@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTkUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-12 18:47:03 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-09-09 21:27:49 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -88,6 +88,13 @@ public:
                          const char *photo_name,
                          vtkImageData *image, 
                          const char *blend_with_name = 0);
+
+  static int GetPhotoHeight(Tcl_Interp *interp,
+                            const char *photo_name);
+
+  static int GetPhotoWidth(Tcl_Interp *interp,
+                           const char *photo_name);
+
   //ETX
 
 protected:

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTkUtilities.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-13 04:11:08 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-09-09 21:27:49 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,7 +55,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.5 $");
 
 //----------------------------------------------------------------------------
 void vtkKWTkUtilities::GetRGBColor(Tcl_Interp *interp,
@@ -115,6 +115,8 @@ int vtkKWTkUtilities::UpdatePhoto(Tcl_Interp *interp,
     vtkGenericWarningMacro(<< "Error looking up Tk photo:" << photo_name);
     return 0;
     }  
+
+  Tk_PhotoSetSize(photo, width, height);
 
 #if (TK_MAJOR_VERSION == 8) && (TK_MINOR_VERSION < 4)
   Tk_PhotoBlank(photo);
@@ -223,6 +225,48 @@ int vtkKWTkUtilities::UpdatePhoto(Tcl_Interp *interp,
 
   flip->Delete();
   return res;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWTkUtilities::GetPhotoHeight(Tcl_Interp *interp,
+                                     const char *photo_name)
+{
+  // Find the photo
+
+  Tk_PhotoHandle photo = Tk_FindPhoto(interp,
+                                      const_cast<char *>(photo_name));
+  if (!photo)
+    {
+    vtkGenericWarningMacro(<< "Error looking up Tk photo:" << photo_name);
+    return 0;
+    }  
+
+  // Return height
+
+  int width, height;
+  Tk_PhotoGetSize(photo, &width, &height);
+  return height;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWTkUtilities::GetPhotoWidth(Tcl_Interp *interp,
+                                    const char *photo_name)
+{
+  // Find the photo
+
+  Tk_PhotoHandle photo = Tk_FindPhoto(interp,
+                                      const_cast<char *>(photo_name));
+  if (!photo)
+    {
+    vtkGenericWarningMacro(<< "Error looking up Tk photo:" << photo_name);
+    return 0;
+    }  
+
+  // Return width
+
+  int width, height;
+  Tk_PhotoGetSize(photo, &width, &height);
+  return width;
 }
 
 //----------------------------------------------------------------------------
