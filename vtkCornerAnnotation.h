@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2000-06-05 15:15:49 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-06-06 21:18:27 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -64,6 +64,12 @@ public:
   vtkGetMacro(MaximumLineHeight,float);
   
   // Description:
+  // Set/Get the minimum size font that will be shown.
+  // If the font drops below this size it will not be rendered.
+  vtkSetMacro(MinimumFontSize,int);
+  vtkGetMacro(MinimumFontSize,int);
+
+  // Description:
   // Release any graphics resources that are being consumed by this actor.
   // The parameter window could be used to determine which graphic
   // resources to release.
@@ -85,7 +91,7 @@ protected:
   vtkTimeStamp   BuildTime;
   int            LastSize[2];
   vtkTextMapper *TextMapper[4];
-
+  int MinimumFontSize;
 private:
 };
 
