@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-29 19:30:08 $
-  Version:   $Revision: 1.105 $
+  Date:      $Date: 2002-08-01 18:18:10 $
+  Version:   $Revision: 1.106 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -231,9 +231,9 @@ vtkKWWindow::vtkKWWindow()
   this->MiddleFrame = vtkKWSplitFrame::New();
   this->MiddleFrame->SetParent(this);
   // Default is not interactively resizable.
-  this->MiddleFrame->SetSeparatorWidth(0);
-  this->MiddleFrame->SetFrame1MinimumWidth(360);
-  this->MiddleFrame->SetFrame1Width(360);
+  this->MiddleFrame->SetSeparatorSize(0);
+  this->MiddleFrame->SetFrame1MinimumSize(360);
+  this->MiddleFrame->SetFrame1Size(360);
 
   this->ViewFrame = vtkKWWidget::New();
   this->ViewFrame->SetParent(this->MiddleFrame->GetFrame2());
@@ -744,8 +744,8 @@ void vtkKWWindow::OnPrint(int propagate, int res)
 
 void vtkKWWindow::ShowProperties()
 {
-  this->MiddleFrame->SetFrame1MinimumWidth(360);
-  //this->MiddleFrame->SetFrame1Width(360);
+  this->MiddleFrame->SetFrame1MinimumSize(360);
+  //this->MiddleFrame->SetFrame1Size(360);
 }
 
 void vtkKWWindow::HideProperties()
@@ -756,8 +756,8 @@ void vtkKWWindow::HideProperties()
     this->GetMenuProperties()->CheckRadioButton(
       this->GetMenuProperties(),"Radio",0);
     }
-  this->MiddleFrame->SetFrame1MinimumWidth(0);
-  this->MiddleFrame->SetFrame1Width(0);
+  this->MiddleFrame->SetFrame1MinimumSize(0);
+  this->MiddleFrame->SetFrame1Size(0);
 }
 
 void vtkKWWindow::InstallMenu(vtkKWMenu* menu)
@@ -996,7 +996,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.105 $");
+  this->ExtractRevision(os,"$Revision: 1.106 $");
 }
 
 int vtkKWWindow::ExitDialog()
