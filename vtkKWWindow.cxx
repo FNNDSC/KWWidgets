@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-22 21:04:00 $
-  Version:   $Revision: 1.61 $
+  Date:      $Date: 2002-01-23 14:46:06 $
+  Version:   $Revision: 1.62 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -325,7 +325,7 @@ vtkKWWindow::~vtkKWWindow()
     }
 
   this->SetWindowClass(0);
-  this->SetScriptExtension(".tcl");
+  this->SetScriptExtension(0);
 }
 
 void vtkKWWindow::DisplayHelp()
@@ -926,7 +926,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.61 $");
+  this->ExtractRevision(os,"$Revision: 1.62 $");
 }
 
 int vtkKWWindow::ExitDialog()
