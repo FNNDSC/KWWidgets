@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-16 20:45:36 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2003-04-17 12:17:06 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -74,7 +74,7 @@ public:
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry );
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.22 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.23 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
@@ -469,4 +469,5 @@ void vtkKWEntry::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "Width: " << this->GetWidth() << endl;
   os << indent << "Readonly: " << (this->ReadOnly?"on":"off") << endl;
   os << indent << "PullDown: " << (this->PullDown?"on":"off") << endl;
+  os << indent << "Entry: " << this->Entry << endl;
 }
