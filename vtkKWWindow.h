@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-15 23:05:38 $
-  Version:   $Revision: 1.70 $
+  Date:      $Date: 2003-01-27 19:57:07 $
+  Version:   $Revision: 1.71 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -61,6 +61,7 @@ class vtkKWNotebook;
 class vtkKWProgressGauge;
 class vtkKWSplitFrame;
 class vtkKWTclInteractor;
+class vtkKWToolbar;
 class vtkKWUserInterfaceManager;
 class vtkKWView;
 class vtkKWViewCollection;
@@ -330,6 +331,13 @@ public:
   // the windows and last is the arguments of the event.
   static void ProcessEvent(vtkObject *, unsigned long, void *, void *);
 
+  // Description:
+  // Update the toolbar aspect once the toolbar settings have been changed
+  virtual void UpdateToolbarAspect();
+  //BTX
+  vtkGetObjectMacro(Toolbars, vtkVector<vtkKWToolbar*>);
+  //ETX
+
 protected:
   vtkKWWindow();
   ~vtkKWWindow();
@@ -409,6 +417,10 @@ protected:
   // Description:
   // This vector holds the list of most recently used files.
   vtkVector<vtkKWWindowMenuEntry*> *RecentFilesVector;
+
+  // Description:
+  // This vector holds the list of toolbars.
+  vtkVector<vtkKWToolbar*> *Toolbars;
 //ETX
 
   vtkKWTclInteractor *TclInteractor;
