@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-09 21:30:41 $
-  Version:   $Revision: 1.60 $
+  Date:      $Date: 2002-09-16 22:29:03 $
+  Version:   $Revision: 1.61 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -379,7 +379,6 @@ protected:
   char  *Title;
   int   PromptBeforeClose;
   int   InExit;
-  int   PropertiesHidden;
 
   vtkKWLabeledFrame *DialogSettingsFrame;
   vtkKWCheckButton  *DialogSettingsConfirmExitCheck;
