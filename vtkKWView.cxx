@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 18:51:48 $
-  Version:   $Revision: 1.78 $
+  Date:      $Date: 2002-08-07 19:06:07 $
+  Version:   $Revision: 1.79 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -76,6 +76,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #else
 #include "vtkXOpenGLRenderWindow.h"
+#include "vtkKWMessageDialog.h"
 int vtkKWViewFoundMatch;
 Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event, 
                              char * vtkNotUsed(arg))
@@ -96,7 +97,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.78 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.79 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -1387,7 +1388,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.78 $");
+  this->ExtractRevision(os,"$Revision: 1.79 $");
 }
 
 //----------------------------------------------------------------------------
