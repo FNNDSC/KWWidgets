@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-15 12:54:36 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-08-07 13:52:15 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -56,6 +56,7 @@ template class VTK_EXPORT vtkVectorIterator<vtkKWWidget*>;
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.13 $");
 
 
 int vtkKWToolbarCommand(ClientData cd, Tcl_Interp *interp,

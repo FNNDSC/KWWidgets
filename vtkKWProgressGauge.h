@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWProgressGauge.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-08-07 13:52:14 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -54,7 +54,7 @@ class VTK_EXPORT vtkKWProgressGauge : public vtkKWWidget
 {
 public:
   static vtkKWProgressGauge* New();
-  vtkTypeMacro(vtkKWProgressGauge,vtkKWWidget);
+  vtkTypeRevisionMacro(vtkKWProgressGauge,vtkKWWidget);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:

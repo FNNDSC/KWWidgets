@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-27 19:26:20 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-08-07 13:52:14 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -54,7 +54,8 @@ class VTK_EXPORT vtkKWFrame : public vtkKWWidget
 {
 public:
   static vtkKWFrame* New();
-  vtkTypeMacro(vtkKWFrame,vtkKWWidget);
+  vtkTypeRevisionMacro(vtkKWFrame,vtkKWWidget);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Create a Tk widget

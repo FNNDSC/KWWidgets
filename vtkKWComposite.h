@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWComposite.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-08-07 13:52:13 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,16 +50,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkKWComposite_h
 #define __vtkKWComposite_h
 
-#include "vtkKWNotebook.h"
-class vtkKWView;
+#include "vtkKWObject.h"
+
 class vtkKWApplication;
-class vtkProp;
+class vtkKWNotebook;
+class vtkKWView;
 class vtkKWWidget;
+class vtkProp;
 
 class VTK_EXPORT vtkKWComposite : public vtkKWObject
 {
 public:
-  vtkTypeMacro(vtkKWComposite,vtkKWObject);
+  vtkTypeRevisionMacro(vtkKWComposite,vtkKWObject);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:

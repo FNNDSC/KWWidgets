@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplitFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-01 18:18:02 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-08-07 13:52:14 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,7 +55,7 @@ class VTK_EXPORT vtkKWSplitFrame : public vtkKWWidget
 {
 public:
   static vtkKWSplitFrame* New();
-  vtkTypeMacro(vtkKWSplitFrame,vtkKWWidget);
+  vtkTypeRevisionMacro(vtkKWSplitFrame,vtkKWWidget);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:

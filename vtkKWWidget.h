@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-07-12 21:30:56 $
-  Version:   $Revision: 1.26 $
+  Date:      $Date: 2002-08-07 13:52:15 $
+  Version:   $Revision: 1.27 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -59,7 +59,7 @@ class VTK_EXPORT vtkKWWidget : public vtkKWObject
 {
 public:
   static vtkKWWidget* New();
-  vtkTypeMacro(vtkKWWidget,vtkKWObject);
+  vtkTypeRevisionMacro(vtkKWWidget,vtkKWObject);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2002-08-07 13:52:14 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,6 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define __vtkKWDialog_h
 
 #include "vtkKWWidget.h"
+
 class vtkKWApplication;
 class vtkKWWindow;
 
@@ -54,7 +55,7 @@ class VTK_EXPORT vtkKWDialog : public vtkKWWidget
 {
 public:
   static vtkKWDialog* New();
-  vtkTypeMacro(vtkKWDialog,vtkKWWidget);
+  vtkTypeRevisionMacro(vtkKWDialog,vtkKWWidget);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:

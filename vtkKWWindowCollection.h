@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindowCollection.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 23:43:00 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-08-07 13:52:15 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,7 +58,8 @@ class VTK_EXPORT vtkKWWindowCollection : public vtkCollection
 {
 public:
   static vtkKWWindowCollection *New();
-  vtkTypeMacro(vtkKWWindowCollection,vtkCollection);
+  vtkTypeRevisionMacro(vtkKWWindowCollection,vtkCollection);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Add an KWWindow to the list.

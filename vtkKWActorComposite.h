@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWActorComposite.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:18 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-08-07 13:52:13 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -61,7 +61,7 @@ class VTK_EXPORT vtkKWActorComposite : public vtkKWComposite
 {
 public:
   static vtkKWActorComposite* New();
-  vtkTypeMacro(vtkKWActorComposite,vtkKWComposite);
+  vtkTypeRevisionMacro(vtkKWActorComposite,vtkKWComposite);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:

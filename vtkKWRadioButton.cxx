@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRadioButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-24 17:29:46 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-08-07 13:52:14 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,6 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWRadioButton );
+vtkCxxRevisionMacro(vtkKWRadioButton, "$Revision: 1.7 $");
 
 
 
@@ -70,3 +71,9 @@ void vtkKWRadioButton::Create(vtkKWApplication *app, const char *args)
                wname,wname,(args?args:""));
 }
 
+
+//----------------------------------------------------------------------------
+void vtkKWRadioButton::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+}

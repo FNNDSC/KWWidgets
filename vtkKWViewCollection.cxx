@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWViewCollection.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 23:42:59 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-08-07 13:52:15 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,6 +45,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWView.h"
 
 vtkStandardNewMacro( vtkKWViewCollection );
+vtkCxxRevisionMacro(vtkKWViewCollection, "$Revision: 1.5 $");
 
 void vtkKWViewCollection::AddItem(vtkKWView *a) 
 {
@@ -76,4 +77,10 @@ vtkKWView *vtkKWViewCollection::GetLastKWView()
     {
     return vtkKWView::SafeDownCast(this->Bottom->Item);
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWViewCollection::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
 }

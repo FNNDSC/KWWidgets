@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTclInteractor.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-08-07 13:52:15 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,7 +58,7 @@ class VTK_EXPORT vtkKWTclInteractor : public vtkKWWidget
 {
 public:
   static vtkKWTclInteractor* New();
-  vtkTypeMacro(vtkKWTclInteractor, vtkKWWidget);
+  vtkTypeRevisionMacro(vtkKWTclInteractor, vtkKWWidget);
   void PrintSelf(ostream& os, vtkIndent indent);
   
   // Description:

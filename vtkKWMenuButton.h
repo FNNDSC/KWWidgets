@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenuButton.h,v $
   Language:  C++
-  Date:      $Date: 2002-07-15 12:42:15 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-08-07 13:52:14 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -43,13 +43,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkKWMenuButton_h
 #define __vtkKWMenuButton_h
 
-#include "vtkKWMenu.h"
+#include "vtkKWWidget.h"
+
+class vtkKWMenu;
 
 class VTK_EXPORT vtkKWMenuButton : public vtkKWWidget
 {
 public:
   static vtkKWMenuButton* New();
-  vtkTypeMacro(vtkKWMenuButton, vtkKWWidget);
+  vtkTypeRevisionMacro(vtkKWMenuButton, vtkKWWidget);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Create a Tk widget

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWBWidgets.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-29 19:30:08 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-08-07 13:52:13 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,6 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWBWidgets );
+vtkCxxRevisionMacro(vtkKWBWidgets, "$Revision: 1.7 $");
 
 int vtkKWBWidgetsCommand(ClientData cd, Tcl_Interp *interp,
                             int argc, char *argv[]);

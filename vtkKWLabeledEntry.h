@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledEntry.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 23:42:59 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-08-07 13:52:14 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -59,7 +59,8 @@ class VTK_EXPORT vtkKWLabeledEntry : public vtkKWWidget
 {
 public:
   static vtkKWLabeledEntry* New();
-  vtkTypeMacro(vtkKWLabeledEntry, vtkKWWidget);
+  vtkTypeRevisionMacro(vtkKWLabeledEntry, vtkKWWidget);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Create a Tk widget

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOKCancelDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:31 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-08-07 13:52:14 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -53,7 +53,8 @@ class VTK_EXPORT vtkKWOKCancelDialog : public vtkKWDialog
 {
 public:
   static vtkKWOKCancelDialog* New();
-  vtkTypeMacro(vtkKWOKCancelDialog,vtkKWDialog);
+  vtkTypeRevisionMacro(vtkKWOKCancelDialog,vtkKWDialog);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Create a Tk widget

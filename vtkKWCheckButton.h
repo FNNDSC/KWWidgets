@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCheckButton.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-28 17:15:00 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-08-07 13:52:13 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -54,7 +54,8 @@ class VTK_EXPORT vtkKWCheckButton : public vtkKWWidget
 {
 public:
   static vtkKWCheckButton* New();
-  vtkTypeMacro(vtkKWCheckButton,vtkKWWidget);
+  vtkTypeRevisionMacro(vtkKWCheckButton,vtkKWWidget);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Create a Tk widget

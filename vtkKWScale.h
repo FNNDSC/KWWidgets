@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2002-08-07 13:52:14 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,7 +55,7 @@ class VTK_EXPORT vtkKWScale : public vtkKWWidget
 {
 public:
   static vtkKWScale* New();
-  vtkTypeMacro(vtkKWScale,vtkKWWidget);
+  vtkTypeRevisionMacro(vtkKWScale,vtkKWWidget);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWText.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-23 17:30:12 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-08-07 13:52:15 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,6 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWText );
+vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.9 $");
 
 vtkKWText::vtkKWText()
 {
@@ -94,12 +95,8 @@ void vtkKWText::Create(vtkKWApplication *app, const char *args)
   this->Script("text %s %s",wname,(args?args:""));
 }
 
-
-
-
-
-
-
-
-
-
+//----------------------------------------------------------------------------
+void vtkKWText::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+}

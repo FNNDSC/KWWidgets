@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWListBox.h,v $
   Language:  C++
-  Date:      $Date: 2002-07-15 12:42:15 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-08-07 13:52:14 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,13 +47,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define __vtkKWListBox_h
 
 #include "vtkKWWidget.h"
+
 class vtkKWApplication;
 
 class VTK_EXPORT vtkKWListBox : public vtkKWWidget
 {
 public:
   static vtkKWListBox* New();
-  vtkTypeMacro(vtkKWListBox,vtkKWWidget);
+  vtkTypeRevisionMacro(vtkKWListBox,vtkKWWidget);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Create a Tk widget

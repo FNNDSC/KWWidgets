@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-27 17:41:52 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-08-07 13:52:13 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -59,7 +59,7 @@ class vtkImageActor;
 class VTK_EXPORT vtkCornerAnnotation : public vtkActor2D
 {
 public:
-  vtkTypeMacro(vtkCornerAnnotation,vtkActor2D);
+  vtkTypeRevisionMacro(vtkCornerAnnotation,vtkActor2D);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:

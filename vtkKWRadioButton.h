@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRadioButton.h,v $
   Language:  C++
-  Date:      $Date: 2002-07-24 17:29:46 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-08-07 13:52:14 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -54,7 +54,8 @@ class VTK_EXPORT vtkKWRadioButton : public vtkKWCheckButton
 {
 public:
   static vtkKWRadioButton* New();
-  vtkTypeMacro(vtkKWRadioButton,vtkKWCheckButton);
+  vtkTypeRevisionMacro(vtkKWRadioButton,vtkKWCheckButton);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Create a Tk widget

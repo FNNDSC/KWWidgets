@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-11 15:38:20 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-08-07 13:52:14 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,7 +58,7 @@ class VTK_EXPORT vtkKWLabeledFrame : public vtkKWWidget
 {
 public:
   static vtkKWLabeledFrame* New();
-  vtkTypeMacro(vtkKWLabeledFrame,vtkKWWidget);
+  vtkTypeRevisionMacro(vtkKWLabeledFrame,vtkKWWidget);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:

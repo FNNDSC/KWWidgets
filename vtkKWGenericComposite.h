@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWGenericComposite.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 23:42:58 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-08-07 13:52:14 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -59,7 +59,8 @@ class VTK_EXPORT vtkKWGenericComposite : public vtkKWComposite
 {
 public:
   static vtkKWGenericComposite* New();
-  vtkTypeMacro(vtkKWGenericComposite,vtkKWComposite);
+  vtkTypeRevisionMacro(vtkKWGenericComposite,vtkKWComposite);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Get the prop for this composite
