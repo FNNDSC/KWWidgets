@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-09 22:52:34 $
-  Version:   $Revision: 1.69 $
+  Date:      $Date: 2003-01-15 23:05:38 $
+  Version:   $Revision: 1.70 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -284,9 +284,9 @@ public:
   
   // Description:
   // Save or retrieve color from registery. If color does not 
-  // exist, it will retrieve -1, -1 ,-1.
+  // exist, it will retrieve -1, -1 ,-1 and return 0 (1 if success).
   void SaveColor(int level, const char*, float rgb[3]);
-  void RetrieveColor(int level, const char*, float rgb[3]);
+  int RetrieveColor(int level, const char*, float rgb[3]);
 
   // Description:
   // Save or retrieve the last path of the dialog to the registery.
