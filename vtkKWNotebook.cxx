@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-13 21:02:10 $
-  Version:   $Revision: 1.26 $
+  Date:      $Date: 2002-06-24 13:40:29 $
+  Version:   $Revision: 1.27 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -563,4 +563,6 @@ void vtkKWNotebook::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "MinimumHeight: " << this->GetMinimumHeight() << endl;
   os << indent << "MinimumWidth: " << this->GetMinimumWidth() << endl;
   os << indent << "NumberOfPages: " << this->GetNumberOfPages() << endl;
+  os << indent << "AlwaysShowTabs: " << (this->AlwaysShowTabs?"on":"off")
+     << endl;
 }
