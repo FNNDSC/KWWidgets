@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-31 13:56:48 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2000-10-15 16:23:02 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -99,6 +99,11 @@ public:
   void SetApplicationVersionName(const char *);
   vtkGetStringMacro(ApplicationVersionName);
 
+  // Description:
+  // Set/Get the ApplicationReleaseName - this is the release of the 
+  // application version, typically beta 1, beta 2, final, patch 1, patch 2
+  void SetApplicationReleaseName(const char *);
+  vtkGetStringMacro(ApplicationReleaseName);
   
 //BTX
   // Description:
@@ -138,6 +143,7 @@ protected:
   vtkKWWindowCollection *Windows;
   char *ApplicationName;
   char *ApplicationVersionName;
+  char *ApplicationReleaseName;
 
   // For Balloon help
   vtkKWWidget *BalloonHelpWindow;
