@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-19 15:39:17 $
-  Version:   $Revision: 1.26 $
+  Date:      $Date: 2002-12-20 18:25:35 $
+  Version:   $Revision: 1.27 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,7 +52,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkCornerAnnotation);
-vtkCxxRevisionMacro(vtkCornerAnnotation, "$Revision: 1.26 $");
+vtkCxxRevisionMacro(vtkCornerAnnotation, "$Revision: 1.27 $");
 
 vtkSetObjectImplementationMacro(vtkCornerAnnotation,ImageActor,vtkImageActor);
 vtkSetObjectImplementationMacro(vtkCornerAnnotation,WindowLevel,
@@ -476,6 +476,11 @@ int vtkCornerAnnotation::RenderOpaqueGeometry(vtkViewport *viewport)
 //----------------------------------------------------------------------------
 void vtkCornerAnnotation::SetText(int i, const char *text)
 {
+  if (i < 0 || i > 3)
+    {
+    return;
+    }
+
   if (!text || 
       (this->CornerText[i] && text && (!strcmp(this->CornerText[i],text))))
     { 
@@ -490,7 +495,22 @@ void vtkCornerAnnotation::SetText(int i, const char *text)
 //----------------------------------------------------------------------------
 char* vtkCornerAnnotation::GetText(int i)
 {
+  if (i < 0 || i > 3)
+    {
+    return NULL;
+    }
+
   return this->CornerText[i];
+}
+
+//----------------------------------------------------------------------------
+void vtkCornerAnnotation::ClearAllTexts()
+{
+  int i;
+  for (i = 0; i < 4; i++)
+    {
+    this->SetText(i, "");
+    }
 }
 
 //----------------------------------------------------------------------------

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-13 21:01:58 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2002-12-20 18:25:35 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -97,6 +97,7 @@ public:
   // Set/Get the text to be displayed for each corner
   void SetText(int i,const char *text);
   char* GetText(int i);
+  void ClearAllTexts();
 
   // Description:
   // Set an image actor to look at for slice information
