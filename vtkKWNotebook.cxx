@@ -3,8 +3,8 @@
 Program:   Visualization Toolkit
 Module:    $RCSfile: vtkKWNotebook.cxx,v $
 Language:  C++
-Date:      $Date: 2003-02-25 22:37:27 $
-Version:   $Revision: 1.40 $
+Date:      $Date: 2003-02-27 21:33:32 $
+Version:   $Revision: 1.41 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -85,7 +85,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.40 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.41 $");
 
 //------------------------------------------------------------------------------
 int vtkKWNotebookCommand(ClientData cd, Tcl_Interp *interp,
@@ -1013,6 +1013,24 @@ int vtkKWNotebook::GetPageTag(vtkKWNotebook::Page *page)
     }
 
   return page->Tag;
+}
+
+//------------------------------------------------------------------------------
+char* vtkKWNotebook::GetPageTitle(int id)
+{
+  return this->GetPageTitle(this->GetPage(id));
+}
+
+//------------------------------------------------------------------------------
+char* vtkKWNotebook::GetPageTitle(vtkKWNotebook::Page *page)
+{
+  if (page == NULL || !this->IsCreated())
+    {
+    vtkErrorMacro("Can not query page title.");
+    return 0;
+    }
+
+  return page->Title;
 }
 
 //------------------------------------------------------------------------------
@@ -2016,6 +2034,39 @@ void vtkKWNotebook::SetPagesCanBePinned(int arg)
       }
     it->Delete();
     }
+}
+
+//----------------------------------------------------------------------------
+int vtkKWNotebook::GetPageIdContainingCoordinatesInTab(int x, int y)
+{
+  if (!this->IsCreated())
+    {
+    return -1;
+    }
+
+  int found = -1;
+  vtkKWNotebook::Page *page = NULL;
+  vtkKWNotebook::PagesContainerIterator *it = this->Pages->NewIterator();
+
+  it->InitTraversal();
+  while (!it->IsDoneWithTraversal())
+    {
+    if (it->GetData(page) == VTK_OK && 
+        page->Visibility &&
+        page->TabFrame->IsCreated() &&
+        vtkKWTkUtilities::ContainsCoordinates(
+          this->GetApplication()->GetMainInterp(),
+          page->TabFrame->GetWidgetName(),
+          x, y))
+      {
+      found = page->Id;
+      break;
+      }
+    it->GoToNextItem();
+    }
+  it->Delete();
+
+  return found;
 }
 
 //----------------------------------------------------------------------------

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-25 18:48:33 $
-  Version:   $Revision: 1.24 $
+  Date:      $Date: 2003-02-27 21:33:32 $
+  Version:   $Revision: 1.25 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -86,6 +86,10 @@ public:
   int AddPage(const char *title, const char* balloon, vtkKWIcon *icon);
   int AddPage(const char *title, const char* balloon);
   int AddPage(const char *title);
+
+  // Description:
+  // Accessors
+  char* GetPageTitle(int id);
 
   // Description:
   // Return the number of pages in the notebook.
@@ -247,6 +251,11 @@ public:
   vtkBooleanMacro(ShowIcons, int);
   
   // Description:
+  // Get the id of the visible page which tab contains a given pair of screen
+  // coordinates (-1 if not found).
+  int GetPageIdContainingCoordinatesInTab(int x, int y);
+
+  // Description:
   // Some callback routines.
   void ScheduleResize();
   void Resize();
@@ -329,6 +338,7 @@ protected:
   int GetPageVisibility(Page*);
   int CanBeHidden(Page*);
   int GetPageTag(Page*);
+  char* GetPageTitle(Page*);
   int EnqueueMostRecentPage(Page*);
 
   // Update the tab frame color of a page given a selection status
