@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-03 20:39:37 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2000-08-14 14:51:11 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -91,7 +91,10 @@ vtkKWCornerAnnotation::vtkKWCornerAnnotation()
 
 vtkKWCornerAnnotation::~vtkKWCornerAnnotation()
 {
-  this->Application->GetEventNotifier()->RemoveCallbacks(this);
+  if (this->Application)
+    {
+    this->Application->GetEventNotifier()->RemoveCallbacks(this);
+    }
   this->SetMasterCornerAnnotation(NULL);
   
   this->CornerDisplayFrame->Delete();
@@ -386,6 +389,6 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.10 $");
+  this->ExtractRevision(os,"$Revision: 1.11 $");
   vtkKWLabeledFrame::SerializeRevision(os,indent);
 }
