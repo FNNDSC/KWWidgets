@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-12-26 22:32:11 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2001-12-27 17:06:44 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -220,7 +220,7 @@ void vtkKWCornerAnnotation::SetTextColor( float r, float g, float b )
 
   if ( this->LightboxID == 0 )
     {
-    this->View->GetWindow()->InvokeEvent( vtkKWObject::LightboxCornerAnnoChangedEvent, ""  ); // ANDY Problems
+    this->View->GetWindow()->InvokeEvent( vtkKWObject::LightboxCornerAnnoChangedEvent, 0  ); // ANDY Problems
     }
 }
 
@@ -243,7 +243,7 @@ void vtkKWCornerAnnotation::OnDisplayCorner()
 
   if ( this->LightboxID == 0 )
     {
-    this->View->GetWindow()->InvokeEvent( vtkKWObject::LightboxCornerAnnoChangedEvent, ""  ); // ANDY Problems
+    this->View->GetWindow()->InvokeEvent( vtkKWObject::LightboxCornerAnnoChangedEvent, 0  ); // ANDY Problems
     }
 }
 
@@ -279,7 +279,7 @@ void vtkKWCornerAnnotation::CornerChanged(int i)
 
   if ( this->LightboxID == 0 )
     {
-    this->View->GetWindow()->InvokeEvent( vtkKWObject::LightboxCornerAnnoChangedEvent, ""  ); // ANDY Problems
+    this->View->GetWindow()->InvokeEvent( vtkKWObject::LightboxCornerAnnoChangedEvent, 0  ); // ANDY Problems
     }
 }
 
@@ -379,6 +379,6 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.14 $");
+  this->ExtractRevision(os,"$Revision: 1.15 $");
   vtkKWLabeledFrame::SerializeRevision(os,indent);
 }
