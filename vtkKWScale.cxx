@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-14 00:48:59 $
-  Version:   $Revision: 1.47 $
+  Date:      $Date: 2003-01-14 22:41:39 $
+  Version:   $Revision: 1.48 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // ---------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWScale );
-vtkCxxRevisionMacro(vtkKWScale, "$Revision: 1.47 $");
+vtkCxxRevisionMacro(vtkKWScale, "$Revision: 1.48 $");
 
 int vtkKWScaleCommand(ClientData cd, Tcl_Interp *interp,
                       int argc, char *argv[]);
@@ -1080,6 +1080,15 @@ void vtkKWScale::SetLabelWidth(int width)
   if (this->Label && this->Label->IsCreated())
     {
     this->Script("%s configure -width %d", this->Label->GetWidgetName(), width);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWScale::SetEntryWidth(int width)
+{
+  if (this->Entry)
+    {
+    this->Entry->SetWidth(width);
     }
 }
 
