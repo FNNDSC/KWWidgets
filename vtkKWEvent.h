@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-10 18:27:17 $
-  Version:   $Revision: 1.34 $
+  Date:      $Date: 2003-01-10 20:37:39 $
+  Version:   $Revision: 1.35 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -96,6 +96,8 @@ class VTK_EXPORT vtkKWEvent
     GrayScaleImageEvent,
     ImageAngleVisibilityChangedEvent,
     ImageBackgroundColorChangedEvent,
+    ImageCameraFocalPointAndPositionChangedEvent,
+    ImageCameraResetEvent,
     ImageCornerAnnotationChangedEvent,
     ImageCornerAnnotationColorChangedEvent,
     ImageDistanceVisibilityChangedEvent,
@@ -103,6 +105,7 @@ class VTK_EXPORT vtkKWEvent
     ImageMouseBindingChangedEvent,
     ImageScaleBarColorChangedEvent,
     ImageScaleBarVisibilityChangedEvent,
+    ImageZoomFactorChangedEvent,
     InteractiveRenderStartEvent,
     LeftMouseOptionChangedEvent,
     LightColorChangedEvent,
@@ -115,8 +118,6 @@ class VTK_EXPORT vtkKWEvent
     MouseBindingChangedEvent,
     MultiPassStillRenderEndEvent,
     MultiPassStillRenderStageChangedEvent,
-    OrthoImageCameraResetEvent,
-    OrthoImageZoomFactorChangedEvent,
     PerspectiveViewAngleChangedEvent,
     ProbeInformationChangedEvent,
     RenderEvent,
