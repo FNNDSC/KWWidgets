@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-13 17:49:52 $
-  Version:   $Revision: 1.49 $
+  Date:      $Date: 2002-09-30 16:00:09 $
+  Version:   $Revision: 1.50 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -96,7 +96,7 @@ class VTK_EXPORT vtkKWView : public vtkKWWidget
   // Description:
   // Sets up some default event handlers to allow
   // users to manipulate the view etc.
-  void SetupBindings();
+  virtual void SetupBindings();
 
   // Description:
   // Used to queue up expose event prior to processing.
