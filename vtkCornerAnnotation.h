@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-04 16:53:58 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2002-10-13 21:01:58 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,6 +55,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 class vtkTextMapper;
 class vtkImageMapToWindowLevelColors;
 class vtkImageActor;
+class vtkTextProperty;
 
 class VTK_EXPORT vtkCornerAnnotation : public vtkActor2D
 {
@@ -118,11 +119,18 @@ public:
   vtkSetMacro(LevelScale, float);
   vtkGetMacro(LevelScale, float);
   
+  // Description:
+  // Set/Get the text property of all corners.
+  virtual void SetTextProperty(vtkTextProperty *p);
+  vtkGetObjectMacro(TextProperty,vtkTextProperty);
+  
 protected:
   vtkCornerAnnotation();
   ~vtkCornerAnnotation();
 
   float MaximumLineHeight;
+
+  vtkTextProperty *TextProperty;
 
   vtkImageMapToWindowLevelColors *WindowLevel;
   float LevelShift;
