@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-09 14:10:21 $
-  Version:   $Revision: 1.20 $
+  Date:      $Date: 2002-08-13 12:36:04 $
+  Version:   $Revision: 1.21 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -77,7 +77,7 @@ void vtkKWToolbar::SetGlobalWidgetsFlatAspect(int val)
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
-vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.20 $");
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.21 $");
 
 
 int vtkKWToolbarCommand(ClientData cd, Tcl_Interp *interp,
@@ -137,7 +137,7 @@ void vtkKWToolbar::InsertWidget(vtkKWWidget *location, vtkKWWidget *widget)
     res = this->Widgets->PrependItem(widget);
     }
 
-  vtkIdType loc;
+  vtkIdType loc = 0;
   if (this->Widgets->FindItem(location, loc) == VTK_OK)
     {
     res = this->Widgets->InsertItem(loc, widget);
@@ -160,7 +160,7 @@ void vtkKWToolbar::InsertWidget(vtkKWWidget *location, vtkKWWidget *widget)
 //----------------------------------------------------------------------------
 void vtkKWToolbar::RemoveWidget(vtkKWWidget *widget)
 {
-  vtkIdType loc;
+  vtkIdType loc = 0;
   if (this->Widgets->FindItem(widget, loc) == VTK_OK)
     {
     if (this->Widgets->RemoveItem(loc) == VTK_OK)
