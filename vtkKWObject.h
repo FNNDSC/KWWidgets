@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-10 21:14:14 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2002-01-11 23:31:25 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -86,13 +86,12 @@ public:
   static int GetIntegerResult(vtkKWApplication *);
   static float GetFloatResult(vtkKWApplication *);
 
-
   // Description:
   // Chaining method to serialize an object and its superclasses.
   void Serialize(ostream& os, vtkIndent indent);
   virtual void SerializeRevision(ostream& os, vtkIndent indent);
   void Serialize(istream& is);
-  virtual void SerializeSelf(ostream& os, vtkIndent indent) {};
+  virtual void SerializeSelf(ostream& /*os*/, vtkIndent /*indent*/) {};
   virtual void SerializeToken(istream& is, const char token[1024]);
   virtual const char *GetVersion(const char *);
   virtual void AddVersion(const char *cname, const char *version);

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTclCommand.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-09 22:32:58 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-01-11 23:31:25 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1993-2001 Ken Martin, Will Schroeder, Bill Lorensen 
 All rights reserved.
@@ -58,7 +58,7 @@ vtkKWTclCommand::~vtkKWTclCommand()
     }
 }
 
-void vtkKWTclCommand::Execute(vtkObject *caller, unsigned long event,
+void vtkKWTclCommand::Execute(vtkObject *caller, unsigned long /*event*/,
                                  void *callData)
 {
   char *str = (char *) callData;

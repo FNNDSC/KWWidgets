@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWChangeColorButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:22 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-01-11 23:31:25 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -153,7 +153,7 @@ void vtkKWChangeColorButton::Create(vtkKWApplication *app, const char *args)
 
 }
 
-void vtkKWChangeColorButton::AButtonPress(int x, int y)
+void vtkKWChangeColorButton::AButtonPress(int /*x*/, int /*y*/)
 {  
   this->Script("%s configure -relief sunken", this->GetWidgetName());  
 }
@@ -261,5 +261,5 @@ void vtkKWChangeColorButton::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWChangeColorButton ";
-  this->ExtractRevision(os,"$Revision: 1.12 $");
+  this->ExtractRevision(os,"$Revision: 1.13 $");
 }

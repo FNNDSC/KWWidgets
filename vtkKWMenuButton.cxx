@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenuButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:23 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-01-11 23:31:25 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -62,7 +62,7 @@ vtkKWMenuButton::~vtkKWMenuButton()
 }
 
 
-void vtkKWMenuButton::Create(vtkKWApplication *app, char *args)
+void vtkKWMenuButton::Create(vtkKWApplication *app, char* /*args*/)
 { 
   // must set the application
   if (this->Application)
@@ -76,6 +76,7 @@ void vtkKWMenuButton::Create(vtkKWApplication *app, char *args)
   this->Script("menubutton %s -menu %s -relief raised -bd 2", 
 	       this->GetWidgetName(), this->Menu->GetWidgetName());
 
+  // Should the args be passed through?
   this->Menu->Create(app, "");  
   
 }

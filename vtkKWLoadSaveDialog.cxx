@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:23 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-01-11 23:31:25 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -71,7 +71,7 @@ vtkKWLoadSaveDialog::~vtkKWLoadSaveDialog()
   this->SetOpenFile(0);
 }
 
-void vtkKWLoadSaveDialog::Create(vtkKWApplication *app, const char *args)
+void vtkKWLoadSaveDialog::Create(vtkKWApplication *app, const char* /*args*/)
 {
   // must set the application
   if (this->Application)

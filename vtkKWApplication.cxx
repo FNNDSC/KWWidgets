@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:22 $
-  Version:   $Revision: 1.43 $
+  Date:      $Date: 2002-01-11 23:31:24 $
+  Version:   $Revision: 1.44 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -392,7 +392,7 @@ void vtkKWApplication::Start(char *arg)
 { 
   this->Start(1,&arg);
 }
-void vtkKWApplication::Start(int argc, char *argv[])
+void vtkKWApplication::Start(int /*argc*/, char ** /*argv*/)
 { 
   while (this->Windows->GetNumberOfItems())
     {
@@ -573,7 +573,7 @@ int vtkKWApplication::GetWidgetVisibility()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWApplication::DisplayAbout(vtkKWWindow *win)
+void vtkKWApplication::DisplayAbout(vtkKWWindow* /*win*/)
 {
   ostrstream str;
   str << "Application : " << this->GetApplicationName() << "\nVersion : " << this->GetApplicationVersionName() << "\nRelease : " << this->GetApplicationReleaseName() << ends;

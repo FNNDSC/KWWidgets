@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 22:30:07 $
-  Version:   $Revision: 1.51 $
+  Date:      $Date: 2002-01-11 23:31:25 $
+  Version:   $Revision: 1.52 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -81,7 +81,7 @@ public:
   int Same( const char *filename, const char*fullfile, vtkKWObject *target, 
 	    const char *command )
     {
-      if ( !this->Command || !this->File || !filename || !command) 
+      if ( !this->Command || !this->File || !filename || !target || !command) 
 	{
 	return 0;
 	}
@@ -682,7 +682,7 @@ void vtkKWWindow::HideProperties()
 void vtkKWWindow::InstallMenu(vtkKWMenu* menu)
 { 
   this->Script("%s configure -menu %s", this->GetWidgetName(),
-	       this->Menu->GetWidgetName());  
+	       menu->GetWidgetName());  
 }
 
 void vtkKWWindow::UnRegister(vtkObject *o)
@@ -822,7 +822,7 @@ void vtkKWWindow::StoreRecentMenuToRegistry(char *key)
     }
   char KeyNameP[10];
   char CmdNameP[10];
-  int i;
+  unsigned int i;
 
   for (i = 0; i < this->NumberOfRecentFiles; i++)
     {
@@ -854,8 +854,6 @@ void vtkKWWindow::AddRecentFilesToMenu(char *key, vtkKWObject *target)
   char fkey[1024];
   char KeyNameP[10];
   char CmdNameP[10];
-  char *KeyName[4] = {"File1","File2","File3","File4"};
-  char *CmdName[4] = {"File1Cmd","File2Cmd","File3Cmd","File4Cmd"};
   char Cmd[1024];
   
   if (!key)
@@ -889,16 +887,13 @@ void vtkKWWindow::AddRecentFilesToMenu(char *key, vtkKWObject *target)
       vtkKWRegisteryUtilities::ReadAValue(hKey, Cmd, CmdNameP,"Open");
       if (strlen(File) > 1)
         {
-        //char *cmd = new char [strlen(Cmd) + strlen(File) + 10];
-        //sprintf(cmd,"%s {%s}", Cmd, File);
 	this->InsertRecentFileToMenu(File, target, Cmd);
-	//delete [] cmd;
         }    
       }
     }
   RegCloseKey(hKey);
   
-  this->UpdateRecentMenu();
+  this->UpdateRecentMenu(key);
 #endif
 }
 
@@ -906,7 +901,7 @@ void vtkKWWindow::AddRecentFile(char *key, char *name,vtkKWObject *target,
                                 const char *command)
 {
   this->InsertRecentFileToMenu(name, target, command);
-  this->UpdateRecentMenu();
+  this->UpdateRecentMenu(key);
 }
 
 int vtkKWWindow::GetFileMenuIndex()
@@ -924,7 +919,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.51 $");
+  this->ExtractRevision(os,"$Revision: 1.52 $");
 }
 
 int vtkKWWindow::ExitDialog()
@@ -946,7 +941,7 @@ int vtkKWWindow::ExitDialog()
   return ret;
 }
 
-void vtkKWWindow::UpdateRecentMenu()
+void vtkKWWindow::UpdateRecentMenu(char *key)
 {  
   int cc;
   for ( cc = 0; cc < this->RealNumberOfMRUFiles; cc ++ )
@@ -957,7 +952,8 @@ void vtkKWWindow::UpdateRecentMenu()
   this->RealNumberOfMRUFiles = 0;
   if ( this->RecentFiles )
     {
-    for ( cc = 0; cc<this->NumberOfRecentFiles; cc++ ) 
+    for ( cc = 0; static_cast<unsigned int>(cc)<this->NumberOfRecentFiles; 
+	  cc++ ) 
       {
       vtkKWWindowMenuEntry *kc;
       if ( ( kc = (vtkKWWindowMenuEntry *)this->RecentFiles->Lookup(cc) ) )
@@ -967,7 +963,7 @@ void vtkKWWindow::UpdateRecentMenu()
 	}
       }
     }
-  this->StoreRecentMenuToRegistry(NULL);
+  this->StoreRecentMenuToRegistry(key);
   this->PrintRecentFiles();
 }
 

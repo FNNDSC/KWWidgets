@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSaveImageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:24 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-01-11 23:31:25 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -115,7 +115,7 @@ void vtkKWSaveImageDialog::Invoke()
   free(path);
 }
 
-void vtkKWSaveImageDialog::Create(vtkKWApplication *app, const char *args)
+void vtkKWSaveImageDialog::Create(vtkKWApplication *app, const char* /*args*/)
 {
   // must set the application
   if (this->Application)
