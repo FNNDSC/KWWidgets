@@ -21,7 +21,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLoadSaveDialog );
-vtkCxxRevisionMacro(vtkKWLoadSaveDialog, "$Revision: 1.35 $");
+vtkCxxRevisionMacro(vtkKWLoadSaveDialog, "$Revision: 1.36 $");
 
 vtkKWLoadSaveDialog::vtkKWLoadSaveDialog()
 {
@@ -156,7 +156,7 @@ const char* vtkKWLoadSaveDialog::GenerateLastPath(const char* path)
       pos--;
       }
     pth[pos] = '\0';
-    // Store in the registery
+    // Store in the registry
     this->SetLastPath(pth);
     delete [] pth;
     }
