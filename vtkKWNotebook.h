@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.h,v $
   Language:  C++
-  Date:      $Date: 2001-03-01 18:59:30 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2001-08-23 12:47:36 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -78,9 +78,6 @@ public:
   vtkSetMacro(MinimumHeight,int);
   vtkGetMacro(MinimumWidth,int);
   vtkGetMacro(MinimumHeight,int);
-
-  vtkSetMacro(MaximumWidth,int);
-  vtkGetMacro(MaximumWidth,int);
   
 protected:
   vtkKWNotebook();
@@ -90,7 +87,6 @@ protected:
 
   int MinimumWidth;
   int MinimumHeight;
-  int MaximumWidth;
   int Current;
   int Height;
   int Pad;

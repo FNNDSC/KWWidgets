@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-03-01 18:59:30 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2001-08-23 12:47:36 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -77,7 +77,6 @@ vtkKWNotebook::vtkKWNotebook()
   this->MaskRight2 = vtkKWWidget::New();
   this->MaskRight2->SetParent(this->MaskRight);
 
-  this->MaximumWidth = 360;
   this->MinimumWidth = 360;
   this->MinimumHeight = 600;
   this->Expanding = 0;
@@ -405,10 +404,6 @@ void vtkKWNotebook::Resize()
   if (width < this->MinimumWidth)
     {
     width = this->MinimumWidth;
-    }
-  if (width > this->MaximumWidth)
-    {
-    width = this->MaximumWidth;
     }
   if (height < this->MinimumHeight)
     {
