@@ -1,10 +1,10 @@
 /*=========================================================================
 
   Program:   Visualization Toolkit
-  Module:    $RCSfile: vtkKWLabeledLabel.h,v $
+  Module:    $RCSfile: vtkKWLabeledWidget.h,v $
   Language:  C++
   Date:      $Date: 2002-12-12 21:51:39 $
-  Version:   $Revision: 1.5 $
+  Version:   $Revision: 1.1 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,31 +39,45 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =========================================================================*/
-// .NAME vtkKWLabeledLabel - an entry with a label
+// .NAME vtkKWLabeledWidget - an abstract class widget with a label
 // .SECTION Description
-// The LabeledLabel creates a label with another label in front of it; both are
-// contained in a frame
+// This class creates a superclass for composite widgets associating a label to 
+// a widget.
+// .SECTION See Also
+// vtkKWLabeledEntry
 
+#ifndef __vtkKWLabeledWidget_h
+#define __vtkKWLabeledWidget_h
 
-#ifndef __vtkKWLabeledLabel_h
-#define __vtkKWLabeledLabel_h
+#include "vtkKWWidget.h"
 
-#include "vtkKWLabeledWidget.h"
+class vtkKWApplication;
+class vtkKWLabel;
 
-class VTK_EXPORT vtkKWLabeledLabel : public vtkKWLabeledWidget
+class VTK_EXPORT vtkKWLabeledWidget : public vtkKWWidget
 {
 public:
-  static vtkKWLabeledLabel* New();
-  vtkTypeRevisionMacro(vtkKWLabeledLabel, vtkKWLabeledWidget);
+  static vtkKWLabeledWidget* New();
+  vtkTypeRevisionMacro(vtkKWLabeledWidget, vtkKWWidget);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
-  // Create the widget
+  // Create a Tk widget
   virtual void Create(vtkKWApplication *app, const char *args = 0);
 
   // Description:
-  // Get the internal object
-  vtkGetObjectMacro(Label2, vtkKWLabel);
+  // Get the internal label
+  vtkGetObjectMacro(Label, vtkKWLabel);
+
+  // Description:
+  // Convenience method to set the contents label.
+  void SetLabel(const char *);
+  
+  // Description:
+  // Show/Hide the label.
+  virtual void SetShowLabel(int);
+  vtkBooleanMacro(ShowLabel, int);
+  vtkGetMacro(ShowLabel, int);
 
   // Description:
   // Set/Get the enabled state.
@@ -77,18 +91,21 @@ public:
   virtual void SetBalloonHelpJustification(int j);
 
 protected:
-  vtkKWLabeledLabel();
-  ~vtkKWLabeledLabel();
+  vtkKWLabeledWidget();
+  ~vtkKWLabeledWidget();
 
-  vtkKWLabel *Label2;
+  vtkKWLabel      *Label;
 
-  // Pack or repack the widget
+  int ShowLabel;
 
-  virtual void Pack();
+  // Pack or repack the widget. To be implemented by subclasses.
+
+  virtual void Pack() {};
 
 private:
-  vtkKWLabeledLabel(const vtkKWLabeledLabel&); // Not implemented
-  void operator=(const vtkKWLabeledLabel&); // Not implemented
+  vtkKWLabeledWidget(const vtkKWLabeledWidget&); // Not implemented
+  void operator=(const vtkKWLabeledWidget&); // Not implemented
 };
+
 
 #endif

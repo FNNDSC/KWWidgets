@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledRadioButtonSet.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-08 17:48:57 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-12-12 21:51:39 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,38 +49,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkKWLabeledRadioButtonSet_h
 #define __vtkKWLabeledRadioButtonSet_h
 
-#include "vtkKWWidget.h"
+#include "vtkKWLabeledWidget.h"
 
-class vtkKWApplication;
-class vtkKWLabel;
 class vtkKWRadioButtonSet;
 
-class VTK_EXPORT vtkKWLabeledRadioButtonSet : public vtkKWWidget
+class VTK_EXPORT vtkKWLabeledRadioButtonSet : public vtkKWLabeledWidget
 {
 public:
   static vtkKWLabeledRadioButtonSet* New();
-  vtkTypeRevisionMacro(vtkKWLabeledRadioButtonSet, vtkKWWidget);
+  vtkTypeRevisionMacro(vtkKWLabeledRadioButtonSet, vtkKWLabeledWidget);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Create the widget
-  virtual void Create(vtkKWApplication *app);
+  virtual void Create(vtkKWApplication *app, const char *args = 0);
 
   // Description:
-  // Get the internal objects
-  vtkGetObjectMacro(Label, vtkKWLabel);
+  // Get the internal object
   vtkGetObjectMacro(RadioButtonSet, vtkKWRadioButtonSet);
 
   // Description:
+  // Set the widget packing order to be horizontal (default is vertical).
+  virtual void SetPackHorizontally(int);
+  vtkBooleanMacro(PackHorizontally, int);
+  vtkGetMacro(PackHorizontally, int);
+
+  // Description:
+  // Set/Get the enabled state.
   // Override to pass down to children.
   virtual void SetEnabled(int);
+
+  // Description:
+  // Set the string that enables balloon help for this widget.
+  // Override to pass down to children.
+  virtual void SetBalloonHelpString(const char *str);
+  virtual void SetBalloonHelpJustification(int j);
 
 protected:
   vtkKWLabeledRadioButtonSet();
   ~vtkKWLabeledRadioButtonSet();
 
-  vtkKWLabel          *Label;
   vtkKWRadioButtonSet *RadioButtonSet;
+
+  int PackHorizontally;
+
+  // Pack or repack the widget.
+
+  virtual void Pack();
 
 private:
   vtkKWLabeledRadioButtonSet(const vtkKWLabeledRadioButtonSet&); // Not implemented

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledOptionMenu.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-04 23:28:21 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-12-12 21:51:39 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,34 +49,32 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkKWLabeledOptionMenu_h
 #define __vtkKWLabeledOptionMenu_h
 
-#include "vtkKWWidget.h"
+#include "vtkKWLabeledWidget.h"
 
-class vtkKWApplication;
-class vtkKWLabel;
 class vtkKWOptionMenu;
 
-class VTK_EXPORT vtkKWLabeledOptionMenu : public vtkKWWidget
+class VTK_EXPORT vtkKWLabeledOptionMenu : public vtkKWLabeledWidget
 {
 public:
   static vtkKWLabeledOptionMenu* New();
-  vtkTypeRevisionMacro(vtkKWLabeledOptionMenu, vtkKWWidget);
+  vtkTypeRevisionMacro(vtkKWLabeledOptionMenu, vtkKWLabeledWidget);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
-  // Create a Tk widget
-  virtual void Create(vtkKWApplication *app);
+  // Create the widget
+  virtual void Create(vtkKWApplication *app, const char *args = 0);
 
   // Description:
-  // Get the internal objects
-  vtkGetObjectMacro(Label, vtkKWLabel);
+  // Get the internal object
   vtkGetObjectMacro(OptionMenu, vtkKWOptionMenu);
 
   // Description:
+  // Set/Get the enabled state.
   // Override to pass down to children.
   virtual void SetEnabled(int);
 
   // Description:
-  // Setting this string enables balloon help for this widget.
+  // Set the string that enables balloon help for this widget.
   // Override to pass down to children.
   virtual void SetBalloonHelpString(const char *str);
   virtual void SetBalloonHelpJustification(int j);
@@ -85,8 +83,11 @@ protected:
   vtkKWLabeledOptionMenu();
   ~vtkKWLabeledOptionMenu();
 
-  vtkKWLabel      *Label;
   vtkKWOptionMenu *OptionMenu;
+
+  // Pack or repack the widget
+
+  virtual void Pack();
 
 private:
   vtkKWLabeledOptionMenu(const vtkKWLabeledOptionMenu&); // Not implemented
