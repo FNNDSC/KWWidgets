@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCallbackSpecification.h,v $
   Language:  C++
-  Date:      $Date: 2000-05-26 05:35:49 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-07-12 17:38:23 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,7 +58,13 @@ class VTK_EXPORT vtkKWCallbackSpecification : public vtkKWObject
   vtkSetObjectMacro( NextCallback, vtkKWCallbackSpecification );
   vtkGetObjectMacro( NextCallback, vtkKWCallbackSpecification );
   
- protected:
+  // This is the C++ method to be called instead of going through tcl interpreter.
+//BTX
+  void SetCommandMethod(void (*f)(const char *)) {this->CommandMethod = f;};
+  void                       (*CommandMethod)(const char *);
+//ETX
+
+protected:
   vtkKWCallbackSpecification();
   ~vtkKWCallbackSpecification();
   vtkKWCallbackSpecification(const vtkKWCallbackSpecification&) {};
