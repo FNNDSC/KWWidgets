@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-22 18:55:30 $
-  Version:   $Revision: 1.88 $
+  Date:      $Date: 2002-07-23 17:31:02 $
+  Version:   $Revision: 1.89 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -261,7 +261,7 @@ const char* vtkKWApplication::ExpandFileName(const char *String, ...)
   return this->MainInterp->result;
 }
 
-void vtkKWApplication::Script(const char *format, ...)
+const char* vtkKWApplication::Script(const char *format, ...)
 {
   char event[1600];
   char* buffer = event;
@@ -280,6 +280,7 @@ void vtkKWApplication::Script(const char *format, ...)
   vsprintf(buffer, format, ap);
   va_end(ap);
 
+  //cout << "Event: " << event << endl;
   if (Tcl_GlobalEval(this->MainInterp, event) != TCL_OK)
     {
     vtkErrorMacro("\n    Script: \n" << event << "\n    Returned Error on line "
@@ -290,9 +291,10 @@ void vtkKWApplication::Script(const char *format, ...)
     {
     delete [] buffer;
     }
+  return this->MainInterp->result;
 }
 
-void vtkKWApplication::SimpleScript(const char *event)
+const char* vtkKWApplication::SimpleScript(const char *event)
 {
 //#define VTK_DEBUG_SCRIPT
 #ifdef VTK_DEBUG_SCRIPT
@@ -303,7 +305,7 @@ void vtkKWApplication::SimpleScript(const char *event)
   int len = vtkString::Length(event);
   if (!event || (len < 1))
     {
-    return;
+    return 0;
     }
   char* script = new char[len+1];
   strcpy(script, event);
@@ -314,6 +316,7 @@ void vtkKWApplication::SimpleScript(const char *event)
                   << this->MainInterp->result << endl);
     }
   delete[] script;
+  return this->MainInterp->result;
 }
 
 
