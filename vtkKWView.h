@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2000-07-21 15:36:02 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2000-07-24 17:13:59 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -130,7 +130,7 @@ public:
   
   // Description:
   // Add/Get/Remove the composites.
-  void AddComposite(vtkKWComposite *c);
+  virtual void AddComposite(vtkKWComposite *c);
   void RemoveComposite(vtkKWComposite *c);
   vtkKWCompositeCollection *GetComposites() {return this->Composites;};
   
