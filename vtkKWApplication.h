@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-22 13:51:22 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2000-08-31 13:56:48 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -113,6 +113,7 @@ public:
   void BalloonHelpTrigger(vtkKWWidget *widget);
   void BalloonHelpDisplay(vtkKWWidget *widget);
   void BalloonHelpCancel();
+  void BalloonHelpWithdraw();
 
   // Description:
   // This variable can be used to hide the user interface.  

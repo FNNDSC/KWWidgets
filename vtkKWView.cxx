@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-25 15:19:10 $
-  Version:   $Revision: 1.26 $
+  Date:      $Date: 2000-08-31 13:56:48 $
+  Version:   $Revision: 1.27 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -102,6 +102,7 @@ vtkKWView::vtkKWView()
   this->StillUpdateRates = new float[1];
   this->StillUpdateRates[0] = 1.0;
   this->RenderMode = VTK_KW_STILL_RENDER;
+  this->RenderState = 1;
   this->MultiPassStillAbortCheckMethod = NULL;
   this->MultiPassStillAbortCheckMethodArg = NULL;
 
@@ -1045,5 +1046,5 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.26 $");
+  this->ExtractRevision(os,"$Revision: 1.27 $");
 }

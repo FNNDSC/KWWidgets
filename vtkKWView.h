@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-10 17:28:28 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2000-08-31 13:56:48 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -233,6 +233,13 @@ public:
   void SetRenderModeToDisabled() 
     { this->RenderMode = VTK_KW_DISABLED_RENDER; };
 
+  // In addition to the render mode, we have the render state - which
+  // can be on or off. This allows a window to disable all its views 
+  // while updating the GUI
+  vtkGetMacro( RenderState, int );
+  vtkSetClampMacro( RenderState, int, 0, 1 );
+  vtkBooleanMacro( RenderState, int );
+  
 //BTX
   // Description:
   // Keep these methods public for use in non-member idle callback
@@ -324,7 +331,8 @@ protected:
   float            *StillUpdateRates;
   int              NumberOfStillUpdates;
   int              RenderMode;
-
+  int              RenderState;
+  
   char             *MenuPropertiesName;
   
   int              Printing;

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-23 16:02:00 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2000-08-31 13:56:48 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -115,8 +115,11 @@ protected:
   vtkKWWidgetCollection *Children; 
   int DeletingChildren;
 
-  char *BalloonHelpString;
+  char  *BalloonHelpString;
   int   BalloonHelpJustification;
+  int   BalloonHelpInitialized;
+  void  SetUpBalloonHelpBindings();
+  
 };
 
 
