@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTkUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-09 21:27:49 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-09-12 19:09:03 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -82,6 +82,7 @@ public:
                          const unsigned char *pixels, 
                          int width, int height,
                          int pixel_size,
+                         unsigned long buffer_length = 0,
                          const char *blend_with_name = 0);
 
   static int UpdatePhoto(Tcl_Interp *interp,
