@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-08 17:38:10 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2002-02-15 20:15:33 $
+  Version:   $Revision: 1.19 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -223,6 +223,10 @@ void vtkKWScale::InvokeEndCommand()
 
 void vtkKWScale::ScaleValueChanged(float num)
 {
+  if ( this->GetValue() == num )
+    {
+    return;
+    }
   this->Value = num;
   if (this->Entry)
     {
