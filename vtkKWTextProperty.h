@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTextProperty.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-13 21:00:28 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-10-13 22:24:12 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -134,6 +134,12 @@ public:
   vtkGetStringMacro(OnChangeCommand);
 
   // Description:
+  // Set/Get the command executed each time a change is made to the
+  // color of the text property (the OnChangeCommand is run too).
+  vtkSetStringMacro(OnColorChangeCommand);
+  vtkGetStringMacro(OnColorChangeCommand);
+
+  // Description:
   // Show copy button. This button can be used to synchronize different
   // text property widgets.
   void SetShowCopy(int);
@@ -211,6 +217,7 @@ protected:
   vtkKWOptionMenu *VerticalJustificationOptionMenu;
 
   char *OnChangeCommand;
+  char *OnColorChangeCommand;
 
   int ShowCopy;
   vtkKWPushButton *CopyButton;
