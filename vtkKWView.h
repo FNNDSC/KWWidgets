@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2000-07-05 20:33:06 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2000-07-21 15:36:02 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -256,6 +256,12 @@ public:
   void InteractOn();
   void InteractOff();
 
+  // Description:
+  // Set the name to be used in the Properties menu for the view properties
+  // sheet entry
+  vtkSetStringMacro( MenuPropertiesName );
+  vtkGetStringMacro( MenuPropertiesName );
+  
 protected:
   vtkKWView();
   ~vtkKWView();
@@ -299,6 +305,8 @@ protected:
   int              NumberOfStillUpdates;
   int              RenderMode;
 
+  char             *MenuPropertiesName;
+  
   int Printing;
   float PrintTargetDPI;
 };
