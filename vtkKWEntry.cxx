@@ -73,7 +73,7 @@ public:
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry );
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.44 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.45 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
@@ -231,7 +231,7 @@ void vtkKWEntry::SetValue(int i)
 void vtkKWEntry::SetValue(double f)
 {
   char tmp[1024];
-  sprintf(tmp, "%g", f);
+  sprintf(tmp, "%.5g", f);
   this->SetValue(tmp);
 }
 
