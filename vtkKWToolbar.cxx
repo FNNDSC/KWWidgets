@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-03-07 20:52:50 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-09-19 19:10:50 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,6 +48,21 @@ vtkKWToolbar::~vtkKWToolbar()
   this->Bar1->Delete();
   this->Bar1 = NULL;
 }
+
+
+//------------------------------------------------------------------------------
+vtkKWToolbar* vtkKWToolbar::New()
+{
+  // First try to create the object from the vtkObjectFactory
+  vtkObject* ret = vtkObjectFactory::CreateInstance("vtkKWToolbar");
+  if(ret)
+    {
+    return (vtkKWToolbar*)ret;
+    }
+  // If the factory was unable to create the object, then create it here.
+  return new vtkKWToolbar;
+}
+
 
 
 //----------------------------------------------------------------------------

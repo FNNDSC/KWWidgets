@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-17 03:20:01 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-09-19 19:10:50 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,7 +45,7 @@ public:
   ~vtkKWToolbar();
   vtkKWToolbar(const vtkKWToolbar&) {};
   void operator=(const vtkKWToolbar&) {};
-  static vtkKWToolbar* New() {return new vtkKWToolbar;};
+  static vtkKWToolbar* New();
   const char *GetClassName() {return "vtkKWToolbar";};
 
   // Description:
