@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-02 21:53:42 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2002-08-06 22:17:05 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -41,10 +41,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 =========================================================================*/
 
 #include "vtkKWComposite.h"
-#include "vtkKWView.h"
+
 #include "vtkKWApplication.h"
-#include "vtkKWWindow.h"
 #include "vtkKWMenu.h"
+#include "vtkKWView.h"
+#include "vtkKWWindow.h"
 
 int vtkKWCompositeCommand(ClientData cd, Tcl_Interp *interp,
                           int argc, char *argv[]);
@@ -213,7 +214,7 @@ void vtkKWComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWComposite ";
-  this->ExtractRevision(os,"$Revision: 1.17 $");
+  this->ExtractRevision(os,"$Revision: 1.18 $");
 }
 
 //----------------------------------------------------------------------------
