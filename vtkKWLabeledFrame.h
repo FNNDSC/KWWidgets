@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-12 21:09:01 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-09-13 02:12:20 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -68,6 +68,11 @@ public:
   // Description:
   // Set the label for the frame.
   void SetLabel(const char *);
+  
+  // Description:
+  // Set/Get the margin between the internal frame and the top groove border.
+  void SetMargin(int);
+  int GetMargin();
   
   // Description:
   // Get the internal frame.

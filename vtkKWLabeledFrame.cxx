@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-12 21:09:01 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-09-13 02:12:20 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabeledFrame );
-vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.13 $");
 
 
 
@@ -95,6 +95,26 @@ void vtkKWLabeledFrame::SetLabel(const char *text)
 {
   this->Script("%s configure -text {%s}",
                this->Label->GetWidgetName(),text);  
+}
+
+void vtkKWLabeledFrame::SetMargin(int m)
+{
+  if (this->Application)
+    {
+    this->Script("%s configure -height %d", 
+                 this->Border2->GetWidgetName(), m);
+    }
+}
+
+int vtkKWLabeledFrame::GetMargin()
+{
+  if (this->Application)
+    {
+    this->Script("%s cget -height", 
+                 this->Border2->GetWidgetName());  
+    return vtkKWObject::GetIntegerResult(this->Application);
+    }
+  return 0;
 }
 
 void vtkKWLabeledFrame::Create(vtkKWApplication *app)
