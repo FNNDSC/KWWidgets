@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2001-10-16 13:45:37 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2001-11-20 20:12:08 $
+  Version:   $Revision: 1.19 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -147,6 +147,13 @@ public:
   // Get the event notifier so that callback can be set or events invoked.
   vtkGetObjectMacro( EventNotifier, vtkKWEventNotifier );
 
+//BTX
+  // Description:
+  // This can be esed to trace the actions of the user.
+  // It only works when the TraceFile has been set.
+  void AddTraceEntry(char *format, ...);
+//ETX
+
 protected:
   vtkKWApplication();
   ~vtkKWApplication();
@@ -172,6 +179,8 @@ protected:
   int InExit;
   
   vtkKWEventNotifier *EventNotifier;
+
+  ofstream *TraceFile;
 };
 
 #endif
