@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-12 15:13:15 $
-  Version:   $Revision: 1.57 $
+  Date:      $Date: 2002-12-12 18:46:18 $
+  Version:   $Revision: 1.58 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -282,6 +282,10 @@ protected:
   // Description:
   // Do one tcl event and whatever application might want to do.
   virtual void DoOneTclEvent();
+
+  // Description:
+  // Cleanup everything before exiting.
+  virtual void Cleanup() { };
 
   Tk_Window MainWindow;
   Tcl_Interp *MainInterp;
