@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWText.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-17 03:20:01 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-04-28 17:59:17 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ public:
 
   // Description:
   // Set/Get the value of the Text.
-  void SetValue(char *);
+  void SetValue(const char *);
   char *GetValue();
 
 protected:

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2000-04-18 18:50:03 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2000-04-28 17:59:17 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -84,7 +84,7 @@ public:
   virtual const char *GetVersion(const char *);
   virtual void AddVersion(const char *cname, const char *version);
   void ExtractRevision(ostream& os,const char *revIn);
-  
+  int CompareVersions(const char *v1, const char *v2);
   
 //BTX
   // Description:
@@ -105,7 +105,8 @@ protected:
 
   char **Versions;
   int   NumberOfVersions;
-
+  int   VersionsLoaded;
+  
   // this instance variable holds the command functions for this class.
   int (*CommandFunction)(ClientData, Tcl_Interp *, int, char *[]);
 //ETX
