@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPushButtonSet.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-08 23:21:23 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2003-01-08 23:38:13 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //------------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWPushButtonSet);
-vtkCxxRevisionMacro(vtkKWPushButtonSet, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWPushButtonSet, "$Revision: 1.4 $");
 
 int vtkvtkKWPushButtonSetCommand(ClientData cd, Tcl_Interp *interp,
                                   int argc, char *argv[]);
@@ -404,4 +404,7 @@ void vtkKWPushButtonSet::PrintSelf(ostream& os, vtkIndent indent)
 
   os << indent << "PackHorizontally: " 
      << (this->PackHorizontally ? "On" : "Off") << endl;
+
+  os << indent << "MaximumNumberOfWidgetInPackingDirection: " 
+     << (this->MaximumNumberOfWidgetInPackingDirection ? "On" : "Off") << endl;
 }
