@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-15 23:04:46 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2003-01-21 15:27:01 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -157,6 +157,17 @@ public:
   vtkGetObjectMacro(CornerAnnotation, vtkCornerAnnotation);
 
   // Description:
+  // Get and control the 2D cursor annotation.
+  virtual void SetCursor2DVisibility(int v);
+  vtkBooleanMacro(Cursor2DVisibility, int);
+  vtkGetMacro(Cursor2DVisibility, int);
+  virtual void SetCursor2DColor(float r, float g, float b);
+  virtual void SetCursor2DColor(float *rgb)
+    { this->SetCursor2DColor(rgb[0], rgb[1], rgb[2]); };
+  vtkGetVector3Macro(Cursor2DColor, float);
+  virtual void SetCursor2DPosition(int x, int y);
+
+  // Description:
   // Get and control the header annotation.
   virtual void SetHeaderAnnotationVisibility(int v);
   virtual int  GetHeaderAnnotationVisibility();
@@ -255,6 +266,11 @@ protected:
 
   int CollapsingRenders;
   int CollapsingRendersCount;
+
+  int   Cursor2DVisibility;
+  float Cursor2DColor[3];
+  int   Cursor2DPosition[2];
+  
 
   vtkKWRenderWidgetObserver *Observer;
   
