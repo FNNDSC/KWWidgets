@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-03 15:08:28 $
-  Version:   $Revision: 1.20 $
+  Date:      $Date: 2002-01-04 15:26:27 $
+  Version:   $Revision: 1.21 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -249,6 +249,18 @@ void vtkKWWidget::SetBind(const char *event, const char *widget, const char *com
 			    event, widget, command);
 }
 
+void vtkKWWidget::SetBindAll(const char *event, const char *widget, const char *command)
+{
+  this->Application->Script("bind all %s { %s %s }", 
+			    event, widget, command);
+}
+
+void vtkKWWidget::SetBindAll(const char *event, const char *command)
+{
+  this->Application->Script("bind all %s { %s }", 
+			    event, command);
+}
+
 void vtkKWWidget::SetCommand(vtkKWObject* CalledObject, const char * CommandString)
 {
   char* command = this->CreateCommand(CalledObject, CommandString);
@@ -303,7 +315,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.20 $");
+  this->ExtractRevision(os,"$Revision: 1.21 $");
 }
 
 vtkKWWindow* vtkKWWidget::GetWindow()

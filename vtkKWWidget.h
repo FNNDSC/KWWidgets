@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-03 15:08:28 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2002-01-04 15:26:27 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -113,6 +113,18 @@ public:
   // This method sets binding:
   // bind this->GetWidgetName() event { widget command }  
   void SetBind(const char *event, const char *widget, const char *command);
+
+  // Description:
+  // A method to set binding on the object.
+  // This method sets binding:
+  // bind all event { widget command }  
+  void SetBindAll(const char *event, const char *widget, const char *command);
+
+  // Description:
+  // A method to set binding on the object.
+  // This method sets binding:
+  // bind all event { command }  
+  void SetBindAll(const char *event, const char *command);
 
   // Description:
   // Set focus to this widget.
