@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWImageLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-31 19:34:24 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-01-31 20:00:18 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -66,7 +66,8 @@ void vtkKWImageLabel::Create(vtkKWApplication *app, const char *args)
 void vtkKWImageLabel::SetImageData(const unsigned char* data, 
 				   int width, int height)
 {
-  this->Script("winfo rgb %s systemButtonFace", this->GetParent()->GetWidgetName());
+  this->Script("winfo rgb %s [ lindex [ %s configure -bg ] end-1 ]", 
+	       this->GetParent()->GetWidgetName(), this->GetParent()->GetWidgetName());
   int r, g, b;
   sscanf( this->Application->GetMainInterp()->result, "%d %d %d",
 	  &r, &g, &b );
