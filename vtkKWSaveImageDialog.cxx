@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSaveImageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-06-10 18:05:02 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -132,5 +132,6 @@ void vtkKWSaveImageDialog::Create(vtkKWApplication *app, const char* /*args*/)
 void vtkKWSaveImageDialog::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
-  os << indent << "FileName: " << this->GetFileName() << endl;
+  os << indent << "FileName: " << (this->FileName?this->FileName:"none") 
+     << endl;
 }

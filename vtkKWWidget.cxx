@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-05-27 19:26:20 $
-  Version:   $Revision: 1.30 $
+  Date:      $Date: 2002-06-10 18:05:02 $
+  Version:   $Revision: 1.31 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -308,7 +308,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.30 $");
+  this->ExtractRevision(os,"$Revision: 1.31 $");
 }
 
 vtkKWWindow* vtkKWWidget::GetWindow()
@@ -435,8 +435,9 @@ void vtkKWWidget::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "BalloonHelpJustification: " 
      << this->GetBalloonHelpJustification() << endl;
   os << indent << "BalloonHelpString: " 
-     << this->GetBalloonHelpString() << endl;
+     << (this->BalloonHelpString ? this->BalloonHelpString : "none") << endl;
   os << indent << "Children: " << this->GetChildren() << endl;
   os << indent << "Parent: " << this->GetParent() << endl;
-  os << indent << "TraceName: " << this->GetTraceName() << endl;
+  os << indent << "TraceName: " << (this->TraceName?this->TraceName:"none") 
+     << endl;
 }

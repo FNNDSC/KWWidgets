@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWProgressGauge.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-06-10 18:05:02 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,11 +39,11 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =========================================================================*/
-#include "vtkKWApplication.h"
 #include "vtkKWProgressGauge.h"
+
+#include "vtkKWApplication.h"
 #include "vtkObjectFactory.h"
-
-
+#include "vtkString.h"
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWProgressGauge );
@@ -58,7 +58,8 @@ vtkKWProgressGauge::vtkKWProgressGauge()
   this->Length = 100;
   this->Height = 20;
   this->Value = 0;
-  this->BarColor = strcpy(new char[5], "blue");
+  this->BarColor = vtkString::Duplicate("blue");
+  this->BackgroundColor = 0;
 }
 
 
@@ -148,8 +149,10 @@ void vtkKWProgressGauge::SetValue(int value)
 void vtkKWProgressGauge::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
-  os << indent << "BackgroundColor: " << this->GetBackgroundColor() << endl;
-  os << indent << "BarColor: " << this->GetBarColor() << endl;
+  os << indent << "BackgroundColor: " 
+     << (this->BackgroundColor?this->BackgroundColor:"none") << endl;
+  os << indent << "BarColor: " << (this->BarColor?this->BarColor:"none") 
+     << endl;
   os << indent << "Height: " << this->GetHeight() << endl;
   os << indent << "Length: " << this->GetLength() << endl;
 }

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-06 21:40:44 $
-  Version:   $Revision: 1.29 $
+  Date:      $Date: 2002-06-10 18:05:02 $
+  Version:   $Revision: 1.30 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -398,7 +398,8 @@ int vtkKWMessageDialog::GetRememberMessage()
 void vtkKWMessageDialog::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
-  os << indent << "DialogName: " << this->GetDialogName() << endl;
+  os << indent << "DialogName: " << (this->DialogName?this->DialogName:"none")
+     << endl;
   os << indent << "Options: " << this->GetOptions() << endl;
   os << indent << "Style: " << this->GetStyle() << endl;
 }

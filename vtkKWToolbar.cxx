@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-07 20:42:36 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-06-10 18:05:02 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifndef VTK_NO_EXPLICIT_TEMPLATE_INSTANTIATION
 
+template class VTK_EXPORT vtkAbstractList<vtkKWWidget*>;
 template class VTK_EXPORT vtkVector<vtkKWWidget*>;
+template class VTK_EXPORT vtkAbstractIterator<vtkIdType,vtkKWWidget*>;
+template class VTK_EXPORT vtkVectorIterator<vtkKWWidget*>;
 
 #endif
 
