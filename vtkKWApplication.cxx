@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-04-15 13:23:24 $
-  Version:   $Revision: 1.68 $
+  Date:      $Date: 2002-04-17 19:00:54 $
+  Version:   $Revision: 1.69 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -817,3 +817,24 @@ int vtkKWApplication::GetRegisteryValue(int level, const char* subkey,
     }  
   return res;
 }
+
+int vtkKWApplication::DeleteRegisteryValue(int level, const char* subkey, 
+				      const char* key)
+{
+  if ( this->GetRegisteryLevel() < 0 ||
+       this->GetRegisteryLevel() < level )
+    {
+    return 0;
+    }
+  int res = 0;
+  char buffer[100];
+  sprintf(buffer, "%s\\%s", 
+	  this->GetApplicationVersionName(),
+	  subkey);
+  
+  vtkKWRegisteryUtilities *reg 
+    = this->GetRegistery(this->GetApplicationName());
+  res = reg->DeleteValue(buffer, key);
+  return res;
+}
+

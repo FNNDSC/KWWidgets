@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-04-15 13:23:24 $
-  Version:   $Revision: 1.38 $
+  Date:      $Date: 2002-04-17 19:00:55 $
+  Version:   $Revision: 1.39 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -223,6 +223,8 @@ public:
 			const char* format, ...);
   int GetRegisteryValue(int level, const char* subkey, const char* key, 
 			char*value);
+  int DeleteRegisteryValue(int level, const char* subkey, const char* key);
+  
 //ETX
 protected:
   vtkKWApplication();
