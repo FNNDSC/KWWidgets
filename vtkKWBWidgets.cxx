@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWBWidgets.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-15 12:54:36 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-07-29 19:30:08 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -271,7 +271,11 @@ int vtkKWBWidgets::CreatePhoto(Tcl_Interp* interp, char *name,
     vtkGenericWarningMacro("error looking up color ramp image");
     return VTK_ERROR;
     }  
+#if (TK_MAJOR_VERSION == 8) && (TK_MINOR_VERSION >= 4)
+  Tk_PhotoPutBlock(photo, &block, 0, 0, block.width, block.height, TK_PHOTO_COMPOSITE_SET);
+#else
   Tk_PhotoPutBlock(photo, &block, 0, 0, block.width, block.height);
+#endif
   return VTK_OK;
 
 }

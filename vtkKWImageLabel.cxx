@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWImageLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-15 12:54:36 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-07-29 19:30:08 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -108,7 +108,11 @@ void vtkKWImageLabel::SetImageData(const unsigned char* data,
       pp+=3;
       }
     }
+#if (TK_MAJOR_VERSION == 8) && (TK_MINOR_VERSION >= 4)
+  Tk_PhotoPutBlock(photo, &sblock, 0, 0, width, height, TK_PHOTO_COMPOSITE_SET);
+#else
   Tk_PhotoPutBlock(photo, &sblock, 0, 0, width, height);
+#endif
   this->Script("%s configure -image %s", this->GetWidgetName(),
                this->ImageDataLabel);
   delete [] array;

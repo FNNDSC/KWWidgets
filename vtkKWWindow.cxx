@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-18 15:26:32 $
-  Version:   $Revision: 1.104 $
+  Date:      $Date: 2002-07-29 19:30:08 $
+  Version:   $Revision: 1.105 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -871,7 +871,11 @@ void vtkKWWindow::CreateStatusImage()
     lp = lp - 2*128*3;
     }
   
+#if (TK_MAJOR_VERSION == 8) && (TK_MINOR_VERSION >= 4)
+  Tk_PhotoPutBlock(photo, &block, 0, 0, block.width, block.height, TK_PHOTO_COMPOSITE_SET);
+#else
   Tk_PhotoPutBlock(photo, &block, 0, 0, block.width, block.height);
+#endif
   delete [] block.pixelPtr;
 }
 
@@ -992,7 +996,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.104 $");
+  this->ExtractRevision(os,"$Revision: 1.105 $");
 }
 
 int vtkKWWindow::ExitDialog()
