@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-29 20:49:43 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2002-12-22 16:59:42 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLoadSaveDialog );
-vtkCxxRevisionMacro(vtkKWLoadSaveDialog, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWLoadSaveDialog, "$Revision: 1.15 $");
 
 vtkKWLoadSaveDialog::vtkKWLoadSaveDialog()
 {
@@ -76,8 +76,9 @@ vtkKWLoadSaveDialog::~vtkKWLoadSaveDialog()
 
 void vtkKWLoadSaveDialog::Create(vtkKWApplication *app, const char* /*args*/)
 {
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("Load Save Dialog already created");
     return;

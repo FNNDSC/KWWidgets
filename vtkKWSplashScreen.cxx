@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplashScreen.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-11 15:28:59 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-12-22 17:04:42 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,7 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWSplashScreen );
-vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.7 $");
+vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.8 $");
 
 //-----------------------------------------------------------------------------
 vtkKWSplashScreen::vtkKWSplashScreen()
@@ -72,7 +72,9 @@ vtkKWSplashScreen::~vtkKWSplashScreen()
 //-----------------------------------------------------------------------------
 void vtkKWSplashScreen::Create(vtkKWApplication *app, const char *args)
 {
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("Dialog already created");
     return;

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSaveImageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-29 20:49:43 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2002-12-22 17:03:15 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWSaveImageDialog );
-vtkCxxRevisionMacro(vtkKWSaveImageDialog, "$Revision: 1.15 $");
+vtkCxxRevisionMacro(vtkKWSaveImageDialog, "$Revision: 1.16 $");
 
 
 
@@ -132,8 +132,9 @@ void vtkKWSaveImageDialog::Invoke()
 
 void vtkKWSaveImageDialog::Create(vtkKWApplication *app, const char* /*args*/)
 {
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("SaveImageDialog already created");
     return;
