@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-27 21:33:32 $
-  Version:   $Revision: 1.25 $
+  Date:      $Date: 2003-02-27 22:39:53 $
+  Version:   $Revision: 1.26 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -339,7 +339,9 @@ protected:
   int CanBeHidden(Page*);
   int GetPageTag(Page*);
   char* GetPageTitle(Page*);
-  int EnqueueMostRecentPage(Page*);
+
+  int AddToMostRecentPages(Page*);
+  int PutOnTopOfMostRecentPages(Page*);
 
   // Update the tab frame color of a page given a selection status
 
