@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-21 19:34:30 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2002-03-09 15:41:10 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -358,7 +358,11 @@ void vtkKWNotebook::AddPage(const char *title, const char *ballon)
 
 // Add a page to the notebook
 void vtkKWNotebook::AddPage(const char *title, const char *ballon, 
-			    vtkKWIcon *icon)
+                            vtkKWIcon *
+#ifdef USE_NOTEBOOK_ICONS
+                            icon
+#endif
+                            )
 {
   int cnt;
 
