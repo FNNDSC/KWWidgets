@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-27 22:33:12 $
-  Version:   $Revision: 1.19 $
+  Date:      $Date: 2002-12-30 19:58:38 $
+  Version:   $Revision: 1.20 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -84,6 +84,7 @@ static const char *vtkKWEventStrings[] = {
   "ImageCornerAnnotationChangedEvent",
   "ImageCornerAnnotationColorChangedEvent",
   "ImageHeaderAnnotationColorChangedEvent",
+  "ImageMouseBindingChangedEvent",
   "InteractiveRenderStartEvent",
   "LeftMouseOptionChangedEvent",
   "LightColorChangedEvent",
@@ -93,6 +94,7 @@ static const char *vtkKWEventStrings[] = {
   "LightboxOrientationChangedEvent",
   "LightboxResolutionChangedEvent",
   "MiddleMouseOptionChangedEvent",
+  "MouseBindingChangedEvent",
   "MultiPassStillRenderEndEvent",
   "MultiPassStillRenderStageChangedEvent",
   "OrthoImageCameraResetEvent",
@@ -118,6 +120,7 @@ static const char *vtkKWEventStrings[] = {
   "VolumeCornerAnnotationChangedEvent",
   "VolumeCornerAnnotationColorChangedEvent",
   "VolumeHeaderAnnotationColorChangedEvent",
+  "VolumeMouseBindingChangedEvent",
   "WindowLevelChangedEvent",
   "WindowLevelChangedImageCompositeEvent",
   "WindowLevelChangingEvent",
