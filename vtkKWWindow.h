@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 20:17:44 $
-  Version:   $Revision: 1.26 $
+  Date:      $Date: 2002-01-11 22:30:07 $
+  Version:   $Revision: 1.27 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -76,6 +76,7 @@ public:
   // Close this window, possibly exiting the application if no more
   // windows are open.
   virtual void Close();
+  virtual void CloseNoPrompt();
 
   // Description::
   // Display help info for this window.
