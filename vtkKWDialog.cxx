@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:33 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2001-12-12 15:41:34 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -57,9 +57,6 @@ vtkKWDialog* vtkKWDialog::New()
   // If the factory was unable to create the object, then create it here.
   return new vtkKWDialog;
 }
-
-
-
 
 int vtkKWDialogCommand(ClientData cd, Tcl_Interp *interp,
                              int argc, char *argv[]);
@@ -132,7 +129,6 @@ void vtkKWDialog::OK()
     }
 }
 
-
 void vtkKWDialog::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
@@ -160,3 +156,10 @@ void vtkKWDialog::SetCommand(vtkKWObject* CalledObject, const char *CommandStrin
 {
   this->Command = this->CreateCommand(CalledObject, CommandString);
 }
+
+void vtkKWDialog::SetTitle( const char* title )
+{
+  this->Script("wm title %s \"%s\"", this->GetWidgetName(), 
+	       title);
+}
+

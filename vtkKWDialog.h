@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:33 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2001-12-12 15:41:35 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -88,6 +88,10 @@ public:
   // name of the method to be called and any arguments in string form.
   // The calling is done via TCL wrappers for the KWObject.
   virtual void SetCommand(vtkKWObject* CalledObject, const char *CommandString);
+
+  // Description:
+  // Set the title of the dialog. Default is "Kitware Dialog".
+  void SetTitle(const char *);
 
 protected:
   vtkKWDialog();
