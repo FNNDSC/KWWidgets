@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-21 20:59:13 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-01-29 20:21:07 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -83,7 +83,10 @@ public:
 
   // Description:
   // Retrieve the file path that the user selected
-  vtkGetStringMacro(OpenFile);
+  vtkGetStringMacro(FileName);
+  // Description:
+  // Set the file path that the user selected
+  vtkSetStringMacro(FileName);
 
   // Description:
   // Set default extention.
@@ -101,12 +104,14 @@ public:
   // Set the title string of the dialog window. Should be called before
   // create otherwise it will have no effect.
   vtkSetStringMacro(Title);
-
-protected:
+  
 
   // Description:
-  // Set the file path that the user selected
-  vtkSetStringMacro(OpenFile);
+  // Set/Get last path
+  vtkGetStringMacro(LastPath);
+  vtkSetStringMacro(LastPath);
+protected:
+
 
   vtkKWLoadSaveDialog();
   ~vtkKWLoadSaveDialog();
@@ -114,14 +119,14 @@ protected:
   vtkKWLoadSaveDialog(const vtkKWLoadSaveDialog&) {};
   void operator=(const vtkKWLoadSaveDialog&) {};
 
-    char *FileTypes;
-    char *InitialDir;  
-    char *Title;
-    char *OpenFile;
-    char *DefaultExt;
-
-    int SaveDialog;
-    int Done;
+  char *FileTypes;
+  char *InitialDir;  
+  char *Title;
+  char *FileName;
+  char *DefaultExt;
+  char *LastPath;
+  int SaveDialog;
+  int Done;
 };
 
 

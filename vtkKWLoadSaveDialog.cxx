@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-23 22:11:01 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-01-29 20:21:07 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -54,7 +54,8 @@ vtkKWLoadSaveDialog::vtkKWLoadSaveDialog()
   this->FileTypes = 0;
   this->InitialDir = 0;
   this->Title = 0;
-  this->OpenFile = 0;
+  this->FileName = 0;
+  this->LastPath = 0;
 
   this->SaveDialog = 0;
   this->DefaultExt = 0;
@@ -69,8 +70,9 @@ vtkKWLoadSaveDialog::~vtkKWLoadSaveDialog()
   this->SetFileTypes(0);
   this->SetInitialDir(0);
   this->SetTitle(0);
-  this->SetOpenFile(0);
+  this->SetFileName(0);
   this->SetDefaultExt(0);
+  this->SetLastPath(0);
 }
 
 void vtkKWLoadSaveDialog::Create(vtkKWApplication *app, const char* /*args*/)
@@ -97,9 +99,9 @@ int vtkKWLoadSaveDialog::Invoke()
   path = this->Application->GetMainInterp()->result;
   if ( path && strlen(path) )
     {
-    this->SetOpenFile(path);
+    this->SetFileName(path);
     return 1;
     }
-  this->SetOpenFile(0);
+  this->SetFileName(0);
   return 0;
 }
