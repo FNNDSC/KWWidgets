@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-15 12:54:36 $
-  Version:   $Revision: 1.24 $
+  Date:      $Date: 2002-07-22 21:33:11 $
+  Version:   $Revision: 1.25 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -132,7 +132,8 @@ void vtkKWScale::Create(vtkKWApplication *app, const char *args)
   this->Script("frame %s",wname);
   this->ScaleWidget->Create(app,"scale","-orient horizontal -showvalue no"
                             " -borderwidth 2");
-  this->Script("%s configure %s",this->ScaleWidget->GetWidgetName(),args);
+  this->Script("%s configure %s",this->ScaleWidget->GetWidgetName(),
+               (args?args:""));
   this->Script("%s configure -resolution %f -highlightthickness 0",
                this->ScaleWidget->GetWidgetName(),this->Resolution);
   this->Script("%s configure -from %f -to %f",

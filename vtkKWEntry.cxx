@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-07 20:42:36 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-07-22 21:33:11 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -132,11 +132,12 @@ void vtkKWEntry::Create(vtkKWApplication *app, const char *args)
   if (this->Width > 0)
     {
     this->Script("entry %s -width %d -textvariable %sValue %s",
-                 wname, this->Width, wname,args);
+                 wname, this->Width, wname, (args?args:""));
     }
   else
     {
-    this->Script("entry %s -textvariable %sValue %s",wname,wname,args);
+    this->Script("entry %s -textvariable %sValue %s",wname,wname,
+                 (args?args:""));
     }
   if ( this->ReadOnly )
     {

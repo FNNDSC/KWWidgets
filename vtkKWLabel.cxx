@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-15 12:54:36 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-07-22 21:33:11 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -97,11 +97,11 @@ void vtkKWLabel::Create(vtkKWApplication *app, const char *args)
   if ( this->LineType == vtkKWLabel::MultiLine )
     {
     this->Script("message %s -text {%s} %s -width %d", 
-                 wname, this->Label, args, this->Width);
+                 wname, this->Label, (args?args:""), this->Width);
     }
   else
     {
-    this->Script("label %s -text {%s} %s", wname, this->Label, args);
+    this->Script("label %s -text {%s} %s", wname, this->Label, (args?args:""));
     }
 }
 
