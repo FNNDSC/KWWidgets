@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-27 22:50:58 $
-  Version:   $Revision: 1.59 $
+  Date:      $Date: 2003-02-24 23:10:10 $
+  Version:   $Revision: 1.60 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.59 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.60 $");
 
 int vtkKWWidgetCommand(ClientData cd, Tcl_Interp *interp,
                        int argc, char *argv[]);
@@ -329,7 +329,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   this->Superclass::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.59 $");
+  this->ExtractRevision(os,"$Revision: 1.60 $");
 }
 
 //------------------------------------------------------------------------------
@@ -522,13 +522,17 @@ int vtkKWWidget::IsAlive()
 //------------------------------------------------------------------------------
 int vtkKWWidget::IsPacked()
 {
-  return !this->Application->EvaluateBooleanExpression(
+  return this->IsCreated() && !this->Application->EvaluateBooleanExpression(
     "catch {pack info %s}", this->GetWidgetName());
 }
 
 //------------------------------------------------------------------------------
 int vtkKWWidget::GetNumberOfPackedChildren()
 {
+  if (!this->IsCreated())
+    {
+    return 0;
+    }
   return atoi(this->Script("llength [pack slaves %s]", this->GetWidgetName()));
 }
 
