@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-02-03 14:52:07 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-03-07 20:52:50 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -66,7 +66,7 @@ void vtkKWToolbar::Create(vtkKWApplication *app)
   this->Script( "frame %s -height %d -relief raised -bd 1", 
                 this->GetWidgetName(), this->Height);
 
-  this->Bar1->Create(app, "frame", "-bd 1 -relief raised");
+  this->Bar1->Create(app, "frame", "-bd 1 -relief flat");
   this->Script("pack %s -side left -fill y -expand yes -padx 4 -pady 2 -ipadx 2 -ipady 2",
                this->Bar1->GetWidgetName());
   this->Script("bind %s <Configure> {%s ScheduleResize}",
