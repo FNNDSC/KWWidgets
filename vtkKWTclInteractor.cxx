@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTclInteractor.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 23:42:59 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-02-21 22:36:06 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -231,9 +231,12 @@ void vtkKWTclInteractor::Evaluate()
   this->Script("set commandList [linsert $commandList end [concat {%s}]]",
                this->CommandEntry->GetValue());
   this->Script("%s insert end \"\n\"", this->DisplayText->GetWidgetName());
-  this->Script("%s insert end [eval [list %s]]",
-               this->DisplayText->GetWidgetName(),
-               this->CommandEntry->GetValue());
+  this->Script("catch {eval [list %s]} _tmp_err",  
+	       this->CommandEntry->GetValue());
+  this->Script("set _tmp_err");
+  this->Script("%s insert end {%s}", 
+	       this->DisplayText->GetWidgetName(),
+	       this->Application->GetMainInterp()->result);
   this->Script("%s insert end \"\n\n\"", this->DisplayText->GetWidgetName());
   this->Script("%s configure -state disabled",
                this->DisplayText->GetWidgetName());
