@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRange.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-24 18:46:27 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2003-04-24 18:48:54 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 
 vtkStandardNewMacro( vtkKWRange );
-vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.6 $");
 
 #define VTK_KW_RANGE_MIN_SLIDER_SIZE        2
 #define VTK_KW_RANGE_MIN_THICKNESS          (2*VTK_KW_RANGE_MIN_SLIDER_SIZE+1)
@@ -65,8 +65,8 @@ vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.5 $");
 #define VTK_KW_RANGE_SLIDER2_TAG            "slider2"
 #define VTK_KW_RANGE_SLIDERS_TAG            "sliders"
 
-// For some reasons, the end-point of a line/box is not drawn in some
-// Tk versions. Comply with that.
+// For some reasons, the end-point of a line/box is not drawn on Windows. 
+// Comply with that.
 
 #ifndef _WIN32
 #define LSTRANGE 0
