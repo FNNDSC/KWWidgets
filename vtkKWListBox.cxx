@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWListBox.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-08-28 22:34:58 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,7 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWListBox );
-vtkCxxRevisionMacro(vtkKWListBox, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWListBox, "$Revision: 1.12 $");
 
 
 int vtkKWListBoxCommand(ClientData cd, Tcl_Interp *interp,
@@ -95,6 +95,15 @@ const char* vtkKWListBox::GetItem(int index)
   delete [] this->Item;
   this->Item = strcpy(new char[strlen(result)+1], result);
   return this->Item;
+}
+
+void vtkKWListBox::SetSelectionIndex(int sel)
+{
+  if ( sel < 0 )
+    {
+    return;
+    }
+  this->Script("%s selection set %d", this->Listbox->GetWidgetName(), sel);
 }
 
 int vtkKWListBox::GetSelectionIndex()

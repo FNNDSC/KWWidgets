@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPushButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-08-28 22:34:58 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWPushButton );
-vtkCxxRevisionMacro(vtkKWPushButton, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWPushButton, "$Revision: 1.9 $");
 
 
 vtkKWPushButton::vtkKWPushButton()
@@ -77,11 +77,12 @@ void vtkKWPushButton::Create(vtkKWApplication *app, const char *args)
   wname = this->GetWidgetName();
   if (this->ButtonLabel)
     {
-    this->Script("button %s %s -text {%s}", wname,args,this->ButtonLabel);
+    this->Script("button %s %s -text {%s}", wname,(args?args:""),
+                 (this->ButtonLabel?this->ButtonLabel:""));
     }
   else
     {
-    this->Script("button %s %s", wname,args);
+    this->Script("button %s %s", wname,(args?args:""));
     }
 }
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2002-08-28 22:34:58 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDialog );
-vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.22 $");
+vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.23 $");
 
 int vtkKWDialogCommand(ClientData cd, Tcl_Interp *interp,
                              int argc, char *argv[]);
@@ -112,7 +112,7 @@ int vtkKWDialog::Invoke()
   this->Script("wm deiconify %s",this->GetWidgetName());
   this->Script("focus %s",this->GetWidgetName());
   this->Script("update idletasks");
-  this->Script("grab %s",this->GetWidgetName());
+  //this->Script("grab %s",this->GetWidgetName());
   if ( this->Beep )
     {
     this->Script("bell");
@@ -180,7 +180,7 @@ void vtkKWDialog::Create(vtkKWApplication *app, const char *args)
 
   // create the top level
   wname = this->GetWidgetName();
-  this->Script("toplevel %s %s",wname,args);
+  this->Script("toplevel %s %s",wname,(args?args:""));
   this->Script("wm title %s \"%s\"",wname,this->TitleString);
   this->Script("wm iconname %s \"Dialog\"",wname);
   this->Script("wm protocol %s WM_DELETE_WINDOW {%s Cancel}",

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.27 $
+  Date:      $Date: 2002-08-28 22:34:58 $
+  Version:   $Revision: 1.28 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.27 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.28 $");
 
 
 
@@ -111,8 +111,11 @@ void vtkKWMenu::DisplayHelp(const char* widget)
   if(this->GetApplication()->GetMainInterp()->result)
     {
     vtkKWWindow* window = this->GetWindow();
-    window->SetStatusText(
-      this->GetApplication()->GetMainInterp()->result);
+    if ( window )
+      {
+      window->SetStatusText(
+        this->GetApplication()->GetMainInterp()->result);
+      }
     }
 }
 
