@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-04-24 20:17:06 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-07-03 03:38:14 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -88,6 +88,6 @@ void vtkKWLabel::Create(vtkKWApplication *app, char *args)
 
   // create the top level
   wname = this->GetWidgetName();
-  this->Script("label %s -text {%s}", wname, this->Label);
+  this->Script("label %s -text {%s} %s", wname, this->Label, args);
 }
 
