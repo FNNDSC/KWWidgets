@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTkUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-04 16:53:59 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-11-21 22:21:36 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -128,6 +128,14 @@ public:
                                const char *widget,
                                int *width,
                                int *height);
+
+  // Description:
+  // Get the horizontal position of a slave of a pack (in case 'winfo x' does
+  // not work because the widget has not been mapped).
+  static int GetPackSlaveHorizontalPosition(Tcl_Interp *interp,
+                                            const char *widget,
+                                            const char *slave,
+                                            int *x);
 
   // Description:
   // Get the padding info of a slave (packed).
