@@ -73,7 +73,7 @@ public:
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry );
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.41 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.42 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
@@ -411,7 +411,6 @@ void vtkKWEntry::SetReadOnly(int ro)
 //----------------------------------------------------------------------------
 void vtkKWEntry::ValueSelectedCallback()
 {
-  cout << "ValueSelectedCallback: " << this->List->GetSelection() << endl;
   this->SetValue(this->List->GetSelection());
   this->WithdrawPopupCallback();
   this->Script("event generate %s <Return>", this->Entry->GetWidgetName());
