@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.46 $
+  Date:      $Date: 2002-06-06 20:38:19 $
+  Version:   $Revision: 1.47 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -106,11 +106,11 @@ public:
 
   // Description:
   // Popup the vtk warning message
-  void WarningMessage(const char* message);
+  virtual void WarningMessage(const char* message);
   
   // Description:
   // Popup the vtk error message
-  void ErrorMessage(const char* message);
+  virtual void ErrorMessage(const char* message);
   
   // Description:
   // Allow windows to get at the different menu entries. In some
