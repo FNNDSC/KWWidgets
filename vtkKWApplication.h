@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-17 23:09:22 $
-  Version:   $Revision: 1.26 $
+  Date:      $Date: 2002-01-25 20:21:35 $
+  Version:   $Revision: 1.27 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -95,8 +95,8 @@ public:
 
   // Description:
   // Display the on-line help and about dialog for this application.
-  virtual void DisplayHelp();
-  virtual void DisplayAbout(vtkKWWindow *);
+  virtual void DisplayHelp(vtkKWWindow *master);
+  virtual void DisplayAbout(vtkKWWindow *master);
 
   // Description:
   // Add a window to this application.

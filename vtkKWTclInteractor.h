@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTclInteractor.h,v $
   Language:  C++
-  Date:      $Date: 2001-12-07 22:02:15 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-01-25 20:21:36 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,6 +52,7 @@ class vtkKWPushButton;
 class vtkKWEntry;
 class vtkKWLabel;
 class vtkKWText;
+class vtkKWWindow;
 
 class VTK_EXPORT vtkKWTclInteractor : public vtkKWWidget
 {
@@ -82,12 +83,21 @@ public:
   // Description:
   // Callback for the up arrow key
   void UpCallback();
+
+  // Description:
+  // Set the window to which the dialog will be slave.
+  // If set, this dialog will always be on top of the master
+  // window and will minimize with it (assuming that the windowing
+  // system supports this)
+  void SetMasterWindow(vtkKWWindow* win);
   
 protected:
   vtkKWTclInteractor();
   ~vtkKWTclInteractor();
   vtkKWTclInteractor(const vtkKWTclInteractor&) {};
   void operator=(const vtkKWTclInteractor&) {};
+
+  vtkKWWindow* MasterWindow;
 
   vtkKWWidget *ButtonFrame;
   vtkKWPushButton *DismissButton;

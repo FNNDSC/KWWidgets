@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-21 20:59:12 $
-  Version:   $Revision: 1.50 $
+  Date:      $Date: 2002-01-25 20:21:35 $
+  Version:   $Revision: 1.51 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -413,7 +413,7 @@ void vtkKWApplication::Start(int /*argc*/, char ** /*argv*/)
 }
 
 
-void vtkKWApplication::DisplayHelp()
+void vtkKWApplication::DisplayHelp(vtkKWWindow* master)
 {
 #ifdef _WIN32
   char temp[1024];
@@ -434,6 +434,7 @@ void vtkKWApplication::DisplayHelp()
   HtmlHelp(NULL, temp, HH_DISPLAY_TOPIC, 0);
 #else
   vtkKWMessageDialog *dlg = vtkKWMessageDialog::New();
+  dlg->SetMasterWindow(master);
   dlg->Create(this,"");
   dlg->SetText(
     "HTML help is included in the help subdirectory of\n"
@@ -581,13 +582,14 @@ int vtkKWApplication::GetWidgetVisibility()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWApplication::DisplayAbout(vtkKWWindow* /*win*/)
+void vtkKWApplication::DisplayAbout(vtkKWWindow* master)
 {
   ostrstream str;
   str << "Application : " << this->GetApplicationName() << "\nVersion : " << this->GetApplicationVersionName() << "\nRelease : " << this->GetApplicationReleaseName() << ends;
 
   char* msg = str.str();
   vtkKWMessageDialog *dlg = vtkKWMessageDialog::New();
+  dlg->SetMasterWindow(master);
   dlg->Create(this,"");
   dlg->SetText(msg);
   dlg->Invoke();  

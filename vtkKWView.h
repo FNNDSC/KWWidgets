@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-21 20:59:14 $
-  Version:   $Revision: 1.31 $
+  Date:      $Date: 2002-01-25 20:21:36 $
+  Version:   $Revision: 1.32 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -310,6 +310,8 @@ class VTK_EXPORT vtkKWView : public vtkKWWidget
   // sheet entry
   vtkSetStringMacro( MenuPropertiesName );
   vtkGetStringMacro( MenuPropertiesName );
+  vtkSetStringMacro( MenuPropertiesHelp );
+  vtkGetStringMacro( MenuPropertiesHelp );
   vtkSetMacro( MenuPropertiesUnderline, int );
   vtkGetMacro( MenuPropertiesUnderline, int );
 
@@ -395,6 +397,7 @@ class VTK_EXPORT vtkKWView : public vtkKWWidget
   int              RenderState;
   
   char             *MenuPropertiesName;
+  char             *MenuPropertiesHelp;
   int              MenuPropertiesUnderline;
   
   int              Printing;

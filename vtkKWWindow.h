@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-21 20:59:14 $
-  Version:   $Revision: 1.32 $
+  Date:      $Date: 2002-01-25 20:21:37 $
+  Version:   $Revision: 1.33 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -181,6 +181,11 @@ public:
   vtkSetStringMacro(WindowClass);
   vtkGetStringMacro(WindowClass);
 
+  // Description:
+  // The title of the properties menu button
+  vtkSetStringMacro(MenuPropertiesTitle);
+  vtkGetStringMacro(MenuPropertiesTitle);
+
   //Description:
   // Set/Get PromptBeforeClose
   vtkSetMacro(PromptBeforeClose, int);
@@ -190,6 +195,11 @@ public:
   // The extension used in LoadScript. Default is .tcl.
   vtkSetStringMacro(ScriptExtension);
   vtkGetStringMacro(ScriptExtension);
+
+  // Description:
+  // The type name used in LoadScript. Default is Tcl.
+  vtkSetStringMacro(ScriptType);
+  vtkGetStringMacro(ScriptType);
 
   // Description:
   // Call render on all views
@@ -259,10 +269,14 @@ protected:
   float      PrintTargetDPI;
   vtkKWMenu *PageMenu;
   char *ScriptExtension;
+  char *ScriptType;
 
   int SupportHelp;
   char *WindowClass;
+  char *MenuPropertiesTitle;
   int PromptBeforeClose;
+
+  int InExit;
 
   vtkKWPointerArray *RecentFiles;
   

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-04 15:27:25 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-01-25 20:21:36 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -103,9 +103,17 @@ public:
   void SetStyleToYesNo() {this->SetStyle(vtkKWMessageDialog::YesNo);};
   void SetStyleToOkCancel() {this->SetStyle(vtkKWMessageDialog::OkCancel);};
 
-  static void PopupMessage(vtkKWApplication *app, unsigned int icon, const char* title, const char*message);
-  static int PopupYesNo(vtkKWApplication *app, unsigned int icon, const char* title, const char*message);
-  static int PopupOkCancel(vtkKWApplication *app, unsigned int icon, const char* title, const char*message);
+  // Description:
+  // Utility methods to create various dialog windows.
+  static void PopupMessage(vtkKWApplication *app, vtkKWWindow *masterWin,
+			   unsigned int icon, const char* title, 
+			   const char*message);
+  static int PopupYesNo(vtkKWApplication *app,  vtkKWWindow *masterWin, 
+			unsigned int icon, const char* title, 
+			const char*message);
+  static int PopupOkCancel(vtkKWApplication *app, vtkKWWindow *masterWin,
+			   unsigned int icon, const char* title, 
+			   const char*message);
 
 protected:
   vtkKWMessageDialog();
