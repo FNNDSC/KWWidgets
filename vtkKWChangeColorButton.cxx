@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWChangeColorButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:13 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2002-08-27 19:18:53 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWChangeColorButton );
-vtkCxxRevisionMacro(vtkKWChangeColorButton, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWChangeColorButton, "$Revision: 1.18 $");
 
 
 int vtkKWChangeColorButtonCommand(ClientData cd, Tcl_Interp *interp,
@@ -132,9 +132,12 @@ void vtkKWChangeColorButton::Create(vtkKWApplication *app, const char *args)
   this->Label2->Create(this->Application,
                        "label","-width 2 -height 1");
   this->Script("pack %s -padx 3 -pady 3 -ipadx 2 -side right",this->Label2->GetWidgetName());
-  this->Script("pack %s -padx 3 -pady 3 -ipadx 2 -side left -fill x -expand yes", 
-               this->Label1->GetWidgetName());
-  
+  if (this->Text && strlen(this->Text) > 0)
+    { 
+    this->Script("pack %s -padx 3 -pady 3 -ipadx 2 -side left -fill x -expand yes", 
+                 this->Label1->GetWidgetName());
+    }
+
   this->Script("%s configure -bg %s",this->Label2->GetWidgetName(),color);
   
   // bind button presses
@@ -261,7 +264,7 @@ void vtkKWChangeColorButton::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWChangeColorButton ";
-  this->ExtractRevision(os,"$Revision: 1.17 $");
+  this->ExtractRevision(os,"$Revision: 1.18 $");
 }
 
 //----------------------------------------------------------------------------
