@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-08 14:02:09 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2003-04-02 16:52:21 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ int vtkKWLabelCommand(ClientData cd, Tcl_Interp *interp,
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabel );
-vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.18 $");
 
 //-----------------------------------------------------------------------------
 vtkKWLabel::vtkKWLabel()
@@ -110,7 +110,7 @@ void vtkKWLabel::Create(vtkKWApplication *app, const char *args)
     }
   else
     {
-    this->Script("label %s -text {%s} -justify left -width %d %s", 
+    this->Script("label %s -text {%s} -anchor nw -justify left -width %d %s", 
                  wname, this->Label, this->Width, (args?args:""));
     }
 
