@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-09-12 04:16:01 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2000-09-13 15:45:16 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -182,7 +182,9 @@ vtkKWVolumeComposite::~vtkKWVolumeComposite()
   
   this->LowResResampler->Delete();
   this->MedResResampler->Delete();
-
+  this->VProResampler->Delete();
+  
+  this->LowResVolumeProMapper->Delete();
   this->VolumeProMapper->Delete();
 }
 
@@ -457,5 +459,5 @@ void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.17 $");
+  this->ExtractRevision(os,"$Revision: 1.18 $");
 }
