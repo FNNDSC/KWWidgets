@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplicationSettingsInterface.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 15:55:48 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2003-01-23 16:54:59 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -53,13 +53,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 
-#define VTK_VV_ASI_LABEL                        "Application Settings"
+#define VTK_KW_APPLICATION_SETTINGS_UIP_LABEL "Application Settings"
 
-#define VTK_KW_ASI_PREFERENCES_LABEL            "Preferences"
-
-#define VTK_KW_ASI_SAVE_WINDOW_GEOMETRY_REG_KEY "SaveWindowGeometry"
-#define VTK_KW_ASI_SHOW_SPLASH_SCREEN_REG_KEY   "ShowSplashScreen"
-#define VTK_KW_ASI_SHOW_TOOLTIPS_REG_KEY        "ShowBalloonHelp"
+#define VTK_KW_SAVE_WINDOW_GEOMETRY_REG_KEY   "SaveWindowGeometry"
+#define VTK_KW_SHOW_SPLASH_SCREEN_REG_KEY     "ShowSplashScreen"
+#define VTK_KW_SHOW_TOOLTIPS_REG_KEY          "ShowBalloonHelp"
 
 //------------------------------------------------------------------------------
 
@@ -105,11 +103,6 @@ public:
   void SaveGeometryCallback();
   void ShowSplashScreenCallback();
   void ShowBalloonHelpCallback();
-
-  // Description:
-  // Access to some sub-widgets. Note that they might be NULL until the Create()
-  // function is called.
-  vtkGetObjectMacro(InterfaceSettingsFrame, vtkKWLabeledFrame);
 
 protected:
   vtkKWApplicationSettingsInterface();

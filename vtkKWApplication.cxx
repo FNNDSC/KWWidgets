@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-12 18:46:18 $
-  Version:   $Revision: 1.108 $
+  Date:      $Date: 2003-01-23 16:54:59 $
+  Version:   $Revision: 1.109 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -75,7 +75,7 @@ int vtkKWApplication::WidgetVisibility = 1;
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.108 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.109 $");
 
 extern "C" int Vtktcl_Init(Tcl_Interp *interp);
 extern "C" int Vtkkwwidgetstcl_Init(Tcl_Interp *interp);
@@ -162,10 +162,10 @@ vtkKWApplication::vtkKWApplication()
   this->ShowSplashScreen = 1;
 
   if (this->HasRegisteryValue(
-    2, "RunTime", VTK_KW_ASI_SHOW_TOOLTIPS_REG_KEY))
+    2, "RunTime", VTK_KW_SHOW_TOOLTIPS_REG_KEY))
     {
     this->ShowBalloonHelp = this->GetIntRegisteryValue(
-      2, "RunTime", VTK_KW_ASI_SHOW_TOOLTIPS_REG_KEY);
+      2, "RunTime", VTK_KW_SHOW_TOOLTIPS_REG_KEY);
     }
   else
     {
@@ -591,10 +591,10 @@ void vtkKWApplication::Start(int /*argc*/, char ** /*argv*/)
   // constructor.
 
   if (this->HasRegisteryValue(
-    2, "RunTime", VTK_KW_ASI_SHOW_TOOLTIPS_REG_KEY))
+    2, "RunTime", VTK_KW_SHOW_TOOLTIPS_REG_KEY))
     {
     this->ShowBalloonHelp = this->GetIntRegisteryValue(
-      2, "RunTime", VTK_KW_ASI_SHOW_TOOLTIPS_REG_KEY);
+      2, "RunTime", VTK_KW_SHOW_TOOLTIPS_REG_KEY);
     }
   else
     {
