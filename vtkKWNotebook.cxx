@@ -3,8 +3,8 @@
 Program:   Visualization Toolkit
 Module:    $RCSfile: vtkKWNotebook.cxx,v $
 Language:  C++
-Date:      $Date: 2003-03-10 22:14:05 $
-Version:   $Revision: 1.45 $
+Date:      $Date: 2003-03-10 22:26:32 $
+Version:   $Revision: 1.46 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -86,7 +86,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.45 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.46 $");
 
 //------------------------------------------------------------------------------
 int vtkKWNotebookCommand(ClientData cd, Tcl_Interp *interp,
@@ -508,6 +508,8 @@ int vtkKWNotebook::GetVisiblePageId(int idx)
     return this->GetMostRecentPageId(idx);
     }
 
+  // If not, consider the unpinned page first
+
   vtkIdType found = -1;
   vtkKWNotebook::Page *page = NULL;
   vtkKWNotebook::PagesContainerIterator *it = this->Pages->NewIterator();
@@ -515,13 +517,32 @@ int vtkKWNotebook::GetVisiblePageId(int idx)
   it->InitTraversal();
   while (!it->IsDoneWithTraversal())
     {
-    if (it->GetData(page) == VTK_OK && page->Visibility && !idx--)
+    if (it->GetData(page) == VTK_OK && 
+        page->Visibility && !page->Pinned && !idx--)
       {
       found = page->Id;
       break;
       }
     it->GoToNextItem();
     }
+
+  // Not found ? Now consider the pinned page
+
+  if (found < 0)
+    {
+    it->InitTraversal();
+    while (!it->IsDoneWithTraversal())
+      {
+      if (it->GetData(page) == VTK_OK && 
+          page->Visibility && page->Pinned && !idx--)
+        {
+        found = page->Id;
+        break;
+        }
+      it->GoToNextItem();
+      }
+    }
+
   it->Delete();
 
   return found;
