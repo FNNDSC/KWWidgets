@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-30 21:03:52 $
-  Version:   $Revision: 1.53 $
+  Date:      $Date: 2003-01-30 22:20:45 $
+  Version:   $Revision: 1.54 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -56,7 +56,6 @@ class VTK_EXPORT vtkKWEvent
     KWWidgetEvents = 2000,
     MessageDialogInvokeEvent,
     // VV    
-    AmbientChangedEvent,
     AngleVisibilityChangedEvent,
     AnnotationColorChangedEvent,
     ApplicationAreaChangedEvent,
@@ -90,7 +89,6 @@ class VTK_EXPORT vtkKWEvent
     Cursor3DXColorChangedEvent,
     Cursor3DYColorChangedEvent,
     Cursor3DZColorChangedEvent,
-    DiffuseChangedEvent,
     DistanceVisibilityChangedEvent,
     EnableShadingEvent,
     GradientOpacityFunctionChangedEvent,
@@ -143,8 +141,6 @@ class VTK_EXPORT vtkKWEvent
     ShiftLeftMouseOptionChangedEvent,
     ShiftMiddleMouseOptionChangedEvent,
     ShiftRightMouseOptionChangedEvent,
-    SpecularChangedEvent,
-    SpecularPowerChangedEvent,
     StandardInteractivityChangedEvent,
     SwitchToVolumeProEvent,
     TransferFunctionsChangedEvent,

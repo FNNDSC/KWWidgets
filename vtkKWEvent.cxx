@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-30 21:03:52 $
-  Version:   $Revision: 1.50 $
+  Date:      $Date: 2003-01-30 22:20:45 $
+  Version:   $Revision: 1.51 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,6 @@ static const char *vtkKWEventStrings[] = {
   "KWWidgetEvents",
   "MessageDialogInvokeEvent",
   // VV    
-  "AmbientChangedEvent",
   "AngleVisibilityChangedEvent",
   "AnnotationColorChangedEvent",
   "ApplicationAreaChangedEvent",
@@ -81,7 +80,6 @@ static const char *vtkKWEventStrings[] = {
   "Cursor3DXColorChangedEvent",
   "Cursor3DYColorChangedEvent",
   "Cursor3DZColorChangedEvent",
-  "DiffuseChangedEvent",
   "DistanceVisibilityChangedEvent",
   "EnableShadingEvent",
   "GradientOpacityFunctionChangedEvent",
@@ -134,8 +132,6 @@ static const char *vtkKWEventStrings[] = {
   "ShiftLeftMouseOptionChangedEvent",
   "ShiftMiddleMouseOptionChangedEvent",
   "ShiftRightMouseOptionChangedEvent",
-  "SpecularChangedEvent",
-  "SpecularPowerChangedEvent",
   "StandardInteractivityChangedEvent",
   "SwitchToVolumeProEvent",
   "TransferFunctionsChangedEvent",
