@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRadioButton.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-11-16 17:15:02 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -64,6 +64,13 @@ public:
   // Description:
   // Set/Get the state of the Radio button 0 = off 1 = on
   vtkBooleanMacro(State,int);
+  virtual int GetState();
+
+  // Description:
+  // Specify the value to store in the button's associated variable 
+  // whenever this button is selected.
+  void SetValue(int v);
+  void SetValue(const char *v);
 
 protected:
   vtkKWRadioButton() {};

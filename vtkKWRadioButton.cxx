@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRadioButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-10 16:01:16 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-11-16 17:15:02 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -43,15 +43,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWRadioButton.h"
 #include "vtkObjectFactory.h"
 
-
-
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWRadioButton );
-vtkCxxRevisionMacro(vtkKWRadioButton, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWRadioButton, "$Revision: 1.9 $");
 
-
-
-
+//------------------------------------------------------------------------------
 void vtkKWRadioButton::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
@@ -72,6 +68,29 @@ void vtkKWRadioButton::Create(vtkKWApplication *app, const char *args)
   this->Script("%s configure %s", wname, (args?args:""));
 }
 
+//----------------------------------------------------------------------------
+void vtkKWRadioButton::SetValue(int v)
+{
+  this->Script("%s configure -value %d", this->GetWidgetName(), v);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRadioButton::SetValue(const char *v)
+{
+  this->Script("%s configure -value %s", this->GetWidgetName(), v);
+}
+
+//------------------------------------------------------------------------------
+int vtkKWRadioButton::GetState()
+{
+  if (this->IsCreated())
+    {
+    this->Script("expr {${%s}} == {[%s cget -value]}",
+                 this->VariableName, this->GetWidgetName());
+    return vtkKWObject::GetIntegerResult(this->Application);
+    }
+  return 0;
+}
 
 //----------------------------------------------------------------------------
 void vtkKWRadioButton::PrintSelf(ostream& os, vtkIndent indent)
