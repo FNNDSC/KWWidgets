@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:23 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-07-09 11:30:00 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -164,3 +164,8 @@ void vtkKWOptionMenu::Create(vtkKWApplication *app, const char *args)
 }
 
 
+void vtkKWOptionMenu::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os, indent);
+  os << indent << "Menu: " << this->Menu << endl;
+}
