@@ -3,8 +3,8 @@
 Program:   Visualization Toolkit
 Module:    $RCSfile: vtkKWNotebook.cxx,v $
 Language:  C++
-Date:      $Date: 2003-02-25 18:48:33 $
-Version:   $Revision: 1.39 $
+Date:      $Date: 2003-02-25 22:37:27 $
+Version:   $Revision: 1.40 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -85,7 +85,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.39 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.40 $");
 
 //------------------------------------------------------------------------------
 int vtkKWNotebookCommand(ClientData cd, Tcl_Interp *interp,
@@ -621,7 +621,7 @@ int vtkKWNotebook::AddPage(const char *title,
   if (icon && icon->GetData())
     {
     page->Icon = vtkKWIcon::New();
-    page->Icon->SetData(icon->GetData(), icon->GetWidth(), icon->GetHeight());
+    page->Icon->SetImageData(icon);
 
     page->ImageLabel = vtkKWImageLabel::New();
     page->ImageLabel->SetParent(page->TabFrame);

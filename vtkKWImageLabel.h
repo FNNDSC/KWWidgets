@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWImageLabel.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-10 21:32:13 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2003-02-25 22:37:27 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -66,7 +66,8 @@ public:
   // Description:
   // Set image data (either using icon, or pixel data).
   void SetImageData(vtkKWIcon *icon);
-  void SetImageData(const unsigned char* data, int width, int height, int pixel_size = 4);
+  void SetImageData(const unsigned char* data, 
+                    int width, int height, int pixel_size = 4);
   
   // Description:
   // Set/Get the TK name of the image.
