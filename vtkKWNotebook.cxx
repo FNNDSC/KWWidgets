@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.25 $
+  Date:      $Date: 2002-06-13 21:02:10 $
+  Version:   $Revision: 1.26 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -88,6 +88,8 @@ vtkKWNotebook::vtkKWNotebook()
   this->MinimumWidth = 360;
   this->MinimumHeight = 600;
   this->Expanding = 0;
+
+  this->AlwaysShowTabs = 0;
 }
 
 vtkKWNotebook::~vtkKWNotebook()
@@ -244,7 +246,8 @@ void vtkKWNotebook::Raise(int num)
 
   this->Current = num;
 
-  if (this->NumberOfPages <= 1)
+  if ((this->NumberOfPages <= 1 && !this->AlwaysShowTabs) ||
+      this->NumberOfPages < 1)
     {
     return;
     }
@@ -462,7 +465,8 @@ void vtkKWNotebook::AddPage(const char *title, const char *ballon,
 	       this->Buttons[this->NumberOfPages]->GetWidgetName());    
   this->NumberOfPages++;
   
-  if (this->NumberOfPages == 2)
+  if (this->NumberOfPages == 2 || 
+      (this->NumberOfPages == 1 && this->AlwaysShowTabs))
     {
 #ifndef OLD_NOTEBOOK_STYLE
 # ifdef _WIN32 
@@ -509,7 +513,8 @@ void vtkKWNotebook::Resize()
   this->Script("winfo reqheight %s", this->Body->GetWidgetName());
   
   int height;
-  if (this->NumberOfPages <= 1)
+  if ((this->NumberOfPages <= 1 && !this->AlwaysShowTabs) ||
+      this->NumberOfPages < 1)
     {
     height = vtkKWObject::GetIntegerResult(this->Application) + 
       this->BorderWidth*2 + 4;

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2002-06-13 21:02:10 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -103,6 +103,13 @@ public:
   vtkSetMacro(MinimumHeight,int);
   vtkGetMacro(MinimumWidth,int);
   vtkGetMacro(MinimumHeight,int);
+
+  // Description:
+  // Normally, the tab frame is not shown when there is only
+  // one page. Turn this on to override that behaviour.
+  vtkSetMacro(AlwaysShowTabs, int);
+  vtkGetMacro(AlwaysShowTabs, int);
+  vtkBooleanMacro(AlwaysShowTabs, int);
   
 protected:
   vtkKWNotebook();
@@ -115,6 +122,7 @@ protected:
   int Pad;
   int BorderWidth;
   int Expanding;
+  int AlwaysShowTabs;
   
   vtkKWWidget *TabsFrame;
   vtkKWWidget *Body;
