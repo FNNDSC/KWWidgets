@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-23 16:54:59 $
-  Version:   $Revision: 1.143 $
+  Date:      $Date: 2003-01-24 21:25:46 $
+  Version:   $Revision: 1.144 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -70,7 +70,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define VTK_KW_WINDOW_GEOMETRY_REG_KEY "WindowGeometry"
 #define VTK_KW_WINDOW_FRAME1_SIZE_REG_KEY "WindowFrame1Size"
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.143 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.144 $");
 vtkCxxSetObjectMacro(vtkKWWindow, PropertiesParent, vtkKWWidget);
 
 class vtkKWWindowMenuEntry
@@ -1112,7 +1112,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.143 $");
+  this->ExtractRevision(os,"$Revision: 1.144 $");
 }
 
 int vtkKWWindow::ExitDialog()
@@ -1220,7 +1220,7 @@ void vtkKWWindow::InsertRecentFileToMenu(const char *filename,
         }
       }
     int flen = vtkString::Length(filename);
-    for(ii=flen; ii >= (flen-25); ii--)
+    for(ii=flen; ii > (flen-20); ii--)
       {
       if ( filename[ii] == '/' )
         {
