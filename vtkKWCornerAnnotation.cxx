@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-03 12:58:34 $
-  Version:   $Revision: 1.48 $
+  Date:      $Date: 2003-01-03 16:01:41 $
+  Version:   $Revision: 1.49 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -65,7 +65,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCornerAnnotation );
-vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.48 $");
+vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.49 $");
 
 int vtkKWCornerAnnotationCommand(ClientData cd, Tcl_Interp *interp,
                                 int argc, char *argv[]);
@@ -942,7 +942,7 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.48 $");
+  this->ExtractRevision(os,"$Revision: 1.49 $");
 }
 
 //----------------------------------------------------------------------------
@@ -1005,6 +1005,9 @@ void vtkKWCornerAnnotation::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
 
+  os << indent << "Frame: " << this->Frame << endl;
+  os << indent << "CornerVisibilityButton: " 
+     << this->CornerVisibilityButton << endl;
   os << indent << "AnnotationColorChangedEvent: " 
      << this->AnnotationColorChangedEvent << endl;
   os << indent << "AnnotationChangedEvent: " 
@@ -1016,4 +1019,8 @@ void vtkKWCornerAnnotation::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "MaximumLineHeightScale: " << this->MaximumLineHeightScale << endl;
   os << indent << "PutVisibilityButtonInTitle: " 
      << (this->PutVisibilityButtonInTitle ? "On" : "Off") << endl;
+  os << indent << "PopupMode: " 
+     << (this->PopupMode ? "On" : "Off") << endl;
+  os << indent << "PopupTextProperty: " 
+     << (this->PopupTextProperty ? "On" : "Off") << endl;
 }
