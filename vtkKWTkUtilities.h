@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTkUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-12 21:42:28 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2003-02-25 18:47:19 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -161,6 +161,7 @@ public:
                                  int *nb_of_cols,
                                  int **col_widths,
                                  int allocate = 0);
+
   // Description:
   // Synchronize the columns minimum size of different widgets that have
   // been grid. If 'factors' is non-null, it is used as an array of
@@ -181,6 +182,13 @@ public:
                                            int nb_of_widgets,
                                            const char **widgets,
                                            const char *options = 0);
+
+  // Description:
+  // Returns the slaves of widget. The slaves array is allocated automatically
+  // and the number of slaves is returned.
+  static int GetSlaves(Tcl_Interp *interp,
+                       const char *widget,
+                       char ***slaves);
 
   //ETX
 
