@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 14:11:42 $
-  Version:   $Revision: 1.35 $
+  Date:      $Date: 2002-11-22 21:28:03 $
+  Version:   $Revision: 1.36 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -163,8 +163,10 @@ public:
   void GetRGBColor(const char* color, int *r, int *g, int *b);
   
   // Description:
-  // Get the current background color of the widget.
+  // Get the current background color of the widget (either as 0 -> 255 int, or
+  // normalized 0.0 -> 1.0 float).
   void GetBackgroundColor(int *r, int *g, int *b);
+  void GetBackgroundColor(float *r, float *g, float *b);
   
   // Description:
   // Query if widget has Tk configuration option
