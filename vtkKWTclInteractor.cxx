@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTclInteractor.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-25 20:21:36 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-02-07 23:42:59 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,6 +46,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWText.h"
 #include "vtkKWWindow.h"
 #include "vtkObjectFactory.h"
+#include "vtkKWLabel.h"
+#include "vtkKWEntry.h"
 
 //-------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTclInteractor );

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindowCollection.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:36 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-02-07 23:43:00 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define __vtkKWWindowC_h
 
 #include "vtkCollection.h"
-#include "vtkKWWindow.h"
+
+class vtkKWWindow;
 
 class VTK_EXPORT vtkKWWindowCollection : public vtkCollection
 {
@@ -88,37 +89,6 @@ private:
   void operator=(const vtkKWWindowCollection&); // Not implemented
 };
 
-inline void vtkKWWindowCollection::AddItem(vtkKWWindow *a) 
-{
-  this->vtkCollection::AddItem((vtkObject *)a);
-}
-
-inline void vtkKWWindowCollection::RemoveItem(vtkKWWindow *a) 
-{
-  this->vtkCollection::RemoveItem((vtkObject *)a);
-}
-
-inline int vtkKWWindowCollection::IsItemPresent(vtkKWWindow *a) 
-{
-  return this->vtkCollection::IsItemPresent((vtkObject *)a);
-}
-
-inline vtkKWWindow *vtkKWWindowCollection::GetNextKWWindow() 
-{ 
-  return vtkKWWindow::SafeDownCast(this->GetNextItemAsObject());
-}
-
-inline vtkKWWindow *vtkKWWindowCollection::GetLastKWWindow() 
-{ 
-  if ( this->Bottom == NULL )
-    {
-    return NULL;
-    }
-  else
-    {
-    return vtkKWWindow::SafeDownCast(this->Bottom->Item);
-    }
-}
 
 #endif
 

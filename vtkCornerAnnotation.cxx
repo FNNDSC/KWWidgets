@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-16 15:50:55 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-02-07 23:42:58 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -41,10 +41,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 =========================================================================*/
 #include "vtkCornerAnnotation.h"
 #include "vtkObjectFactory.h"
+#include "vtkTextMapper.h"
+#include "vtkImageMapToWindowLevelColors.h"
+#include "vtkImageActor.h"
 
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkCornerAnnotation);
+ 
+vtkSetObjectImplementationMacro(vtkCornerAnnotation,ImageActor,vtkImageActor);
+vtkSetObjectImplementationMacro(vtkCornerAnnotation,WindowLevel,
+				vtkImageMapToWindowLevelColors);
 
 vtkCornerAnnotation::vtkCornerAnnotation()
 {

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:27 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-02-07 23:42:58 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,9 +51,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define __vtkCornerAnnotation_h
 
 #include "vtkActor2D.h"
-#include "vtkTextMapper.h"
-#include "vtkImageMapToWindowLevelColors.h"
-#include "vtkImageActor.h"
+
+class vtkTextMapper;
+class vtkImageMapToWindowLevelColors;
+class vtkImageActor;
 
 class VTK_EXPORT vtkCornerAnnotation : public vtkActor2D
 {
@@ -97,13 +98,13 @@ public:
 
   // Description:
   // Set an image actor to look at for slice information
-  vtkSetObjectMacro(ImageActor,vtkImageActor);
+  void SetImageActor(vtkImageActor*);
   vtkGetObjectMacro(ImageActor,vtkImageActor);
   
   // Description:
   // Set an instance of vtkImageMapToWindowLevelColors to use for
   // looking at window level changes
-  vtkSetObjectMacro(WindowLevel,vtkImageMapToWindowLevelColors);
+  void SetWindowLevel(vtkImageMapToWindowLevelColors*);
   vtkGetObjectMacro(WindowLevel,vtkImageMapToWindowLevelColors);
   
 protected:

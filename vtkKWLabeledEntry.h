@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledEntry.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:30 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-02-07 23:42:59 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,8 +48,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkKWLabeledEntry_h
 #define __vtkKWLabeledEntry_h
 
-#include "vtkKWLabel.h"
-#include "vtkKWEntry.h"
+#include "vtkKWWidget.h"
+
+class vtkKWLabel;
+class vtkKWEntry;
 
 class vtkKWApplication;
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWActorComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:22 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-02-07 23:42:58 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -43,6 +43,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWWidget.h"
 #include "vtkKWView.h"
 #include "vtkObjectFactory.h"
+#include "vtkActor.h"
+#include "vtkPolyDataMapper.h"
+#include "vtkKWRadioButton.h"
+#include "vtkKWOptionMenu.h"
 
 
 
@@ -90,5 +94,12 @@ void vtkKWActorComposite::CreateProperties()
   this->vtkKWComposite::CreateProperties();
 }
 
+vtkPolyData *vtkKWActorComposite::GetInput() 
+{
+  return this->Mapper->GetInput();
+}
 
-
+vtkProp *vtkKWActorComposite::GetProp() 
+{
+  return this->Actor;
+}

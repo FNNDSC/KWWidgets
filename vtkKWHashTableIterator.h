@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWHashTableIterator.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-16 19:13:32 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-02-07 23:42:58 $
+  Version:   $Revision: 1.2 $
 
 
 Copyright (c) 1993-2001 Ken Martin, Will Schroeder, Bill Lorensen 
@@ -68,6 +68,7 @@ private:
   vtkKWHashTableIterator();
   ~vtkKWHashTableIterator();
   vtkKWHashTableIterator(const vtkKWHashTableIterator&);  // Not implemented.
+  void operator=(const vtkKWHashTableIterator&);  // Not implemented.
 
   vtkKWHashTable *HashTable;
   unsigned int Bucket;

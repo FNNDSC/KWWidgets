@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-05 22:08:23 $
-  Version:   $Revision: 1.38 $
+  Date:      $Date: 2002-02-07 23:43:00 $
+  Version:   $Revision: 1.39 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -132,7 +132,8 @@ public:
   // will create an attachment point for the properties at
   // the window level.
   vtkGetObjectMacro(PropertiesParent,vtkKWWidget);
-  vtkSetObjectMacro(PropertiesParent,vtkKWWidget);
+  void SetPropertiesParent(vtkKWWidget*);
+  
   void CreateDefaultPropertiesParent();
   void HideProperties();
   void ShowProperties();

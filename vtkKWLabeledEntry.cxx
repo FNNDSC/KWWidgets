@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledEntry.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:23 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-02-07 23:42:58 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,9 +39,11 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =========================================================================*/
-#include "vtkKWApplication.h"
+//#include "vtkKWApplication.h"
 #include "vtkKWLabeledEntry.h"
 #include "vtkObjectFactory.h"
+#include "vtkKWLabel.h"
+#include "vtkKWEntry.h"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabeledEntry );

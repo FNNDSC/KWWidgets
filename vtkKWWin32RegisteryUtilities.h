@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWin32RegisteryUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-16 19:12:31 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-02-07 23:42:59 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -43,7 +43,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkKWWin32RegisteryUtilities_h
 #define __vtkKWWin32RegisteryUtilities_h
 
-#include "vtkKWObject.h"
 #include "vtkKWRegisteryUtilities.h"
 
 class VTK_EXPORT vtkKWWin32RegisteryUtilities : public vtkKWRegisteryUtilities
@@ -81,6 +80,8 @@ class VTK_EXPORT vtkKWWin32RegisteryUtilities : public vtkKWRegisteryUtilities
   virtual ~vtkKWWin32RegisteryUtilities();
 
   private:
+  vtkKWWin32RegisteryUtilities(const vtkKWWin32RegisteryUtilities&);
+  void operator=(const vtkKWWin32RegisteryUtilities&);
   HKEY HKey;
 };
 

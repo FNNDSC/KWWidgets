@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCompositeCollection.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:22 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-02-07 23:42:58 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -42,6 +42,38 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWCompositeCollection.h"
 #include "vtkObjectFactory.h"
 
-
+#include "vtkKWComposite.h"
 
 vtkStandardNewMacro( vtkKWCompositeCollection );
+
+void vtkKWCompositeCollection::AddItem(vtkKWComposite *a) 
+{
+  this->vtkCollection::AddItem((vtkObject *)a);
+}
+
+void vtkKWCompositeCollection::RemoveItem(vtkKWComposite *a) 
+{
+  this->vtkCollection::RemoveItem((vtkObject *)a);
+}
+
+int vtkKWCompositeCollection::IsItemPresent(vtkKWComposite *a) 
+{
+  return this->vtkCollection::IsItemPresent((vtkObject *)a);
+}
+
+vtkKWComposite *vtkKWCompositeCollection::GetNextKWComposite() 
+{ 
+  return vtkKWComposite::SafeDownCast(this->GetNextItemAsObject());
+}
+
+vtkKWComposite *vtkKWCompositeCollection::GetLastKWComposite() 
+{ 
+  if ( this->Bottom == NULL )
+    {
+    return NULL;
+    }
+  else
+    {
+    return vtkKWComposite::SafeDownCast(this->Bottom->Item);
+    }
+}

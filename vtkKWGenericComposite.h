@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWGenericComposite.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:29 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-02-07 23:42:58 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,11 +49,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 #include "vtkKWComposite.h"
-#include "vtkProp.h"
 
 class vtkKWApplication;
 class vtkKWView;
 class vtkStructuredPoints;
+class vtkProp;
 
 class VTK_EXPORT vtkKWGenericComposite : public vtkKWComposite
 {
@@ -64,7 +64,7 @@ public:
   // Description:
   // Get the prop for this composite
   virtual vtkProp *GetProp() {return this->Prop;};
-  vtkSetObjectMacro(Prop,vtkProp);
+  void SetProp(vtkProp *);
   
 protected:
   vtkKWGenericComposite();
