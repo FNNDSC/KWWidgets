@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceNotebookManager.h,v $
   Language:  C++
-  Date:      $Date: 2003-03-10 22:15:08 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2003-04-15 15:29:01 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -177,8 +177,8 @@ public:
     vtkKWWidget *widget, vtkKWWidget *anchor, vtkKWWidget *target);
 
   // Description:
-  // Write the list of visible pages to a string, parse the same kind of
-  // list from a string (and show the pages). Pinned status is saved too.
+  // Write the list of visible pages to a stream, parse the same kind of
+  // list from a stream (and show the pages). Pinned status is saved too.
   virtual void WriteVisiblePagesString(ostream &os);
   virtual void ParseVisiblePagesString(istream &is);
 
