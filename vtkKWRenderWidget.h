@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-23 14:48:58 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2003-03-03 21:40:34 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -169,7 +169,7 @@ public:
   
   // Description:
   // Set/Get the units that pixel sizes are measured in
-  vtkSetStringMacro(Units);
+  virtual void SetUnits(const char*);
   vtkGetStringMacro(Units);
   
   // Description:
@@ -261,6 +261,8 @@ protected:
   int CollapsingRendersCount;
 
   vtkKWRenderWidgetObserver *Observer;
+
+  virtual void UpdateAccordingToUnits() {};
   
 private:
   vtkKWRenderWidget(const vtkKWRenderWidget&);  // Not implemented

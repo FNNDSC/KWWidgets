@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-24 21:55:57 $
-  Version:   $Revision: 1.33 $
+  Date:      $Date: 2003-03-03 21:40:34 $
+  Version:   $Revision: 1.34 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -60,7 +60,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.33 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.34 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetObserver : public vtkCommand
@@ -162,6 +162,39 @@ vtkKWRenderWidget::~vtkKWRenderWidget()
   this->Observer->Delete();
   this->Observer = NULL;
 }
+
+//----------------------------------------------------------------------------
+void vtkKWRenderWidget::SetUnits(const char* _arg)
+{
+  if (this->Units == NULL && _arg == NULL) 
+    { 
+    return;
+    }
+
+  if (this->Units && _arg && (!strcmp(this->Units, _arg))) 
+    {
+    return;
+    }
+
+  if (this->Units) 
+    { 
+    delete [] this->Units; 
+    }
+
+  if (_arg)
+    {
+    this->Units = new char[strlen(_arg)+1];
+    strcpy(this->Units, _arg);
+    }
+  else
+    {
+    this->Units = NULL;
+    }
+
+  this->Modified();
+  
+  this->UpdateAccordingToUnits();
+} 
 
 //----------------------------------------------------------------------------
 void vtkKWRenderWidget::Create(vtkKWApplication *app, const char *args)
