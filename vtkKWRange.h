@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRange.h,v $
   Language:  C++
-  Date:      $Date: 2003-04-28 20:00:46 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2003-04-28 21:21:31 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -76,6 +76,15 @@ public:
   virtual void SetRange(float *range) 
     { this->SetRange(range[0], range[1]); };
 
+  // Description:
+  // Set/Get the current (sub-)range as relative positions in the whole range.
+  virtual void GetRelativeRange(float &r0, float &r1);
+  virtual void GetRelativeRange(float range[2])
+    { this->GetRelativeRange(range[0], range[1]); };
+  virtual void SetRelativeRange(float r0, float r1);
+  virtual void SetRelativeRange(float range[2])
+    { this->SetRelativeRange(range[0], range[1]); };
+  
   // Description:
   // Set/Get the resolution. Also get the entries resolution, which is the
   // number of decimal places displayed in the entries 

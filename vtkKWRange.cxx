@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRange.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-28 20:00:46 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2003-04-28 21:21:31 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 
 vtkStandardNewMacro( vtkKWRange );
-vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.13 $");
 
 #define VTK_KW_RANGE_MIN_SLIDER_SIZE        2
 #define VTK_KW_RANGE_MIN_THICKNESS          (2*VTK_KW_RANGE_MIN_SLIDER_SIZE+1)
@@ -522,6 +522,22 @@ void vtkKWRange::SetRange(float r0, float r1)
     {
     this->InvokeCommand();
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRange::GetRelativeRange(float &r0, float &r1)
+{
+  float whole_range = (this->WholeRange[1] - this->WholeRange[0]);
+  r0 = (this->Range[0] - this->WholeRange[0]) / whole_range;
+  r1 = (this->Range[1] - this->WholeRange[0]) / whole_range;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRange::SetRelativeRange(float r0, float r1)
+{
+  float whole_range = (this->WholeRange[1] - this->WholeRange[0]);
+  this->SetRange(r0 * whole_range + this->WholeRange[0],
+                 r1 * whole_range + this->WholeRange[0]);
 }
 
 //----------------------------------------------------------------------------
