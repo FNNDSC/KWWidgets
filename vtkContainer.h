@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkContainer.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-16 20:45:01 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-01-16 20:50:00 $
+  Version:   $Revision: 1.2 $
 
 
 Copyright (c) 1993-2001 Ken Martin, Will Schroeder, Bill Lorensen 
@@ -41,7 +41,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 =========================================================================*/
 // .NAME vtkContainer - a base class for templated containers
 
+
 #include "vtkWin32Header.h"
+#include "vtkKWWidgets.h"
 
 class vtkObject;
 
