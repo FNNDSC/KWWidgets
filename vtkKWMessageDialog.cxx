@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-12 18:41:42 $
-  Version:   $Revision: 1.43 $
+  Date:      $Date: 2003-02-13 14:22:33 $
+  Version:   $Revision: 1.44 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMessageDialog );
-vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.43 $");
+vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.44 $");
 
 
 
@@ -415,6 +415,6 @@ void vtkKWMessageDialog::PrintSelf(ostream& os, vtkIndent indent)
                                        this->CancelButtonText:"none") << endl;
   os << indent << "DialogName: " << (this->DialogName?this->DialogName:"none")
      << endl;
-  os << indent << "TopFrame: " << (this->TopFrame?this->TopFrame:"none") << endl;
-  os << indent << "BottomFrame: " << (this->BottomFrame?this->BottomFrame:"none") << endl;
+  os << indent << "TopFrame: " << this->TopFrame << endl;
+  os << indent << "BottomFrame: " << this->BottomFrame << endl;
 }
