@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-16 17:15:30 $
-  Version:   $Revision: 1.34 $
+  Date:      $Date: 2002-11-18 14:11:42 $
+  Version:   $Revision: 1.35 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -64,7 +64,7 @@ public:
 
   // Description:
   // Create a Tk widget
-  virtual void Create(vtkKWApplication *app,const char *name, const char *args);
+  void Create(vtkKWApplication *app,const char *name, const char *args);
   int IsCreated() { return (this->Application != 0); }
 
   // Description:
