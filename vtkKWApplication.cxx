@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:18 $
-  Version:   $Revision: 1.71 $
+  Date:      $Date: 2002-05-27 19:26:20 $
+  Version:   $Revision: 1.72 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,7 +52,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkOutputWindow.h"
 #include "vtkKWWindow.h"
 #include "kwinit.h"
-
+#include "vtkbwidgets.h"
+ 
 #include "vtkArrayMap.txx"
 
 
@@ -402,10 +403,19 @@ Tcl_Interp *vtkKWApplication::InitializeTcl(int argc, char *argv[])
   // initialize VTK
   Vtktcl_Init(interp);
 
+
   // initialize Widgets
   if (vtkKWApplication::WidgetVisibility)
     {
     Vtkkwwidgetstcl_Init(interp);
+
+    char* script = new char[strlen(bwidgets)+1];
+    strcpy(script, bwidgets);
+    if (Tcl_GlobalEval(interp, script) != TCL_OK)
+      {
+      vtkGenericWarningMacro(<< "BWidgets failed to initialize. Error:" << interp->result);
+      }
+    delete[] script;
     }
 
   return interp;

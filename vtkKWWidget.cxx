@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.29 $
+  Date:      $Date: 2002-05-27 19:26:20 $
+  Version:   $Revision: 1.30 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -272,11 +272,11 @@ char* vtkKWWidget::CreateCommand(vtkKWObject* CalledObject, const char * Command
 
 void vtkKWWidget::SetBalloonHelpString(const char *str)
 {
-  if (this->Application == NULL)
-    {
-    vtkErrorMacro("Application needs to be set before balloon help.");
-    return;
-    }
+//    if (this->Application == NULL)
+//      {
+//      vtkErrorMacro("Application needs to be set before balloon help.");
+//      return;
+//      }
 
   // A little overkill.
   if (this->BalloonHelpString == NULL && str == NULL)
@@ -296,7 +296,8 @@ void vtkKWWidget::SetBalloonHelpString(const char *str)
     strcpy(this->BalloonHelpString, str);
     }
   
-  if ( !this->BalloonHelpInitialized )
+  if ( this->BalloonHelpString && this->Application && 
+       !this->BalloonHelpInitialized )
     {
     this->SetUpBalloonHelpBindings();
     this->BalloonHelpInitialized = 1;
@@ -307,7 +308,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.29 $");
+  this->ExtractRevision(os,"$Revision: 1.30 $");
 }
 
 vtkKWWindow* vtkKWWidget::GetWindow()
