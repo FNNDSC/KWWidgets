@@ -22,9 +22,11 @@
 #include "vtkKWWindow.h"
 #include "vtkObjectFactory.h"
 
+#include <vtkstd/string>
+
 //-------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTclInteractor );
-vtkCxxRevisionMacro(vtkKWTclInteractor, "$Revision: 1.22 $");
+vtkCxxRevisionMacro(vtkKWTclInteractor, "$Revision: 1.23 $");
 
 int vtkKWTclInteractorCommand(ClientData cd, Tcl_Interp *interp,
                            int argc, char *argv[]);
