@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-31 13:56:48 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2001-08-22 21:35:58 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -120,11 +120,11 @@ const char *vtkKWWidget::GetWidgetName()
   if (this->Parent)
     {
     const char *tmp = this->Parent->GetWidgetName();
-    sprintf(local,"%s.%i",tmp,count);
+    sprintf(local,"%s.%u",tmp,count);
     }
   else
     {
-    sprintf(local,".%i",count);
+    sprintf(local,".%u",count);
     }
   count++;
   this->WidgetName = new char [strlen(local)+1];
@@ -167,7 +167,7 @@ int  vtkKWWidget::GetNetReferenceCount()
   vtkKWWidget *child;
   
   for (this->Children->InitTraversal(); 
-       child = this->Children->GetNextKWWidget();)
+       (child = this->Children->GetNextKWWidget());)
     {
     childCounts += child->GetNetReferenceCount();
     }
@@ -186,7 +186,7 @@ void vtkKWWidget::UnRegister(vtkObject *o)
   
       this->DeletingChildren = 1;
       this->Children->InitTraversal();
-      while(child = this->Children->GetNextKWWidget())
+      while ((child = this->Children->GetNextKWWidget()))
           {
           child->SetParent(NULL);
           }
@@ -252,7 +252,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.13 $");
+  this->ExtractRevision(os,"$Revision: 1.14 $");
 }
 
 vtkKWWindow* vtkKWWidget::GetWindow()
