@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-01-03 17:19:30 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-13 22:56:28 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -134,19 +134,7 @@ void vtkKWDialog::Create(vtkKWApplication *app, char *args)
   this->Script("wm withdraw %s",wname);
 }
 
-void vtkKWDialog::SetCommand(char *format, ...)
+void vtkKWDialog::SetCommand(vtkKWObject* CalledObject, const char *CommandString)
 {
-  static char event[16000];
-
-  va_list var_args;
-  va_start(var_args, format);
-  vsprintf(event, format, var_args);
-  va_end(var_args);
-
-  if (this->Command)
-    {
-    delete [] this->Command;
-    }
-  this->Command = new char [strlen(event)+1];
-  strcpy(this->Command,event);
+  this->Command = this->CreateCommand(CalledObject, CommandString);
 }

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-01-03 17:19:30 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-13 22:56:28 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -34,7 +34,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "vtkTclUtil.h"
 #include "vtkKWMessageDialog.h"
 #include "vtkObjectFactory.h"
-
+#include "vtkOutputWindow.h"
 
 
 //------------------------------------------------------------------------------
@@ -109,6 +109,11 @@ void vtkKWApplication::Script(char *format, ...)
 }
 void vtkKWApplication::SimpleScript(char *event)
 {
+#ifdef VTK_DEBUG_SCRIPT
+    vtkOutputWindow::GetInstance()->DisplayText(event);
+    vtkOutputWindow::GetInstance()->DisplayText("\n");
+#endif
+  
   if (Tcl_GlobalEval(this->MainInterp, event) != TCL_OK)
     {
     vtkGenericWarningMacro("Error returned from tcl script.\n" <<

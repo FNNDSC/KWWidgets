@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-01-03 17:19:30 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-13 22:56:28 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -173,20 +173,19 @@ void vtkKWWidget::UnRegister(vtkObject *o)
   this->vtkObject::UnRegister(o);
 }
 
-void vtkKWWidget::SetCommand(char *format, ...)
-{
-  static char event[16000];
 
-  sprintf(event,"%s configure -command ",this->GetWidgetName());
-  
-  va_list var_args;
-  va_start(var_args, format);
-  vsprintf(event+strlen(event), format, var_args);
-  va_end(var_args);
-  
-  if (Tcl_GlobalEval(this->Application->GetMainInterp(), event) != TCL_OK)
-    {
-    vtkGenericWarningMacro("Error returned from tcl script.\n" <<
-			   this->Application->GetMainInterp()->result << endl);
-    }
+void vtkKWWidget::SetCommand(vtkKWObject* CalledObject, const char * CommandString)
+{
+  char* command = this->CreateCommand(CalledObject, CommandString);
+  this->Application->SimpleScript(command);
+  delete [] command;
+}
+
+char* vtkKWWidget::CreateCommand(vtkKWObject* CalledObject, const char * CommandString)
+{
+  ostrstream event;
+  event << this->GetWidgetName() << " configure -command {" 
+	<< CalledObject->GetTclName() 
+	<< " " << CommandString << "} " << ends;
+  return event.str();
 }

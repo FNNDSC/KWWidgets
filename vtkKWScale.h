@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.h,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-13 22:56:28 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -69,15 +69,14 @@ public:
   virtual void InvokeStartCommand();
   virtual void InvokeEndCommand();
   
-//BTX
   // Description:
-  // A convienience method to invoke some tcl script code and
-  // perform arguement substitution.
-  virtual void SetCommand(char *EventString, ...);
-  virtual void SetStartCommand(char *EventString, ...);
-  virtual void SetEndCommand(char *EventString, ...);
-//ETX
-
+  // A method to set callback functions on objects.  The first argument is
+  // the KWObject that will have the method called on it.  The second is the
+  // name of the method to be called and any arguments in string form.
+  // The calling is done via TCL wrappers for the KWObject.
+  virtual void SetCommand(vtkKWObject* Object, const char *MethodAndArgString);
+  virtual void SetStartCommand(vtkKWObject* Object, const char *MethodAndArgString);
+  virtual void SetEndCommand(vtkKWObject* Object, const char *MethodAndArgString);
 protected:
   char        *Command;
   char        *StartCommand;

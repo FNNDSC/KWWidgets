@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-03 17:19:30 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-13 22:56:28 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -35,20 +35,27 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #ifndef __vtkKWApplication_h
 #define __vtkKWApplication_h
 
-#include "vtkObject.h"
+#include "vtkKWObject.h"
 #include "tcl.h"
 #include "tk.h"
 class vtkKWWindowCollection;
 class vtkKWWindow;
 class vtkKWWidget;
 
-class VTK_EXPORT vtkKWApplication : public vtkObject
+class VTK_EXPORT vtkKWApplication : public vtkKWObject
 {
 public:
   vtkKWApplication();
   ~vtkKWApplication();
   static vtkKWApplication* New();
   const char *GetClassName() {return "vtkKWApplication";};
+  
+  virtual vtkKWApplication *GetApplication()  { return this;  }
+  virtual void SetApplication (vtkKWApplication* arg) 
+    { 
+      vtkErrorMacro( << "Do not set the Application on an Application" << endl ); 
+    }
+  
   
   // Description:
   // Start running the main application.

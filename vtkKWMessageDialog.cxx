@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-01-03 17:19:30 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-13 22:56:28 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -77,7 +77,7 @@ void vtkKWMessageDialog::Create(vtkKWApplication *app, char *args)
   this->Message->Create(app,"label","");
   this->ButtonFrame->Create(app,"frame","");
   this->OKButton->Create(app,"button","-text OK -width 16");
-  this->OKButton->SetCommand("{%s OK}",this->GetTclName());
+  this->OKButton->SetCommand(this, "OK");
   this->Script("pack %s -side left -padx 4 -expand yes",
                this->OKButton->GetWidgetName());
   this->Script("pack %s -side bottom -fill x -pady 4",

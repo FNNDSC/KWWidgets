@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-03 17:19:30 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-13 22:56:28 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,7 +39,8 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #ifndef __vtkKWObject_h
 #define __vtkKWObject_h
 
-#include "vtkKWApplication.h"
+class vtkKWApplication;
+#include "vtkObject.h"
 #include "vtkKWSerializer.h"
 
 // var args
@@ -50,6 +51,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <stdlib.h>
 #include <string.h>
 #include "tcl.h"
+
 
 class VTK_EXPORT vtkKWObject : public vtkObject
 {
@@ -66,7 +68,7 @@ public:
   // Description:
   // Get the application instance for this class.
   vtkGetObjectMacro(Application,vtkKWApplication);
-  vtkSetObjectMacro(Application,vtkKWApplication);
+  virtual void SetApplication (vtkKWApplication* arg);
 
   // Description:
   // Convienience methods to get results of Tcl commands.

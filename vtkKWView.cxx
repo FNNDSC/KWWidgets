@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-01-03 17:19:30 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-13 22:56:28 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -268,8 +268,7 @@ void vtkKWView::CreateViewProperties()
   // create the anno widgets
   this->HeaderButton->Create(this->Application,
                              "-text {Display Header Annotation}");
-  this->HeaderButton->SetCommand("{%s OnDisplayHeader}",
-                                 this->GetTclName());
+  this->HeaderButton->SetCommand(this, "OnDisplayHeader");
   this->Script("pack %s -padx 2 -pady 4 -anchor nw",
                this->HeaderButton->GetWidgetName());
   this->HeaderLabel->Create(app,"label","-text Header");
@@ -283,8 +282,7 @@ void vtkKWView::CreateViewProperties()
   
   this->CornerButton->Create(this->Application,
                              "-text {Display Corner Annotation}");
-  this->CornerButton->SetCommand("{%s OnDisplayCorner}",
-                                 this->GetTclName());
+  this->CornerButton->SetCommand(this, "OnDisplayCorner");
   this->Script("pack %s -padx 2 -pady 4 -anchor nw",
                this->CornerButton->GetWidgetName());
   this->CornerLabel->Create(app,"label","-text {Corner Text}");
