@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.h,v $
   Language:  C++
-  Date:      $Date: 2003-04-16 20:45:36 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2003-04-28 18:39:42 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -71,6 +71,7 @@ public:
   void SetValue(const char *);
   void SetValue(int a);
   void SetValue(float f,int size);
+  void SetValue(float f);
   char *GetValue();
   int GetValueAsInt();
   float GetValueAsFloat();

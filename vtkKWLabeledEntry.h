@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledEntry.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 16:05:12 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2003-04-28 18:39:42 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -73,6 +73,7 @@ public:
   // number of decimal places to display.
   void SetValue(const char *);
   void SetValue(int a);
+  void SetValue(float a);
   void SetValue(float f,int size);
   char *GetValue();
   int GetValueAsInt();
