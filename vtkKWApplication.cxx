@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-15 16:34:21 $
-  Version:   $Revision: 1.57 $
+  Date:      $Date: 2002-02-15 21:34:17 $
+  Version:   $Revision: 1.58 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -425,9 +425,9 @@ void vtkKWApplication::DisplayHelp(vtkKWWindow* master)
 #ifdef _WIN32
   char temp[1024];
   char loc[1024];
-  sprintf(temp, "%i", this->GetApplicationKey());
-  vtkKWRegisteryUtilities *reg = this->GetRegistery(temp);
-  if ( reg )
+  vtkKWRegisteryUtilities *reg = this->GetRegistery();
+  sprintf(temp, "%s\\Setup", this->GetApplicationVersionName());
+  if ( !reg )
     {
     vtkKWMessageDialog *dlg = vtkKWMessageDialog::New();
     dlg->SetMasterWindow(master);
@@ -437,7 +437,7 @@ void vtkKWApplication::DisplayHelp(vtkKWWindow* master)
     dlg->Invoke();  
     dlg->Delete();
     }
-  if ( reg->ReadValue( "Inst", "Loc", loc ) )
+  if ( reg->ReadValue( temp, "InstalledPath", loc ) )
     {
     sprintf(temp,"%s/%s.chm::/Introduction/Introduction.htm",
             loc,this->ApplicationName);
@@ -448,7 +448,15 @@ void vtkKWApplication::DisplayHelp(vtkKWWindow* master)
 	    this->ApplicationName);
     }
   
-  HtmlHelp(NULL, temp, HH_DISPLAY_TOPIC, 0);
+  if ( !HtmlHelp(NULL, temp, HH_DISPLAY_TOPIC, 0) )
+    {
+    vtkKWMessageDialog::PopupMessage(
+      this, master, vtkKWMessageDialog::Error,
+      "Loading Help Error",
+      "Help file cannot be displayed. This can be a result of "
+      "the program being wrongly installed or help file being "
+      "corrupted. Please reinstall this program.");
+    }
 #else
   vtkKWMessageDialog *dlg = vtkKWMessageDialog::New();
   dlg->SetMasterWindow(master);
