@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkXMLKWRenderWidgetReader.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-03-28 22:48:22 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2003-04-16 18:28:22 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkXMLKWRenderWidgetWriter.h"
 
 vtkStandardNewMacro(vtkXMLKWRenderWidgetReader);
-vtkCxxRevisionMacro(vtkXMLKWRenderWidgetReader, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkXMLKWRenderWidgetReader, "$Revision: 1.2 $");
 
 //----------------------------------------------------------------------------
 char* vtkXMLKWRenderWidgetReader::GetRootElementName()
@@ -103,20 +103,15 @@ int vtkXMLKWRenderWidgetReader::Parse(vtkXMLDataElement *elem)
 
   // Get nested elements
 
-  vtkXMLDataElement *nested_elem;
-
   // Camera
 
   vtkCamera *cam = obj->GetCurrentCamera();
   if (cam)
     {
     vtkXMLCameraReader *xmlr = vtkXMLCameraReader::New();
-    nested_elem = elem->FindNestedElementWithName(xmlr->GetRootElementName());
-    if (nested_elem)
-      {
-      xmlr->SetObject(cam);
-      xmlr->Parse(nested_elem);
-      }
+    xmlr->SetObject(cam);
+    xmlr->ParseInNestedElement(
+      elem, vtkXMLKWRenderWidgetWriter::GetCurrentCameraElementName());
     xmlr->Delete();
     }
 
@@ -126,24 +121,19 @@ int vtkXMLKWRenderWidgetReader::Parse(vtkXMLDataElement *elem)
   if (canno)
     {
     vtkXMLCornerAnnotationReader *xmlr = vtkXMLCornerAnnotationReader::New();
-    nested_elem = elem->FindNestedElementWithName(xmlr->GetRootElementName());
-    if (nested_elem)
+    xmlr->SetObject(canno);
+    if (xmlr->ParseInNestedElement(
+          elem, vtkXMLKWRenderWidgetWriter::GetCornerAnnotationElementName()))
       {
-      xmlr->SetObject(canno);
-      xmlr->Parse(nested_elem);
-      if (nested_elem->GetScalarAttribute("Visibility", ival))
-        {
-        obj->SetCornerAnnotationVisibility(ival);
-        }
+      obj->SetCornerAnnotationVisibility(canno->GetVisibility()); // add prop
       }
     xmlr->Delete();
     }
 
   // Header Annotation
 
-  vtkXMLDataElement *ha_elem = 
-    elem->FindNestedElementWithName(
-      vtkXMLKWRenderWidgetWriter::GetHeaderAnnotationElementName());
+  vtkXMLDataElement *ha_elem = elem->FindNestedElementWithName(
+    vtkXMLKWRenderWidgetWriter::GetHeaderAnnotationElementName());
   if (ha_elem)
     {
     if (ha_elem->GetScalarAttribute("Visibility", ival))

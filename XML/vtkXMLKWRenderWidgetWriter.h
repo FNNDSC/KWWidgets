@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkXMLKWRenderWidgetWriter.h,v $
   Language:  C++
-  Date:      $Date: 2003-03-28 22:48:22 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2003-04-16 18:28:22 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -61,6 +61,16 @@ public:
   // Return the name of the root element of the XML tree this writer
   // is supposed to write.
   virtual char* GetRootElementName();
+
+  // Description:
+  // Return the name of the camera element used inside that tree to
+  // store the current camera parameters.
+  static char* GetCurrentCameraElementName();
+
+  // Description:
+  // Return the name of the element used inside that tree to
+  // store the corner annotation parameters.
+  static char* GetCornerAnnotationElementName();
 
   // Description:
   // Return the name of the header annotation element used inside that tree to
