@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.h,v $
   Language:  C++
-  Date:      $Date: 2001-12-12 16:34:39 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-01-02 21:28:55 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -90,6 +90,15 @@ public:
   virtual void SetCommand(vtkKWObject* CalledObject, const char *CommandString);
 
   // Description:
+  // Play beep when the dialog is displayed
+  vtkSetClampMacro( Beep, int, 0, 1 );
+  vtkBooleanMacro( Beep, int );
+
+  // Description:
+  // Sets the beep type
+  vtkSetMacro( BeepType, int );
+
+  // Description:
   // Set the title of the dialog. Default is "Kitware Dialog".
   void SetTitle(const char *);
 
@@ -107,6 +116,8 @@ protected:
   char *Command;
   char *TitleString;
   int Done;
+  int Beep;
+  int BeepType;
 };
 
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-12-28 23:41:09 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-01-02 21:28:55 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -68,6 +68,7 @@ vtkKWDialog::vtkKWDialog()
   this->Done = 1;
   this->TitleString = 0;
   this->SetTitleString("Kitware Dialog");
+  this->Beep = 0;
 }
 
 vtkKWDialog::~vtkKWDialog()
@@ -87,6 +88,11 @@ int vtkKWDialog::Invoke()
   this->Script("wm deiconify %s",this->GetWidgetName());
   this->Script("focus %s",this->GetWidgetName());
   this->Script("grab %s",this->GetWidgetName());
+  if ( this->Beep )
+    {
+    this->Script("bell");
+    }
+
 
   // do a grab
   // wait for the end
