@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-10-12 18:28:48 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2001-12-12 18:32:02 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -367,9 +367,19 @@ void vtkKWMenu::AddSeparator()
 {
   this->Script( "%s add separator", this->GetWidgetName());
 }
+
 void vtkKWMenu::InsertSeparator(int position)
 {
   this->Script( "%s insert %d separator", this->GetWidgetName(), position);
 }
 
-
+void vtkKWMenu::SetState(int index, int state)
+{
+  char stateStr[][9] = { "normal", "active", "disabled" };
+  if ( state <= vtkKWMenu::Normal || state > vtkKWMenu::Disabled )
+    {
+    state = 0;
+    }
+  this->Script("%s entryconfigure %d -state %s", 
+	       this->GetWidgetName(), index, stateStr[state] );
+}

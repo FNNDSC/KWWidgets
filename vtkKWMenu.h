@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2001-10-11 20:12:56 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2001-12-12 18:32:02 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -137,6 +137,13 @@ public:
   vtkGetMacro(TearOff, int);
   vtkBooleanMacro(TearOff, int);
 
+  // Description:
+  // Set state of the menu entry with a given index.
+  void SetState(int index, int state);
+
+//BTX
+  enum { Normal = 0, Active, Disabled };
+//ETX
 protected:
   
   vtkKWMenu();
