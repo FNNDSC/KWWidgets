@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledOptionMenu.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 16:57:22 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2003-01-15 19:40:45 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -69,6 +69,12 @@ public:
   vtkGetObjectMacro(OptionMenu, vtkKWOptionMenu);
 
   // Description:
+  // Set the widget packing order to be horizontal (default).
+  virtual void SetPackHorizontally(int);
+  vtkBooleanMacro(PackHorizontally, int);
+  vtkGetMacro(PackHorizontally, int);
+
+  // Description:
   // Set the string that enables balloon help for this widget.
   // Override to pass down to children.
   virtual void SetBalloonHelpString(const char *str);
@@ -79,6 +85,8 @@ protected:
   ~vtkKWLabeledOptionMenu();
 
   vtkKWOptionMenu *OptionMenu;
+
+  int PackHorizontally;
 
   // Pack or repack the widget
 
