@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-03-14 18:08:49 $
-  Version:   $Revision: 1.23 $
+  Date:      $Date: 2003-03-14 21:39:56 $
+  Version:   $Revision: 1.24 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLoadSaveDialog );
-vtkCxxRevisionMacro(vtkKWLoadSaveDialog, "$Revision: 1.23 $");
+vtkCxxRevisionMacro(vtkKWLoadSaveDialog, "$Revision: 1.24 $");
 
 vtkKWLoadSaveDialog::vtkKWLoadSaveDialog()
 {
@@ -120,6 +120,8 @@ int vtkKWLoadSaveDialog::Invoke()
   // Example: the file Baumann_Gü_0002 becomes Baumann_GÃ¼_0002
   // convertfrom identity seems to do the trick to convert back to
   // an ASCII-8 string that can be understood by the system.
+
+  path = this->Application->GetMainInterp()->result;
 
   if (path && strlen(path))
     {
