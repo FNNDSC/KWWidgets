@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-14 22:59:21 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2002-02-15 13:40:42 $
+  Version:   $Revision: 1.19 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -479,7 +479,7 @@ void vtkKWMenu::SetState(const char* item, int state)
   this->SetState(index, state);
 }
 
-void vtkKWMenu::SetCommand(int index, vtkKWObject* object, 
+void vtkKWMenu::SetEntryCommand(int index, vtkKWObject* object, 
 			   const char* MethodAndArgString)
 {
   ostrstream str;
@@ -490,7 +490,7 @@ void vtkKWMenu::SetCommand(int index, vtkKWObject* object,
   str.rdbuf()->freeze(0);
 }
 
-void vtkKWMenu::SetCommand(const char* item, vtkKWObject* object, 
+void vtkKWMenu::SetEntryCommand(const char* item, vtkKWObject* object, 
 			   const char* MethodAndArgString)
 {
   if ( !this->IsItemPresent(item) )
@@ -498,6 +498,6 @@ void vtkKWMenu::SetCommand(const char* item, vtkKWObject* object,
     return;
     }
   int index = this->GetIndex(item);
-  this->SetCommand(index, object, MethodAndArgString);
+  this->SetEntryCommand(index, object, MethodAndArgString);
 }
 
