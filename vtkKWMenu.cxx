@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-09 19:33:09 $
-  Version:   $Revision: 1.30 $
+  Date:      $Date: 2002-10-16 14:32:42 $
+  Version:   $Revision: 1.31 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.30 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.31 $");
 
 
 
@@ -820,8 +820,8 @@ void vtkKWMenu::RestoreMenuState(vtkArrayMap<const char*, int>* state)
   // Mark all sources as not visited.
   while( !it->IsDoneWithTraversal() )
     {    
-    int state;
-    const char* item;
+    int state = 0;
+    const char* item = 0;
     if (it->GetKey(item) == VTK_OK && item && it->GetData(state) == VTK_OK)
       {
       if ( state == vtkKWMenu::Active )
