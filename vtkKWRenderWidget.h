@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-10 04:45:03 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2003-01-14 18:04:26 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -206,6 +206,7 @@ public:
   virtual void* GetMemoryDC();
   
   virtual void ExecuteEvent(vtkObject *wdg, unsigned long event, void *calldata);
+
   // Update the enable state. This should propagate similar calls to the
   // internal widgets.
   virtual void UpdateEnableState();

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-10 04:45:03 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2003-01-14 18:04:26 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,7 +58,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.22 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.23 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetObserver : public vtkCommand
@@ -192,6 +192,10 @@ void vtkKWRenderWidget::Create(vtkKWApplication *app, const char *args)
 //----------------------------------------------------------------------------
 void vtkKWRenderWidget::SetupBindings()
 {
+  // First remove the old one so that bindings don't get duplicated
+
+  this->RemoveBindings();
+
   const char *wname = this->VTKWidget->GetWidgetName();
   const char *tname = this->GetTclName();
 
@@ -224,6 +228,17 @@ void vtkKWRenderWidget::RemoveBindings()
 //----------------------------------------------------------------------------
 void vtkKWRenderWidget::SetupInteractionBindings()
 {
+  // First remove the old one so that bindings don't get duplicated
+
+  this->RemoveInteractionBindings();
+
+  // If we are disabled, don't do anything
+
+  if (!this->Enabled)
+    {
+    return;
+    }
+
   const char *wname = this->VTKWidget->GetWidgetName();
   const char *tname = this->GetTclName();
 
