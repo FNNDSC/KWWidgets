@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-12 21:48:18 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2003-01-02 04:11:00 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -85,8 +85,12 @@ public:
 
   // Description:
   // Remove entry from an option menu.
-  void DeleteEntry(const char*name);
+  void DeleteEntry(const char *name);
   void DeleteEntry(int index);
+  
+  // Description:
+  // Has entry ?
+  int HasEntry(const char *name);
   
   // Description:
   // Remove all entries from the option menu.
