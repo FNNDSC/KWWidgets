@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-31 13:56:48 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2000-09-06 21:49:17 $
+  Version:   $Revision: 1.19 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -286,6 +286,15 @@ public:
   vtkGetMacro( SupportPrint, int );
   vtkBooleanMacro( SupportPrint, int );
 
+  vtkSetMacro( SupportControlFrame, int );
+  vtkGetMacro( SupportControlFrame, int );
+  vtkBooleanMacro( SupportControlFrame, int );
+
+  // Description::
+  // Get the control frame to put custom controls within
+  vtkGetObjectMacro( ControlFrame, vtkKWWidget );
+  
+  
 protected:
   vtkKWView();
   ~vtkKWView();
@@ -306,6 +315,7 @@ protected:
   vtkKWWidget *Label;
   vtkKWWidget *Frame;
   vtkKWWidget *Frame2;
+  vtkKWWidget *ControlFrame;
   vtkKWComposite *SelectedComposite;
 
   vtkKWWidget            *AnnotationProperties;
@@ -339,6 +349,7 @@ protected:
   
   int              SupportSaveAsImage;
   int              SupportPrint;
+  int              SupportControlFrame;
   
 };
 
