@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledLabel.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-02 05:57:43 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2003-01-14 00:48:27 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -70,6 +70,12 @@ public:
   void SetLabel2(const char *);
   
   // Description:
+  // Set the widget packing order to be horizontal (default).
+  virtual void SetPackHorizontally(int);
+  vtkBooleanMacro(PackHorizontally, int);
+  vtkGetMacro(PackHorizontally, int);
+
+  // Description:
   // Set the string that enables balloon help for this widget.
   // Override to pass down to children.
   virtual void SetBalloonHelpString(const char *str);
@@ -78,6 +84,8 @@ public:
 protected:
   vtkKWLabeledLabel();
   ~vtkKWLabeledLabel();
+
+  int PackHorizontally;
 
   vtkKWLabel *Label2;
 
