@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-30 22:29:40 $
-  Version:   $Revision: 1.55 $
+  Date:      $Date: 2002-02-06 22:00:49 $
+  Version:   $Revision: 1.56 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -87,7 +87,7 @@ vtkKWApplication::vtkKWApplication()
   this->Windows = vtkKWWindowCollection::New();  
   
   // add the application as $app
-	
+
   //vtkTclGetObjectFromPointer(this->MainInterp, (void *)this, 
   //                           vtkKWApplicationCommand);
 
@@ -104,10 +104,13 @@ vtkKWApplication::vtkKWApplication()
   if (vtkKWApplication::WidgetVisibility)
     {
     //this->BalloonHelpWindow->SetParent(this->GetParentWindow());
-    this->BalloonHelpWindow->Create(this, "toplevel", "-background black -borderwidth 1 -relief flat");
-    this->BalloonHelpLabel->Create(this, "label", "-background LightYellow -justify left -wraplength 2i");
+    this->BalloonHelpWindow->Create(
+      this, "toplevel", "-background black -borderwidth 1 -relief flat");
+    this->BalloonHelpLabel->Create(
+      this, "label", "-background LightYellow -justify left -wraplength 2i");
     this->Script("pack %s", this->BalloonHelpLabel->GetWidgetName());
-    this->Script("wm overrideredirect %s 1", this->BalloonHelpWindow->GetWidgetName());
+    this->Script("wm overrideredirect %s 1", 
+		 this->BalloonHelpWindow->GetWidgetName());
     this->Script("wm withdraw %s", this->BalloonHelpWindow->GetWidgetName());
     }
   
