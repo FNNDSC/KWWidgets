@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-03 17:19:30 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -77,8 +77,8 @@ vtkKWLabeledFrame::~vtkKWLabeledFrame()
 
 void vtkKWLabeledFrame::SetLabel(const char *text)
 {
-  vtkKWObject::Script(this->Application,"%s configure -text {%s}",
-                      this->Label->GetWidgetName(),text);  
+  this->Script("%s configure -text {%s}",
+               this->Label->GetWidgetName(),text);  
 }
 
 void vtkKWLabeledFrame::Create(vtkKWApplication *app)
@@ -96,7 +96,7 @@ void vtkKWLabeledFrame::Create(vtkKWApplication *app)
 
   // create the top level
   wname = this->GetWidgetName();
-  vtkKWObject::Script(app,"frame %s -borderwidth 0 -relief flat",wname);
+  this->Script("frame %s -borderwidth 0 -relief flat",wname);
 
   this->Border->Create(app,"frame","-height 10 -borderwidth 0 -relief flat");
   this->Label->Create(app,"label","");
@@ -104,17 +104,13 @@ void vtkKWLabeledFrame::Create(vtkKWApplication *app)
   this->Border2->Create(app,"frame","-height 10 -borderwidth 0 -relief flat");
   this->Frame->Create(app,"frame","-borderwidth 0 -relief flat");
   
-  vtkKWObject::Script(app,"pack %s -fill x -side top",
-                      this->Border->GetWidgetName());
-  vtkKWObject::Script(app,"pack %s -fill x -side top",
-                      this->Groove->GetWidgetName());
-  vtkKWObject::Script(app,"pack %s -fill x -side top",
-                      this->Border2->GetWidgetName());
-  vtkKWObject::Script(app,"pack %s -fill both -expand yes",
-                      this->Frame->GetWidgetName());
-  vtkKWObject::Script(app,"place %s -relx 0 -x 5 -y 0 -anchor nw",
-                      this->Label->GetWidgetName());
-  vtkKWObject::Script(app,"raise %s", this->Label->GetWidgetName());
+  this->Script("pack %s -fill x -side top", this->Border->GetWidgetName());
+  this->Script("pack %s -fill x -side top", this->Groove->GetWidgetName());
+  this->Script("pack %s -fill x -side top", this->Border2->GetWidgetName());
+  this->Script("pack %s -fill both -expand yes",this->Frame->GetWidgetName());
+  this->Script("place %s -relx 0 -x 5 -y 0 -anchor nw",
+               this->Label->GetWidgetName());
+  this->Script("raise %s", this->Label->GetWidgetName());
 }
 
 

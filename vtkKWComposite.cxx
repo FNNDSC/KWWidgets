@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-03 17:19:30 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -122,18 +122,18 @@ void vtkKWComposite::CreateProperties()
     // create and use a toplevel shell
     this->TopLevel = vtkKWWidget::New();
     this->TopLevel->Create(app,"toplevel","");
-    vtkKWObject::Script(app,"wm title %s \"Properties\"",
-			this->TopLevel->GetWidgetName());
-    vtkKWObject::Script(app,"wm iconname %s \"Properties\"",
-			this->TopLevel->GetWidgetName());
+    this->Script("wm title %s \"Properties\"",
+                 this->TopLevel->GetWidgetName());
+    this->Script("wm iconname %s \"Properties\"",
+                 this->TopLevel->GetWidgetName());
     this->Notebook->SetParent(this->TopLevel);
     this->Notebook2->SetParent(this->TopLevel);
     }
   this->Notebook->Create(this->Application,"");
   this->Notebook2->Create(this->Application,"");
 
-  vtkKWObject::Script(this->Application,"pack %s -pady 2 -padx 2 -fill both -expand yes -anchor n",
-    this->Notebook->GetWidgetName());
+  this->Script("pack %s -pady 2 -padx 2 -fill both -expand yes -anchor n",
+               this->Notebook->GetWidgetName());
 }
 
 void vtkKWComposite::Select(vtkKWView *v)

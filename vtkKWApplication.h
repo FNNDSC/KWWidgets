@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-03 17:19:30 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -82,6 +82,14 @@ public:
   // Set/Get the ApplicationName
   void SetApplicationName(const char *);
   vtkGetStringMacro(ApplicationName);
+  
+//BTX
+  // Description:
+  // A convienience method to invoke some tcl script code and
+  // perform arguement substitution.
+  void Script(char *EventString, ...);
+  void SimpleScript(char *EventString);
+//ETX
   
 protected:
   Tk_Window MainWindow;

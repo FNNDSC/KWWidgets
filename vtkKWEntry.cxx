@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.cxx,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-03 17:19:30 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,8 +49,7 @@ vtkKWEntry* vtkKWEntry::New()
 
 char *vtkKWEntry::GetValue()
 {
-  vtkKWObject::Script(this->Application,
-		      "%s get", this->GetWidgetName());
+  this->Script("%s get", this->GetWidgetName());
   return this->Application->GetMainInterp()->result;
 }
 
@@ -66,31 +65,26 @@ float vtkKWEntry::GetValueAsFloat()
 
 void vtkKWEntry::SetValue(char *s)
 {
-  vtkKWObject::Script(this->Application,"%s delete 0 end", 
-		      this->GetWidgetName());
+  this->Script("%s delete 0 end", this->GetWidgetName());
   if (s)
     {
-    vtkKWObject::Script(this->Application,"%s insert 0 {%s}", 
-			this->GetWidgetName(),s);
+    this->Script("%s insert 0 {%s}", this->GetWidgetName(),s);
     }
 }
 
 void vtkKWEntry::SetValue(int i)
 {
-  vtkKWObject::Script(this->Application,"%s delete 0 end", 
-		      this->GetWidgetName());
-  vtkKWObject::Script(this->Application,"%s insert 0 %d", 
-			this->GetWidgetName(),i);
+  this->Script("%s delete 0 end", this->GetWidgetName());
+  this->Script("%s insert 0 %d", this->GetWidgetName(),i);
 }
 
 void vtkKWEntry::SetValue(float f, int size)
 {
   char tmp[1024];
   
-  vtkKWObject::Script(this->Application,"%s delete 0 end", 
-		      this->GetWidgetName());
+  this->Script("%s delete 0 end",this->GetWidgetName());
   sprintf(tmp,"%%s insert 0 %%.%df",size);
-  vtkKWObject::Script(this->Application,tmp,this->GetWidgetName(),f);
+  this->Script(tmp,this->GetWidgetName(),f);
 }
 
 void vtkKWEntry::Create(vtkKWApplication *app, char *args)
@@ -108,7 +102,6 @@ void vtkKWEntry::Create(vtkKWApplication *app, char *args)
 
   // create the top level
   wname = this->GetWidgetName();
-  vtkKWObject::Script(app,"entry %s -textvariable %sValue %s",
-		      wname,wname,args);
+  this->Script("entry %s -textvariable %sValue %s",wname,wname,args);
 }
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.cxx,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-03 17:19:30 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -125,7 +125,7 @@ const char *vtkKWObject::GetTclName()
   return this->TclName;
 }
 
-void vtkKWObject::Script(vtkKWApplication *app, char *format, ...)
+void vtkKWObject::Script(char *format, ...)
 {
   static char event[16000];
 
@@ -134,10 +134,13 @@ void vtkKWObject::Script(vtkKWApplication *app, char *format, ...)
   vsprintf(event, format, var_args);
   va_end(var_args);
 
-  if (Tcl_GlobalEval(app->GetMainInterp(), event) != TCL_OK)
+  if (this->Application)
     {
-    vtkGenericWarningMacro("Error returned from tcl script.\n" <<
-			   app->GetMainInterp()->result << endl);
+    this->Application->SimpleScript(event);
+    }
+  else
+    {
+    vtkWarningMacro("Attempt to script a command without a KWApplication");
     }
 }
 

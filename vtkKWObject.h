@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-03 17:19:30 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -81,22 +81,20 @@ public:
   virtual void SerializeSelf(ostream& os, vtkIndent indent) {};
   virtual void SerializeToken(istream& is, const char token[1024]) {};
 
-
 //BTX
   // Description:
   // A convienience method to invoke some tcl script code and
   // perform arguement substitution.
-  static void Script(vtkKWApplication* ,char *EventString, ...);
-
+  void Script(char *EventString, ...);
 
 private:
   char *TclName;
 
 protected:
   vtkKWApplication *Application;
+
   // this instance variable holds the command functions for this class.
-  int (*CommandFunction)(ClientData, Tcl_Interp *,
-                         int, char *[]);
+  int (*CommandFunction)(ClientData, Tcl_Interp *, int, char *[]);
 //ETX
 };
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWText.cxx,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-03 17:19:30 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,19 +49,16 @@ vtkKWText* vtkKWText::New()
 
 char *vtkKWText::GetValue()
 {
-  vtkKWObject::Script(this->Application,
-		      "%s get 1.0 {end -1 chars}", this->GetWidgetName());
+  this->Script("%s get 1.0 {end -1 chars}", this->GetWidgetName());
   return this->Application->GetMainInterp()->result;
 }
 
 void vtkKWText::SetValue(char *s)
 {
-  vtkKWObject::Script(this->Application,"%s delete 1.0 end", 
-		      this->GetWidgetName());
+  this->Script("%s delete 1.0 end", this->GetWidgetName());
   if (s)
     {
-    vtkKWObject::Script(this->Application,"%s insert 1.0 {%s}", 
-			this->GetWidgetName(),s);
+    this->Script("%s insert 1.0 {%s}",this->GetWidgetName(),s);
     }
 }
 
@@ -80,7 +77,7 @@ void vtkKWText::Create(vtkKWApplication *app, char *args)
 
   // create the top level
   wname = this->GetWidgetName();
-  vtkKWObject::Script(app,"text %s %s",wname,args);
+  this->Script("text %s %s",wname,args);
 }
 
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-03 17:19:30 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -31,7 +31,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
 
-//------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 vtkKWMessageDialog* vtkKWMessageDialog::New()
 {
   // First try to create the object from the vtkObjectFactory
@@ -78,16 +78,16 @@ void vtkKWMessageDialog::Create(vtkKWApplication *app, char *args)
   this->ButtonFrame->Create(app,"frame","");
   this->OKButton->Create(app,"button","-text OK -width 16");
   this->OKButton->SetCommand("{%s OK}",this->GetTclName());
-  vtkKWObject::Script(app,"pack %s -side left -padx 4 -expand yes",
-		      this->OKButton->GetWidgetName());
-  vtkKWObject::Script(app,"pack %s -side bottom -fill x -pady 4",
-		      this->ButtonFrame->GetWidgetName());
-  vtkKWObject::Script(app,"pack %s -side bottom -fill x -pady 4",
-		      this->Message->GetWidgetName());
+  this->Script("pack %s -side left -padx 4 -expand yes",
+               this->OKButton->GetWidgetName());
+  this->Script("pack %s -side bottom -fill x -pady 4",
+               this->ButtonFrame->GetWidgetName());
+  this->Script("pack %s -side bottom -fill x -pady 4",
+               this->Message->GetWidgetName());
 }
 
 void vtkKWMessageDialog::SetText(const char *txt)
 {
-  vtkKWObject::Script(this->Application,"%s configure -text {%s}",
-		      this->Message->GetWidgetName(),txt);
+  this->Script("%s configure -text {%s}",
+               this->Message->GetWidgetName(),txt);
 }

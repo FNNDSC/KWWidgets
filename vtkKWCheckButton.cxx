@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCheckButton.cxx,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-03 17:19:30 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,8 +49,7 @@ vtkKWCheckButton* vtkKWCheckButton::New()
 
 int vtkKWCheckButton::GetState()
 {
-  vtkKWObject::Script(this->Application,"set %sValue",
-		      this->GetWidgetName());
+  this->Script("set %sValue",this->GetWidgetName());
   
   return vtkKWObject::GetIntegerResult(this->Application);
 }
@@ -59,11 +58,11 @@ void vtkKWCheckButton::SetState(int s)
 {
   if (s)
     {
-    vtkKWObject::Script(this->Application,"%s select",this->GetWidgetName());
+    this->Script("%s select",this->GetWidgetName());
     }
   else
     {
-    vtkKWObject::Script(this->Application,"%s deselect",this->GetWidgetName());
+    this->Script("%s deselect",this->GetWidgetName());
     }
 }
 
@@ -83,7 +82,7 @@ void vtkKWCheckButton::Create(vtkKWApplication *app, char *args)
 
   // create the top level
   wname = this->GetWidgetName();
-  vtkKWObject::Script(app,"checkbutton %s -variable %sValue %s",
-		      wname,wname,args);
+  this->Script("checkbutton %s -variable %sValue %s",
+               wname,wname,args);
 }
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-03 17:19:30 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -65,8 +65,7 @@ vtkKWWidget::~vtkKWWidget()
   
   if (this->Application)
     {
-    vtkKWObject::Script(this->Application, 
-      "destroy %s",this->GetWidgetName());
+    this->Script("destroy %s",this->GetWidgetName());
     }
   if (this->WidgetName)
     {
@@ -135,7 +134,7 @@ void vtkKWWidget::Create(vtkKWApplication *app, char *name, char *args)
     return;
     }
   this->SetApplication(app);
-  vtkKWObject::Script(app,"%s %s %s",name,this->GetWidgetName(),args);
+  this->Script("%s %s %s",name,this->GetWidgetName(),args);
 }
 
 int  vtkKWWidget::GetNetReferenceCount() 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-03 17:19:30 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -67,7 +67,7 @@ vtkKWOptionMenu::~vtkKWOptionMenu()
 
 char *vtkKWOptionMenu::GetValue()
 {
-  vtkKWObject::Script(this->Application,"set %sValue",this->GetWidgetName());
+  this->Script("set %sValue",this->GetWidgetName());
   
   if (this->CurrentValue)
     {
@@ -81,32 +81,29 @@ void vtkKWOptionMenu::SetValue(char *s)
 {
   if (s)
     {
-    vtkKWObject::Script(this->Application,"set %sValue %s", 
-			this->GetWidgetName(),s);
+    this->Script("set %sValue %s", this->GetWidgetName(),s);
     }
 }
 
 void vtkKWOptionMenu::AddEntry(const char *name)
 {
-  vtkKWObject::Script(this->Application,
-		      "%s add radiobutton -label {%s} -variable %sValue",
-		      this->Menu->GetWidgetName(), name, 
-		      this->GetWidgetName());
+  this->Script("%s add radiobutton -label {%s} -variable %sValue",
+               this->Menu->GetWidgetName(), name, 
+               this->GetWidgetName());
 }
 
 void vtkKWOptionMenu::AddEntryWithCommand(const char *name, const char *obj, 
 					  const char *method)
 {
-  vtkKWObject::Script(this->Application,
-		      "%s add radiobutton -label {%s} -variable %sValue -command {%s %s}",
-		      this->Menu->GetWidgetName(), name, 
-		      this->GetWidgetName(), obj, method);
+  this->Script(
+    "%s add radiobutton -label {%s} -variable %sValue -command {%s %s}",
+    this->Menu->GetWidgetName(), name, 
+    this->GetWidgetName(), obj, method);
 }
 
 void vtkKWOptionMenu::SetCurrentEntry(const char *name)
 { 
-  vtkKWObject::Script(this->Application,
-		      "set %sValue {%s}",this->GetWidgetName(), name);
+  this->Script("set %sValue {%s}",this->GetWidgetName(), name);
 }
  
 void vtkKWOptionMenu::Create(vtkKWApplication *app, char *args)
@@ -125,7 +122,8 @@ void vtkKWOptionMenu::Create(vtkKWApplication *app, char *args)
   // create the top level
   wname = this->GetWidgetName();
   
-  vtkKWObject::Script(app,"menubutton %s -textvariable %sValue -indicatoron 1 -menu %s -relief raised -bd 2 -highlightthickness 2 -anchor c -direction flush %s", wname, wname, this->Menu->GetWidgetName(), args);
+  this->Script("menubutton %s -textvariable %sValue -indicatoron 1 -menu %s -relief raised -bd 2 -highlightthickness 2 -anchor c -direction flush %s", wname, wname, this->Menu->GetWidgetName(), args);
   this->Menu->Create(app,"menu","-tearoff 0");
 }
+
 
