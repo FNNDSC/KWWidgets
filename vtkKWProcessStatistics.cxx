@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWProcessStatistics.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-29 23:05:31 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-01-30 15:50:40 $
+  Version:   $Revision: 1.4 $
 
   Copyright (c) 1993-2002 Ken Martin, Will Schroeder, Bill Lorensen 
   All rights reserved.
@@ -17,7 +17,7 @@
 =========================================================================*/
 #include "vtkKWProcessStatistics.h"
 
-vtkCxxRevisionMacro(vtkKWProcessStatistics, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWProcessStatistics, "$Revision: 1.4 $");
 
 #ifdef __linux
 #include <sys/procfs.h>
@@ -210,3 +210,26 @@ int vtkKWProcessStatistics::QueryMemory()
 #endif
 }
 
+long vtkKWProcessStatistics::GetTotalVirtualMemory() 
+{ 
+  this->QueryMemory(); 
+  return this->TotalVirtualMemory; 
+}
+
+long vtkKWProcessStatistics::GetAvailableVirtualMemory() 
+{ 
+  this->QueryMemory(); 
+  return this->AvailableVirtualMemory; 
+}
+
+long vtkKWProcessStatistics::GetTotalPhysicalMemory() 
+{ 
+  this->QueryMemory(); 
+  return this->TotalPhysicalMemory; 
+}
+
+long vtkKWProcessStatistics::GetAvailablePhysicalMemory() 
+{ 
+  this->QueryMemory(); 
+  return this->AvailablePhysicalMemory; 
+}  

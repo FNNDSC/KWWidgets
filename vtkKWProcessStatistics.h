@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWProcessStatistics.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-29 20:56:33 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-01-30 15:50:40 $
+  Version:   $Revision: 1.2 $
 
   Copyright (c) 1993-2002 Ken Martin, Will Schroeder, Bill Lorensen 
   All rights reserved.
@@ -43,11 +43,10 @@ public:
 
   // Description:
   // Retrieve memory information.
-  vtkGetMacro(TotalVirtualMemory, long);
-  vtkGetMacro(AvailableVirtualMemory, long);
-  vtkGetMacro(TotalPhysicalMemory, long);
-  vtkGetMacro(AvailablePhysicalMemory, long);
-  
+  long GetTotalVirtualMemory();
+  long GetAvailableVirtualMemory();
+  long GetTotalPhysicalMemory();
+  long GetAvailablePhysicalMemory();  
 
 protected:
   vtkKWProcessStatistics();
