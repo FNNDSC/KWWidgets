@@ -82,7 +82,7 @@ const char* bwidgets1 =
 "# ----------------------------------------------------------------------------\n"
 "#  widget.tcl\n"
 "#  This file is part of Unifix BWidget Toolkit\n"
-"#  $Id: vtkbwidgets.h,v 1.9 2003-05-08 15:11:56 henderson Exp $\n"
+"#  $Id: vtkbwidgets.h,v 1.10 2003-12-04 15:35:58 andy Exp $\n"
 "# ----------------------------------------------------------------------------\n"
 "namespace eval Widget {\n"
 "    variable _optiontype\n"
@@ -1001,7 +1001,7 @@ const char* bwidgets2 =
 "# ------------------------------------------------------------------------------\n"
 "#  scrollframe.tcl\n"
 "#  This file is part of Unifix BWidget Toolkit\n"
-"#  $Id: vtkbwidgets.h,v 1.9 2003-05-08 15:11:56 henderson Exp $\n"
+"#  $Id: vtkbwidgets.h,v 1.10 2003-12-04 15:35:58 andy Exp $\n"
 "# ------------------------------------------------------------------------------\n"
 "\n"
 "namespace eval ScrollableFrame {\n"
@@ -1146,7 +1146,7 @@ const char* bwidgets3 =
 "# -----------------------------------------------------------------------------\n"
 "#  scrollw.tcl\n"
 "#  This file is part of Unifix BWidget Toolkit\n"
-"#  $Id: vtkbwidgets.h,v 1.9 2003-05-08 15:11:56 henderson Exp $\n"
+"#  $Id: vtkbwidgets.h,v 1.10 2003-12-04 15:35:58 andy Exp $\n"
 "# -----------------------------------------------------------------------------\n"
 "namespace eval ScrolledWindow {\n"
 "    Widget::declare ScrolledWindow {\n"
@@ -2375,7 +2375,9 @@ const char* bwidgets4 =
 "    rename $path {}\n"
 "}\n"
 "\n"
-"\n"
+"\n";
+
+const char* bwidgets5 =
 "# ------------------------------------------------------------------------------\n"
 "#  Command Tree::_see\n"
 "# ------------------------------------------------------------------------------\n"
@@ -3282,7 +3284,9 @@ const char* bwidgets4 =
 "    }\n"
 "    return\n"
 "}\n"
-"\n"
+"\n";
+
+const char* bwidgets6 =
 "# Tree::_get_node_name --\n"
 "#\n"
 "#      Given a canvas item, get the name of the tree node represented by that\n"
