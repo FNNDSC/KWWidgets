@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWProcessStatistics.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 23:42:59 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-02-13 16:23:50 $
+  Version:   $Revision: 1.4 $
 
   Copyright (c) 1993-2002 Ken Martin, Will Schroeder, Bill Lorensen 
   All rights reserved.
@@ -40,7 +40,7 @@ public:
   int QueryMemory();
 
   // Description:
-  // Retrieve memory information.
+  // Retrieve memory information in kilobytes.
   long GetTotalVirtualMemory();
   long GetAvailableVirtualMemory();
   long GetTotalPhysicalMemory();
