@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-17 21:06:19 $
-  Version:   $Revision: 1.49 $
+  Date:      $Date: 2003-01-20 15:53:27 $
+  Version:   $Revision: 1.50 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -94,6 +94,7 @@ class VTK_EXPORT vtkKWEvent
     GradientOpacityFunctionPresetApplyEvent,
     GradientOpacityStateChangedEvent,
     GrayScaleImageEvent,
+    HistogramChangedEvent,
     ImageAngleVisibilityChangedEvent,
     ImageBackgroundColorChangedEvent,
     ImageCameraFocalPointAndPositionChangedEvent,
