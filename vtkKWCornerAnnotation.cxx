@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-08 19:56:38 $
-  Version:   $Revision: 1.52 $
+  Date:      $Date: 2003-01-09 16:23:49 $
+  Version:   $Revision: 1.53 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -66,7 +66,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCornerAnnotation );
-vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.52 $");
+vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.53 $");
 
 int vtkKWCornerAnnotationCommand(ClientData cd, Tcl_Interp *interp,
                                 int argc, char *argv[]);
@@ -718,7 +718,7 @@ void vtkKWCornerAnnotation::SetVisibility(int state)
         }
       if (this->RenderWidget)
         {
-        this->RenderWidget->CornerAnnotationOn();
+        this->RenderWidget->SetCornerAnnotationVisibility(state);
         }
       }
     else
@@ -732,7 +732,7 @@ void vtkKWCornerAnnotation::SetVisibility(int state)
         }
       if (this->RenderWidget)
         {
-        this->RenderWidget->CornerAnnotationOff();
+        this->RenderWidget->SetCornerAnnotationVisibility(state);
         }
       }
     }
@@ -952,7 +952,7 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.52 $");
+  this->ExtractRevision(os,"$Revision: 1.53 $");
 }
 
 //----------------------------------------------------------------------------
