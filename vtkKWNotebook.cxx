@@ -3,8 +3,8 @@
 Program:   Visualization Toolkit
 Module:    $RCSfile: vtkKWNotebook.cxx,v $
 Language:  C++
-Date:      $Date: 2002-12-22 17:00:39 $
-Version:   $Revision: 1.36 $
+Date:      $Date: 2003-01-10 20:37:54 $
+Version:   $Revision: 1.37 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -84,7 +84,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.36 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.37 $");
 
 //------------------------------------------------------------------------------
 int vtkKWNotebookCommand(ClientData cd, Tcl_Interp *interp,
@@ -1436,7 +1436,11 @@ void vtkKWNotebook::ScheduleResize()
     return;
     }
   this->Expanding = 1;
-  this->Script("after idle {%s Resize}", this->GetTclName());
+
+  // We need a "catch" here since in the "idle time" we could have been
+  // destroyed.
+
+  this->Script("after idle {catch {%s Resize}}", this->GetTclName());
 }
 
 //------------------------------------------------------------------------------
