@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-24 13:40:29 $
-  Version:   $Revision: 1.79 $
+  Date:      $Date: 2002-06-28 12:32:43 $
+  Version:   $Revision: 1.80 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -142,6 +142,10 @@ vtkKWApplication::vtkKWApplication()
 
 vtkKWApplication::~vtkKWApplication()
 {
+  if ( this->BalloonHelpWindow )
+    {
+    this->BalloonHelpWindow->Delete();
+    }
   this->SetBalloonHelpWidget(0);
   if (this->Windows)
     {
@@ -259,7 +263,7 @@ void vtkKWApplication::SimpleScript(const char *event)
 void vtkKWApplication::SetApplicationName(const char *_arg)
 {
   vtkDebugMacro(<< this->GetClassName() << " (" << this << "): setting ApplicationName to " << _arg ); 
-  if ( this->ApplicationName && _arg && (!strcmp(this->ApplicationName,_arg)))
+  if ( _arg && vtkString::Equals(this->ApplicationName,_arg) )
     { 
     return;
     } 

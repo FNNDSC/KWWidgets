@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCheckButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-04 14:07:32 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-06-28 12:32:43 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -72,6 +72,7 @@ void vtkKWCheckButton::SetIndicator(int ind)
 	}
       }
     }
+  this->SetMyText(0);
 }
 
 void vtkKWCheckButton::SetText(const char* txt)
