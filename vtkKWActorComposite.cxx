@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWActorComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-11-19 19:04:35 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2003-01-10 18:57:37 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWActorComposite );
-vtkCxxRevisionMacro(vtkKWActorComposite, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWActorComposite, "$Revision: 1.11 $");
 
 //------------------------------------------------------------------------------
 int vtkKWActorCompositeCommand(ClientData cd, Tcl_Interp *interp,
@@ -91,7 +91,7 @@ void vtkKWActorComposite::SetInput(vtkPolyData *input)
 void vtkKWActorComposite::CreateProperties()
 {
   // invoke superclass always
-  this->vtkKWComposite::CreateProperties();
+  this->Superclass::CreateProperties();
 }
 
 //------------------------------------------------------------------------------

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-30 02:26:49 $
-  Version:   $Revision: 1.29 $
+  Date:      $Date: 2003-01-10 18:57:36 $
+  Version:   $Revision: 1.30 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -53,7 +53,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkCornerAnnotation);
-vtkCxxRevisionMacro(vtkCornerAnnotation, "$Revision: 1.29 $");
+vtkCxxRevisionMacro(vtkCornerAnnotation, "$Revision: 1.30 $");
 
 vtkSetObjectImplementationMacro(vtkCornerAnnotation,ImageActor,vtkImageActor);
 vtkSetObjectImplementationMacro(vtkCornerAnnotation,WindowLevel,
@@ -114,7 +114,7 @@ vtkCornerAnnotation::~vtkCornerAnnotation()
 // resources to release.
 void vtkCornerAnnotation::ReleaseGraphicsResources(vtkWindow *win)
 {
-  this->vtkActor2D::ReleaseGraphicsResources(win);
+  this->Superclass::ReleaseGraphicsResources(win);
   for (int i = 0; i < 4; i++)
     {
     this->TextActor[i]->ReleaseGraphicsResources(win);

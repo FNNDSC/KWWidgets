@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOKCancelDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2003-01-10 18:57:37 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWOKCancelDialog );
-vtkCxxRevisionMacro(vtkKWOKCancelDialog, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWOKCancelDialog, "$Revision: 1.6 $");
 
 
 
@@ -80,7 +80,7 @@ vtkKWOKCancelDialog::~vtkKWOKCancelDialog()
 void vtkKWOKCancelDialog::Create(vtkKWApplication *app, const char *args)
 {
   // invoke super method
-  this->vtkKWDialog::Create(app,args);
+  this->Superclass::Create(app,args);
   
   this->Message->Create(app,"label","");
   this->ButtonFrame->Create(app,"frame","");

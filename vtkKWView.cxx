@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-02 23:25:42 $
-  Version:   $Revision: 1.104 $
+  Date:      $Date: 2003-01-10 18:57:37 $
+  Version:   $Revision: 1.105 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -104,7 +104,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.104 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.105 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -1361,7 +1361,7 @@ void vtkKWView::UnRegister(vtkObjectBase *o)
       }
     }
   
-  this->vtkObject::UnRegister(o);
+  this->Superclass::UnRegister(o);
 }
 
 //----------------------------------------------------------------------------
@@ -1433,7 +1433,7 @@ void vtkKWView::InteractOff()
 void vtkKWView::SerializeSelf(ostream& os, vtkIndent indent)
 {
   // invoke superclass
-  this->vtkKWWidget::SerializeSelf(os,indent);
+  this->Superclass::SerializeSelf(os,indent);
 
   // write out the composite
   if (this->PropertiesCreated)
@@ -1524,7 +1524,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.104 $");
+  this->ExtractRevision(os,"$Revision: 1.105 $");
 }
 
 //----------------------------------------------------------------------------

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-06 22:37:40 $
-  Version:   $Revision: 1.25 $
+  Date:      $Date: 2003-01-10 18:57:37 $
+  Version:   $Revision: 1.26 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,8 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkKWWidget.h"
 
-// Sorry, I need vtkKWTextProperty::EventStruct
-#include "vtkKWTextProperty.h"
+#include "vtkKWTextProperty.h" // Sorry, I need vtkKWTextProperty::EventStruct
 
 class vtkCornerAnnotation;
 class vtkKWChangeColorButton;

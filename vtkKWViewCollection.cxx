@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWViewCollection.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:15 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2003-01-10 18:57:37 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,21 +45,21 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWView.h"
 
 vtkStandardNewMacro( vtkKWViewCollection );
-vtkCxxRevisionMacro(vtkKWViewCollection, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWViewCollection, "$Revision: 1.6 $");
 
 void vtkKWViewCollection::AddItem(vtkKWView *a) 
 {
-  this->vtkCollection::AddItem((vtkObject *)a);
+  this->Superclass::AddItem((vtkObject *)a);
 }
 
 void vtkKWViewCollection::RemoveItem(vtkKWView *a) 
 {
-  this->vtkCollection::RemoveItem((vtkObject *)a);
+  this->Superclass::RemoveItem((vtkObject *)a);
 }
 
 int vtkKWViewCollection::IsItemPresent(vtkKWView *a) 
 {
-  return this->vtkCollection::IsItemPresent((vtkObject *)a);
+  return this->Superclass::IsItemPresent((vtkObject *)a);
 }
 
 vtkKWView *vtkKWViewCollection::GetNextKWView() 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-04 16:53:59 $
-  Version:   $Revision: 1.39 $
+  Date:      $Date: 2003-01-10 18:57:37 $
+  Version:   $Revision: 1.40 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMessageDialog );
-vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.39 $");
+vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.40 $");
 
 
 
@@ -115,7 +115,7 @@ vtkKWMessageDialog::~vtkKWMessageDialog()
 void vtkKWMessageDialog::Create(vtkKWApplication *app, const char *args)
 {
   // invoke super method
-  this->vtkKWDialog::Create(app,args);
+  this->Superclass::Create(app,args);
   
   this->MessageDialogFrame->Create(app,"frame","");
   this->Label->SetLineType(vtkKWLabel::MultiLine);
