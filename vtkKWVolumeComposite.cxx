@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-21 19:04:54 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2000-08-23 21:31:58 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -434,6 +434,7 @@ void vtkKWVolumeComposite::SetInput(vtkImageData *input)
   pwf->AddPoint( (max/ 50.0), 1.0);
   pwf->AddPoint(         max, 1.0);
   this->VolumeProMapper->GradientOpacityModulationOn();
+  this->LowResVolumeProMapper->GradientOpacityModulationOn();
 
   if ( this->GetView() )
     {
@@ -452,5 +453,5 @@ void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.14 $");
+  this->ExtractRevision(os,"$Revision: 1.15 $");
 }
