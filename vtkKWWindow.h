@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-04 20:33:56 $
-  Version:   $Revision: 1.37 $
+  Date:      $Date: 2002-02-05 22:08:23 $
+  Version:   $Revision: 1.38 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -57,6 +57,7 @@ class vtkKWMenu;
 class vtkKWProgressGauge;
 class vtkKWView;
 class vtkKWPointerArray;
+class vtkKWLabel;
 
 class VTK_EXPORT vtkKWWindow : public vtkKWWidget
 {
@@ -89,6 +90,7 @@ public:
   // Description:
   // Set the text for the status bar of this window.
   void SetStatusText(const char *);
+  const char *GetStatusText();
   
   // Description:
   // Load in a Tcl based script to drive the application. If called
@@ -269,7 +271,7 @@ protected:
   vtkKWMenu *MenuHelp;
   vtkKWWidget *StatusFrame;
   vtkKWWidget *StatusImage;
-  vtkKWWidget *StatusLabel;
+  vtkKWLabel *StatusLabel;
   vtkKWProgressGauge* ProgressGauge;
   vtkKWWidget* ProgressFrame;
   char        *StatusImageName;
