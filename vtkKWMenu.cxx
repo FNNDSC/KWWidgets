@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-04 16:53:59 $
-  Version:   $Revision: 1.29 $
+  Date:      $Date: 2002-10-09 19:33:09 $
+  Version:   $Revision: 1.30 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.29 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.30 $");
 
 
 
@@ -244,8 +244,8 @@ void vtkKWMenu::SetCascade(int index, const char* menu)
   // (i.e. the parent + '.' + at least a letter)
   // If not, clone it.
 
-  int parent_length = strlen(wname);
-  int child_length = strlen(menu);
+  int parent_length = (int)(strlen(wname));
+  int child_length = (int)(strlen(menu));
 
   if (child_length < (parent_length + 2) || 
       strncmp(wname, menu, parent_length) ||
