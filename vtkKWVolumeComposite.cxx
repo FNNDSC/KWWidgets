@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-06 15:15:32 $
-  Version:   $Revision: 1.30 $
+  Date:      $Date: 2002-02-06 16:23:37 $
+  Version:   $Revision: 1.31 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -498,7 +498,7 @@ void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.30 $");
+  this->ExtractRevision(os,"$Revision: 1.31 $");
 }
 
 vtkProp *vtkKWVolumeComposite::GetProp() 
@@ -547,17 +547,11 @@ void vtkKWVolumeComposite::DeregisterIntermixIntersectingGeometry()
 
 void vtkKWVolumeComposite::UseCursor()
 {
-  if ( !this->CanDoHardwareCursor )
-    {
-    this->RegisterIntermixIntersectingGeometry();
-    }
+  this->RegisterIntermixIntersectingGeometry();
 }
 
 void vtkKWVolumeComposite::StopUsingCursor()
 {
-  if ( !this->CanDoHardwareCursor )
-    {
-    this->DeregisterIntermixIntersectingGeometry();
-    }
+  this->DeregisterIntermixIntersectingGeometry();
 }
 
