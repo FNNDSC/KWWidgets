@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceNotebookManager.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-26 22:36:27 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2003-02-27 21:34:17 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -163,6 +163,12 @@ public:
   // panel's Update() method, on the opposite the panel's Update() will call this
   // method if the panel has a UIM set.
   virtual void UpdatePanel(vtkKWUserInterfacePanel *panel);
+
+  // Description:
+  // Drag and Drop callback
+  virtual void DragAndDropEndCallback(
+    int x, int y, 
+    vtkKWWidget *widget, vtkKWWidget *anchor, vtkKWWidget *target);
 
 protected:
   vtkKWUserInterfaceNotebookManager();
