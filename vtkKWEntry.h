@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.h,v $
   Language:  C++
-  Date:      $Date: 2003-04-16 12:55:26 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2003-04-16 20:45:36 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -103,6 +103,7 @@ public:
   void AddValue(const char* value);
   void DeleteValue(int idx);
   int GetValueIndex(const char* value);
+  const char* GetValueFromIndex(int idx);
   int GetNumberOfValues();
   void DeleteAllValues();
 
