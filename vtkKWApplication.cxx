@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-07-14 16:20:05 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2000-07-19 15:43:17 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -95,6 +95,8 @@ vtkKWApplication::vtkKWApplication()
   this->Script("wm overrideredirect %s 1", this->BalloonHelpWindow->GetWidgetName());
   this->Script("wm withdraw %s", this->BalloonHelpWindow->GetWidgetName());
 
+  this->WidgetVisibility = 1;
+  
   this->EventNotifier = vtkKWEventNotifier::New();
   this->EventNotifier->SetApplication( this );
 }
@@ -142,8 +144,8 @@ void vtkKWApplication::SimpleScript(char *event)
   
   if (Tcl_GlobalEval(this->MainInterp, event) != TCL_OK)
     {
-    vtkGenericWarningMacro("Error returned from tcl script.\n" <<
-			   this->MainInterp->result << endl);
+    vtkErrorMacro("Error returned from tcl script.\n" <<
+		  this->MainInterp->result << endl);
     }
 }
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2000-05-30 20:50:06 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2000-07-19 15:43:17 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -113,6 +113,14 @@ public:
   void BalloonHelpTrigger(vtkKWWidget *widget);
   void BalloonHelpDisplay(vtkKWWidget *widget);
   void BalloonHelpCancel();
+
+  // Description:
+  // This variable can be used to hide the user interface.  
+  // When WidgetVisibility is off, The cherat methods of vtkKWWidgets 
+  // should not create the TK widgets.
+  vtkSetMacro(WidgetVisibility, int);
+  vtkGetMacro(WidgetVisibility, int);
+  vtkBooleanMacro(WidgetVisibility, int);
   
   // Description:
   // Get the event notifier so that callback can be set or events invoked.
@@ -138,9 +146,15 @@ protected:
 
   virtual int GetApplicationKey() {return -1;};
 
+  int WidgetVisibility;
+  
   vtkKWEventNotifier *EventNotifier;
 };
 
 #endif
+
+
+
+
 
 
