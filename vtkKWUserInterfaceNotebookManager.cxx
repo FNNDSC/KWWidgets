@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceNotebookManager.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-27 22:40:26 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2003-02-28 14:27:28 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -56,7 +56,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceNotebookManager);
-vtkCxxRevisionMacro(vtkKWUserInterfaceNotebookManager, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceNotebookManager, "$Revision: 1.9 $");
 
 int vtkKWUserInterfaceNotebookManagerCommand(ClientData cd, Tcl_Interp *interp,
                                              int argc, char *argv[]);
@@ -512,7 +512,7 @@ void vtkKWUserInterfaceNotebookManager::UpdatePanel(
 //----------------------------------------------------------------------------
 void vtkKWUserInterfaceNotebookManager::DragAndDropEndCallback(
   int x, int y, 
-  vtkKWWidget *widget, vtkKWWidget *anchor, vtkKWWidget *target)
+  vtkKWWidget *widget, vtkKWWidget *vtkNotUsed(anchor), vtkKWWidget *target)
 {
   if (!this->Notebook || this->Notebook != target)
     {

@@ -3,8 +3,8 @@
 Program:   Visualization Toolkit
 Module:    $RCSfile: vtkKWNotebook.cxx,v $
 Language:  C++
-Date:      $Date: 2003-02-27 22:39:53 $
-Version:   $Revision: 1.42 $
+Date:      $Date: 2003-02-28 14:27:28 $
+Version:   $Revision: 1.43 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -85,7 +85,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.42 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.43 $");
 
 //------------------------------------------------------------------------------
 int vtkKWNotebookCommand(ClientData cd, Tcl_Interp *interp,
@@ -1322,7 +1322,7 @@ int vtkKWNotebook::PutOnTopOfMostRecentPages(vtkKWNotebook::Page *page)
     return 0;
     }
 
-  vtkIdType idx;
+  vtkIdType idx = 0;
   if (this->MostRecentPages->FindItem(page, idx) == VTK_OK)
     {
     this->MostRecentPages->RemoveItem(idx);
@@ -2007,7 +2007,7 @@ void vtkKWNotebook::ConstrainVisiblePages()
     int diff = 
       this->MostRecentPages->GetNumberOfItems() - this->NumberOfMostRecentPages;
 
-    vtkIdType key;
+    vtkIdType key = 0;
     vtkKWNotebook::Page *page = NULL;
     vtkKWNotebook::PagesContainerIterator *it = 
       this->MostRecentPages->NewIterator();
