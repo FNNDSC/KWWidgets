@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCheckButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 06:46:23 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2002-12-22 16:00:45 $
+  Version:   $Revision: 1.19 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,7 +45,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCheckButton );
-vtkCxxRevisionMacro(vtkKWCheckButton, "$Revision: 1.18 $");
+vtkCxxRevisionMacro(vtkKWCheckButton, "$Revision: 1.19 $");
 
 //------------------------------------------------------------------------------
 vtkKWCheckButton::vtkKWCheckButton() 
@@ -177,8 +177,9 @@ void vtkKWCheckButton::SetState(int s)
 //------------------------------------------------------------------------------
 void vtkKWCheckButton::Create(vtkKWApplication *app, const char *args)
 {
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("CheckButton already created");
     return;
@@ -192,6 +193,10 @@ void vtkKWCheckButton::Create(vtkKWApplication *app, const char *args)
   this->Script("checkbutton %s", wname);
   this->Configure();
   this->Script("%s configure %s", wname, (args?args:""));
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 //------------------------------------------------------------------------------

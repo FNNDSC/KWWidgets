@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-16 18:05:49 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-12-22 16:04:12 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFrame );
-vtkCxxRevisionMacro(vtkKWFrame, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWFrame, "$Revision: 1.10 $");
 
 vtkKWFrame::vtkKWFrame()
 {
@@ -72,8 +72,9 @@ void vtkKWFrame::Create(vtkKWApplication *app, const char* args)
 {
   const char *wname;
   
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("ScrollableFrame already created");
     return;
@@ -113,6 +114,10 @@ void vtkKWFrame::Create(vtkKWApplication *app, const char* args)
 
     this->Frame = this;
     }
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 //----------------------------------------------------------------------------

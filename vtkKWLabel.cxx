@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-11-15 21:22:18 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2002-12-22 16:04:12 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ int vtkKWLabelCommand(ClientData cd, Tcl_Interp *interp,
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabel );
-vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.15 $");
 
 //-----------------------------------------------------------------------------
 vtkKWLabel::vtkKWLabel()
@@ -91,8 +91,9 @@ void vtkKWLabel::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
 
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("Label already created");
     return;
@@ -112,6 +113,10 @@ void vtkKWLabel::Create(vtkKWApplication *app, const char *args)
     this->Script("label %s -text {%s} -justify left %s", 
                  wname, this->Label, (args?args:""));
     }
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 //-----------------------------------------------------------------------------

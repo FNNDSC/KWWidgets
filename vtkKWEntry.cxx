@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-12-22 16:03:32 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry );
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.13 $");
 
 vtkKWEntry::vtkKWEntry()
 {
@@ -119,8 +119,9 @@ void vtkKWEntry::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
 
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("Entry already created");
     return;
@@ -144,6 +145,10 @@ void vtkKWEntry::Create(vtkKWApplication *app, const char *args)
     {
     this->Script("%s configure -state disabled", wname);
     }
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 void vtkKWEntry::SetReadOnly(int ro)

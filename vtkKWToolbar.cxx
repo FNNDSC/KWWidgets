@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-16 17:28:31 $
-  Version:   $Revision: 1.24 $
+  Date:      $Date: 2002-12-22 15:59:33 $
+  Version:   $Revision: 1.25 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -83,7 +83,7 @@ void vtkKWToolbar::SetGlobalWidgetsFlatAspect(int val)
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
-vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.24 $");
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.25 $");
 
 
 int vtkKWToolbarCommand(ClientData cd, Tcl_Interp *interp,
@@ -188,9 +188,9 @@ void vtkKWToolbar::RemoveWidget(vtkKWWidget *widget)
 //----------------------------------------------------------------------------
 void vtkKWToolbar::Create(vtkKWApplication *app)
 {
-  // Must set the application
+  // Set the application
 
-  if (this->Application)
+  if (this->IsCreated())
     {
     vtkErrorMacro("widget already created");
     return;
@@ -222,6 +222,10 @@ void vtkKWToolbar::Create(vtkKWApplication *app)
   // to keep track of default options)
 
   this->DefaultOptionsWidget->Create(app, "");
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 //----------------------------------------------------------------------------
