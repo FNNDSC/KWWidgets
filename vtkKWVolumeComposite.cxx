@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-06 22:03:38 $
-  Version:   $Revision: 1.32 $
+  Date:      $Date: 2002-02-07 16:16:39 $
+  Version:   $Revision: 1.33 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -71,6 +71,8 @@ vtkKWVolumeComposite::vtkKWVolumeComposite()
   vtkFiniteDifferenceGradientEstimator *gradientEstimator;
   vtkRecursiveSphereDirectionEncoder   *directionEncoder;
 
+  this->Input                 = NULL;
+  
   this->LODVolume             = vtkLODProp3D::New();
   this->Composite             = vtkVolumeRayCastCompositeFunction::New();
   this->MIP                   = vtkVolumeRayCastMIPFunction::New();
@@ -181,6 +183,8 @@ vtkKWVolumeComposite::vtkKWVolumeComposite()
 
 vtkKWVolumeComposite::~vtkKWVolumeComposite()
 {
+  this->Input->UnRegister(this);
+  
   this->LODVolume->Delete();
   this->Composite->Delete();
   this->MIP->Delete();
@@ -231,6 +235,17 @@ void vtkKWVolumeComposite::SetInput(vtkImageData *input)
 {
   int   size[3];
 
+  // Hang on to the input
+  if ( this->Input )
+    {
+    this->Input->UnRegister(this);
+    }
+  this->Input = input;
+  if ( input )
+    {
+    this->Input->Register(this);
+    }
+  
   // Make sure the user has not turned off Software rendering when Hardware is
   // not available
   if ( !this->VolumeProMapperAvailable )
@@ -491,14 +506,14 @@ void vtkKWVolumeComposite::SetInput(vtkImageData *input)
 
 vtkImageData *vtkKWVolumeComposite::GetInput()
 {
-  return this->RayCastMapper->GetInput();
+  return this->Input;
 }
 
 void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.32 $");
+  this->ExtractRevision(os,"$Revision: 1.33 $");
 }
 
 vtkProp *vtkKWVolumeComposite::GetProp() 
