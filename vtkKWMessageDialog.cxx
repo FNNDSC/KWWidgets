@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-12-12 16:34:39 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2001-12-28 20:44:42 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -159,4 +159,40 @@ void vtkKWMessageDialog::SetIcon( int ico )
   this->Script("%s configure -bitmap {%s} -anchor n -pady 4 -padx 4 -borderwidth 4",
 	       this->Icon->GetWidgetName(),
 	       icon_array[ico]);
+}
+
+void vtkKWMessageDialog::PopupMessage(vtkKWApplication *app, unsigned int icon, const char* title, const char*message)
+{
+  vtkKWMessageDialog *dlg2 = vtkKWMessageDialog::New();
+  dlg2->Create(app,"");
+  dlg2->SetText( message );
+  dlg2->SetTitle( title );
+  dlg2->SetIcon( icon );
+  dlg2->Invoke();
+  dlg2->Delete();
+}
+
+int vtkKWMessageDialog::PopupYesNo(vtkKWApplication *app, unsigned int icon, const char* title, const char*message)
+{
+  vtkKWMessageDialog *dlg2 = vtkKWMessageDialog::New();
+  dlg2->SetStyleToYesNo();
+  dlg2->Create(app,"");
+  dlg2->SetText( message );
+  dlg2->SetTitle( title );
+  dlg2->SetIcon( icon );
+  int ret = dlg2->Invoke();
+  dlg2->Delete();
+  return ret;
+}
+int vtkKWMessageDialog::PopupOkCancel(vtkKWApplication *app, unsigned int icon, const char* title, const char*message)
+{
+  vtkKWMessageDialog *dlg2 = vtkKWMessageDialog::New();
+  dlg2->SetStyleToOkCancel();
+  dlg2->Create(app,"");
+  dlg2->SetText( message );
+  dlg2->SetTitle( title );
+  dlg2->SetIcon( icon );
+  int ret = dlg2->Invoke();
+  dlg2->Delete();
+  return ret;
 }

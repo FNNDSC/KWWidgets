@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.h,v $
   Language:  C++
-  Date:      $Date: 2001-12-12 15:43:00 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2001-12-28 20:44:42 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -87,7 +87,11 @@ public:
   void SetStyleToMessage() {this->SetStyle(vtkKWMessageDialog::Message);};
   void SetStyleToYesNo() {this->SetStyle(vtkKWMessageDialog::YesNo);};
   void SetStyleToOkCancel() {this->SetStyle(vtkKWMessageDialog::OkCancel);};
-  
+
+  static void PopupMessage(vtkKWApplication *app, unsigned int icon, const char* title, const char*message);
+  static int PopupYesNo(vtkKWApplication *app, unsigned int icon, const char* title, const char*message);
+  static int PopupOkCancel(vtkKWApplication *app, unsigned int icon, const char* title, const char*message);
+
 protected:
   vtkKWMessageDialog();
   ~vtkKWMessageDialog();
