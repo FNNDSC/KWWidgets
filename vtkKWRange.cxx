@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRange.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-25 17:37:03 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2003-04-26 15:54:18 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 
 vtkStandardNewMacro( vtkKWRange );
-vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.10 $");
 
 #define VTK_KW_RANGE_MIN_SLIDER_SIZE        2
 #define VTK_KW_RANGE_MIN_THICKNESS          (2*VTK_KW_RANGE_MIN_SLIDER_SIZE+1)
@@ -534,7 +534,7 @@ void vtkKWRange::SetResolution(float arg)
 
   if (this->AdjustResolution)
     {
-    arg = pow(10.0, floor(log10(arg)));
+    arg = (float)pow(10.0, floor(log10((double)arg)));
     }
 
   if (this->Resolution == arg || arg <= 0.0)
@@ -567,7 +567,8 @@ void vtkKWRange::SetAdjustResolution(int arg)
 
   if (this->AdjustResolution)
     {
-    this->SetResolution(pow(10.0, floor(log10(this->Resolution))));
+    this->SetResolution(
+      (float)pow(10.0, floor(log10((double)this->Resolution))));
     }
 }
 
