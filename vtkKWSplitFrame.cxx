@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplitFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-08-23 12:48:20 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2001-08-27 13:44:20 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -130,8 +130,6 @@ void vtkKWSplitFrame::ConfigureCallback()
   this->Script( "winfo width %s", this->GetWidgetName());
   width = vtkKWObject::GetIntegerResult(this->Application);   
 
-  vtkErrorMacro("configure " << width);
-
   // First check to see if we have to make the window larger.
   tmp = this->Frame1MinimumWidth + this->Frame2MinimumWidth 
           + this->SeparatorWidth;
@@ -176,8 +174,6 @@ void vtkKWSplitFrame::DragCallback()
 
   this->Script( "winfo width %s", this->GetWidgetName());
   width = vtkKWObject::GetIntegerResult(this->Application); 
-
-  vtkErrorMacro("DragCallback width " << width);
 
   this->Width = width;
 
@@ -292,8 +288,6 @@ void vtkKWSplitFrame::SetSeparatorWidth(int width)
 
 void vtkKWSplitFrame::Update()
 {
-  vtkErrorMacro("Updating with width " << this->Width);
-
   this->Script("place %s -relx 0 -rely 0 -width %d -relheight 1.0",
                this->Frame1->GetWidgetName(), this->Frame1Width);
   this->Script("place %s -x %d -rely 0 -width %d -relheight 1.0",
