@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2003-03-24 20:49:09 $
-  Version:   $Revision: 1.29 $
+  Date:      $Date: 2003-04-04 21:18:49 $
+  Version:   $Revision: 1.30 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -131,7 +131,7 @@ public:
   // Description:
   // A convienience method to invoke some tcl script code and
   // perform arguement substitution.
-  const char* Script(const char *EventString, ...);
+  virtual const char* Script(const char *EventString, ...);
   
   // Description:
   // Method to estimate the length of the string that will be produced
@@ -139,7 +139,7 @@ public:
   // returned length will always be at least as large as the string
   // that will result from printing.
   int EstimateFormatLength(const char* format, va_list ap);
-
+  
 private:
   char *TclName;
   
