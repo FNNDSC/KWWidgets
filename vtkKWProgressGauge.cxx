@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWProgressGauge.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:24 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-01-11 20:17:44 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -141,5 +141,5 @@ void vtkKWProgressGauge::SetValue(int value)
 		 wname, this->Value, wname, wname);
     }
   // do an update
-  this->Script("update");
+  this->Script("update idletasks");
 }

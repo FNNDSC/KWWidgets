@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 19:19:59 $
-  Version:   $Revision: 1.25 $
+  Date:      $Date: 2002-01-11 20:17:44 $
+  Version:   $Revision: 1.26 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -184,6 +184,10 @@ public:
   // Set/Get PromptBeforeClose
   vtkSetMacro(PromptBeforeClose, int);
   vtkGetMacro(PromptBeforeClose, int);
+
+  // Description:
+  // Call render on all views
+  void Render();
 
   //Description:
   // Set/Get Number of recent files in the menu.

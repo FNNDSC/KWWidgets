@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 19:24:44 $
-  Version:   $Revision: 1.49 $
+  Date:      $Date: 2002-01-11 20:17:44 $
+  Version:   $Revision: 1.50 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -415,6 +415,17 @@ void vtkKWWindow::Close()
   this->Application->Close(this);
 }
 
+void vtkKWWindow::Render()
+{
+  vtkKWView *v;
+  
+  this->Views->InitTraversal();
+  while ((v = this->Views->GetNextKWView()))
+    {
+    v->Render();
+    }
+}
+
 // invoke the apps about dialog when selected
 void vtkKWWindow::DisplayAbout()
 {
@@ -785,8 +796,6 @@ void vtkKWWindow::StoreRecentMenuToRegistry(char *key)
 {
 #ifdef _WIN32
   char fkey[1024];
-  char File[1024];
-  char Cmd[1024];
   
   if (!key)
     {
@@ -910,7 +919,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.49 $");
+  this->ExtractRevision(os,"$Revision: 1.50 $");
 }
 
 int vtkKWWindow::ExitDialog()
