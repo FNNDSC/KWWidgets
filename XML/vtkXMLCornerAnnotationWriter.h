@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkXMLCornerAnnotationWriter.h,v $
   Language:  C++
-  Date:      $Date: 2003-03-28 22:48:11 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2003-04-16 18:27:58 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,18 +49,23 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkXMLCornerAnnotationWriter_h
 #define __vtkXMLCornerAnnotationWriter_h
 
-#include "vtkXMLObjectWriter.h"
+#include "vtkXMLActor2DWriter.h"
 
-class VTK_EXPORT vtkXMLCornerAnnotationWriter : public vtkXMLObjectWriter
+class VTK_EXPORT vtkXMLCornerAnnotationWriter : public vtkXMLActor2DWriter
 {
 public:
   static vtkXMLCornerAnnotationWriter* New();
-  vtkTypeRevisionMacro(vtkXMLCornerAnnotationWriter,vtkXMLObjectWriter);
+  vtkTypeRevisionMacro(vtkXMLCornerAnnotationWriter,vtkXMLActor2DWriter);
 
   // Description:
   // Return the name of the root element of the XML tree this writer
   // is supposed to write.
   virtual char* GetRootElementName();
+
+  // Description:
+  // Return the name of the element used inside that tree to
+  // store the text property.
+  static char* GetTextPropertyElementName();
 
 protected:
   vtkXMLCornerAnnotationWriter() {};

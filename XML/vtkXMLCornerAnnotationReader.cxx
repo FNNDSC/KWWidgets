@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkXMLCornerAnnotationReader.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-03-28 22:48:11 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2003-04-16 18:27:58 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,9 +46,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkTextProperty.h"
 #include "vtkXMLDataElement.h"
 #include "vtkXMLTextPropertyReader.h"
+#include "vtkXMLCornerAnnotationWriter.h"
 
 vtkStandardNewMacro(vtkXMLCornerAnnotationReader);
-vtkCxxRevisionMacro(vtkXMLCornerAnnotationReader, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkXMLCornerAnnotationReader, "$Revision: 1.2 $");
 
 //----------------------------------------------------------------------------
 char* vtkXMLCornerAnnotationReader::GetRootElementName()
@@ -76,11 +77,6 @@ int vtkXMLCornerAnnotationReader::Parse(vtkXMLDataElement *elem)
   float fval;
   int ival;
   const char *cptr;
-
-  if (elem->GetScalarAttribute("Visibility", ival))
-    {
-    obj->SetVisibility(ival);
-    }
 
   for (int i = 0; i < 4; i++)
     {
@@ -114,21 +110,31 @@ int vtkXMLCornerAnnotationReader::Parse(vtkXMLDataElement *elem)
     obj->SetLevelScale(fval);
     }
 
-  // Get the nested text property
-
-  vtkTextProperty *tprop = obj->GetTextProperty();
-  if (tprop)
+  if (elem->GetScalarAttribute("ShowSliceAndImage", ival))
     {
-    vtkXMLTextPropertyReader *xmltpr = vtkXMLTextPropertyReader::New();
-    vtkXMLDataElement *tprop_elem = 
-      elem->FindNestedElementWithName(xmltpr->GetRootElementName());
-    if (tprop_elem)
-      {
-      xmltpr->SetObject(tprop);
-      xmltpr->Parse(tprop_elem);
-      }
-    xmltpr->Delete();
+    obj->SetShowSliceAndImage(ival);
     }
+
+  // Get nested elements
+  
+  // Text property
+
+  vtkXMLTextPropertyReader *xmlr = vtkXMLTextPropertyReader::New();
+  if (xmlr->IsInNestedElement(
+        elem, vtkXMLCornerAnnotationWriter::GetTextPropertyElementName()))
+    {
+    vtkTextProperty *tprop = obj->GetTextProperty();
+    if (!tprop)
+      {
+      tprop = vtkTextProperty::New();
+      obj->SetTextProperty(tprop);
+      tprop->Delete();
+      }
+    xmlr->SetObject(tprop);
+    xmlr->ParseInNestedElement(
+      elem, vtkXMLCornerAnnotationWriter::GetTextPropertyElementName());
+    }
+  xmlr->Delete();
   
   return 1;
 }

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkXMLCornerAnnotationReader.h,v $
   Language:  C++
-  Date:      $Date: 2003-03-28 22:48:11 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2003-04-16 18:27:58 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,13 +49,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkXMLCornerAnnotationReader_h
 #define __vtkXMLCornerAnnotationReader_h
 
-#include "vtkXMLObjectReader.h"
+#include "vtkXMLActor2DReader.h"
 
-class VTK_EXPORT vtkXMLCornerAnnotationReader : public vtkXMLObjectReader
+class VTK_EXPORT vtkXMLCornerAnnotationReader : public vtkXMLActor2DReader
 {
 public:
   static vtkXMLCornerAnnotationReader* New();
-  vtkTypeRevisionMacro(vtkXMLCornerAnnotationReader, vtkXMLObjectReader);
+  vtkTypeRevisionMacro(vtkXMLCornerAnnotationReader, vtkXMLActor2DReader);
 
   // Description:
   // Parse an XML tree.
