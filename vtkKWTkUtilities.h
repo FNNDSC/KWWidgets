@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTkUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-09 21:57:04 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-08-12 18:47:03 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -56,6 +56,7 @@ class VTK_EXPORT vtkKWTkUtilities : public vtkObject
 public:
   static vtkKWTkUtilities* New();
   vtkTypeRevisionMacro(vtkKWTkUtilities,vtkObject);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Get RGB component for color (given a window)
   //BTX  
