@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-30 22:29:40 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2002-01-31 19:34:25 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -206,8 +206,6 @@ int vtkKWMessageDialog::Invoke()
     this->Script("wm geometry %s", this->GetMasterWindow()->GetWidgetName());
     sscanf(this->GetApplication()->GetMainInterp()->result, "%dx%d+%d+%d",
 	   &width, &height, &x, &y);
-    cout << "Main window: " << width << "x" << height << endl;
-    cout << "Position: " << x << ", " << y << endl;
     x += width/2;
     y += height/2;
     this->Script("wm geometry %s +%d+%d", this->GetWidgetName(),
