@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-14 18:04:26 $
-  Version:   $Revision: 1.23 $
+  Date:      $Date: 2003-01-15 17:23:20 $
+  Version:   $Revision: 1.24 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,7 +58,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.23 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.24 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetObserver : public vtkCommand
@@ -416,12 +416,31 @@ void vtkKWRenderWidget::Configure(int width, int height)
 //----------------------------------------------------------------------------
 void vtkKWRenderWidget::Render()
 {
-  if ( this->CollapsingRenders )
+  if (this->CollapsingRenders)
     {
-    this->CollapsingRendersCount ++;
+    this->CollapsingRendersCount++;
     return;
     }
-  this->RenderWindow->Render();
+
+  if (!this->RenderState)
+    {
+    return;
+    }
+
+  static int static_in_render = 0;
+  if (static_in_render)
+    {
+    return;
+    }
+  static_in_render = 1;
+
+  if (this->RenderMode != VTK_KW_DISABLED_RENDER)
+    {
+    this->Renderer->ResetCameraClippingRange();
+    this->RenderWindow->Render();
+    }
+  
+  static_in_render = 0;
 }
 
 //----------------------------------------------------------------------------
