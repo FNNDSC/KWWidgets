@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-13 14:41:38 $
-  Version:   $Revision: 1.40 $
+  Date:      $Date: 2002-12-17 15:00:14 $
+  Version:   $Revision: 1.41 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // ---------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWScale );
-vtkCxxRevisionMacro(vtkKWScale, "$Revision: 1.40 $");
+vtkCxxRevisionMacro(vtkKWScale, "$Revision: 1.41 $");
 
 int vtkKWScaleCommand(ClientData cd, Tcl_Interp *interp,
                       int argc, char *argv[]);
@@ -180,6 +180,7 @@ vtkKWScale::~vtkKWScale()
     }
   
   this->SetShortLabel(NULL);
+  this->SetNormalLabel(NULL);
 }
 
 // ---------------------------------------------------------------------------
