@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2000-06-06 21:18:27 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-07-06 20:15:57 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -25,10 +25,10 @@ PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE IS PROVIDED ON AN
 MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 =========================================================================*/
-// .NAME vtkKWCornerAnnotation - simple annotation for a data set.
+// .NAME vtkCornerAnnotation - text annotation in four corners
 // .SECTION Description
-// A property class used for annotation of a data set. Provides simple
-// functionality such as a bounding box, scalar bar, and labeled axes.
+// This is an annotation object that manages four text actors / mappers
+// to provide annotation in the four corners of a viewport
 //
 // .SECTION See Also
 // vtkActor2D vtkTextMapper

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2000-07-05 05:08:01 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-07-06 20:15:57 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -25,10 +25,11 @@ PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE IS PROVIDED ON AN
 MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 =========================================================================*/
-// .NAME vtkKWCornerAnnotation - simple annotation for a data set.
+// .NAME vtkKWCornerAnnotation - a corner annotation widget
 // .SECTION Description
-// A property class used for annotation of a data set. Provides simple
-// functionality such as a bounding box, scalar bar, and labeled axes.
+// A class that provides a UI for vtkCornerAnnotation. User can set the
+// text for each corner, set the color of the text, and turn the annotation
+// on and off.
 
 #ifndef __vtkKWCornerAnnotation_h
 #define __vtkKWCornerAnnotation_h

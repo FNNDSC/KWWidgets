@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.h,v $
   Language:  C++
-  Date:      $Date: 2000-03-29 22:19:01 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-07-06 20:15:57 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -25,10 +25,10 @@ PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE IS PROVIDED ON AN
 MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 =========================================================================*/
-// .NAME vtkKWLabel - check button widget
+// .NAME vtkKWLabel - label widget
 // .SECTION Description
-// A simple widget that represents a check button. It can be modified 
-// and queried using the GetState and SetState methods.
+// A simple widget that represents a label. The label can be set with 
+// the SetLabel method.
 
 #ifndef __vtkKWLabel_h
 #define __vtkKWLabel_h

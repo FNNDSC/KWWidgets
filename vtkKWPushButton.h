@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPushButton.h,v $
   Language:  C++
-  Date:      $Date: 2000-03-10 00:17:29 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-07-06 20:15:57 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -25,10 +25,9 @@ PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE IS PROVIDED ON AN
 MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 =========================================================================*/
-// .NAME vtkKWPushButton - check button widget
+// .NAME vtkKWPushButton - push button widget
 // .SECTION Description
-// A simple widget that represents a check button. It can be modified 
-// and queried using the GetState and SetState methods.
+// A simple widget that represents a push button. 
 
 #ifndef __vtkKWPushButton_h
 #define __vtkKWPushButton_h
