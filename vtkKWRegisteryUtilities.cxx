@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRegisteryUtilities.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-16 20:25:14 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-01-17 23:09:23 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -152,7 +152,11 @@ int vtkKWRegisteryUtilities::ReadValue(const char *subkey,
 				       char *value)
 {
   int res = 1;
-  int open = 0;
+  int open = 0;  
+  if ( ! value )
+    {
+    return 0;
+    }
   if ( !this->Opened )
     {
     if ( !this->Open(this->GetTopLevel(), subkey, 
@@ -162,6 +166,7 @@ int vtkKWRegisteryUtilities::ReadValue(const char *subkey,
       }
     open = 1;
     }
+  *value = 0;
   res = this->ReadValueInternal(key, value);
 
   if ( open )

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-17 13:55:46 $
-  Version:   $Revision: 1.29 $
+  Date:      $Date: 2002-01-17 23:09:23 $
+  Version:   $Revision: 1.30 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -211,7 +211,7 @@ protected:
 			      vtkKWObject *taret, 
 			      const char *command);
   void UpdateRecentMenu(char *key);
-  void StoreRecentMenuToRegistry(char *key);
+  void StoreRecentMenuToRegistery(char *key);
 
   unsigned int NumberOfRecentFiles;
   

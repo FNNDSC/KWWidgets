@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-17 20:04:25 $
-  Version:   $Revision: 1.57 $
+  Date:      $Date: 2002-01-17 23:09:23 $
+  Version:   $Revision: 1.58 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -798,7 +798,7 @@ void vtkKWWindow::CreateStatusImage()
   delete [] block.pixelPtr;
 }
 
-void vtkKWWindow::StoreRecentMenuToRegistry(char *key)
+void vtkKWWindow::StoreRecentMenuToRegistery(char *key)
 {
   char KeyNameP[10];
   char CmdNameP[10];
@@ -810,7 +810,7 @@ void vtkKWWindow::StoreRecentMenuToRegistry(char *key)
 
   //cout << "Store recent menu to registry; MRU: " 
   //     << this->RealNumberOfMRUFiles << endl;
-  vtkKWRegisteryUtilities *reg = vtkKWRegisteryUtilities::New();
+  vtkKWRegisteryUtilities *reg = this->GetApplication()->GetRegistery();
   reg->SetTopLevel( key ? key : 
 		    this->GetApplication()->GetApplicationName() );
   
@@ -834,7 +834,6 @@ void vtkKWWindow::StoreRecentMenuToRegistry(char *key)
 	}
       }
     }
-  reg->Delete();
 }
 
 void vtkKWWindow::AddRecentFilesToMenu(char *key, vtkKWObject *target)
@@ -842,7 +841,7 @@ void vtkKWWindow::AddRecentFilesToMenu(char *key, vtkKWObject *target)
   char KeyNameP[10];
   char CmdNameP[10];
   //cout << "vtkKWWindow::AddRecentFilesToMenu()" << endl;
-  vtkKWRegisteryUtilities *reg = vtkKWRegisteryUtilities::New();
+  vtkKWRegisteryUtilities *reg = this->GetApplication()->GetRegistery();
   if ( reg->Open( key ? key : this->GetApplication()->GetApplicationName(),
 		  "MRU", vtkKWRegisteryUtilities::READONLY ) )
     {
@@ -869,7 +868,6 @@ void vtkKWWindow::AddRecentFilesToMenu(char *key, vtkKWObject *target)
       }
     reg->Close();
     }
-  reg->Delete();
   this->UpdateRecentMenu(key);
 }
 
@@ -883,7 +881,7 @@ void vtkKWWindow::AddRecentFile(char *key, char *name,vtkKWObject *target,
     }
   this->InsertRecentFileToMenu(name, target, command);
   this->UpdateRecentMenu(key);
-  this->StoreRecentMenuToRegistry(key);
+  this->StoreRecentMenuToRegistery(key);
 }
 
 int vtkKWWindow::GetFileMenuIndex()
@@ -901,7 +899,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.57 $");
+  this->ExtractRevision(os,"$Revision: 1.58 $");
 }
 
 int vtkKWWindow::ExitDialog()

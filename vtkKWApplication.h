@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 23:31:25 $
-  Version:   $Revision: 1.25 $
+  Date:      $Date: 2002-01-17 23:09:22 $
+  Version:   $Revision: 1.26 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -56,6 +56,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 class vtkKWWindowCollection;
 class vtkKWWindow;
 class vtkKWWidget;
+class vtkKWRegisteryUtilities;
 
 class VTK_EXPORT vtkKWApplication : public vtkKWObject
 {
@@ -152,6 +153,13 @@ public:
 //ETX
   virtual int GetApplicationKey() {return -1;};
 
+//BTX
+  // Description:
+  // Return the Registry object. It is created on first use
+  // and deleted on exiting the application.
+  vtkKWRegisteryUtilities *GetRegistery( const char* toplevel);
+  vtkKWRegisteryUtilities *GetRegistery( );
+//ETX
 
   // Description:
   // This value will be returned by application1 at exit.
@@ -187,6 +195,8 @@ protected:
   int ExitStatus;
   
   ofstream *TraceFile;
+
+  vtkKWRegisteryUtilities *Registery;
 };
 
 #endif
