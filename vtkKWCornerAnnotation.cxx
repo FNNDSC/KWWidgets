@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-07-05 20:33:06 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2000-07-06 03:47:41 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -137,10 +137,13 @@ void vtkKWCornerAnnotation::Create(vtkKWApplication *app)
     this->CornerDisplayFrame->GetWidgetName() );
   this->CornerButton->Create(this->Application,
                              "-text {Display Corner Annotation}");
+  this->CornerButton->SetBalloonHelpString("Toggle the visibility of the corner annotation");
   this->CornerButton->SetCommand(this, "OnDisplayCorner");
   this->Script("pack %s -side left -padx 2 -pady 4 -anchor nw",
                this->CornerButton->GetWidgetName());
   this->CornerColor->Create( app, "" );
+  this->CornerColor->SetBalloonHelpJustificationToRight();
+  this->CornerColor->SetBalloonHelpString( "Change the color of all four corner annotation text items" );
   this->Script("pack %s -side right -padx 2 -pady 4 -anchor ne",
                this->CornerColor->GetWidgetName());
   this->CornerColor->SetCommand( this, "SetTextColor" );
@@ -185,6 +188,16 @@ void vtkKWCornerAnnotation::Create(vtkKWApplication *app)
     this->Script("pack %s -side top -anchor w -padx 4 -pady 2 -expand yes -fill x",
                  this->CornerText[i]->GetWidgetName());
     }
+
+  this->CornerLabel[0]->SetBalloonHelpString("Set the lower left corner annotation. The text will automatically scale to fit within the allocated space");
+
+  this->CornerLabel[1]->SetBalloonHelpJustificationToRight();
+  this->CornerLabel[1]->SetBalloonHelpString("Set the lower right corner annotation. The text will automatically scale to fit within the allocated space");
+
+  this->CornerLabel[2]->SetBalloonHelpString("Set the upper left corner annotation. The text will automatically scale to fit within the allocated space");
+
+  this->CornerLabel[3]->SetBalloonHelpJustificationToRight();
+  this->CornerLabel[3]->SetBalloonHelpString("Set the upper right corner annotation. The text will automatically scale to fit within the allocated space");
 
   // Register the events we are interested. 
 
@@ -373,6 +386,6 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.6 $");
+  this->ExtractRevision(os,"$Revision: 1.7 $");
   vtkKWLabeledFrame::SerializeRevision(os,indent);
 }

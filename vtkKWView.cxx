@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-06-30 19:12:03 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2000-07-06 03:47:41 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -260,20 +260,24 @@ void vtkKWView::CreateViewProperties()
   this->HeaderEntryFrame->Create(app,"frame","");
   this->Script("pack %s -padx 2 -pady 2 -fill x -expand yes -anchor w",
                this->HeaderFrame->GetWidgetName());
-    this->Script("pack %s %s -side top -padx 2 -pady 4 -expand 1 -fill x -anchor nw",
+  this->Script("pack %s %s -side top -padx 2 -pady 4 -expand 1 -fill x -anchor nw",
                this->HeaderDisplayFrame->GetWidgetName(),
                this->HeaderEntryFrame->GetWidgetName());
 
   this->HeaderButton->Create(this->Application,
                              "-text {Display Header Annotation}");
+  this->HeaderButton->SetBalloonHelpString("Toggle the visibility of header");
   this->HeaderButton->SetCommand(this, "OnDisplayHeader");
   this->HeaderColor->Create(this->Application, "");
   this->HeaderColor->SetCommand( this, "SetHeaderTextColor" );
+  this->HeaderColor->SetBalloonHelpJustificationToRight();
+  this->HeaderColor->SetBalloonHelpString("Change the color the the header text");
   this->Script("pack %s -side left -padx 2 -pady 4 -anchor nw",
                this->HeaderButton->GetWidgetName());
   this->Script("pack %s -side right -padx 2 -pady 4 -anchor ne",
                this->HeaderColor->GetWidgetName());
   this->HeaderLabel->Create(app,"label","-text Header:");
+  this->HeaderLabel->SetBalloonHelpString("Set the text for the header");
   this->HeaderEntry->Create(app,"-width 20");
   this->Script("bind %s <Return> {%s HeaderChanged}",
                this->HeaderEntry->GetWidgetName(),this->GetTclName());
@@ -953,5 +957,5 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.15 $");
+  this->ExtractRevision(os,"$Revision: 1.16 $");
 }
