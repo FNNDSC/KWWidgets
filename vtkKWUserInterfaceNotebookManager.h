@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceNotebookManager.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-17 21:45:22 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2003-02-26 19:35:27 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -115,6 +115,14 @@ public:
   virtual vtkKWWidget* GetPageWidget(int id);
   virtual vtkKWWidget* GetPageWidget(vtkKWUserInterfacePanel *panel, 
                                      const char *title);
+
+  // Description:
+  // Retrieve the parent widget of the pages associated to a panel. It is
+  // the unique widget that is common to all pages in the chain of parents.
+  // Note that you should use the panel's own API to get the page parent: this
+  // will automatically call this method with the proper panel parameter
+  // (see vtkKWUserInterfacePanel::GetPagesParentWidget()).
+  virtual vtkKWWidget *GetPagesParentWidget(vtkKWUserInterfacePanel *panel);
 
   // Description:
   // Raise a page reserved by the manager. This can be done through the unique 

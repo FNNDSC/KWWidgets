@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceNotebookManager.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-25 18:48:33 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2003-02-26 19:35:27 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceNotebookManager);
-vtkCxxRevisionMacro(vtkKWUserInterfaceNotebookManager, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceNotebookManager, "$Revision: 1.4 $");
 
 int vtkKWUserInterfaceNotebookManagerCommand(ClientData cd, Tcl_Interp *interp,
                                              int argc, char *argv[]);
@@ -218,6 +218,15 @@ vtkKWWidget* vtkKWUserInterfaceNotebookManager::GetPageWidget(
   // panel). This allow pages from different panels to have the same title.
 
   return this->Notebook->GetFrame(title, tag);
+}
+
+//----------------------------------------------------------------------------
+vtkKWWidget* vtkKWUserInterfaceNotebookManager::GetPagesParentWidget(
+  vtkKWUserInterfacePanel *panel)
+{
+  // Here we probably need this->Notebook->Body but it's not a public member
+
+  return this->Notebook;
 }
 
 //----------------------------------------------------------------------------

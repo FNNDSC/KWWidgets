@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfacePanel.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 15:54:39 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2003-02-26 19:35:27 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -122,6 +122,11 @@ public:
   // Return NULL on error.
   virtual vtkKWWidget *GetPageWidget(int id);
   virtual vtkKWWidget *GetPageWidget(const char *title);
+
+  // Description:
+  // Retrieve the parent widget of the pages associated to the panel. It is
+  // the unique widget that is common to all pages in the chain of parents.
+  virtual vtkKWWidget *GetPagesParentWidget();
 
   // Description:
   // Raise a page added to the panel. This can be done through the unique 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfacePanel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 15:54:39 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2003-02-26 19:35:27 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfacePanel);
-vtkCxxRevisionMacro(vtkKWUserInterfacePanel, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWUserInterfacePanel, "$Revision: 1.4 $");
 
 int vtkKWUserInterfacePanelCommand(ClientData cd, Tcl_Interp *interp,
                                    int argc, char *argv[]);
@@ -165,6 +165,19 @@ vtkKWWidget* vtkKWUserInterfacePanel::GetPageWidget(const char *title)
     }
 
   return this->UserInterfaceManager->GetPageWidget(this, title);
+}
+
+//----------------------------------------------------------------------------
+vtkKWWidget* vtkKWUserInterfacePanel::GetPagesParentWidget()
+{
+  if (this->UserInterfaceManager == NULL)
+    {
+    vtkErrorMacro("The UserInterfaceManager manager needs to be set before "
+                  "a the pages parent can be queried.");
+    return NULL;
+    }
+
+  return this->UserInterfaceManager->GetPagesParentWidget(this);
 }
 
 //----------------------------------------------------------------------------
