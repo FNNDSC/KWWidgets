@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-14 00:13:58 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2002-10-14 19:33:13 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -110,6 +110,7 @@ public:
   // Description:
   // Set/Get the maximum line height.
   void SetMaximumLineHeight(float);
+  void SetMaximumLineHeightNoTrace(float);
   float GetMaximumLineHeight();
   void MaximumLineHeightCallback();
   void MaximumLineHeightEndCallback();

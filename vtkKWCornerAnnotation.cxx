@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-14 17:02:39 $
-  Version:   $Revision: 1.34 $
+  Date:      $Date: 2002-10-14 19:33:13 $
+  Version:   $Revision: 1.35 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -57,7 +57,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCornerAnnotation );
-vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.34 $");
+vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.35 $");
 
 vtkSetObjectImplementationMacro(vtkKWCornerAnnotation,View,vtkKWView);
 
@@ -275,7 +275,7 @@ float vtkKWCornerAnnotation::GetMaximumLineHeight()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWCornerAnnotation::SetMaximumLineHeight(float v)
+void vtkKWCornerAnnotation::SetMaximumLineHeightNoTrace(float v)
 {
   if (this->MaximumLineHeightScale->IsCreated())
     {
@@ -290,24 +290,28 @@ void vtkKWCornerAnnotation::SetMaximumLineHeight(float v)
 }
 
 //----------------------------------------------------------------------------
+void vtkKWCornerAnnotation::SetMaximumLineHeight(float v)
+{
+  this->SetMaximumLineHeightNoTrace(v);
+  this->AddTraceEntry("$kw(%s) SetMaximumLineHeight %f",
+                      this->GetTclName(), v);
+}
+
+//----------------------------------------------------------------------------
 void vtkKWCornerAnnotation::MaximumLineHeightCallback()
 {
   if (this->MaximumLineHeightScale->IsCreated())
     {
-    this->SetMaximumLineHeight(this->MaximumLineHeightScale->GetValue());
+    this->SetMaximumLineHeightNoTrace(this->MaximumLineHeightScale->GetValue());
     }
-
 }
 
 //----------------------------------------------------------------------------
 void vtkKWCornerAnnotation::MaximumLineHeightEndCallback()
 {
-  this->MaximumLineHeightCallback();
   if (this->MaximumLineHeightScale->IsCreated())
     {
-    this->AddTraceEntry("$kw(%s) SetMaximumLineHeight %f",
-                        this->GetTclName(), 
-                        this->MaximumLineHeightScale->GetValue());
+    this->SetMaximumLineHeight(this->MaximumLineHeightScale->GetValue());
     }
 }
 
@@ -478,7 +482,7 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.34 $");
+  this->ExtractRevision(os,"$Revision: 1.35 $");
   vtkKWLabeledFrame::SerializeRevision(os,indent);
 }
 
