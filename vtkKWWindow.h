@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-07-08 23:25:31 $
-  Version:   $Revision: 1.50 $
+  Date:      $Date: 2002-07-11 19:40:32 $
+  Version:   $Revision: 1.51 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,6 +55,7 @@ class vtkKWImageLabel;
 class vtkKWLabel;
 class vtkKWLoadSaveDialog;
 class vtkKWMenu;
+class vtkKWMessageDialog;
 class vtkKWNotebook;
 class vtkKWProgressGauge;
 class vtkKWSplitFrame;
@@ -351,6 +352,8 @@ protected:
 
   int InExit;
   int UseMenuProperties;
+
+  vtkKWMessageDialog *ExitDialogWidget;
 
 //BTX
   // Description:

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-09 21:36:21 $
-  Version:   $Revision: 1.99 $
+  Date:      $Date: 2002-07-11 19:40:32 $
+  Version:   $Revision: 1.100 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -290,6 +290,8 @@ vtkKWWindow::vtkKWWindow()
   this->InExit = 0;
 
   this->RecentFilesMenuTag =0;
+
+  this->ExitDialogWidget = 0;
 }
 
 vtkKWWindow::~vtkKWWindow()
@@ -489,6 +491,7 @@ void vtkKWWindow::Render()
 // invoke the apps about dialog when selected
 void vtkKWWindow::DisplayAbout()
 {
+  int i = *(int*)0;
   this->Application->DisplayAbout(this);
 }
 
@@ -1014,12 +1017,15 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.99 $");
+  this->ExtractRevision(os,"$Revision: 1.100 $");
 }
 
 int vtkKWWindow::ExitDialog()
 {
-
+  if ( this->ExitDialogWidget )
+    {
+    return 1;
+    }
   ostrstream title;
   title << "Exit " << this->GetApplication()->GetApplicationName() << ends;
   char* ttl = title.str();
@@ -1028,10 +1034,20 @@ int vtkKWWindow::ExitDialog()
       << this->GetApplication()->GetApplicationName() << "?" << ends;
   char* msg = str.str();
   
-  int ret = vtkKWMessageDialog::PopupYesNo(
-    this->GetApplication(), this, "ExitApplication",
-    ttl, msg, 
-    vtkKWMessageDialog::QuestionIcon | vtkKWMessageDialog::RememberYes);
+  vtkKWMessageDialog *dlg2 = vtkKWMessageDialog::New();
+  this->ExitDialogWidget = dlg2;
+  dlg2->SetStyleToYesNo();
+  dlg2->SetMasterWindow(this);
+  dlg2->SetOptions(
+     vtkKWMessageDialog::QuestionIcon | vtkKWMessageDialog::RememberYes |
+     vtkKWMessageDialog::Beep | vtkKWMessageDialog::YesDefault );
+  dlg2->SetDialogName("ExitApplication");
+  dlg2->Create(this->GetApplication(),"");
+  dlg2->SetText( msg );
+  dlg2->SetTitle( ttl );
+  int ret = dlg2->Invoke();
+  this->ExitDialogWidget = 0;
+  dlg2->Delete();
 
   delete[] msg;
   delete[] ttl;
