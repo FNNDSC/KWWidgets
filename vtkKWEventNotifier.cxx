@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEventNotifier.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-07-13 15:35:42 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2000-07-14 21:41:57 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -115,7 +115,9 @@ void vtkKWEventNotifier::AddCallback( const char *event,
 
 void vtkKWEventNotifier::AddCallback( const char *event, 
 				      vtkKWWindow *window,
-				      void (*command)(const char *) )
+				      void (*command)(const char *, void *),
+				      void *arg,
+				      void (*delCommand)(void *) )
 {
   int                         index;
   vtkKWCallbackSpecification  *tmp1, *tmp2;
@@ -128,6 +130,8 @@ void vtkKWEventNotifier::AddCallback( const char *event,
   tmp1->SetEventString  ( event   );
   tmp1->SetWindow( window );
   tmp1->SetCommandMethod( command );
+  tmp1->SetArg( arg );
+  tmp1->SetArgDeleteMethod( delCommand );
 
   // If we already have another callback in this bucket
   if ( this->Callbacks[index] )
@@ -325,7 +329,7 @@ void vtkKWEventNotifier::RemoveCallback( const char *event,
 void vtkKWEventNotifier::RemoveCallback( const char *event, 
 					 vtkKWWindow *window,
 					 vtkKWObject *object, 
-					 void (*command)(const char *) )
+					 void (*command)(const char *, void *) )
 {
   int                         index;
   vtkKWCallbackSpecification  *tmp1, *tmp2, *tmp3;
@@ -448,7 +452,7 @@ void vtkKWEventNotifier::InvokeCallbacks( vtkKWObject *object,
           }
         else if ( tmp->CommandMethod )
           {
-          tmp->CommandMethod(args);
+          tmp->CommandMethod(args, tmp->GetArg() );
           }
         
 	}

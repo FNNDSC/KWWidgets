@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCallbackSpecification.h,v $
   Language:  C++
-  Date:      $Date: 2000-07-12 17:38:23 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-07-14 21:41:57 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -60,8 +60,14 @@ class VTK_EXPORT vtkKWCallbackSpecification : public vtkKWObject
   
   // This is the C++ method to be called instead of going through tcl interpreter.
 //BTX
-  void SetCommandMethod(void (*f)(const char *)) {this->CommandMethod = f;};
-  void                       (*CommandMethod)(const char *);
+  void SetCommandMethod(void (*f)(const char *,void *)) {this->CommandMethod = f;};
+  void (*CommandMethod)(const char *, void *);
+
+  void SetArgDeleteMethod(void (*f)(void *)) {this->ArgDeleteMethod = f;};
+  void (*ArgDeleteMethod)(void *);
+  
+  void SetArg( void *arg ) { this->Arg = arg;};
+  void *GetArg() {return this->Arg;};  
 //ETX
 
 protected:
@@ -74,6 +80,7 @@ protected:
   char                       *CommandString;
   vtkKWObject                *CalledObject;
   vtkKWWindow                *Window;
+  void                       *Arg;    
   vtkKWCallbackSpecification *NextCallback;
 };
 

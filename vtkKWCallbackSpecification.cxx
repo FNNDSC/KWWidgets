@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCallbackSpecification.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-06-30 21:22:32 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-07-14 21:41:57 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,6 +39,9 @@ vtkKWCallbackSpecification::vtkKWCallbackSpecification()
   this->CommandString   = NULL;
   this->CalledObject    = NULL;
   this->Window          = NULL;
+  this->CommandMethod   = NULL;
+  this->ArgDeleteMethod = NULL;
+  this->Arg             = NULL;
   this->NextCallback    = NULL;
   this->CommandFunction = vtkKWCallbackSpecificationCommand;
 }
@@ -48,6 +51,11 @@ vtkKWCallbackSpecification::~vtkKWCallbackSpecification()
   this->SetNextCallback(NULL);
   delete [] this->CommandString;
   delete [] this->EventString;
+  if ( this->ArgDeleteMethod )
+    {
+    this->ArgDeleteMethod(this->Arg);
+    this->Arg = NULL;
+    }
 }
 
 vtkKWCallbackSpecification* vtkKWCallbackSpecification::New()
