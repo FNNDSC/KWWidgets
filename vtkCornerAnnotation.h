@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:31 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-01-08 16:31:26 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -116,6 +116,7 @@ protected:
 
   vtkImageMapToWindowLevelColors *WindowLevel;
   vtkImageActor *ImageActor;
+  vtkImageActor *LastImageActor;
 
   char *CornerText[4];
   
@@ -127,7 +128,7 @@ protected:
   int MinimumFontSize;
   
   // search for replacable tokens and replace
-  void ReplaceText();
+  void ReplaceText(vtkImageActor *ia);
 private:
 };
 
