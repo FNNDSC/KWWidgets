@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-12-12 15:41:34 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2001-12-12 16:34:38 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -66,6 +66,8 @@ vtkKWDialog::vtkKWDialog()
   this->CommandFunction = vtkKWDialogCommand;
   this->Command = NULL;
   this->Done = 1;
+  this->TitleString = 0;
+  this->SetTitleString("Kitware Dialog");
 }
 
 vtkKWDialog::~vtkKWDialog()
@@ -145,7 +147,7 @@ void vtkKWDialog::Create(vtkKWApplication *app, const char *args)
   // create the top level
   wname = this->GetWidgetName();
   this->Script("toplevel %s %s",wname,args);
-  this->Script("wm title %s \"Kitware Dialog\"",wname);
+  this->Script("wm title %s \"%s\"",wname,this->TitleString);
   this->Script("wm iconname %s \"Dialog\"",wname);
   this->Script("wm protocol %s WM_DELETE_WINDOW {%s Cancel}",
                wname, this->GetTclName());
@@ -159,7 +161,14 @@ void vtkKWDialog::SetCommand(vtkKWObject* CalledObject, const char *CommandStrin
 
 void vtkKWDialog::SetTitle( const char* title )
 {
-  this->Script("wm title %s \"%s\"", this->GetWidgetName(), 
-	       title);
+  if (this->Application)
+    {
+    this->Script("wm title %s \"%s\"", this->GetWidgetName(), 
+		 title);
+    }
+  else
+    {
+    this->SetTitleString(title);
+    }
 }
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-11-26 16:57:09 $
-  Version:   $Revision: 1.36 $
+  Date:      $Date: 2001-12-12 16:34:38 $
+  Version:   $Revision: 1.37 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -149,9 +149,10 @@ vtkKWApplication::~vtkKWApplication()
     }
 }
 
+
 void vtkKWApplication::Script(const char *format, ...)
 {
-  static char event[16000];
+  char event[16000];
   
   va_list var_args;
   va_start(var_args, format);
@@ -160,6 +161,7 @@ void vtkKWApplication::Script(const char *format, ...)
 
   this->SimpleScript(event);
 }
+
 void vtkKWApplication::SimpleScript(char *event)
 {
 //#define VTK_DEBUG_SCRIPT
@@ -584,11 +586,13 @@ void vtkKWApplication::DisplayAbout(vtkKWWindow *win)
   ostrstream str;
   str << "Application : " << this->GetApplicationName() << "\nVersion : " << this->GetApplicationVersionName() << "\nRelease : " << this->GetApplicationReleaseName() << ends;
 
+  char* msg = str.str();
   vtkKWMessageDialog *dlg = vtkKWMessageDialog::New();
   dlg->Create(this,"");
-  dlg->SetText(str.str());
+  dlg->SetText(msg);
   dlg->Invoke();  
-  dlg->Delete();  
+  dlg->Delete(); 
+  delete[] msg;
 }
 
 //----------------------------------------------------------------------------

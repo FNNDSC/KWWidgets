@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.h,v $
   Language:  C++
-  Date:      $Date: 2001-12-12 15:41:35 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2001-12-12 16:34:39 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -94,12 +94,18 @@ public:
   void SetTitle(const char *);
 
 protected:
+  // Description:
+  // Set the title string of the dialog window. Should be called before
+  // create otherwise it will have no effect.
+  vtkSetStringMacro(TitleString);
+
   vtkKWDialog();
   ~vtkKWDialog();
   vtkKWDialog(const vtkKWDialog&) {};
   void operator=(const vtkKWDialog&) {};
 
   char *Command;
+  char *TitleString;
   int Done;
 };
 
