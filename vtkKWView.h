@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-08 21:10:19 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2000-08-10 17:28:28 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -101,7 +101,8 @@ public:
   // Print the image. This may pop up a dialog box etc.
   virtual void Print();
   int GetPrinting() {return this->Printing;};
-
+  vtkSetMacro(Printing,int);
+  
   // Description:
   // Set/Get the last position of the mouse.
   vtkSetVector2Macro(LastPosition,int);
