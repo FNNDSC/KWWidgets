@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.h,v $
   Language:  C++
-  Date:      $Date: 2003-04-15 16:33:16 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2003-04-16 12:55:26 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -103,6 +103,8 @@ public:
   void AddValue(const char* value);
   void DeleteValue(int idx);
   int GetValueIndex(const char* value);
+  int GetNumberOfValues();
+  void DeleteAllValues();
 
   // Description:
   // Make this entry a puldown combobox.
@@ -113,6 +115,10 @@ public:
   // Description:
   // This method is called when one of the entries in pulldown is selected.
   void ValueSelectedCallback();
+
+  // Description:
+  // Get the actuall Entry widget.
+  vtkGetObjectMacro(Entry, vtkKWWidget);
 
 protected:
   vtkKWEntry();
