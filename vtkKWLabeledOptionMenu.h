@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledOptionMenu.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-15 19:40:45 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2003-01-16 19:53:19 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -75,6 +75,12 @@ public:
   vtkGetMacro(PackHorizontally, int);
 
   // Description:
+  // Set the option menu to auto-expand (does not by default).
+  virtual void SetExpandOptionMenu(int);
+  vtkBooleanMacro(ExpandOptionMenu, int);
+  vtkGetMacro(ExpandOptionMenu, int);
+
+  // Description:
   // Set the string that enables balloon help for this widget.
   // Override to pass down to children.
   virtual void SetBalloonHelpString(const char *str);
@@ -87,6 +93,7 @@ protected:
   vtkKWOptionMenu *OptionMenu;
 
   int PackHorizontally;
+  int ExpandOptionMenu;
 
   // Pack or repack the widget
 
