@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2000-06-02 17:55:48 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2001-01-08 18:44:32 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -102,20 +102,23 @@ public:
   void Invoke(int position);
 
   // Description:
-  // Delete the menu item at the give position.
+  // Delete the menu item at the given position.
   // Be careful, there is a bug in tk, that will break other items
   // in the menu below the one being deleted, unless a new item is added.
   void DeleteMenuItem(int position);
   void DeleteMenuItem(const char* menuname);
-
+  void DeleteAllMenuItems();
+  
   // Description:
-  // Retrun the integer index of the menu item by string
+  // Return the integer index of the menu item by string
   int GetIndex(const char* menuname);
   
   // Description:
   // Call back for active menu item doc line help
   void DisplayHelp(const char*);
+  
 protected:
+  
   vtkKWMenu();
   ~vtkKWMenu();
   vtkKWMenu(const vtkKWMenu&) {};

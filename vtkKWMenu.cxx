@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-06-02 17:55:48 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2001-01-08 18:44:27 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -306,6 +306,24 @@ void vtkKWMenu::DeleteMenuItem(const char* menuitem)
 {
   this->Script("catch {%s delete {%s}}", this->GetWidgetName(), menuitem);
   this->Script("set {%sHelpArray(%s)} {}", this->GetWidgetName(), menuitem);
+}
+
+void vtkKWMenu::DeleteAllMenuItems()
+{
+  int i, last;
+  
+  this->Script("%s index end", this->GetWidgetName());
+  if (strcmp("none", this->GetApplication()->GetMainInterp()->result) == 0)
+    {
+    return;
+    }
+  
+  last = vtkKWObject::GetIntegerResult(this->Application);
+  
+  for (i = last; i >= 0; --i)
+    {
+    this->DeleteMenuItem(i);
+    }
 }
 
 int vtkKWMenu::GetIndex(const char* menuname)
