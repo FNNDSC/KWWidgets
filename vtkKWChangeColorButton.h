@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWChangeColorButton.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:13 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-11-08 17:37:47 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,6 +50,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWWidget.h"
 
 class vtkKWApplication;
+class vtkKWFrame;
+class vtkKWLabel;
 
 class VTK_EXPORT vtkKWChangeColorButton : public vtkKWWidget
 {
@@ -98,8 +100,8 @@ protected:
   vtkKWChangeColorButton();
   ~vtkKWChangeColorButton();
 
-  vtkKWWidget *Label1;
-  vtkKWWidget *Label2;
+  vtkKWLabel *Label1;
+  vtkKWFrame *Label2;
   char        *Command;
   char        *Text;
   float       Color[3];
