@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2003-03-21 21:02:20 $
-  Version:   $Revision: 1.61 $
+  Date:      $Date: 2003-03-28 19:14:48 $
+  Version:   $Revision: 1.62 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -122,6 +122,12 @@ class VTK_EXPORT vtkKWEvent
     Marker2DColorChangedEvent,
     Marker2DPositionChangedEvent,
     Marker2DVisibilityChangedEvent,
+    Marker3DAddMarkerEvent,
+    Marker3DColorChangedEvent,
+    Marker3DPositionChangedEvent,
+    Marker3DRemoveAllMarkersEvent,
+    Marker3DRemoveSelectedMarkerEvent,
+    Marker3DVisibilityChangedEvent,
     MaterialPropertyChangedEvent,
     MiddleMouseOptionChangedEvent,
     MouseBindingChangedEvent,
