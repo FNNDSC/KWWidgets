@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-09 17:20:20 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2003-01-10 04:45:03 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -111,9 +111,14 @@ public:
   virtual void Close();
   
   // Description:
-  // Setup/remove the widget bindings (mouse, keyboard, etc.)
+  // Setup/remove the widget bindings.
+  // SetupBindings(), which sets up general bindings like Expose or Configure
+  // events, will ultimately call SetupInteractionBindings() which sets up
+  // interaction bindings (mouse events, keyboard events, etc.).
   virtual void SetupBindings();
   virtual void RemoveBindings();
+  virtual void SetupInteractionBindings();
+  virtual void RemoveInteractionBindings();
   
   // Description:
   // Manage props inside this widget renderer(s). Add, remove, query.
@@ -201,6 +206,9 @@ public:
   virtual void* GetMemoryDC();
   
   virtual void ExecuteEvent(vtkObject *wdg, unsigned long event, void *calldata);
+  // Update the enable state. This should propagate similar calls to the
+  // internal widgets.
+  virtual void UpdateEnableState();
 
 protected:
   vtkKWRenderWidget();
