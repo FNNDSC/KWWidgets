@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-12 21:30:56 $
-  Version:   $Revision: 1.37 $
+  Date:      $Date: 2002-07-23 17:29:48 $
+  Version:   $Revision: 1.38 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -159,7 +159,7 @@ void vtkKWWidget::Create(vtkKWApplication *app, const char *name,
     return;
     }
   this->SetApplication(app);
-  this->Script("%s %s %s",name,this->GetWidgetName(),args);
+  this->Script("%s %s %s",name,this->GetWidgetName(),(args?args:""));
 
   const char* type = this->GetType();
   if ( !vtkString::Equals(type, "Frame") && 
@@ -343,7 +343,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.37 $");
+  this->ExtractRevision(os,"$Revision: 1.38 $");
 }
 
 //------------------------------------------------------------------------------
