@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:35 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2001-12-12 15:43:00 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -59,6 +59,13 @@ public:
   enum {Message = 0,
         YesNo,
         OkCancel};
+  
+  enum {NoIcon = 0,
+	Error,
+	Warning,
+	Question,
+	Info};
+	
   //ETX
   
   // Description:
@@ -68,6 +75,10 @@ public:
   // Description:
   // Set the text of the message
   void SetText(const char *);
+
+  // Description:
+  // Set the icon in the message dialog
+  void SetIcon(int);
 
   // Description:
   // Set the style of the message box
@@ -84,11 +95,13 @@ protected:
   void operator=(const vtkKWMessageDialog&) {};
 
   int Style;
-  
+
+  vtkKWWidget *MessageDialogFrame;
   vtkKWWidget *Label;
   vtkKWWidget *ButtonFrame;
   vtkKWWidget *OKButton;
   vtkKWWidget *CancelButton;  
+  vtkKWWidget *Icon;
 };
 
 
