@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRegisteryUtilities.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-10-31 22:13:42 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-01-10 16:18:28 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -54,4 +54,66 @@ void vtkKWRegisteryUtilities::ReadAValue(HKEY hKey,char *val,char *key,
     {
     strcpy(val,adefault);
     }
+}
+
+unsigned long vtkKWRegisteryUtilities::DeleteKey(HKEY hKey, char *key)
+{
+  unsigned long res = 0;
+  res =  RegDeleteKey( hKey, key );
+  cout << "Delete key: " << key << " (" << res << ")" << endl;
+  LPVOID lpMsgBuf;
+  FormatMessage( 
+    FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+    FORMAT_MESSAGE_FROM_SYSTEM | 
+    FORMAT_MESSAGE_IGNORE_INSERTS,
+    NULL,
+    GetLastError(),
+    MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+    (LPTSTR) &lpMsgBuf,
+    0,
+    NULL 
+    );
+// Process any inserts in lpMsgBuf.
+// ...
+// Display the string.
+  cout << (LPCTSTR)lpMsgBuf << endl;
+// Free the buffer.
+  LocalFree( lpMsgBuf );    
+ 
+  return res;
+}
+
+unsigned long vtkKWRegisteryUtilities::DeleteValue(HKEY hKey, char *value)
+{
+  unsigned long res = 0;
+  res =  RegDeleteValue( hKey, value );
+  cout << "Delete value: " << value << " (" << res << ")" << endl;
+  LPVOID lpMsgBuf;
+  FormatMessage( 
+    FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+    FORMAT_MESSAGE_FROM_SYSTEM | 
+    FORMAT_MESSAGE_IGNORE_INSERTS,
+    NULL,
+    GetLastError(),
+    MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+    (LPTSTR) &lpMsgBuf,
+    0,
+    NULL 
+    );
+// Process any inserts in lpMsgBuf.
+// ...
+// Display the string.
+  cout << (LPCTSTR)lpMsgBuf << endl;
+// Free the buffer.
+  LocalFree( lpMsgBuf );    
+ 
+  return res;
+}
+
+unsigned long vtkKWRegisteryUtilities::SetValue(HKEY hKey,char *key,char *value)
+{
+  unsigned long res = 0;
+  res = RegSetValueEx(hKey, key, 0, REG_SZ, 
+		(CONST BYTE *)(const char *)value, strlen(value)+1);
+  return res;
 }

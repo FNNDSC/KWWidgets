@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRegisteryUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2001-10-31 22:13:42 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-01-10 16:18:28 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,6 +49,9 @@ class VTK_EXPORT vtkKWRegisteryUtilities
 {
 public:
   static void ReadAValue(HKEY hKey,char *val,char *key, char *adefault);
+  static unsigned long DeleteKey(HKEY hKey, char *key);
+  static unsigned long DeleteValue(HKEY hKey, char *value);
+  static unsigned long SetValue(HKEY hKey,char *key,char *val);
 };
 
 #endif
