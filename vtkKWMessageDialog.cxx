@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-20 19:13:29 $
-  Version:   $Revision: 1.23 $
+  Date:      $Date: 2002-03-28 21:44:31 $
+  Version:   $Revision: 1.24 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -191,6 +191,10 @@ void vtkKWMessageDialog::SetText(const char *txt)
 
 int vtkKWMessageDialog::Invoke()
 {
+  if ( !this->GetApplication()->GetUseMessageDialogs() )
+    {
+    return 0;
+    }
   if ( this->Default == vtkKWMessageDialog::YesDefault )
     {
     this->OKButton->Focus();

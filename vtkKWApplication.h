@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-03-04 20:33:37 $
-  Version:   $Revision: 1.35 $
+  Date:      $Date: 2002-03-28 21:44:31 $
+  Version:   $Revision: 1.36 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -190,6 +190,12 @@ public:
   // it will refuse to exit
   vtkSetMacro(DialogUp, int);
   vtkGetMacro(DialogUp, int);
+
+  // Description:
+  // This method will suppress all message dialogs.
+  // There is no way back for now.
+  void SupressMessageDialogs() { this->UseMessageDialogs = 0; }
+  vtkGetMacro(UseMessageDialogs, int);
   
 protected:
   vtkKWApplication();
@@ -220,6 +226,8 @@ protected:
   vtkKWRegisteryUtilities *Registery;
   int RegisteryLevel;
   int BalloonHelpDelay;
+
+  int UseMessageDialogs;
 
 private:
   vtkKWApplication(const vtkKWApplication&);   // Not implemented.

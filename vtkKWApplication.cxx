@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-22 22:37:11 $
-  Version:   $Revision: 1.65 $
+  Date:      $Date: 2002-03-28 21:44:31 $
+  Version:   $Revision: 1.66 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -122,6 +122,8 @@ vtkKWApplication::vtkKWApplication()
 
   this->Registery = 0;
   this->RegisteryLevel = 10;
+
+  this->UseMessageDialogs = 1;
 }
 
 vtkKWApplication::~vtkKWApplication()
