@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWExtent.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2002-06-28 16:58:47 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -160,19 +160,19 @@ void vtkKWExtent::SetExtentRange(float *er)
 void vtkKWExtent::SetExtentRange(float x1, float x2, float y1, float y2, 
                                  float z1, float z2)
 {
-  this->XMinScale->SetRange(x1,x2);
-  this->XMaxScale->SetRange(x1,x2);
-  this->YMinScale->SetRange(y1,y2);
-  this->YMaxScale->SetRange(y1,y2);
-  this->ZMinScale->SetRange(z1,z2);
-  this->ZMaxScale->SetRange(z1,z2);
-  
   this->XMinScale->SetResolution((x2<x1)?((x1-x2)/1024.0):((x2-x1)/1024.0));
   this->XMaxScale->SetResolution((x2<x1)?((x1-x2)/1024.0):((x2-x1)/1024.0));
   this->YMinScale->SetResolution((y2<y1)?((y1-y2)/1024.0):((y2-y1)/1024.0));
   this->YMaxScale->SetResolution((y2<y1)?((y1-y2)/1024.0):((y2-y1)/1024.0));
   this->ZMinScale->SetResolution((y2<y1)?((y1-y2)/1024.0):((y2-y1)/1024.0));
   this->ZMaxScale->SetResolution((y2<y1)?((y1-y2)/1024.0):((y2-y1)/1024.0));
+  
+  this->XMinScale->SetRange(x1,x2);
+  this->XMaxScale->SetRange(x1,x2);
+  this->YMinScale->SetRange(y1,y2);
+  this->YMaxScale->SetRange(y1,y2);
+  this->ZMinScale->SetRange(z1,z2);
+  this->ZMaxScale->SetRange(z1,z2);
   
   this->SetExtent(x1,x2,y1,y2,z1,z2);
 }
