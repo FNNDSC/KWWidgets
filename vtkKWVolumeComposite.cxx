@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-06 16:23:37 $
-  Version:   $Revision: 1.31 $
+  Date:      $Date: 2002-02-06 22:03:38 $
+  Version:   $Revision: 1.32 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -498,7 +498,7 @@ void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.31 $");
+  this->ExtractRevision(os,"$Revision: 1.32 $");
 }
 
 vtkProp *vtkKWVolumeComposite::GetProp() 
@@ -508,8 +508,6 @@ vtkProp *vtkKWVolumeComposite::GetProp()
 
 void vtkKWVolumeComposite::RegisterIntermixIntersectingGeometry()
 {
-  //cout << "vtkKWVolumeComposite::RegisterIntermixIntersectingGeometry()" 
-  //     << endl;
   if ( !this->UseIntermixIntersectingGeometry )
     {
     this->RayCastMapper->IntermixIntersectingGeometryOn();
@@ -522,8 +520,6 @@ void vtkKWVolumeComposite::RegisterIntermixIntersectingGeometry()
 }
 void vtkKWVolumeComposite::DeregisterIntermixIntersectingGeometry()
 {
-  //cout << "vtkKWVolumeComposite::DeregisterIntermixIntersectingGeometry()" 
-  //<< endl;
   if ( this->UseIntermixIntersectingGeometry <= 0 )
     {
     this->UseIntermixIntersectingGeometry = 0;
