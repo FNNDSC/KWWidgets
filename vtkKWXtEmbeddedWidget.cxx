@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWXtEmbeddedWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:15 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-12-22 15:51:40 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWXtEmbeddedWidget);
-vtkCxxRevisionMacro(vtkKWXtEmbeddedWidget, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWXtEmbeddedWidget, "$Revision: 1.6 $");
 
 int vtkKWXtEmbeddedWidgetCommand(ClientData cd, Tcl_Interp *interp,
                              int argc, char *argv[]);
@@ -71,8 +71,9 @@ void vtkKWXtEmbeddedWidget::Display()
 
 void vtkKWXtEmbeddedWidget::Create(vtkKWApplication *app, char *args)
 {
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("Dialog already created");
     return;
