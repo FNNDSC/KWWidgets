@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2000-04-21 19:29:32 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2000-04-28 21:44:30 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,6 +39,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include "vtkKWObject.h"
 #include "vtkKWWidgetCollection.h"
+class vtkKWWindow;
 
 class VTK_EXPORT vtkKWWidget : public vtkKWObject
 {
@@ -98,6 +99,10 @@ public:
   void SetBalloonHelpJustificationToRight(){
     this->SetBalloonHelpJustification(2);};
   
+  // Description:
+  // Get the containing vtkKWWindow for this Widget if there is one.
+  // NOTE: this may return NULL if the Widget is not in a window.
+  vtkKWWindow* GetWindow();
 protected:
   vtkKWWidget();
   ~vtkKWWidget();

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-04-21 19:29:32 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2000-04-28 21:44:30 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -28,7 +28,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "vtkKWApplication.h"
 #include "vtkKWWidget.h"
 #include "vtkObjectFactory.h"
-
+#include "vtkKWWindow.h"
 
 
 //------------------------------------------------------------------------------
@@ -246,5 +246,20 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.6 $");
+  this->ExtractRevision(os,"$Revision: 1.7 $");
+}
+
+vtkKWWindow* vtkKWWidget::GetWindow()
+{
+  vtkKWWindow* win =0;
+  vtkKWWidget* widget = this->GetParent();
+  while(widget)
+    {
+    if((win = vtkKWWindow::SafeDownCast(widget)))
+      {
+      return win;
+      }
+    widget = widget->GetParent();
+    }
+  return win;
 }
