@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWChangeColorButton.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 16:00:26 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2003-02-28 18:01:52 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -71,11 +71,6 @@ public:
   vtkGetStringMacro(Text);
  
   // Description:
-  // Handle button press and release events
-  void AButtonPress(int x, int y);
-  void AButtonRelease(int x, int y);
-  
-  // Description:
   // Set the command that is called when the color is changed - the object is
   // the KWObject that will have the method called on it.  The second argument
   // is the name of the method to be called and any arguments in string form.
@@ -108,9 +103,14 @@ public:
   vtkBooleanMacro(LabelOutsideButton, int);
 
   // Description:
-  // Update the color
-  void ChangeColor();
+  // Query user for color
+  void QueryUserForColor();
 
+  // Description:
+  // Callbacks (handle button press and release events, etc.)
+  void ButtonPressCallback(int x, int y);
+  void ButtonReleaseCallback(int x, int y);
+  
 protected:
   vtkKWChangeColorButton();
   ~vtkKWChangeColorButton();
