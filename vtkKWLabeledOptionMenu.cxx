@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledOptionMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-03 18:47:51 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-12-04 23:28:20 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabeledOptionMenu );
-vtkCxxRevisionMacro(vtkKWLabeledOptionMenu, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWLabeledOptionMenu, "$Revision: 1.2 $");
 
 int vtkKWLabeledOptionMenuCommand(ClientData cd, Tcl_Interp *interp,
                              int argc, char *argv[]);
@@ -119,6 +119,34 @@ void vtkKWLabeledOptionMenu::SetEnabled(int e)
 
   this->Enabled = e;
   this->Modified();
+}
+
+// ---------------------------------------------------------------------------
+void vtkKWLabeledOptionMenu::SetBalloonHelpString(const char *string)
+{
+  if (this->Label)
+    {
+    this->Label->SetBalloonHelpString(string);
+    }
+
+  if (this->OptionMenu)
+    {
+    this->OptionMenu->SetBalloonHelpString(string);
+    }
+}
+
+// ---------------------------------------------------------------------------
+void vtkKWLabeledOptionMenu::SetBalloonHelpJustification(int j)
+{
+  if (this->Label)
+    {
+    this->Label->SetBalloonHelpJustification(j);
+    }
+
+  if (this->OptionMenu)
+    {
+    this->OptionMenu->SetBalloonHelpJustification(j);
+    }
 }
 
 //----------------------------------------------------------------------------

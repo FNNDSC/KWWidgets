@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledEntry.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-03 18:50:51 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-12-04 23:28:20 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabeledEntry );
-vtkCxxRevisionMacro(vtkKWLabeledEntry, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWLabeledEntry, "$Revision: 1.9 $");
 
 int vtkKWLabeledEntryCommand(ClientData cd, Tcl_Interp *interp,
                              int argc, char *argv[]);
@@ -168,10 +168,39 @@ void vtkKWLabeledEntry::SetEnabled(int e)
   this->Modified();
 }
 
+// ---------------------------------------------------------------------------
+void vtkKWLabeledEntry::SetBalloonHelpString(const char *string)
+{
+  if (this->Label)
+    {
+    this->Label->SetBalloonHelpString(string);
+    }
+
+  if (this->Entry)
+    {
+    this->Entry->SetBalloonHelpString(string);
+    }
+}
+
+// ---------------------------------------------------------------------------
+void vtkKWLabeledEntry::SetBalloonHelpJustification(int j)
+{
+  if (this->Label)
+    {
+    this->Label->SetBalloonHelpJustification(j);
+    }
+
+  if (this->Entry)
+    {
+    this->Entry->SetBalloonHelpJustification(j);
+    }
+}
+
 //----------------------------------------------------------------------------
 void vtkKWLabeledEntry::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
+
   os << indent << "Label: " << this->Label << endl;
   os << indent << "Entry: " << this->Entry << endl;
 }

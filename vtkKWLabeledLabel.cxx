@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-03 18:49:59 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-12-04 23:28:20 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabeledLabel );
-vtkCxxRevisionMacro(vtkKWLabeledLabel, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWLabeledLabel, "$Revision: 1.4 $");
 
 int vtkKWLabeledLabelCommand(ClientData cd, Tcl_Interp *interp,
                              int argc, char *argv[]);
@@ -119,6 +119,34 @@ void vtkKWLabeledLabel::SetEnabled(int e)
 
   this->Enabled = e;
   this->Modified();
+}
+
+// ---------------------------------------------------------------------------
+void vtkKWLabeledLabel::SetBalloonHelpString(const char *string)
+{
+  if (this->Label1)
+    {
+    this->Label1->SetBalloonHelpString(string);
+    }
+
+  if (this->Label2)
+    {
+    this->Label2->SetBalloonHelpString(string);
+    }
+}
+
+// ---------------------------------------------------------------------------
+void vtkKWLabeledLabel::SetBalloonHelpJustification(int j)
+{
+  if (this->Label1)
+    {
+    this->Label1->SetBalloonHelpJustification(j);
+    }
+
+  if (this->Label2)
+    {
+    this->Label2->SetBalloonHelpJustification(j);
+    }
 }
 
 //----------------------------------------------------------------------------

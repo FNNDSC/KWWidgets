@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledOptionMenu.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-03 18:47:51 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-12-04 23:28:21 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -72,8 +72,14 @@ public:
   vtkGetObjectMacro(OptionMenu, vtkKWOptionMenu);
 
   // Description:
-  // Set or get enabled state.
+  // Override to pass down to children.
   virtual void SetEnabled(int);
+
+  // Description:
+  // Setting this string enables balloon help for this widget.
+  // Override to pass down to children.
+  virtual void SetBalloonHelpString(const char *str);
+  virtual void SetBalloonHelpJustification(int j);
 
 protected:
   vtkKWLabeledOptionMenu();
