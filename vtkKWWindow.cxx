@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-10 14:16:34 $
-  Version:   $Revision: 1.116 $
+  Date:      $Date: 2002-09-10 17:09:48 $
+  Version:   $Revision: 1.117 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -68,7 +68,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define VTK_KW_SHOW_PROPERTIES_LABEL "Show Left Panel"
 #define VTK_KW_EXIT_DIALOG_NAME "ExitApplication"
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.116 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.117 $");
 vtkCxxSetObjectMacro(vtkKWWindow, PropertiesParent, vtkKWWidget);
 
 class vtkKWWindowMenuEntry
@@ -328,6 +328,18 @@ vtkKWWindow::~vtkKWWindow()
     this->Views->Delete();
     this->Views = NULL;
     }
+
+
+#if (TK_MAJOR_VERSION == 8) && (TK_MINOR_VERSION <= 2)
+  // This "hack" is here to get around a Tk bug ( Bug: 3402 )
+  // in tkMenu.c
+  vtkKWMenu* menuparent = vtkKWMenu::SafeDownCast(this->PageMenu->GetParent());
+  if (menuparent)
+    {
+    menuparent->DeleteMenuItem(VTK_KW_PAGE_SETUP_MENU_LABEL);
+    }
+#endif
+
   this->Menu->Delete();
   this->PageMenu->Delete();
   this->MenuFile->Delete();
@@ -1147,7 +1159,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.116 $");
+  this->ExtractRevision(os,"$Revision: 1.117 $");
 }
 
 int vtkKWWindow::ExitDialog()
