@@ -25,7 +25,6 @@
 #include "vtkKWUserInterfaceNotebookManager.h"
 #include "vtkKWWindow.h"
 #include "vtkObjectFactory.h"
-#include "vtkVector.h"
 
 //----------------------------------------------------------------------------
 
@@ -33,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWApplicationSettingsInterface);
-vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.23 $");
+vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.24 $");
 
 int vtkKWApplicationSettingsInterfaceCommand(ClientData cd, Tcl_Interp *interp,
                                              int argc, char *argv[]);
