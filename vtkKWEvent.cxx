@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-03 20:48:32 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-11-06 19:01:44 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -68,6 +68,7 @@ static const char *vtkKWEventStrings[] = {
   "CroppingRegionsVisibilityChangedEvent",
   "CroppingPlanesPositionChangedEvent",
   "CroppingRegionFlagsChangedEvent",
+  "ScaleBarVisibilityChangedEvent",
   "MiddleMouseOptionChangedEvent",
   "MultiPassStillRenderEndEvent",
   "MultiPassStillRenderStageChangedEvent",
