@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-21 20:59:13 $
-  Version:   $Revision: 1.51 $
+  Date:      $Date: 2002-01-22 15:19:17 $
+  Version:   $Revision: 1.52 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -519,6 +519,10 @@ void vtkKWView::CreateViewProperties()
 
 void vtkKWView::SetHeaderTextColor( float r, float g, float b )
 {
+  if ( r < 0 || g < 0 || b < 0 )
+    {
+    return;
+    }
   float *ff = this->GetHeaderTextColor();
   if ( ff[0] == r && ff[1] == g && ff[2] == b )
     {
@@ -1271,7 +1275,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.51 $");
+  this->ExtractRevision(os,"$Revision: 1.52 $");
 }
 
 void vtkKWView::SetupMemoryRendering(int x, int y, void *cd) 
@@ -1314,6 +1318,10 @@ unsigned char *vtkKWView::GetMemoryData()
 
 void vtkKWView::SetBackgroundColor( float r, float g, float b )
 {
+  if ( r < 0 || g < 0 || b < 0 )
+    {
+    return;
+    }
   float *ff = this->Renderer->GetBackground( );
   if ( ff[0] == r && ff[1] == g && ff[2] == b )
     {
@@ -1346,6 +1354,10 @@ void vtkKWView::GetBackgroundColor( float *r, float *g, float *b )
 
 void vtkKWView::SetCornerTextColor( float rgb[3] )
 {
+  if ( rgb[0] < 0 || rgb[1] < 0 || rgb[2] < 0 )
+    {
+    return;
+    }
   this->CornerAnnotation->SetTextColor( rgb );
 }
 

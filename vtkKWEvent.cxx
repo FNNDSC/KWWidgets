@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-21 20:59:13 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-01-22 15:19:17 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -86,6 +86,8 @@ static const char *vtkKWEventStrings[] = {
   "PerspectiveViewAngleChangedEvent",
   "LightboxResolutionChangedEvent",
   "ChangePrinterDPIEvent",
+  "ChangeMouseOperationsEvent",
+  "ChangeStandardInteractivityEvent",
   "InitializeTraceEvent"
 };
 
