@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-05 20:22:57 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-02-05 21:16:15 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -236,7 +236,12 @@ void vtkKWNotebook::Raise(int num)
   int h0 = bw * 2;
 #endif
 
-  int x0 = xb + x + bw-1;
+  int x0 = xb + x + bw
+#ifdef _WIN32    
+    -1;
+#else
+  ;
+#endif
   int y0 = yb +  y  + height - bw - h0;
   int w0 = width - (bw * 2);
 
@@ -393,9 +398,15 @@ void vtkKWNotebook::AddPage(const char *title, const char *ballon,
                this->GetTclName(),this->NumberOfPages);
   if ( this->Icons[this->NumberOfPages] )
     {
-    this->Script("place %s -in %s -x -3", 
+    this->Script("place %s -in %s -x %d -y %d", 
 		 this->Icons[this->NumberOfPages]->GetWidgetName(),
-		 this->Buttons[this->NumberOfPages]->GetWidgetName());   
+		 this->Buttons[this->NumberOfPages]->GetWidgetName(),
+#ifdef _WIN32
+		 -4, 0
+#else
+		 +1, 1
+#endif
+      );   
     this->Script("bind %s  <ButtonRelease-1> {%s invoke}",
 		 this->Icons[this->NumberOfPages]->GetWidgetName(),
 		 this->Buttons[this->NumberOfPages]->GetWidgetName());    
