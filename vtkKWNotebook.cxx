@@ -3,8 +3,8 @@
 Program:   Visualization Toolkit
 Module:    $RCSfile: vtkKWNotebook.cxx,v $
 Language:  C++
-Date:      $Date: 2003-03-10 22:26:32 $
-Version:   $Revision: 1.46 $
+Date:      $Date: 2003-03-11 14:04:36 $
+Version:   $Revision: 1.47 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -86,7 +86,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.46 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.47 $");
 
 //------------------------------------------------------------------------------
 int vtkKWNotebookCommand(ClientData cd, Tcl_Interp *interp,
@@ -1446,7 +1446,7 @@ int vtkKWNotebook::GetMostRecentPageId(int idx)
     return -1;
     }
 
-  vtkKWNotebook::Page *page;
+  vtkKWNotebook::Page *page = NULL;
   if (this->MostRecentPages->GetItem(idx, page) != VTK_OK)
     {
     return -1;
@@ -1467,7 +1467,7 @@ void vtkKWNotebook::PinPage(const char *title)
   this->PinPage(this->GetPage(title));
 }
 
-//------------------------------------------------------------------------------
+//--------------------------------------------------------------------------1----
 void vtkKWNotebook::PinPage(vtkKWNotebook::Page *page)
 {
   if (page == NULL || !this->IsCreated())
