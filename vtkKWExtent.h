@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWExtent.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-17 03:20:01 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-08-04 18:18:51 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,15 +52,15 @@ public:
   // Set the Range of the Extent, this is the range of
   // acceptable values for the sliders. Specified as 
   // minx maxx miny maxy minz maxz
-  void SetExtentRange(int *);
-  void SetExtentRange(int,int,int,int,int,int);
+  void SetExtentRange(float *);
+  void SetExtentRange(float,float,float,float,float,float);
 
   
   // Description:
   // Set/Get the Extent.
-  vtkGetVector6Macro(Extent,int);
-  void SetExtent(int *);
-  void SetExtent(int,int,int,int,int,int);
+  vtkGetVector6Macro(Extent,float);
+  void SetExtent(float *);
+  void SetExtent(float,float,float,float,float,float);
 
   // Description:
   // handle the callback, this is called internally when one of the 
@@ -88,7 +88,7 @@ protected:
   void operator=(const vtkKWExtent&) {};
 
   char *Command;
-  int Extent[6];
+  float Extent[6];
   vtkKWScale  *XMinScale;
   vtkKWScale  *XMaxScale;
   vtkKWScale  *YMinScale;
