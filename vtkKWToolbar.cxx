@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-10 18:05:02 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-06-21 20:51:12 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -130,7 +130,7 @@ void vtkKWToolbar::UpdateWidgets()
     vtkVectorIterator<vtkKWWidget*>* it = this->Widgets->NewIterator();
     
     int totReqWidth=0;
-    while ( it->IsDoneWithTraversal() != VTK_OK )
+    while ( !it->IsDoneWithTraversal() )
       {
       vtkKWWidget* widget = 0;
       if (it->GetData(widget) == VTK_OK)
@@ -153,7 +153,7 @@ void vtkKWToolbar::UpdateWidgets()
       ostrstream s;
       it->InitTraversal();
       int num = 0;
-      while ( it->IsDoneWithTraversal() != VTK_OK )
+      while ( !it->IsDoneWithTraversal() )
 	{
 	vtkKWWidget* widget = 0;
 	if (it->GetData(widget) == VTK_OK)
