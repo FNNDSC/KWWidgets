@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-04-03 20:20:14 $
-  Version:   $Revision: 1.47 $
+  Date:      $Date: 2003-05-02 19:34:09 $
+  Version:   $Revision: 1.48 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -275,6 +275,24 @@ public:
   virtual void DragAndDropStartCallback(int x, int y);
   virtual void DragAndDropPerformCallback(int x, int y);
   virtual void DragAndDropEndCallback(int x, int y);
+
+  // Description:
+  // Some constant that can be used to specify anchoring
+  //BTX
+  enum
+  {
+    ANCHOR_N,
+    ANCHOR_NE,
+    ANCHOR_E,
+    ANCHOR_SE,
+    ANCHOR_S,
+    ANCHOR_SW,
+    ANCHOR_W,
+    ANCHOR_NW,
+    ANCHOR_CENTER
+  };
+  //ETX
+  virtual const char* GetAnchorAsString(int);
 
 protected:
   vtkKWWidget();

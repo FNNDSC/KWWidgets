@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-23 20:58:42 $
-  Version:   $Revision: 1.68 $
+  Date:      $Date: 2003-05-02 19:34:09 $
+  Version:   $Revision: 1.69 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,7 +52,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.68 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.69 $");
 
 int vtkKWWidgetCommand(ClientData cd, Tcl_Interp *interp,
                        int argc, char *argv[]);
@@ -346,7 +346,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   this->Superclass::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.68 $");
+  this->ExtractRevision(os,"$Revision: 1.69 $");
 }
 
 //----------------------------------------------------------------------------
@@ -1151,6 +1151,34 @@ void vtkKWWidget::DragAndDropEndCallback(int x, int y)
 }
 
 //----------------------------------------------------------------------------
+const char* vtkKWWidget::GetAnchorAsString(int anchor)
+{
+  switch (anchor)
+    {
+    case ANCHOR_N:
+      return "n";
+    case ANCHOR_NE:
+      return "ne";
+    case ANCHOR_E:
+      return "e";
+    case ANCHOR_SE:
+      return "se";
+    case ANCHOR_S:
+      return "s";
+    case ANCHOR_SW:
+      return "sw";
+    case ANCHOR_W:
+      return "w";
+    case ANCHOR_NW:
+      return "nw";
+    case ANCHOR_CENTER:
+      return "center";
+    default:
+      return "";
+    }
+}
+
+//----------------------------------------------------------------------------
 void vtkKWWidget::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
@@ -1167,7 +1195,3 @@ void vtkKWWidget::PrintSelf(ostream& os, vtkIndent indent)
      << (this->EnableDragAndDrop ? "On" : "Off") << endl;
   os << indent << "DragAndDropAnchor: " << this->DragAndDropAnchor << endl;
 }
-
-
-
-
