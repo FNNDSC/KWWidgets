@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWListBox.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:23 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-01-22 16:45:46 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -101,12 +101,20 @@ int vtkKWListBox::GetSelectionIndex()
   this->Script("%s curselection", this->Listbox->GetWidgetName(),
 	       this->GetWidgetName());
   char* result = this->Application->GetMainInterp()->result;
-  return atoi(result);
+  if ( strlen(result)>0 )
+    {
+    return atoi(result);
+    }
+  return -1;
 }
 
   
 const char *vtkKWListBox::GetSelection()
 {
+  if ( this->GetSelectionIndex() < 0 )
+    {
+    return 0;
+    }
   this->Script("%s get [%s curselection]", this->Listbox->GetWidgetName(),
 	       this->Listbox->GetWidgetName());
   char* result = this->Application->GetMainInterp()->result;
