@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 18:52:00 $
-  Version:   $Revision: 1.109 $
+  Date:      $Date: 2002-08-07 20:24:50 $
+  Version:   $Revision: 1.110 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -67,7 +67,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define VTK_KW_SHOW_PROPERTIES_LABEL "Show Left Panel"
 #define VTK_KW_EXIT_DIALOG_NAME "ExitApplication"
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.109 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.110 $");
 vtkCxxSetObjectMacro(vtkKWWindow, PropertiesParent, vtkKWWidget);
 
 class vtkKWWindowMenuEntry
@@ -359,6 +359,15 @@ vtkKWWindow::~vtkKWWindow()
   this->SetWindowClass(0);
   this->SetScriptExtension(0);
   this->SetScriptType(0);
+
+  if (this->DialogSettingsFrame)
+    {
+    this->DialogSettingsFrame->Delete();
+    }
+  if (this->DialogSettingsConfirmExitCheck)
+    {
+    this->DialogSettingsConfirmExitCheck->Delete();
+    }
 }
 
 void vtkKWWindow::DisplayHelp()
@@ -1060,7 +1069,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.109 $");
+  this->ExtractRevision(os,"$Revision: 1.110 $");
 }
 
 int vtkKWWindow::ExitDialog()
