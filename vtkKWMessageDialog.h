@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.h,v $
   Language:  C++
-  Date:      $Date: 2001-12-28 20:44:42 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-01-02 21:30:30 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -65,6 +65,10 @@ public:
 	Warning,
 	Question,
 	Info};
+
+  enum {NoneDefault = 0,
+	YesDefault = 1,
+	NoDefault = 2};
 	
   //ETX
   
@@ -79,6 +83,16 @@ public:
   // Description:
   // Set the icon in the message dialog
   void SetIcon(int);
+
+  // Description:
+  // Invoke the dialog and display it in a modal manner. 
+  // This method returns a zero if the dilaog was killed or 
+  // canceled, nonzero otherwise.
+  virtual int Invoke();
+
+  // Description:
+  // Set the default button
+  vtkSetClampMacro(Default, int, 0, 2);
 
   // Description:
   // Set the style of the message box
@@ -99,6 +113,7 @@ protected:
   void operator=(const vtkKWMessageDialog&) {};
 
   int Style;
+  int Default;
 
   vtkKWWidget *MessageDialogFrame;
   vtkKWWidget *Label;
