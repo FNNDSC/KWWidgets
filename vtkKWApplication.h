@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2001-12-26 22:31:30 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2002-01-09 22:08:04 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -153,6 +153,15 @@ public:
 
   virtual int GetApplicationKey() {return -1;};
 
+
+  // Description:
+  // This value will be returned by application1 at exit.
+  // Use this from scripts if you want ParaView exit with an
+  // error status (for example to indicate that a regression test 
+  // failed)
+  vtkSetMacro(ExitStatus, int);
+  vtkGetMacro(ExitStatus, int);
+
 protected:
   vtkKWApplication();
   ~vtkKWApplication();
@@ -175,6 +184,8 @@ protected:
 
   static int WidgetVisibility;
   int InExit;
+
+  int ExitStatus;
   
   ofstream *TraceFile;
 };
