@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 17:03:00 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-12-30 20:00:05 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -57,7 +57,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.10 $");
 
 vtkKWRenderWidget::vtkKWRenderWidget()
 {
@@ -529,4 +529,5 @@ void vtkKWRenderWidget::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "RenderMode: " << this->RenderMode << endl;
   os << indent << "RenderState: " << this->RenderState << endl;
   os << indent << "Renderer: " << this->Renderer << endl;
+  os << indent << "EventMap: " << this->EventMap << endl;
 }

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-19 15:38:33 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-12-30 20:00:05 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -68,6 +68,7 @@ public:
   
   virtual void Create(vtkKWApplication *app, const char *args);
 
+  vtkGetObjectMacro(EventMap, vtkKWEventMap);
   vtkGetObjectMacro(Renderer, vtkRenderer);
   vtkGetObjectMacro(RenderWindow, vtkRenderWindow);
   
