@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-02 21:28:06 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2002-01-03 15:08:28 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -97,8 +97,26 @@ public:
   virtual void SetCommand( vtkKWObject* Object, const char* MethodAndArgString);
   
   // Description:
-  // A method to set binding on the object
-  void SetBind(vtkKWObject* CalledObject, const char *Event, const char *CommandString);
+  // A method to set binding on the object.
+  // This method sets binding:
+  // bind this->GetWidgetName() event { object->GetTclName() command }
+  void SetBind(vtkKWObject* object, const char *event, const char *command);
+
+  // Description:
+  // A method to set binding on the object.
+  // This method sets binding:
+  // bind this->GetWidgetName() event { command }  
+  void SetBind(const char *event, const char *command);
+
+  // Description:
+  // A method to set binding on the object.
+  // This method sets binding:
+  // bind this->GetWidgetName() event { widget command }  
+  void SetBind(const char *event, const char *widget, const char *command);
+
+  // Description:
+  // Set focus to this widget.
+  void Focus();
 
   // Description: a method to create a callback string from a KWObject.
   // The caller is resposible for deleting the returned string.  
