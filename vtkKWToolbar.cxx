@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-08 22:50:30 $
-  Version:   $Revision: 1.19 $
+  Date:      $Date: 2002-08-09 14:10:21 $
+  Version:   $Revision: 1.20 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -77,7 +77,7 @@ void vtkKWToolbar::SetGlobalWidgetsFlatAspect(int val)
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
-vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.19 $");
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.20 $");
 
 
 int vtkKWToolbarCommand(ClientData cd, Tcl_Interp *interp,
@@ -490,4 +490,7 @@ void vtkKWToolbar::PrintSelf(ostream& os, vtkIndent indent)
   this->Superclass::PrintSelf(os,indent);
   os << indent << "Frame: " << this->Frame << endl;
   os << indent << "Separator: " << this->Separator << endl;
+  os << indent << "Resizable: " << (this->Resizable ? "On" : "Off") << endl;
+  os << indent << "FlatAspect: " << (this->FlatAspect ? "On" : "Off") << endl;
+  os << indent << "WidgetsFlatAspect: " << (this->WidgetsFlatAspect ? "On" : "Off") << endl;
 }
