@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-17 03:20:00 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2000-03-13 21:11:59 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -87,6 +87,12 @@ public:
   // Set/Get the ApplicationName
   void SetApplicationName(const char *);
   vtkGetStringMacro(ApplicationName);
+
+  // Description:
+  // Set/Get the ApplicationVersionName - this is the name + version number
+  void SetApplicationVersionName(const char *);
+  vtkGetStringMacro(ApplicationVersionName);
+
   
 //BTX
   // Description:
@@ -112,6 +118,7 @@ protected:
   Tcl_Interp *MainInterp;
   vtkKWWindowCollection *Windows;
   char *ApplicationName;
+  char *ApplicationVersionName;
 
   // For Balloon help
   vtkKWWidget *BalloonHelpWindow;
@@ -119,6 +126,7 @@ protected:
   char *BalloonHelpPending;
   vtkSetStringMacro(BalloonHelpPending);
 
+  virtual int GetApplicationKey() {return -1;};
 };
 
 #endif
