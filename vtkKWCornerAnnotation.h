@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-19 15:41:12 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2002-12-22 16:02:12 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -143,11 +143,6 @@ public:
   virtual void SerializeRevision(ostream& os, vtkIndent indent);
 
   // Description:
-  // Set/Get the enabled state.
-  // Override to pass down to children.
-  virtual void SetEnabled(int);
-
-  // Description:
   // Update the GUI according to the value of the ivars
   void Update();
 
@@ -188,6 +183,10 @@ protected:
   vtkKWTextProperty      *TextPropertyWidget;
 
   void Render();
+
+  // Update the enable state. This should propagate similar calls to the
+  // internal widgets.
+  virtual void UpdateEnableState();
 
 private:
   vtkKWCornerAnnotation(const vtkKWCornerAnnotation&); // Not implemented
