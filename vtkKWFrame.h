@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 04:20:05 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2003-01-14 19:30:16 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -65,6 +65,13 @@ public:
   // Get the vtkKWWidget for the internal frame.
   vtkKWWidget *GetFrame() {return this->Frame;};
 
+  // Description:
+  // By default this is a simple frame. BY turning Scrollable on it becomes
+  // a scrolled frame. This must be set prior to creation.
+  vtkSetMacro(Scrollable,int);
+  vtkGetMacro(Scrollable,int);
+  vtkBooleanMacro(Scrollable,int);
+  
 protected:
   vtkKWFrame();
   ~vtkKWFrame();
@@ -74,7 +81,8 @@ protected:
   vtkKWWidget *ScrollFrame;
 
   char* FrameId;
-
+  int Scrollable;
+  
 private:
   vtkKWFrame(const vtkKWFrame&); // Not implemented
   void operator=(const vtkKWFrame&); // Not implemented
