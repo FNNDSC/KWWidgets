@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSelectionFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-07 19:30:30 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2003-01-16 21:50:47 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "Resources/vtkKWArrowDown.h"
 
 vtkStandardNewMacro(vtkKWSelectionFrame);
-vtkCxxRevisionMacro(vtkKWSelectionFrame, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrame, "$Revision: 1.7 $");
 
 vtkCxxSetObjectMacro(vtkKWSelectionFrame, SelectObject, vtkKWObject);
 
@@ -116,6 +116,7 @@ void vtkKWSelectionFrame::Create(vtkKWApplication *app, const char *args)
                                 image_KWArrowDown_buffer_length);
   this->Script("%s configure -image %s -indicatoron 0",
                this->SelectionList->GetWidgetName(), imageName);
+  delete [] imageName;
 
   this->Title->Create(app, "-bg #008 -fg #fff");
   this->Title->SetLabel("<Click to Select>");
