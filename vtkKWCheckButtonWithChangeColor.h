@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCheckButtonWithChangeColor.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-08 19:56:18 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2003-01-15 22:59:32 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -67,12 +67,26 @@ public:
   vtkGetObjectMacro(CheckButton, vtkKWCheckButton);
   vtkGetObjectMacro(ChangeColorButton, vtkKWChangeColorButton);
   
+  // Description:
+  // Refresh the interface given the current value of the widgets and Ivars
+  virtual void Update();
+
+  // Description:
+  // Disable the color button when the checkbutton is not checked.
+  // You will have to call the Update() method manually though, to reflect
+  // that state.
+  virtual void SetDisableChangeColorButtonWhenNotChecked(int);
+  vtkBooleanMacro(DisableChangeColorButtonWhenNotChecked, int);
+  vtkGetMacro(DisableChangeColorButtonWhenNotChecked, int);
+
 protected:
   vtkKWCheckButtonWithChangeColor();
   ~vtkKWCheckButtonWithChangeColor();
 
   vtkKWCheckButton       *CheckButton;
   vtkKWChangeColorButton *ChangeColorButton;
+
+  int DisableChangeColorButtonWhenNotChecked;
 
   // Pack or repack the widget
 
