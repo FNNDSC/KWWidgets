@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-29 20:21:07 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-04-14 23:06:41 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -90,6 +90,7 @@ void vtkKWLoadSaveDialog::Create(vtkKWApplication *app, const char* /*args*/)
 
 int vtkKWLoadSaveDialog::Invoke()
 {
+  this->Application->SetDialogUp(1);
   char *path = NULL;
   this->Script("%s -title \"%s\" -defaultextension {%s} "
 	       "-filetypes {%s} -initialdir {%s}", 
@@ -100,8 +101,10 @@ int vtkKWLoadSaveDialog::Invoke()
   if ( path && strlen(path) )
     {
     this->SetFileName(path);
+    this->Application->SetDialogUp(0);
     return 1;
     }
   this->SetFileName(0);
+  this->Application->SetDialogUp(0);
   return 0;
 }

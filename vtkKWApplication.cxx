@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-28 21:44:31 $
-  Version:   $Revision: 1.66 $
+  Date:      $Date: 2002-04-14 23:06:41 $
+  Version:   $Revision: 1.67 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,6 +52,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkOutputWindow.h"
 #include "vtkKWWindow.h"
 #include "kwinit.h"
+
+#include "vtkArrayMap.txx"
 
 
 int vtkKWApplication::WidgetVisibility = 1;
@@ -123,7 +125,7 @@ vtkKWApplication::vtkKWApplication()
   this->Registery = 0;
   this->RegisteryLevel = 10;
 
-  this->UseMessageDialogs = 1;
+  this->UseMessageDialogs = 1;  
 }
 
 vtkKWApplication::~vtkKWApplication()
@@ -742,4 +744,17 @@ void vtkKWApplication::SetBalloonHelpWidget( vtkKWWidget *widget )
     this->BalloonHelpWidget = widget;
     this->BalloonHelpWidget->Register(this);
     }  
+}
+
+
+int vtkKWApplication::GetMessageDialogResponse(const char* dialogname)
+{
+  return 0;
+}
+
+int vtkKWApplication::SetMessageDialogResponse(const char* dialogname, 
+					       int response)
+{
+  dialogname = dialogname;
+  response = response;
 }
