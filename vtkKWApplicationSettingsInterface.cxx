@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplicationSettingsInterface.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-27 19:57:07 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2003-01-27 20:13:30 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,10 +49,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWToolbar.h"
 #include "vtkKWWindow.h"
 #include "vtkObjectFactory.h"
+#include "vtkVector.h"
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWApplicationSettingsInterface);
-vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.9 $");
 
 int vtkKWApplicationSettingsInterfaceCommand(ClientData cd, Tcl_Interp *interp,
                                              int argc, char *argv[]);
@@ -343,7 +344,7 @@ void vtkKWApplicationSettingsInterface::Update()
 {
   this->Superclass::Update();
 
-  if (!this->IsCreated())
+  if (!this->IsCreated() || !this->Window)
     {
     return;
     }
@@ -433,7 +434,6 @@ void vtkKWApplicationSettingsInterface::Update()
       }
     }
 
-
   // Toolbar settings : flat buttons
 
   if (FlatButtonsCheckButton)
@@ -452,6 +452,21 @@ void vtkKWApplicationSettingsInterface::Update()
         vtkKWToolbar::GetGlobalWidgetsFlatAspect());
       this->FlatButtonsCheckButton->SetState(
         vtkKWToolbar::GetGlobalWidgetsFlatAspect());
+      }
+    }
+
+  // If there is no toolbars, disable the interface
+
+  if (!this->Window->GetToolbars() ||
+      !this->Window->GetToolbars()->GetNumberOfItems())
+    {
+    if (this->FlatFrameCheckButton)
+      {
+      this->FlatFrameCheckButton->SetEnabled(0);
+      }
+    if (this->FlatButtonsCheckButton)
+      {
+      this->FlatButtonsCheckButton->SetEnabled(0);
       }
     }
 }
