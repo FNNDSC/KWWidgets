@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-13 14:41:38 $
-  Version:   $Revision: 1.102 $
+  Date:      $Date: 2002-12-13 22:16:59 $
+  Version:   $Revision: 1.103 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -104,7 +104,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.102 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.103 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -752,6 +752,12 @@ void vtkKWView::RemoveComposite(vtkKWComposite *c)
   c->SetView(NULL);
   this->GetViewport()->RemoveProp(c->GetProp());
   this->Composites->RemoveItem(c);
+}
+
+//----------------------------------------------------------------------------
+int vtkKWView::HasComposite(vtkKWComposite *c)
+{
+  return this->Composites->IsItemPresent(c);
 }
 
 //----------------------------------------------------------------------------
@@ -1518,7 +1524,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.102 $");
+  this->ExtractRevision(os,"$Revision: 1.103 $");
 }
 
 //----------------------------------------------------------------------------
