@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-03-03 21:40:34 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2003-03-10 16:40:26 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -174,7 +174,7 @@ public:
   
   // Description:
   // Get the current camera
-  vtkGetObjectMacro(CurrentCamera, vtkCamera);
+  vtkCamera *GetCurrentCamera();
 
   // Description:
   // Set/Get the scalar shift/scale
@@ -229,6 +229,11 @@ public:
   // internal widgets.
   virtual void UpdateEnableState();
 
+  // Description:
+  // Chaining method to serialize an object and its superclasses.
+  virtual void SerializeSelf(ostream& os, vtkIndent indent);
+  virtual void SerializeToken(istream& is, const char token[1024]);
+
 protected:
   vtkKWRenderWidget();
   ~vtkKWRenderWidget();
@@ -252,8 +257,6 @@ protected:
   
   char *Units;
 
-  vtkCamera *CurrentCamera;
-
   float ScalarShift;
   float ScalarScale;
 
@@ -263,6 +266,8 @@ protected:
   vtkKWRenderWidgetObserver *Observer;
 
   virtual void UpdateAccordingToUnits() {};
+
+  virtual void SerializeRevision(ostream& os, vtkIndent indent);
   
 private:
   vtkKWRenderWidget(const vtkKWRenderWidget&);  // Not implemented
