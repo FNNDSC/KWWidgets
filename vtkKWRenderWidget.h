@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-03 20:35:24 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2003-01-06 22:37:05 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -143,6 +143,7 @@ public:
   vtkGetObjectMacro(CornerAnnotation, vtkCornerAnnotation);
   virtual void CornerAnnotationOn();
   virtual void CornerAnnotationOff();
+  virtual void SetCornerAnnotationVisibility(int v);
   virtual void SetCornerTextColor(float r, float g, float b);
   virtual void SetCornerTextColor(float *rgb)
                { this->SetCornerTextColor(rgb[0], rgb[1], rgb[2]); }
