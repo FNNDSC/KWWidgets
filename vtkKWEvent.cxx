@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-15 20:42:16 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-06-06 21:40:44 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,6 +45,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 static const char *vtkKWEventStrings[] = {
   "KWWidgetEvents",
+  "MessageDialogInvokeEvent",
   "WindowLevelChangedEvent",
   "WindowLevelChangingEvent",
   "WindowLevelChangedImageCompositeEvent",
@@ -90,7 +91,10 @@ static const char *vtkKWEventStrings[] = {
   "ChangeMouseOperationsEvent",
   "ChangeStandardInteractivityEvent",
   "SwitchToVolumeProEvent",
-  "InitializeTraceEvent"
+  "InitializeTraceEvent",
+  "ErrorMessageEvent",
+  "WarningMessageEvent",
+  "FinalBogusNotUsedEvent"
 };
 
 const char *vtkKWEvent::GetStringFromEventId(unsigned long event)

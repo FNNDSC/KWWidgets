@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2002-03-20 19:13:55 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-06-06 21:40:44 $
+  Version:   $Revision: 1.10 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -53,8 +53,9 @@ class VTK_EXPORT vtkKWEvent
   static const char* GetStringFromEventId(unsigned long event);
   enum {
     KWWidgetEvents = 2000,
+    MessageDialogInvokeEvent,
     // VV    
-    WindowLevelChangedEvent = 2000,    
+    WindowLevelChangedEvent,
     WindowLevelChangingEvent,
     WindowLevelChangedImageCompositeEvent,
     WindowLevelChangingImageCompositeEvent,
@@ -101,7 +102,11 @@ class VTK_EXPORT vtkKWEvent
     SwitchToVolumeProEvent,
     ViewAnnotationChangedEvent,
     // PV
-    InitializeTraceEvent
+    InitializeTraceEvent,
+    ErrorMessageEvent,
+    WarningMessageEvent,    
+    // 
+    FinalBogusNotUsedEvent
   };
 };
 
