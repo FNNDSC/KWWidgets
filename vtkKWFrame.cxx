@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-14 20:08:58 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2003-01-14 21:04:41 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFrame );
-vtkCxxRevisionMacro(vtkKWFrame, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWFrame, "$Revision: 1.13 $");
 
 vtkKWFrame::vtkKWFrame()
 {
@@ -70,21 +70,18 @@ vtkKWFrame::~vtkKWFrame()
 
 
 void vtkKWFrame::Create(vtkKWApplication *app, const char* args)
-{  
+{
   const char *wname;
   
   // Set the application
-
   if (this->IsCreated())
     {
     vtkErrorMacro("ScrollableFrame already created");
     return;
     }
-
   this->SetApplication(app);
-
   
-  if ( args )
+  if ( this->Scrollable )
     {
     // create the top level
     wname = this->GetWidgetName();
@@ -105,14 +102,19 @@ void vtkKWFrame::Create(vtkKWApplication *app, const char* args)
 
     this->Script("%s configure -constrainedwidth 1", 
                  this->ScrollFrame->GetWidgetName());
-
     }
   else
     {
     // create the top level
     wname = this->GetWidgetName();
-    this->Script("frame %s -borderwidth 0 -relief flat", wname);
-
+    if (args)
+      {
+      this->Script("frame %s %s", wname, args);
+      }
+    else // original code with hard defaults
+      {
+      this->Script("frame %s -borderwidth 0 -relief flat", wname);
+      }
     this->Frame = this;
     }
 
