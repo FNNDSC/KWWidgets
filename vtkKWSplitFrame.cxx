@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplitFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:24 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-03-21 18:48:41 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -105,7 +105,7 @@ void vtkKWSplitFrame::Create(vtkKWApplication *app)
                wname);
 
   this->Frame1->Create(app,"frame","-borderwidth 0 -relief flat");
-  this->Separator->Create(app,"frame","-borderwidth 2 -relief raised");
+  this->Separator->Create(app,"frame","-borderwidth 0 -relief flat");
   this->Frame2->Create(app,"frame","-borderwidth 0 -relief flat");
   
   this->Update();
@@ -113,7 +113,7 @@ void vtkKWSplitFrame::Create(vtkKWApplication *app)
   this->Script("bind %s <B1-Motion> {%s DragCallback}",
                this->Separator->GetWidgetName(), this->GetTclName());
   this->Script("bind %s <Configure> {%s ConfigureCallback}",
-               this->Separator->GetWidgetName(), this->GetTclName());
+               this->GetWidgetName(), this->GetTclName());
 
 
   // Setup the cursor to indication an action associatyed with the separator. 
