@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplicationSettingsInterface.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-26 19:35:27 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2003-02-26 21:03:53 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,6 +44,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkKWApplication.h"
 #include "vtkKWCheckButton.h"
+#include "vtkKWFrame.h"
 #include "vtkKWIcon.h"
 #include "vtkKWLabeledFrame.h"
 #include "vtkKWToolbar.h"
@@ -53,7 +54,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWApplicationSettingsInterface);
-vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.11 $");
 
 int vtkKWApplicationSettingsInterfaceCommand(ClientData cd, Tcl_Interp *interp,
                                              int argc, char *argv[]);
@@ -164,7 +165,7 @@ void vtkKWApplicationSettingsInterface::Create(vtkKWApplication *app)
 
   ostrstream tk_cmd;
   vtkKWWidget *page;
-  vtkKWWidget *frame;
+  vtkKWFrame *frame;
 
   // --------------------------------------------------------------
   // Add a "Preferences" page

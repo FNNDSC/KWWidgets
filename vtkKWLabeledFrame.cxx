@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 16:56:26 $
-  Version:   $Revision: 1.23 $
+  Date:      $Date: 2003-02-26 21:03:53 $
+  Version:   $Revision: 1.24 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -42,6 +42,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWLabeledFrame.h"
 
 #include "vtkKWApplication.h"
+#include "vtkKWFrame.h"
 #include "vtkKWIcon.h"
 #include "vtkKWImageLabel.h"
 #include "vtkKWTkUtilities.h"
@@ -49,16 +50,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <ctype.h>
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabeledFrame );
-vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.23 $");
-
-
-
+vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.24 $");
 
 int vtkKWLabeledFrameCommand(ClientData cd, Tcl_Interp *interp,
                       int argc, char *argv[]);
 
+//----------------------------------------------------------------------------
 vtkKWLabeledFrame::vtkKWLabeledFrame()
 {
   this->CommandFunction = vtkKWLabeledFrameCommand;
@@ -69,11 +68,11 @@ vtkKWLabeledFrame::vtkKWLabeledFrame()
   this->Groove->SetParent(this);
   this->Border2 = vtkKWWidget::New();
   this->Border2->SetParent(this->Groove);
-  this->Frame = vtkKWWidget::New();
+  this->Frame = vtkKWFrame::New();
   this->Frame->SetParent(this->Groove);
-  this->LabelFrame = vtkKWWidget::New();
+  this->LabelFrame = vtkKWFrame::New();
   this->LabelFrame->SetParent(this);
-  this->Label = vtkKWWidget::New();
+  this->Label = vtkKWLabel::New();
   this->Label->SetParent(this->LabelFrame);
   this->Icon = vtkKWImageLabel::New();
   this->Icon->SetParent(this);
@@ -83,6 +82,7 @@ vtkKWLabeledFrame::vtkKWLabeledFrame()
   this->ShowHideFrame = 0;
 }
 
+//----------------------------------------------------------------------------
 vtkKWLabeledFrame::~vtkKWLabeledFrame()
 {
   this->Icon->Delete();
@@ -95,6 +95,7 @@ vtkKWLabeledFrame::~vtkKWLabeledFrame()
   this->Groove->Delete();
 }
 
+//----------------------------------------------------------------------------
 void vtkKWLabeledFrame::SetLabel(const char *text)
 {
   if (!text)
@@ -136,7 +137,7 @@ void vtkKWLabeledFrame::SetLabel(const char *text)
     ptr = buffer;
     }
 
-  this->Script("%s configure -text {%s}", this->Label->GetWidgetName(), ptr);
+  this->Label->SetLabel(ptr);
 
   if (vtkKWLabeledFrame::LabelCase != VTK_KW_LABEL_CASE_USER_SPECIFIED)
     {
@@ -144,6 +145,7 @@ void vtkKWLabeledFrame::SetLabel(const char *text)
     }
 }
 
+//----------------------------------------------------------------------------
 void vtkKWLabeledFrame::AdjustMargin()
 {
   if (this->Application)
@@ -199,6 +201,7 @@ void vtkKWLabeledFrame::AdjustMargin()
     }
 }
 
+//----------------------------------------------------------------------------
 void vtkKWLabeledFrame::Create(vtkKWApplication *app, const char* args)
 {
   const char *wname;
@@ -224,11 +227,11 @@ void vtkKWLabeledFrame::Create(vtkKWApplication *app, const char* args)
 
   this->Border2->Create(app,"frame","-borderwidth 0 -relief flat");
 
-  this->Frame->Create(app,"frame","-borderwidth 0 -relief flat");
+  this->Frame->Create(app, "");
 
-  this->LabelFrame->Create(app,"frame","-borderwidth 0 -relief flat");
+  this->LabelFrame->Create(app, "");
 
-  this->Label->Create(app,"label"," -bd 0 -pady 0 -padx 2");
+  this->Label->Create(app, " -bd 0 -pady 0 -padx 2");
 
   if (vtkKWLabeledFrame::BoldLabel)
     {
@@ -269,6 +272,7 @@ void vtkKWLabeledFrame::Create(vtkKWApplication *app, const char* args)
   this->UpdateEnableState();
 }
 
+//----------------------------------------------------------------------------
 void vtkKWLabeledFrame::PerformShowHideFrame()
 {
   if ( this->Displayed )
