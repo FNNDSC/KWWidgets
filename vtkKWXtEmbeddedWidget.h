@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWXtEmbeddedWidget.h,v $
   Language:  C++
-  Date:      $Date: 2000-06-29 16:28:23 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-06-29 18:47:59 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,11 +48,14 @@ public:
   void SetWindowId(void* w) { this->WindowId = w;}
   
   // Description:
-  // Create a Tk widget
+  // Create create the widget.  If WindowId is set,
+  // then the widget is placed in that window.  If it
+  // is not set, then a toplevel window is created.
   void Create(vtkKWApplication *app, char *args);
 
   // Description:
-  // display the widget
+  // If the window id is null, this deiconifies the toplevel
+  // window.
   virtual void Display();
 
 protected:
