@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-18 19:04:53 $
-  Version:   $Revision: 1.48 $
+  Date:      $Date: 2002-06-25 12:57:17 $
+  Version:   $Revision: 1.49 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -101,8 +101,8 @@ public:
   // Description:
   // Load in a Tcl based script to drive the application. If called
   // without an argument it will open a file dialog.
-  void LoadScript();
-  void LoadScript(const char *name);
+  virtual void LoadScript();
+  virtual void LoadScript(const char *name);
 
   // Description:
   // Popup the vtk warning message
