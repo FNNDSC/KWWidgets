@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWBWidgets.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-13 12:44:41 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-06-13 15:34:46 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -136,8 +136,17 @@ void vtkKWBWidgets::Initialize(Tcl_Interp* interp)
     return;
     }
 
-  char* script = new char[strlen(bwidgets)+1];
-  strcpy(script, bwidgets);
+  char* script = new char[strlen(bwidgets1)+1];
+  strcpy(script, bwidgets1);
+  if (Tcl_GlobalEval(interp, script) != TCL_OK)
+    {
+    vtkGenericWarningMacro(<< "BWidgets failed to initialize. Error:" 
+    << interp->result);
+    }
+  delete[] script;
+
+  script = new char[strlen(bwidgets2)+1];
+  strcpy(script, bwidgets2);
   if (Tcl_GlobalEval(interp, script) != TCL_OK)
     {
     vtkGenericWarningMacro(<< "BWidgets failed to initialize. Error:" 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkbwidgets.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-13 12:44:41 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-06-13 15:34:34 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -84,11 +84,11 @@ permission to use and distribute the software in accordance with the
 terms specified in this license. 
 */
 
-const char* bwidgets =
+const char* bwidgets1 =
 "# ----------------------------------------------------------------------------\n"
 "#  widget.tcl\n"
 "#  This file is part of Unifix BWidget Toolkit\n"
-"#  $Id: vtkbwidgets.h,v 1.4 2002-06-13 12:44:41 berk Exp $\n"
+"#  $Id: vtkbwidgets.h,v 1.5 2002-06-13 15:34:34 lawcc Exp $\n"
 "# ----------------------------------------------------------------------------\n"
 "namespace eval Widget {\n"
 "    variable _optiontype\n"
@@ -1004,7 +1004,7 @@ const char* bwidgets =
 "# ------------------------------------------------------------------------------\n"
 "#  scrollframe.tcl\n"
 "#  This file is part of Unifix BWidget Toolkit\n"
-"#  $Id: vtkbwidgets.h,v 1.4 2002-06-13 12:44:41 berk Exp $\n"
+"#  $Id: vtkbwidgets.h,v 1.5 2002-06-13 15:34:34 lawcc Exp $\n"
 "# ------------------------------------------------------------------------------\n"
 "\n"
 "namespace eval ScrollableFrame {\n"
@@ -1147,7 +1147,7 @@ const char* bwidgets =
 "# -----------------------------------------------------------------------------\n"
 "#  scrollw.tcl\n"
 "#  This file is part of Unifix BWidget Toolkit\n"
-"#  $Id: vtkbwidgets.h,v 1.4 2002-06-13 12:44:41 berk Exp $\n"
+"#  $Id: vtkbwidgets.h,v 1.5 2002-06-13 15:34:34 lawcc Exp $\n"
 "# -----------------------------------------------------------------------------\n"
 "namespace eval ScrolledWindow {\n"
 "    Widget::declare ScrolledWindow {\n"
@@ -1785,7 +1785,9 @@ const char* bwidgets =
 "    return [Widget::cget $path.$node $option]\n"
 "}\n"
 "\n"
-"\n"
+"\n";
+
+const char* bwidgets2 =
 "# ------------------------------------------------------------------------------\n"
 "#  Command Tree::bindText\n"
 "# ------------------------------------------------------------------------------\n"
