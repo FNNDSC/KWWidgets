@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUNIXRegisteryUtilities.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-16 19:12:30 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-01-16 23:46:02 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -161,7 +161,7 @@ int vtkKWUNIXRegisteryUtilities::OpenInternal(const char *toplevel,
       // Comment
       continue;
       }   
-    for ( cc = 0; cc< strlen(line); cc++ )
+    for ( cc = 0; cc< static_cast<int>(strlen(line)); cc++ )
       {
       if ( line[cc] == '=' )
 	{
@@ -202,7 +202,7 @@ int vtkKWUNIXRegisteryUtilities::CloseInternal()
 	{
 	if ( it->Valid() )
 	  {      
-	  unsigned long key = it->GetKey();
+	  //unsigned long key = it->GetKey();
 	  void *value = it->GetData();
 	  if ( value )
 	    {
@@ -261,7 +261,7 @@ int vtkKWUNIXRegisteryUtilities::CloseInternal()
 	{
 	if ( it->Valid() )
 	  {      
-	  unsigned long key = it->GetKey();
+	  // unsigned long key = it->GetKey();
 	  void *value = it->GetData();
 	  if ( value )
 	    {
