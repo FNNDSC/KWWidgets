@@ -1,10 +1,10 @@
 /*=========================================================================
 
   Program:   Visualization Toolkit
-  Module:    $RCSfile: vtkKWLabel.cxx,v $
+  Module:    $RCSfile: vtkKWImageLabel.cxx,v $
   Language:  C++
   Date:      $Date: 2002-01-30 21:43:37 $
-  Version:   $Revision: 1.8 $
+  Version:   $Revision: 1.1 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -40,96 +40,72 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =========================================================================*/
 #include "vtkKWApplication.h"
-#include "vtkKWLabel.h"
+#include "vtkKWImageLabel.h"
 #include "vtkObjectFactory.h"
 
 
 
 //------------------------------------------------------------------------------
-vtkStandardNewMacro( vtkKWLabel );
+vtkStandardNewMacro( vtkKWImageLabel );
 
-vtkKWLabel::vtkKWLabel()
+vtkKWImageLabel::vtkKWImageLabel()
 {
-  this->Label    = new char[1];
-  this->Label[0] = 0;
-  this->LineType = vtkKWLabel::SingleLine;
-  this->Width    = 0;
+  this->ImageDataLabel = 0;
 }
 
-vtkKWLabel::~vtkKWLabel()
+vtkKWImageLabel::~vtkKWImageLabel()
 {
-  delete [] this->Label;
+  this->SetImageDataLabel(0);
 }
 
-void vtkKWLabel::SetLabel(const char* l)
+void vtkKWImageLabel::Create(vtkKWApplication *app, const char *args)
 {
-  if(!l)
-    {
-    l = "";
-    }
-  
-  delete [] this->Label;
-  this->Label = strcpy(new char[strlen(l)+1], l);
-  if(this->Application)
-    {
-    // if this has been created then change the text
-    this->Script("%s configure -text {%s}", this->GetWidgetName(), 
-		 this->Label);
-    }
+  this->vtkKWLabel::Create(app, args);
 }
 
-
-void vtkKWLabel::Create(vtkKWApplication *app, const char *args)
+void vtkKWImageLabel::SetImageData(const unsigned char* data, 
+				   int width, int height)
 {
-  const char *wname;
+  this->Script("image create photo -height %d -width %d", width, height);
+  this->SetImageDataLabel(this->Application->GetMainInterp()->result);
+  Tk_PhotoHandle photo;
+  Tk_PhotoImageBlock block;
 
-  // must set the application
-  if (this->Application)
-    {
-    vtkErrorMacro("Label already created");
-    return;
-    }
+  block.width = width;
+  block.height = height;
+  block.pixelSize = 4;
+  block.pitch = block.width*block.pixelSize;
+  block.offset[0] = 0;
+  block.offset[1] = 1;
+  block.offset[2] = 2;
+  block.pixelPtr = new unsigned char [block.pitch*block.height];
 
-  this->SetApplication(app);
+  photo = Tk_FindPhoto(this->Application->GetMainInterp(),
+		       this->ImageDataLabel);
 
-  // create the top level
-  wname = this->GetWidgetName();
-  if ( this->LineType == vtkKWLabel::MultiLine )
+  unsigned char *pp = block.pixelPtr;
+  const unsigned char *dd = data;
+  int cc;
+  for ( cc=0; cc < block.width * block.height; cc++ )
     {
-    this->Script("message %s -text {%s} %s -width %d", 
-		 wname, this->Label, args, this->Width);
-    }
-  else
-    {
-    this->Script("label %s -text {%s} %s", wname, this->Label, args);
-    }
-}
-
-void vtkKWLabel::SetLineType( int type )
-{
-  if ( this->Application )
-    {
-    if ( this->LineType != type )
+    /*
+    cout << "Color: " << (unsigned int)*(pp) << ", " 
+	 << (unsigned int)*(pp) << ", " << (unsigned int)*(pp) << ", " 
+	 << (unsigned int)*(pp) << endl;
+    */
+    if ( *(dd+3) > 0 )
       {
-      this->Script("lindex [ %s configure -text ] 4", 
-		   this->GetWidgetName());
-      char *str = this->Application->GetMainInterp()->result;
-      this->Script("destroy %s", this->GetWidgetName());
-      if ( this->LineType == vtkKWLabel::MultiLine )
-	{
-	this->Script("message %s -text {%s} -width %d", 
-		     this->GetWidgetName(), str, this->Width);
-	}
-      else
-	{
-	this->Script("label %s -text {%s}", 
-		     this->GetWidgetName(), str);
-	}		   
+      *(pp)   = *(dd);
+      *(pp+1) = *(dd+1);
+      *(pp+2) = *(dd+2);
+      *(pp+3) = *(dd+3);
       }
+    pp+=4;
+    dd+=4;
     }
-  this->LineType = type;
+  Tk_PhotoPutBlock(photo, &block, 0, 0, block.width, block.height);
+  delete [] block.pixelPtr;
+  this->Script("%s configure -image %s", this->GetWidgetName(),
+	       this->ImageDataLabel);
 }
-
-
-
 
