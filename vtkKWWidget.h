@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-03-18 16:54:34 $
-  Version:   $Revision: 1.46 $
+  Date:      $Date: 2003-04-03 20:20:14 $
+  Version:   $Revision: 1.47 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -77,6 +77,7 @@ public:
   // Get the name of the underlying tk widget being used
   // the parent should be set before calling this method.
   const char *GetWidgetName();
+  vtkKWWidget *GetChildWidgetWithName(const char *);
 
   // Description:
   // Set/Get the parent widget for this widget
@@ -216,7 +217,7 @@ public:
   // for GetChildWidget to work.
   vtkSetStringMacro(TraceName);
   vtkGetStringMacro(TraceName);
-  vtkKWWidget *GetChildWidget(const char* traceName);
+  vtkKWWidget *GetChildWidgetWithTraceName(const char* traceName);
 
   // Description:
   // Tracing support specific to widgets.  This method will initialize
