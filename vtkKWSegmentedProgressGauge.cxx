@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSegmentedProgressGauge.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-05 19:10:05 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-12-06 18:49:43 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -29,7 +29,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "vtkObjectFactory.h"
 
 vtkStandardNewMacro(vtkKWSegmentedProgressGauge);
-vtkCxxRevisionMacro(vtkKWSegmentedProgressGauge, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWSegmentedProgressGauge, "$Revision: 1.2 $");
 
 vtkKWSegmentedProgressGauge::vtkKWSegmentedProgressGauge()
 {
@@ -83,7 +83,7 @@ void vtkKWSegmentedProgressGauge::Create(vtkKWApplication *app,
   int i;
   for (i = 0; i < this->NumberOfSegments; i++)
     {
-    this->Script("%s create rectangle %d 0 %d %d -outline black -fill black -tags bar%d",
+    this->Script("%s create rectangle %d 0 %d %d -fill #008 -tags bar%d",
                  this->ProgressCanvas->GetWidgetName(),
                  (int)(i*this->Width/(float)this->NumberOfSegments),
                  (int)((i+1)*(this->Width/(float)this->NumberOfSegments)),
@@ -134,12 +134,12 @@ void vtkKWSegmentedProgressGauge::SetValue(int segment, int value)
     {
     if (i <= this->Segment)
       {
-      this->Script("%s itemconfigure bar%d -fill $color%d -outline {}",
+      this->Script("%s itemconfigure bar%d -fill $color%d",
                    this->ProgressCanvas->GetWidgetName(), i, i);
       }
     else
       {
-      this->Script("%s itemconfigure bar%d -fill black -outline black",
+      this->Script("%s itemconfigure bar%d -fill #008",
                    this->ProgressCanvas->GetWidgetName(), i);
       }
     
