@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWProgressGauge.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-09 21:28:43 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-11-12 22:26:07 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWProgressGauge );
-vtkCxxRevisionMacro(vtkKWProgressGauge, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWProgressGauge, "$Revision: 1.11 $");
 
 int vtkKWProgressGaugeCommand(ClientData cd, Tcl_Interp *interp,
                               int argc, char *argv[]);
@@ -165,8 +165,6 @@ void vtkKWProgressGauge::SetHeight(int height)
 
     this->Script("%s.display coords value [expr 0.5 * %d] [expr 0.5 * %d]", 
                  this->GetWidgetName(), this->Length, this->Height);
-
-    this->Script("update idletasks");
     }
 }
 
