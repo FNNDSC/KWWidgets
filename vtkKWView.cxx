@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-11-12 22:26:38 $
-  Version:   $Revision: 1.94 $
+  Date:      $Date: 2002-11-19 14:33:31 $
+  Version:   $Revision: 1.95 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -99,7 +99,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.94 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.95 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -495,7 +495,7 @@ void vtkKWView::CreateViewProperties()
   this->CornerAnnotation->SetParent(this->AnnotationProperties->GetFrame());
   this->CornerAnnotation->SetView(this);
   this->CornerAnnotation->ShowHideFrameOn();
-  this->CornerAnnotation->Create(app);
+  this->CornerAnnotation->Create(app, "");
   this->CornerAnnotation->SetLabel("Corner Annotation");
   this->Script("pack %s -padx 2 -pady 4 -fill x -expand yes -anchor w",
                this->CornerAnnotation->GetWidgetName());
@@ -1494,7 +1494,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.94 $");
+  this->ExtractRevision(os,"$Revision: 1.95 $");
 }
 
 //----------------------------------------------------------------------------
