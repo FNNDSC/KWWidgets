@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceNotebookManager.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-26 22:36:27 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2003-02-27 14:34:52 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,7 +52,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceNotebookManager);
-vtkCxxRevisionMacro(vtkKWUserInterfaceNotebookManager, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceNotebookManager, "$Revision: 1.6 $");
 
 int vtkKWUserInterfaceNotebookManagerCommand(ClientData cd, Tcl_Interp *interp,
                                              int argc, char *argv[]);
@@ -226,7 +226,7 @@ vtkKWWidget* vtkKWUserInterfaceNotebookManager::GetPageWidget(
 
 //----------------------------------------------------------------------------
 vtkKWWidget* vtkKWUserInterfaceNotebookManager::GetPagesParentWidget(
-  vtkKWUserInterfacePanel *panel)
+  vtkKWUserInterfacePanel *vtkNotUsed(panel))
 {
   // Here we probably need this->Notebook->Body but it's not a public member
 
