@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:15 $
-  Version:   $Revision: 1.27 $
+  Date:      $Date: 2002-08-08 04:29:59 $
+  Version:   $Revision: 1.28 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -165,6 +165,10 @@ public:
   // Description:
   // Get the current background color of the widget.
   void GetBackgroundColor(int *r, int *g, int *b);
+  
+  // Description:
+  // Query if widget has Tk configuration option
+  int HasConfigurationOption(const char* option);
   
   // Description:
   // Adjusts the placement of the baloon help

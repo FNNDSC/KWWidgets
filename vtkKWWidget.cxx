@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 18:46:08 $
-  Version:   $Revision: 1.42 $
+  Date:      $Date: 2002-08-08 04:29:59 $
+  Version:   $Revision: 1.43 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.42 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.43 $");
 
 int vtkKWWidgetCommand(ClientData cd, Tcl_Interp *interp,
                        int argc, char *argv[]);
@@ -344,7 +344,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   this->Superclass::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.42 $");
+  this->ExtractRevision(os,"$Revision: 1.43 $");
 }
 
 //------------------------------------------------------------------------------
@@ -500,6 +500,14 @@ void vtkKWWidget::GetBackgroundColor(int *r, int *g, int *b)
   this->Script(str.str());
   this->GetRGBColor(this->Application->GetMainInterp()->result, r, g, b);
   str.rdbuf()->freeze(0);
+}
+
+//------------------------------------------------------------------------------
+int vtkKWWidget::HasConfigurationOption(const char* option)
+{
+  return !this->Application->EvaluateBooleanExpression(
+    "catch {%s cget %s}",
+    this->GetWidgetName(), option);
 }
 
 //------------------------------------------------------------------------------
