@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 18:52:00 $
-  Version:   $Revision: 1.56 $
+  Date:      $Date: 2002-08-12 19:22:21 $
+  Version:   $Revision: 1.57 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -372,6 +372,7 @@ protected:
 
   vtkKWLabeledFrame *DialogSettingsFrame;
   vtkKWCheckButton  *DialogSettingsConfirmExitCheck;
+  vtkKWCheckButton  *DialogSettingsShowSplashScreenCheck;
   
 //BTX
   // Description:
