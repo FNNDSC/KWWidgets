@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEventNotifier.h,v $
   Language:  C++
-  Date:      $Date: 2000-06-28 15:43:03 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-07-05 05:08:01 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -41,17 +41,28 @@ public:
   static vtkKWEventNotifier* New();
   vtkTypeMacro(vtkKWEventNotifier,vtkKWObject);
 
+  // Description:
+  // Add a callback for a specified event occurring in a specified
+  // window. The command of the object will be called.
   void AddCallback( const char *event,   vtkKWWindow *window,
 		    vtkKWObject *object, const char *command );
 
+  // Description:
+  // Remove a specific callback
   void RemoveCallback( const char *event,   vtkKWWindow *window,
 		       vtkKWObject *object, const char *command );
 
+  // Description:
+  // Remove all callbacks associated with this object
+  void RemoveCallbacks( vtkKWObject *object );
+
+  // Description:
   // This version invokes all callbacks of the specified type for
   // the specified window - even its own callback if it has one
   void InvokeCallbacks( const char *event, vtkKWWindow *window,
 			const char *args );
 
+  // Description:
   // This version won't invoke callbacks on the specified object 
   // Usually the calling object uses this to avoid calling itself
   void InvokeCallbacks( vtkKWObject *object, const char *event, 

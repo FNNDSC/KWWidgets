@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2000-06-05 00:44:57 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-07-05 05:08:01 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,7 +39,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "vtkKWLabeledFrame.h"
 #include "vtkKWChangeColorButton.h"
 #include "vtkKWView.h"
-class vtkCornerAnnotation;
+#include "vtkCornerAnnotation.h"
 
 class VTK_EXPORT vtkKWCornerAnnotation : public vtkKWLabeledFrame
 {
@@ -67,6 +67,7 @@ public:
   // Description:
   // Callback functions used by the pro sheet
   virtual void SetCornerText(const char *txt, int corner);
+  virtual char *GetCornerText(int i){return this->CornerText[i]->GetValue();};
   virtual void CornerChanged(int i);
   virtual void OnDisplayCorner();
   virtual void SetVisibility(int i);
@@ -82,6 +83,21 @@ public:
   // Description:
   // Change the color of the annotation
   void SetTextColor(float r, float g, float b);
+  float *GetTextColor() {return this->CornerProp->GetProperty()->GetColor();};
+
+  // Description:
+  // If this corner anno is part of a lightbox, then we'll need some special
+  // methods to keep all the corner annotations linked. The ID will indicate
+  // if we are part of the lightbox - if it is < 0 we are not, if it is = 0
+  // then we are the master lightbox, and the others > 0 are just part of 
+  // the lightbox with no visible UI
+  vtkSetMacro( LightboxID, int );
+  vtkGetMacro( LightboxID, int );
+
+  vtkSetObjectMacro( MasterCornerAnnotation, vtkKWCornerAnnotation );
+  vtkGetObjectMacro( MasterCornerAnnotation, vtkKWCornerAnnotation );
+
+  void UpdateFromMaster();
 
 protected:
   vtkKWCornerAnnotation();
@@ -103,9 +119,13 @@ protected:
   vtkKWGenericComposite  *CornerComposite;
 
   vtkKWView *View;
+
+  int                    LightboxID;
+  vtkKWCornerAnnotation  *MasterCornerAnnotation;
 };
 
 
 #endif
+
 
 
