@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-10 18:57:36 $
-  Version:   $Revision: 1.30 $
+  Date:      $Date: 2003-04-03 19:20:52 $
+  Version:   $Revision: 1.31 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -53,7 +53,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkCornerAnnotation);
-vtkCxxRevisionMacro(vtkCornerAnnotation, "$Revision: 1.30 $");
+vtkCxxRevisionMacro(vtkCornerAnnotation, "$Revision: 1.31 $");
 
 vtkSetObjectImplementationMacro(vtkCornerAnnotation,ImageActor,vtkImageActor);
 vtkSetObjectImplementationMacro(vtkCornerAnnotation,WindowLevel,
@@ -90,6 +90,8 @@ vtkCornerAnnotation::vtkCornerAnnotation()
   
   this->LevelShift = 0;
   this->LevelScale = 1;
+  
+  this->ShowSliceAndImage = 1;
 }
 
 //----------------------------------------------------------------------------
@@ -156,7 +158,7 @@ void vtkCornerAnnotation::ReplaceText(vtkImageActor *ia,
       while (rpos)
         {
         *rpos = '\0';
-        if (ia)
+        if (ia && this->ShowSliceAndImage)
           {
           sprintf(text2,"%sImage: %i%s",text,image,rpos+7);
           }
@@ -173,7 +175,7 @@ void vtkCornerAnnotation::ReplaceText(vtkImageActor *ia,
       while (rpos)
         {
         *rpos = '\0';
-        if (ia)
+        if (ia && this->ShowSliceAndImage)
           {
           sprintf(text2,"%sSlice: %i%s",text,image,rpos+7);
           }

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-30 02:26:49 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2003-04-03 19:20:52 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -125,6 +125,12 @@ public:
   // Set/Get the text property of all corners.
   virtual void SetTextProperty(vtkTextProperty *p);
   vtkGetObjectMacro(TextProperty,vtkTextProperty);
+
+  // Description:
+  // Even if there is an image actor, should <slice> and <image> be displayed?
+  vtkBooleanMacro(ShowSliceAndImage, int);
+  vtkSetMacro(ShowSliceAndImage, int);
+  vtkGetMacro(ShowSliceAndImage, int);
   
 protected:
   vtkCornerAnnotation();
@@ -148,6 +154,8 @@ protected:
   int            LastSize[2];
   vtkTextMapper *TextMapper[4];
   int MinimumFontSize;
+  
+  int ShowSliceAndImage;
   
   // search for replacable tokens and replace
   void ReplaceText(vtkImageActor *ia,  vtkImageMapToWindowLevelColors *wl);

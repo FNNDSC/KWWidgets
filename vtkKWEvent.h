@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2003-04-02 20:08:09 $
-  Version:   $Revision: 1.63 $
+  Date:      $Date: 2003-04-03 19:20:52 $
+  Version:   $Revision: 1.64 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -136,6 +136,7 @@ class VTK_EXPORT vtkKWEvent
     MultiPassStillRenderEndEvent,
     MultiPassStillRenderStageChangedEvent,
     ObliqueProbeColorChangedEvent,
+    ObliqueProbeMovementEvent,
     ObliqueProbeResetEvent,
     ObliqueProbeScalarsVisibilityChangedEvent,
     ObliqueProbeVisibilityChangedEvent,
