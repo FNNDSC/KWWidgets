@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-08 17:36:07 $
-  Version:   $Revision: 1.53 $
+  Date:      $Date: 2002-11-12 22:25:36 $
+  Version:   $Revision: 1.54 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -124,6 +124,12 @@ public:
   // Set/Get the ApplicationName
   void SetApplicationName(const char *);
   vtkGetStringMacro(ApplicationName);
+
+  // Description:
+  // ParaView version is always MajorVersion.MinorVersion.
+  // Change these in the constructor.
+  vtkGetMacro(MajorVersion, int);
+  vtkGetMacro(MinorVersion, int);
 
   // Description:
   // Set/Get the ApplicationVersionName - this is the name + version number
@@ -282,9 +288,12 @@ protected:
   Tk_Window MainWindow;
   Tcl_Interp *MainInterp;
   vtkKWWindowCollection *Windows;
+
   char *ApplicationName;
   char *ApplicationVersionName;
   char *ApplicationReleaseName;
+  int MajorVersion;
+  int MinorVersion;
 
   // For Balloon help
   vtkKWWidget *BalloonHelpWindow;
