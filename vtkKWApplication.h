@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-12 22:25:36 $
-  Version:   $Revision: 1.54 $
+  Date:      $Date: 2002-12-02 23:00:59 $
+  Version:   $Revision: 1.55 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -63,9 +63,6 @@ class vtkKWWindowCollection;
 //BTX
 template<class KeyType,class DataType> class vtkAbstractMap;
 //ETX
-
-#define VTK_KW_SPLASH_SCREEN_REG_KEY "ShowSplashScreen"
-#define VTK_KW_BALLOON_HELP_REG_KEY "ShowBalloonHelp"
 
 class VTK_EXPORT vtkKWApplication : public vtkKWObject
 {

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-11-12 22:25:36 $
-  Version:   $Revision: 1.103 $
+  Date:      $Date: 2002-12-02 23:00:59 $
+  Version:   $Revision: 1.104 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -42,6 +42,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWApplication.h"
 
 #include "vtkArrayMap.txx"
+#include "vtkKWApplicationSettingsInterface.h"
 #include "vtkKWBWidgets.h"
 #include "vtkKWLabel.h"
 #include "vtkKWMessageDialog.h"
@@ -74,7 +75,7 @@ int vtkKWApplication::WidgetVisibility = 1;
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.103 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.104 $");
 
 extern "C" int Vtktcl_Init(Tcl_Interp *interp);
 extern "C" int Vtkkwwidgetstcl_Init(Tcl_Interp *interp);
