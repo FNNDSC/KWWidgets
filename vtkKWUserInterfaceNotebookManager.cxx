@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceNotebookManager.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-27 21:34:17 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2003-02-27 22:40:26 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -56,7 +56,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceNotebookManager);
-vtkCxxRevisionMacro(vtkKWUserInterfaceNotebookManager, "$Revision: 1.7 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceNotebookManager, "$Revision: 1.8 $");
 
 int vtkKWUserInterfaceNotebookManagerCommand(ClientData cd, Tcl_Interp *interp,
                                              int argc, char *argv[]);
@@ -494,11 +494,13 @@ void vtkKWUserInterfaceNotebookManager::UpdatePanel(
 
     // Enable Drag & Drop for that frame, the notebook is the drop target
 
-    if (widget && frame && !frame->GetEnableDragAndDrop())
+    if (widget && frame && 
+        !widget->HasDragAndDropTarget(this->Notebook))
       {
-      frame->EnableDragAndDropOn();
-      frame->AddDragAndDropTarget(this->Notebook);
-      frame->SetDragAndDropEndCommand(
+      widget->EnableDragAndDropOn();
+      widget->SetDragAndDropAnchor(frame->GetDragAndDropAnchor());
+      widget->AddDragAndDropTarget(this->Notebook);
+      widget->SetDragAndDropEndCommand(
         this->Notebook, this, "DragAndDropEndCallback");
       }
 
