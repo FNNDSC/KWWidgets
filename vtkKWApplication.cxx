@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-03 14:51:33 $
-  Version:   $Revision: 1.105 $
+  Date:      $Date: 2002-12-11 11:56:55 $
+  Version:   $Revision: 1.106 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -75,7 +75,7 @@ int vtkKWApplication::WidgetVisibility = 1;
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.105 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.106 $");
 
 extern "C" int Vtktcl_Init(Tcl_Interp *interp);
 extern "C" int Vtkkwwidgetstcl_Init(Tcl_Interp *interp);
@@ -208,6 +208,10 @@ vtkKWApplication::~vtkKWApplication()
     }
 }
 
+void vtkKWApplication::SetApplication(vtkKWApplication*) 
+{ 
+  vtkErrorMacro( << "Do not set the Application on an Application" << endl); 
+}
 
 const char* vtkKWApplication::EvaluateString(const char *String, ...)
 {
