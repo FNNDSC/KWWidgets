@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-04 16:53:58 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2002-10-13 21:02:25 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -56,6 +56,7 @@ class vtkKWCheckButton;
 class vtkKWGenericComposite;
 class vtkKWScale;
 class vtkKWText;
+class vtkKWTextProperty;
 class vtkKWView;
 
 class VTK_EXPORT vtkKWCornerAnnotation : public vtkKWLabeledFrame
@@ -110,18 +111,23 @@ public:
   void SetMaximumLineHeight(float);
   float GetMaximumLineHeight();
   void MaximumLineHeightCallback();
+  void MaximumLineHeightEndCallback();
 
   // Description:
   // Get at the underlying vtkCornerAnnotationClass
   vtkGetObjectMacro(CornerProp,vtkCornerAnnotation);
   
+  // Description:
+  // GUI components access
+  vtkGetObjectMacro(TextProperty, vtkKWTextProperty);
+
 protected:
   vtkKWCornerAnnotation();
   ~vtkKWCornerAnnotation();
 
-  vtkKWWidget            *CornerDisplayFrame;
-  vtkKWChangeColorButton *CornerColor;
-  vtkKWCheckButton       *CornerButton;
+  vtkKWTextProperty *TextProperty;
+
+  vtkKWCheckButton       *CornerVisibilityButton;
 
   vtkKWWidget            *CornerTopFrame;
   vtkKWWidget            *CornerBottomFrame;
