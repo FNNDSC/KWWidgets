@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-14 19:33:13 $
-  Version:   $Revision: 1.35 $
+  Date:      $Date: 2002-10-15 15:17:18 $
+  Version:   $Revision: 1.36 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -57,7 +57,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCornerAnnotation );
-vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.35 $");
+vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.36 $");
 
 vtkSetObjectImplementationMacro(vtkKWCornerAnnotation,View,vtkKWView);
 
@@ -248,7 +248,7 @@ void vtkKWCornerAnnotation::Create(vtkKWApplication *app)
   this->TextPropertyWidget->SetActor2D(this->CornerProp);
   this->TextPropertyWidget->Create(this->Application);
   this->TextPropertyWidget->ShowLabelOn();
-  this->TextPropertyWidget->GetLabel()->SetLabel("Text property:");
+  this->TextPropertyWidget->GetLabel()->SetLabel("Properties:");
   this->TextPropertyWidget->SetTraceReferenceObject(this);
   this->TextPropertyWidget->SetTraceReferenceCommand("GetTextPropertyWidget");
   ostrstream onchangecommand;
@@ -482,7 +482,7 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.35 $");
+  this->ExtractRevision(os,"$Revision: 1.36 $");
   vtkKWLabeledFrame::SerializeRevision(os,indent);
 }
 
