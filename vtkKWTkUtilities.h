@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTkUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-25 18:47:19 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2003-02-27 21:32:40 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -79,6 +79,13 @@ public:
   static void GetBackgroundColor(Tcl_Interp *interp,
                                  const char *window, 
                                  int *r, int *g, int *b);
+
+  // Description:
+  // Check if a pair of screen coordinates are within the area defined by
+  // a window.
+  static int ContainsCoordinates(Tcl_Interp *interp,
+                                 const char *window, 
+                                 int x, int y);
   
   // Description:
   // Update a photo given a pixel structure. 
