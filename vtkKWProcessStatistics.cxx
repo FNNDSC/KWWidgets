@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWProcessStatistics.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-29 21:18:15 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-01-29 23:05:31 $
+  Version:   $Revision: 1.3 $
 
   Copyright (c) 1993-2002 Ken Martin, Will Schroeder, Bill Lorensen 
   All rights reserved.
@@ -17,13 +17,16 @@
 =========================================================================*/
 #include "vtkKWProcessStatistics.h"
 
-vtkCxxRevisionMacro(vtkKWProcessStatistics, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWProcessStatistics, "$Revision: 1.3 $");
 
-#ifndef _WIN32
+#ifdef __linux
 #include <sys/procfs.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <fcntl.h>
+#elif __hpux
+#include <sys/param.h>
+#include <sys/pstat.h>
 #endif
 
 #include "vtkObjectFactory.h"
