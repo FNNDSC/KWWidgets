@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 23:31:25 $
-  Version:   $Revision: 1.48 $
+  Date:      $Date: 2002-01-12 14:40:28 $
+  Version:   $Revision: 1.49 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -748,7 +748,7 @@ void vtkKWView::Print()
   if (this->GetParentWindow())
     {
     // Is this right? Should DPI be int or float?
-    DPI = his->GetParentWindow()->GetPrintTargetDPI();
+    DPI = this->GetParentWindow()->GetPrintTargetDPI();
     }
   if (DPI >= 150.0)
     {
@@ -1246,7 +1246,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.48 $");
+  this->ExtractRevision(os,"$Revision: 1.49 $");
 }
 
 void vtkKWView::SetupMemoryRendering(int x, int y, void *cd) 
