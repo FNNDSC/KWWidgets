@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-28 12:32:43 $
-  Version:   $Revision: 1.80 $
+  Date:      $Date: 2002-07-01 17:27:30 $
+  Version:   $Revision: 1.81 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -145,6 +145,10 @@ vtkKWApplication::~vtkKWApplication()
   if ( this->BalloonHelpWindow )
     {
     this->BalloonHelpWindow->Delete();
+    }
+  if ( this->BalloonHelpLabel )
+    {
+    this->BalloonHelpLabel->Delete();
     }
   this->SetBalloonHelpWidget(0);
   if (this->Windows)
