@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-10 23:22:06 $
-  Version:   $Revision: 1.34 $
+  Date:      $Date: 2003-01-11 00:46:35 $
+  Version:   $Revision: 1.35 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -60,9 +60,11 @@ static const char *vtkKWEventStrings[] = {
   "ContourAnnotationAddEvent",
   "ContourAnnotationChangeColorEvent",
   "ContourAnnotationChangeLineWidthEvent",
+  "ContourAnnotationChangeOpacityEvent",
   "ContourAnnotationChangeSurfaceQualityEvent",
   "ContourAnnotationChangeSurfaceRepresentationEvent",
   "ContourAnnotationChangeSurfaceShineEvent",
+  "ContourAnnotationChangeVisibilityEvent",
   "ContourAnnotationComputeStatisticsEvent",
   "ContourAnnotationRemoveEvent",
   "ControlLeftMouseOptionChangedEvent",
