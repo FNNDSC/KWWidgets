@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-15 21:01:26 $
-  Version:   $Revision: 1.45 $
+  Date:      $Date: 2002-01-16 19:40:17 $
+  Version:   $Revision: 1.46 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -328,8 +328,8 @@ void vtkKWApplication::Exit()
   return;
 }
     
-#define ET_TCL_LIBRARY "C:/Program Files/Tcl/lib/tcl8.2"
-#define ET_TK_LIBRARY "C:/Program Files/Tcl/lib/tk8.2"
+#define ET_TCL_LIBRARY "/ThisIsNotAPath/Tcl/lib/tcl8.2"
+#define ET_TK_LIBRARY "/ThisIsNotAPath/Tcl/lib/tk8.2"
 Tcl_Interp *vtkKWApplication::InitializeTcl(int argc, char *argv[])
 {
   Tcl_Interp *interp;
