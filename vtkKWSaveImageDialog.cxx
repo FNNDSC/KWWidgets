@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSaveImageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:37 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2001-11-15 18:31:42 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -78,7 +78,7 @@ void vtkKWSaveImageDialog::Invoke()
   
   while (!done)
     {
-    this->Script("tk_getSaveFile -title \"Save As Image\" -filetypes {{{Windows Bitmap} {.bmp}} {{Binary PPM} {.ppm}} {{TIFF Images} {.tif}}}");
+    this->Script("tk_getSaveFile -title {Save As Image} -defaultextension {.bmp} -filetypes {{{Windows Bitmap} {.bmp}} {{JPEG Images} {.jpg}} {{PNG Images} {.png}} {{Binary PPM} {.ppm}} {{TIFF Images} {.tif}}}");
     if (path)
       {
       free(path);
@@ -92,7 +92,9 @@ void vtkKWSaveImageDialog::Invoke()
       }  
     else if (!strcmp(path + strlen(path) - 4,".bmp") ||
 	     !strcmp(path + strlen(path) - 4,".tif") ||
-	     !strcmp(path + strlen(path) - 4,".pnm"))
+	     !strcmp(path + strlen(path) - 4,".png") ||
+	     !strcmp(path + strlen(path) - 4,".jpg") ||
+	     !strcmp(path + strlen(path) - 4,".ppm"))
       {
       done = 1;
       }

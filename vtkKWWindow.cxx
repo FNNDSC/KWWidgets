@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-10-31 22:13:42 $
-  Version:   $Revision: 1.29 $
+  Date:      $Date: 2001-11-15 18:31:42 $
+  Version:   $Revision: 1.30 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -456,7 +456,7 @@ void vtkKWWindow::Create(vtkKWApplication *app, char *args)
   rbv = 
     this->GetMenuProperties()->CreateRadioButtonVariable(
       this->GetMenuProperties(),"Radio");
-  this->GetMenuProperties()->AddRadioButton(0," Hide Properties", 
+  this->GetMenuProperties()->AddRadioButton(0,"  Hide Properties", 
                                             rbv, this, "HideProperties");
   delete [] rbv;
 }
@@ -814,5 +814,5 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.29 $");
+  this->ExtractRevision(os,"$Revision: 1.30 $");
 }
