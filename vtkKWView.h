@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-09 21:26:15 $
-  Version:   $Revision: 1.53 $
+  Date:      $Date: 2002-12-13 14:41:38 $
+  Version:   $Revision: 1.54 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -70,7 +70,9 @@ class vtkKWFrame;
 class vtkKWGenericComposite;
 class vtkKWLabeledFrame;
 class vtkKWMenu;
+class vtkKWMenuButton;
 class vtkKWNotebook;
+class vtkKWSegmentedProgressGauge;
 class vtkKWText;
 class vtkKWWindow;
 class vtkKWWindow;
@@ -81,7 +83,6 @@ class vtkTextMapper;
 class vtkViewport;
 class vtkViewport;
 class vtkWindow;
-class vtkKWSegmentedProgressGauge;
 
 class VTK_EXPORT vtkKWView : public vtkKWWidget
 {
