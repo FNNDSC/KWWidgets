@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2001-12-12 19:40:05 $
-  Version:   $Revision: 1.20 $
+  Date:      $Date: 2001-12-12 22:34:40 $
+  Version:   $Revision: 1.21 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -178,6 +178,11 @@ public:
   vtkSetStringMacro(WindowClass);
   vtkGetStringMacro(WindowClass);
 
+  //Description:
+  // Set/Get PromptBeforeClose
+  vtkSetMacro(PromptBeforeClose, int);
+  vtkGetMacro(PromptBeforeClose, int);
+  
 protected:
   vtkKWWindow();
   ~vtkKWWindow();
@@ -213,7 +218,7 @@ protected:
 
   int SupportHelp;
   char *WindowClass;
-  int ExitingApplication;
+  int PromptBeforeClose;
 };
 
 

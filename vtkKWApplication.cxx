@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-12-12 16:34:38 $
-  Version:   $Revision: 1.37 $
+  Date:      $Date: 2001-12-12 22:34:40 $
+  Version:   $Revision: 1.38 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -313,6 +313,7 @@ void vtkKWApplication::Exit()
   
   while (this->Windows && (win = this->Windows->GetNextKWWindow()))
     {
+    win->SetPromptBeforeClose(0);
     win->Close();
     if (this->Windows)
       {
