@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2000-06-01 21:38:16 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2000-06-02 17:55:48 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -104,6 +104,8 @@ public:
   vtkGetObjectMacro(PropertiesParent,vtkKWWidget);
   vtkSetObjectMacro(PropertiesParent,vtkKWWidget);
   void CreateDefaultPropertiesParent();
+  void HideProperties();
+  void ShowProperties();
   
   // Description::
   // Override Unregister since widgets have loops.

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-04-18 18:50:03 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2000-06-02 17:55:48 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -27,6 +27,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 =========================================================================*/
 #include "vtkKWView.h"
 #include "vtkKWApplication.h"
+#include "vtkKWWindow.h"
 
 int vtkKWCompositeCommand(ClientData cd, Tcl_Interp *interp,
 			  int argc, char *argv[]);
@@ -40,6 +41,7 @@ vtkKWComposite::vtkKWComposite()
   this->TopLevel = NULL;
   this->Application = NULL;
   this->View = NULL;
+  this->LastSelectedProperty = -1;
 }
 
 vtkKWComposite::~vtkKWComposite()
@@ -137,6 +139,13 @@ void vtkKWComposite::CreateProperties()
                this->Notebook->GetWidgetName());
 }
 
+void vtkKWComposite::Deselect(vtkKWView *v)
+{
+  this->LastSelectedProperty = 
+    v->GetParentWindow()->GetMenuProperties()->GetRadioButtonValue(
+      v->GetParentWindow()->GetMenuProperties(),"Radio");
+}
+
 void vtkKWComposite::Select(vtkKWView *v)
 {
   // make sure we have an applicaiton
@@ -157,5 +166,5 @@ void vtkKWComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWComposite ";
-  this->ExtractRevision(os,"$Revision: 1.5 $");
+  this->ExtractRevision(os,"$Revision: 1.6 $");
 }

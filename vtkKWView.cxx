@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-06-01 21:38:16 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2000-06-02 17:55:48 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -297,6 +297,8 @@ void vtkKWView::SetHeaderTextColor( float r, float g, float b )
 
 void vtkKWView::ShowViewProperties()
 {
+  this->ParentWindow->ShowProperties();
+  
   // make sure we have an applicaiton
   if (!this->Application)
     {
@@ -695,9 +697,8 @@ void vtkKWView::Select(vtkKWWindow *pw)
   if (this->SharedPropertiesParent)
     {
     // if the window prop is empty then pack this one
-    this->Script("pack slaves %s",
-                 this->PropertiesParent->GetParent()->GetWidgetName());
-    if (strlen(this->Application->GetMainInterp()->result) < 1)
+    if (this->ParentWindow->GetMenuProperties()->GetRadioButtonValue(
+      this->ParentWindow->GetMenuProperties(),"Radio") >= 10)
       {
       this->Script("pack %s -side left -anchor nw -fill y",
                    this->PropertiesParent->GetWidgetName());
@@ -952,5 +953,5 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.12 $");
+  this->ExtractRevision(os,"$Revision: 1.13 $");
 }

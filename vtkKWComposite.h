@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWComposite.h,v $
   Language:  C++
-  Date:      $Date: 2000-04-18 18:50:03 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2000-06-02 17:55:48 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -75,7 +75,7 @@ public:
   // for example. When a volume composite is selected it might 
   // add an option to the menu bar to view the 2D slices.
   virtual void Select(vtkKWView *);
-  virtual void Deselect(vtkKWView *) {};
+  virtual void Deselect(vtkKWView *);
   virtual void MakeSelected();
 
   // Description:
@@ -101,6 +101,7 @@ protected:
 
   vtkKWNotebook *Notebook;
   vtkKWNotebook *Notebook2;
+  int LastSelectedProperty;
   int PropertiesCreated;
   vtkKWWidget *TopLevel;
   vtkKWView *View;

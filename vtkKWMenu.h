@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2000-06-01 21:37:40 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2000-06-02 17:55:48 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -91,6 +91,7 @@ public:
   // Add a radio button menu item.  You must create a variable to store
   // the value of the button.
   char* CreateRadioButtonVariable(vtkKWObject* Object, const char* varname);
+  int GetRadioButtonValue(vtkKWObject* Object, const char* varname);
   void CheckRadioButton(vtkKWObject *Object, const char *varname, int id);
   void InsertRadioButton(int position, int value, const char* label, 
                          const char* buttonVar, vtkKWObject* Called, 
