@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-03-09 23:16:01 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-03-13 02:14:17 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -72,9 +72,19 @@ public:
 
   // Description:
   // Show or hide the frame.
-  void ShowHideFrame();
+  void PerformShowHideFrame();
+
+  // Description:
+  // Globally enable or disable show/hide frame.
+  // By default it is globally disabled.
   static void AllowShowHideOn();
   static void AllowShowHideOff();
+
+  // Description:
+  // Set / get ShowHide for this object.
+  vtkSetMacro(ShowHideFrame, int);
+  vtkBooleanMacro(ShowHideFrame, int);
+  vtkGetMacro(ShowHideFrame, int);
 
 protected:
   vtkKWLabeledFrame();
@@ -89,6 +99,7 @@ protected:
   vtkKWIcon       *IconData;
   int Displayed;
   static int AllowShowHide;
+  int ShowHideFrame;
 private:
   vtkKWLabeledFrame(const vtkKWLabeledFrame&); // Not implemented
   void operator=(const vtkKWLabeledFrame&); // Not implemented

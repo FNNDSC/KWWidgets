@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-12 01:05:11 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-03-13 02:14:17 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -73,6 +73,7 @@ vtkKWLabeledFrame::vtkKWLabeledFrame()
   this->IconData = vtkKWIcon::New();
   this->IconData->SetImageData(vtkKWIcon::ICON_SHRINK);
   this->Displayed = 1;
+  this->ShowHideFrame = 0;
 }
 
 vtkKWLabeledFrame::~vtkKWLabeledFrame()
@@ -127,18 +128,18 @@ void vtkKWLabeledFrame::Create(vtkKWApplication *app)
 
   this->Script("raise %s", this->Label->GetWidgetName());
 
-  if ( vtkKWLabeledFrame::AllowShowHide )
+  if ( vtkKWLabeledFrame::AllowShowHide && this->ShowHideFrame )
     {
     this->Script("place %s -relx 1 -x -5 -y 2 -anchor ne",
 		 this->Icon->GetWidgetName());    
-    this->Script("bind %s <ButtonRelease-1> { %s ShowHideFrame }",
+    this->Script("bind %s <ButtonRelease-1> { %s PerformShowHideFrame }",
 		 this->Icon->GetWidgetName(),
 		 this->GetTclName());
     this->Script("raise %s", this->Icon->GetWidgetName());
     }
 }
 
-void vtkKWLabeledFrame::ShowHideFrame()
+void vtkKWLabeledFrame::PerformShowHideFrame()
 {
   if ( this->Displayed )
     {
