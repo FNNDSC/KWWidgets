@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-08 20:33:29 $
-  Version:   $Revision: 1.28 $
+  Date:      $Date: 2003-01-08 23:20:26 $
+  Version:   $Revision: 1.29 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -138,6 +138,7 @@ static const char *vtkKWEventStrings[] = {
   "VolumeOrientationMarkerVisibilityChangedEvent",
   "VolumeScaleBarColorChangedEvent",
   "VolumeScaleBarVisibilityChangedEvent",
+  "VolumeStandardCameraViewEvent",
   "WindowLevelChangedEvent",
   "WindowLevelChangedImageCompositeEvent",
   "WindowLevelChangingEvent",
