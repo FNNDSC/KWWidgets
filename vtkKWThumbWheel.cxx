@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWThumbWheel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-31 23:47:17 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-11-05 14:55:30 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -60,7 +60,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // ---------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWThumbWheel );
-vtkCxxRevisionMacro(vtkKWThumbWheel, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWThumbWheel, "$Revision: 1.2 $");
 
 // ---------------------------------------------------------------------------
 int vtkKWThumbWheelCommand(ClientData cd, 
@@ -1398,7 +1398,6 @@ void vtkKWThumbWheel::UpdateThumbWheelImage(float pos)
   // Allocate buffer for the whole wheel
 
   unsigned char *img_buffer = new unsigned char[img_buffer_size];
-  unsigned char *img_buffer_end = img_buffer + img_buffer_size;
 
     // img_ptr_s0: 1st row = gray - shadow * 2 (i.e. dark shadow)
     // img_ptr_s1: 2nd row = gray - shadow     (i.e. ligh shadow)
@@ -1534,9 +1533,9 @@ void vtkKWThumbWheel::UpdateThumbWheelImage(float pos)
     {
     int gray[4];
     gray[2] = 240 + gray_global_shift;
-    gray[3] = gray[2] + 1.7 * gray_relief_shift;
-    gray[1] = gray[2] - 1.7 * gray_relief_shift;
-    gray[0] = gray[2] - 3.4 * gray_relief_shift;
+    gray[3] = (int)(gray[2] + 1.7 * gray_relief_shift);
+    gray[1] = (int)(gray[2] - 1.7 * gray_relief_shift);
+    gray[0] = (int)(gray[2] - 3.4 * gray_relief_shift);
 
     VTK_KW_TW_CLAMP_UCHAR_MACRO(gray[0]);
     VTK_KW_TW_CLAMP_UCHAR_MACRO(gray[1]);
