@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledEntry.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 04:20:05 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-12-03 18:50:51 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -71,12 +71,9 @@ public:
   void SetLabel(const char *);
   
   // Description:
-  // get the internal label
-  vtkKWLabel *GetLabel() { return this->Label; }
-  
-  // Description:
-  // get the internal entry
-  vtkKWEntry *GetEntry() { return this->Entry; }
+  // Get the internal objects
+  vtkGetObjectMacro(Label, vtkKWLabel);
+  vtkGetObjectMacro(Entry, vtkKWEntry);
   
   // Description:
   // Set/Get the value of the entry in a few different formats.
