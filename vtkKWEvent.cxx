@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-04 22:09:52 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2002-12-05 23:15:21 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,6 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 static const char *vtkKWEventStrings[] = {
   "KWWidgetEvents",
   "MessageDialogInvokeEvent",
+  // VV    
   "WindowLevelChangedEvent",
   "WindowLevelChangingEvent",
   "WindowLevelChangedImageCompositeEvent",
@@ -110,13 +111,37 @@ static const char *vtkKWEventStrings[] = {
   "ChangeMouseOperationsEvent",
   "ChangeStandardInteractivityEvent",
   "SwitchToVolumeProEvent",
+  "ViewAnnotationChangedEvent",
+  "RenderEvent",
+  // PV
   "InitializeTraceEvent",
   "ErrorMessageEvent",
   "WarningMessageEvent",
   "ManipulatorModifiedEvent",
   "WidgetModifiedEvent",
-  "FinalBogusNotUsedEvent"
+  // 
+  "FinalBogusNotUsedEvent",
+  0
 };
+
+unsigned long vtkKWEvent::GetEventIdFromString(const char* cevent)
+{
+  unsigned long event = vtkCommand::GetEventIdFromString(cevent);
+  if ( event != vtkCommand::NoEvent )
+    {
+    return event;
+    }
+  
+  int cc;
+  for ( cc = 0; vtkKWEventStrings[cc] != 0; cc ++ )
+    {
+    if ( strcmp(cevent, vtkKWEventStrings[cc]) == 0 )
+      {
+      return cc + vtkKWEvent::KWWidgetEvents;
+      }
+    }
+  return vtkCommand::NoEvent;
+}
 
 const char *vtkKWEvent::GetStringFromEventId(unsigned long event)
 {

@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-04 22:09:52 $
-  Version:   $Revision: 1.19 $
+  Date:      $Date: 2002-12-05 23:15:21 $
+  Version:   $Revision: 1.20 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,6 +51,7 @@ class VTK_EXPORT vtkKWEvent
 {
   public:
   static const char* GetStringFromEventId(unsigned long event);
+  static unsigned long GetEventIdFromString(const char* event);
   enum {
     KWWidgetEvents = 2000,
     MessageDialogInvokeEvent,
@@ -120,6 +121,7 @@ class VTK_EXPORT vtkKWEvent
     ChangeStandardInteractivityEvent,
     SwitchToVolumeProEvent,
     ViewAnnotationChangedEvent,
+    RenderEvent,
     // PV
     InitializeTraceEvent,
     ErrorMessageEvent,
