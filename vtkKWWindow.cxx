@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-16 22:28:53 $
-  Version:   $Revision: 1.122 $
+  Date:      $Date: 2002-09-20 14:42:23 $
+  Version:   $Revision: 1.123 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -68,7 +68,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define VTK_KW_SHOW_PROPERTIES_LABEL "Show Left Panel"
 #define VTK_KW_EXIT_DIALOG_NAME "ExitApplication"
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.122 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.123 $");
 vtkCxxSetObjectMacro(vtkKWWindow, PropertiesParent, vtkKWWidget);
 
 class vtkKWWindowMenuEntry
@@ -1154,7 +1154,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.122 $");
+  this->ExtractRevision(os,"$Revision: 1.123 $");
 }
 
 int vtkKWWindow::ExitDialog()
@@ -1382,10 +1382,12 @@ void vtkKWWindow::RetrieveColor(int level, const char* key, float rgb[3])
     }
 }
 
-int vtkKWWindow::BooleanRegisteryCheck(int level, const char* key, 
+int vtkKWWindow::BooleanRegisteryCheck(int level, 
+                                       const char* subkey,
+                                       const char* key, 
                                        const char* trueval)
 {
-  return this->GetApplication()->BooleanRegisteryCheck(level, key, trueval);
+  return this->GetApplication()->BooleanRegisteryCheck(level, subkey, key, trueval);
 }
 
 

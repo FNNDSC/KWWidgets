@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-12 19:22:21 $
-  Version:   $Revision: 1.50 $
+  Date:      $Date: 2002-09-20 14:42:23 $
+  Version:   $Revision: 1.51 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -249,7 +249,7 @@ public:
   // Description:
   // Perform a boolean check of the value in registery. If the value
   // at the key is trueval, then return true, otherwise return false.
-  int BooleanRegisteryCheck(int level, const char* key, 
+  int BooleanRegisteryCheck(int level, const char* subkey, const char* key, 
                             const char* trueval);
 
   // Description:
