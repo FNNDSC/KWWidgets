@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-06 22:37:05 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2003-01-07 19:30:30 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,7 +58,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.17 $");
 
 vtkKWRenderWidget::vtkKWRenderWidget()
 {
@@ -219,7 +219,8 @@ void vtkKWRenderWidget::SetupBindings()
                wname, tname);
   
   this->Script("bind %s <Configure> {%s Configure %%w %%h}",
-               wname, tname);
+               this->GetWidgetName(), tname);
+//               wname, tname);
   
   this->Script("bind %s <Enter> {%s Enter %%x %%y}",
                wname, tname);
@@ -320,9 +321,6 @@ void vtkKWRenderWidget::Exposed()
 
 void vtkKWRenderWidget::Configure(int width, int height)
 {
-  this->Script("%s configure -width %d -height %d",
-               this->VTKWidget->GetWidgetName(), width, height);
-  
   this->Interactor->UpdateSize(width, height);
   this->Interactor->ConfigureEvent();
 }

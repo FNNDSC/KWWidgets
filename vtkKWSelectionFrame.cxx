@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSelectionFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 17:04:29 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2003-01-07 19:30:30 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "Resources/vtkKWArrowDown.h"
 
 vtkStandardNewMacro(vtkKWSelectionFrame);
-vtkCxxRevisionMacro(vtkKWSelectionFrame, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrame, "$Revision: 1.6 $");
 
 vtkCxxSetObjectMacro(vtkKWSelectionFrame, SelectObject, vtkKWObject);
 
@@ -129,7 +129,7 @@ void vtkKWSelectionFrame::Create(vtkKWApplication *app, const char *args)
                this->TitleBarRightSubframe->GetWidgetName());
   
   this->BodyFrame->Create(app, "frame", "");
-  this->Script("pack %s -side top -fill x -expand yes",
+  this->Script("pack %s -side top -fill x -expand no",
                this->TitleBar->GetWidgetName());
   this->Script("pack %s -side top -fill both -expand yes",
                this->BodyFrame->GetWidgetName());
