@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-04 16:53:58 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-11-08 17:51:52 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFrame );
-vtkCxxRevisionMacro(vtkKWFrame, "$Revision: 1.7 $");
+vtkCxxRevisionMacro(vtkKWFrame, "$Revision: 1.8 $");
 
 vtkKWFrame::vtkKWFrame()
 {
@@ -68,7 +68,7 @@ vtkKWFrame::~vtkKWFrame()
 }
 
 
-void vtkKWFrame::Create(vtkKWApplication *app, int scrollable)
+void vtkKWFrame::Create(vtkKWApplication *app, const char* args)
 {
   const char *wname;
   
@@ -82,7 +82,7 @@ void vtkKWFrame::Create(vtkKWApplication *app, int scrollable)
   this->SetApplication(app);
 
   
-  if ( scrollable )
+  if ( args )
     {
     // create the top level
     wname = this->GetWidgetName();

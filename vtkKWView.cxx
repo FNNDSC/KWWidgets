@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-11-08 17:47:28 $
-  Version:   $Revision: 1.91 $
+  Date:      $Date: 2002-11-08 17:51:52 $
+  Version:   $Revision: 1.92 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -98,7 +98,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.91 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.92 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -442,7 +442,7 @@ void vtkKWView::CreateViewProperties()
   ico->Delete();
   
   this->AnnotationProperties->SetParent(this->Notebook->GetFrame("Annotate"));
-  this->AnnotationProperties->Create(app,1);
+  this->AnnotationProperties->Create(app,"-scrollable");
   this->Script("pack %s -pady 2 -padx 2 -fill both -expand yes -anchor n",
                this->Notebook->GetWidgetName());
   this->Script("pack %s -pady 2 -fill both -expand yes -anchor n",
@@ -499,7 +499,7 @@ void vtkKWView::CreateViewProperties()
 
   
   this->GeneralProperties->SetParent(this->Notebook->GetFrame("General"));
-  this->GeneralProperties->Create(app,1);
+  this->GeneralProperties->Create(app,"-scrollable");
   this->Script("pack %s -pady 2 -padx 2 -fill both -expand yes -anchor n",
                this->Notebook->GetWidgetName());
   this->Script("pack %s -pady 2 -fill both -expand yes -anchor n",
@@ -1491,7 +1491,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.91 $");
+  this->ExtractRevision(os,"$Revision: 1.92 $");
 }
 
 //----------------------------------------------------------------------------
