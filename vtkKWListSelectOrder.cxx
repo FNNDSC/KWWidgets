@@ -15,6 +15,7 @@
 
 #include "vtkKWApplication.h"
 #include "vtkKWIcon.h"
+#include "vtkCommand.h"
 #include "vtkKWLabel.h"
 #include "vtkKWListBox.h"
 #include "vtkObjectFactory.h"
@@ -27,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWListSelectOrder );
-vtkCxxRevisionMacro(vtkKWListSelectOrder, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWListSelectOrder, "$Revision: 1.12 $");
 
 //----------------------------------------------------------------------------
 vtkKWListSelectOrder::vtkKWListSelectOrder()
