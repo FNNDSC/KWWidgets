@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-08 21:10:19 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2000-08-15 19:00:38 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -120,6 +120,18 @@ vtkKWView::vtkKWView()
 
 vtkKWView::~vtkKWView()
 {
+  // Remove all binding
+  const char *wname = this->VTKWidget->GetWidgetName();
+  this->Script("bind %s <Expose>",wname);
+  this->Script("bind %s <Any-ButtonPress>",wname);
+  this->Script("bind %s <Any-ButtonRelease>",wname);
+  this->Script("bind %s <B1-Motion>",wname);
+  this->Script("bind %s <B2-Motion>",wname);
+  this->Script("bind %s <B3-Motion>",wname);
+  this->Script("bind %s <Shift-B1-Motion>",wname);
+  this->Script("bind %s <KeyPress>",wname);
+  this->Script("bind %s <Enter>",wname);
+
   this->GeneralProperties->Delete();
   this->BackgroundFrame->Delete();
   this->BackgroundColor->Delete();
@@ -845,8 +857,6 @@ void vtkKWView::SetupBindings()
   
   this->Script("bind %s <Enter> {%s Enter %%x %%y}", wname, tname);
 
-  //this->Script(
-  //  "bind %s <Leave> {%s Leave %%x %%y}", wname, tname);
 }
 
 
@@ -1032,5 +1042,5 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.22 $");
+  this->ExtractRevision(os,"$Revision: 1.23 $");
 }
