@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 16:16:39 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2002-02-19 20:42:20 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -178,6 +178,8 @@ protected:
   int                                  CanDoHardwareCursor;
 
   int                                  UseIntermixIntersectingGeometry;
+
+  int                                  Use3DCursor;
 
 private:
   vtkKWVolumeComposite(const vtkKWVolumeComposite&); // Not implemented

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 16:16:39 $
-  Version:   $Revision: 1.33 $
+  Date:      $Date: 2002-02-19 20:42:20 $
+  Version:   $Revision: 1.34 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -68,6 +68,7 @@ int vtkKWVolumeCompositeCommand(ClientData cd, Tcl_Interp *interp,
 
 vtkKWVolumeComposite::vtkKWVolumeComposite()
 {
+  this->Use3DCursor = 0;
   vtkFiniteDifferenceGradientEstimator *gradientEstimator;
   vtkRecursiveSphereDirectionEncoder   *directionEncoder;
 
@@ -513,7 +514,7 @@ void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.33 $");
+  this->ExtractRevision(os,"$Revision: 1.34 $");
 }
 
 vtkProp *vtkKWVolumeComposite::GetProp() 
@@ -558,11 +559,19 @@ void vtkKWVolumeComposite::DeregisterIntermixIntersectingGeometry()
 
 void vtkKWVolumeComposite::UseCursor()
 {
-  this->RegisterIntermixIntersectingGeometry();
+  if ( !this->Use3DCursor )
+    {
+    this->RegisterIntermixIntersectingGeometry();
+    this->Use3DCursor = 1;
+    }
 }
 
 void vtkKWVolumeComposite::StopUsingCursor()
 {
-  this->DeregisterIntermixIntersectingGeometry();
+  if ( this->Use3DCursor )
+    {    
+    this->DeregisterIntermixIntersectingGeometry();
+    this->Use3DCursor = 0;
+    }
 }
 
