@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-07-06 03:47:41 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2000-08-01 14:04:26 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -319,13 +319,13 @@ void vtkKWCornerAnnotation::SerializeSelf(ostream& os, vtkIndent indent)
   vtkKWSerializer::WriteSafeString(os, this->CornerText[0]->GetValue());
   os << endl;
   os << indent << "CornerText1 ";
-  vtkKWSerializer::WriteSafeString(os, this->CornerText[0]->GetValue());
+  vtkKWSerializer::WriteSafeString(os, this->CornerText[1]->GetValue());
   os << endl;
   os << indent << "CornerText2 ";
-  vtkKWSerializer::WriteSafeString(os, this->CornerText[0]->GetValue());
+  vtkKWSerializer::WriteSafeString(os, this->CornerText[2]->GetValue());
   os << endl;
   os << indent << "CornerText3 ";
-  vtkKWSerializer::WriteSafeString(os, this->CornerText[0]->GetValue());
+  vtkKWSerializer::WriteSafeString(os, this->CornerText[3]->GetValue());
   os << endl;
 
   os << indent << "CornerButton " << this->CornerButton->GetState() << endl;
@@ -386,6 +386,6 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.7 $");
+  this->ExtractRevision(os,"$Revision: 1.8 $");
   vtkKWLabeledFrame::SerializeRevision(os,indent);
 }
