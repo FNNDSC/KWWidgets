@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-23 16:47:35 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-12-03 16:01:38 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -73,8 +73,15 @@ public:
   // Description:
   // Add entries to an option menu, with or without a command.
   void AddEntry(const char *name);
-  void AddEntryWithCommand(const char *name, const char *obj, const char *method, const char *options = 0);
-  void AddEntryWithCommand(const char *name, vtkKWObject *obj, const char *methodAndArgs, const char *options = 0);
+  void AddEntryWithCommand(const char *name, const char *obj,
+                           const char *method, const char *options = 0);
+  void AddEntryWithCommand(const char *name, vtkKWObject *obj,
+                           const char *methodAndArgs, const char *options = 0);
+  void AddImageEntryWithCommand(const char *imageName, const char *obj,
+                                const char *method, const char *options = 0);
+  void AddImageEntryWithCommand(const char *ImageName, vtkKWObject *obj,
+                                const char *methodAndArgs,
+                                const char *options = 0);
 
   // Description:
   // Remove entry from an option menu.
