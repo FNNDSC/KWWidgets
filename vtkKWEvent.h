@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-03 20:22:42 $
-  Version:   $Revision: 1.55 $
+  Date:      $Date: 2003-02-04 22:06:40 $
+  Version:   $Revision: 1.56 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -62,29 +62,24 @@ class VTK_EXPORT vtkKWEvent
     BackgroundColorChangedEvent,
     ColorImageEvent,
     ContourAnnotationActiveChangedEvent,
+    ContourAnnotationAddAtPositionEvent,
     ContourAnnotationAddEvent,
-    ContourAnnotationAddPositionEvent,
     ContourAnnotationColorChangedEvent,
     ContourAnnotationComputeStatisticsEvent,
     ContourAnnotationLineWidthChangedEvent,
     ContourAnnotationOpacityChangedEvent,
-    ContourAnnotationPositionAddEvent,
-    ContourAnnotationPositionActiveChangedEvent,
     ContourAnnotationRemoveEvent,
+    ContourAnnotationSurfacePropertyChangedEvent,
     ContourAnnotationSurfaceQualityChangedEvent,
     ContourAnnotationSurfaceRepresentationChangedEvent,
     ContourAnnotationSurfaceShineChangedEvent,
     ContourAnnotationVisibilityChangedEvent,
-    ContourAtPositionAnnotationActiveChangedEvent,
     ControlLeftMouseOptionChangedEvent,
     ControlMiddleMouseOptionChangedEvent,
     ControlRightMouseOptionChangedEvent,
     CroppingPlanesPositionChangedEvent,
     CroppingRegionFlagsChangedEvent,
     CroppingRegionsVisibilityChangedEvent,
-    Marker2DColorChangedEvent,
-    Marker2DPositionChangedEvent,
-    Marker2DVisibilityChangedEvent,
     Cursor3DInteractiveStateChangedEvent,
     Cursor3DPositionChangedEvent,
     Cursor3DPositionChangingEvent,
@@ -123,6 +118,9 @@ class VTK_EXPORT vtkKWEvent
     LightVisibilityChangedEvent,
     LightboxOrientationChangedEvent,
     LightboxResolutionChangedEvent,
+    Marker2DColorChangedEvent,
+    Marker2DPositionChangedEvent,
+    Marker2DVisibilityChangedEvent,
     MaterialPropertyChangedEvent,
     MiddleMouseOptionChangedEvent,
     MouseBindingChangedEvent,
@@ -146,6 +144,7 @@ class VTK_EXPORT vtkKWEvent
     ShiftMiddleMouseOptionChangedEvent,
     ShiftRightMouseOptionChangedEvent,
     StandardInteractivityChangedEvent,
+    SurfacePropertyChangedEvent,
     SwitchToVolumeProEvent,
     TransferFunctionsChangedEvent,
     TransferFunctionsChangingEvent,
@@ -165,6 +164,7 @@ class VTK_EXPORT vtkKWEvent
     VolumeMouseBindingChangedEvent,
     VolumeOrientationMarkerColorChangedEvent,
     VolumeOrientationMarkerVisibilityChangedEvent,
+    VolumePropertyChangedEvent,
     VolumeReformatBoxVisibilityChangedEvent,
     VolumeReformatChangedEvent,
     VolumeReformatManipulationStyleChangedEvent,

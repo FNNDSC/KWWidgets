@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-03 20:22:42 $
-  Version:   $Revision: 1.52 $
+  Date:      $Date: 2003-02-04 22:06:41 $
+  Version:   $Revision: 1.53 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -53,29 +53,24 @@ static const char *vtkKWEventStrings[] = {
   "BackgroundColorChangedEvent",
   "ColorImageEvent",
   "ContourAnnotationActiveChangedEvent",
+  "ContourAnnotationAddAtPositionEvent",
   "ContourAnnotationAddEvent",
-  "ContourAnnotationAddPositionEvent",
   "ContourAnnotationColorChangedEvent",
   "ContourAnnotationComputeStatisticsEvent",
   "ContourAnnotationLineWidthChangedEvent",
   "ContourAnnotationOpacityChangedEvent",
-  "ContourAnnotationPositionActiveChangedEvent",
-  "ContourAnnotationPositionAddEvent",
   "ContourAnnotationRemoveEvent",
+  "ContourAnnotationSurfacePropertyChangedEvent",
   "ContourAnnotationSurfaceQualityChangedEvent",
   "ContourAnnotationSurfaceRepresentationChangedEvent",
   "ContourAnnotationSurfaceShineChangedEvent",
   "ContourAnnotationVisibilityChangedEvent",
-  "ContourAtPositionAnnotationActiveChangedEvent",
   "ControlLeftMouseOptionChangedEvent",
   "ControlMiddleMouseOptionChangedEvent",
   "ControlRightMouseOptionChangedEvent",
   "CroppingPlanesPositionChangedEvent",
   "CroppingRegionFlagsChangedEvent",
   "CroppingRegionsVisibilityChangedEvent",
-  "Marker2DColorChangedEvent",
-  "Marker2DPositionChangedEvent",
-  "Marker2DVisibilityChangedEvent",
   "Cursor3DInteractiveStateChangedEvent",
   "Cursor3DPositionChangedEvent",
   "Cursor3DPositionChangingEvent",
@@ -114,6 +109,9 @@ static const char *vtkKWEventStrings[] = {
   "LightVisibilityChangedEvent",
   "LightboxOrientationChangedEvent",
   "LightboxResolutionChangedEvent",
+  "Marker2DColorChangedEvent",
+  "Marker2DPositionChangedEvent",
+  "Marker2DVisibilityChangedEvent",
   "MaterialPropertyChangedEvent",
   "MiddleMouseOptionChangedEvent",
   "MouseBindingChangedEvent",
@@ -137,6 +135,7 @@ static const char *vtkKWEventStrings[] = {
   "ShiftMiddleMouseOptionChangedEvent",
   "ShiftRightMouseOptionChangedEvent",
   "StandardInteractivityChangedEvent",
+  "SurfacePropertyChangedEvent",
   "SwitchToVolumeProEvent",
   "TransferFunctionsChangedEvent",
   "TransferFunctionsChangingEvent",
@@ -156,6 +155,7 @@ static const char *vtkKWEventStrings[] = {
   "VolumeMouseBindingChangedEvent",
   "VolumeOrientationMarkerColorChangedEvent",
   "VolumeOrientationMarkerVisibilityChangedEvent",
+  "VolumePropertyChangedEvent",
   "VolumeReformatBoxVisibilityChangedEvent",
   "VolumeReformatChangedEvent",
   "VolumeReformatManipulationStyleChangedEvent",
