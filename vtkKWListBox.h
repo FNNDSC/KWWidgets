@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWListBox.h,v $
   Language:  C++
-  Date:      $Date: 2000-03-29 22:19:01 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-06-29 16:28:22 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -27,8 +27,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 =========================================================================*/
 // .NAME vtkKWListBox
 // .SECTION Description
-// A widget that looks like a button but when pressed provides a list
-// of options that the user can select.
+// A widget that can have a list of items with a scroll bar.
 
 #ifndef __vtkKWListBox_h
 #define __vtkKWListBox_h
