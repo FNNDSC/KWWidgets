@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-12 18:46:18 $
-  Version:   $Revision: 1.58 $
+  Date:      $Date: 2003-03-21 21:54:17 $
+  Version:   $Revision: 1.59 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -275,6 +275,11 @@ public:
   vtkSetMacro(ShowSplashScreen, int);
   vtkBooleanMacro(ShowSplashScreen, int);
 
+  // Description:
+  // At the end of Exit(), this is set to true. Other objects
+  // can use this to cleanup properly.
+  vtkGetMacro(ApplicationExited, int);
+
 protected:
   vtkKWApplication();
   ~vtkKWApplication();
@@ -296,6 +301,8 @@ protected:
   char *ApplicationReleaseName;
   int MajorVersion;
   int MinorVersion;
+
+  int ApplicationExited;
 
   // For Balloon help
   vtkKWWidget *BalloonHelpWindow;
