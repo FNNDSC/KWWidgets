@@ -15,15 +15,16 @@
 
 #include "vtkKWApplication.h"
 #include "vtkObjectFactory.h"
-#include "vtkbwidgets.h"
-#include "vtkcombobox.h"
 #include "vtkKWTkUtilities.h"
 
 #include "vtkTk.h"
+
+#include "Utilities/vtkKWBWidgetsTclLibrary.h"
+#include "Utilities/vtkKWComboboxTclLibrary.h"
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWBWidgets );
-vtkCxxRevisionMacro(vtkKWBWidgets, "$Revision: 1.19 $");
+vtkCxxRevisionMacro(vtkKWBWidgets, "$Revision: 1.20 $");
 
 int vtkKWBWidgetsCommand(ClientData cd, Tcl_Interp *interp,
                             int argc, char *argv[]);
