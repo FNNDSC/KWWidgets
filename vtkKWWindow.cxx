@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-05 16:17:59 $
-  Version:   $Revision: 1.81 $
+  Date:      $Date: 2002-03-21 20:48:44 $
+  Version:   $Revision: 1.82 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -907,12 +907,32 @@ void vtkKWWindow::AddRecentFilesToMenu(char *menuEntry, vtkKWObject *target)
 {
   char KeyNameP[10];
   char CmdNameP[10];
-  int i;
+  int i = 0;
   char File[1024];
   char Cmd[1024];
+  
+  char *newMenuEntry = 0;
   if ( menuEntry )
     {
-    this->SetRecentFilesMenuTag(menuEntry);
+    newMenuEntry = new char[ strlen(menuEntry)+1 ];
+    while ( menuEntry[i] )
+      {
+      if ( menuEntry[i] == '\\' )
+	{
+	newMenuEntry[i] = '/';
+	}
+      else
+	{
+	newMenuEntry[i] = menuEntry[i];
+	}      
+      i++;
+      }
+    newMenuEntry[i] = 0;
+    }
+
+  if ( newMenuEntry )
+    {
+    this->SetRecentFilesMenuTag(newMenuEntry);
     }
   else
     {
@@ -934,6 +954,7 @@ void vtkKWWindow::AddRecentFilesToMenu(char *menuEntry, vtkKWObject *target)
       }
     }
   this->UpdateRecentMenu(NULL);
+  delete [] newMenuEntry;
 }
 
 void vtkKWWindow::AddRecentFile(char *key, char *name,vtkKWObject *target,
@@ -969,7 +990,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.81 $");
+  this->ExtractRevision(os,"$Revision: 1.82 $");
 }
 
 int vtkKWWindow::ExitDialog()
