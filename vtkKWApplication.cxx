@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-03 15:15:14 $
-  Version:   $Revision: 1.82 $
+  Date:      $Date: 2002-07-03 22:34:52 $
+  Version:   $Revision: 1.83 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -233,7 +233,8 @@ void vtkKWApplication::Script(const char *format, ...)
 
   if (Tcl_GlobalEval(this->MainInterp, event) != TCL_OK)
     {
-    vtkErrorMacro("\n    Script: \n" << event << "\n    Returned Error: \n"  
+    vtkErrorMacro("\n    Script: \n" << event << "\n    Returned Error on line "
+		  << this->MainInterp->errorLine << ": \n"  
 		  << this->MainInterp->result << endl);
     }
 }
