@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplitFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-21 18:48:41 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-03-25 13:32:33 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -105,7 +105,7 @@ void vtkKWSplitFrame::Create(vtkKWApplication *app)
                wname);
 
   this->Frame1->Create(app,"frame","-borderwidth 0 -relief flat");
-  this->Separator->Create(app,"frame","-borderwidth 0 -relief flat");
+  this->Separator->Create(app,"frame","-borderwidth 2 -relief raised");
   this->Frame2->Create(app,"frame","-borderwidth 0 -relief flat");
   
   this->Update();
