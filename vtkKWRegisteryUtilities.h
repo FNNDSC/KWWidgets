@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRegisteryUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-17 18:43:09 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-02-01 22:42:13 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -147,6 +147,9 @@ class VTK_EXPORT vtkKWRegisteryUtilities : public vtkKWObject
   private:
   char *TopLevel;  
   int Locked;
+private:
+  vtkKWRegisteryUtilities(const vtkKWRegisteryUtilities&); // Not implemented
+  void operator=(const vtkKWRegisteryUtilities&); // Not implemented
 };
 
 #endif

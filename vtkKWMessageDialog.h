@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:31 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2002-02-01 22:42:13 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,6 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWDialog.h"
 class vtkKWApplication;
 class vtkKWImageLabel;
+class vtkKWLabel;
 
 class VTK_EXPORT vtkKWMessageDialog : public vtkKWDialog
 {
@@ -124,7 +125,7 @@ protected:
   int Default;
 
   vtkKWWidget *MessageDialogFrame;
-  vtkKWWidget *Label;
+  vtkKWLabel *Label;
   vtkKWWidget *ButtonFrame;
   vtkKWWidget *OKButton;
   vtkKWWidget *CancelButton;  

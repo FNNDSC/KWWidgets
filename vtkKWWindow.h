@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:35 $
-  Version:   $Revision: 1.35 $
+  Date:      $Date: 2002-02-01 22:42:14 $
+  Version:   $Revision: 1.36 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -95,6 +95,14 @@ public:
   // without an argument it will open a file dialog.
   void LoadScript();
   void LoadScript(const char *name);
+
+  // Description:
+  // Popup the vtk warning message
+  void WarningMessage(const char* message);
+  
+  // Description:
+  // Popup the vtk error message
+  void ErrorMessage(const char* message);
   
   // Description:
   // Allow windows to get at the different menu entries. In some
