@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-30 20:12:24 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2003-04-30 20:21:54 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -143,6 +143,7 @@ protected:
   int Beep;
   int BeepType;
   int InvokeAtPointer;
+  int Grab;
 
 private:
   vtkKWDialog(const vtkKWDialog&); // Not implemented

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-14 15:42:30 $
-  Version:   $Revision: 1.29 $
+  Date:      $Date: 2003-04-30 20:21:54 $
+  Version:   $Revision: 1.30 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDialog );
-vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.29 $");
+vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.30 $");
 
 int vtkKWDialogCommand(ClientData cd, Tcl_Interp *interp,
                              int argc, char *argv[]);
@@ -63,6 +63,7 @@ vtkKWDialog::vtkKWDialog()
   this->BeepType = 0;
   this->MasterWindow = 0;
   this->InvokeAtPointer = 0;
+  this->Grab = 1;
 }
 
 vtkKWDialog::~vtkKWDialog()
@@ -141,7 +142,10 @@ int vtkKWDialog::Invoke()
 
   this->Script("focus %s",this->GetWidgetName());
   this->Script("update idletasks");
-  this->Script("grab %s",this->GetWidgetName());
+  if ( this->Grab )
+    {
+    this->Script("grab %s",this->GetWidgetName());
+    }
   if ( this->Beep )
     {
     this->Script("bell");
@@ -153,7 +157,10 @@ int vtkKWDialog::Invoke()
     {
     Tcl_DoOneEvent(0);    
     }
-  this->Script("grab release %s",this->GetWidgetName());
+  if ( this->Grab )
+    {
+    this->Script("grab release %s",this->GetWidgetName());
+    }
 
   this->Application->SetDialogUp(0);
   return (this->Done-1);
