@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-10 20:37:39 $
-  Version:   $Revision: 1.35 $
+  Date:      $Date: 2003-01-10 22:35:10 $
+  Version:   $Revision: 1.36 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -105,6 +105,7 @@ class VTK_EXPORT vtkKWEvent
     ImageMouseBindingChangedEvent,
     ImageScaleBarColorChangedEvent,
     ImageScaleBarVisibilityChangedEvent,
+    ImageSliceChangedEvent,
     ImageZoomFactorChangedEvent,
     InteractiveRenderStartEvent,
     LeftMouseOptionChangedEvent,
