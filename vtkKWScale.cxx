@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-15 14:57:18 $
-  Version:   $Revision: 1.33 $
+  Date:      $Date: 2002-10-23 21:31:28 $
+  Version:   $Revision: 1.34 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // ---------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWScale );
-vtkCxxRevisionMacro(vtkKWScale, "$Revision: 1.33 $");
+vtkCxxRevisionMacro(vtkKWScale, "$Revision: 1.34 $");
 
 int vtkKWScaleCommand(ClientData cd, Tcl_Interp *interp,
                       int argc, char *argv[]);
@@ -190,7 +190,6 @@ void vtkKWScale::Create(vtkKWApplication *app, const char *args)
 
     ostrstream arrow;
     arrow << this->PopupPushButton->GetWidgetName() << ".arrowimg" << ends;
-    this->Script("image create photo %s", arrow.str());
     if (!vtkKWTkUtilities::UpdatePhoto(this->Application->GetMainInterp(),
                                        arrow.str(), 
                                        image_arrow, 
@@ -514,10 +513,6 @@ void vtkKWScale::WithdrawPopupScaleCallback()
     {
     return;
     }
-
-  // Generate/propagate the press event for the scale
-  
-  // this->InvokeEndCommand();
 
   // Withdraw the popup
 
