@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-08 15:03:45 $
-  Version:   $Revision: 1.64 $
+  Date:      $Date: 2002-11-18 04:54:36 $
+  Version:   $Revision: 1.65 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -62,6 +62,7 @@ class vtkKWNotebook;
 class vtkKWProgressGauge;
 class vtkKWRadioButton;
 class vtkKWSplitFrame;
+class vtkKWTclInteractor;
 class vtkKWView;
 class vtkKWViewCollection;
 
@@ -311,6 +312,14 @@ public:
   void OnInterfaceSettingsChange();
   vtkGetObjectMacro(InterfaceSettingsFrame,vtkKWLabeledFrame);
 
+  // Description:
+  // Display the tcl interactor.
+  void DisplayCommandPrompt();
+  
+  // Description:
+  // Access to the Tcl interactor.
+  vtkGetObjectMacro(TclInteractor, vtkKWTclInteractor);
+
 protected:
   vtkKWWindow();
   ~vtkKWWindow();
@@ -394,6 +403,8 @@ protected:
   // This vector holds the list of most recently used files.
   vtkVector<vtkKWWindowMenuEntry*> *RecentFilesVector;
 //ETX
+
+  vtkKWTclInteractor *TclInteractor;
 
 private:
   vtkKWWindow(const vtkKWWindow&); // Not implemented
