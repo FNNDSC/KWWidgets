@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWChangeColorButton.h,v $
   Language:  C++
-  Date:      $Date: 2000-04-24 22:20:14 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-04-28 05:18:30 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,8 @@ public:
 
   // Description:
   // Set/Get the current color
-  void SetColor(float c[3]);
+  void SetColor(float c[3]) {this->SetColor(c[0], c[1], c[2]);};
+  void SetColor(float r, float g, float b);
   virtual float *GetColor() {return this->Color;};
 
   // Description:
