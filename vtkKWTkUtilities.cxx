@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTkUtilities.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-16 20:26:36 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-09-16 20:54:55 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -57,7 +57,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.10 $");
 
 //----------------------------------------------------------------------------
 void vtkKWTkUtilities::GetRGBColor(Tcl_Interp *interp,
@@ -476,24 +476,10 @@ int vtkKWTkUtilities::GetGridColumnWidths(Tcl_Interp *interp,
         continue;
         }
 
-      ostrstream wclass;
-      wclass << "winfo class " << interp->result << ends;
-
-      cout << "[" << col << ", " << row << "] [" << interp->result << "] ";
+      // Get the slave reqwidth
 
       ostrstream reqwidth;
       reqwidth << "winfo reqwidth " << interp->result << ends;
-
-      ostrstream wwidth;
-      wwidth << "winfo width " << interp->result << ends;
-
-      res = Tcl_GlobalEval(interp, wclass.str());
-      wclass.rdbuf()->freeze(0);
-
-      cout << "[" << interp->result << "] ";
-
-      // Get the slave reqwidth
-
       res = Tcl_GlobalEval(interp, reqwidth.str());
       reqwidth.rdbuf()->freeze(0);
       if (res != TCL_OK)
@@ -504,19 +490,10 @@ int vtkKWTkUtilities::GetGridColumnWidths(Tcl_Interp *interp,
       int width = 0;
       sscanf(interp->result, "%d", &width);
 
-      cout << "= " << width;
-
       if (width > (*col_widths)[col])
         {
         (*col_widths)[col] = width;
         }
-
-      // Get the slave width
-
-      res = Tcl_GlobalEval(interp, wwidth.str());
-      wwidth.rdbuf()->freeze(0);
-      cout << " (w = " << interp->result << ")" << endl;
-
       }
     }
 
@@ -582,7 +559,7 @@ int vtkKWTkUtilities::SynchroniseGridsColumnMinimumSize(
       }
     }
   minsize << ends;
-  cout << minsize.str() << endl;
+  // cout << minsize.str() << endl;
 
   int ok = 1;
   if (Tcl_GlobalEval(interp, minsize.str()) != TCL_OK)
