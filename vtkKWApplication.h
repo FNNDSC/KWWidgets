@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-12 18:22:56 $
-  Version:   $Revision: 1.43 $
+  Date:      $Date: 2002-07-03 15:15:14 $
+  Version:   $Revision: 1.44 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -134,6 +134,10 @@ public:
   const char* ExpandFileName(const char *String, ...);
   int EvaluateBooleanExpression(const char*Expression, ...);
 //ETX
+
+  // Description:
+  // Test some of the features that cannot be tested from the tcl.
+  int SelfTest();
 
   // Description:
   // Internal Balloon help callbacks.
