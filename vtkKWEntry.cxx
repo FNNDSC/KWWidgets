@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-16 12:55:26 $
-  Version:   $Revision: 1.19 $
+  Date:      $Date: 2003-04-16 13:00:06 $
+  Version:   $Revision: 1.20 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -70,7 +70,7 @@ public:
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry );
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.19 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.20 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
@@ -397,7 +397,7 @@ void vtkKWEntry::AddValue(const char* value)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWEntry::GetNumberOfValues()
+int vtkKWEntry::GetNumberOfValues()
 {
   return this->Internals->Entries.size();
 }
