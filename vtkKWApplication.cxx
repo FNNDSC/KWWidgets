@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-21 20:22:22 $
-  Version:   $Revision: 1.19 $
+  Date:      $Date: 2000-08-22 13:51:22 $
+  Version:   $Revision: 1.20 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -443,3 +443,14 @@ void vtkKWApplication::BalloonHelpCancel()
 }
 
 
+//----------------------------------------------------------------------------
+void vtkKWApplication::SetWidgetVisibility(int v)
+{
+  vtkKWApplication::WidgetVisibility = v;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWApplication::GetWidgetVisibility() 
+{
+  return vtkKWApplication::WidgetVisibility;
+}
