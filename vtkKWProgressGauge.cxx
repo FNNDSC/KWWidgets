@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWProgressGauge.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-11-12 22:26:07 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-12-22 17:01:08 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWProgressGauge );
-vtkCxxRevisionMacro(vtkKWProgressGauge, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWProgressGauge, "$Revision: 1.12 $");
 
 int vtkKWProgressGaugeCommand(ClientData cd, Tcl_Interp *interp,
                               int argc, char *argv[]);
@@ -74,8 +74,9 @@ void vtkKWProgressGauge::Create(vtkKWApplication *app, char *args)
 {
   const char *wname;
 
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("CheckButton already created");
     return;
@@ -98,6 +99,10 @@ void vtkKWProgressGauge::Create(vtkKWApplication *app, char *args)
     "%s.display create text [expr 0.5 * %d] [expr 0.5 * %d] "
     "-anchor c -text \"\" -tags value",
     wname, this->Length, this->Height);
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 void vtkKWProgressGauge::SetValue(int value)

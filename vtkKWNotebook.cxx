@@ -3,8 +3,8 @@
 Program:   Visualization Toolkit
 Module:    $RCSfile: vtkKWNotebook.cxx,v $
 Language:  C++
-Date:      $Date: 2002-12-17 21:46:44 $
-Version:   $Revision: 1.35 $
+Date:      $Date: 2002-12-22 17:00:39 $
+Version:   $Revision: 1.36 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -84,7 +84,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.35 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.36 $");
 
 //------------------------------------------------------------------------------
 int vtkKWNotebookCommand(ClientData cd, Tcl_Interp *interp,
@@ -189,6 +189,8 @@ vtkKWNotebook::~vtkKWNotebook()
 //------------------------------------------------------------------------------
 void vtkKWNotebook::Create(vtkKWApplication *app, const char *args)
 {
+  // Set the application
+
   if (this->IsCreated())
     {
     vtkErrorMacro("The notebook is already created");
@@ -242,6 +244,10 @@ void vtkKWNotebook::Create(vtkKWApplication *app, const char *args)
   cmd << ends;
   this->Script(cmd.str());
   cmd.rdbuf()->freeze(0);
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 //------------------------------------------------------------------------------

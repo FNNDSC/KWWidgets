@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-29 20:49:43 $
-  Version:   $Revision: 1.32 $
+  Date:      $Date: 2002-12-22 17:00:15 $
+  Version:   $Revision: 1.33 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.32 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.33 $");
 
 
 
@@ -71,17 +71,22 @@ vtkKWMenu::~vtkKWMenu()
 //------------------------------------------------------------------------------
 void vtkKWMenu::Create(vtkKWApplication* app, const char* args)
 {
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("Menu already created");
     return;
     }
   this->SetApplication(app);
+
   this->Script("menu %s -tearoff %d %s", this->GetWidgetName(), this->TearOff, args); 
   this->Script("bind %s <<MenuSelect>> {%s DisplayHelp %%W}", this->GetWidgetName(),
                this->GetTclName());
-  
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 //------------------------------------------------------------------------------

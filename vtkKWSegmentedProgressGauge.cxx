@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSegmentedProgressGauge.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-06 18:49:43 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-12-22 17:04:11 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -29,7 +29,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "vtkObjectFactory.h"
 
 vtkStandardNewMacro(vtkKWSegmentedProgressGauge);
-vtkCxxRevisionMacro(vtkKWSegmentedProgressGauge, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWSegmentedProgressGauge, "$Revision: 1.3 $");
 
 vtkKWSegmentedProgressGauge::vtkKWSegmentedProgressGauge()
 {
@@ -57,8 +57,9 @@ void vtkKWSegmentedProgressGauge::Create(vtkKWApplication *app,
 {
   const char *wname;
   
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("Segmented progress gauge already created");
     return;
@@ -105,6 +106,10 @@ void vtkKWSegmentedProgressGauge::Create(vtkKWApplication *app,
       this->Script("set color0 red1; set color1 orange1; set color2 yellow1; set color3 green1");
       break;
     }
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 void vtkKWSegmentedProgressGauge::SetValue(int segment, int value)

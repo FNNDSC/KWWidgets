@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWListBox.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-28 22:34:58 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-12-22 16:59:21 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,7 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWListBox );
-vtkCxxRevisionMacro(vtkKWListBox, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWListBox, "$Revision: 1.13 $");
 
 
 int vtkKWListBoxCommand(ClientData cd, Tcl_Interp *interp,
@@ -173,8 +173,9 @@ void vtkKWListBox::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
 
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("OptionListBox already created");
     return;
@@ -200,6 +201,10 @@ void vtkKWListBox::Create(vtkKWApplication *app, const char *args)
   
   this->Script("pack %s -side right -fill y", this->Scrollbar->GetWidgetName());
   this->Script("pack %s -side left -expand 1 -fill both", this->Listbox->GetWidgetName());
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 

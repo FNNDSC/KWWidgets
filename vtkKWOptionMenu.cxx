@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-12 21:48:18 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2002-12-22 17:01:08 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWOptionMenu );
-vtkCxxRevisionMacro(vtkKWOptionMenu, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWOptionMenu, "$Revision: 1.18 $");
 
 //-----------------------------------------------------------------------------
 vtkKWOptionMenu::vtkKWOptionMenu()
@@ -185,8 +185,9 @@ void vtkKWOptionMenu::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
 
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("OptionMenu already created");
     return;
@@ -199,6 +200,10 @@ void vtkKWOptionMenu::Create(vtkKWApplication *app, const char *args)
   
   this->Script("menubutton %s -textvariable %sValue -indicatoron 1 -menu %s -relief raised -bd 2 -highlightthickness 0 -anchor c -direction flush %s", wname, wname, this->Menu->GetWidgetName(), (args?args:""));
   this->Menu->Create(app,"menu","-tearoff 0");
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 //-----------------------------------------------------------------------------

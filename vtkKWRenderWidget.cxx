@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-19 15:38:33 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-12-22 17:03:00 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -57,7 +57,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.9 $");
 
 vtkKWRenderWidget::vtkKWRenderWidget()
 {
@@ -109,8 +109,9 @@ void vtkKWRenderWidget::Create(vtkKWApplication *app, const char *args)
   char *local;
   const char *wname;
   
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("Render widget already created");
     return;
@@ -131,6 +132,10 @@ void vtkKWRenderWidget::Create(vtkKWApplication *app, const char *args)
   
   this->RenderWindow->Render();
   delete [] local;
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 void vtkKWRenderWidget::SetupBindings()

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSelectionFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-18 19:29:25 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-12-22 17:04:29 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "Resources/vtkKWArrowDown.h"
 
 vtkStandardNewMacro(vtkKWSelectionFrame);
-vtkCxxRevisionMacro(vtkKWSelectionFrame, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrame, "$Revision: 1.5 $");
 
 vtkCxxSetObjectMacro(vtkKWSelectionFrame, SelectObject, vtkKWObject);
 
@@ -89,8 +89,9 @@ void vtkKWSelectionFrame::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
   
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("Selection frame already created");
     return;
@@ -135,6 +136,10 @@ void vtkKWSelectionFrame::Create(vtkKWApplication *app, const char *args)
   
   this->SetSelectObject(NULL);
   this->SetSelectMethod(NULL);
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 void vtkKWSelectionFrame::SetTitle(const char *title)

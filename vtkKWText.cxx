@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWText.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:15 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-12-22 17:05:21 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWText );
-vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.10 $");
 
 vtkKWText::vtkKWText()
 {
@@ -81,8 +81,9 @@ void vtkKWText::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
 
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("Text already created");
     return;
@@ -93,6 +94,10 @@ void vtkKWText::Create(vtkKWApplication *app, const char *args)
   // create the top level
   wname = this->GetWidgetName();
   this->Script("text %s %s",wname,(args?args:""));
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 //----------------------------------------------------------------------------
