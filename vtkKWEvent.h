@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 20:32:33 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2002-11-26 21:12:36 $
+  Version:   $Revision: 1.18 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -95,6 +95,11 @@ class VTK_EXPORT vtkKWEvent
     ControlLeftMouseOptionChangedEvent,
     ControlMiddleMouseOptionChangedEvent,
     ControlRightMouseOptionChangedEvent,
+    EnableShadingEvent,
+    AmbientChangedEvent,
+    DiffuseChangedEvent,
+    SpecularChangedEvent,
+    SpecularPowerChangedEvent,
     TransferFunctionsChangedEvent,
     TransferFunctionsChangingEvent,
     ContourAnnotationAddEvent,
