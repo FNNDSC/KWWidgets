@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkbwidgets.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-27 19:26:20 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-05-30 18:50:23 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -88,7 +88,7 @@ const char* bwidgets =
 "# ----------------------------------------------------------------------------\n"
 "#  widget.tcl\n"
 "#  This file is part of Unifix BWidget Toolkit\n"
-"#  $Id: vtkbwidgets.h,v 1.2 2002-05-27 19:26:20 berk Exp $\n"
+"#  $Id: vtkbwidgets.h,v 1.3 2002-05-30 18:50:23 berk Exp $\n"
 "# ----------------------------------------------------------------------------\n"
 "namespace eval Widget {\n"
 "    variable _optiontype\n"
@@ -323,6 +323,27 @@ const char* bwidgets =
 "\n"
 "\n"
 "\n"
+"# ----------------------------------------------------------------------------\n"
+"#  Command Widget::destroy\n"
+"# ----------------------------------------------------------------------------\n"
+"proc Widget::destroy { path } {\n"
+"    variable _class\n"
+"\n"
+"    set class $_class($path)\n"
+"    upvar 0 ${class}::$path:opt pathopt\n"
+"    upvar 0 ${class}::$path:mod pathmod\n"
+"    upvar 0 ${class}::$path:init pathinit\n"
+"\n"
+"    if {[info exists pathopt]} {\n"
+"        unset pathopt\n"
+"    }\n"
+"    if {[info exists pathmod]} {\n"
+"        unset pathmod\n"
+"    }\n"
+"    if {[info exists pathinit]} {\n"
+"        unset pathinit\n"
+"    }\n"
+"}\n"
 "# ----------------------------------------------------------------------------\n"
 "#  Command Widget::configure\n"
 "# ----------------------------------------------------------------------------\n"
@@ -882,7 +903,7 @@ const char* bwidgets =
 "# ------------------------------------------------------------------------------\n"
 "#  scrollframe.tcl\n"
 "#  This file is part of Unifix BWidget Toolkit\n"
-"#  $Id: vtkbwidgets.h,v 1.2 2002-05-27 19:26:20 berk Exp $\n"
+"#  $Id: vtkbwidgets.h,v 1.3 2002-05-30 18:50:23 berk Exp $\n"
 "# ------------------------------------------------------------------------------\n"
 "\n"
 "namespace eval ScrollableFrame {\n"
@@ -1025,7 +1046,7 @@ const char* bwidgets =
 "# -----------------------------------------------------------------------------\n"
 "#  scrollw.tcl\n"
 "#  This file is part of Unifix BWidget Toolkit\n"
-"#  $Id: vtkbwidgets.h,v 1.2 2002-05-27 19:26:20 berk Exp $\n"
+"#  $Id: vtkbwidgets.h,v 1.3 2002-05-30 18:50:23 berk Exp $\n"
 "# -----------------------------------------------------------------------------\n"
 "namespace eval ScrolledWindow {\n"
 "    Widget::declare ScrolledWindow {\n"
