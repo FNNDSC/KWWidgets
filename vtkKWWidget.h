@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 15:49:22 $
-  Version:   $Revision: 1.39 $
+  Date:      $Date: 2003-01-15 23:05:09 $
+  Version:   $Revision: 1.40 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -169,8 +169,9 @@ public:
   void GetBackgroundColor(float *r, float *g, float *b);
   
   // Description:
-  // Query if widget has Tk configuration option
+  // Query if widget has Tk configuration option, and get the option as int
   int HasConfigurationOption(const char* option);
+  int GetConfigurationOptionAsInt(const char* option);
   
   // Description:
   // Query if widget is packed

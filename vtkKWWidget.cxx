@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-10 18:57:37 $
-  Version:   $Revision: 1.56 $
+  Date:      $Date: 2003-01-15 23:05:09 $
+  Version:   $Revision: 1.57 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.56 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.57 $");
 
 int vtkKWWidgetCommand(ClientData cd, Tcl_Interp *interp,
                        int argc, char *argv[]);
@@ -329,7 +329,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   this->Superclass::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.56 $");
+  this->ExtractRevision(os,"$Revision: 1.57 $");
 }
 
 //------------------------------------------------------------------------------
@@ -495,6 +495,17 @@ int vtkKWWidget::HasConfigurationOption(const char* option)
           !this->Application->EvaluateBooleanExpression(
             "catch {%s cget %s}",
             this->GetWidgetName(), option));
+}
+
+//------------------------------------------------------------------------------
+int vtkKWWidget::GetConfigurationOptionAsInt(const char* option)
+{
+  if (!this->HasConfigurationOption(option))
+    {
+    return 0;
+    }
+
+  return atoi(this->Script("%s cget %s", this->GetWidgetName(), option));
 }
 
 //------------------------------------------------------------------------------
