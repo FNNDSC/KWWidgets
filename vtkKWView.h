@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-05 19:10:05 $
-  Version:   $Revision: 1.51 $
+  Date:      $Date: 2002-12-06 20:59:33 $
+  Version:   $Revision: 1.52 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -444,7 +444,7 @@ protected:
   int              SupportPrint;
   int              SupportCopy;
   int              SupportControlFrame;
-  
+
 #ifdef _WIN32
   // internal methods used in printing
   void Print(HDC ghdc, HDC adc);
@@ -458,7 +458,4 @@ private:
   void operator=(const vtkKWView&); // Not implemented
 };
 
-
 #endif
-
-

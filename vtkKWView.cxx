@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-05 20:10:23 $
-  Version:   $Revision: 1.98 $
+  Date:      $Date: 2002-12-06 20:59:33 $
+  Version:   $Revision: 1.99 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -101,7 +101,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.98 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.99 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -1175,7 +1175,6 @@ void vtkKWView::Select(vtkKWWindow *pw)
     this->SelectedComposite->Select(this);
     }
   
-  
   // map the property sheet as needed
   if (this->SharedPropertiesParent && this->MenuEntryName)
     {
@@ -1239,11 +1238,11 @@ void vtkKWView::Deselect(vtkKWWindow *pw)
 //----------------------------------------------------------------------------
 void vtkKWView::MakeSelected()
 {
-  this->Script("focus %s",this->VTKWidget->GetWidgetName());
   if (this->ParentWindow)
     {
     this->ParentWindow->SetSelectedView(this);
     }
+  this->Script("focus %s", this->VTKWidget->GetWidgetName());
 }
 
 //----------------------------------------------------------------------------
@@ -1308,7 +1307,6 @@ void vtkKWView::SetupBindings()
                wname, tname);
   
   this->Script("bind %s <Enter> {%s Enter %%x %%y}", wname, tname);
-
 }
 
 
@@ -1507,7 +1505,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.98 $");
+  this->ExtractRevision(os,"$Revision: 1.99 $");
 }
 
 //----------------------------------------------------------------------------
