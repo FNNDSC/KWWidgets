@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 04:20:05 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-12-30 04:29:10 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -84,6 +84,11 @@ public:
   void SetReadOnly(int);
   vtkBooleanMacro(ReadOnly, int);
   vtkGetMacro(ReadOnly, int);
+
+  // Description:
+  // Bind the command called when <Return> is pressed or the widget gets out
+  // of focus.
+  virtual void BindCommand(vtkKWObject *object, const char *command);
 
 protected:
   vtkKWEntry();
