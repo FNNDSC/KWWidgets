@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2001-12-12 23:30:29 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2002-01-08 22:21:03 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -56,6 +56,7 @@ class vtkKWViewCollection;
 class vtkKWMenu;
 class vtkKWProgressGauge;
 class vtkKWView;
+class vtkKWPointerArray;
 
 class VTK_EXPORT vtkKWWindow : public vtkKWWidget
 {
@@ -190,12 +191,18 @@ protected:
   vtkKWWindow(const vtkKWWindow&) {};
   void operator=(const vtkKWWindow&) {};
   virtual void SerializeRevision(ostream& os, vtkIndent indent);
+
+  void InsertRecentFileToMenu(const char *filename, 
+			      vtkKWObject *taret, 
+			      const char *command);
+  void UpdateRecentMenu();
   
   int ExitDialog();
 
   vtkKWNotebook *Notebook;
   virtual void CreateStatusImage();
   int NumberOfMRUFiles;
+  int RealNumberOfMRUFiles;
   vtkKWView *SelectedView;
   vtkKWViewCollection *Views;
   vtkKWMenu *Menu;
@@ -221,6 +228,10 @@ protected:
   int SupportHelp;
   char *WindowClass;
   int PromptBeforeClose;
+
+  vtkKWPointerArray *RecentFiles;
+
+  void PrintRecentFiles();
 };
 
 
