@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPopupButton.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-02 23:28:37 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2003-01-30 22:19:44 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,11 +39,10 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =========================================================================*/
-// .NAME vtkKWPopupButton - a popup button with a label
+// .NAME vtkKWPopupButton - a button that triggers a popup
 // .SECTION Description
-// The vtkKWPopupButton class creates a push button with a label in 
-// front of it (just as its parent vtkKWLabeledPushButton does), but
-// it will popup a window. User widgets should be inserted inside
+// The vtkKWPopupButton class creates a push button that
+// will popup a window. User widgets should be inserted inside
 // the PopupFrame ivar.
 
 #ifndef __vtkKWPopupButton_h

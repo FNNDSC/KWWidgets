@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPopupButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-02 23:28:37 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2003-01-30 22:19:44 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPopupButton);
-vtkCxxRevisionMacro(vtkKWPopupButton, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWPopupButton, "$Revision: 1.2 $");
 
 int vtkKWPopupButtonCommand(ClientData cd, Tcl_Interp *interp,
                             int argc, char *argv[]);
@@ -95,7 +95,7 @@ void vtkKWPopupButton::Create(vtkKWApplication *app, const char *args)
 
   if (this->IsCreated())
     {
-    vtkErrorMacro("LabeledPopupButton already created");
+    vtkErrorMacro("PopupButton already created");
     return;
     }
 
