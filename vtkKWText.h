@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWText.h,v $
   Language:  C++
-  Date:      $Date: 2000-04-28 17:59:17 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-07-05 20:33:06 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,11 +52,15 @@ public:
   char *GetValue();
 
 protected:
-  vtkKWText() {};
-  ~vtkKWText() {};
+  vtkKWText();
+  ~vtkKWText();
   vtkKWText(const vtkKWText&) {};
   void operator=(const vtkKWText&) {};
 
+  vtkGetStringMacro( ValueString );
+  vtkSetStringMacro( ValueString );
+  
+  char *ValueString;
 };
 
 

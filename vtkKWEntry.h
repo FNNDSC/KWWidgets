@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-17 03:20:01 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-07-05 20:33:06 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -59,10 +59,16 @@ public:
   
 
 protected:
-  vtkKWEntry() {};
-  ~vtkKWEntry() {};
+  vtkKWEntry();
+  ~vtkKWEntry();
   vtkKWEntry(const vtkKWEntry&) {};
   void operator=(const vtkKWEntry&) {};
+  
+  vtkSetStringMacro(ValueString);
+  vtkGetStringMacro(ValueString);
+  
+  char *ValueString;
+  
 };
 
 

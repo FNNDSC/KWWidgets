@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-01-03 17:19:30 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-07-05 20:33:06 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,13 +44,23 @@ vtkKWEntry* vtkKWEntry::New()
   return new vtkKWEntry;
 }
 
+vtkKWEntry::vtkKWEntry()
+{
+  this->ValueString = NULL;
+}
+
+vtkKWEntry::~vtkKWEntry()
+{
+  this->SetValueString(NULL);
+}
 
 
 
 char *vtkKWEntry::GetValue()
 {
   this->Script("%s get", this->GetWidgetName());
-  return this->Application->GetMainInterp()->result;
+  this->SetValueString( this->Application->GetMainInterp()->result );
+  return this->GetValueString();
 }
 
 int vtkKWEntry::GetValueAsInt()

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWText.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-04-28 17:59:17 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-07-05 20:33:06 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,13 +44,23 @@ vtkKWText* vtkKWText::New()
   return new vtkKWText;
 }
 
+vtkKWText::vtkKWText()
+{
+  this->ValueString = NULL;
+}
+
+vtkKWText::~vtkKWText()
+{
+  this->SetValueString(NULL);
+}
 
 
 
 char *vtkKWText::GetValue()
 {
   this->Script("%s get 1.0 {end -1 chars}", this->GetWidgetName());
-  return this->Application->GetMainInterp()->result;
+  this->SetValueString( this->Application->GetMainInterp()->result );
+  return this->GetValueString();
 }
 
 void vtkKWText::SetValue(const char *s)

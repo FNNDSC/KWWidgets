@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2000-06-01 21:38:16 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2000-07-05 20:33:06 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -248,7 +248,7 @@ public:
 
   // Description:
   // Change the color of the annotation text
-  void SetHeaderTextColor( float r, float g, float b );
+  virtual void SetHeaderTextColor( float r, float g, float b );
 
   // Description:
   // Turn interactivity on / off - used for UI components that want 
