@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:25 $
-  Version:   $Revision: 1.48 $
+  Date:      $Date: 2002-01-11 19:24:44 $
+  Version:   $Revision: 1.49 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -610,10 +610,7 @@ void vtkKWWindow::Create(vtkKWApplication *app, char *args)
   this->PageMenu->AddRadioButton(2,"300 DPI",rbv,this,"OnPrint3", 0);
   delete [] rbv;
   // add the Print option
-
-#ifdef _WIN32
   this->MenuFile->AddCascade("Page Setup", this->PageMenu,8);
-#endif
 
   this->MenuFile->AddSeparator();
   this->MenuFile->AddCommand("Close", this, "Close", 0);
@@ -913,7 +910,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.48 $");
+  this->ExtractRevision(os,"$Revision: 1.49 $");
 }
 
 int vtkKWWindow::ExitDialog()
