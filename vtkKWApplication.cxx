@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-04-21 19:29:32 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2000-04-24 20:17:06 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -35,6 +35,8 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "vtkKWMessageDialog.h"
 #include "vtkObjectFactory.h"
 #include "vtkOutputWindow.h"
+#include "vtkKWWindow.h"
+
 
 
 //------------------------------------------------------------------------------
@@ -194,13 +196,26 @@ void vtkKWApplication::AddWindow(vtkKWWindow *w)
 
 void vtkKWApplication::Exit()
 {
-  this->Windows->RemoveAllItems();
-  this->Windows->Delete();
-  this->Windows = NULL;  
-  this->Script("exit");
-  //Tcl_GlobalEval(this->MainInterp, "destroy .");  
-  //Tcl_DeleteInterp(this->MainInterp);
-  this->MainInterp = NULL;
+  vtkKWWindow* win = 0;
+  this->Windows->InitTraversal();
+  while (this->Windows && (win = this->Windows->GetNextKWWindow()))
+    {
+    win->Close();
+    if (this->Windows)
+      {
+      this->Windows->InitTraversal();
+      }
+    }
+  
+  if (this->Windows)
+    {
+    this->Windows->Delete();
+    this->Windows = NULL;
+    this->MainInterp = NULL;
+    vtkObjectFactory::UnRegisterAllFactories();
+    Tcl_Finalize();
+    }
+  return;
 }
     
 void vtkKWApplication::Start()

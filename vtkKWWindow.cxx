@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-04-19 17:56:37 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2000-04-24 20:17:06 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -2603,7 +2603,9 @@ void vtkKWWindow::LoadScript()
   char *path = NULL;
 
   this->Script("tk_getOpenFile -title \"Load Script\" -filetypes {{{Tcl Script} {.tcl}}}");
-  path = strdup(this->Application->GetMainInterp()->result);
+  path = 
+    strcpy(new char[strlen(this->Application->GetMainInterp()->result)+1], 
+	   this->Application->GetMainInterp()->result);
   if (strlen(path) != 0)
     {
     FILE *fin = fopen(path,"r");
@@ -2853,5 +2855,5 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.12 $");
+  this->ExtractRevision(os,"$Revision: 1.13 $");
 }

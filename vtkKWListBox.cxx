@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWListBox.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-03-29 22:19:01 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-04-24 20:17:06 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -77,6 +77,7 @@ const char* vtkKWListBox::GetItem(int index)
 {
   this->Script("%s.list get %d", this->GetWidgetName(), index);
   char* result = this->Application->GetMainInterp()->result;
+  delete [] this->Item;
   this->Item = strcpy(new char[strlen(result)+1], result);
   return this->Item;
 }

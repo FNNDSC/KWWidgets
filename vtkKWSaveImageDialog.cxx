@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSaveImageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-01-03 17:19:30 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-04-24 20:17:06 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -69,7 +69,9 @@ void vtkKWSaveImageDialog::Invoke()
       {
       free(path);
       }
-    path = strdup(this->Application->GetMainInterp()->result);
+    path =  
+      strcpy(new char[strlen(this->Application->GetMainInterp()->result)+1], 
+	     this->Application->GetMainInterp()->result);
     if (strlen(path) == 0)
       {
       done = 1;
