@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-23 16:02:00 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2000-11-08 13:55:38 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,8 @@ public:
   void Create(vtkKWApplication *app, const char *args);
 
   // Description:
-  // Set/Get the value of the scale
+  // Set/Get the value of the scale.  If you are changing the default
+  // resoltion of the scale, set it before setting the value.
   void SetValue(float v);
   virtual float GetValue() {return this->Value;};
 
@@ -68,7 +69,8 @@ public:
   virtual void InvokeEndCommand();
 
   // Description:
-  // Method to set / get the resolution of the slider
+  // Method to set / get the resolution of the slider.  Be sure to set the
+  // resolution of the scale prior to setting the scale value.
   vtkGetMacro( Resolution, float );
   void SetResolution( float r );
   
