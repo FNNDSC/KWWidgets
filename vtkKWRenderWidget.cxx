@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-03 18:33:04 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2003-01-06 14:42:24 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,7 +58,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.15 $");
 
 vtkKWRenderWidget::vtkKWRenderWidget()
 {
@@ -569,4 +569,9 @@ void vtkKWRenderWidget::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "RenderState: " << this->RenderState << endl;
   os << indent << "Renderer: " << this->Renderer << endl;
   os << indent << "EventMap: " << this->EventMap << endl;
+  os << indent << "CollapsingRenders: " << this->CollapsingRenders << endl;
+  os << indent << "ScalarShift: " << this->ScalarShift << endl;
+  os << indent << "ScalarScale: " << this->ScalarScale << endl;
+  os << indent << "CurrentCamera: " << this->CurrentCamera << endl;
+  os << indent << "Units: " << (this->Units ? this->Units : "(none)") << endl;
 }
