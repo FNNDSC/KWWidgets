@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-02 04:11:26 $
-  Version:   $Revision: 1.24 $
+  Date:      $Date: 2003-01-10 23:08:55 $
+  Version:   $Revision: 1.25 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -149,6 +149,14 @@ public:
                                 const char *MethodAndArgString);
 
   // Description:
+  // Set/get whether the above commands should be called or not.
+  // This allow you to disable the commands while you are setting the scale
+  // value for example.
+  vtkSetMacro(DisableCommands, int);
+  vtkGetMacro(DisableCommands, int);
+  vtkBooleanMacro(DisableCommands, int);
+
+  // Description:
   // Setting this string enables balloon help for this widget.
   // Override to pass down to children for cleaner behavior
   virtual void SetBalloonHelpString(const char *str);
@@ -181,6 +189,7 @@ protected:
   int         ExpandEntry;
   int         DisplayRange;
   int         SmartResize;
+  int         DisableCommands;
 
   char        *Command;
   char        *StartCommand;
