@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-15 20:41:39 $
-  Version:   $Revision: 1.20 $
+  Date:      $Date: 2002-02-15 22:32:43 $
+  Version:   $Revision: 1.21 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -487,6 +487,16 @@ void vtkKWMenu::SetState(const char* item, int state)
   int index = this->GetIndex(item);
   this->SetState(index, state);
 }
+
+void vtkKWMenu::ConfigureItem(int index, const char* conf)
+{
+  ostrstream str;
+  str << this->GetWidgetName() << " entryconfigure "
+      << index << " " << conf << ends;
+  this->Script(str.str());
+  str.rdbuf()->freeze(0);
+}
+
 
 void vtkKWMenu::SetEntryCommand(int index, vtkKWObject* object, 
 			   const char* MethodAndArgString)

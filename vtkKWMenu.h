@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-15 20:41:39 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2002-02-15 22:32:43 $
+  Version:   $Revision: 1.19 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -172,6 +172,10 @@ public:
   // Set command of the menu entry with a given index.
   void SetEntryCommand(int index, vtkKWObject* object, const char* MethodAndArgString);
   void SetEntryCommand(const char* item, vtkKWObject* object, const char* method);
+
+  // Description:
+  // Configure the item at given index.
+  void ConfigureItem(int index, const char*);
 
 //BTX
   enum { Normal = 0, Active, Disabled };
