@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 04:20:05 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2002-12-20 18:45:36 $
+  Version:   $Revision: 1.19 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -124,6 +124,11 @@ public:
   // By default it is globally disabled.
   static void BoldLabelOn();
   static void BoldLabelOff();
+
+  // Description:
+  // Set/Get the enabled state.
+  // Override to pass down to children.
+  virtual void SetEnabled(int);
 
 protected:
   vtkKWLabeledFrame();
