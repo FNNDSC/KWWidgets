@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTclCommand.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-12-27 17:06:44 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2001-12-28 23:41:10 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1993-2001 Ken Martin, Will Schroeder, Bill Lorensen 
 All rights reserved.
@@ -70,8 +70,8 @@ void vtkKWTclCommand::Execute(vtkObject *caller, unsigned long event,
 //         << "] on event " << event 
 //         << " executing: [" << this->StringCommand 
 //         << "] call data is: " << callData << " (" << str << ")" << endl;
-//      cout << "A: eval " << this->StringCommand << " " << str << " (" 
-//  	 << kwCaller->GetClassName() << ")" << endl;
+    //cout << "A: eval " << this->StringCommand << " " 
+    //   << (str ? str : "") << endl;
     kwCaller->Script("eval %s %s", this->StringCommand, str ? str : "");
     }
 }
