@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-10 16:19:17 $
-  Version:   $Revision: 1.24 $
+  Date:      $Date: 2002-01-11 19:19:59 $
+  Version:   $Revision: 1.25 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -187,8 +187,8 @@ public:
 
   //Description:
   // Set/Get Number of recent files in the menu.
-  vtkSetClampMacro(NumberOfRecentFiles, int, 4, 10);
-  vtkGetMacro(NumberOfRecentFiles, int);
+  vtkSetClampMacro(NumberOfRecentFiles, unsigned int, 4, 10);
+  vtkGetMacro(NumberOfRecentFiles, unsigned int);
   
 protected:
   vtkKWWindow();
@@ -203,7 +203,7 @@ protected:
   void UpdateRecentMenu();
   void StoreRecentMenuToRegistry(char *key);
 
-  int NumberOfRecentFiles;
+  unsigned int NumberOfRecentFiles;
   
   int ExitDialog();
 
