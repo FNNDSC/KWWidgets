@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEventNotifier.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-07-12 19:16:41 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2000-07-13 15:35:42 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -439,7 +439,7 @@ void vtkKWEventNotifier::InvokeCallbacks( vtkKWObject *object,
       if ( !strcmp( tmp->GetEventString(), event ) &&
 	   ( window == NULL || tmp->GetWindow() == NULL ||
 	     tmp->GetWindow() == window ) &&
-           tmp->GetCalledObject() != object )
+           ( object == NULL || tmp->GetCalledObject() != object ) )
 	{
         if ( tmp->GetCommandString() )
           {
