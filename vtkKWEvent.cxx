@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-03-07 18:23:00 $
-  Version:   $Revision: 1.57 $
+  Date:      $Date: 2003-03-21 21:02:20 $
+  Version:   $Revision: 1.58 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -120,6 +120,7 @@ static const char *vtkKWEventStrings[] = {
   "MultiPassStillRenderEndEvent",
   "MultiPassStillRenderStageChangedEvent",
   "ObliqueProbeColorChangedEvent",
+  "ObliqueProbeResetEvent",
   "ObliqueProbeScalarsVisibilityChangedEvent",
   "ObliqueProbeVisibilityChangedEvent",
   "PerspectiveViewAngleChangedEvent",
