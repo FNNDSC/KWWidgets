@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 04:20:05 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2003-01-30 20:12:24 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -108,6 +108,13 @@ public:
   vtkGetMacro( BeepType, int );
 
   // Description:
+  // Invoke the dialog centered at the mouse pointer position (default is
+  // either screen center or window center)
+  vtkSetClampMacro(InvokeAtPointer, int, 0, 1);
+  vtkBooleanMacro(InvokeAtPointer, int);
+  vtkGetMacro(InvokeAtPointer, int );
+
+  // Description:
   // Set the title of the dialog. Default is "Kitware Dialog".
   void SetTitle(const char *);
 
@@ -135,6 +142,8 @@ protected:
   int Done;
   int Beep;
   int BeepType;
+  int InvokeAtPointer;
+
 private:
   vtkKWDialog(const vtkKWDialog&); // Not implemented
   void operator=(const vtkKWDialog&); // Not Implemented
