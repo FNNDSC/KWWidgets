@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-03 21:57:29 $
-  Version:   $Revision: 1.26 $
+  Date:      $Date: 2003-01-07 16:50:40 $
+  Version:   $Revision: 1.27 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -133,6 +133,7 @@ class VTK_EXPORT vtkKWEvent
     VolumeBackgroundColorChangedEvent,
     VolumeCornerAnnotationChangedEvent,
     VolumeCornerAnnotationColorChangedEvent,
+    VolumeFlySpeedChangedEvent,
     VolumeHeaderAnnotationColorChangedEvent,
     VolumeMouseBindingChangedEvent,
     WindowLevelChangedEvent,
