@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:35 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2001-10-11 20:12:56 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -131,6 +131,12 @@ public:
   // Call back for active menu item doc line help
   void DisplayHelp(const char*);
   
+  // Description:
+  // Option to make this menu a tearoff menu.  By dafault this value is off.
+  void SetTearOff(int val);
+  vtkGetMacro(TearOff, int);
+  vtkBooleanMacro(TearOff, int);
+
 protected:
   
   vtkKWMenu();
@@ -143,6 +149,8 @@ protected:
   void InsertGeneric(int position, const char* addtype, const char* label, 
 		     vtkKWObject* Object,
 		     const char* MethodAndArgString, const char* extra, const char* help);
+
+  int TearOff;
   
 };
 
