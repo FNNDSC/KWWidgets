@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 23:42:59 $
-  Version:   $Revision: 1.34 $
+  Date:      $Date: 2002-04-01 03:01:46 $
+  Version:   $Revision: 1.35 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -185,7 +185,7 @@ class VTK_EXPORT vtkKWView : public vtkKWWidget
 
   // Description:
   // Make sure that the Views property parent is currently packed
-  void PackProperties();
+  virtual void PackProperties();
   
   // Description:
   // Render the image.
