@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWExtent.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:22 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-02-21 18:43:37 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -240,8 +240,10 @@ void vtkKWExtent::ExtentSelected()
     this->Extent[4] = this->Extent[5];
     this->ZMinScale->SetValue(this->Extent[4]);    
     }
-  
-  this->Script("eval %s",this->Command);
+  if ( this->Command )
+    {
+    this->Script("eval %s",this->Command);
+    }
 }
 
 
