@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWThumbWheel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-11-13 15:13:46 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-12-04 19:04:51 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -60,7 +60,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // ---------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWThumbWheel );
-vtkCxxRevisionMacro(vtkKWThumbWheel, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWThumbWheel, "$Revision: 1.4 $");
 
 // ---------------------------------------------------------------------------
 int vtkKWThumbWheelCommand(ClientData cd, 
@@ -891,7 +891,7 @@ void vtkKWThumbWheel::UpdateEntryResolution()
     const char *pos = strchr(res, '.');
     if (pos)
       {
-      this->EntryResolution = strlen(res) - (pos - res) - 1;
+      this->EntryResolution = static_cast<int>(strlen(res)) - (pos - res) - 1;
       }
     }
 }
