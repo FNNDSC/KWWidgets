@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkContainer.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-21 14:48:02 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-02-21 18:13:23 $
+  Version:   $Revision: 1.4 $
 
 
   Copyright (c) 1993-2002 Ken Martin, Will Schroeder, Bill Lorensen 
@@ -21,7 +21,7 @@
 
 #include "vtkObject.h"
 
-class VTK_COMMON_EXPORT vtkContainer
+class VTK_EXPORT vtkContainer
 {
 public:
   // Description:
