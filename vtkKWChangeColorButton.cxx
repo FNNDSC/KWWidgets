@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWChangeColorButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-03-27 03:57:19 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-03-31 05:48:14 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -158,8 +158,11 @@ void vtkKWChangeColorButton::ChangeColor()
 		    this->GetWidgetName(), result );
       }
     this->Script( "update idletasks");
-    this->Script("eval %s %f %f %f", this->Command, 
-		 (float)r/255.0, (float)g/255.0, (float)b/255.0);
+    if ( this->Command )
+      {
+      this->Script("eval %s %f %f %f", this->Command, 
+		   (float)r/255.0, (float)g/255.0, (float)b/255.0);
+      }
     this->Color[0] = (float)r/255.0;
     this->Color[1] = (float)g/255.0;
     this->Color[2] = (float)b/255.0;
