@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-03 22:46:04 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2002-01-10 21:14:14 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -172,6 +172,7 @@ void vtkKWMenu::InsertGeneric(int position, const char* addtype,
     help = label;
     }
   this->Application->SimpleScript(str.str());
+  cout << "Str: <<" << str.str() << ">>" << endl;
   delete [] str.str();
   this->Script("set {%sHelpArray(%s)} {%s}", this->GetTclName(), 
 	       label, help);

@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-10 20:06:11 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-01-10 21:14:14 $
+  Version:   $Revision: 1.2 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,9 +51,47 @@ class vtkKWEvent
 {
   public:
   enum {
-    InitializeTraceEvent = 10000,
-    }
-}
+    KWWidgetEvents = 2000,
+    // VV
+    WindowLevelChangedEvent = 2000,
+    WindowLevelChangingEvent,
+    WindowLevelChangedImageCompositeEvent,
+    WindowLevelChangingImageCompositeEvent,
+    ColorImageEvent,
+    GradientOpacityFunctionChangedEvent,
+    GradientOpacityStateChangedEvent,
+    GrayScaleImageEvent,
+    InteractiveRenderStartEvent,
+    LeftMouseOptionChangedEvent,
+    Cursor3DOffEvent,
+    Cursor3DOnEvent,
+    Cursor3DPositionChangedEvent,
+    Cursor3DTypeChangedEvent,
+    Cursor3DXColorChangedEvent,
+    Cursor3DYColorChangedEvent,
+    Cursor3DZColorChangedEvent,
+    MiddleMouseOptionChangedEvent,
+    MultiPassStillRenderEndEvent,
+    MultiPassStillRenderStageChangedEvent,
+    OrthoImageCameraResetEvent,
+    OrthoImageZoomFactorChangedEvent,
+    ProbeInformationChangedEvent,
+    RightMouseOptionChangedEvent,
+    ScalarColorFunctionChangedEvent,
+    ScalarOpacityFunctionChangedEvent,
+    ShiftLeftMouseOptionChangedEvent,
+    ShiftMiddleMouseOptionChangedEvent,
+    ShiftRightMouseOptionChangedEvent,
+    TransferFunctionsChangedEvent,
+    TransferFunctionsChangingEvent,
+    ContourAnnotationAddEvent,
+    ContourAnnotationRemoveEvent,
+    ContourAnnotationChangeColorEvent,
+    ContourAnnotationChangeThicknessEvent,
+    // PV
+    InitializeTraceEvent,
+  };
+};
 
 #endif
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-09 16:04:36 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2002-01-10 21:14:14 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -104,44 +104,6 @@ public:
   // A convienience method to invoke some tcl script code and
   // perform arguement substitution.
   void Script(const char *EventString, ...);
-
-  enum {
-    WindowLevelChangedEvent = 2000,
-    WindowLevelChangingEvent,
-    WindowLevelChangedImageCompositeEvent,
-    WindowLevelChangingImageCompositeEvent,
-    ColorImageEvent,
-    GradientOpacityFunctionChangedEvent,
-    GradientOpacityStateChangedEvent,
-    GrayScaleImageEvent,
-    InteractiveRenderStartEvent,
-    LeftMouseOptionChangedEvent,
-    Cursor3DOffEvent,
-    Cursor3DOnEvent,
-    Cursor3DPositionChangedEvent,
-    Cursor3DTypeChangedEvent,
-    Cursor3DXColorChangedEvent,
-    Cursor3DYColorChangedEvent,
-    Cursor3DZColorChangedEvent,
-    MiddleMouseOptionChangedEvent,
-    MultiPassStillRenderEndEvent,
-    MultiPassStillRenderStageChangedEvent,
-    OrthoImageCameraResetEvent,
-    OrthoImageZoomFactorChangedEvent,
-    ProbeInformationChangedEvent,
-    RightMouseOptionChangedEvent,
-    ScalarColorFunctionChangedEvent,
-    ScalarOpacityFunctionChangedEvent,
-    ShiftLeftMouseOptionChangedEvent,
-    ShiftMiddleMouseOptionChangedEvent,
-    ShiftRightMouseOptionChangedEvent,
-    TransferFunctionsChangedEvent,
-    TransferFunctionsChangingEvent,
-    ContourAnnotationAddEvent,
-    ContourAnnotationRemoveEvent,
-    ContourAnnotationChangeColorEvent,
-    ContourAnnotationChangeThicknessEvent
-  };
 
 private:
   char *TclName;
