@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:36 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2001-12-26 22:30:13 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -66,7 +66,6 @@ class vtkKWApplication;
 #include <string.h>
 #include "tcl.h"
 
-
 class VTK_EXPORT vtkKWObject : public vtkObject
 {
 public:
@@ -99,12 +98,49 @@ public:
   virtual void AddVersion(const char *cname, const char *version);
   void ExtractRevision(ostream& os,const char *revIn);
   int CompareVersions(const char *v1, const char *v2);
-  
+
 //BTX
   // Description:
   // A convienience method to invoke some tcl script code and
   // perform arguement substitution.
   void Script(const char *EventString, ...);
+
+  enum {
+    WindowLevelChangedEvent = 2000,
+    WindowLevelChangingEvent,
+    ColorImageEvent,
+    GradientOpacityFunctionChangedEvent,
+    GradientOpacityStateChangedEvent,
+    GrayScaleImageEvent,
+    ImageBackgroundColorChangedEvent,
+    InteractiveRenderStartEvent,
+    LeftMouseOptionChangedEvent,
+    LightboxCornerAnnoChangedEvent,
+    LightboxHeaderChangedEvent,
+    LightboxRedrawEvent,
+    LightboxSliceChangedEvent,
+    Cursor3DOffEvent,
+    Cursor3DOnEvent,
+    Cursor3DPositionChangedEvent,
+    Cursor3DTypeChangedEvent,
+    Cursor3DXColorChangedEvent,
+    Cursor3DYColorChangedEvent,
+    Cursor3DZColorChangedEvent,
+    MiddleMouseOptionChangedEvent,
+    MultiPassStillRenderEndEvent,
+    MultiPassStillRenderStageChangedEvent,
+    OrthoImageCameraResetEvent,
+    OrthoImageZoomFactorChangedEvent,
+    ProbeInformationChangedEvent,
+    RightMouseOptionChangedEvent,
+    ScalarColorFunctionChangedEvent,
+    ScalarOpacityFunctionChangedEvent,
+    ShiftLeftMouseOptionChangedEvent,
+    ShiftMiddleMouseOptionChangedEvent,
+    ShiftRightMouseOptionChangedEvent,
+    TransferFunctionsChangedEvent,
+    TransferFunctionsChangingEvent
+  };
 
 private:
   char *TclName;
@@ -128,5 +164,4 @@ protected:
 
 
 #endif
-
 
