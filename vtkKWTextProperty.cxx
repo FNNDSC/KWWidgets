@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTextProperty.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-06 22:37:40 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2003-01-14 22:41:52 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,7 +46,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWChangeColorButton.h"
 #include "vtkKWCheckButton.h"
 #include "vtkKWCheckButtonSet.h"
-#include "vtkKWEntry.h"
 #include "vtkKWLabel.h"
 #include "vtkKWLabeledCheckButtonSet.h"
 #include "vtkKWLabeledOptionMenu.h"
@@ -129,7 +128,7 @@ static unsigned char image_copy[] =
 
 // ----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTextProperty);
-vtkCxxRevisionMacro(vtkKWTextProperty, "$Revision: 1.15 $");
+vtkCxxRevisionMacro(vtkKWTextProperty, "$Revision: 1.16 $");
 
 int vtkKWTextPropertyCommand(ClientData cd, Tcl_Interp *interp,
                       int argc, char *argv[]);
@@ -424,7 +423,7 @@ void vtkKWTextProperty::Create(vtkKWApplication *app)
   this->OpacityScale->Create(this->Application, "");
   this->OpacityScale->DisplayEntry();
   this->OpacityScale->DisplayLabel("");
-  this->OpacityScale->GetEntry()->SetWidth(4);
+  this->OpacityScale->SetEntryWidth(4);
   this->OpacityScale->DisplayEntryAndLabelOnTopOff();
   this->OpacityScale->SetCommand(this, "OpacityCallback");
   this->OpacityScale->SetEndCommand(this, "OpacityEndCallback");
