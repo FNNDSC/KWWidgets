@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTextProperty.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-13 22:44:35 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-12-16 18:05:19 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -91,6 +91,13 @@ public:
   void SetLongFormat(int);
   vtkBooleanMacro(LongFormat, int);
   vtkGetMacro(LongFormat, int);
+
+  // Description:
+  // Show the label on top (default0, otherwise on left. 
+  // Valid if LongFormat is On.
+  void SetLabelOnTop(int);
+  vtkBooleanMacro(LabelOnTop, int);
+  vtkGetMacro(LabelOnTop, int);
 
   // Description:
   // Show label.
@@ -198,6 +205,7 @@ protected:
   int LongFormat;
 
   int ShowLabel;
+  int LabelOnTop;
   vtkKWLabel *Label;
 
   int ShowColor;
