@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-14 21:04:41 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2003-04-08 20:55:23 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFrame );
-vtkCxxRevisionMacro(vtkKWFrame, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWFrame, "$Revision: 1.14 $");
 
 vtkKWFrame::vtkKWFrame()
 {
@@ -99,6 +99,7 @@ void vtkKWFrame::Create(vtkKWApplication *app, const char* args)
     this->Frame->SetParent(this->ScrollFrame);
     this->Script("%s getframe", this->ScrollFrame->GetWidgetName());
     this->Frame->SetWidgetName(this->Application->GetMainInterp()->result);
+    this->Frame->SetApplication(this->Application);
 
     this->Script("%s configure -constrainedwidth 1", 
                  this->ScrollFrame->GetWidgetName());
