@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-04 16:53:58 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2002-11-15 21:22:18 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,10 +44,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 
 
+int vtkKWLabelCommand(ClientData cd, Tcl_Interp *interp,
+                      int argc, char *argv[]);
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabel );
-vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.14 $");
 
 //-----------------------------------------------------------------------------
 vtkKWLabel::vtkKWLabel()
@@ -57,6 +59,7 @@ vtkKWLabel::vtkKWLabel()
   this->LineType = vtkKWLabel::SingleLine;
   this->Width    = 0;
   this->AdjustWrapLengthToWidth = 0;
+  this->CommandFunction = vtkKWLabelCommand;
 }
 
 //-----------------------------------------------------------------------------
