@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-06 22:37:40 $
-  Version:   $Revision: 1.50 $
+  Date:      $Date: 2003-01-08 16:57:20 $
+  Version:   $Revision: 1.51 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -66,7 +66,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCornerAnnotation );
-vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.50 $");
+vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.51 $");
 
 int vtkKWCornerAnnotationCommand(ClientData cd, Tcl_Interp *interp,
                                 int argc, char *argv[]);
@@ -391,10 +391,14 @@ void vtkKWCornerAnnotation::Create(vtkKWApplication *app,
                                      : this->Frame->GetFrame());
     }
 
-  this->CornerVisibilityButton->Create(
-    this->Application, "-bd 0 -highlightthickness 0 -padx 0 -pady 0");
+  this->CornerVisibilityButton->Create(this->Application, "");
 
-  if (!put_visibility_button_in_title)
+  if (put_visibility_button_in_title)
+    {
+    this->Script("%s config -bd 0 -highlightthickness 0 -padx 0 -pady 0",
+                 this->CornerVisibilityButton->GetWidgetName());
+    }
+  else
     {
     this->CornerVisibilityButton->SetText("Display corner annotation");
     }
@@ -947,7 +951,7 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.50 $");
+  this->ExtractRevision(os,"$Revision: 1.51 $");
 }
 
 //----------------------------------------------------------------------------
