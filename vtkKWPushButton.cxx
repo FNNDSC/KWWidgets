@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPushButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:24 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-03-14 20:11:15 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -75,3 +75,27 @@ void vtkKWPushButton::SetLabel( const char *name )
     this->Script("%s configure -text {%s}", this->GetWidgetName(), name );
     }
 }
+
+
+void vtkKWPushButton::Disable()
+{
+  if (this->Application == NULL)
+    {
+    vtkErrorMacro("Widget not created yet.");
+    return;
+    }
+
+  this->Script("%s configure -state disabled", this->GetWidgetName());
+}
+
+void vtkKWPushButton::Enable()
+{
+  if (this->Application == NULL)
+    {
+    vtkErrorMacro("Widget not created yet.");
+    return;
+    }
+
+  this->Script("%s configure -state normal", this->GetWidgetName());
+}
+

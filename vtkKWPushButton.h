@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPushButton.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:32 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-03-14 20:11:15 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -60,6 +60,13 @@ public:
   virtual void Create(vtkKWApplication *app, const char *args);
 
   void SetLabel(const char *label);
+
+  // Description:
+  // This will configures the state of the button to Disable or Normal.
+  // I did not like the method name SetState because it conflicts 
+  // with check buttons.
+  void Disable();
+  void Enable();
 
 protected:
   vtkKWPushButton() {};
