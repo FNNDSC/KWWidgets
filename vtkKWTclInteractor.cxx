@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTclInteractor.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-12-10 21:57:02 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2001-12-20 19:46:35 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -199,10 +199,10 @@ void vtkKWTclInteractor::Evaluate()
   
   this->Script("%s configure -state normal",
                this->DisplayText->GetWidgetName());
-  this->Script("%s insert end [list %s] %d",
+  this->Script("%s insert end [concat {%s}] %d",
                this->DisplayText->GetWidgetName(),
                this->CommandEntry->GetValue(), this->CommandIndex);
-  this->Script("set commandList [linsert $commandList end [list %s]]",
+  this->Script("set commandList [linsert $commandList end [concat {%s}]]",
                this->CommandEntry->GetValue());
   this->Script("%s insert end \"\n\"", this->DisplayText->GetWidgetName());
   this->Script("%s insert end [eval [list %s]]",
