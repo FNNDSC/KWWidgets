@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-13 22:16:59 $
-  Version:   $Revision: 1.55 $
+  Date:      $Date: 2003-03-24 20:49:51 $
+  Version:   $Revision: 1.56 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -302,7 +302,7 @@ class VTK_EXPORT vtkKWView : public vtkKWWidget
   // Description:
   // Chaining method to serialize an object and its superclasses.
   virtual void SerializeSelf(ostream& os, vtkIndent indent);
-  virtual void SerializeToken(istream& is,const char token[1024]);
+  virtual void SerializeToken(istream& is, const char *token);
   virtual void SerializeRevision(ostream& os, vtkIndent indent);
 
   // Description:

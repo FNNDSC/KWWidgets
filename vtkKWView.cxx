@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-20 22:55:08 $
-  Version:   $Revision: 1.108 $
+  Date:      $Date: 2003-03-24 20:49:51 $
+  Version:   $Revision: 1.109 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -107,7 +107,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.108 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.109 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -1461,10 +1461,10 @@ void vtkKWView::SerializeSelf(ostream& os, vtkIndent indent)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWView::SerializeToken(istream& is, const char token[1024])
+void vtkKWView::SerializeToken(istream& is, const char *token)
 {
   int i;
-  char tmp[1024];
+  char tmp[VTK_KWSERIALIZER_MAX_TOKEN_LENGTH];
   
   // do we need to create the props ?
   if (!this->PropertiesCreated)
@@ -1530,7 +1530,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.108 $");
+  this->ExtractRevision(os,"$Revision: 1.109 $");
 }
 
 //----------------------------------------------------------------------------

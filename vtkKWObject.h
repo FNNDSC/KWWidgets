@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2003-03-18 16:54:07 $
-  Version:   $Revision: 1.28 $
+  Date:      $Date: 2003-03-24 20:49:09 $
+  Version:   $Revision: 1.29 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -94,7 +94,7 @@ public:
   virtual void SerializeRevision(ostream& os, vtkIndent indent);
   virtual void Serialize(istream& is);
   virtual void SerializeSelf(ostream& /*os*/, vtkIndent /*indent*/) {};
-  virtual void SerializeToken(istream& is, const char token[1024]);
+  virtual void SerializeToken(istream& is, const char *token);
   virtual const char *GetVersion(const char *);
   virtual void AddVersion(const char *cname, const char *version);
   void ExtractRevision(ostream& os,const char *revIn);

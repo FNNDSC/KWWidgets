@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWChangeColorButton.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-28 18:01:52 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2003-03-24 20:48:46 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -80,7 +80,7 @@ public:
   // Description:
   // Chaining method to serialize an object and its superclasses.
   virtual void SerializeSelf(ostream& os, vtkIndent indent);
-  virtual void SerializeToken(istream& is,const char token[1024]);
+  virtual void SerializeToken(istream& is, const char *token);
   virtual void SerializeRevision(ostream& os, vtkIndent indent);
 
   // Description:

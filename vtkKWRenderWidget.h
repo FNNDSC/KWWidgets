@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-03-10 16:40:26 $
-  Version:   $Revision: 1.23 $
+  Date:      $Date: 2003-03-24 20:49:25 $
+  Version:   $Revision: 1.24 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -232,7 +232,7 @@ public:
   // Description:
   // Chaining method to serialize an object and its superclasses.
   virtual void SerializeSelf(ostream& os, vtkIndent indent);
-  virtual void SerializeToken(istream& is, const char token[1024]);
+  virtual void SerializeToken(istream& is, const char *token);
 
 protected:
   vtkKWRenderWidget();
