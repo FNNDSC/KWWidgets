@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-27 22:51:50 $
-  Version:   $Revision: 1.72 $
+  Date:      $Date: 2003-03-07 22:02:57 $
+  Version:   $Revision: 1.73 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -162,9 +162,11 @@ public:
 
   // Description:
   // Provide hide/show functionality of properties
-  void HideProperties();
-  void ShowProperties();
-  void OnToggleProperties();
+  int GetPropertiesVisiblity();
+  void SetPropertiesVisiblity(int);
+  void HideProperties() { this->SetPropertiesVisiblity(0); };
+  void ShowProperties() { this->SetPropertiesVisiblity(1); };
+  void TogglePropertiesVisibilityCallback();
   
   // Description:
   // Callback to display window properties (usually, application settings)
@@ -180,8 +182,8 @@ public:
   // "Close". The command
   // is the command to execute when a file is selected.
   virtual void AddRecentFilesToMenu(const char *menuEntry, vtkKWObject *target);
-  virtual void AddRecentFile(const char *key, const char *name, vtkKWObject *target,
-                             const char *command);
+  virtual void AddRecentFile(const char *key, const char *name, 
+                             vtkKWObject *target, const char *command);
   
   // Description:
   // Return the index of the entry above the MRU File list
@@ -338,9 +340,15 @@ public:
   vtkGetObjectMacro(Toolbars, vtkVector<vtkKWToolbar*>);
   //ETX
 
+  // Description:
+  // Chaining method to serialize an object and its superclasses.
+  virtual void SerializeSelf(ostream& os, vtkIndent indent);
+  virtual void SerializeToken(istream& is,const char token[1024]);
+
 protected:
   vtkKWWindow();
   ~vtkKWWindow();
+
   virtual void SerializeRevision(ostream& os, vtkIndent indent);
 
   void InsertRecentFileToMenu(const char *filename, 
