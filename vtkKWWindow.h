@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2001-10-31 22:13:43 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2001-12-10 18:36:31 $
+  Version:   $Revision: 1.19 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -92,7 +92,7 @@ public:
   // Load in a Tcl based script to drive the application. If called
   // without an argument it will open a file dialog.
   void LoadScript();
-  void LoadScript(char *name);
+  void LoadScript(const char *name);
   
   // Description:
   // Allow windows to get at the different menu entries. In some

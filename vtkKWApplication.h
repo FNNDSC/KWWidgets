@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2001-11-26 18:59:10 $
-  Version:   $Revision: 1.20 $
+  Date:      $Date: 2001-12-10 18:36:31 $
+  Version:   $Revision: 1.21 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -156,6 +156,8 @@ public:
   ofstream *GetTraceFile() {return this->TraceFile;}
 //ETX
 
+  virtual int GetApplicationKey() {return -1;};
+
 protected:
   vtkKWApplication();
   ~vtkKWApplication();
@@ -175,7 +177,6 @@ protected:
   char *BalloonHelpPending;
   vtkSetStringMacro(BalloonHelpPending);
 
-  virtual int GetApplicationKey() {return -1;};
 
   static int WidgetVisibility;
   int InExit;
