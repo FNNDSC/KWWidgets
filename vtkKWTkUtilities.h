@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTkUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-21 22:21:36 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-11-28 20:02:13 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -109,9 +109,13 @@ public:
                            const char *photo_name);
 
   // Description:
-  // Boldify the -font attribute of widget.
-  static int ChangeFontToBold(Tcl_Interp *interp,
-                              const char *widget);
+  // Change the -font weight attribute of widget to bold or normal.
+  static int ChangeFontWeightToBold(Tcl_Interp *interp, const char *widget);
+  static int ChangeFontWeightToNormal(Tcl_Interp *interp, const char *widget);
+
+  // Change the -font slant attribute of widget to italic or roman (normal).
+  static int ChangeFontSlantToItalic(Tcl_Interp *interp, const char *widget);
+  static int ChangeFontSlantToRoman(Tcl_Interp *interp, const char *widget);
 
   // Description:
   // Get the size of a grid (i.e. the number of colums and rows in this 
@@ -174,6 +178,9 @@ public:
 protected:
   vtkKWTkUtilities() {};
   ~vtkKWTkUtilities() {};
+
+  static int ChangeFontWeight(Tcl_Interp *interp, const char *widget, int);
+  static int ChangeFontSlant(Tcl_Interp *interp, const char *widget, int);
 
 private:
   vtkKWTkUtilities(const vtkKWTkUtilities&); // Not implemented
