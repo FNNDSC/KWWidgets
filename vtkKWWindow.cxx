@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-22 22:37:12 $
-  Version:   $Revision: 1.84 $
+  Date:      $Date: 2002-04-07 15:26:51 $
+  Version:   $Revision: 1.85 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -991,7 +991,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.84 $");
+  this->ExtractRevision(os,"$Revision: 1.85 $");
 }
 
 int vtkKWWindow::ExitDialog()
@@ -1098,10 +1098,8 @@ void vtkKWWindow::InsertRecentFileToMenu(const char *filename,
   // Find current one
   vtkKWWindowMenuEntry *recent = 0;
   vtkKWWindowMenuEntry *kc = 0;
-  int cc;
-  for ( cc = 0; 
-	static_cast<unsigned long>(cc) < 
-	  this->RecentFilesVector->GetNumberOfItems(); cc ++ )
+  vtkIdType cc;
+  for ( cc = 0; cc < this->RecentFilesVector->GetNumberOfItems(); cc ++ )
     {
     kc = 0;
     if ( this->RecentFilesVector->GetItem(cc, kc) == VTK_OK && kc &&
@@ -1127,7 +1125,7 @@ void vtkKWWindow::InsertRecentFileToMenu(const char *filename,
   // prepend it to array  
   this->RecentFilesVector->PrependItem( recent );
   while ( this->RecentFilesVector->GetNumberOfItems() > 
-	  this->NumberOfRecentFiles )
+	  static_cast<vtkIdType>(this->NumberOfRecentFiles) )
     {
     kc = 0;
     if ( this->RecentFilesVector->GetItem(this->NumberOfRecentFiles, kc) ==
