@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-28 13:55:54 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2002-06-30 16:26:57 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,6 +44,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkTextMapper.h"
 #include "vtkImageMapToWindowLevelColors.h"
 #include "vtkImageActor.h"
+#include "vtkViewport.h"
 
 
 //------------------------------------------------------------------------------
