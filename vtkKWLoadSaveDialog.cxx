@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-21 20:59:13 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-01-23 22:11:01 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -92,8 +92,8 @@ int vtkKWLoadSaveDialog::Invoke()
   this->Script("%s -title \"%s\" -defaultextension {%s} "
 	       "-filetypes {%s} -initialdir {%s}", 
 	       (this->SaveDialog) ? "tk_getSaveFile" : "tk_getOpenFile", 
-	       this->DefaultExt ? this->DefaultExt : "",
-	       this->Title, this->FileTypes, this->InitialDir);
+	       this->Title, this->DefaultExt ? this->DefaultExt : "",
+	       this->FileTypes, this->InitialDir);
   path = this->Application->GetMainInterp()->result;
   if ( path && strlen(path) )
     {
