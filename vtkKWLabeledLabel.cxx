@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 16:56:47 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2003-01-02 05:57:43 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLabeledLabel);
-vtkCxxRevisionMacro(vtkKWLabeledLabel, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWLabeledLabel, "$Revision: 1.7 $");
 
 int vtkKWLabeledLabelCommand(ClientData cd, Tcl_Interp *interp,
                              int argc, char *argv[]);
@@ -138,6 +138,15 @@ void vtkKWLabeledLabel::UpdateEnableState()
   if (this->Label2)
     {
     this->Label2->SetEnabled(this->Enabled);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWLabeledLabel::SetLabel2(const char *text)
+{
+  if (this->Label2)
+    {
+    this->Label2->SetLabel(text);
     }
 }
 

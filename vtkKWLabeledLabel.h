@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledLabel.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 16:56:47 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2003-01-02 05:57:43 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -65,6 +65,10 @@ public:
   // Get the internal object
   vtkGetObjectMacro(Label2, vtkKWLabel);
 
+  // Description:
+  // Convenience method to set the contents label2.
+  void SetLabel2(const char *);
+  
   // Description:
   // Set the string that enables balloon help for this widget.
   // Override to pass down to children.
