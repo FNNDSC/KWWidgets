@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-22 21:03:03 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2002-02-14 22:59:21 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -468,3 +468,36 @@ void vtkKWMenu::SetState(int index, int state)
   this->Script("%s entryconfigure %d -state %s", 
 	       this->GetWidgetName(), index, stateStr[state] );
 }
+
+void vtkKWMenu::SetState(const char* item, int state)
+{
+  if ( !this->IsItemPresent(item) )
+    {
+    return;
+    }
+  int index = this->GetIndex(item);
+  this->SetState(index, state);
+}
+
+void vtkKWMenu::SetCommand(int index, vtkKWObject* object, 
+			   const char* MethodAndArgString)
+{
+  ostrstream str;
+  str << this->GetWidgetName() << " entryconfigure "
+      << index << " -command {" << object->GetTclName() 
+      << " " << MethodAndArgString << "}" << ends;
+  this->Script(str.str());
+  str.rdbuf()->freeze(0);
+}
+
+void vtkKWMenu::SetCommand(const char* item, vtkKWObject* object, 
+			   const char* MethodAndArgString)
+{
+  if ( !this->IsItemPresent(item) )
+    {
+    return;
+    }
+  int index = this->GetIndex(item);
+  this->SetCommand(index, object, MethodAndArgString);
+}
+
