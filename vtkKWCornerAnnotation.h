@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-08 17:47:03 $
-  Version:   $Revision: 1.19 $
+  Date:      $Date: 2002-11-19 14:33:09 $
+  Version:   $Revision: 1.20 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -74,7 +74,7 @@ public:
 
   // Description:
   // Create the properties object, called by ShowProperties.
-  virtual void Create(vtkKWApplication *app);
+  virtual void Create(vtkKWApplication *app, const char* args);
 
   // Description:
   // Close out and remove any composites prior to deletion.
