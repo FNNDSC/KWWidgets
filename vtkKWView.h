@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-07 17:26:48 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -152,6 +152,7 @@ public:
   // Description:
   // Render the image.
   virtual void Render() {this->GetVTKWindow()->Render();};
+  virtual void Reset() {};
 	
   // Description:
   // Return the tk widget used for the vtkWindow. This widget
