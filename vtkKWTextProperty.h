@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTextProperty.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-16 18:05:19 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-12-22 17:05:47 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -177,11 +177,6 @@ public:
   // Save out the text properties to a file.
   void SaveInTclScript(ofstream *file, const char *tcl_name = 0);
 
-  // Description:
-  // Set/Get the enabled state.
-  // Override to pass down to children.
-  virtual void SetEnabled(int);
-
 protected:
   vtkKWTextProperty();
   ~vtkKWTextProperty();
@@ -225,6 +220,10 @@ protected:
 
   int ShowCopy;
   vtkKWLabeledPushButtonSet *PushButtonSet;
+
+  // Update the enable state. This should propagate similar calls to the
+  // internal widgets.
+  virtual void UpdateEnableState();
 
 private:
   vtkKWTextProperty(const vtkKWTextProperty&); // Not implemented

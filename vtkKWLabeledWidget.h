@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-12 21:51:39 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-12-22 16:58:59 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -80,11 +80,6 @@ public:
   vtkGetMacro(ShowLabel, int);
 
   // Description:
-  // Set/Get the enabled state.
-  // Override to pass down to children.
-  virtual void SetEnabled(int);
-
-  // Description:
   // Set the string that enables balloon help for this widget.
   // Override to pass down to children.
   virtual void SetBalloonHelpString(const char *str);
@@ -101,6 +96,10 @@ protected:
   // Pack or repack the widget. To be implemented by subclasses.
 
   virtual void Pack() {};
+
+  // Update the enable state. This should propagate similar calls to the
+  // internal widgets.
+  virtual void UpdateEnableState();
 
 private:
   vtkKWLabeledWidget(const vtkKWLabeledWidget&); // Not implemented

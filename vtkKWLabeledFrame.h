@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-20 18:45:36 $
-  Version:   $Revision: 1.19 $
+  Date:      $Date: 2002-12-22 16:56:26 $
+  Version:   $Revision: 1.20 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -125,11 +125,6 @@ public:
   static void BoldLabelOn();
   static void BoldLabelOff();
 
-  // Description:
-  // Set/Get the enabled state.
-  // Override to pass down to children.
-  virtual void SetEnabled(int);
-
 protected:
   vtkKWLabeledFrame();
   ~vtkKWLabeledFrame();
@@ -147,6 +142,11 @@ protected:
   static int BoldLabel;
   static int LabelCase;
   int ShowHideFrame;
+
+  // Update the enable state. This should propagate similar calls to the
+  // internal widgets.
+  virtual void UpdateEnableState();
+
 private:
   vtkKWLabeledFrame(const vtkKWLabeledFrame&); // Not implemented
   void operator=(const vtkKWLabeledFrame&); // Not implemented

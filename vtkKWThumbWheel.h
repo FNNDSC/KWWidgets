@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWThumbWheel.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 04:20:05 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-12-22 17:06:03 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -236,10 +236,6 @@ public:
   virtual void SetBalloonHelpJustification(int j);
 
   // Description:
-  // Set/get enabled state.
-  virtual void SetEnabled(int);
-
-  // Description:
   // Bind/Unbind all components so that values can be changed, but
   // no command will be called.
   void Bind();
@@ -337,6 +333,10 @@ protected:
   NonLinearMotionState StartNonLinearMotionState;
 
   int InInvokeCommand;
+
+  // Update the enable state. This should propagate similar calls to the
+  // internal widgets.
+  virtual void UpdateEnableState();
 
 private:
   vtkKWThumbWheel(const vtkKWThumbWheel&); // Not implemented

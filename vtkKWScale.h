@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-18 19:29:25 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2002-12-22 17:03:53 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -153,10 +153,6 @@ public:
   virtual void SetBalloonHelpJustification(int j);
 
   // Description:
-  // Set/get enabled state.
-  virtual void SetEnabled(int);
-
-  // Description:
   // Bind/Unbind all components so that values can be changed, but
   // no command will be called.
   void Bind();
@@ -217,6 +213,10 @@ protected:
   
   void PackWidget();
   void UpdateEntryResolution();
+
+  // Update the enable state. This should propagate similar calls to the
+  // internal widgets.
+  virtual void UpdateEnableState();
 
 private:
   vtkKWScale(const vtkKWScale&); // Not implemented

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRadioButtonSet.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-12 21:47:45 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-12-22 17:02:26 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //------------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWRadioButtonSet);
-vtkCxxRevisionMacro(vtkKWRadioButtonSet, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWRadioButtonSet, "$Revision: 1.3 $");
 
 int vtkvtkKWRadioButtonSetCommand(ClientData cd, Tcl_Interp *interp,
                                   int argc, char *argv[]);
@@ -153,11 +153,17 @@ void vtkKWRadioButtonSet::Create(vtkKWApplication *app, const char *args)
   // Create the container frame
 
   this->Script("frame %s %s", this->GetWidgetName(), args ? args : "");
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 //----------------------------------------------------------------------------
-void vtkKWRadioButtonSet::SetEnabled(int arg)
+void vtkKWRadioButtonSet::UpdateEnableState()
 {
+  this->Superclass::UpdateEnableState();
+
   vtkKWRadioButtonSet::ButtonSlot *button_slot = NULL;
   vtkKWRadioButtonSet::ButtonsContainerIterator *it = 
     this->Buttons->NewIterator();
@@ -167,7 +173,7 @@ void vtkKWRadioButtonSet::SetEnabled(int arg)
     {
     if (it->GetData(button_slot) == VTK_OK)
       {
-      button_slot->Button->SetEnabled(arg);
+      button_slot->Button->SetEnabled(this->Enabled);
       }
     it->GoToNextItem();
     }

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledText.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-13 22:12:02 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-12-22 16:58:34 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLabeledText);
-vtkCxxRevisionMacro(vtkKWLabeledText, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWLabeledText, "$Revision: 1.2 $");
 
 int vtkKWLabeledTextCommand(ClientData cd, Tcl_Interp *interp,
                             int argc, char *argv[]);
@@ -94,6 +94,10 @@ void vtkKWLabeledText::Create(vtkKWApplication *app, const char *args)
   // Pack the label and the option menu
 
   this->Pack();
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 // ----------------------------------------------------------------------------
@@ -125,20 +129,14 @@ void vtkKWLabeledText::Pack()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWLabeledText::SetEnabled(int e)
+void vtkKWLabeledText::UpdateEnableState()
 {
-  // Propagate first (since objects can be modified externally, they might
-  // not be in synch with this->Enabled)
+  this->Superclass::UpdateEnableState();
 
-  if (this->IsCreated())
+  if (this->Text)
     {
-    this->Text->SetEnabled(e);
+    this->Text->SetEnabled(this->Enabled);
     }
-
-  // Then call superclass, which will call SetEnabled on the label and 
-  // update the internal Enabled ivar (although it is not of much use here)
-
-  this->Superclass::SetEnabled(e);
 }
 
 // ---------------------------------------------------------------------------

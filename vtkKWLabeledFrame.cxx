@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-20 18:45:36 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2002-12-22 16:56:26 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabeledFrame );
-vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.22 $");
+vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.23 $");
 
 
 
@@ -203,8 +203,9 @@ void vtkKWLabeledFrame::Create(vtkKWApplication *app, const char* args)
 {
   const char *wname;
   
-  // must set the application
-  if (this->Application)
+  // Set the application
+
+  if (this->IsCreated())
     {
     vtkErrorMacro("LabeledFrame already created");
     return;
@@ -262,6 +263,10 @@ void vtkKWLabeledFrame::Create(vtkKWApplication *app, const char* args)
 
   this->Script("bind %s <Configure> { catch {%s AdjustMargin} }",
                this->LabelFrame->GetWidgetName(), this->GetTclName());
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 void vtkKWLabeledFrame::PerformShowHideFrame()
@@ -320,23 +325,14 @@ int vtkKWLabeledFrame::GetLabelCase()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWLabeledFrame::SetEnabled(int e)
+void vtkKWLabeledFrame::UpdateEnableState()
 {
-  // Propagate first (since objects can be modified externally, they might
-  // not be in synch with this->Enabled)
+  this->Superclass::UpdateEnableState();
 
-  if (this->IsCreated())
+  if (this->Label)
     {
-    if (this->Label)
-      {
-      this->Label->SetEnabled(e);
-      }
+    this->Label->SetEnabled(this->Enabled);
     }
-
-  // Then call superclass, which will call SetEnabled and 
-  // update the internal Enabled ivar (although it is not of much use here)
-
-  this->Superclass::SetEnabled(e);
 }
 
 //----------------------------------------------------------------------------

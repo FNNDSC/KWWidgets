@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledRadioButtonSet.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-12 21:51:39 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-12-22 16:58:12 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLabeledRadioButtonSet);
-vtkCxxRevisionMacro(vtkKWLabeledRadioButtonSet, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWLabeledRadioButtonSet, "$Revision: 1.3 $");
 
 int vtkKWLabeledRadioButtonSetCommand(ClientData cd, Tcl_Interp *interp,
                                       int argc, char *argv[]);
@@ -96,6 +96,10 @@ void vtkKWLabeledRadioButtonSet::Create(vtkKWApplication *app, const char *args)
   // Pack the label and the checkbutton
 
   this->Pack();
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 // ----------------------------------------------------------------------------
@@ -154,20 +158,14 @@ void vtkKWLabeledRadioButtonSet::SetPackHorizontally(int _arg)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWLabeledRadioButtonSet::SetEnabled(int e)
+void vtkKWLabeledRadioButtonSet::UpdateEnableState()
 {
-  // Propagate first (since objects can be modified externally, they might
-  // not be in synch with this->Enabled)
+  this->Superclass::UpdateEnableState();
 
-  if (this->IsCreated())
+  if (this->RadioButtonSet)
     {
-    this->RadioButtonSet->SetEnabled(e);
+    this->RadioButtonSet->SetEnabled(this->Enabled);
     }
-
-  // Then call superclass, which will call SetEnabled on the label and 
-  // update the internal Enabled ivar (although it is not of much use here)
-
-  this->Superclass::SetEnabled(e);
 }
 
 // ---------------------------------------------------------------------------

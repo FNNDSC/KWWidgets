@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRadioButtonSet.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-12 21:47:45 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-12-22 17:02:34 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -109,11 +109,6 @@ public:
   int GetNumberOfVisibleButtons();
 
   // Description:
-  // Enable/Disable this widget. This propagates SetEnabled() calls to all
-  // radiobuttons.
-  virtual void SetEnabled(int);
-
-  // Description:
   // Set the widget packing order to be horizontal (default is vertical).
   void SetPackHorizontally(int);
   vtkBooleanMacro(PackHorizontally, int);
@@ -150,6 +145,10 @@ protected:
   //ETX
 
   void Pack();
+
+  // Update the enable state. This should propagate similar calls to the
+  // internal widgets.
+  virtual void UpdateEnableState();
 
 private:
   vtkKWRadioButtonSet(const vtkKWRadioButtonSet&); // Not implemented
