@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-15 15:35:13 $
-  Version:   $Revision: 1.48 $
+  Date:      $Date: 2002-09-13 17:49:52 $
+  Version:   $Revision: 1.49 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -408,7 +408,7 @@ protected:
   vtkTextMapper          *HeaderMapper;
 
   vtkKWFrame             *GeneralProperties;
-  vtkKWLabeledFrame      *BackgroundFrame;
+  vtkKWLabeledFrame      *ColorsFrame;
   vtkKWChangeColorButton *BackgroundColor;
 
   vtkRenderer            *Renderer;
