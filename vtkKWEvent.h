@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-30 22:20:45 $
-  Version:   $Revision: 1.54 $
+  Date:      $Date: 2003-02-03 20:22:42 $
+  Version:   $Revision: 1.55 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -63,15 +63,19 @@ class VTK_EXPORT vtkKWEvent
     ColorImageEvent,
     ContourAnnotationActiveChangedEvent,
     ContourAnnotationAddEvent,
+    ContourAnnotationAddPositionEvent,
     ContourAnnotationColorChangedEvent,
     ContourAnnotationComputeStatisticsEvent,
     ContourAnnotationLineWidthChangedEvent,
     ContourAnnotationOpacityChangedEvent,
+    ContourAnnotationPositionAddEvent,
+    ContourAnnotationPositionActiveChangedEvent,
     ContourAnnotationRemoveEvent,
     ContourAnnotationSurfaceQualityChangedEvent,
     ContourAnnotationSurfaceRepresentationChangedEvent,
     ContourAnnotationSurfaceShineChangedEvent,
     ContourAnnotationVisibilityChangedEvent,
+    ContourAtPositionAnnotationActiveChangedEvent,
     ControlLeftMouseOptionChangedEvent,
     ControlMiddleMouseOptionChangedEvent,
     ControlRightMouseOptionChangedEvent,
