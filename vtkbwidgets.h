@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkbwidgets.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-13 17:57:43 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-06-17 14:44:51 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -88,7 +88,7 @@ const char* bwidgets1 =
 "# ----------------------------------------------------------------------------\n"
 "#  widget.tcl\n"
 "#  This file is part of Unifix BWidget Toolkit\n"
-"#  $Id: vtkbwidgets.h,v 1.6 2002-06-13 17:57:43 berk Exp $\n"
+"#  $Id: vtkbwidgets.h,v 1.7 2002-06-17 14:44:51 berk Exp $\n"
 "# ----------------------------------------------------------------------------\n"
 "namespace eval Widget {\n"
 "    variable _optiontype\n"
@@ -1007,7 +1007,7 @@ const char* bwidgets2 =
 "# ------------------------------------------------------------------------------\n"
 "#  scrollframe.tcl\n"
 "#  This file is part of Unifix BWidget Toolkit\n"
-"#  $Id: vtkbwidgets.h,v 1.6 2002-06-13 17:57:43 berk Exp $\n"
+"#  $Id: vtkbwidgets.h,v 1.7 2002-06-17 14:44:51 berk Exp $\n"
 "# ------------------------------------------------------------------------------\n"
 "\n"
 "namespace eval ScrollableFrame {\n"
@@ -1152,7 +1152,7 @@ const char* bwidgets3 =
 "# -----------------------------------------------------------------------------\n"
 "#  scrollw.tcl\n"
 "#  This file is part of Unifix BWidget Toolkit\n"
-"#  $Id: vtkbwidgets.h,v 1.6 2002-06-13 17:57:43 berk Exp $\n"
+"#  $Id: vtkbwidgets.h,v 1.7 2002-06-17 14:44:51 berk Exp $\n"
 "# -----------------------------------------------------------------------------\n"
 "namespace eval ScrolledWindow {\n"
 "    Widget::declare ScrolledWindow {\n"
@@ -2562,6 +2562,7 @@ const char* bwidgets4 =
 "        } else {\n"
 "            set bmp bwplus\n"
 "        }\n"
+"$path.c create rectangle [expr $x0-4] [expr $y0-4] [expr $x0+4] [expr $y0+4] -fill black\n"
 "        $path.c create image $x0 $y0 \\\n"
 "            -image     $bmp \\\n"
 "            -tags       \"cross c:$node\" -anchor c\n"
