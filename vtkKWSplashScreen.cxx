@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplashScreen.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-10 21:32:32 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-09-11 15:28:59 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,7 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWSplashScreen );
-vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.7 $");
 
 //-----------------------------------------------------------------------------
 vtkKWSplashScreen::vtkKWSplashScreen()
@@ -265,6 +265,8 @@ void vtkKWSplashScreen::SetProgressMessageVerticalOffset(int _arg)
 void vtkKWSplashScreen::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
-  os << indent << "ProgressMessageVerticalOffset: " << this->ProgressMessageVerticalOffset << endl;
-  os << indent << "ImageName: " << this->ImageName << endl;
+  os << indent << "ProgressMessageVerticalOffset: " 
+     << this->ProgressMessageVerticalOffset << endl;
+  os << indent << "ImageName: " 
+     << (this->ImageName ? this->ImageName : "(none)") << endl;
 }
