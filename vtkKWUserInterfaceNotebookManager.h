@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceNotebookManager.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-27 21:34:17 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2003-02-28 15:16:56 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -165,6 +165,12 @@ public:
   virtual void UpdatePanel(vtkKWUserInterfacePanel *panel);
 
   // Description:
+  // Enable/disable Drag and Drop.
+  virtual void SetEnableDragAndDrop(int);
+  vtkBooleanMacro(EnableDragAndDrop, int);
+  vtkGetMacro(EnableDragAndDrop, int);
+
+  // Description:
   // Drag and Drop callback
   virtual void DragAndDropEndCallback(
     int x, int y, 
@@ -183,6 +189,11 @@ protected:
   virtual int RemovePageWidgets(vtkKWUserInterfacePanel *panel);
   
   vtkKWNotebook *Notebook;
+
+  // Description:
+  // Update Drag And Drop bindings
+  virtual void UpdatePanelDragAndDrop(vtkKWUserInterfacePanel *panel);
+  int EnableDragAndDrop;
 
 private:
 
