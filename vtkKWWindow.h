@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-17 21:43:54 $
-  Version:   $Revision: 1.68 $
+  Date:      $Date: 2003-01-09 22:52:34 $
+  Version:   $Revision: 1.69 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -324,6 +324,12 @@ public:
   // Check if the application needs to abort.
   virtual int CheckForOtherAbort() { return 0; }
   
+  // Description:
+  // Static method that processes the event. First argument is  
+  // the calling object, second is event id, third is a pointer to
+  // the windows and last is the arguments of the event.
+  static void ProcessEvent(vtkObject *, unsigned long, void *, void *);
+
 protected:
   vtkKWWindow();
   ~vtkKWWindow();
@@ -347,6 +353,10 @@ protected:
   // Description:
   // Display the exit dialog.
   int ExitDialog();
+
+  // Description:
+  // Process events
+  virtual void InternalProcessEvent(vtkObject *, unsigned long, float *, void *);
 
   virtual void CreateStatusImage();
 

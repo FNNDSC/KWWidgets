@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 15:51:40 $
-  Version:   $Revision: 1.136 $
+  Date:      $Date: 2003-01-09 22:52:34 $
+  Version:   $Revision: 1.137 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -70,7 +70,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define VTK_KW_WINDOW_GEOMETRY_REG_KEY "WindowGeometry"
 #define VTK_KW_WINDOW_FRAME1_SIZE_REG_KEY "WindowFrame1Size"
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.136 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.137 $");
 vtkCxxSetObjectMacro(vtkKWWindow, PropertiesParent, vtkKWWidget);
 
 class vtkKWWindowMenuEntry
@@ -1108,7 +1108,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.136 $");
+  this->ExtractRevision(os,"$Revision: 1.137 $");
 }
 
 int vtkKWWindow::ExitDialog()
@@ -1495,6 +1495,28 @@ void vtkKWWindow::DisplayCommandPrompt()
     }
   
   this->TclInteractor->Display();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWindow::ProcessEvent( vtkObject* object,
+                                unsigned long event, 
+                                void *clientdata, void *calldata)
+{   
+  float *fArgs = 0;
+  if (calldata)
+    {    
+    fArgs = reinterpret_cast<float *>(calldata);
+    }
+
+  vtkKWWindow *self = reinterpret_cast<vtkKWWindow *>(clientdata);
+  self->InternalProcessEvent(object, event, fArgs, calldata);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWindow::InternalProcessEvent(vtkObject*, unsigned long, 
+                                       float *, void *)
+{
+  // No implementation
 }
 
 //----------------------------------------------------------------------------
