@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-10-11 20:12:57 $
-  Version:   $Revision: 1.26 $
+  Date:      $Date: 2001-10-17 15:25:01 $
+  Version:   $Revision: 1.27 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -597,7 +597,7 @@ void vtkKWWindow::CreateStatusImage()
 
 
 #ifdef _WIN32
-void ReadAValue(HKEY hKey,char *val,char *key, char *adefault)
+static void ReadAValue(HKEY hKey,char *val,char *key, char *adefault)
 {
   DWORD dwType, dwSize;
   
@@ -816,5 +816,5 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.26 $");
+  this->ExtractRevision(os,"$Revision: 1.27 $");
 }

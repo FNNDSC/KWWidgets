@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-10-16 13:45:38 $
-  Version:   $Revision: 1.32 $
+  Date:      $Date: 2001-10-17 15:25:00 $
+  Version:   $Revision: 1.33 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -391,7 +391,18 @@ void vtkKWApplication::Start(int argc, char *argv[])
 
 
 #ifdef _WIN32
-extern void ReadAValue(HKEY hKey,char *val,char *key, char *adefault);
+static void ReadAValue(HKEY hKey,char *val,char *key, char *adefault)
+{
+  DWORD dwType, dwSize;
+  
+  dwType = REG_SZ;
+  dwSize = 1023;
+  if(RegQueryValueEx(hKey,key, NULL, &dwType, 
+                     (BYTE *)val, &dwSize) != ERROR_SUCCESS)
+    {
+    strcpy(val,adefault);
+    }
+}
 #endif
 
 void vtkKWApplication::DisplayHelp()

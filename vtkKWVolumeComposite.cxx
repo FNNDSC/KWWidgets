@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:39 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2001-10-17 15:25:01 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -54,7 +54,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkVolumeTextureMapper2D.h"
 #include "vtkMath.h"
 #include "vtkImageResample.h"
-#include "vtkRayCaster.h"
 #include "vtkObjectFactory.h"
 #include "vtkVolume.h"
 #include "vtkVolumeProMapper.h"
@@ -144,6 +143,10 @@ vtkKWVolumeComposite::vtkKWVolumeComposite()
   this->VProMagnification[0] = 1.0;
   this->VProMagnification[1] = 1.0;
   this->VProMagnification[2] = 1.0;
+
+  // set up the low res and med res mappers to use some storage
+  this->LowResTextureMapper->SetMaximumStorageSize(7000000);
+  this->MedResTextureMapper->SetMaximumStorageSize(7000000);
   
   vtkPiecewiseFunction *pwf = vtkPiecewiseFunction::New();
   pwf->AddPoint(0,0.0);
@@ -497,5 +500,5 @@ void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.22 $");
+  this->ExtractRevision(os,"$Revision: 1.23 $");
 }
