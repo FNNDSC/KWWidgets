@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-15 17:21:42 $
-  Version:   $Revision: 1.42 $
+  Date:      $Date: 2003-01-15 19:40:19 $
+  Version:   $Revision: 1.43 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -82,6 +82,7 @@ static const char *vtkKWEventStrings[] = {
   "DistanceVisibilityChangedEvent",
   "EnableShadingEvent",
   "GradientOpacityFunctionChangedEvent",
+  "GradientOpacityFunctionPresetApplyEvent",
   "GradientOpacityStateChangedEvent",
   "GrayScaleImageEvent",
   "ImageAngleVisibilityChangedEvent",
@@ -119,7 +120,9 @@ static const char *vtkKWEventStrings[] = {
   "RenderEvent",
   "RightMouseOptionChangedEvent",
   "ScalarColorFunctionChangedEvent",
+  "ScalarColorFunctionPresetApplyEvent",
   "ScalarOpacityFunctionChangedEvent",
+  "ScalarOpacityFunctionPresetApplyEvent",
   "ScaleBarVisibilityChangedEvent",
   "ShiftLeftMouseOptionChangedEvent",
   "ShiftMiddleMouseOptionChangedEvent",
@@ -137,15 +140,12 @@ static const char *vtkKWEventStrings[] = {
   "VolumeBlendModeChangedEvent",
   "VolumeBoundingBoxColorChangedEvent",
   "VolumeBoundingBoxVisibilityChangedEvent",
-  "VolumeColorFunctionPresetApplyEvent",
   "VolumeCornerAnnotationChangedEvent",
   "VolumeCornerAnnotationColorChangedEvent",
   "VolumeDistanceVisibilityChangedEvent",
   "VolumeFlySpeedChangedEvent",
-  "VolumeGradientFunctionPresetApplyEvent",
   "VolumeHeaderAnnotationColorChangedEvent",
   "VolumeMouseBindingChangedEvent",
-  "VolumeOpacityFunctionPresetApplyEvent",
   "VolumeOrientationMarkerColorChangedEvent",
   "VolumeOrientationMarkerVisibilityChangedEvent",
   "VolumeReformatBoxVisibilityChangedEvent",
