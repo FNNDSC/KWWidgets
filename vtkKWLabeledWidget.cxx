@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 16:58:59 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-12-26 01:54:03 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLabeledWidget);
-vtkCxxRevisionMacro(vtkKWLabeledWidget, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWLabeledWidget, "$Revision: 1.3 $");
 
 int vtkKWLabeledWidgetCommand(ClientData cd, Tcl_Interp *interp,
                               int argc, char *argv[]);
@@ -98,7 +98,7 @@ void vtkKWLabeledWidget::Create(vtkKWApplication *app, const char *args)
     this->Label->SetParent(this);
     }
 
-  this->Label->Create(app, "");
+  this->Label->Create(app, "-anchor w");
 
   // Subclasses will call this->Pack() here
   // this->Pack();
@@ -114,6 +114,15 @@ void vtkKWLabeledWidget::SetLabel(const char *text)
   if (this->Label)
     {
     this->Label->SetLabel(text);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWLabeledWidget::SetLabelWidth(int width)
+{
+  if (this->IsCreated() && this->Label)
+    {
+    this->Script("%s configure -width %d", this->Label->GetWidgetName(), width);
     }
 }
 
