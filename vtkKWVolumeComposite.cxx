@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-06-21 20:20:31 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2000-08-09 19:46:24 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -91,6 +91,10 @@ vtkKWVolumeComposite::vtkKWVolumeComposite()
   this->RayCastMapper->SetGradientEstimator( gradientEstimator );
   this->HiResTextureMapper->SetGradientEstimator( gradientEstimator );
 
+  this->LowResTextureMapper->SetMaximumNumberOfPlanes(128);
+  this->MedResTextureMapper->SetMaximumNumberOfPlanes(128);
+  this->HiResTextureMapper->SetMaximumNumberOfPlanes(128);
+  
   gradientEstimator->Delete();
   directionEncoder->Delete();
 
@@ -354,5 +358,5 @@ void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.9 $");
+  this->ExtractRevision(os,"$Revision: 1.10 $");
 }
