@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEventNotifier.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-07-12 17:38:23 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2000-07-12 19:16:41 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -115,7 +115,6 @@ void vtkKWEventNotifier::AddCallback( const char *event,
 
 void vtkKWEventNotifier::AddCallback( const char *event, 
 				      vtkKWWindow *window,
-				      vtkKWObject *object, 
 				      void (*command)(const char *) )
 {
   int                         index;
@@ -127,7 +126,6 @@ void vtkKWEventNotifier::AddCallback( const char *event,
   // Create a callback specification object to store it in
   tmp1   = (vtkKWCallbackSpecification *)vtkKWCallbackSpecification::New();
   tmp1->SetEventString  ( event   );
-  tmp1->SetCalledObject ( object  );
   tmp1->SetWindow( window );
   tmp1->SetCommandMethod( command );
 

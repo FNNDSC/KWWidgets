@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEventNotifier.h,v $
   Language:  C++
-  Date:      $Date: 2000-07-12 17:38:23 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-07-12 19:16:41 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -53,7 +53,15 @@ public:
   // window. The command is a C++ method to be called (no tcl interpreter used)
   // It must take a string as an argument, and know how to parse it.
   void AddCallback( const char *event,   vtkKWWindow *window,
-		    vtkKWObject *object, void (*f)(const char *) );
+		    void (*f)(const char *) );
+
+  // Description:
+  // Add a callback for a specified event occurring in a specified
+  // window. The command is a C++ method to be called (no tcl interpreter used)
+  // It must take a string as an argument, and know how to parse it.
+  void AddCallback( const char *event, void (*f)(const char *) )
+    {this->AddCallback( event, (vtkKWWindow *)NULL, f );};
+
 //ETX
   
   // Description:
