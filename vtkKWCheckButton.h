@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCheckButton.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-04 16:53:58 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-10-10 16:01:16 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -90,6 +90,8 @@ protected:
   int IndicatorOn;
   char *MyText;
   char *VariableName;
+
+  void Configure();
 
 private:
   vtkKWCheckButton(const vtkKWCheckButton&); // Not implemented
