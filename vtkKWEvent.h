@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-14 00:48:04 $
-  Version:   $Revision: 1.42 $
+  Date:      $Date: 2003-01-14 23:13:29 $
+  Version:   $Revision: 1.43 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -61,21 +61,17 @@ class VTK_EXPORT vtkKWEvent
     AnnotationColorChangedEvent,
     ApplicationAreaChangedEvent,
     BackgroundColorChangedEvent,
-    ChangeMouseOperationsEvent,
-    ChangePrinterDPIEvent,
-    ChangeProjectionEvent,
-    ChangeStandardInteractivityEvent,
     ColorImageEvent,
     ContourAnnotationAddEvent,
-    ContourAnnotationChangeColorEvent,
-    ContourAnnotationChangeLineWidthEvent,
-    ContourAnnotationChangeOpacityEvent,
-    ContourAnnotationChangeSurfaceQualityEvent,
-    ContourAnnotationChangeSurfaceRepresentationEvent,
-    ContourAnnotationChangeSurfaceShineEvent,
-    ContourAnnotationChangeVisibilityEvent,
+    ContourAnnotationColorChangedEvent,
     ContourAnnotationComputeStatisticsEvent,
+    ContourAnnotationLineWidthChangedEvent,
+    ContourAnnotationOpacityChangedEvent,
     ContourAnnotationRemoveEvent,
+    ContourAnnotationSurfaceQualityChangedEvent,
+    ContourAnnotationSurfaceRepresentationChangedEvent,
+    ContourAnnotationSurfaceShineChangedEvent,
+    ContourAnnotationVisibilityChangedEvent,
     ControlLeftMouseOptionChangedEvent,
     ControlMiddleMouseOptionChangedEvent,
     ControlRightMouseOptionChangedEvent,
@@ -120,10 +116,13 @@ class VTK_EXPORT vtkKWEvent
     MaterialPropertyChangedEvent,
     MiddleMouseOptionChangedEvent,
     MouseBindingChangedEvent,
+    MouseOperationsChangedEvent,
     MultiPassStillRenderEndEvent,
     MultiPassStillRenderStageChangedEvent,
     PerspectiveViewAngleChangedEvent,
+    PrinterDPIChangedEvent,
     ProbeInformationChangedEvent,
+    ProjectionTypeChangedEvent,
     RenderEvent,
     RightMouseOptionChangedEvent,
     ScalarColorFunctionChangedEvent,
@@ -134,6 +133,7 @@ class VTK_EXPORT vtkKWEvent
     ShiftRightMouseOptionChangedEvent,
     SpecularChangedEvent,
     SpecularPowerChangedEvent,
+    StandardInteractivityChangedEvent,
     SwitchToVolumeProEvent,
     TransferFunctionsChangedEvent,
     TransferFunctionsChangingEvent,
@@ -166,9 +166,7 @@ class VTK_EXPORT vtkKWEvent
     WindowInterfaceChangedEvent,
     WindowLayoutChangedEvent,
     WindowLevelChangedEvent,
-    WindowLevelChangedImageCompositeEvent,
     WindowLevelChangingEvent,
-    WindowLevelChangingImageCompositeEvent,
     WindowLevelResetEvent,
     // PV
     ErrorMessageEvent,

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-14 00:48:04 $
-  Version:   $Revision: 1.39 $
+  Date:      $Date: 2003-01-14 23:13:29 $
+  Version:   $Revision: 1.40 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,21 +52,17 @@ static const char *vtkKWEventStrings[] = {
   "AnnotationColorChangedEvent",
   "ApplicationAreaChangedEvent",
   "BackgroundColorChangedEvent",
-  "ChangeMouseOperationsEvent",
-  "ChangePrinterDPIEvent",
-  "ChangeProjectionEvent",
-  "ChangeStandardInteractivityEvent",
   "ColorImageEvent",
   "ContourAnnotationAddEvent",
-  "ContourAnnotationChangeColorEvent",
-  "ContourAnnotationChangeLineWidthEvent",
-  "ContourAnnotationChangeOpacityEvent",
-  "ContourAnnotationChangeSurfaceQualityEvent",
-  "ContourAnnotationChangeSurfaceRepresentationEvent",
-  "ContourAnnotationChangeSurfaceShineEvent",
-  "ContourAnnotationChangeVisibilityEvent",
+  "ContourAnnotationColorChangedEvent",
   "ContourAnnotationComputeStatisticsEvent",
+  "ContourAnnotationLineWidthChangedEvent",
+  "ContourAnnotationOpacityChangedEvent",
   "ContourAnnotationRemoveEvent",
+  "ContourAnnotationSurfaceQualityChangedEvent",
+  "ContourAnnotationSurfaceRepresentationChangedEvent",
+  "ContourAnnotationSurfaceShineChangedEvent",
+  "ContourAnnotationVisibilityChangedEvent",
   "ControlLeftMouseOptionChangedEvent",
   "ControlMiddleMouseOptionChangedEvent",
   "ControlRightMouseOptionChangedEvent",
@@ -111,10 +107,13 @@ static const char *vtkKWEventStrings[] = {
   "MaterialPropertyChangedEvent",
   "MiddleMouseOptionChangedEvent",
   "MouseBindingChangedEvent",
+  "MouseOperationsChangedEvent",
   "MultiPassStillRenderEndEvent",
   "MultiPassStillRenderStageChangedEvent",
   "PerspectiveViewAngleChangedEvent",
+  "PrinterDPIChangedEvent",
   "ProbeInformationChangedEvent",
+  "ProjectionTypeChangedEvent",
   "RenderEvent",
   "RightMouseOptionChangedEvent",
   "ScalarColorFunctionChangedEvent",
@@ -125,6 +124,7 @@ static const char *vtkKWEventStrings[] = {
   "ShiftRightMouseOptionChangedEvent",
   "SpecularChangedEvent",
   "SpecularPowerChangedEvent",
+  "StandardInteractivityChangedEvent",
   "SwitchToVolumeProEvent",
   "TransferFunctionsChangedEvent",
   "TransferFunctionsChangingEvent",
@@ -157,9 +157,7 @@ static const char *vtkKWEventStrings[] = {
   "WindowInterfaceChangedEvent",
   "WindowLayoutChangedEvent",
   "WindowLevelChangedEvent",
-  "WindowLevelChangedImageCompositeEvent",
   "WindowLevelChangingEvent",
-  "WindowLevelChangingImageCompositeEvent",
   "WindowLevelResetEvent",
   // PV
   "ErrorMessageEvent",
