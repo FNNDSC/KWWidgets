@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-10 16:31:42 $
-  Version:   $Revision: 1.46 $
+  Date:      $Date: 2002-01-11 17:52:09 $
+  Version:   $Revision: 1.47 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -278,6 +278,16 @@ vtkKWWindow::~vtkKWWindow()
 {
   if ( this->RecentFiles )
     {
+    vtkKWWindowMenuEntry *kc = 0;
+    while( this->RecentFiles->GetSize() > 0 )
+      {
+      if ( ( kc = (vtkKWWindowMenuEntry *)
+	     this->RecentFiles->Lookup( this->RecentFiles->GetSize()-1 ) ) )
+	{
+	kc->Delete();
+	this->RecentFiles->Remove( this->RecentFiles->GetSize()-1 );
+	}
+      }
     this->RecentFiles->Delete();
     }
   this->Notebook->Delete();
@@ -913,7 +923,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.46 $");
+  this->ExtractRevision(os,"$Revision: 1.47 $");
 }
 
 int vtkKWWindow::ExitDialog()
