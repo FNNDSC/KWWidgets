@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledEntry.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-12 21:51:39 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-12-22 16:05:12 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLabeledEntry);
-vtkCxxRevisionMacro(vtkKWLabeledEntry, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWLabeledEntry, "$Revision: 1.11 $");
 
 int vtkKWLabeledEntryCommand(ClientData cd, Tcl_Interp *interp,
                              int argc, char *argv[]);
@@ -94,6 +94,10 @@ void vtkKWLabeledEntry::Create(vtkKWApplication *app, const char *args)
   // Pack the label and the entry
 
   this->Pack();
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 // ----------------------------------------------------------------------------
@@ -162,20 +166,14 @@ float vtkKWLabeledEntry::GetValueAsFloat()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWLabeledEntry::SetEnabled(int e)
+void vtkKWLabeledEntry::UpdateEnableState()
 {
-  // Propagate first (since objects can be modified externally, they might
-  // not be in synch with this->Enabled)
+  this->Superclass::UpdateEnableState();
 
-  if (this->IsCreated())
+  if (this->Entry)
     {
-    this->Entry->SetEnabled(e);
+    this->Entry->SetEnabled(this->Enabled);
     }
-
-  // Then call superclass, which will call SetEnabled on the label and 
-  // update the internal Enabled ivar (although it is not of much use here)
-
-  this->Superclass::SetEnabled(e);
 }
 
 // ---------------------------------------------------------------------------
