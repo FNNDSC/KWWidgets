@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: kwappicon.c,v $
   Language:  C++
-  Date:      $Date: 2002-09-07 00:53:08 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-09-15 16:16:05 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,6 +45,8 @@ int SetApplicationIconCmd(ClientData clientdata,
   HINSTANCE hInst = 0;
   int iconID, error, set_small;
   char cmd[1024];
+
+  clientdata = 0; // To avoid warning: unreferenced formal parameter
 
   // Check usage
 
