@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-01-03 17:19:30 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-05 14:45:16 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -195,7 +195,10 @@ void vtkKWScale::ScaleValueChanged(float num)
     {
     this->Entry->SetValue(this->Value,0);
     }
-  this->Script("eval %s",this->Command);
+  if (this->Command)
+    {
+    this->Script("eval %s",this->Command);
+    }
 }
 
 void vtkKWScale::SetCommand(char *format, ...)
