@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-15 20:42:49 $
-  Version:   $Revision: 1.40 $
+  Date:      $Date: 2002-02-15 22:32:19 $
+  Version:   $Revision: 1.41 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,6 +58,7 @@ class vtkKWProgressGauge;
 class vtkKWView;
 class vtkKWPointerArray;
 class vtkKWLabel;
+class vtkKWLoadSaveDialog;
 
 class VTK_EXPORT vtkKWWindow : public vtkKWWidget
 {
@@ -246,6 +247,24 @@ public:
   float GetFloatRegisteryValue(int level, const char* subkey, 
 			       const char* key);
   int   GetIntRegisteryValue(int level, const char* subkey, const char* key);
+
+  // Description:
+  // Perform a boolean check of the value in registery. If the value 
+  // at the key is trueval, then return true, otherwise return false.
+  int BooleanRegisteryCheck(int level, const char* key, const char* trueval);
+  
+  // Description:
+  // Save or retrieve color from registery. If color does not 
+  // exist, it will retrieve -1, -1 ,-1.
+  void SaveColor(int level, const char*, float rgb[3]);
+  void RetrieveColor(int level, const char*, float rgb[3]);
+
+  // Description:
+  // Save or retrieve the last path of the dialog to the registery.
+  // The string argument is the registery key.
+  void SaveLastPath(vtkKWLoadSaveDialog *, const char*);
+  void RetrieveLastPath(vtkKWLoadSaveDialog *, const char*);
+
 //ETX
   
 protected:
