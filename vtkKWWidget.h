@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-07-08 18:02:01 $
-  Version:   $Revision: 1.25 $
+  Date:      $Date: 2002-07-12 21:30:56 $
+  Version:   $Revision: 1.26 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -65,6 +65,7 @@ public:
   // Description:
   // Create a Tk widget
   void Create(vtkKWApplication *app,const char *name, const char *args);
+  int IsCreated() { return (this->Application != 0); }
 
   // Description:
   // Get the name of the underlying tk widget being used
@@ -97,7 +98,7 @@ public:
   // name of the method to be called and any arguments in string form.
   // The calling is done via TCL wrappers for the KWObject.
   virtual void SetCommand( vtkKWObject* Object, 
-			   const char* MethodAndArgString);
+                           const char* MethodAndArgString);
 
   // Description:
   // Get the string type of a widget.
