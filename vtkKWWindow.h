@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 23:31:26 $
-  Version:   $Revision: 1.28 $
+  Date:      $Date: 2002-01-17 13:55:46 $
+  Version:   $Revision: 1.29 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -187,6 +187,11 @@ public:
   vtkGetMacro(PromptBeforeClose, int);
 
   // Description:
+  // The extension used in LoadScript. Default is .tcl.
+  vtkSetStringMacro(ScriptExtension);
+  vtkGetStringMacro(ScriptExtension);
+
+  // Description:
   // Call render on all views
   void Render();
 
@@ -237,13 +242,14 @@ protected:
   vtkKWWidget *ToolbarFrame;
   float      PrintTargetDPI;
   vtkKWMenu *PageMenu;
+  char *ScriptExtension;
 
   int SupportHelp;
   char *WindowClass;
   int PromptBeforeClose;
 
   vtkKWPointerArray *RecentFiles;
-
+  
   void PrintRecentFiles();
 };
 
