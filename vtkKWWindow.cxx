@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-01-17 03:02:43 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-01-17 17:01:42 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -2432,7 +2432,7 @@ vtkKWMenu *vtkKWWindow::GetMenuView()
     }
   else
     {
-    this->Menu->InsertCascade(2, "View", this->MenuView, 0);
+    this->Menu->InsertCascade(1, "View", this->MenuView, 0);
     }
   
   return this->MenuView;
@@ -2525,12 +2525,12 @@ void vtkKWWindow::Create(vtkKWApplication *app, char *args)
   this->MenuFile->AddSeparator();
   this->MenuFile->AddCommand("Close", this, "Close");
   this->MenuFile->AddCommand("Exit", this, "Exit");
+  // install the menu bar into this window
+  this->InstallMenu(this->Menu);
   this->MenuHelp->Create(app,"-tearoff 0");
   this->Menu->AddCascade("Help", this->MenuHelp, 0);
   this->MenuHelp->AddCommand("OnLine Help", this, "DisplayHelp");
   this->MenuHelp->AddCommand("About", this, "DisplayAbout");
-  // install the menu bar into this window
-  this->InstallMenu(this->Menu);
 }
 
 void vtkKWWindow::InstallMenu(vtkKWMenu* menu)
