@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-09 21:26:15 $
-  Version:   $Revision: 1.67 $
+  Date:      $Date: 2002-12-17 21:43:54 $
+  Version:   $Revision: 1.68 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -302,14 +302,15 @@ public:
   void PrintRecentFiles();
   
   // Description:
-  // Get the user interface manager.
+  // Get the User Interface Manager.
   virtual vtkKWUserInterfaceManager* GetUserInterfaceManager()
     { return 0; };
 
   // Description:
-  // Get the application settings interface. 
+  // Get/Show the Application Settings Interface. 
   virtual vtkKWApplicationSettingsInterface* GetApplicationSettingsInterface() 
     { return 0; };
+  void ShowApplicationSettingsInterface();
 
   // Description:
   // Display the tcl interactor.
