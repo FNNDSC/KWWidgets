@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 16:02:12 $
-  Version:   $Revision: 1.45 $
+  Date:      $Date: 2002-12-27 15:00:12 $
+  Version:   $Revision: 1.46 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -61,7 +61,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCornerAnnotation );
-vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.45 $");
+vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.46 $");
 
 int vtkKWCornerAnnotationCommand(ClientData cd, Tcl_Interp *interp,
                                 int argc, char *argv[]);
@@ -766,7 +766,7 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.45 $");
+  this->ExtractRevision(os,"$Revision: 1.46 $");
   vtkKWLabeledFrame::SerializeRevision(os,indent);
 }
 
@@ -818,4 +818,5 @@ void vtkKWCornerAnnotation::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "View: " << this->GetView() << endl;
   os << indent << "RenderWidget: " << this->GetRenderWidget() << endl;
   os << indent << "TextPropertyWidget: " << this->TextPropertyWidget << endl;
+  os << indent << "MaximumLineHeightScale: " << this->MaximumLineHeightScale << endl;
 }
