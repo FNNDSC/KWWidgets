@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-16 04:10:54 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2000-08-23 16:02:00 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -253,4 +253,38 @@ void vtkKWScale::SetCommand(vtkKWObject* CalledObject, const char *CommandString
   ostrstream command;
   command << CalledObject->GetTclName() << " " << CommandString << ends;
   this->Command = command.str();
+}
+
+void vtkKWScale::SetBalloonHelpString( const char *string )
+{
+  if ( !this->Application )
+    {
+    vtkErrorMacro("Must set application before setting balloon help string");
+    return;
+    }
+  
+  this->ScaleWidget->SetBalloonHelpString( string );
+  if ( this->Entry )
+    {
+    this->Entry->SetBalloonHelpString( string );
+    }
+  if ( this->ScaleLabel )
+    {
+    this->ScaleLabel->SetBalloonHelpString( string );
+    }
+  
+}
+
+void vtkKWScale::SetBalloonHelpJustification( int j )
+{
+  this->ScaleWidget->SetBalloonHelpJustification( j );
+  if ( this->Entry )
+    {
+    this->Entry->SetBalloonHelpJustification( j );
+    }
+  if ( this->ScaleLabel )
+    {
+    this->ScaleLabel->SetBalloonHelpJustification( j );
+    }
+  
 }

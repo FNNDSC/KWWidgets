@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-07 20:15:27 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2000-08-23 16:02:00 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -87,7 +87,7 @@ public:
 
   // Description:
   // Setting this string enables balloon help for this widget.
-  void SetBalloonHelpString(const char *str);
+  virtual void SetBalloonHelpString(const char *str);
   vtkGetStringMacro(BalloonHelpString);
   
   // Description:

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-07 20:15:27 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2000-08-23 16:02:00 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -80,6 +80,12 @@ public:
   virtual void SetCommand(vtkKWObject* Object, const char *MethodAndArgString);
   virtual void SetStartCommand(vtkKWObject* Object, const char *MethodAndArgString);
   virtual void SetEndCommand(vtkKWObject* Object, const char *MethodAndArgString);
+
+  // Description:
+  // Setting this string enables balloon help for this widget.
+  // Override to pass down to children for cleaner behavior
+  virtual void SetBalloonHelpString(const char *str);
+  virtual void SetBalloonHelpJustification( int j );
 
 protected:
   vtkKWScale();

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-14 14:51:11 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2000-08-23 16:02:00 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -140,7 +140,7 @@ void vtkKWCornerAnnotation::Create(vtkKWApplication *app)
     this->CornerDisplayFrame->GetWidgetName() );
   this->CornerButton->Create(this->Application,
                              "-text {Display Corner Annotation}");
-  this->CornerButton->SetBalloonHelpString("Toggle the visibility of the corner annotation");
+  this->CornerButton->SetBalloonHelpString("Toggle the visibility of the corner annotation text");
   this->CornerButton->SetCommand(this, "OnDisplayCorner");
   this->Script("pack %s -side left -padx 2 -pady 4 -anchor nw",
                this->CornerButton->GetWidgetName());
@@ -389,6 +389,6 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.11 $");
+  this->ExtractRevision(os,"$Revision: 1.12 $");
   vtkKWLabeledFrame::SerializeRevision(os,indent);
 }
