@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWHashTable.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:23 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-01-16 19:12:29 $
+  Version:   $Revision: 1.3 $
 
 
 Copyright (c) 1993-2001 Ken Martin, Will Schroeder, Bill Lorensen 
@@ -43,26 +43,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 
 #include "vtkKWHashTable.h"
+#include "vtkKWHashTableIterator.h"
 #include "vtkObjectFactory.h"
 
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWHashTable );
-
-// Hash table vtkKWHashTableItem structure
-class vtkKWHashTableItem
-{
-public:
-  vtkKWHashTableItem();
-  ~vtkKWHashTableItem();
-  void Set( vtkKWHashTableItem * );
-  void *Data;
-  unsigned long Key;
-  unsigned int Valid;
-  vtkKWHashTableItem *Next;
-
-  static int Count;
-};
 
 int vtkKWHashTableItem::Count = 0;
 
@@ -278,4 +264,16 @@ vtkKWHashTable::HashString(const char* s)
     h = 5*h + *s;
     }
   return h;
+}
+
+vtkKWHashTableIterator *vtkKWHashTable::Iterator()
+{
+  vtkKWHashTableIterator *it = vtkKWHashTableIterator::New();
+  it->SetHashTable( this );
+  if ( it->Valid() )
+    {
+    return it;
+    }
+  it->Delete();
+  return 0;
 }

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWin32RegisteryUtilities.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-15 21:01:27 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-01-16 19:12:31 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -83,8 +83,8 @@ int vtkKWWin32RegisteryUtilities::CloseInternal()
   return res;
 }
 
-int vtkKWWin32RegisteryUtilities::ReadValueInternal(char *value, 
-						    const char *key)
+int vtkKWWin32RegisteryUtilities::ReadValueInternal(const char *key,
+						    char *value)
 {
   int res = 1;
   DWORD dwType, dwSize;  

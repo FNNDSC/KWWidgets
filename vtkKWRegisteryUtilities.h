@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRegisteryUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-15 21:01:27 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-01-16 19:12:30 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -53,8 +53,8 @@ class VTK_EXPORT vtkKWRegisteryUtilities : public vtkKWObject
 
   // Description:
   // Read a value from the registry.
-  int ReadValue(const char *subkey, char *value, 
-		const char *key);
+  int ReadValue(const char *subkey, 
+		const char *key, char *value);
 
   // Description:
   // Delete a key from the registry.
@@ -108,8 +108,7 @@ class VTK_EXPORT vtkKWRegisteryUtilities : public vtkKWObject
   
   // Description:
   // Read a value from the registry.
-  virtual int ReadValueInternal(char *value, 
-				const char *key) = 0;
+  virtual int ReadValueInternal(const char *key, char *value) = 0;
   
   // Description:
   // Delete a key from the registry.
@@ -142,6 +141,8 @@ class VTK_EXPORT vtkKWRegisteryUtilities : public vtkKWObject
   char *Strip(char *str);
 
   int Opened;
+  int Changed;
+  int Empty;
    
   private:
   char *TopLevel;  

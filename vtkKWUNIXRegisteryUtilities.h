@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUNIXRegisteryUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-15 21:01:27 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-01-16 19:12:31 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,7 +55,7 @@ public:
 
   // Description:
   // Read a value from the registry.
-  virtual int ReadValueInternal(char *value, const char *key); 
+  virtual int ReadValueInternal(const char *key, char *value); 
 
   // Description:
   // Delete a key from the registry.
@@ -80,9 +80,13 @@ public:
 protected:
   vtkKWUNIXRegisteryUtilities();
   virtual ~vtkKWUNIXRegisteryUtilities();
+  vtkSetStringMacro(SubKey);
+
+  char *CreateKey(const char *key);
 
 private:
   vtkKWHashTable *Entries;
+  char *SubKey;
 };
 
 #endif
