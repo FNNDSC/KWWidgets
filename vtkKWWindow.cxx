@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-26 22:10:19 $
-  Version:   $Revision: 1.77 $
+  Date:      $Date: 2002-02-27 15:25:56 $
+  Version:   $Revision: 1.78 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -934,7 +934,7 @@ void vtkKWWindow::AddRecentFilesToMenu(char *menuEntry, vtkKWObject *target)
 void vtkKWWindow::AddRecentFile(char *key, char *name,vtkKWObject *target,
                                 const char *command)
 {
-  const char* filename = this->Application->EvaluateString(name);
+  const char* filename = this->Application->ExpandFileName(name);
   this->InsertRecentFileToMenu(filename, target, command);
   this->UpdateRecentMenu(key);
   this->StoreRecentMenuToRegistery(key);
@@ -964,7 +964,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.77 $");
+  this->ExtractRevision(os,"$Revision: 1.78 $");
 }
 
 int vtkKWWindow::ExitDialog()

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-26 22:08:13 $
-  Version:   $Revision: 1.32 $
+  Date:      $Date: 2002-02-27 15:25:56 $
+  Version:   $Revision: 1.33 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -128,6 +128,7 @@ public:
   void SimpleScript(char *EventString);
   void SimpleScript(const char *EventString);
   const char* EvaluateString(const char *String, ...);
+  const char* ExpandFileName(const char *String, ...);
 //ETX
 
   // Description:
