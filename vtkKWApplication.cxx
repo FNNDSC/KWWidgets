@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-23 16:02:00 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2000-08-24 14:09:49 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -92,13 +92,16 @@ vtkKWApplication::vtkKWApplication()
   this->BalloonHelpLabel->SetParent(this->BalloonHelpWindow);
   this->BalloonHelpPending = NULL;
 
-  //this->BalloonHelpWindow->SetParent(this->GetParentWindow());
-  this->BalloonHelpWindow->Create(this, "toplevel", "-background black -borderwidth 1 -relief flat");
-  this->BalloonHelpLabel->Create(this, "label", "-background LightYellow -justify left -wraplength 2i");
-  this->Script("pack %s", this->BalloonHelpLabel->GetWidgetName());
-  this->Script("wm overrideredirect %s 1", this->BalloonHelpWindow->GetWidgetName());
-  this->Script("wm withdraw %s", this->BalloonHelpWindow->GetWidgetName());
-
+  if (vtkKWApplication::WidgetVisibility)
+    {
+    //this->BalloonHelpWindow->SetParent(this->GetParentWindow());
+    this->BalloonHelpWindow->Create(this, "toplevel", "-background black -borderwidth 1 -relief flat");
+    this->BalloonHelpLabel->Create(this, "label", "-background LightYellow -justify left -wraplength 2i");
+    this->Script("pack %s", this->BalloonHelpLabel->GetWidgetName());
+    this->Script("wm overrideredirect %s 1", this->BalloonHelpWindow->GetWidgetName());
+    this->Script("wm withdraw %s", this->BalloonHelpWindow->GetWidgetName());
+    }
+  
   this->EventNotifier = vtkKWEventNotifier::New();
   this->EventNotifier->SetApplication( this );
 }
