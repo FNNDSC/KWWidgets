@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-22 21:28:03 $
-  Version:   $Revision: 1.36 $
+  Date:      $Date: 2002-12-03 18:49:20 $
+  Version:   $Revision: 1.37 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -233,6 +233,8 @@ protected:
   // trace cannot be initialized for this widget.
   char *TraceName;
   int Enabled;
+
+  void UpdateEnableState();
 
 private:
   vtkKWWidget(const vtkKWWidget&); // Not implemented
