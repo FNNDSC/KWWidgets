@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfacePanel.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-02 23:00:59 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-12-10 20:03:21 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -136,6 +136,10 @@ public:
   // will call the panel's Create() method automatically, allowing the 
   // creation of the panel to be delayed until it is really needed.
   virtual void Show();
+
+  // Description:
+  // Refresh the interface.
+  virtual void Update() {};
 
 protected:
   vtkKWUserInterfacePanel();
