@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-04-15 13:23:24 $
-  Version:   $Revision: 1.86 $
+  Date:      $Date: 2002-04-15 16:17:53 $
+  Version:   $Revision: 1.87 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -993,7 +993,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.86 $");
+  this->ExtractRevision(os,"$Revision: 1.87 $");
 }
 
 int vtkKWWindow::ExitDialog()
@@ -1008,8 +1008,9 @@ int vtkKWWindow::ExitDialog()
   char* msg = str.str();
   
   int ret = vtkKWMessageDialog::PopupYesNo(
-    this->GetApplication(), this, vtkKWMessageDialog::Question,
-    ttl, msg);
+    this->GetApplication(), this, "ExitApplication",
+    ttl, msg, 
+    vtkKWMessageDialog::QuestionIcon | vtkKWMessageDialog::RememberYes);
 
   delete[] msg;
   delete[] ttl;
@@ -1319,19 +1320,17 @@ int vtkKWWindow::BooleanRegisteryCheck(int level, const char* key,
 
 void vtkKWWindow::WarningMessage(const char* message)
 {
-  vtkKWMessageDialog::PopupMessage(this->GetApplication(),
-				   this, vtkKWMessageDialog::Warning,
-				   "VTK Warning",
-				   message);
+  vtkKWMessageDialog::PopupMessage(
+    this->GetApplication(), this, "VTK Warning",
+    message, vtkKWMessageDialog::WarningIcon);
 }
 
 void vtkKWWindow::ErrorMessage(const char* message)
 {
   //cout << message << endl;
-  vtkKWMessageDialog::PopupMessage(this->GetApplication(),
-				   this, vtkKWMessageDialog::Error,
-				   "VTK Error",
-				   message);
+  vtkKWMessageDialog::PopupMessage(
+    this->GetApplication(), this, "VTK Error",
+    message, vtkKWMessageDialog::ErrorIcon);
 }
 
 void vtkKWWindow::PrintRecentFiles()

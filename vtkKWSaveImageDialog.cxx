@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSaveImageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 23:31:25 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-04-15 16:17:53 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -97,7 +97,7 @@ void vtkKWSaveImageDialog::Invoke()
         "A valid file extension was not found.\\n"
 	"Please use a .bmp, .ppm, or .tif file extension\\n"
 	"when naming your file.");
-      dlg2->SetIcon(vtkKWMessageDialog::Error);
+      dlg2->SetOptions(dlg2->GetOptions() | vtkKWMessageDialog::ErrorIcon);
       dlg2->SetTitle("Save Image Error");
       dlg2->Invoke();
       dlg2->Delete();
