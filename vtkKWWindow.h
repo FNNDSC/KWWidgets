@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2001-12-12 22:34:40 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2001-12-12 23:30:29 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -102,13 +102,14 @@ public:
   vtkGetObjectMacro(MenuFile,vtkKWMenu);
   vtkKWMenu *GetMenuEdit();
   vtkKWMenu *GetMenuView();
+  vtkKWMenu *GetMenuWindow();
   vtkKWMenu *GetMenuProperties();
   
   // Description:
   // Operations on the views.
   void AddView(vtkKWView *);
   void RemoveView(vtkKWView *);
-  void SetSelectedView(vtkKWView *);
+  virtual void SetSelectedView(vtkKWView *);
   vtkGetObjectMacro(SelectedView,vtkKWView);
   vtkKWViewCollection *GetViews() {return this->Views;};
   vtkGetObjectMacro(ViewFrame,vtkKWWidget);
@@ -202,6 +203,7 @@ protected:
   vtkKWMenu *MenuProperties;
   vtkKWMenu *MenuEdit;
   vtkKWMenu *MenuView;
+  vtkKWMenu *MenuWindow;
   vtkKWMenu *MenuHelp;
   vtkKWWidget *StatusFrame;
   vtkKWWidget *StatusImage;
