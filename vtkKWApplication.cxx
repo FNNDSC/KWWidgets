@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-06 22:00:49 $
-  Version:   $Revision: 1.56 $
+  Date:      $Date: 2002-02-15 16:34:21 $
+  Version:   $Revision: 1.57 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -488,7 +488,8 @@ void vtkKWApplication::BalloonHelpTrigger(vtkKWWidget *widget)
 //----------------------------------------------------------------------------
 void vtkKWApplication::BalloonHelpDisplay(vtkKWWidget *widget)
 {
-  if ( !this->BalloonHelpLabel || !this->BalloonHelpWindow )
+  if ( !this->BalloonHelpLabel || !this->BalloonHelpWindow ||
+       !widget->GetParent() )
     {
     return;
     }
@@ -500,7 +501,7 @@ void vtkKWApplication::BalloonHelpDisplay(vtkKWWidget *widget)
     this->SetBalloonHelpPending(NULL);
     return;
     }
-  
+
   // make sure it is really pending
   this->Script("%s configure -text {%s}", 
                this->BalloonHelpLabel->GetWidgetName(), 
@@ -571,6 +572,7 @@ void vtkKWApplication::BalloonHelpDisplay(vtkKWWidget *widget)
     }
   
   this->SetBalloonHelpPending(NULL);
+
 }
 
 
