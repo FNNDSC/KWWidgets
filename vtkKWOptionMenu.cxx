@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-01-03 17:19:30 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-02-28 23:17:23 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -99,6 +99,37 @@ void vtkKWOptionMenu::AddEntryWithCommand(const char *name, const char *obj,
     "%s add radiobutton -label {%s} -variable %sValue -command {%s %s}",
     this->Menu->GetWidgetName(), name, 
     this->GetWidgetName(), obj, method);
+}
+
+void vtkKWOptionMenu::AddEntryWithCommand(const char *name, vtkKWObject *obj, 
+					  const char *methodAndArgs)
+{
+  this->Script(
+    "%s add radiobutton -label {%s} -variable %sValue -command {%s %s}",
+    this->Menu->GetWidgetName(), name, 
+    this->GetWidgetName(), obj->GetTclName(), methodAndArgs);
+}
+
+void vtkKWOptionMenu::DeleteEntry(const char* name)
+{ 
+  this->Script(
+    "%s  delete {%s}",
+    this->Menu->GetWidgetName(), name);
+}
+
+
+void vtkKWOptionMenu::DeleteEntry(int index)
+{
+  this->Script(
+    "%s  delete %d",
+    this->Menu->GetWidgetName(), index);
+
+}
+
+
+void vtkKWOptionMenu::ClearEntries()
+{
+  this->Script("%s delete 0 end", this->Menu->GetWidgetName());
 }
 
 void vtkKWOptionMenu::SetCurrentEntry(const char *name)
