@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-01-13 22:56:28 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-02-28 14:37:01 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -208,7 +208,9 @@ void vtkKWScale::SetStartCommand(vtkKWObject* Object, const char * MethodAndArgS
     {
     delete [] this->StartCommand;
     }
-  this->StartCommand = this->CreateCommand(Object, MethodAndArgString);
+  ostrstream command;
+  command << Object->GetTclName() << " " << MethodAndArgString << ends;
+  this->StartCommand = command.str();
 }
 
 void vtkKWScale::SetEndCommand(vtkKWObject* Object, const char * MethodAndArgString)
@@ -217,7 +219,9 @@ void vtkKWScale::SetEndCommand(vtkKWObject* Object, const char * MethodAndArgStr
     {
     delete [] this->EndCommand;
     }
-  this->EndCommand = this->CreateCommand(Object, MethodAndArgString);
+  ostrstream command;
+  command << Object->GetTclName() << " " << MethodAndArgString << ends;
+  this->EndCommand = command.str();
 }
 
 
