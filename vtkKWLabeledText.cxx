@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledText.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 16:58:34 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2003-01-02 23:27:04 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLabeledText);
-vtkCxxRevisionMacro(vtkKWLabeledText, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWLabeledText, "$Revision: 1.3 $");
 
 int vtkKWLabeledTextCommand(ClientData cd, Tcl_Interp *interp,
                             int argc, char *argv[]);
@@ -86,6 +86,13 @@ void vtkKWLabeledText::Create(vtkKWApplication *app, const char *args)
 
   this->Superclass::Create(app, args);
 
+  // Let's make the label slightly smaller
+
+  if (this->Label)
+    {
+    this->Script("%s configure -bd 1", this->Label->GetWidgetName());
+    }
+
   // Create the option menu
 
   this->Text->SetParent(this);
@@ -118,7 +125,8 @@ void vtkKWLabeledText::Pack()
 
   if (this->ShowLabel)
     {
-    tk_cmd << "pack " << this->Label->GetWidgetName() << " -anchor nw" << endl;
+    tk_cmd << "pack " << this->Label->GetWidgetName() 
+           << " -anchor nw -pady 0 -ipady 0" << endl;
     }
   tk_cmd << "pack " << this->Text->GetWidgetName() 
          << " -side top -anchor nw -fill both -expand t" << endl;
