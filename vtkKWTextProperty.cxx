@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTextProperty.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 17:05:47 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2003-01-02 23:26:18 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -129,7 +129,7 @@ static unsigned char image_copy[] =
 
 // ----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTextProperty);
-vtkCxxRevisionMacro(vtkKWTextProperty, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWTextProperty, "$Revision: 1.14 $");
 
 int vtkKWTextPropertyCommand(ClientData cd, Tcl_Interp *interp,
                       int argc, char *argv[]);
@@ -223,10 +223,9 @@ void vtkKWTextProperty::Create(vtkKWApplication *app)
     }
   this->SetApplication(app);
 
-  // Create the top level widget
+  // Create container
 
-  const char *wname = this->GetWidgetName();
-  this->Script("frame %s -borderwidth 0 -relief flat", wname);
+  this->Script("frame %s -borderwidth 0 -relief flat", this->GetWidgetName());
 
   // Label
 
@@ -488,8 +487,7 @@ void vtkKWTextProperty::Pack()
 
   ostrstream tk_cmd;
 
-  tk_cmd << "catch {eval grid forget [grid slaves " << this->GetWidgetName() 
-         << "]}" << endl;
+  this->ChangeColorButton->UnpackSiblings();
 
   if (this->LongFormat)
     {
