@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWImageLabel.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-05 20:22:56 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-02-12 14:02:51 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,10 +39,11 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =========================================================================*/
-// .NAME vtkKWImageLabel - label widget
+// .NAME vtkKWImageLabel - image label widget
 // .SECTION Description
-// A simple widget that represents a label. The label can be set with 
-// the SetLabel method.
+// A simple subclass of the label widget which holds image. The image
+// can have transparency. It has to be defined as vtkKWIcon or
+// as array of unsigned char values, four per pixel (RGBA).
 
 #ifndef __vtkKWImageLabel_h
 #define __vtkKWImageLabel_h
@@ -70,11 +71,14 @@ protected:
   vtkKWImageLabel();
   ~vtkKWImageLabel();
 
+  // Description:
+  // Set and get the TK name of the image.
   vtkSetStringMacro(ImageDataLabel);
   vtkGetStringMacro(ImageDataLabel);
 
 private:
   char *ImageDataLabel;
+
   vtkKWImageLabel(const vtkKWImageLabel&); // Not implemented
   void operator=(const vtkKWImageLabel&); // Not implemented
 };
