@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRadioButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:24 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-07-24 17:29:46 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -67,6 +67,6 @@ void vtkKWRadioButton::Create(vtkKWApplication *app, const char *args)
   // create the top level
   wname = this->GetWidgetName();
   this->Script("radiobutton %s -value 1 -variable %sValue %s",
-               wname,wname,args);
+               wname,wname,(args?args:""));
 }
 
