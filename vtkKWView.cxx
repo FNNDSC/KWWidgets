@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-03 12:51:31 $
-  Version:   $Revision: 1.84 $
+  Date:      $Date: 2002-09-06 17:20:49 $
+  Version:   $Revision: 1.85 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -97,7 +97,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.84 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.85 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -1117,8 +1117,17 @@ void vtkKWView::Select(vtkKWWindow *pw)
   if ( this->SupportPrint )
     {
     // add the Print option
-    pw->GetMenuFile()->InsertCommand(this->ParentWindow->GetFileMenuIndex(),
-                                     "Print", this, "PrintView", 0);
+    // If there is a "Page Setup" menu, insert below
+    int clidx;
+    if (pw->GetMenuFile()->IsItemPresent(VTK_KW_PAGE_SETUP_MENU_LABEL))
+      {
+      clidx = pw->GetMenuFile()->GetIndex(VTK_KW_PAGE_SETUP_MENU_LABEL) + 1;  
+      }
+    else
+      {
+      clidx = this->ParentWindow->GetFileMenuIndex();  
+      }
+    pw->GetMenuFile()->InsertCommand(clidx, "Print", this, "PrintView", 0);
     }
   
   if ( this->SupportCopy )
@@ -1471,7 +1480,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.84 $");
+  this->ExtractRevision(os,"$Revision: 1.85 $");
 }
 
 //----------------------------------------------------------------------------

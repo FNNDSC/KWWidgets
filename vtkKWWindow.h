@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-05 16:02:33 $
-  Version:   $Revision: 1.58 $
+  Date:      $Date: 2002-09-06 17:20:49 $
+  Version:   $Revision: 1.59 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -71,6 +71,7 @@ template<class DType> class vtkVector;
 //ETX
 
 #define VTK_KW_PREFERENCES_PAGE_LABEL "Preferences"
+#define VTK_KW_PAGE_SETUP_MENU_LABEL "Page Setup"
 
 class VTK_EXPORT vtkKWWindow : public vtkKWWidget
 {
