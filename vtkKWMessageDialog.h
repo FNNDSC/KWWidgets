@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 04:20:05 $
-  Version:   $Revision: 1.26 $
+  Date:      $Date: 2003-01-31 20:48:17 $
+  Version:   $Revision: 1.27 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -143,7 +143,9 @@ public:
 
   // Description:
   // Retrieve the frame where the message is.
+  vtkGetObjectMacro(TopFrame, vtkKWWidget);
   vtkGetObjectMacro(MessageDialogFrame, vtkKWWidget);
+  vtkGetObjectMacro(BottomFrame, vtkKWWidget);
 
   // Description:
   // Set the icon on the message dialog.
@@ -162,7 +164,9 @@ protected:
   vtkSetStringMacro(DialogText);
   vtkGetStringMacro(DialogText);
 
+  vtkKWWidget     *TopFrame;
   vtkKWWidget     *MessageDialogFrame;
+  vtkKWWidget     *BottomFrame;
   vtkKWLabel      *Label;
   vtkKWWidget     *ButtonFrame;
   vtkKWWidget     *OKButton;
