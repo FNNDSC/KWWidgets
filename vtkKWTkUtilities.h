@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTkUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-27 21:32:40 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2003-04-30 20:17:32 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,6 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObject.h"
 
 class vtkImageData;
+class vtkKWIcon;
 struct Tcl_Interp;
 
 class VTK_EXPORT vtkKWTkUtilities : public vtkObject
@@ -107,6 +108,15 @@ public:
                          vtkImageData *image, 
                          const char *blend_with_name = 0,
                          const char *color_option = 0);
+
+  // Description:
+  // Set the -image option of 'widget' using the data stored in 'icon'.
+  // Since a Tk image is created, it needs a name, created from the widget
+  // name and a 'suffix'.
+  static int SetImageOption(Tcl_Interp *interp,
+                            const char *widget,
+                            vtkKWIcon *icon, 
+                            const char *image_name_suffix);
 
   // Description:
   // Quick way to get a photo height/width.
