@@ -17,13 +17,12 @@
 #include "vtkKWIcon.h"
 #include "vtkKWLoadSaveDialog.h"
 #include "vtkObjectFactory.h"
-#include "vtkString.h"
 
 #include <kwsys/SystemTools.hxx>
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLoadSaveButton);
-vtkCxxRevisionMacro(vtkKWLoadSaveButton, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWLoadSaveButton, "$Revision: 1.6 $");
 
 int vtkKWLoadSaveButtonCommand(ClientData cd, Tcl_Interp *interp,
                                int argc, char *argv[]);
