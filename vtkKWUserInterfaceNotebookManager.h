@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceNotebookManager.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-26 19:35:27 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2003-02-26 22:36:27 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -144,7 +144,7 @@ public:
   // this panel are shown.
   // In this concrete implementation, this shows all notebook's pages belonging
   // to this panel.
-  // Raise() behaves like Show(), but it will also bring
+  // RaisePanel() behaves like ShowPanel(), but it will also try to bring
   // up the first page of the panel to the front (i.e., "select" it).
   // Note that you should use the panel's own API to show a panel: this
   // will automatically call this method with the proper panel parameter
@@ -154,9 +154,16 @@ public:
   // vtkKWUserInterfacePanel::Create()) ; this allows the creation of the 
   // panel to be delayed until it is really needed.
   // Return 1 on success, 0 on error.
-  virtual int Show(vtkKWUserInterfacePanel *panel);
-  virtual int Raise(vtkKWUserInterfacePanel *panel);
+  virtual int ShowPanel(vtkKWUserInterfacePanel *panel);
+  virtual int RaisePanel(vtkKWUserInterfacePanel *panel);
   
+  // Description:
+  // Update a panel according to the manager settings (i.e., it just performs 
+  // manager-specific changes on the panel). Note that it does not call the
+  // panel's Update() method, on the opposite the panel's Update() will call this
+  // method if the panel has a UIM set.
+  virtual void UpdatePanel(vtkKWUserInterfacePanel *panel);
+
 protected:
   vtkKWUserInterfaceNotebookManager();
   ~vtkKWUserInterfaceNotebookManager();
