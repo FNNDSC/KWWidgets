@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWActorComposite.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:31 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2001-12-28 23:00:39 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -76,6 +76,10 @@ public:
   // Get the prop for this composite
   virtual vtkProp *GetProp() {return this->Actor;};
   virtual vtkActor *GetActor() {return this->Actor;};
+  
+  // Description:
+  // Get the mapper for the composite
+  vtkGetObjectMacro( Mapper, vtkPolyDataMapper );
   
 protected:
   vtkKWActorComposite();
