@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-04 16:53:58 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-12-30 19:59:11 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -77,8 +77,8 @@ public:
   void SetLineType(int type);
 
   // Description:
-  // Set/Get width of the label when in multiline mode.
-  vtkSetMacro(Width, int);
+  // Set/Get width of the label.
+  virtual void SetWidth(int);
   vtkGetMacro(Width, int);
 
   // Description:

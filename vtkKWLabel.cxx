@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 16:04:12 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2002-12-30 19:59:11 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ int vtkKWLabelCommand(ClientData cd, Tcl_Interp *interp,
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabel );
-vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.15 $");
+vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.16 $");
 
 //-----------------------------------------------------------------------------
 vtkKWLabel::vtkKWLabel()
@@ -110,8 +110,8 @@ void vtkKWLabel::Create(vtkKWApplication *app, const char *args)
     }
   else
     {
-    this->Script("label %s -text {%s} -justify left %s", 
-                 wname, this->Label, (args?args:""));
+    this->Script("label %s -text {%s} -justify left %s -width %d", 
+                 wname, this->Label, (args?args:""), this->Width);
     }
 
   // Update enable state
@@ -137,12 +137,29 @@ void vtkKWLabel::SetLineType( int type )
         }
       else
         {
-        this->Script("label %s -text {%s} -justify left", 
-                     this->GetWidgetName(), str);
+        this->Script("label %s -text {%s} -justify left -width %d", 
+                     this->GetWidgetName(), str, this->Width);
         }                  
       }
     }
   this->LineType = type;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWLabel::SetWidth(int width)
+{
+  if (this->Width == width)
+    {
+    return;
+    }
+
+  this->Width = width;
+  this->Modified();
+
+  if (this->IsCreated())
+    {
+    this->Script("%s configure -width %d", this->GetWidgetName(), width);
+    }
 }
 
 //-----------------------------------------------------------------------------
