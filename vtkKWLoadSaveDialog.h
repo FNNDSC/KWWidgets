@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-07-16 20:12:28 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -80,11 +80,6 @@ public:
   vtkGetStringMacro( FileTypes );
 
   // Description:
-  // Set the initial directory for the dialog.
-  vtkSetStringMacro(InitialDir);
-  vtkGetStringMacro(InitialDir);
-
-  // Description:
   // Retrieve the file path that the user selected
   vtkGetStringMacro(FileName);
 
@@ -115,15 +110,16 @@ public:
   // Set/Get last path
   vtkGetStringMacro(LastPath);
   vtkSetStringMacro(LastPath);
+
+  // Description:
+  // Figure out last path out of the file name.
+  const char* GenerateLastPath(const char* path);
+
 protected:
-
-
   vtkKWLoadSaveDialog();
   ~vtkKWLoadSaveDialog();
 
-
   char *FileTypes;
-  char *InitialDir;  
   char *Title;
   char *FileName;
   char *DefaultExt;
