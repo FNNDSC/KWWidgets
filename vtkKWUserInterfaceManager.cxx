@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceManager.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-03 14:11:58 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-12-08 17:49:22 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 
 //------------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWUserInterfaceManager, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManager, "$Revision: 1.4 $");
 
 int vtkKWUserInterfaceManagerCommand(ClientData cd, Tcl_Interp *interp,
                                      int argc, char *argv[]);
@@ -66,16 +66,16 @@ vtkKWUserInterfaceManager::~vtkKWUserInterfaceManager()
 {
   // Delete all panels
 
-  vtkKWUserInterfaceManager::PanelSlot *panel = NULL;
+  vtkKWUserInterfaceManager::PanelSlot *panel_slot = NULL;
   vtkKWUserInterfaceManager::PanelsContainerIterator *it = 
     this->Panels->NewIterator();
 
   it->InitTraversal();
   while (!it->IsDoneWithTraversal())
     {
-    if (it->GetData(panel) == VTK_OK)
+    if (it->GetData(panel_slot) == VTK_OK)
       {
-      delete panel;
+      delete panel_slot;
       }
     it->GoToNextItem();
     }
@@ -213,7 +213,7 @@ int vtkKWUserInterfaceManager::AddPanel(vtkKWUserInterfacePanel *panel)
     return this->GetPanelId(panel);
     }
 
-  // Add the panel to the manager
+  // Add the panel slot to the manager
 
   vtkKWUserInterfaceManager::PanelSlot *panel_slot = 
     new vtkKWUserInterfaceManager::PanelSlot;
