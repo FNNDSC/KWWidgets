@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2000-07-24 17:13:59 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2000-08-01 16:17:10 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -257,6 +257,10 @@ public:
   void InteractOff();
 
   // Description:
+  // Set the background color
+  virtual void SetBackgroundColor( float r, float g, float b ) {};
+
+  // Description:
   // Set the name to be used in the Properties menu for the view properties
   // sheet entry
   vtkSetStringMacro( MenuPropertiesName );
@@ -297,6 +301,9 @@ protected:
   vtkScaledTextActor     *HeaderProp;
   vtkTextMapper          *HeaderMapper;
 
+  vtkKWWidget            *GeneralProperties;
+  vtkKWLabeledFrame      *BackgroundFrame;
+  vtkKWChangeColorButton *BackgroundColor;
 
   int              PropertiesCreated;
 
