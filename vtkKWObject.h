@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-13 13:34:57 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2002-07-22 18:55:30 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -63,6 +63,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 #include "tcl.h"
+
+// Needed for "va_list" argument of EstimateFormatLength.
+#include <stdarg.h>
 
 class vtkKWApplication;
 
@@ -127,6 +130,13 @@ public:
   // A convienience method to invoke some tcl script code and
   // perform arguement substitution.
   void Script(const char *EventString, ...);
+  
+  // Description:
+  // Method to estimate the length of the string that will be produced
+  // from printing the given format string and arguments.  The
+  // returned length will always be at least as large as the string
+  // that will result from printing.
+  int EstimateFormatLength(const char* format, va_list ap);
 
 private:
   char *TclName;
