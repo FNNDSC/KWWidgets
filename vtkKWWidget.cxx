@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-29 22:06:51 $
-  Version:   $Revision: 1.39 $
+  Date:      $Date: 2002-07-30 19:07:46 $
+  Version:   $Revision: 1.40 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -168,7 +168,8 @@ void vtkKWWidget::Create(vtkKWApplication *app, const char *name,
        !vtkString::Equals(type, "Canvas") && 
        !vtkString::Equals(type, "Scrollbar") && 
        !vtkString::Equals(type, "Listbox") && 
-       !vtkString::Equals(type, "Toplevel") )
+       !vtkString::Equals(type, "Toplevel") &&
+       !vtkString::Equals(type, "Tree"))
     {
     this->Script("%s configure -state %s", 
                  this->GetWidgetName(),
@@ -343,7 +344,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   this->Superclass::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.39 $");
+  this->ExtractRevision(os,"$Revision: 1.40 $");
 }
 
 //------------------------------------------------------------------------------
