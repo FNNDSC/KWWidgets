@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-28 00:30:55 $
-  Version:   $Revision: 1.28 $
+  Date:      $Date: 2003-01-28 00:36:11 $
+  Version:   $Revision: 1.29 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -83,7 +83,7 @@ void vtkKWToolbar::SetGlobalWidgetsFlatAspect(int val)
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
-vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.28 $");
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.29 $");
 
 
 int vtkKWToolbarCommand(ClientData cd, Tcl_Interp *interp,
@@ -448,10 +448,10 @@ void vtkKWToolbar::ConstrainWidgetsLayout()
         {
         s << "grid " << widget->GetWidgetName() << " -row " 
           << row << " -column " << num << " -sticky news "
-          << " -padx " 
+          << " -ipadx " 
           << (this->PadX + (this->WidgetsFlatAspect ? 
                             this->WidgetsFlatAdditionalPadX : 0))
-          << " -pady "
+          << " -ipady "
           << (this->PadY + (this->WidgetsFlatAspect ? 
                             this->WidgetsFlatAdditionalPadY : 0))
           << endl;
@@ -508,10 +508,10 @@ void vtkKWToolbar::UpdateWidgetsLayout()
   it->Delete();
 
   s << " -sticky news -row 0 "
-    << " -padx " 
+    << " -ipadx " 
     << (this->PadX + (this->WidgetsFlatAspect ? 
                       this->WidgetsFlatAdditionalPadX : 0))
-    << " -pady "
+    << " -ipady "
     << (this->PadY + (this->WidgetsFlatAspect ? 
                       this->WidgetsFlatAdditionalPadY : 0))
     << ends;

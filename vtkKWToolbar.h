@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-28 00:30:55 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2003-01-28 00:36:11 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -149,7 +149,7 @@ public:
     { vtkKWToolbar::SetGlobalWidgetsFlatAspect(0); };
 
   // Description:
-  // Set/Get the padding that will be applied around each widget.
+  // Set/Get the internal padding that will be applied around each widget.
   // (default to 0 on Windows, 1 otherwise).
   virtual void SetPadX(int);
   vtkGetMacro(PadX, int);
@@ -157,8 +157,8 @@ public:
   vtkGetMacro(PadY, int);
 
   // Description:
-  // Set/Get the additional padding that will be applied around each widget
-  // when WidgetsFlatAspect is On (default to 1).
+  // Set/Get the additional internal padding that will be applied around 
+  // each widget when WidgetsFlatAspect is On (default to 1).
   virtual void SetWidgetsFlatAdditionalPadX(int);
   vtkGetMacro(WidgetsFlatAdditionalPadX, int);
   virtual void SetWidgetsFlatAdditionalPadY(int);
