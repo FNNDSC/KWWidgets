@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-05 21:14:06 $
-  Version:   $Revision: 1.24 $
+  Date:      $Date: 2002-09-11 20:25:22 $
+  Version:   $Revision: 1.25 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDialog );
-vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.24 $");
+vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.25 $");
 
 int vtkKWDialogCommand(ClientData cd, Tcl_Interp *interp,
                              int argc, char *argv[]);
@@ -82,9 +82,7 @@ int vtkKWDialog::Invoke()
 
   int width, height, x, y;
   int sw, sh;
-  this->Script("concat [ winfo screenwidth %s ] [ winfo screenheight %s ]",
-               this->GetMasterWindow()->GetWidgetName(), 
-               this->GetMasterWindow()->GetWidgetName());
+  this->Script("concat [ winfo screenwidth . ] [ winfo screenheight . ]");
   sscanf(this->GetApplication()->GetMainInterp()->result,
          "%d %d", &sw, &sh);
   if ( this->GetMasterWindow() )
@@ -96,11 +94,11 @@ int vtkKWDialog::Invoke()
     y += height/2;
     if ( x > sw - 200 )
       {
-      x = sw - 200;
+      x = sw /2;
       }
     if ( y > sh - 200 )
       {
-      y = sh - 200;
+      y = sh / 2;
       }
     }
   else
