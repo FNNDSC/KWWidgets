@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTkUtilities.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-12 18:47:03 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-08-13 04:11:08 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,7 +55,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.4 $");
 
 //----------------------------------------------------------------------------
 void vtkKWTkUtilities::GetRGBColor(Tcl_Interp *interp,
@@ -151,8 +151,7 @@ int vtkKWTkUtilities::UpdatePhoto(Tcl_Interp *interp,
       }
     else
       {
-      // Use a gray
-      r = g = b = 128;
+      vtkKWTkUtilities::GetBackgroundColor(interp, ".", &r, &g, &b);
       }
 
     // Create photo pixels
