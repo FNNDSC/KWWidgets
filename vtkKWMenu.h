@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 04:20:05 $
-  Version:   $Revision: 1.27 $
+  Date:      $Date: 2003-01-24 18:03:57 $
+  Version:   $Revision: 1.28 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -107,6 +107,9 @@ public:
                       vtkKWObject* Called, 
                       const char* MethodAndArgString, int underline,  
                       const char* help = 0);
+  void AddRadioButtonImage(int value, const char* imgname, 
+                           const char* buttonVar, vtkKWObject* Called, 
+                           const char* MethodAndArgString, const char* help = 0);
 
   // Description:
   // Same as add commands, but insert at a given integer position.

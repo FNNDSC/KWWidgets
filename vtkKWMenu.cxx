@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 17:00:15 $
-  Version:   $Revision: 1.33 $
+  Date:      $Date: 2003-01-24 18:03:57 $
+  Version:   $Revision: 1.34 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.33 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.34 $");
 
 
 
@@ -533,7 +533,9 @@ void vtkKWMenu::CheckCheckButton(vtkKWObject* Object,
 }
 
 //----------------------------------------------------------------------------
-void vtkKWMenu::AddRadioButton(int value, const char* label, const char* buttonVar, 
+void vtkKWMenu::AddRadioButton(int value, 
+                               const char* label, 
+                               const char* buttonVar, 
                                vtkKWObject* Object, 
                                const char* MethodAndArgString,
                                int underline, 
@@ -561,6 +563,24 @@ void vtkKWMenu::AddRadioButton(int value, const char* label, const char* buttonV
                        -1, help);
 }
 
+
+//----------------------------------------------------------------------------
+void vtkKWMenu::AddRadioButtonImage(int value, 
+                                    const char* imgname, 
+                                    const char* buttonVar, 
+                                    vtkKWObject* Object, 
+                                    const char* MethodAndArgString,
+                                    const char* help)
+{
+  ostrstream str;
+  str << "-image " << imgname 
+      << " -value " << value 
+      << " -variable " << buttonVar
+      << ends;
+  this->AddGeneric("radiobutton", "", Object,
+                   MethodAndArgString, str.str(), help);
+  delete [] str.str();
+}
 
 //----------------------------------------------------------------------------
 void vtkKWMenu::InsertRadioButton(int position, int value, const char* label, 
