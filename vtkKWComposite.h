@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWComposite.h,v $
   Language:  C++
-  Date:      $Date: 2000-07-03 20:22:37 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2001-03-01 20:24:10 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -97,6 +97,13 @@ public:
   // A chance for the composite to reset itself
   virtual void Reset() {};
   
+  // Description:
+  // This allows you to set the propertiesParent to any widget you like.  
+  // If you do not specify a parent, then the views->PropertyParent is used.  
+  // If the composite does not have a view, then a top level window is created.
+  void SetPropertiesParent(vtkKWWidget *parent);
+  vtkGetObjectMacro(PropertiesParent, vtkKWWidget);
+  
 protected:
   vtkKWComposite();
   ~vtkKWComposite();
@@ -109,6 +116,8 @@ protected:
   int PropertiesCreated;
   vtkKWWidget *TopLevel;
   vtkKWView *View;
+
+  vtkKWWidget *PropertiesParent;
 };
 
 
