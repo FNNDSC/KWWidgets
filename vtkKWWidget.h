@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-27 21:31:59 $
-  Version:   $Revision: 1.43 $
+  Date:      $Date: 2003-02-27 22:39:22 $
+  Version:   $Revision: 1.44 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -251,6 +251,7 @@ public:
     vtkKWWidget *target, vtkKWObject *object, const char *method);
   virtual int SetDragAndDropEndCommand(
     vtkKWWidget *target, vtkKWObject *object, const char *method);
+  virtual int HasDragAndDropTarget(vtkKWWidget *target);
 
   // Description:
   // Set/Get the Drag and Drop anchor. This is the actual widget (or part of)

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-27 21:31:59 $
-  Version:   $Revision: 1.61 $
+  Date:      $Date: 2003-02-27 22:39:22 $
+  Version:   $Revision: 1.62 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,7 +52,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.61 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.62 $");
 
 int vtkKWWidgetCommand(ClientData cd, Tcl_Interp *interp,
                        int argc, char *argv[]);
@@ -346,7 +346,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   this->Superclass::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.61 $");
+  this->ExtractRevision(os,"$Revision: 1.62 $");
 }
 
 //------------------------------------------------------------------------------
@@ -877,6 +877,13 @@ int vtkKWWidget::AddDragAndDropTarget(vtkKWWidget *widget)
   target->Target = widget;
 
   return 1;
+}
+
+// ---------------------------------------------------------------------------
+int vtkKWWidget::HasDragAndDropTarget(vtkKWWidget *widget)
+{
+  vtkKWWidget::DragAndDropTarget *found = this->GetDragAndDropTarget(widget);
+  return found ? 1 : 0;
 }
 
 // ---------------------------------------------------------------------------
