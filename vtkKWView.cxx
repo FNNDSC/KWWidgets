@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-04-10 14:41:12 $
-  Version:   $Revision: 1.35 $
+  Date:      $Date: 2001-04-20 15:50:47 $
+  Version:   $Revision: 1.36 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -166,6 +166,7 @@ vtkKWView::vtkKWView()
   this->Renderer = vtkRenderer::New();
   this->RenderWindow = vtkRenderWindow::New();
   this->RenderWindow->AddRenderer(this->Renderer);
+  this->RenderWindow->SetAbortCheckMethod(KWViewAbortCheckMethod, (void*)this);
 }
 
 vtkKWView::~vtkKWView()
@@ -1193,7 +1194,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.35 $");
+  this->ExtractRevision(os,"$Revision: 1.36 $");
 }
 
 void vtkKWView::SetupMemoryRendering(int x, int y, void *cd) 
