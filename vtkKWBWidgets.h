@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWBWidgets.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-13 12:44:41 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-06-13 12:46:57 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,8 +39,10 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =========================================================================*/
-// .NAME vtkKWApplication - 
+// .NAME vtkKWBWidgets - class used to initialized bwidgets
 // .SECTION Description
+// This class is used to initialize the bwidgets used by
+// KW widgets.
 
 
 #ifndef __vtkKWBWidgets_h
@@ -55,7 +57,13 @@ public:
   vtkTypeMacro(vtkKWBWidgets,vtkKWObject);
   void PrintSelf(ostream& os, vtkIndent indent);
 
+  // Description:
+  // Load the bwidgets.
   static void Initialize(Tcl_Interp*);
+
+  // Description:
+  // Create a photo from an array. Used to initialized
+  // some icons used in the Tree widget.
   static int CreatePhoto(Tcl_Interp*, char *name, 
 			 unsigned char *data, int width, int height);
 
