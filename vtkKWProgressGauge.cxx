@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWProgressGauge.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-09-09 21:28:43 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWProgressGauge );
-vtkCxxRevisionMacro(vtkKWProgressGauge, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWProgressGauge, "$Revision: 1.10 $");
 
 int vtkKWProgressGaugeCommand(ClientData cd, Tcl_Interp *interp,
                               int argc, char *argv[]);
@@ -95,10 +95,9 @@ void vtkKWProgressGauge::Create(vtkKWApplication *app, char *args)
     "%s.display create rectangle 0 0 0 0 -outline \"\"  -tags bar", 
                wname );
   this->Script(
-    "%s.display create text [expr 0.5 * %d] "
-    "%d "
+    "%s.display create text [expr 0.5 * %d] [expr 0.5 * %d] "
     "-anchor c -text \"\" -tags value",
-    wname, this->Length, int(this->Height/2));
+    wname, this->Length, this->Height);
 }
 
 void vtkKWProgressGauge::SetValue(int value)
@@ -144,6 +143,31 @@ void vtkKWProgressGauge::SetValue(int value)
     }
   // do an update
   this->Script("update idletasks");
+}
+
+//----------------------------------------------------------------------------
+void vtkKWProgressGauge::SetHeight(int height)
+{
+  if (this->Height == height)
+    {
+    return;
+    }
+
+  this->Height = height;
+  this->Modified();
+
+  //  Change gauge height, move text
+
+  if (this->Application)
+    {
+    this->Script("%s.display config -height %d", 
+                 this->GetWidgetName(), this->Height);
+
+    this->Script("%s.display coords value [expr 0.5 * %d] [expr 0.5 * %d]", 
+                 this->GetWidgetName(), this->Length, this->Height);
+
+    this->Script("update idletasks");
+    }
 }
 
 //----------------------------------------------------------------------------
