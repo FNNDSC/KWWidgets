@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceManager.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-10 20:02:39 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-12-17 21:45:36 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -148,10 +148,15 @@ public:
   // Description:
   // Show a panel. It will make sure the pages reserved by the manager for 
   // this panel are shown.
-  // Note that you should use the panel's own API to show a panel: this
+  // Raise() behaves like Show(), but it will also try to bring
+  // up the first page of the panel to the front (i.e., "select" it).
+  // Note that you should use the panel's own API to show/raise a panel: this
   // will automatically call this method with the proper panel parameter
-  // (see vtkKWUserInterfacePanel::Show()).
-  virtual void Show(vtkKWUserInterfacePanel *panel) = 0;
+  // (see vtkKWUserInterfacePanel::Show/Raise()).
+  // Return 1 on success, 0 on error.
+  virtual int Show(vtkKWUserInterfacePanel *panel) = 0;
+  virtual int Raise(vtkKWUserInterfacePanel *panel) 
+    { return this->Show(panel); };
 
 protected:
   vtkKWUserInterfaceManager();
