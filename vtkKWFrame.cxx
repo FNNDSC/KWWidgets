@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-11-08 17:51:52 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-12-16 18:05:49 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFrame );
-vtkCxxRevisionMacro(vtkKWFrame, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWFrame, "$Revision: 1.9 $");
 
 vtkKWFrame::vtkKWFrame()
 {
@@ -109,7 +109,7 @@ void vtkKWFrame::Create(vtkKWApplication *app, const char* args)
     {
     // create the top level
     wname = this->GetWidgetName();
-    this->Script("frame %s -borderwidth 2 -relief flat", wname);
+    this->Script("frame %s -borderwidth 0 -relief flat", wname);
 
     this->Frame = this;
     }
