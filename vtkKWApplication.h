@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2000-10-15 16:23:02 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2001-05-04 12:56:57 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -154,6 +154,7 @@ protected:
   virtual int GetApplicationKey() {return -1;};
 
   static int WidgetVisibility;
+  int InExit;
   
   vtkKWEventNotifier *EventNotifier;
 };

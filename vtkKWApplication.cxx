@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-05-02 19:23:31 $
-  Version:   $Revision: 1.28 $
+  Date:      $Date: 2001-05-04 12:56:57 $
+  Version:   $Revision: 1.29 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -107,6 +107,8 @@ vtkKWApplication::vtkKWApplication()
   
   this->EventNotifier = vtkKWEventNotifier::New();
   this->EventNotifier->SetApplication( this );
+
+  this->InExit = 0;
 }
 
 vtkKWApplication::~vtkKWApplication()
@@ -242,6 +244,14 @@ void vtkKWApplication::Exit()
 {
   vtkKWWindow* win = 0;
   this->Windows->InitTraversal();
+
+  // Avoid a recursive exit.
+  if (this->InExit)
+    {
+    return;
+    }
+  this->InExit = 1;
+  
   while (this->Windows && (win = this->Windows->GetNextKWWindow()))
     {
     win->Close();
@@ -269,6 +279,9 @@ void vtkKWApplication::Exit()
     this->BalloonHelpLabel = NULL;
     }
   this->SetBalloonHelpPending(NULL);
+
+  this->InExit = 0;
+
   return;
 }
     
