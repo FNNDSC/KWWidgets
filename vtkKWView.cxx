@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-11-11 21:42:15 $
-  Version:   $Revision: 1.93 $
+  Date:      $Date: 2002-11-12 22:26:38 $
+  Version:   $Revision: 1.94 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -99,7 +99,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.93 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.94 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -1352,7 +1352,7 @@ void vtkKWView::SetTitle(const char *title)
 {
   this->Script("%s configure -text {%s}", 
                this->Label->GetWidgetName(), title);
-  this->Script("update idletasks");
+  //  this->Script("update idletasks");
 }
 
 //----------------------------------------------------------------------------
@@ -1494,7 +1494,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.93 $");
+  this->ExtractRevision(os,"$Revision: 1.94 $");
 }
 
 //----------------------------------------------------------------------------
