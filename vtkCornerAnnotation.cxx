@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-30 16:26:57 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2002-07-01 19:19:06 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -136,6 +136,7 @@ void vtkCornerAnnotation::ReplaceText(vtkImageActor *ia,
   if (wl)
     {
     window = wl->GetWindow();
+    window *= this->LevelScale;
     level = wl->GetLevel();    
     level = level * this->LevelScale + this->LevelShift;
     }
