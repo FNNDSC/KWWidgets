@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-03 18:05:58 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2003-01-03 18:33:04 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,7 +58,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.14 $");
 
 vtkKWRenderWidget::vtkKWRenderWidget()
 {
@@ -543,7 +543,6 @@ void vtkKWRenderWidget::SetCollapsingRenders(int r)
     this->CollapsingRenders = 0;
     if ( this->CollapsingRendersCount )
       {
-      cout << "With render" << endl;
       this->Render();
       }
     }
