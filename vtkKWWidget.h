@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-28 15:16:13 $
-  Version:   $Revision: 1.45 $
+  Date:      $Date: 2003-03-18 16:54:34 $
+  Version:   $Revision: 1.46 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -224,7 +224,10 @@ public:
   // if the widget was initialized successfully.  This widget needs
   // a TraceName unique between the children of the parent in order for
   // this method to work.  The parent also has to be able to be initialized.
-  virtual int InitializeTrace();
+  // The "file" arguments extends the functinality to saving state
+  // Into a tcl script.  I need a way to store "TraceInitialized"
+  // for each file.
+  virtual int InitializeTrace(ofstream* file);
 
   // Description:
   // Enable/disable Drag and Drop.
