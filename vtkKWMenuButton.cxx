@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenuButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:35 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2001-10-11 19:11:13 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,6 +51,7 @@ vtkKWMenuButton::vtkKWMenuButton()
   this->CommandFunction = vtkKWMenuButtonCommand;
   
   this->Menu = vtkKWMenu::New();
+  this->TearOff = 1;
 }
 
 vtkKWMenuButton::~vtkKWMenuButton()

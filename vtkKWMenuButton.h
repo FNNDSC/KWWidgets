@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenuButton.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:35 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2001-10-11 19:11:14 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -66,6 +66,12 @@ public:
   
   vtkKWMenu* GetMenu();
   
+  // Description:
+  // Option to make this menu a tearoff menu.  By dafault this value is on.
+  vtkSetMacro(TearOff, int);
+  vtkGetMacro(TearOff, int);
+  vtkBooleanMacro(TearOff, int);
+
 protected:
   vtkKWMenuButton();
   ~vtkKWMenuButton();
@@ -73,6 +79,7 @@ protected:
   void operator=(const vtkKWMenuButton&) {};
   
   vtkKWMenu *Menu;
+  int TearOff;
 };
 
 #endif
