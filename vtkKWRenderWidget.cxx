@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-02 15:04:29 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2003-01-03 16:47:26 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -41,6 +41,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 =========================================================================*/
 #include "vtkKWRenderWidget.h"
 
+#include "vtkCamera.h"
 #include "vtkCornerAnnotation.h"
 #include "vtkKWApplication.h"
 #include "vtkKWEvent.h"
@@ -57,7 +58,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.12 $");
 
 vtkKWRenderWidget::vtkKWRenderWidget()
 {
@@ -70,6 +71,7 @@ vtkKWRenderWidget::vtkKWRenderWidget()
   
   this->Printing = 0;
   this->RenderMode = VTK_KW_STILL_RENDER;
+  this->RenderState = 1;
   
   this->ParentWindow = NULL;
   
@@ -83,6 +85,14 @@ vtkKWRenderWidget::vtkKWRenderWidget()
   this->CornerAnnotation = vtkCornerAnnotation::New();
   this->CornerAnnotation->SetMaximumLineHeight(0.07);
   this->CornerAnnotation->VisibilityOff();
+
+  this->Units = NULL;
+
+  this->CurrentCamera = this->Renderer->GetActiveCamera();
+  this->CurrentCamera->ParallelProjectionOn();  
+
+  this->ScalarShift = 0;
+  this->ScalarScale = 1;  
 }
 
 vtkKWRenderWidget::~vtkKWRenderWidget()
@@ -102,6 +112,8 @@ vtkKWRenderWidget::~vtkKWRenderWidget()
     this->CornerAnnotation->Delete();
     this->CornerAnnotation = NULL;
     }
+  
+  this->SetUnits(NULL);
 }
 
 void vtkKWRenderWidget::Create(vtkKWApplication *app, const char *args)
@@ -205,6 +217,9 @@ void vtkKWRenderWidget::SetupBindings()
                wname, tname);
   
   this->Script("bind %s <Configure> {%s Configure %%w %%h}",
+               wname, tname);
+  
+  this->Script("bind %s <Enter> {%s Enter %%x %%y}",
                wname, tname);
 }
 
