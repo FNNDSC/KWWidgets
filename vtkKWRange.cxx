@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRange.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-28 18:37:21 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2003-04-28 20:00:46 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 
 vtkStandardNewMacro( vtkKWRange );
-vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.12 $");
 
 #define VTK_KW_RANGE_MIN_SLIDER_SIZE        2
 #define VTK_KW_RANGE_MIN_THICKNESS          (2*VTK_KW_RANGE_MIN_SLIDER_SIZE+1)
@@ -125,6 +125,8 @@ vtkKWRange::vtkKWRange()
     }
 
   this->ConstraintRanges();
+
+  this->ConstraintResolution();
 }
 
 //----------------------------------------------------------------------------
@@ -530,17 +532,14 @@ void vtkKWRange::SetResolution(float arg)
     return;
     }
 
-  if (this->AdjustResolution)
-    {
-    arg = (float)pow(10.0, floor(log10((double)arg)));
-    }
+  float old_res = this->Resolution;
+  this->Resolution = arg;
+  this->ConstraintResolution();
 
-  if (this->Resolution == arg || arg <= 0.0)
+  if (this->Resolution == old_res)
     {
     return;
     }
-
-  this->Resolution = arg;
 
   this->Modified();
 
@@ -563,10 +562,25 @@ void vtkKWRange::SetAdjustResolution(int arg)
 
   this->Modified();
 
+  this->ConstraintResolution();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRange::ConstraintResolution()
+{
   if (this->AdjustResolution)
     {
-    this->SetResolution(
-      (float)pow(10.0, floor(log10((double)this->Resolution))));
+    double reslog = log10((double)this->Resolution);
+    double intp, fracp;
+    fracp = modf(reslog, &intp);
+    if (fabs(fracp) > 0.00001)
+      {
+      float newres = (float)pow(10.0, floor(reslog));
+      if (newres != this->Resolution)
+        {
+        this->SetResolution(newres);
+        }
+      }
     }
 }
 
@@ -1999,6 +2013,7 @@ void vtkKWRange::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "Range: " 
      << this->Range[0] << "..." <<  this->Range[1] << endl;
   os << indent << "Resolution: " << this->Resolution << endl;
+  os << indent << "EntriesResolution: " << this->EntriesResolution << endl;
   os << indent << "Thickness: " << this->Thickness << endl;
   os << indent << "InternalThickness: " << this->InternalThickness << endl;
   os << indent << "Orientation: "<< this->Orientation << endl;

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRange.h,v $
   Language:  C++
-  Date:      $Date: 2003-04-25 17:37:03 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2003-04-28 20:00:46 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -77,9 +77,12 @@ public:
     { this->SetRange(range[0], range[1]); };
 
   // Description:
-  // Set/Get the resolution.
+  // Set/Get the resolution. Also get the entries resolution, which is the
+  // number of decimal places displayed in the entries 
+  // (computed automatically from the current resolution).
   virtual void SetResolution(float r);
   vtkGetMacro(Resolution, float);
+  vtkGetMacro(EntriesResolution, int);
 
   // Description:
   // Adjust the resolution automatically (to a power of 10 in this implem)
@@ -280,6 +283,7 @@ protected:
 
   virtual void CreateEntries();
   virtual void UpdateEntriesResolution();
+  virtual void ConstraintResolution();
 
   // Description:
   // Bind/Unbind all components.
