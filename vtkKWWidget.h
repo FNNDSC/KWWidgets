@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-10 22:08:50 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2002-01-25 12:22:42 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -180,23 +180,16 @@ protected:
   int   BalloonHelpInitialized;
   void  SetUpBalloonHelpBindings();
   
-  // Tracing support:
-  // This flag indicates that a variable has been defined in the 
-  // trace file for this widget.
-  int TraceInitialized;
+  // Tracing support specific to widgets.  This method will initialize
+  // a widget useing its parent as reference.  This method returns 1
+  // if the widget was initialized successfully.  This widget needs
+  // a TraceName unique between the children of the parent in order for
+  // this method to work.  The parent also has to be able to be initialized.
+  virtual int InitializeTrace();
   // We need a unique way to get the widget from the parent.  This
   // is unfortunate, but necessary.  With out this name set, the
   // trace cannot be initialized for this widget.
   char *TraceName;
-  // The subclass can use this method to initialize the widget in the trace file.
-  // It returns 1 if successful.
-  virtual int InitializeTrace();
-  // Convenience method that initializes and handles formating the trace command.
-  // The formated string should contain a command that looks like:
-  // "$kw(%s) SetValue %d", this->GetTclName(), this->GetValue().  
-//BTX
-  int AddTraceEntry(const char *EventString, ...);
-//ETX
 };
 
 
