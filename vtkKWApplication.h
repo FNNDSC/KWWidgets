@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2000-05-22 05:50:21 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2000-05-30 20:50:06 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -63,6 +63,10 @@ public:
   virtual void Start(char *arg);
   virtual void Start(int argc, char *argv[]);
 
+  // Description:
+  // class static method to initialize Tcl/Tk
+  static Tcl_Interp *InitializeTcl(int argc, char *argv[]);
+  
   // Description:
   // Get the interpreter being used by this application
   Tcl_Interp *GetMainInterp() {return this->MainInterp;};
