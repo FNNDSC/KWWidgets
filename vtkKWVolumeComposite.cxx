@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-02-29 21:07:26 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-02-29 22:23:55 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -221,8 +221,6 @@ void vtkKWVolumeComposite::SetInput(vtkImageData *input)
     }
   vtkPiecewiseFunction *pwf = 
     this->VolumeProperty->GetScalarOpacity();
-  vtkGenericWarningMacro("input " << *input);
-  vtkGenericWarningMacro("GetInput " << *this->GetInput() );
   
   float *range = input->GetScalarRange();
   float max;
