@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplashScreen.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-10 21:32:32 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-11-18 04:20:05 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,7 +58,7 @@ public:
 
   // Description:
   // Create a Tk widget
-  void Create(vtkKWApplication *app, const char *args);
+  virtual void Create(vtkKWApplication *app, const char *args);
 
   // Description:
   // Show/Hide the splash screen

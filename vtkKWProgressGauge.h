@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWProgressGauge.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-09 21:28:43 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-11-18 04:20:05 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -59,7 +59,7 @@ public:
 
   // Description:
   // Create a Tk widget
-  void Create(vtkKWApplication *app, char *args);
+  virtual void Create(vtkKWApplication *app, char *args);
 
   // Description:
   // Set and get the length and width of the widget

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-04 16:53:59 $
-  Version:   $Revision: 1.26 $
+  Date:      $Date: 2002-11-18 04:20:05 $
+  Version:   $Revision: 1.27 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -62,7 +62,7 @@ public:
   vtkTypeRevisionMacro(vtkKWMenu,vtkKWWidget);
   void PrintSelf(ostream& os, vtkIndent indent);
  
-  void Create(vtkKWApplication* app, const char* args);
+  virtual void Create(vtkKWApplication* app, const char* args);
   
   // Description: 
   // Append a separator to the menu.

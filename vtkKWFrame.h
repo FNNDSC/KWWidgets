@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-08 17:51:52 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-11-18 04:20:05 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -59,7 +59,7 @@ public:
 
   // Description:
   // Create a Tk widget
-  void Create(vtkKWApplication *app, const char* args);
+  virtual void Create(vtkKWApplication *app, const char* args);
 
   // Description:
   // Get the vtkKWWidget for the internal frame.

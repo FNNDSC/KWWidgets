@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplitFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-16 22:27:44 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-11-18 04:20:05 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -60,7 +60,7 @@ public:
 
   // Description:
   // Create a Tk widget
-  void Create(vtkKWApplication *app);
+  virtual void Create(vtkKWApplication *app);
   
   // Description:
   // Get the vtkKWWidget for the left internal frame.

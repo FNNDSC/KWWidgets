@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-11-18 04:20:05 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -59,7 +59,7 @@ public:
 
   // Description:
   // Create a Tk widget
-  void Create(vtkKWApplication *app, const char *args);
+  virtual void Create(vtkKWApplication *app, const char *args);
 
   // Description:
   // Invoke the dialog and display it in a modal manner. 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWThumbWheel.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-31 23:47:17 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-11-18 04:20:05 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -68,7 +68,7 @@ public:
 
   // Description:
   // Create a Tk widget
-  void Create(vtkKWApplication *app, const char *args);
+  virtual void Create(vtkKWApplication *app, const char *args);
 
   // Description:
   // Set/Get the value of the thumbwheel.

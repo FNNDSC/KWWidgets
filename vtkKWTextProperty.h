@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTextProperty.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-13 22:24:12 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-11-18 04:20:05 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -69,7 +69,7 @@ public:
 
   // Description:
   // Create a Tk widget
-  void Create(vtkKWApplication *app);
+  virtual void Create(vtkKWApplication *app);
 
   // Description:
   // Set/Get the text property to control.
