@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-27 00:26:02 $
-  Version:   $Revision: 1.28 $
+  Date:      $Date: 2002-12-30 02:26:49 $
+  Version:   $Revision: 1.29 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -53,7 +53,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkCornerAnnotation);
-vtkCxxRevisionMacro(vtkCornerAnnotation, "$Revision: 1.28 $");
+vtkCxxRevisionMacro(vtkCornerAnnotation, "$Revision: 1.29 $");
 
 vtkSetObjectImplementationMacro(vtkCornerAnnotation,ImageActor,vtkImageActor);
 vtkSetObjectImplementationMacro(vtkCornerAnnotation,WindowLevel,
@@ -511,6 +511,16 @@ void vtkCornerAnnotation::ClearAllTexts()
   for (i = 0; i < 4; i++)
     {
     this->SetText(i, "");
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkCornerAnnotation::CopyAllTextsFrom(vtkCornerAnnotation *ca)
+{
+  int i;
+  for (i = 0; i < 4; i++)
+    {
+    this->SetText(i, ca->GetText(i));
     }
 }
 
