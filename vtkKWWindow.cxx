@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.89 $
+  Date:      $Date: 2002-05-31 13:32:48 $
+  Version:   $Revision: 1.90 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -743,7 +743,7 @@ void vtkKWWindow::OnPrint3(int propagate)
 void vtkKWWindow::ShowProperties()
 {
   this->MiddleFrame->SetFrame1MinimumWidth(360);
-  this->MiddleFrame->SetFrame1Width(360);
+  //this->MiddleFrame->SetFrame1Width(360);
 }
 
 void vtkKWWindow::HideProperties()
@@ -993,7 +993,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.89 $");
+  this->ExtractRevision(os,"$Revision: 1.90 $");
 }
 
 int vtkKWWindow::ExitDialog()
