@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-05-27 19:26:20 $
-  Version:   $Revision: 1.23 $
+  Date:      $Date: 2002-07-15 12:54:36 $
+  Version:   $Revision: 1.24 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,7 +52,7 @@ vtkStandardNewMacro( vtkKWScale );
 
 
 int vtkKWScaleCommand(ClientData cd, Tcl_Interp *interp,
-		      int argc, char *argv[]);
+                      int argc, char *argv[]);
 
 vtkKWScale::vtkKWScale()
 {
@@ -131,13 +131,13 @@ void vtkKWScale::Create(vtkKWApplication *app, const char *args)
   wname = this->GetWidgetName();
   this->Script("frame %s",wname);
   this->ScaleWidget->Create(app,"scale","-orient horizontal -showvalue no"
-			    " -borderwidth 2");
+                            " -borderwidth 2");
   this->Script("%s configure %s",this->ScaleWidget->GetWidgetName(),args);
   this->Script("%s configure -resolution %f -highlightthickness 0",
                this->ScaleWidget->GetWidgetName(),this->Resolution);
   this->Script("%s configure -from %f -to %f",
                this->ScaleWidget->GetWidgetName(),
-	       this->Range[0], this->Range[1]);
+               this->Range[0], this->Range[1]);
   this->ScaleWidget->SetCommand(this, "ScaleValueChanged");
   this->Script("pack %s -side bottom -fill x -expand yes -pady 0 -padx 0",
                this->ScaleWidget->GetWidgetName());
@@ -155,7 +155,7 @@ void vtkKWScale::SetRange(float min, float max)
   if (this->Application)
     {
     this->Script("%s configure -from %f -to %f",
-		 this->ScaleWidget->GetWidgetName(),min,max);
+                 this->ScaleWidget->GetWidgetName(),min,max);
     }
   this->Modified();
 }
@@ -186,7 +186,7 @@ void vtkKWScale::DisplayLabel(const char *name)
   if (this->ScaleLabel)
     {
     this->Script("%s configure -text {%s}",
-		 this->ScaleLabel->GetWidgetName(), name );
+                 this->ScaleLabel->GetWidgetName(), name );
     return;
     }
 

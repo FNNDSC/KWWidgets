@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWGenericComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 23:42:58 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-07-15 12:54:36 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -54,7 +54,7 @@ vtkSetObjectImplementationMacro(vtkKWGenericComposite, Prop, vtkProp);
 
 
 int vtkKWGenericCompositeCommand(ClientData cd, Tcl_Interp *interp,
-				int argc, char *argv[]);
+                                int argc, char *argv[]);
 
 vtkKWGenericComposite::vtkKWGenericComposite()
 {

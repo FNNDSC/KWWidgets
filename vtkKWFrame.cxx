@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-05-27 19:26:20 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-07-15 12:54:36 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -92,7 +92,7 @@ void vtkKWFrame::Create(vtkKWApplication *app, int scrollable)
     this->ScrollFrame->SetParent(this);
     this->ScrollFrame->Create(this->Application, "ScrollableFrame", "-height 1024");
     this->Script("%s setwidget %s", this->GetWidgetName(),
-		 this->ScrollFrame->GetWidgetName());
+                 this->ScrollFrame->GetWidgetName());
 
     this->Frame = vtkKWWidget::New();
     this->Frame->SetParent(this->ScrollFrame);

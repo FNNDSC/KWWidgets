@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCheckButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-11 14:15:47 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-07-15 12:54:36 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -68,13 +68,13 @@ void vtkKWCheckButton::SetIndicator(int ind)
     if (this->Application)
       {
       if (ind)
-	{
-	this->Script("%s configure -indicatoron 1", this->GetWidgetName());
-	}
+        {
+        this->Script("%s configure -indicatoron 1", this->GetWidgetName());
+        }
       else
-	{
-	this->Script("%s configure -indicatoron 0", this->GetWidgetName());
-	}
+        {
+        this->Script("%s configure -indicatoron 0", this->GetWidgetName());
+        }
       }
     }
   this->SetMyText(0);
@@ -143,12 +143,12 @@ void vtkKWCheckButton::Create(vtkKWApplication *app, const char *args)
   if (!this->IndicatorOn)
     {
     this->Script("checkbutton %s -indicatoron 0 -variable %sValue %s",
-		 wname,wname,args);
+                 wname,wname,args);
     }
   else
     {
     this->Script("checkbutton %s -variable %sValue %s",
-		 wname,wname,args);
+                 wname,wname,args);
     }
 
   if (this->MyText)

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWActorComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:18 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-07-15 12:54:36 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -57,7 +57,7 @@ vtkStandardNewMacro( vtkKWActorComposite );
 
 
 int vtkKWActorCompositeCommand(ClientData cd, Tcl_Interp *interp,
-				int argc, char *argv[]);
+                                int argc, char *argv[]);
 
 vtkKWActorComposite::vtkKWActorComposite()
 {

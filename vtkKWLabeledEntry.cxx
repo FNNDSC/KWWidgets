@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledEntry.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 23:42:58 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-07-15 12:54:36 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 vtkStandardNewMacro( vtkKWLabeledEntry );
 
 int vtkKWLabeledEntryCommand(ClientData cd, Tcl_Interp *interp,
-			     int argc, char *argv[]);
+                             int argc, char *argv[]);
 
 vtkKWLabeledEntry::vtkKWLabeledEntry()
 {
@@ -96,7 +96,7 @@ void vtkKWLabeledEntry::Create(vtkKWApplication *app)
   this->Entry->Create(app, "");
 
   this->Script("pack %s %s -side left", this->Label->GetWidgetName(),
-	       this->Entry->GetWidgetName());
+               this->Entry->GetWidgetName());
 }
 
 void vtkKWLabeledEntry::SetValue(const char *value)

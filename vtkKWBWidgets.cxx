@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWBWidgets.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-17 14:44:51 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-07-15 12:54:36 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 vtkStandardNewMacro( vtkKWBWidgets );
 
 int vtkKWBWidgetsCommand(ClientData cd, Tcl_Interp *interp,
-			    int argc, char *argv[]);
+                            int argc, char *argv[]);
 
 #define minus_width 9
 #define minus_height 9
@@ -239,14 +239,14 @@ vtkKWBWidgets::~vtkKWBWidgets()
 
 //----------------------------------------------------------------------------
 int vtkKWBWidgets::CreatePhoto(Tcl_Interp* interp, char *name, 
-				unsigned char *data, int width, int height)
+                                unsigned char *data, int width, int height)
 {
   Tk_PhotoHandle photo;
   Tk_PhotoImageBlock block;
 
   ostrstream command;
   command << "image create photo " << name << " -height "
-	  << height << " -width " << width << ends;
+          << height << " -width " << width << ends;
   if (Tcl_GlobalEval(interp, command.str()) != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to create image. Error:" 
