@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-02 04:11:00 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2003-01-13 04:47:29 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -99,6 +99,7 @@ public:
   // Description:
   // Set the current entry of this optionmenu
   void SetCurrentEntry(const char *name);
+  void SetCurrentImageEntry(const char *image_name);
 
   // Description
   // Set the indicator On/Off. To be called after creation.
