@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-06 21:40:44 $
-  Version:   $Revision: 1.20 $
+  Date:      $Date: 2002-07-15 12:42:15 $
+  Version:   $Revision: 1.21 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -66,13 +66,13 @@ public:
         OkCancel};
 
   enum {RememberYes  = 0x00002,
-	RememberNo   = 0x00004,
+        RememberNo   = 0x00004,
         ErrorIcon    = 0x00008,
-	WarningIcon  = 0x00010,
-	QuestionIcon = 0x00020,
-	YesDefault   = 0x00040,
-	NoDefault    = 0x00080,
-	Beep         = 0x00100};
+        WarningIcon  = 0x00010,
+        QuestionIcon = 0x00020,
+        YesDefault   = 0x00040,
+        NoDefault    = 0x00080,
+        Beep         = 0x00100};
   //ETX
   
   // Description:
@@ -114,18 +114,18 @@ public:
   // used for the registery. message is the text message displayed
   // in the dialog.
   static void PopupMessage(vtkKWApplication *app, vtkKWWindow *masterWin,
-			   const char* title, 
-			   const char* message, int options = 0);
+                           const char* title, 
+                           const char* message, int options = 0);
   static int PopupYesNo(vtkKWApplication *app,  vtkKWWindow *masterWin,
-			const char* title, 
-			const char* message, int options = 0);
+                        const char* title, 
+                        const char* message, int options = 0);
   static int PopupYesNo(vtkKWApplication *app,  vtkKWWindow *masterWin, 
-			const char* name, 
-			const char* title, const char* message, 
-			int options = 0);
+                        const char* name, 
+                        const char* title, const char* message, 
+                        int options = 0);
   static int PopupOkCancel(vtkKWApplication *app, vtkKWWindow *masterWin,
-			   const char* title, 
-			   const char* message, int options = 0);
+                           const char* title, 
+                           const char* message, int options = 0);
 
 protected:
   vtkKWMessageDialog();

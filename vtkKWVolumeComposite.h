@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2002-07-15 12:42:15 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -107,8 +107,8 @@ public:
   // Description:
   // What are we using to render?
   vtkSetClampMacro( RenderMethod, int, 
-		    VTK_VOLUMECOMPOSITE_SOFTWARE_METHOD,
-		    VTK_VOLUMECOMPOSITE_VOLUMEPRO_METHOD );
+                    VTK_VOLUMECOMPOSITE_SOFTWARE_METHOD,
+                    VTK_VOLUMECOMPOSITE_VOLUMEPRO_METHOD );
   vtkGetMacro( RenderMethod, int );
   virtual void SetRenderMethodToSoftware(); 
   virtual void SetRenderMethodToVolumePro();

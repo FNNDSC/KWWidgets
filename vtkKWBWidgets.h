@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWBWidgets.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-13 12:46:57 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-07-15 12:42:15 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -65,7 +65,7 @@ public:
   // Create a photo from an array. Used to initialized
   // some icons used in the Tree widget.
   static int CreatePhoto(Tcl_Interp*, char *name, 
-			 unsigned char *data, int width, int height);
+                         unsigned char *data, int width, int height);
 
 protected:
   vtkKWBWidgets();

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenuButton.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:31 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-07-15 12:42:15 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -62,7 +62,7 @@ public:
   // Description: 
   // Append a standard menu item and command to the current menu.
   void AddCommand(const char* label, vtkKWObject* Object,
-		  const char* MethodAndArgString , const char* help = 0);
+                  const char* MethodAndArgString , const char* help = 0);
   
   vtkKWMenu* GetMenu();
   

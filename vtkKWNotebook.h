@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-13 21:02:10 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2002-07-15 12:42:15 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -89,7 +89,7 @@ public:
   // Add new page to the notebook. By setting balloon string, 
   // the page will have balloon help.
   void AddPage(const char *title, const char* balloon, 
-	       vtkKWIcon *icon);
+               vtkKWIcon *icon);
   void AddPage(const char *title, const char* balloon);
   void AddPage(const char *title);
   
