@@ -13,13 +13,14 @@
 =========================================================================*/
 #include "vtkKWPopupFrame.h"
 
+#include "vtkKWFrame.h"
 #include "vtkKWLabeledFrame.h"
 #include "vtkKWPopupButton.h"
 #include "vtkObjectFactory.h"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWPopupFrame );
-vtkCxxRevisionMacro(vtkKWPopupFrame, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWPopupFrame, "$Revision: 1.3 $");
 
 int vtkKWPopupFrameCommand(ClientData cd, Tcl_Interp *interp,
                            int argc, char *argv[]);
