@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWActorComposite.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-04 18:35:31 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-11-02 19:15:01 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,7 +55,7 @@ public:
 
   // Description:
   // Set the input data for this Actor
-  void SetInput(vtkPolyData *input);
+  virtual void SetInput(vtkPolyData *input);
   vtkPolyData *GetInput() {return this->Mapper->GetInput();};
   
   // Description:
