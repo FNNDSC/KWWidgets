@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEventNotifier.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-07-14 21:41:57 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2000-07-18 19:53:01 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -60,7 +60,7 @@ vtkKWEventNotifier::~vtkKWEventNotifier()
 {
   if ( this->Callbacks )
     {
-    for ( int i; i < 26; i++ )
+    for ( int i = 0; i < 26; i++ )
       {
       if ( this->Callbacks[i] )
 	{
