@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-13 12:44:41 $
-  Version:   $Revision: 1.77 $
+  Date:      $Date: 2002-06-24 13:32:59 $
+  Version:   $Revision: 1.78 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -103,9 +103,17 @@ vtkKWApplication::vtkKWApplication()
   
   // add the application as $app
 
-  this->BalloonHelpWindow = vtkKWWidget::New();
-  this->BalloonHelpLabel = vtkKWWidget::New();
-  this->BalloonHelpLabel->SetParent(this->BalloonHelpWindow);
+  if (vtkKWApplication::WidgetVisibility)
+    {
+    this->BalloonHelpWindow = vtkKWWidget::New();
+    this->BalloonHelpLabel = vtkKWWidget::New();
+    this->BalloonHelpLabel->SetParent(this->BalloonHelpWindow);
+    }
+  else
+    {
+    this->BalloonHelpWindow = 0;
+    this->BalloonHelpLabel = 0;
+    }
   this->BalloonHelpPending = NULL;
   this->BalloonHelpDelay = 2;
 
