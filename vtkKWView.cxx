@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-23 16:02:00 $
-  Version:   $Revision: 1.25 $
+  Date:      $Date: 2000-08-25 15:19:10 $
+  Version:   $Revision: 1.26 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -122,15 +122,15 @@ vtkKWView::~vtkKWView()
 {
   // Remove all binding
   const char *wname = this->VTKWidget->GetWidgetName();
-  this->Script("bind %s <Expose>",wname);
-  this->Script("bind %s <Any-ButtonPress>",wname);
-  this->Script("bind %s <Any-ButtonRelease>",wname);
-  this->Script("bind %s <B1-Motion>",wname);
-  this->Script("bind %s <B2-Motion>",wname);
-  this->Script("bind %s <B3-Motion>",wname);
-  this->Script("bind %s <Shift-B1-Motion>",wname);
-  this->Script("bind %s <KeyPress>",wname);
-  this->Script("bind %s <Enter>",wname);
+  this->Script("bind %s <Expose> {}",wname);
+  this->Script("bind %s <Any-ButtonPress> {}",wname);
+  this->Script("bind %s <Any-ButtonRelease> {}",wname);
+  this->Script("bind %s <B1-Motion> {}",wname);
+  this->Script("bind %s <B2-Motion> {}",wname);
+  this->Script("bind %s <B3-Motion> {}",wname);
+  this->Script("bind %s <Shift-B1-Motion> {}",wname);
+  this->Script("bind %s <KeyPress> {}",wname);
+  this->Script("bind %s <Enter> {}",wname);
 
   this->GeneralProperties->Delete();
   this->BackgroundFrame->Delete();
@@ -451,7 +451,7 @@ void vtkKWView::RemoveComposite(vtkKWComposite *c)
 
 void vtkKWView::Enter(int x, int y)
 {
-  this->Script("focus %s",this->VTKWidget->GetWidgetName());
+//  this->Script("focus %s",this->VTKWidget->GetWidgetName());
 }
 
 void vtkKWView::Print()
@@ -822,6 +822,7 @@ void vtkKWView::Deselect(vtkKWWindow *pw)
 
 void vtkKWView::MakeSelected()
 {
+  this->Script("focus %s",this->VTKWidget->GetWidgetName());
   if (this->ParentWindow)
     {
     this->ParentWindow->SetSelectedView(this);
@@ -1044,5 +1045,5 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.25 $");
+  this->ExtractRevision(os,"$Revision: 1.26 $");
 }
