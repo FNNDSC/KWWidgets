@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-02-28 14:37:01 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2000-05-30 19:14:58 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -210,7 +210,10 @@ void vtkKWScale::SetStartCommand(vtkKWObject* Object, const char * MethodAndArgS
     }
   ostrstream command;
   command << Object->GetTclName() << " " << MethodAndArgString << ends;
-  this->StartCommand = command.str();
+ 
+  this->StartCommand = new char [strlen(command.str())+1];
+  strcpy(this->StartCommand,command.str());
+  command.rdbuf()->freeze(0);
 }
 
 void vtkKWScale::SetEndCommand(vtkKWObject* Object, const char * MethodAndArgString)
@@ -221,7 +224,10 @@ void vtkKWScale::SetEndCommand(vtkKWObject* Object, const char * MethodAndArgStr
     }
   ostrstream command;
   command << Object->GetTclName() << " " << MethodAndArgString << ends;
-  this->EndCommand = command.str();
+
+  this->EndCommand = new char [strlen(command.str())+1];
+  strcpy(this->EndCommand,command.str());
+  command.rdbuf()->freeze(0);
 }
 
 
@@ -233,5 +239,8 @@ void vtkKWScale::SetCommand(vtkKWObject* CalledObject, const char *CommandString
     }
   ostrstream command;
   command << CalledObject->GetTclName() << " " << CommandString << ends;
-  this->Command = command.str();
+
+  this->Command = new char [strlen(command.str())+1];
+  strcpy(this->Command,command.str());
+  command.rdbuf()->freeze(0);
 }

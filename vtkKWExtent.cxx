@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWExtent.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-01-13 22:56:28 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-05-30 19:15:14 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -237,5 +237,8 @@ void vtkKWExtent::SetCommand(vtkKWObject* CalledObject, const char *CommandStrin
 { 
   ostrstream command;
   command << CalledObject->GetTclName() << " " << CommandString << ends;
-  this->Command = command.str();
+
+  this->Command = new char [strlen(command.str())+1];
+  strcpy(this->Command,command.str());
+  command.rdbuf()->freeze(0);
 }
