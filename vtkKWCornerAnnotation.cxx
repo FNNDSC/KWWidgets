@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-12-27 17:06:44 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2002-01-02 23:17:59 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -215,16 +215,23 @@ void vtkKWCornerAnnotation::Create(vtkKWApplication *app)
 
 void vtkKWCornerAnnotation::SetTextColor( float r, float g, float b )
 {
+  this->SetTextColorNoPropagate( r, g, b );
+  this->View->GetWindow()->InvokeEvent( vtkKWObject::LightboxCornerAnnoChangedEvent, 0  ); // ANDY Problems
+}
+
+void vtkKWCornerAnnotation::SetTextColorNoPropagate( float r, float g, float b )
+{
   this->CornerProp->GetProperty()->SetColor( r, g, b );
   this->View->Render();
-
-  if ( this->LightboxID == 0 )
-    {
-    this->View->GetWindow()->InvokeEvent( vtkKWObject::LightboxCornerAnnoChangedEvent, 0  ); // ANDY Problems
-    }
 }
 
 void vtkKWCornerAnnotation::OnDisplayCorner() 
+{
+  this->OnDisplayCornerNoPropagate();
+  this->View->GetWindow()->InvokeEvent( vtkKWObject::LightboxCornerAnnoChangedEvent, 0  ); // ANDY Problems
+}
+ 
+void vtkKWCornerAnnotation::OnDisplayCornerNoPropagate() 
 {
   if (this->CornerButton->GetState())
     {
@@ -239,11 +246,6 @@ void vtkKWCornerAnnotation::OnDisplayCorner()
     {
     this->View->RemoveComposite(this->CornerComposite);
     this->View->Render();
-    }
-
-  if ( this->LightboxID == 0 )
-    {
-    this->View->GetWindow()->InvokeEvent( vtkKWObject::LightboxCornerAnnoChangedEvent, 0  ); // ANDY Problems
     }
 }
 
@@ -262,24 +264,29 @@ void vtkKWCornerAnnotation::SetVisibility(int state)
   this->OnDisplayCorner();
 }
 
-void vtkKWCornerAnnotation::SetCornerText(const char *text, int corner) 
+void vtkKWCornerAnnotation::SetCornerTextNoPropagate(const char *text, int corner) 
 {
   this->CornerText[corner]->SetValue(text);
-  
+}
+
+void vtkKWCornerAnnotation::SetCornerText(const char *text, int corner) 
+{
+  this->SetCornerTextNoPropagate(text, corner);
   this->CornerChanged(corner);
 }
 
 void vtkKWCornerAnnotation::CornerChanged(int i) 
 {
+  this->CornerChangedNoPropagate( i );
+  this->View->GetWindow()->InvokeEvent( vtkKWObject::LightboxCornerAnnoChangedEvent, 0  ); // ANDY Problems
+}
+
+void vtkKWCornerAnnotation::CornerChangedNoPropagate(int i) 
+{
   this->CornerProp->SetText(i,this->CornerText[i]->GetValue());
   if (this->CornerButton->GetState())
     {
     this->View->Render();
-    }
-
-  if ( this->LightboxID == 0 )
-    {
-    this->View->GetWindow()->InvokeEvent( vtkKWObject::LightboxCornerAnnoChangedEvent, 0  ); // ANDY Problems
     }
 }
 
@@ -287,10 +294,10 @@ void vtkKWCornerAnnotation::UpdateFromMaster()
 {
   if ( this->MasterCornerAnnotation )
     {
-    this->SetCornerText(this->MasterCornerAnnotation->GetCornerText(0), 0);
-    this->SetCornerText(this->MasterCornerAnnotation->GetCornerText(1), 1);
-    this->SetCornerText(this->MasterCornerAnnotation->GetCornerText(2), 2);
-    this->SetCornerText(this->MasterCornerAnnotation->GetCornerText(3), 3);
+    this->SetCornerTextNoPropagate(this->MasterCornerAnnotation->GetCornerText(0), 0);
+    this->SetCornerTextNoPropagate(this->MasterCornerAnnotation->GetCornerText(1), 1);
+    this->SetCornerTextNoPropagate(this->MasterCornerAnnotation->GetCornerText(2), 2);
+    this->SetCornerTextNoPropagate(this->MasterCornerAnnotation->GetCornerText(3), 3);
     
     this->CornerProp->GetProperty()->
       SetColor( this->MasterCornerAnnotation->GetTextColor() );
@@ -379,6 +386,6 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.15 $");
+  this->ExtractRevision(os,"$Revision: 1.16 $");
   vtkKWLabeledFrame::SerializeRevision(os,indent);
 }
