@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-15 13:40:42 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2002-02-15 20:41:39 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -135,6 +135,7 @@ public:
   // Description:
   // Call the menu item callback at the given index
   void Invoke(int position);
+  void Invoke(const char* name);
 
   // Description:
   // Delete the menu item at the given position.

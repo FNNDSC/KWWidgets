@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-15 13:40:42 $
-  Version:   $Revision: 1.19 $
+  Date:      $Date: 2002-02-15 20:41:39 $
+  Version:   $Revision: 1.20 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -402,6 +402,15 @@ void vtkKWMenu::InsertRadioButton(int position, int value, const char* label,
 void vtkKWMenu::Invoke(int position)
 {
   this->Script("%s invoke %d", this->GetWidgetName(), position);
+}
+
+void vtkKWMenu::Invoke(const char* item)
+{
+  if ( !this->IsItemPresent(item) )
+    {
+    return;
+    }
+  this->Invoke(this->GetIndex(item));
 }
 
 void vtkKWMenu::DeleteMenuItem(int position)
