@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledEntry.h,v $
   Language:  C++
-  Date:      $Date: 2000-09-20 18:07:57 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-11-07 15:06:47 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -67,7 +67,7 @@ public:
   char *GetValue();
   int GetValueAsInt();
   float GetValueAsFloat();
-  
+
 protected:
   vtkKWLabeledEntry();
   ~vtkKWLabeledEntry();
