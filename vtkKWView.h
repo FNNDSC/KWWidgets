@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 16:00:07 $
-  Version:   $Revision: 1.44 $
+  Date:      $Date: 2002-08-07 18:51:48 $
+  Version:   $Revision: 1.45 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -182,6 +182,7 @@ class VTK_EXPORT vtkKWView : public vtkKWWidget
   // This attachment point may be obtained from the parent window
   // if it has been set.
   virtual vtkKWWidget *GetPropertiesParent();
+  void SetPropertiesParent(vtkKWWidget*);
 
   // Description:
   // Make the properties show up in the view instead of the window
