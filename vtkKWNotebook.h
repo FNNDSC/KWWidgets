@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-18 19:59:35 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-28 21:30:55 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ public:
 
   // Description:
   // Raise the specified tab to be on the top.
-  void Raise(int n);
+  virtual void Raise(int n);
   void Raise(const char *name);
   void RaiseCurrent(){this->Raise(this->Current);};
 
