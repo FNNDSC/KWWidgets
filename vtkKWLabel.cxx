@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-30 19:59:11 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2003-01-08 14:02:09 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ int vtkKWLabelCommand(ClientData cd, Tcl_Interp *interp,
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabel );
-vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.17 $");
 
 //-----------------------------------------------------------------------------
 vtkKWLabel::vtkKWLabel()
@@ -105,13 +105,13 @@ void vtkKWLabel::Create(vtkKWApplication *app, const char *args)
   wname = this->GetWidgetName();
   if ( this->LineType == vtkKWLabel::MultiLine )
     {
-    this->Script("message %s -text {%s} %s -width %d", 
-                 wname, this->Label, (args?args:""), this->Width);
+    this->Script("message %s -text {%s} -width %d %s", 
+                 wname, this->Label, this->Width, (args?args:""));
     }
   else
     {
-    this->Script("label %s -text {%s} -justify left %s -width %d", 
-                 wname, this->Label, (args?args:""), this->Width);
+    this->Script("label %s -text {%s} -justify left -width %d %s", 
+                 wname, this->Label, this->Width, (args?args:""));
     }
 
   // Update enable state
