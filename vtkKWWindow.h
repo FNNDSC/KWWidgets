@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2000-06-02 17:55:48 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2000-08-01 19:42:04 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -130,6 +130,13 @@ public:
   void InstallMenu(vtkKWMenu* menu);
 
   // Description:
+  // Callbacks used to set the print quality
+  void OnPrint1();
+  void OnPrint2();
+  void OnPrint3();
+  vtkGetMacro(PrintTargetDPI,float);
+  
+  // Description:
   // Allow access to the notebook object.
   vtkGetObjectMacro(Notebook,vtkKWNotebook);
 
@@ -171,6 +178,8 @@ protected:
   vtkKWWidget *PropertiesParent;
   vtkKWWidget *ViewFrame;
   vtkKWWidget *ToolbarFrame;
+  float      PrintTargetDPI;
+  vtkKWMenu *PageMenu;
 };
 
 

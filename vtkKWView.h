@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-01 16:17:10 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2000-08-01 19:42:04 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,6 +46,7 @@ class vtkKWApplication;
 class vtkKWWindow;
 class vtkViewport;
 class vtkKWCornerAnnotation;
+class vtkKWMenu;
 #include "vtkWindow.h"
 #include "vtkKWNotebook.h"
 #include "vtkKWEntry.h"
@@ -315,7 +316,6 @@ protected:
   char             *MenuPropertiesName;
   
   int Printing;
-  float PrintTargetDPI;
 };
 
 
