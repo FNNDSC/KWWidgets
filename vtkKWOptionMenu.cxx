@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-04 23:29:12 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2002-12-12 21:48:18 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWOptionMenu );
-vtkCxxRevisionMacro(vtkKWOptionMenu, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWOptionMenu, "$Revision: 1.17 $");
 
 //-----------------------------------------------------------------------------
 vtkKWOptionMenu::vtkKWOptionMenu()
@@ -201,6 +201,27 @@ void vtkKWOptionMenu::Create(vtkKWApplication *app, const char *args)
   this->Menu->Create(app,"menu","-tearoff 0");
 }
 
+//-----------------------------------------------------------------------------
+void vtkKWOptionMenu::IndicatorOn()
+{
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
+  this->Script("%s config -indicatoron 1", this->GetWidgetName());
+}
+
+//-----------------------------------------------------------------------------
+void vtkKWOptionMenu::IndicatorOff()
+{
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
+  this->Script("%s config -indicatoron 0", this->GetWidgetName());
+}
 
 //-----------------------------------------------------------------------------
 void vtkKWOptionMenu::PrintSelf(ostream& os, vtkIndent indent)
