@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-21 22:35:53 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2003-04-03 20:49:33 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLabeledLabel);
-vtkCxxRevisionMacro(vtkKWLabeledLabel, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWLabeledLabel, "$Revision: 1.10 $");
 
 int vtkKWLabeledLabelCommand(ClientData cd, Tcl_Interp *interp,
                              int argc, char *argv[]);
@@ -91,7 +91,7 @@ void vtkKWLabeledLabel::Create(vtkKWApplication *app, const char *args)
   // Create the 2nd label
 
   this->Label2->SetParent(this);
-  this->Label2->Create(app, "");
+  this->Label2->Create(app, "-anchor nw");
 
   // Pack the labels
 
