@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWChangeColorButton.h,v $
   Language:  C++
-  Date:      $Date: 2000-04-21 21:59:24 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-04-24 22:20:14 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -68,6 +68,12 @@ public:
   // is the name of the method to be called and any arguments in string form.
   // The calling is done via TCL wrappers for the KWObject.
   virtual void SetCommand(vtkKWObject* Object, const char *MethodAndArgString);
+
+  // Description:
+  // Chaining method to serialize an object and its superclasses.
+  virtual void SerializeSelf(ostream& os, vtkIndent indent);
+  virtual void SerializeToken(istream& is,const char token[1024]);
+  virtual void SerializeRevision(ostream& os, vtkIndent indent);
 
   void        ChangeColor();
 
