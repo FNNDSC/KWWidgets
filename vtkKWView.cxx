@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-09-25 21:30:57 $
-  Version:   $Revision: 1.32 $
+  Date:      $Date: 2000-09-28 14:32:06 $
+  Version:   $Revision: 1.33 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -133,6 +133,9 @@ vtkKWView::vtkKWView()
 
 vtkKWView::~vtkKWView()
 {
+  this->Renderer->Delete();
+  this->RenderWindow->Delete();
+
   // Remove all binding
   const char *wname = this->VTKWidget->GetWidgetName();
   this->Script("bind %s <Expose> {}",wname);
@@ -180,8 +183,6 @@ vtkKWView::~vtkKWView()
   
   this->SetMenuPropertiesName(NULL);
   
-  this->Renderer->Delete();
-  this->RenderWindow->Delete();
 }
 
 void vtkKWView::SetStillUpdateRates( int count, float *rates )
@@ -1062,7 +1063,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.32 $");
+  this->ExtractRevision(os,"$Revision: 1.33 $");
 }
 
 void vtkKWView::SetupMemoryRendering(int x, int y, void *cd) 
