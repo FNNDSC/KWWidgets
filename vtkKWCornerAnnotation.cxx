@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-01 19:41:34 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2000-08-03 20:39:37 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -81,7 +81,7 @@ vtkKWCornerAnnotation::vtkKWCornerAnnotation()
     }
 
   this->CornerProp = vtkCornerAnnotation::New();
-  this->CornerProp->SetMaximumLineHeight(0.05);
+  this->CornerProp->SetMaximumLineHeight(0.07);
   this->CornerComposite = vtkKWGenericComposite::New();
   this->CornerComposite->SetProp(this->CornerProp);
 
@@ -386,6 +386,6 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.9 $");
+  this->ExtractRevision(os,"$Revision: 1.10 $");
   vtkKWLabeledFrame::SerializeRevision(os,indent);
 }
