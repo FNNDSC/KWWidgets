@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-13 20:47:52 $
-  Version:   $Revision: 1.38 $
+  Date:      $Date: 2003-01-14 00:48:04 $
+  Version:   $Revision: 1.39 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -108,6 +108,7 @@ static const char *vtkKWEventStrings[] = {
   "LightVisibilityChangedEvent",
   "LightboxOrientationChangedEvent",
   "LightboxResolutionChangedEvent",
+  "MaterialPropertyChangedEvent",
   "MiddleMouseOptionChangedEvent",
   "MouseBindingChangedEvent",
   "MultiPassStillRenderEndEvent",
