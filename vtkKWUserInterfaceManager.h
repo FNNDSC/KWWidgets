@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceManager.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-26 22:36:27 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2003-03-10 22:14:30 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -211,9 +211,11 @@ protected:
 
   PanelSlot* GetPanelSlot(vtkKWUserInterfacePanel *panel);
   PanelSlot* GetPanelSlot(int id);
+  PanelSlot* GetPanelSlot(const char *panel_name);
   int HasPanel(vtkKWUserInterfacePanel *panel);
   int GetPanelId(vtkKWUserInterfacePanel *panel);
   vtkKWUserInterfacePanel* GetPanel(int id);
+  vtkKWUserInterfacePanel* GetPanel(const char *panel_name);
 
   //ETX
 

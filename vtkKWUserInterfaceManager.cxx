@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceManager.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-20 18:46:19 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2003-03-10 22:14:30 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 
 //------------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWUserInterfaceManager, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManager, "$Revision: 1.7 $");
 
 int vtkKWUserInterfaceManagerCommand(ClientData cd, Tcl_Interp *interp,
                                      int argc, char *argv[]);
@@ -135,6 +135,33 @@ vtkKWUserInterfaceManager::GetPanelSlot(int id)
 }
 
 //----------------------------------------------------------------------------
+vtkKWUserInterfaceManager::PanelSlot* 
+vtkKWUserInterfaceManager::GetPanelSlot(const char *panel_name)
+{
+  vtkKWUserInterfaceManager::PanelSlot *panel_slot = NULL;
+  vtkKWUserInterfaceManager::PanelSlot *found = NULL;
+  vtkKWUserInterfaceManager::PanelsContainerIterator *it = 
+    this->Panels->NewIterator();
+
+  it->InitTraversal();
+  while (!it->IsDoneWithTraversal())
+    {
+    if (it->GetData(panel_slot) == VTK_OK && 
+        panel_slot->Panel &&
+        panel_slot->Panel->GetName() &&
+        !strcmp(panel_slot->Panel->GetName(), panel_name))
+      {
+      found = panel_slot;
+      break;
+      }
+    it->GoToNextItem();
+    }
+  it->Delete();
+
+  return found;
+}
+
+//----------------------------------------------------------------------------
 int vtkKWUserInterfaceManager::HasPanel(vtkKWUserInterfacePanel *panel)
 {
   return this->GetPanelSlot(panel) ? 1 : 0;
@@ -156,6 +183,20 @@ int vtkKWUserInterfaceManager::GetPanelId(vtkKWUserInterfacePanel *panel)
 vtkKWUserInterfacePanel* vtkKWUserInterfaceManager::GetPanel(int id)
 {
   vtkKWUserInterfaceManager::PanelSlot *panel_slot = this->GetPanelSlot(id);
+  if (!panel_slot)
+    {
+    return NULL;
+    }
+
+  return panel_slot->Panel;
+}
+
+//----------------------------------------------------------------------------
+vtkKWUserInterfacePanel* vtkKWUserInterfaceManager::GetPanel(
+  const char *panel_name)
+{
+  vtkKWUserInterfaceManager::PanelSlot *panel_slot = 
+    this->GetPanelSlot(panel_name);
   if (!panel_slot)
     {
     return NULL;
