@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-13 18:40:57 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2002-09-13 18:49:26 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,9 +45,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWImageLabel.h"
 #include "vtkKWIcon.h"
 
+#include <ctype.h>
+
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabeledFrame );
-vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.15 $");
 
 
 
