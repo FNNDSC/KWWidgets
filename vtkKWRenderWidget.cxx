@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-09 20:32:21 $
-  Version:   $Revision: 1.41 $
+  Date:      $Date: 2003-04-14 15:42:31 $
+  Version:   $Revision: 1.42 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -59,7 +59,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.41 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.42 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetObserver : public vtkCommand
@@ -841,7 +841,7 @@ void vtkKWRenderWidget::ExecuteEvent(vtkObject*, unsigned long event,
     }
 }
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void vtkKWRenderWidget::UpdateEnableState()
 {
   this->Superclass::UpdateEnableState();

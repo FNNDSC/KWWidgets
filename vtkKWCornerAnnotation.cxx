@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-03-24 20:48:58 $
-  Version:   $Revision: 1.58 $
+  Date:      $Date: 2003-04-14 15:42:30 $
+  Version:   $Revision: 1.59 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -63,9 +63,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkString.h"
 #include "vtkTextProperty.h"
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCornerAnnotation );
-vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.58 $");
+vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.59 $");
 
 int vtkKWCornerAnnotationCommand(ClientData cd, Tcl_Interp *interp,
                                 int argc, char *argv[]);
@@ -972,7 +972,7 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is, const char *token)
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.58 $");
+  this->ExtractRevision(os,"$Revision: 1.59 $");
 }
 
 //----------------------------------------------------------------------------

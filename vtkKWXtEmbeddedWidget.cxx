@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWXtEmbeddedWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 15:51:40 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2003-04-14 15:42:31 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,9 +45,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWXtEmbeddedWidget);
-vtkCxxRevisionMacro(vtkKWXtEmbeddedWidget, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWXtEmbeddedWidget, "$Revision: 1.7 $");
 
 int vtkKWXtEmbeddedWidgetCommand(ClientData cd, Tcl_Interp *interp,
                              int argc, char *argv[]);

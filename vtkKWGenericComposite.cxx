@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWGenericComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2003-04-14 15:42:30 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,9 +44,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 #include "vtkProp.h"
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWGenericComposite );
-vtkCxxRevisionMacro(vtkKWGenericComposite, "$Revision: 1.7 $");
+vtkCxxRevisionMacro(vtkKWGenericComposite, "$Revision: 1.8 $");
 
 vtkSetObjectImplementationMacro(vtkKWGenericComposite, Prop, vtkProp);
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWActorComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-10 18:57:37 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2003-04-14 15:42:30 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,15 +47,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWRadioButton.h"
 #include "vtkKWOptionMenu.h"
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWActorComposite );
-vtkCxxRevisionMacro(vtkKWActorComposite, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWActorComposite, "$Revision: 1.12 $");
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 int vtkKWActorCompositeCommand(ClientData cd, Tcl_Interp *interp,
                                 int argc, char *argv[]);
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkKWActorComposite::vtkKWActorComposite()
 {
   this->CommandFunction = vtkKWActorCompositeCommand;
@@ -65,7 +65,7 @@ vtkKWActorComposite::vtkKWActorComposite()
   this->Actor->SetMapper(this->Mapper);
 }
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkKWActorComposite::~vtkKWActorComposite()
 {
   if (this->Actor)
@@ -81,26 +81,26 @@ vtkKWActorComposite::~vtkKWActorComposite()
     }
 }
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void vtkKWActorComposite::SetInput(vtkPolyData *input)
 {
   this->Mapper->SetInput(input); 
 }
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void vtkKWActorComposite::CreateProperties()
 {
   // invoke superclass always
   this->Superclass::CreateProperties();
 }
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkPolyData *vtkKWActorComposite::GetInput() 
 {
   return this->Mapper->GetInput();
 }
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkProp *vtkKWActorComposite::GetProp() 
 {
   return this->Actor;

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-03 20:19:45 $
-  Version:   $Revision: 1.152 $
+  Date:      $Date: 2003-04-14 15:42:31 $
+  Version:   $Revision: 1.153 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -72,7 +72,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define VTK_KW_WINDOW_GEOMETRY_REG_KEY "WindowGeometry"
 #define VTK_KW_WINDOW_FRAME1_SIZE_REG_KEY "WindowFrame1Size"
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.152 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.153 $");
 vtkCxxSetObjectMacro(vtkKWWindow, PropertiesParent, vtkKWWidget);
 
 class vtkKWWindowMenuEntry
@@ -209,7 +209,7 @@ int vtkKWWindowMenuEntry::InsertToMenu( int pos, const char* menuEntry,
   return 0;
 }
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindow );
 
 int vtkKWWindowCommand(ClientData cd, Tcl_Interp *interp,

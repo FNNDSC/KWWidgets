@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWImageLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-25 22:37:27 $
-  Version:   $Revision: 1.23 $
+  Date:      $Date: 2003-04-14 15:42:30 $
+  Version:   $Revision: 1.24 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,9 +46,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWTkUtilities.h"
 #include "vtkObjectFactory.h"
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWImageLabel );
-vtkCxxRevisionMacro(vtkKWImageLabel, "$Revision: 1.23 $");
+vtkCxxRevisionMacro(vtkKWImageLabel, "$Revision: 1.24 $");
 
 vtkKWImageLabel::vtkKWImageLabel()
 {

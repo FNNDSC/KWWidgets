@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-28 00:36:11 $
-  Version:   $Revision: 1.29 $
+  Date:      $Date: 2003-04-14 15:42:31 $
+  Version:   $Revision: 1.30 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -81,9 +81,9 @@ void vtkKWToolbar::SetGlobalWidgetsFlatAspect(int val)
   vtkKWToolbarGlobalWidgetsFlatAspect = val; 
 };
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
-vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.29 $");
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.30 $");
 
 
 int vtkKWToolbarCommand(ClientData cd, Tcl_Interp *interp,
@@ -634,7 +634,7 @@ void vtkKWToolbar::Pack(const char *options)
     }
 }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void vtkKWToolbar::SetFlatAspect(int f)
 {
   if (this->FlatAspect == f)
@@ -651,7 +651,7 @@ void vtkKWToolbar::SetFlatAspect(int f)
     }
 }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void vtkKWToolbar::SetWidgetsFlatAspect(int f)
 {
   if (this->WidgetsFlatAspect == f)
@@ -663,7 +663,7 @@ void vtkKWToolbar::SetWidgetsFlatAspect(int f)
   this->UpdateWidgets();
 }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void vtkKWToolbar::SetResizable(int r)
 {
   if (this->Resizable == r)

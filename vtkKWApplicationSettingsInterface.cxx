@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplicationSettingsInterface.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-26 21:54:30 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2003-04-14 15:42:30 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,7 +58,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWApplicationSettingsInterface);
-vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.13 $");
 
 int vtkKWApplicationSettingsInterfaceCommand(ClientData cd, Tcl_Interp *interp,
                                              int argc, char *argv[]);
@@ -554,7 +554,7 @@ void vtkKWApplicationSettingsInterface::FlatButtonsCallback()
     }
 }
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void vtkKWApplicationSettingsInterface::UpdateEnableState()
 {
   this->Superclass::UpdateEnableState();

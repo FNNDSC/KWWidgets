@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOKCancelDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-10 18:57:37 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2003-04-14 15:42:30 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,9 +45,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWOKCancelDialog );
-vtkCxxRevisionMacro(vtkKWOKCancelDialog, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWOKCancelDialog, "$Revision: 1.7 $");
 
 
 

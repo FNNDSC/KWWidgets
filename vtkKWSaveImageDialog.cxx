@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSaveImageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 17:03:15 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2003-04-14 15:42:31 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,9 +46,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkKWMessageDialog.h"
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWSaveImageDialog );
-vtkCxxRevisionMacro(vtkKWSaveImageDialog, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWSaveImageDialog, "$Revision: 1.17 $");
 
 
 

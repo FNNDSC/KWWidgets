@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRadioButtonSet.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-28 14:27:28 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2003-04-14 15:42:31 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,10 +48,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkLinkedListIterator.txx"
 #include "vtkObjectFactory.h"
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWRadioButtonSet);
-vtkCxxRevisionMacro(vtkKWRadioButtonSet, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWRadioButtonSet, "$Revision: 1.6 $");
 
 int vtkvtkKWRadioButtonSetCommand(ClientData cd, Tcl_Interp *interp,
                                   int argc, char *argv[]);
@@ -137,7 +137,7 @@ int vtkKWRadioButtonSet::HasButton(int id)
   return this->GetButtonSlot(id) ? 1 : 0;
 }
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void vtkKWRadioButtonSet::Create(vtkKWApplication *app, const char *args)
 {
   // Set the application
@@ -180,7 +180,7 @@ void vtkKWRadioButtonSet::UpdateEnableState()
   it->Delete();
 }
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 int vtkKWRadioButtonSet::AddButton(int id, 
                                    const char *text, 
                                    vtkKWObject *object, 

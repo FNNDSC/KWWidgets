@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPushButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 17:01:08 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2003-04-14 15:42:30 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,9 +45,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWPushButton );
-vtkCxxRevisionMacro(vtkKWPushButton, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWPushButton, "$Revision: 1.11 $");
 
 
 vtkKWPushButton::vtkKWPushButton()

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledLabelSet.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-21 22:36:12 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2003-04-14 15:42:30 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,10 +50,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkLinkedListIterator.txx"
 #include "vtkObjectFactory.h"
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWLabeledLabelSet);
-vtkCxxRevisionMacro(vtkKWLabeledLabelSet, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWLabeledLabelSet, "$Revision: 1.4 $");
 
 int vtkvtkKWLabeledLabelSetCommand(ClientData cd, Tcl_Interp *interp,
                                   int argc, char *argv[]);
@@ -138,7 +138,7 @@ int vtkKWLabeledLabelSet::HasLabeledLabel(int id)
   return this->GetLabeledLabelSlot(id) ? 1 : 0;
 }
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void vtkKWLabeledLabelSet::Create(vtkKWApplication *app, const char *args)
 {
   // Set the application
@@ -181,7 +181,7 @@ void vtkKWLabeledLabelSet::UpdateEnableState()
   it->Delete();
 }
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 int vtkKWLabeledLabelSet::AddLabeledLabel(int id, 
                                           const char *text, 
                                           const char *text2, 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWChangeColorButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-03-24 20:48:46 $
-  Version:   $Revision: 1.32 $
+  Date:      $Date: 2003-04-14 15:42:30 $
+  Version:   $Revision: 1.33 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,9 +45,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWImageLabel.h"
 #include "vtkObjectFactory.h"
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWChangeColorButton);
-vtkCxxRevisionMacro(vtkKWChangeColorButton, "$Revision: 1.32 $");
+vtkCxxRevisionMacro(vtkKWChangeColorButton, "$Revision: 1.33 $");
 
 int vtkKWChangeColorButtonCommand(ClientData cd, Tcl_Interp *interp,
                                   int argc, char *argv[]);
@@ -491,7 +491,7 @@ void vtkKWChangeColorButton::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWChangeColorButton ";
-  this->ExtractRevision(os,"$Revision: 1.32 $");
+  this->ExtractRevision(os,"$Revision: 1.33 $");
 }
 
 //----------------------------------------------------------------------------

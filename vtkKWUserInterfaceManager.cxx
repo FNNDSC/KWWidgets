@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceManager.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-03-10 22:14:30 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2003-04-14 15:42:31 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,8 +48,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkLinkedListIterator.txx"
 #include "vtkObjectFactory.h"
 
-//------------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWUserInterfaceManager, "$Revision: 1.7 $");
+//----------------------------------------------------------------------------
+vtkCxxRevisionMacro(vtkKWUserInterfaceManager, "$Revision: 1.8 $");
 
 int vtkKWUserInterfaceManagerCommand(ClientData cd, Tcl_Interp *interp,
                                      int argc, char *argv[]);

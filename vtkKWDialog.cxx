@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-30 20:12:24 $
-  Version:   $Revision: 1.28 $
+  Date:      $Date: 2003-04-14 15:42:30 $
+  Version:   $Revision: 1.29 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,9 +45,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWApplication.h"
 #include "vtkKWWindow.h"
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDialog );
-vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.28 $");
+vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.29 $");
 
 int vtkKWDialogCommand(ClientData cd, Tcl_Interp *interp,
                              int argc, char *argv[]);

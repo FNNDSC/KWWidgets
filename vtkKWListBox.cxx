@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWListBox.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-17 14:59:47 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2003-04-14 15:42:30 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,9 +44,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWListBox );
-vtkCxxRevisionMacro(vtkKWListBox, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWListBox, "$Revision: 1.15 $");
 
 
 int vtkKWListBoxCommand(ClientData cd, Tcl_Interp *interp,
