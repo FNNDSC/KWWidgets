@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfacePanel.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-26 19:35:27 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2003-02-26 21:54:30 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -89,7 +89,12 @@ public:
   // the manager to NULL (it is done automatically by the destructor).
   virtual void SetUserInterfaceManager(vtkKWUserInterfaceManager*);
   vtkGetObjectMacro(UserInterfaceManager, vtkKWUserInterfaceManager);
-  
+
+  // Description:
+  // Set the panel name. Can be used to add the panel to a menu, etc.
+  vtkGetStringMacro(Name);
+  vtkSetStringMacro(Name);
+
   // Description:
   // Create the interface objects. Note that if the panel is not created 
   // the first time one if its pages is shown or raised, this method is 
@@ -157,6 +162,8 @@ protected:
   ~vtkKWUserInterfacePanel();
 
   vtkKWUserInterfaceManager *UserInterfaceManager;
+
+  char *Name;
 
   // Update the enable state. This should propagate similar calls to the
   // internal widgets.

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplicationSettingsInterface.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-27 22:49:50 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2003-02-26 21:54:30 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,8 +52,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWUserInterfacePanel.h"
 
 //------------------------------------------------------------------------------
-
-#define VTK_KW_APPLICATION_SETTINGS_UIP_LABEL "Application Settings"
 
 #define VTK_KW_SAVE_WINDOW_GEOMETRY_REG_KEY   "SaveWindowGeometry"
 #define VTK_KW_SHOW_SPLASH_SCREEN_REG_KEY     "ShowSplashScreen"
