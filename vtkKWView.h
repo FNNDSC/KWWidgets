@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-30 16:00:09 $
-  Version:   $Revision: 1.50 $
+  Date:      $Date: 2002-12-05 19:10:05 $
+  Version:   $Revision: 1.51 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -81,6 +81,7 @@ class vtkTextMapper;
 class vtkViewport;
 class vtkViewport;
 class vtkWindow;
+class vtkKWSegmentedProgressGauge;
 
 class VTK_EXPORT vtkKWView : public vtkKWWidget
 {
@@ -372,6 +373,15 @@ class VTK_EXPORT vtkKWView : public vtkKWWidget
   // The guts of the abort check method. Made public so that it can
   // be accessed by the render timer callback.
   int ShouldIAbort();
+
+  // Description:
+  // Should I display the progress gauge in the title bar?  By default,
+  // it is off.
+  vtkSetMacro(UseProgressGauge, int);
+  vtkGetMacro(UseProgressGauge, int);
+  vtkBooleanMacro(UseProgressGauge, int);
+
+  vtkGetObjectMacro(ProgressGauge, vtkKWSegmentedProgressGauge);
   
 protected:
   vtkKWView();
@@ -389,6 +399,8 @@ protected:
   vtkKWWidget *PropertiesParent;
   vtkKWWidget *VTKWidget;
   vtkKWWidget *Label;
+  int UseProgressGauge;
+  vtkKWSegmentedProgressGauge *ProgressGauge;
   vtkKWWidget *Frame;
   vtkKWWidget *Frame2;
   vtkKWWidget *ControlFrame;
