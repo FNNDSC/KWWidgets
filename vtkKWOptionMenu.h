@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-04 16:53:59 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-10-23 16:47:35 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -64,7 +64,7 @@ public:
   // Description:
   // Set/Get the state of the option menu
   void SetValue(const char *);
-  char *GetValue();
+  const char *GetValue();
 
   // Description:
   // Get the menu.

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTextProperty.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-14 17:02:39 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-10-23 16:47:35 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -118,7 +118,7 @@ static unsigned char image_copy[] =
 
 // ----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTextProperty);
-vtkCxxRevisionMacro(vtkKWTextProperty, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWTextProperty, "$Revision: 1.7 $");
 
 int vtkKWTextPropertyCommand(ClientData cd, Tcl_Interp *interp,
                       int argc, char *argv[]);
@@ -668,7 +668,7 @@ void vtkKWTextProperty::FontFamilyOptionMenuCallback()
 {
   if (this->FontFamilyOptionMenu->IsCreated())
     {
-    char *value = this->FontFamilyOptionMenu->GetValue();
+    const char *value = this->FontFamilyOptionMenu->GetValue();
     if (!strcmp(value, VTK_KW_TEXT_PROP_ARIAL))
       {
       this->SetFontFamily(VTK_ARIAL);
