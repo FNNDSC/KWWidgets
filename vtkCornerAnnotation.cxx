@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:18 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2002-06-27 17:41:52 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -89,6 +89,9 @@ vtkCornerAnnotation::vtkCornerAnnotation()
   this->ImageActor = NULL;
   this->LastImageActor = 0;
   this->WindowLevel = NULL;
+  
+  this->LevelShift = 0;
+  this->LevelScale = 1;
 }
 
 vtkCornerAnnotation::~vtkCornerAnnotation()
@@ -133,6 +136,7 @@ void vtkCornerAnnotation::ReplaceText(vtkImageActor *ia,
     {
     window = wl->GetWindow();
     level = wl->GetLevel();    
+    level = level * this->LevelScale + this->LevelShift;
     }
   
   // search for tokens, replace and then assign to TextMappers

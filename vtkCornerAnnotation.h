@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 23:42:58 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-06-27 17:41:52 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -106,6 +106,16 @@ public:
   // looking at window level changes
   void SetWindowLevel(vtkImageMapToWindowLevelColors*);
   vtkGetObjectMacro(WindowLevel,vtkImageMapToWindowLevelColors);
+
+  // Description:
+  // Set the value to shift the level by.
+  vtkSetMacro(LevelShift, float);
+  vtkGetMacro(LevelShift, float);
+  
+  // Description:
+  // Set the value to scale the level by.
+  vtkSetMacro(LevelScale, float);
+  vtkGetMacro(LevelScale, float);
   
 protected:
   vtkCornerAnnotation();
@@ -114,6 +124,8 @@ protected:
   float MaximumLineHeight;
 
   vtkImageMapToWindowLevelColors *WindowLevel;
+  float LevelShift;
+  float LevelScale;
   vtkImageActor *ImageActor;
   vtkImageActor *LastImageActor;
 
