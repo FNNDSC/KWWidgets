@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2003-03-24 20:50:02 $
-  Version:   $Revision: 1.74 $
+  Date:      $Date: 2003-03-28 22:50:05 $
+  Version:   $Revision: 1.75 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -340,16 +340,9 @@ public:
   vtkGetObjectMacro(Toolbars, vtkVector<vtkKWToolbar*>);
   //ETX
 
-  // Description:
-  // Chaining method to serialize an object and its superclasses.
-  virtual void SerializeSelf(ostream& os, vtkIndent indent);
-  virtual void SerializeToken(istream& is, const char *token);
-
 protected:
   vtkKWWindow();
   ~vtkKWWindow();
-
-  virtual void SerializeRevision(ostream& os, vtkIndent indent);
 
   void InsertRecentFileToMenu(const char *filename, 
                               vtkKWObject *taret, 

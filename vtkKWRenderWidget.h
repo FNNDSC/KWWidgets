@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-03-24 20:49:25 $
-  Version:   $Revision: 1.24 $
+  Date:      $Date: 2003-03-28 22:49:45 $
+  Version:   $Revision: 1.25 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -229,11 +229,6 @@ public:
   // internal widgets.
   virtual void UpdateEnableState();
 
-  // Description:
-  // Chaining method to serialize an object and its superclasses.
-  virtual void SerializeSelf(ostream& os, vtkIndent indent);
-  virtual void SerializeToken(istream& is, const char *token);
-
 protected:
   vtkKWRenderWidget();
   ~vtkKWRenderWidget();
@@ -267,8 +262,6 @@ protected:
 
   virtual void UpdateAccordingToUnits() {};
 
-  virtual void SerializeRevision(ostream& os, vtkIndent indent);
-  
 private:
   vtkKWRenderWidget(const vtkKWRenderWidget&);  // Not implemented
   void operator=(const vtkKWRenderWidget&);  // Not implemented
