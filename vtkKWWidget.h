@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-17 03:20:01 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2000-04-18 18:50:03 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -94,6 +94,7 @@ protected:
   ~vtkKWWidget();
   vtkKWWidget(const vtkKWWidget&) {};
   void operator=(const vtkKWWidget&) {};
+  virtual void SerializeRevision(ostream& os, vtkIndent indent);
 
   char *WidgetName;
   vtkKWWidget *Parent;

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-17 03:20:01 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2000-04-18 18:50:03 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -77,10 +77,15 @@ public:
   // Description:
   // Chaining method to serialize an object and its superclasses.
   void Serialize(ostream& os, vtkIndent indent);
+  virtual void SerializeRevision(ostream& os, vtkIndent indent);
   void Serialize(istream& is);
   virtual void SerializeSelf(ostream& os, vtkIndent indent) {};
-  virtual void SerializeToken(istream& is, const char token[1024]) {};
-
+  virtual void SerializeToken(istream& is, const char token[1024]);
+  virtual const char *GetVersion(const char *);
+  virtual void AddVersion(const char *cname, const char *version);
+  void ExtractRevision(ostream& os,const char *revIn);
+  
+  
 //BTX
   // Description:
   // A convienience method to invoke some tcl script code and
@@ -89,7 +94,7 @@ public:
 
 private:
   char *TclName;
-
+  
 protected:
   vtkKWObject();
   ~vtkKWObject();
@@ -97,6 +102,9 @@ protected:
   void operator=(const vtkKWObject&) {};
 
   vtkKWApplication *Application;
+
+  char **Versions;
+  int   NumberOfVersions;
 
   // this instance variable holds the command functions for this class.
   int (*CommandFunction)(ClientData, Tcl_Interp *, int, char *[]);

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-03-17 23:00:10 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2000-04-18 18:50:03 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -2832,4 +2832,11 @@ int vtkKWWindow::GetFileMenuIndex()
     return clidx - this->NumberOfMRUFiles - 2;
     }
   return clidx - 1;  
+}
+
+void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
+{
+  vtkKWWidget::SerializeRevision(os,indent);
+  os << indent << "vtkKWWindow ";
+  this->ExtractRevision(os,"$Revision: 1.11 $");
 }

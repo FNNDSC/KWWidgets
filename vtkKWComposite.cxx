@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-01-13 22:56:28 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-04-18 18:50:03 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -151,4 +151,11 @@ void vtkKWComposite::Select(vtkKWView *v)
       vtkErrorMacro("attempt to select composite without an application set");
       }
     }
+}
+
+void vtkKWComposite::SerializeRevision(ostream& os, vtkIndent indent)
+{
+  vtkKWObject::SerializeRevision(os,indent);
+  os << indent << "vtkKWComposite ";
+  this->ExtractRevision(os,"$Revision: 1.5 $");
 }

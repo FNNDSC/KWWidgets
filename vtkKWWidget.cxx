@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-02-01 02:34:11 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-04-18 18:50:03 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -239,4 +239,11 @@ void vtkKWWidget::SetBalloonHelpString(char *str)
     this->BalloonHelpString = new char[strlen(str)+1];
     strcpy(this->BalloonHelpString, str);
     }
+}
+
+void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
+{
+  vtkKWObject::SerializeRevision(os,indent);
+  os << indent << "vtkKWWidget ";
+  this->ExtractRevision(os,"$Revision: 1.5 $");
 }

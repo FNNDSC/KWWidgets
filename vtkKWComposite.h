@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWComposite.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-17 03:20:01 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-04-18 18:50:03 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -88,6 +88,10 @@ public:
   // it is closed. The default behavior is to do nothing - can be
   // overridden in a subclass for example to close dialogs.
   virtual void Close() {};
+
+  // Description:
+  // Chaining method to serialize an object and its superclasses.
+  virtual void SerializeRevision(ostream& os, vtkIndent indent);
 
 protected:
   vtkKWComposite();

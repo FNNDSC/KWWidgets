@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-03-30 06:17:19 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-04-18 18:50:03 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -1050,3 +1050,9 @@ void vtkKWView::SerializeToken(istream& is, const char token[1024])
   vtkKWWidget::SerializeToken(is,token);
 }
 
+void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
+{
+  vtkKWWidget::SerializeRevision(os,indent);
+  os << indent << "vtkKWView ";
+  this->ExtractRevision(os,"$Revision: 1.5 $");
+}

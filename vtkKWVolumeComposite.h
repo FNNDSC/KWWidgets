@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.h,v $
   Language:  C++
-  Date:      $Date: 2000-04-03 18:45:24 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-04-18 18:50:03 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -71,6 +71,9 @@ public:
 
   vtkGetObjectMacro( VolumeProperty, vtkVolumeProperty );
 
+  // Description:
+  // Chaining method to serialize an object and its superclasses.
+  virtual void SerializeRevision(ostream& os, vtkIndent indent);
 
 protected:
   vtkKWVolumeComposite();

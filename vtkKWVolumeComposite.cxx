@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-02-29 22:23:55 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-04-18 18:50:03 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -249,4 +249,11 @@ void vtkKWVolumeComposite::SetInput(vtkImageData *input)
 vtkImageData *vtkKWVolumeComposite::GetInput()
 {
   return this->RayCastMapper->GetInput();
+}
+
+void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
+{
+  vtkKWComposite::SerializeRevision(os,indent);
+  os << indent << "vtkKWVolumeComposite ";
+  this->ExtractRevision(os,"$Revision: 1.4 $");
 }
