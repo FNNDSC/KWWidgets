@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRange.h,v $
   Language:  C++
-  Date:      $Date: 2003-04-24 15:41:24 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2003-04-25 17:37:03 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -234,9 +234,10 @@ public:
   virtual void ConfigureCallback();
   virtual void MaximizeRangeCallback();
   virtual void EntriesUpdateCallback(int i);
-  virtual void StartInteractionCallback();
+  virtual void StartInteractionCallback(int x, int y);
   virtual void EndInteractionCallback();
   virtual void SliderMotionCallback(int slider_idx, int x, int y);
+  virtual void RangeMotionCallback(int x, int y);
 
   // Description:
   // Access to the canvas
@@ -262,13 +263,16 @@ protected:
   int   LabelPosition;
   int   EntriesResolution;
   int   EntriesWidth;
-  int   InInteraction;
   int   SliderCanPush;
 
-  char *Command;
-  char *StartCommand;
-  char *EndCommand;
-  char *EntriesCommand;
+  int   InInteraction;
+  int   StartInteractionPos;
+  float StartInteractionRange[2];
+
+  char  *Command;
+  char  *StartCommand;
+  char  *EndCommand;
+  char  *EntriesCommand;
 
   vtkKWFrame  *CanvasFrame;
   vtkKWWidget *Canvas;
@@ -285,7 +289,9 @@ protected:
   // Description:
   // Make sure all elements are constrained correctly
   virtual void ConstraintValueToResolution(float &value);
-  virtual void ConstraintRanges(float *range_hint = 0);
+  virtual void ConstraintWholeRange();
+  virtual void ConstraintRange(float range[2], float *range_hint = 0);
+  virtual void ConstraintRanges();
 
   // Description:
   // Pack the widget
