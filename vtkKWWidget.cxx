@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-28 15:16:13 $
-  Version:   $Revision: 1.63 $
+  Date:      $Date: 2003-03-06 17:38:34 $
+  Version:   $Revision: 1.64 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,7 +52,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.63 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.64 $");
 
 int vtkKWWidgetCommand(ClientData cd, Tcl_Interp *interp,
                        int argc, char *argv[]);
@@ -346,7 +346,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   this->Superclass::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.63 $");
+  this->ExtractRevision(os,"$Revision: 1.64 $");
 }
 
 //------------------------------------------------------------------------------
@@ -627,7 +627,7 @@ void vtkKWWidget::UnpackChildren()
 {
   this->Script("catch {eval pack forget [pack slaves %s]} \n "
                "catch {eval grid forget [grid slaves %s]}",
-               this->GetWidgetName());
+               this->GetWidgetName(),this->GetWidgetName());
 }
 
 //------------------------------------------------------------------------------
