@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTclCommand.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-12-28 23:41:10 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-01-09 22:32:58 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1993-2001 Ken Martin, Will Schroeder, Bill Lorensen 
 All rights reserved.
@@ -42,7 +42,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 #include <ctype.h>
 #include "vtkKWTclCommand.h"
-#include <iostream.h>
 #include "vtkKWObject.h"
 
 //----------------------------------------------------------------
