@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 04:20:05 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2003-01-14 21:05:24 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -88,10 +88,22 @@ public:
   vtkSetStringMacro(FileName);
 
   // Description:
-  // Set default extention.
-  vtkSetStringMacro(DefaultExt);
-  vtkGetStringMacro(DefaultExt);
-
+  // Set default extension.
+  virtual void SetDefaultExt(const char *)
+    {
+      vtkErrorMacro("This method is deprecated use SetDefaultExtension");
+    }
+  const char *GetDefaultExt()
+    {
+      vtkErrorMacro("This method is deprecated use GetDefaultExtension");
+      return NULL;
+    }
+  
+  // Description:
+  // Set default extension.
+  vtkSetStringMacro(DefaultExtension);
+  vtkGetStringMacro(DefaultExtension);
+  
   // Description:
   // Set or reset the SaveDialog. If set, the dialog will be
   // save file dialog. If reset, the dialog will be load 
@@ -122,7 +134,7 @@ protected:
   char *FileTypes;
   char *Title;
   char *FileName;
-  char *DefaultExt;
+  char *DefaultExtension;
   char *LastPath;
   int SaveDialog;
   int Done;
