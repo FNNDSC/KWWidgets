@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:38 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2001-12-20 16:00:20 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -98,10 +98,15 @@ public:
   // These are the event handlers that UIs can use or override.
   virtual void AButtonPress(int num, int x, int y) {};
   virtual void AButtonRelease(int num, int x, int y) {};
+  virtual void AShiftButtonPress(int num, int x, int y) {};
+  virtual void AShiftButtonRelease(int num, int x, int y) {};
   virtual void AKeyPress(char key, int x, int y) {};
   virtual void Button1Motion(int x, int y) {};
   virtual void Button2Motion(int x, int y) {};
   virtual void Button3Motion(int x, int y) {};
+  virtual void ShiftButton1Motion(int x, int y) {};
+  virtual void ShiftButton2Motion(int x, int y) {};
+  virtual void ShiftButton3Motion(int x, int y) {};
   virtual void Exposed() {};
   virtual void Enter(int x, int y);
 
