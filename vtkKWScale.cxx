@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-07 20:15:27 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2000-08-16 04:10:54 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -170,8 +170,11 @@ void vtkKWScale::DisplayLabel(const char *name)
 {
   if (this->ScaleLabel)
     {
+    this->Script("%s configure -text {%s}",
+		 this->ScaleLabel->GetWidgetName(), name );
     return;
     }
+
   this->ScaleLabel = vtkKWWidget::New();
   this->ScaleLabel->SetParent(this);
   char temp[1024];

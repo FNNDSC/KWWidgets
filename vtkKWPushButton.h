@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPushButton.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-07 20:15:27 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-08-16 04:10:54 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,6 +44,8 @@ public:
   // Description:
   // Create a Tk widget
   virtual void Create(vtkKWApplication *app, const char *args);
+
+  void SetLabel(const char *label);
 
 protected:
   vtkKWPushButton() {};
