@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-27 17:41:52 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2002-06-28 13:55:54 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -411,4 +411,6 @@ void vtkCornerAnnotation::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "WindowLevel: " << this->GetWindowLevel() << endl;
   os << indent << "Mapper: " << this->GetMapper() << endl;
   os << indent << "MaximumLineHeight: " << this->MaximumLineHeight << endl;
+  os << indent << "LevelShift: " << this->LevelShift << endl;
+  os << indent << "LevelScale: " << this->LevelScale << endl;
 }
