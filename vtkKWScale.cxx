@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-23 16:02:00 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2000-09-22 19:02:43 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -94,7 +94,7 @@ void vtkKWScale::SetValue(float s)
   this->Script("%s set %f", this->ScaleWidget->GetWidgetName(),s);
   if (this->Entry)
     {
-    this->Entry->SetValue(s,0);
+    this->Entry->SetValue(s,2);
     }
   this->Value = s;
 
@@ -212,7 +212,7 @@ void vtkKWScale::ScaleValueChanged(float num)
   this->Value = num;
   if (this->Entry)
     {
-    this->Entry->SetValue(this->Value,0);
+    this->Entry->SetValue(this->Value,2);
     }
   if (this->Command)
     {
