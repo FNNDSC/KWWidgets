@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2001-12-10 18:36:31 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2001-12-26 22:31:30 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -56,7 +56,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 class vtkKWWindowCollection;
 class vtkKWWindow;
 class vtkKWWidget;
-class vtkKWEventNotifier;
 
 class VTK_EXPORT vtkKWApplication : public vtkKWObject
 {
@@ -144,10 +143,6 @@ public:
   static int GetWidgetVisibility();
   vtkBooleanMacro(WidgetVisibility, int);
   
-  // Description:
-  // Get the event notifier so that callback can be set or events invoked.
-  vtkGetObjectMacro( EventNotifier, vtkKWEventNotifier );
-
 //BTX
   // Description:
   // This can be esed to trace the actions of the user.
@@ -181,8 +176,6 @@ protected:
   static int WidgetVisibility;
   int InExit;
   
-  vtkKWEventNotifier *EventNotifier;
-
   ofstream *TraceFile;
 };
 

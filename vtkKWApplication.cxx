@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-12-12 22:34:40 $
-  Version:   $Revision: 1.38 $
+  Date:      $Date: 2001-12-26 22:31:10 $
+  Version:   $Revision: 1.39 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 #include "vtkOutputWindow.h"
 #include "vtkKWWindow.h"
-#include "vtkKWEventNotifier.h"
 #include "kwinit.h"
 
 
@@ -120,9 +119,6 @@ vtkKWApplication::vtkKWApplication()
     this->Script("wm withdraw %s", this->BalloonHelpWindow->GetWidgetName());
     }
   
-  this->EventNotifier = vtkKWEventNotifier::New();
-  this->EventNotifier->SetApplication( this );
-
   this->InExit = 0;
   this->TraceFile = NULL;
 }
@@ -321,12 +317,6 @@ void vtkKWApplication::Exit()
       }
     }
   
-  // remove the event notifier which otherwise would cause a ref count loop
-  if (this->EventNotifier)
-    {
-    this->EventNotifier->Delete();
-    this->EventNotifier = NULL;
-    }
   this->SetBalloonHelpPending(NULL);
   if (this->BalloonHelpWindow)
     {
