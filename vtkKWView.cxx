@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-09-18 21:33:20 $
-  Version:   $Revision: 1.31 $
+  Date:      $Date: 2000-09-25 21:30:57 $
+  Version:   $Revision: 1.32 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -761,7 +761,7 @@ void vtkKWView::Select(vtkKWWindow *pw)
     {
     // add the save as image option
     pw->GetMenuFile()->InsertCommand(this->ParentWindow->GetFileMenuIndex(),
-                                     "Save As Image",this, "SaveAsImage");
+                                     "Save Image",this, "SaveAsImage");
     }
   
   if ( this->SupportPrint )
@@ -812,7 +812,7 @@ void vtkKWView::Deselect(vtkKWWindow *pw)
   
   if ( this->SupportSaveAsImage )
     {
-    pw->GetMenuFile()->DeleteMenuItem("Save As Image");
+    pw->GetMenuFile()->DeleteMenuItem("Save Image");
     }
   
 #ifdef _WIN32
@@ -1062,7 +1062,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.31 $");
+  this->ExtractRevision(os,"$Revision: 1.32 $");
 }
 
 void vtkKWView::SetupMemoryRendering(int x, int y, void *cd) 
