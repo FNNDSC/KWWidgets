@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledEntry.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-08-18 13:57:41 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -69,6 +69,10 @@ public:
   // Description:
   // Set the label for the frame.
   void SetLabel(const char *);
+  
+  // Description:
+  // get the internal label
+  vtkKWLabel *GetLabel() { return this->Label; }
   
   // Description:
   // get the internal entry
