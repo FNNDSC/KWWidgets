@@ -21,7 +21,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWActorComposite );
-vtkCxxRevisionMacro(vtkKWActorComposite, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWActorComposite, "$Revision: 1.15 $");
 
 //----------------------------------------------------------------------------
 int vtkKWActorCompositeCommand(ClientData cd, Tcl_Interp *interp,
@@ -73,7 +73,7 @@ vtkPolyData *vtkKWActorComposite::GetInput()
 }
 
 //----------------------------------------------------------------------------
-vtkProp *vtkKWActorComposite::GetProp() 
+vtkProp* vtkKWActorComposite::GetPropInternal()
 {
   return this->Actor;
 }
