@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplashScreen.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-12 19:22:21 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-08-16 15:09:44 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWSplashScreen );
-vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.2 $");
 
 //-----------------------------------------------------------------------------
 vtkKWSplashScreen::vtkKWSplashScreen()
@@ -122,8 +122,9 @@ void vtkKWSplashScreen::Show()
   sscanf(this->GetApplication()->GetMainInterp()->result, "%d %d", &sw, &sh);
 
   int w, h;
-  this->Script("wm geometry %s", this->GetWidgetName());
-  sscanf(this->GetApplication()->GetMainInterp()->result, "%dx%d+", &w, &h);
+  this->Script("concat [winfo reqwidth %s] [winfo reqheight %s]",
+               this->GetWidgetName(), this->GetWidgetName());
+  sscanf(this->GetApplication()->GetMainInterp()->result, "%d %d", &w, &h);
 
   int x = (sw - w) / 2;
   int y = (sh - h) / 2;
