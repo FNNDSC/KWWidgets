@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTkUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-28 20:02:13 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-12-12 21:42:28 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -172,6 +172,15 @@ public:
                                                const char **widgets,
                                                const float *factors = 0,
                                                const int *weights = 0);
+
+  // Description:
+  // Synchronize the width of a set of label widgets. The maximum size is found
+  // and assigned to each label. Additionally it will apply the "options" to
+  // each widget (if any).
+  static int SynchroniseLabelsMaximumWidth(Tcl_Interp *interp,
+                                           int nb_of_widgets,
+                                           const char **widgets,
+                                           const char *options = 0);
 
   //ETX
 
