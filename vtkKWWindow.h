@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-01 19:42:04 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2000-10-05 20:15:56 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -150,6 +150,12 @@ public:
   // in the Status frame on the bottom right of the window.
   vtkGetObjectMacro(ProgressGauge, vtkKWProgressGauge);
  
+  // Description:
+  // Will the window add a help menu?
+  vtkSetClampMacro( SupportHelp, int, 0, 1 );
+  vtkGetMacro( SupportHelp, int );
+  vtkBooleanMacro( SupportHelp, int );
+  
 protected:
   vtkKWWindow();
   ~vtkKWWindow();
@@ -180,6 +186,8 @@ protected:
   vtkKWWidget *ToolbarFrame;
   float      PrintTargetDPI;
   vtkKWMenu *PageMenu;
+
+  int SupportHelp;
 };
 
 
