@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-15 22:59:51 $
-  Version:   $Revision: 1.27 $
+  Date:      $Date: 2003-01-30 21:03:52 $
+  Version:   $Revision: 1.28 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -141,7 +141,6 @@ public:
   virtual void SetTextColor(float *rgb)
                { this->SetTextColor(rgb[0], rgb[1], rgb[2]); }
   virtual float *GetTextColor();
-  virtual void TextColorCallback();
 
   // Description:
   // Set/Get the maximum line height.
@@ -185,13 +184,6 @@ public:
   void Update();
 
   // Description:
-  // Set the event invoked when the color of the annotation is changed.
-  // The AnnotationChangedEvent will be invoked too.
-  // Defaults to vtkKWEvent::AnnotationColorChangedEvent
-  vtkSetMacro(AnnotationColorChangedEvent, int)
-  vtkGetMacro(AnnotationColorChangedEvent, int)
-
-  // Description:
   // Set the event invoked when the anything in the annotation is changed.
   // Defaults to vtkKWEvent::ViewAnnotationChangedEvent
   vtkSetMacro(AnnotationChangedEvent, int);
@@ -226,7 +218,6 @@ protected:
   vtkKWCornerAnnotation();
   ~vtkKWCornerAnnotation();
 
-  int AnnotationColorChangedEvent;
   int AnnotationChangedEvent;
 
   vtkCornerAnnotation     *CornerProp;

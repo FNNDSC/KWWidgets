@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-22 16:40:45 $
-  Version:   $Revision: 1.49 $
+  Date:      $Date: 2003-01-30 21:03:52 $
+  Version:   $Revision: 1.50 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -94,7 +94,6 @@ static const char *vtkKWEventStrings[] = {
   "ImageCameraFocalPointAndPositionChangedEvent",
   "ImageCameraResetEvent",
   "ImageCornerAnnotationChangedEvent",
-  "ImageCornerAnnotationColorChangedEvent",
   "ImageDistanceVisibilityChangedEvent",
   "ImageHeaderAnnotationColorChangedEvent",
   "ImageHeaderAnnotationTextChangedEvent",
@@ -149,7 +148,6 @@ static const char *vtkKWEventStrings[] = {
   "VolumeBoundingBoxColorChangedEvent",
   "VolumeBoundingBoxVisibilityChangedEvent",
   "VolumeCornerAnnotationChangedEvent",
-  "VolumeCornerAnnotationColorChangedEvent",
   "VolumeDistanceVisibilityChangedEvent",
   "VolumeFlySpeedChangedEvent",
   "VolumeHeaderAnnotationColorChangedEvent",

@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-22 16:40:45 $
-  Version:   $Revision: 1.52 $
+  Date:      $Date: 2003-01-30 21:03:52 $
+  Version:   $Revision: 1.53 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -103,7 +103,6 @@ class VTK_EXPORT vtkKWEvent
     ImageCameraFocalPointAndPositionChangedEvent,
     ImageCameraResetEvent,
     ImageCornerAnnotationChangedEvent,
-    ImageCornerAnnotationColorChangedEvent,
     ImageDistanceVisibilityChangedEvent,
     ImageHeaderAnnotationColorChangedEvent,
     ImageHeaderAnnotationTextChangedEvent,
@@ -158,7 +157,6 @@ class VTK_EXPORT vtkKWEvent
     VolumeBoundingBoxColorChangedEvent,
     VolumeBoundingBoxVisibilityChangedEvent,
     VolumeCornerAnnotationChangedEvent,
-    VolumeCornerAnnotationColorChangedEvent,
     VolumeDistanceVisibilityChangedEvent,
     VolumeFlySpeedChangedEvent,
     VolumeHeaderAnnotationColorChangedEvent,
