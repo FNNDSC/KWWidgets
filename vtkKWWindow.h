@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-03-22 17:39:06 $
-  Version:   $Revision: 1.43 $
+  Date:      $Date: 2002-04-15 13:23:24 $
+  Version:   $Revision: 1.44 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -239,9 +239,9 @@ public:
   // When storing multiple arguments, separate with spaces.
   // If the level is lower than current registery level, operation 
   // will be successfull.
-  int SetRegisteryValue(int level, const char* subkey, const char* key, 
+  int SetWindowRegisteryValue(int level, const char* subkey, const char* key, 
 			const char* format, ...);
-  int GetRegisteryValue(int level, const char* subkey, const char* key, 
+  int GetWindowRegisteryValue(int level, const char* subkey, const char* key, 
 			char*value);
   int DeleteRegisteryValue(int level, const char* subkey, const char* key);
   
