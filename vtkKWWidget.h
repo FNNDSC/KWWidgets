@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-18 19:59:35 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-02-01 02:34:11 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -84,6 +84,11 @@ public:
   // The caller is resposible for deleting the returned string.  
   char* CreateCommand(vtkKWObject* Object, const char* MethodAndArgString);
 
+  // Description:
+  // Setting this string enables balloon help for this widget.
+  void SetBalloonHelpString(char *str);
+  vtkGetStringMacro(BalloonHelpString);
+
 protected:
   vtkKWWidget();
   ~vtkKWWidget();
@@ -94,6 +99,8 @@ protected:
   vtkKWWidget *Parent;
   vtkKWWidgetCollection *Children; 
   int DeletingChildren;
+
+  char *BalloonHelpString;
 };
 
 

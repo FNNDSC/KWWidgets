@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-18 19:59:35 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-02-01 02:34:11 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -95,6 +95,12 @@ public:
   void Script(char *EventString, ...);
   void SimpleScript(char *EventString);
 //ETX
+
+  // Description:
+  // Internal Balloon help callbacks.
+  void BalloonHelpTrigger(vtkKWWidget *widget);
+  void BalloonHelpDisplay(vtkKWWidget *widget);
+  void BalloonHelpCancel();
   
 protected:
   vtkKWApplication();
@@ -106,6 +112,13 @@ protected:
   Tcl_Interp *MainInterp;
   vtkKWWindowCollection *Windows;
   char *ApplicationName;
+
+  // For Balloon help
+  vtkKWWidget *BalloonHelpWindow;
+  vtkKWWidget *BalloonHelpLabel;
+  char *BalloonHelpPending;
+  vtkSetStringMacro(BalloonHelpPending);
+
 };
 
 #endif
