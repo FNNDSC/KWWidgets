@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-05 19:10:05 $
-  Version:   $Revision: 1.97 $
+  Date:      $Date: 2002-12-05 20:10:23 $
+  Version:   $Revision: 1.98 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -101,7 +101,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.97 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.98 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -1507,7 +1507,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.97 $");
+  this->ExtractRevision(os,"$Revision: 1.98 $");
 }
 
 //----------------------------------------------------------------------------
@@ -1670,4 +1670,5 @@ void vtkKWView::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "SupportSaveAsImage: " << this->GetSupportSaveAsImage() 
      << endl;
   os << indent << "SupportCopy: " << this->GetSupportCopy() << endl;
+  os << indent << "UseProgressGauge: " << this->UseProgressGauge << endl;
 }
