@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-08-28 17:11:32 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLoadSaveDialog );
-vtkCxxRevisionMacro(vtkKWLoadSaveDialog, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWLoadSaveDialog, "$Revision: 1.13 $");
 
 vtkKWLoadSaveDialog::vtkKWLoadSaveDialog()
 {
@@ -93,8 +93,10 @@ int vtkKWLoadSaveDialog::Invoke()
   this->Script("%s -title \"%s\" -defaultextension {%s} "
                "-filetypes {%s} -initialdir {%s}", 
                (this->SaveDialog) ? "tk_getSaveFile" : "tk_getOpenFile", 
-               this->Title, this->DefaultExt ? this->DefaultExt : "",
-               this->FileTypes, this->LastPath);
+               this->Title, 
+               (this->DefaultExt ? this->DefaultExt : ""),
+               this->FileTypes, 
+               (this->LastPath ? this->LastPath : "."));
   path = this->Application->GetMainInterp()->result;
   if ( path && strlen(path) )
     {
