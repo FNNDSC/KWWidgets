@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOKCancelDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-09-15 20:37:14 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-09-16 04:21:55 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -81,7 +81,7 @@ void vtkKWOKCancelDialog::Create(vtkKWApplication *app, const char *args)
   this->ButtonFrame->Create(app,"frame","");
   this->OKButton->Create(app,"button","-text OK -width 16");
   this->OKButton->SetCommand(this, "OK");
-  this->CancelButton->Create(app,"button","-text OK -width 16");
+  this->CancelButton->Create(app,"button","-text Cancel -width 16");
   this->CancelButton->SetCommand(this, "Cancel");
   this->Script("pack %s %s -side left -padx 4 -expand yes",
                this->OKButton->GetWidgetName(),
