@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-25 20:21:35 $
-  Version:   $Revision: 1.51 $
+  Date:      $Date: 2002-01-25 21:07:13 $
+  Version:   $Revision: 1.52 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -98,6 +98,7 @@ vtkKWApplication::vtkKWApplication()
   this->BalloonHelpLabel = vtkKWWidget::New();
   this->BalloonHelpLabel->SetParent(this->BalloonHelpWindow);
   this->BalloonHelpPending = NULL;
+  this->BalloonHelpDelay = 2;
 
   if (vtkKWApplication::WidgetVisibility)
     {
@@ -452,14 +453,15 @@ void vtkKWApplication::BalloonHelpTrigger(vtkKWWidget *widget)
   char *result;
 
   // If there is no help string, return
-  if ( !widget->GetBalloonHelpString() )
+  if ( !widget->GetBalloonHelpString() || this->BalloonHelpDelay <= 0 )
     {
     this->SetBalloonHelpPending(NULL);
     return;
     }
   
   this->BalloonHelpCancel();
-  this->Script("after 2000 {catch {%s BalloonHelpDisplay %s}}", 
+  this->Script("after %d {catch {%s BalloonHelpDisplay %s}}", 
+	       this->BalloonHelpDelay * 1000,
                this->GetTclName(), widget->GetTclName());
   result = this->GetMainInterp()->result;
   this->SetBalloonHelpPending(result);

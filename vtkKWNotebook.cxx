@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-25 20:15:25 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-01-25 21:07:13 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -290,9 +290,14 @@ vtkKWWidget *vtkKWNotebook::GetFrame(int n)
   return this->Frames[n];
 }
 
-
 // Add a page to the notebook
 void vtkKWNotebook::AddPage(const char *title)
+{
+  this->AddPage(title, 0);
+}
+
+// Add a page to the notebook
+void vtkKWNotebook::AddPage(const char *title, const char *ballon)
 {
   int cnt;
 
@@ -333,6 +338,10 @@ void vtkKWNotebook::AddPage(const char *title)
 
   this->Buttons[this->NumberOfPages]->Create(this->Application,"button",
 					     "-bd 2 -highlightthickness 0");
+  if ( ballon )
+    {
+    this->Buttons[this->NumberOfPages]->SetBalloonHelpString(ballon);
+    }
 
   this->Script(
     "%s configure -text {%s} -borderwidth %d -command {%s Raise %d}",

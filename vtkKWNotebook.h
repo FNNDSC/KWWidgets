@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:35 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-01-25 21:07:13 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -78,9 +78,14 @@ public:
   vtkKWWidget *GetFrame(const char *name);
 
   // Description:
-  // Set/Get the number of pages in the notebook.
-  void AddPage(const char *title);
+  // Get the number of pages in the notebook.
   vtkGetMacro(NumberOfPages,int);
+
+  // Description:
+  // Add new page to the notebook. By setting balloon string, 
+  // the page will have balloon help.
+  void AddPage(const char *title, const char* balloon);
+  void AddPage(const char *title);
   
   // Description:
   // The notebook will automatically resize itself to fit its
