@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-25 15:21:06 $
-  Version:   $Revision: 1.25 $
+  Date:      $Date: 2002-01-28 13:54:56 $
+  Version:   $Revision: 1.26 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -159,14 +159,14 @@ void vtkKWWidget::SetUpBalloonHelpBindings()
   this->Script("bind %s <Enter> {+%s BalloonHelpTrigger %s}", 
                this->GetWidgetName(), this->Application->GetTclName(),
                this->GetTclName());
-  this->Script("bind %s <ButtonPress> {+%s BalloonHelpCancel}", 
+  this->Script("bind %s <ButtonPress> {+%s BalloonHelpWithdraw}", 
                this->GetWidgetName(), this->Application->GetTclName());
-  this->Script("bind %s <KeyPress> {+%s BalloonHelpCancel}", 
+  this->Script("bind %s <KeyPress> {+%s BalloonHelpWithdraw}", 
                this->GetWidgetName(), this->Application->GetTclName());
   this->Script("bind %s <Leave> {+%s BalloonHelpCancel}", 
                this->GetWidgetName(), this->Application->GetTclName());
   this->Script("bind %s <B1-Motion> {+%s BalloonHelpWithdraw}", 
-               this->GetWidgetName(), this->Application->GetTclName());
+               this->GetWidgetName(), this->Application->GetTclName());  
 }
 
 
@@ -307,7 +307,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.25 $");
+  this->ExtractRevision(os,"$Revision: 1.26 $");
 }
 
 vtkKWWindow* vtkKWWidget::GetWindow()
