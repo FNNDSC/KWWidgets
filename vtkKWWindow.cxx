@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-14 13:43:27 $
-  Version:   $Revision: 1.127 $
+  Date:      $Date: 2002-10-29 20:49:43 $
+  Version:   $Revision: 1.128 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -70,7 +70,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define VTK_KW_WINDOW_GEOMETRY_REG_KEY "WindowGeometry"
 #define VTK_KW_WINDOW_FRAME1_SIZE_REG_KEY "WindowFrame1Size"
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.127 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.128 $");
 vtkCxxSetObjectMacro(vtkKWWindow, PropertiesParent, vtkKWWidget);
 
 class vtkKWWindowMenuEntry
@@ -1094,6 +1094,7 @@ void vtkKWWindow::LoadScript()
 {
   vtkKWLoadSaveDialog* loadScriptDialog = vtkKWLoadSaveDialog::New();
   this->RetrieveLastPath(loadScriptDialog, "LoadScriptLastPath");
+  loadScriptDialog->SetParent(this);
   loadScriptDialog->Create(this->Application,"");
   loadScriptDialog->SaveDialogOff();
   loadScriptDialog->SetTitle("Load Script");
@@ -1299,7 +1300,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.127 $");
+  this->ExtractRevision(os,"$Revision: 1.128 $");
 }
 
 int vtkKWWindow::ExitDialog()

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-16 14:32:42 $
-  Version:   $Revision: 1.31 $
+  Date:      $Date: 2002-10-29 20:49:43 $
+  Version:   $Revision: 1.32 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.31 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.32 $");
 
 
 
@@ -655,7 +655,7 @@ int vtkKWMenu::GetItemLabel(int position, char* label, int maxlen)
     }
   const char* lbl = 
     this->Script("%s entrycget %d -label", this->GetWidgetName(), position);
-  if (!label[0]) 
+  if (!lbl[0]) 
     {
     return VTK_ERROR;
     }
