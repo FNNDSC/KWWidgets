@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-17 21:43:05 $
-  Version:   $Revision: 1.38 $
+  Date:      $Date: 2002-12-22 15:49:22 $
+  Version:   $Revision: 1.39 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -238,7 +238,7 @@ protected:
   char *TraceName;
   int Enabled;
 
-  void UpdateEnableState();
+  virtual void UpdateEnableState();
 
 private:
   vtkKWWidget(const vtkKWWidget&); // Not implemented
