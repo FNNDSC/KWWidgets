@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-13 18:37:59 $
-  Version:   $Revision: 1.46 $
+  Date:      $Date: 2002-08-14 13:27:45 $
+  Version:   $Revision: 1.47 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -137,10 +137,10 @@ class VTK_EXPORT vtkKWView : public vtkKWWidget
   // Printthe image. This may pop up a dialog box etc.
   virtual void PrintView();
 #ifdef _WIN32
-  void SetupPrint(RECT &rcDest, HDC ghdc, HDC adc,
+  void SetupPrint(RECT &rcDest, HDC ghdc,
                   int printerPageSizeX, int printerPageSizeY,
                   int printerDPIX, int printerDPIY,
-                  float minX, float minY, float scaleX, float scaleY,
+                  float scaleX, float scaleY,
                   int screenSizeX, int screenSizeY);
 #endif
   int GetPrinting() {return this->Printing;};

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-13 18:37:58 $
-  Version:   $Revision: 1.81 $
+  Date:      $Date: 2002-08-14 13:27:44 $
+  Version:   $Revision: 1.82 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -97,7 +97,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.81 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.82 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -860,8 +860,8 @@ void vtkKWView::Print(HDC ghdc, HDC adc,
   int size[2];
   memcpy(size,vtkWin->GetSize(),sizeof(int)*2);
 
-  this->SetupPrint(rcDest, ghdc, adc, printerPageSizeX, printerPageSizeY,
-                   printerDPIX, printerDPIY, minX, minY,
+  this->SetupPrint(rcDest, ghdc, printerPageSizeX, printerPageSizeY,
+                   printerDPIX, printerDPIY,
                    scaleX, scaleY, size[0], size[1]);
   float scale;
   // target DPI specified here
@@ -887,10 +887,10 @@ void vtkKWView::Print(HDC ghdc, HDC adc,
   this->ResumeScreenRendering();
 }
 
-void vtkKWView::SetupPrint(RECT &rcDest, HDC ghdc, HDC adc,
+void vtkKWView::SetupPrint(RECT &rcDest, HDC ghdc,
                            int printerPageSizeX, int printerPageSizeY,
                            int printerDPIX, int printerDPIY,
-                           float minX, float minY, float scaleX, float scaleY,
+                           float scaleX, float scaleY,
                            int screenSizeX, int screenSizeY)
 {
   float scale;
@@ -1445,7 +1445,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.81 $");
+  this->ExtractRevision(os,"$Revision: 1.82 $");
 }
 
 //----------------------------------------------------------------------------
