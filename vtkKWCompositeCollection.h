@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCompositeCollection.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-17 03:20:01 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2001-01-30 17:15:17 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -90,7 +90,7 @@ inline int vtkKWCompositeCollection::IsItemPresent(vtkKWComposite *a)
 
 inline vtkKWComposite *vtkKWCompositeCollection::GetNextKWComposite() 
 { 
-  return (vtkKWComposite *)(this->GetNextItemAsObject());
+  return vtkKWComposite::SafeDownCast(this->GetNextItemAsObject());
 }
 
 inline vtkKWComposite *vtkKWCompositeCollection::GetLastKWComposite() 
@@ -101,7 +101,7 @@ inline vtkKWComposite *vtkKWCompositeCollection::GetLastKWComposite()
     }
   else
     {
-    return (vtkKWComposite *)(this->Bottom->Item);
+    return vtkKWComposite::SafeDownCast(this->Bottom->Item);
     }
 }
 
