@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-23 21:31:58 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2000-08-31 17:23:15 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -190,7 +190,7 @@ void vtkKWVolumeComposite::SetInput(vtkImageData *input)
 
   if ( this->GetView() )
     {
-    this->GetView()->GetWindow()->GetProgressGauge()->SetValue(0);
+    this->GetView()->GetWindow()->GetProgressGauge()->SetValue(5);
     }
   
   input->Update();
@@ -453,5 +453,5 @@ void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.15 $");
+  this->ExtractRevision(os,"$Revision: 1.16 $");
 }
