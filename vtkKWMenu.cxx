@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-05-30 20:03:34 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2000-06-01 21:37:40 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -233,6 +233,23 @@ char* vtkKWMenu::CreateRadioButtonVariable(vtkKWObject* Object,
   str << Object->GetTclName() << varname << ends;
   return str.str();
 }
+
+  
+  
+    
+void vtkKWMenu::CheckRadioButton(vtkKWObject* Object, 
+                                 const char* varname, int id)
+{
+  char *rbv = 
+    this->CreateRadioButtonVariable(Object,varname);
+  this->Script("set %s",rbv);
+  if (this->GetIntegerResult(this->Application) != id)
+    {
+    this->Script("set %s %d",rbv,id);
+    }
+  delete [] rbv;
+}
+
 
 void vtkKWMenu::AddRadioButton(int value, const char* label, const char* buttonVar, 
 			       vtkKWObject* Object, 
