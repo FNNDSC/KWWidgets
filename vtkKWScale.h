@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 17:03:53 $
-  Version:   $Revision: 1.23 $
+  Date:      $Date: 2003-01-02 04:11:26 $
+  Version:   $Revision: 1.24 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -82,6 +82,8 @@ public:
   virtual void SetRange(float min, float max);
   virtual void SetRange(float *range) { this->SetRange(range[0], range[1]); };
   vtkGetVector2Macro(Range, float);
+  virtual float GetRangeMin() { return this->GetRange()[0]; };
+  virtual float GetRangeMax() { return this->GetRange()[1]; };
 
   // Description:
   // Set/get whether to display the range of the scale
