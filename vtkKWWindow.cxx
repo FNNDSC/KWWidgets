@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-27 15:25:56 $
-  Version:   $Revision: 1.78 $
+  Date:      $Date: 2002-03-04 20:33:38 $
+  Version:   $Revision: 1.79 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -406,6 +406,11 @@ void vtkKWWindow::SetSelectedView(vtkKWView *_arg)
 // invoke the apps exit when selected
 void vtkKWWindow::Exit()
 {  
+  if (this->Application->GetDialogUp())
+    {
+    this->Script("bell");
+    return;
+    }
   if (!this->InExit)
     {
     this->InExit = 1;
@@ -964,7 +969,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.78 $");
+  this->ExtractRevision(os,"$Revision: 1.79 $");
 }
 
 int vtkKWWindow::ExitDialog()

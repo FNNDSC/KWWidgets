@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-03-01 18:00:13 $
-  Version:   $Revision: 1.34 $
+  Date:      $Date: 2002-03-04 20:33:37 $
+  Version:   $Revision: 1.35 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -184,6 +184,13 @@ public:
   vtkSetMacro(ExitStatus, int);
   vtkGetMacro(ExitStatus, int);
 
+  // Description:
+  // When a modal dialog is up, this flag should be set.
+  // vtkKWWindow will check this at exit and if set,
+  // it will refuse to exit
+  vtkSetMacro(DialogUp, int);
+  vtkGetMacro(DialogUp, int);
+  
 protected:
   vtkKWApplication();
   ~vtkKWApplication();
@@ -204,6 +211,7 @@ protected:
 
   static int WidgetVisibility;
   int InExit;
+  int DialogUp;
 
   int ExitStatus;
   
