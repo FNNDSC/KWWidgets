@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-10-11 20:12:55 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2001-10-12 18:28:48 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -82,7 +82,7 @@ void vtkKWMenu::Create(vtkKWApplication* app, const char* args)
     return;
     }
   this->SetApplication(app);
-  this->Script("menu %s %s -tearoff %d", this->GetWidgetName(), args, this->TearOff); 
+  this->Script("menu %s -tearoff %d %s", this->GetWidgetName(), this->TearOff, args); 
   this->Script("bind %s <<MenuSelect>> {%s DisplayHelp %%W}", this->GetWidgetName(),
 	       this->GetTclName());
   
