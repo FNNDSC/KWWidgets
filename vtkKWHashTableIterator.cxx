@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWHashTableIterator.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-16 19:13:31 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-01-22 20:36:56 $
+  Version:   $Revision: 1.2 $
 
 
 Copyright (c) 1993-2001 Ken Martin, Will Schroeder, Bill Lorensen 
@@ -59,6 +59,7 @@ vtkKWHashTableIterator::vtkKWHashTableIterator()
 
 vtkKWHashTableIterator::~vtkKWHashTableIterator()
 {
+  this->SetHashTable(0);
 }
 
 unsigned long vtkKWHashTableIterator::GetKey()
@@ -138,6 +139,11 @@ void vtkKWHashTableIterator::SetHashTable(vtkKWHashTable *table)
   //cout << "Set hash table" << endl;
   if ( !table )
     {
+    if ( this->HashTable )
+      {
+      this->HashTable->Delete();
+      this->HashTable=0;
+      }
     return;
     }
   if ( this->HashTable == table )
