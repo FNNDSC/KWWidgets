@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-04 14:37:46 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-06-07 20:42:36 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -178,4 +178,5 @@ void vtkKWEntry::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
   os << indent << "Width: " << this->GetWidth() << endl;
+  os << indent << "Readonly: " << (this->ReadOnly?"on":"off") << endl;
 }
