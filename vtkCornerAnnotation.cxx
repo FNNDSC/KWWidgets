@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-06-06 21:18:27 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-07-07 14:42:09 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -104,7 +104,7 @@ int vtkCornerAnnotation::RenderOverlay(vtkViewport *viewport)
 {
   // Everything is built, just have to render
   // only render if font is at least minimum font
-  if (this->TextMapper[0]->GetFontSize() >= this->MinimumFontSize)
+  if (this->FontSize >= this->MinimumFontSize)
     {
     for (int i = 0; i < 4; i++)
       {
@@ -202,6 +202,7 @@ int vtkCornerAnnotation::RenderOpaqueGeometry(vtkViewport *viewport)
       maxX = (tempi[0] + tempi[2]) > (tempi[4] + tempi[6]) ?
         tempi[0] + tempi[2] : tempi[4] + tempi[6];
       }
+    this->FontSize = fontSize;
     
     // now set the position of the TextActors
     this->TextActor[0]->SetPosition(5,5);
@@ -217,7 +218,7 @@ int vtkCornerAnnotation::RenderOpaqueGeometry(vtkViewport *viewport)
     }
 
   // Everything is built, just have to render
-  if (this->TextMapper[0]->GetFontSize() >= this->MinimumFontSize)
+  if (this->FontSize >= this->MinimumFontSize)
     {
     for (i = 0; i < 4; i++)
       {

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2000-07-06 20:15:57 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-07-07 14:42:05 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -86,7 +86,8 @@ protected:
   void operator=(const vtkCornerAnnotation&) {};
 
   float MaximumLineHeight;
-  
+
+  int FontSize;
   vtkActor2D    *TextActor[4];
   vtkTimeStamp   BuildTime;
   int            LastSize[2];
