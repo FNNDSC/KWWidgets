@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-13 12:49:17 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2002-07-02 15:00:41 $
+  Version:   $Revision: 1.19 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -82,11 +82,26 @@ int vtkKWDialog::Invoke()
   if ( this->GetMasterWindow() )
     {
     int width, height, x, y;
+    int sw, sh;
+    this->Script("concat [ winfo screenwidth %s ] [ winfo screenheight %s ]",
+		 this->GetMasterWindow()->GetWidgetName(), 
+		 this->GetMasterWindow()->GetWidgetName());
+    sscanf(this->GetApplication()->GetMainInterp()->result,
+	   "%d %d", &sw, &sh);
     this->Script("wm geometry %s", this->GetMasterWindow()->GetWidgetName());
     sscanf(this->GetApplication()->GetMainInterp()->result, "%dx%d+%d+%d",
 	   &width, &height, &x, &y);
     x += width/2;
     y += height/2;
+    if ( x > sw - 200 )
+      {
+      x = sw - 200;
+      }
+    if ( y > sh - 200 )
+      {
+      y = sh - 200;
+      }
+
     this->Script("wm geometry %s +%d+%d", this->GetWidgetName(),
 		 x, y);
     }
