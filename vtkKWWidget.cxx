@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-08 18:02:01 $
-  Version:   $Revision: 1.33 $
+  Date:      $Date: 2002-07-08 18:12:10 $
+  Version:   $Revision: 1.34 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -341,7 +341,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.33 $");
+  this->ExtractRevision(os,"$Revision: 1.34 $");
 }
 
 //------------------------------------------------------------------------------
@@ -515,4 +515,5 @@ void vtkKWWidget::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "Parent: " << this->GetParent() << endl;
   os << indent << "TraceName: " << (this->TraceName?this->TraceName:"none") 
      << endl;
+  os << indent << "Enabled: " << (this->Enabled ? "on" : "off") << endl;
 }
