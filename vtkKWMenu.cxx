@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:23 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2002-01-22 21:03:03 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -440,6 +440,12 @@ int vtkKWMenu::GetIndex(const char* menuname)
 {
   this->Script("%s index {%s}", this->GetWidgetName(), menuname);
   return vtkKWObject::GetIntegerResult(this->Application);
+}
+
+int vtkKWMenu::IsItemPresent(const char* menuname)
+{
+  this->Script("catch {%s index {%s}}", this->GetWidgetName(), menuname);
+  return !vtkKWObject::GetIntegerResult(this->Application);
 }
 
 void vtkKWMenu::AddSeparator()

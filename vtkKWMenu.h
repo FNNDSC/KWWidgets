@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-03 22:46:04 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2002-01-22 21:03:03 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -147,6 +147,10 @@ public:
   // Description:
   // Return the integer index of the menu item by string
   int GetIndex(const char* menuname);
+
+  // Description:
+  // Checks if an item is in the menu
+  int IsItemPresent(const char* menuname);
   
   // Description:
   // Call back for active menu item doc line help
