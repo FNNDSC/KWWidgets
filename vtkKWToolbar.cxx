@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 18:45:46 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2002-08-07 19:21:10 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -77,7 +77,7 @@ void vtkKWToolbar::SetGlobalWidgetsFlatAspect(int val)
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
-vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.15 $");
 
 
 int vtkKWToolbarCommand(ClientData cd, Tcl_Interp *interp,
@@ -137,7 +137,7 @@ void vtkKWToolbar::Create(vtkKWApplication *app)
 
   // Create the main frame for this widget
 
-  this->Script("frame %s -pady 2", this->GetWidgetName());
+  this->Script("frame %s ", this->GetWidgetName());
   this->Script("pack %s -side left -anchor nw -expand y -fill both -ipadx 0 -padx 2",
                this->GetWidgetName());
   
@@ -248,7 +248,7 @@ void vtkKWToolbar::Pack()
     }
   else
     {
-    this->Script("%s config -relief raised -bd 1 -padx 3", 
+    this->Script("%s config -relief raised -bd 1 -padx 3 -pady 2", 
                  this->GetWidgetName());
     this->Script("pack forget %s", this->Separator->GetWidgetName());
     this->Script("pack %s -side left -anchor nw -expand n -fill y -ipadx 0",
