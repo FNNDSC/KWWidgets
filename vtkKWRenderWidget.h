@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-03 18:05:58 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2003-01-03 20:35:24 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -82,7 +82,7 @@ public:
   virtual void AKeyPress(char key, int x, int y, int ctrl, int shift);
   virtual void Exposed();
   virtual void Configure(int width, int height);
-  virtual void Enter(int x, int y) {}
+  virtual void Enter(int /*x*/, int /*y*/) {}
   
   virtual void Render();
   virtual void Reset() = 0;
