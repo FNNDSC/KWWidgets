@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWParameterValueFunctionEditor.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-05-07 21:37:03 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2003-05-08 13:24:24 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkMath.h"
 #include "vtkObjectFactory.h"
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.5 $");
 
 #define VTK_KW_RANGE_POINT_RADIUS_MIN    2
 
@@ -854,9 +854,10 @@ void vtkKWParameterValueFunctionEditor::InvokeVisibleRangeChangingCommand()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWParameterValueFunctionEditor::SetCommand(char **command, 
-                                                   vtkKWObject *object, 
-                                                   const char *method)
+void vtkKWParameterValueFunctionEditor::SetObjectMethodCommand(
+  char **command, 
+  vtkKWObject *object, 
+  const char *method)
 {
   if (*command)
     {
@@ -878,63 +879,65 @@ void vtkKWParameterValueFunctionEditor::SetCommand(char **command,
 void vtkKWParameterValueFunctionEditor::SetPointAddedCommand(
   vtkKWObject *object, const char *method)
 {
-  this->SetCommand(&this->PointAddedCommand, object, method);
+  this->SetObjectMethodCommand(&this->PointAddedCommand, object, method);
 }
 
 //----------------------------------------------------------------------------
 void vtkKWParameterValueFunctionEditor::SetPointMovingCommand(
   vtkKWObject *object, const char *method)
 {
-  this->SetCommand(&this->PointMovingCommand, object, method);
+  this->SetObjectMethodCommand(&this->PointMovingCommand, object, method);
 }
 
 //----------------------------------------------------------------------------
 void vtkKWParameterValueFunctionEditor::SetPointMovedCommand(
   vtkKWObject *object, const char *method)
 {
-  this->SetCommand(&this->PointMovedCommand, object, method);
+  this->SetObjectMethodCommand(&this->PointMovedCommand, object, method);
 }
 
 //----------------------------------------------------------------------------
 void vtkKWParameterValueFunctionEditor::SetPointRemovedCommand(
   vtkKWObject *object, const char *method)
 {
-  this->SetCommand(&this->PointRemovedCommand, object, method);
+  this->SetObjectMethodCommand(&this->PointRemovedCommand, object, method);
 }
 
 //----------------------------------------------------------------------------
 void vtkKWParameterValueFunctionEditor::SetSelectionChangedCommand(
   vtkKWObject *object, const char *method)
 {
-  this->SetCommand(&this->SelectionChangedCommand, object, method);
+  this->SetObjectMethodCommand(&this->SelectionChangedCommand, object, method);
 }
 
 //----------------------------------------------------------------------------
 void vtkKWParameterValueFunctionEditor::SetFunctionChangedCommand(
   vtkKWObject *object, const char *method)
 {
-  this->SetCommand(&this->FunctionChangedCommand, object, method);
+  this->SetObjectMethodCommand(&this->FunctionChangedCommand, object, method);
 }
 
 //----------------------------------------------------------------------------
 void vtkKWParameterValueFunctionEditor::SetFunctionChangingCommand(
   vtkKWObject *object, const char *method)
 {
-  this->SetCommand(&this->FunctionChangingCommand, object, method);
+  this->SetObjectMethodCommand(&this->FunctionChangingCommand, object, method);
 }
 
 //----------------------------------------------------------------------------
 void vtkKWParameterValueFunctionEditor::SetVisibleRangeChangedCommand(
   vtkKWObject *object, const char *method)
 {
-  this->SetCommand(&this->VisibleRangeChangedCommand, object, method);
+  this->SetObjectMethodCommand(
+    &this->VisibleRangeChangedCommand, object, method);
 }
 
 //----------------------------------------------------------------------------
 void vtkKWParameterValueFunctionEditor::SetVisibleRangeChangingCommand(
   vtkKWObject *object, const char *method)
 {
-  this->SetCommand(&this->VisibleRangeChangingCommand, object, method);
+  this->SetObjectMethodCommand(
+    &this->VisibleRangeChangingCommand, object, method);
 }
 
 //----------------------------------------------------------------------------
@@ -1636,8 +1639,8 @@ void vtkKWParameterValueFunctionEditor::MovePointCallback(
     {
     if (this->LastConstrainedMove == CONSTRAINED_MOVE_FREE)
       {
-      if (fabs(c_x - LastSelectCanvasCoordinates[0]) >
-          fabs(c_y - LastSelectCanvasCoordinates[1]))
+      if (fabs((double)(c_x - LastSelectCanvasCoordinates[0])) >
+          fabs((double)(c_y - LastSelectCanvasCoordinates[1])))
         {
         this->LastConstrainedMove = CONSTRAINED_MOVE_H;
         }

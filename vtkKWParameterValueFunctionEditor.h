@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWParameterValueFunctionEditor.h,v $
   Language:  C++
-  Date:      $Date: 2003-05-07 14:31:44 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2003-05-08 13:24:24 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -302,8 +302,8 @@ protected:
 
   virtual void InvokeCommand(const char *command);
   virtual void InvokePointCommand(const char *command, int id);
-  virtual void SetCommand(char **command, 
-                          vtkKWObject *object, const char *method);
+  virtual void SetObjectMethodCommand(char **command, 
+                                      vtkKWObject *object, const char *method);
 
   // GUI
 
