@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-06 21:59:42 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2002-02-07 19:57:31 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -129,8 +129,8 @@ protected:
   
   // Description:
   // Store background color of the back tab and the front tab.
-  char BackColor[10];
-  char ForeColor[10];
+  char BackgroundColor[10];
+  char ForegroundColor[10];
 private:
   vtkKWNotebook(const vtkKWNotebook&); // Not implemented
   void operator=(const vtkKWNotebook&); // Not implemented
