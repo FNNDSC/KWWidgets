@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplicationSettingsInterface.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-10 18:24:25 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-12-10 20:02:03 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWApplicationSettingsInterface);
-vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.5 $");
 
 int vtkKWApplicationSettingsInterfaceCommand(ClientData cd, Tcl_Interp *interp,
                                              int argc, char *argv[]);
@@ -374,6 +374,15 @@ void vtkKWApplicationSettingsInterface::ShowBalloonHelpCallback()
 //------------------------------------------------------------------------------
 void vtkKWApplicationSettingsInterface::SetEnabled(int e)
 {
+  this->Superclass::SetEnabled(e);
+
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
+  // Interface settings
+
   if (this->InterfaceSettingsFrame)
     {
     this->InterfaceSettingsFrame->SetEnabled(e);
