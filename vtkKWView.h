@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-03 22:48:05 $
-  Version:   $Revision: 1.24 $
+  Date:      $Date: 2002-01-08 21:45:28 $
+  Version:   $Revision: 1.25 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -200,10 +200,6 @@ public:
   // Description::
   // Override Unregister since widgets have loops.
   void UnRegister(vtkObject *o);
-
-  // Description::
-  // Indicate when printing if a higher resolution output can be used.
-  virtual int RequireUnityScale() {return 0;};
 
   // Description::
   // Set the title of this view.
