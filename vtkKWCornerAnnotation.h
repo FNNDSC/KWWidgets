@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2000-07-06 20:15:57 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2000-07-11 17:10:38 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -100,6 +100,11 @@ public:
 
   void UpdateFromMaster();
 
+  
+  // Description:
+  // Get at the underlying vtkCornerAnnotationClass
+  vtkGetObjectMacro(CornerProp,vtkCornerAnnotation);
+  
 protected:
   vtkKWCornerAnnotation();
   ~vtkKWCornerAnnotation();
