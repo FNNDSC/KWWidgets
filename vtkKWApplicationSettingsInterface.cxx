@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplicationSettingsInterface.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-10 20:02:03 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-12-22 15:55:48 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWApplicationSettingsInterface);
-vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.6 $");
 
 int vtkKWApplicationSettingsInterfaceCommand(ClientData cd, Tcl_Interp *interp,
                                              int argc, char *argv[]);
@@ -281,6 +281,10 @@ void vtkKWApplicationSettingsInterface::Create(vtkKWApplication *app)
   tk_cmd << ends;
   this->Script(tk_cmd.str());
   tk_cmd.rdbuf()->freeze(0);
+
+  // Update
+
+  this->Update();
 }
 
 //----------------------------------------------------------------------------
@@ -372,40 +376,35 @@ void vtkKWApplicationSettingsInterface::ShowBalloonHelpCallback()
 }
 
 //------------------------------------------------------------------------------
-void vtkKWApplicationSettingsInterface::SetEnabled(int e)
+void vtkKWApplicationSettingsInterface::UpdateEnableState()
 {
-  this->Superclass::SetEnabled(e);
-
-  if (!this->IsCreated())
-    {
-    return;
-    }
+  this->Superclass::UpdateEnableState();
 
   // Interface settings
 
   if (this->InterfaceSettingsFrame)
     {
-    this->InterfaceSettingsFrame->SetEnabled(e);
+    this->InterfaceSettingsFrame->SetEnabled(this->Enabled);
     }
 
   if (this->ConfirmExitCheckButton)
     {
-    this->ConfirmExitCheckButton->SetEnabled(e);
+    this->ConfirmExitCheckButton->SetEnabled(this->Enabled);
     }
 
   if (this->SaveGeometryCheckButton)
     {
-    this->SaveGeometryCheckButton->SetEnabled(e);
+    this->SaveGeometryCheckButton->SetEnabled(this->Enabled);
     }
 
   if (this->ShowSplashScreenCheckButton)
     {
-    this->ShowSplashScreenCheckButton->SetEnabled(e);
+    this->ShowSplashScreenCheckButton->SetEnabled(this->Enabled);
     }
 
   if (this->ShowBalloonHelpCheckButton)
     {
-    this->ShowBalloonHelpCheckButton->SetEnabled(e);
+    this->ShowBalloonHelpCheckButton->SetEnabled(this->Enabled);
     }
 }
 

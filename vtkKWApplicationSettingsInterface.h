@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplicationSettingsInterface.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-20 14:17:18 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-12-22 15:55:48 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -78,11 +78,6 @@ public:
   virtual void Create(vtkKWApplication *app);
 
   // Description:
-  // Enable/Disable this panel. This should propagate SetEnabled() calls to the
-  // internal widgets.
-  virtual void SetEnabled(int e);
-
-  // Description:
   // Set ConfirmExit UI On/Off programmatically. 
   // Save the setting to registry.
   void SetConfirmExit(int);
@@ -116,10 +111,6 @@ public:
   // function is called.
   vtkGetObjectMacro(InterfaceSettingsFrame, vtkKWLabeledFrame);
 
-  // Description:
-  // Refresh the interface given the ivars.
-  virtual void Update() {};
-
 protected:
   vtkKWApplicationSettingsInterface();
   ~vtkKWApplicationSettingsInterface();
@@ -130,6 +121,10 @@ protected:
   vtkKWCheckButton  *SaveGeometryCheckButton;
   vtkKWCheckButton  *ShowSplashScreenCheckButton;
   vtkKWCheckButton  *ShowBalloonHelpCheckButton;
+
+  // Update the enable state. This should propagate similar calls to the
+  // internal widgets.
+  virtual void UpdateEnableState();
 
 private:
   vtkKWApplicationSettingsInterface(const vtkKWApplicationSettingsInterface&); // Not implemented
