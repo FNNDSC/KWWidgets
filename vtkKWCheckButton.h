@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCheckButton.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:13 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-10-04 16:53:58 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -75,6 +75,11 @@ public:
   void SetText(const char* txt);
   const char* GetText();
 
+  // Description:
+  // Set the variable name.
+  vtkGetStringMacro(VariableName);
+  virtual void SetVariableName(const char *);
+
 protected:
 
   vtkSetStringMacro(MyText);
@@ -83,7 +88,9 @@ protected:
   ~vtkKWCheckButton();
 
   int IndicatorOn;
-  char* MyText;
+  char *MyText;
+  char *VariableName;
+
 private:
   vtkKWCheckButton(const vtkKWCheckButton&); // Not implemented
   void operator=(const vtkKWCheckButton&); // Not Implemented

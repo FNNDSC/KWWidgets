@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-10-04 16:53:58 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -81,6 +81,14 @@ public:
   vtkSetMacro(Width, int);
   vtkGetMacro(Width, int);
 
+  // Description:
+  // Adjust the -wraplength argument so that it matches the width of
+  // the widget automatically (through the <Configure> event).
+  virtual void SetAdjustWrapLengthToWidth(int);
+  vtkGetMacro(AdjustWrapLengthToWidth, int);
+  vtkBooleanMacro(AdjustWrapLengthToWidth, int);
+  void AdjustWrapLengthToWidthCallback();
+
 //BTX
   enum {
     SingleLine,
@@ -91,10 +99,12 @@ public:
 protected:
   vtkKWLabel();
   ~vtkKWLabel();
+
 private:
   char* Label;
   int LineType;
   int Width;
+  int AdjustWrapLengthToWidth;
   vtkKWLabel(const vtkKWLabel&); // Not implemented
   void operator=(const vtkKWLabel&); // Not implemented
 };

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-13 20:58:06 $
-  Version:   $Revision: 1.87 $
+  Date:      $Date: 2002-10-04 16:53:59 $
+  Version:   $Revision: 1.88 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -97,7 +97,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.87 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.88 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -171,6 +171,8 @@ vtkKWView::vtkKWView()
   this->HeaderComposite->SetProp(this->HeaderProp);
 
   this->CornerAnnotation = vtkKWCornerAnnotation::New();
+  this->CornerAnnotation->SetTraceReferenceObject(this);
+  this->CornerAnnotation->SetTraceReferenceCommand("GetCornerAnnotation");
   
   this->PropertiesCreated = 0;
   this->InteractiveUpdateRate = 5.0;
@@ -1113,8 +1115,12 @@ void vtkKWView::Select(vtkKWWindow *pw)
   if ( this->SupportSaveAsImage )
     {
     // add the save as image option
+    pw->GetMenuFile()->InsertSeparator(this->ParentWindow->GetFileMenuIndex());
     pw->GetMenuFile()->InsertCommand(this->ParentWindow->GetFileMenuIndex(),
-                                     "Save Image",this, "SaveAsImage", 8);
+                                     "Save View Image",
+                                     this, 
+                                     "SaveAsImage", 8,
+                                     "Save an image of the current view contents");
     }
   
   if ( this->SupportPrint )
@@ -1137,7 +1143,7 @@ void vtkKWView::Select(vtkKWWindow *pw)
     {
 #ifdef _WIN32
   // add the edit copy option
-  pw->GetMenuEdit()->AddCommand("Copy view",this,"EditCopy", "Copy the contents of the current view to the clipboard");
+  pw->GetMenuEdit()->AddCommand("Copy View Image",this,"EditCopy", "Copy an image of current view contents to the clipboard");
 #endif
     }
   
@@ -1483,7 +1489,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.87 $");
+  this->ExtractRevision(os,"$Revision: 1.88 $");
 }
 
 //----------------------------------------------------------------------------

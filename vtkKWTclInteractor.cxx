@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTclInteractor.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-10-04 16:53:59 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTclInteractor );
-vtkCxxRevisionMacro(vtkKWTclInteractor, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWTclInteractor, "$Revision: 1.12 $");
 
 int vtkKWTclInteractorCommand(ClientData cd, Tcl_Interp *interp,
                            int argc, char *argv[]);
@@ -142,7 +142,16 @@ void vtkKWTclInteractor::Create(vtkKWApplication *app)
   
   // create the top level
   wname = this->GetWidgetName();
-  this->Script("toplevel %s", wname);
+  if (this->MasterWindow)
+    {
+    this->Script("toplevel %s -class %s", 
+                 wname,
+                 this->MasterWindow->GetClassName());
+    }
+  else
+    {
+    this->Script("toplevel %s", wname);
+    }
   this->Script("wm title %s \"%s\"", wname, this->Title);
   this->Script("wm iconname %s \"vtk\"", wname);
   if (this->MasterWindow)

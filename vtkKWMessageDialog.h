@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-05 21:13:41 $
-  Version:   $Revision: 1.24 $
+  Date:      $Date: 2002-10-04 16:53:59 $
+  Version:   $Revision: 1.25 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -110,6 +110,18 @@ public:
   vtkGetMacro(Options, int);
 
   // Description:
+  // The label displayed on the OK button. Only used when
+  // the style is OkCancel.
+  vtkSetStringMacro(OKButtonText);
+  vtkGetStringMacro(OKButtonText);
+
+  // Description:
+  // The label displayed on the cancel button. Only used when
+  // the style is OkCancel.
+  vtkSetStringMacro(CancelButtonText);
+  vtkGetStringMacro(CancelButtonText);
+
+  // Description:
   // Utility methods to create various dialog windows.
   // icon is a enumerated icon type described in vtkKWIcon.
   // title is a title string of the dialog. name is the dialog name
@@ -132,6 +144,10 @@ public:
   // Description:
   // Retrieve the frame where the message is.
   vtkGetObjectMacro(MessageDialogFrame, vtkKWWidget);
+
+  // Description:
+  // Set the icon on the message dialog.
+  void SetIcon();
 
 protected:
   vtkKWMessageDialog();
@@ -162,9 +178,8 @@ protected:
   // the user.
   int GetRememberMessage();
   
-  // Description:
-  // Set the icon on the message dialog.
-  void SetIcon();
+  char* OKButtonText;
+  char* CancelButtonText;
 
 private:
   vtkKWMessageDialog(const vtkKWMessageDialog&); // Not implemented

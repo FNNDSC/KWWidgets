@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-20 14:42:23 $
-  Version:   $Revision: 1.62 $
+  Date:      $Date: 2002-10-04 16:53:59 $
+  Version:   $Revision: 1.63 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -72,6 +72,7 @@ template<class DType> class vtkVector;
 
 #define VTK_KW_PREFERENCES_PAGE_LABEL "Preferences"
 #define VTK_KW_PAGE_SETUP_MENU_LABEL "Page Setup"
+#define VTK_KW_SAVE_WINDOW_GEOMETRY_REG_KEY "SaveWindowGeometry"
 
 class VTK_EXPORT vtkKWWindow : public vtkKWWidget
 {
@@ -307,7 +308,8 @@ public:
   
   // Description:
   // Callback to handle dialog settings change
-  void OnDialogSettingsChange();
+  void OnInterfaceSettingsChange();
+  vtkGetObjectMacro(InterfaceSettingsFrame,vtkKWLabeledFrame);
 
 protected:
   vtkKWWindow();
@@ -380,9 +382,11 @@ protected:
   int   PromptBeforeClose;
   int   InExit;
 
-  vtkKWLabeledFrame *DialogSettingsFrame;
-  vtkKWCheckButton  *DialogSettingsConfirmExitCheck;
-  vtkKWCheckButton  *DialogSettingsShowSplashScreenCheck;
+  vtkKWLabeledFrame *InterfaceSettingsFrame;
+  vtkKWCheckButton  *InterfaceSettingsConfirmExitCheck;
+  vtkKWCheckButton  *InterfaceSettingsSaveWindowGeometry;
+  vtkKWCheckButton  *InterfaceSettingsShowSplashScreenCheck;
+  vtkKWCheckButton  *InterfaceSettingsShowBalloonHelpCheck;
   
 //BTX
   // Description:

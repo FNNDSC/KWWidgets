@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenuButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-10-04 16:53:59 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,7 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 
 vtkStandardNewMacro( vtkKWMenuButton );
-vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.9 $");
 
 int vtkKWMenuButtonCommand(ClientData cd, Tcl_Interp *interp,
                       int argc, char *argv[]);
@@ -76,7 +76,7 @@ void vtkKWMenuButton::Create(vtkKWApplication *app, char* /*args*/)
   this->SetApplication(app);
 
   this->Menu->SetParent(this);
-  this->Script("menubutton %s -menu %s -relief raised -bd 2", 
+  this->Script("menubutton %s -menu %s -indicatoron 1 -relief raised -bd 2 -direction flush", 
                this->GetWidgetName(), this->Menu->GetWidgetName());
 
   // Should the args be passed through?

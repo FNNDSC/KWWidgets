@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-13 20:09:59 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2002-10-04 16:53:59 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -74,10 +74,11 @@ public:
   void SetLabel(const char *);
   
   // Description:
-  // Set/Get the margin between the internal frame and the top groove border.
-  void SetMargin(int);
-  int GetMargin();
-  
+  // Ask the frame to readjust its tops margin according to the content of
+  // the LabelFrame. This method if bound to a <Configure> event, so
+  // the widget should adjust itself automatically most of the time.
+  void AdjustMargin();
+
   // Description:
   // Get the internal frame.
   vtkGetObjectMacro(Frame, vtkKWWidget);

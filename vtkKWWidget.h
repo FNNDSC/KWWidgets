@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-08 21:26:14 $
-  Version:   $Revision: 1.31 $
+  Date:      $Date: 2002-10-04 16:53:59 $
+  Version:   $Revision: 1.32 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -136,7 +136,7 @@ public:
 
   // Description:
   // Set or get enabled state.
-  void SetEnabled(int);
+  virtual void SetEnabled(int);
   vtkBooleanMacro(Enabled, int);
   vtkGetMacro(Enabled, int);
 

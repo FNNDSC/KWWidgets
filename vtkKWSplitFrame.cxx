@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplitFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-16 22:27:44 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2002-10-04 16:53:59 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,7 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 vtkStandardNewMacro( vtkKWSplitFrame );
-vtkCxxRevisionMacro(vtkKWSplitFrame, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWSplitFrame, "$Revision: 1.14 $");
 
 
 
@@ -178,6 +178,14 @@ void vtkKWSplitFrame::ConfigureCallback()
     this->Script( "winfo height %s", this->GetWidgetName());
     }
   size = vtkKWObject::GetIntegerResult(this->Application);   
+
+  // If size == 1 then the widget has not been packed, it will be later
+  // and the Configure event will bring us back here with the correct size
+
+  if (size == 1)
+    {
+    return;
+    }
 
   // First check to see if we have to make the window larger.
   tmp = this->Frame1MinimumSize + this->Frame2MinimumSize 
