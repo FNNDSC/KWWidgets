@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-31 17:23:15 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2000-09-12 04:16:01 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -109,10 +109,12 @@ vtkKWVolumeComposite::vtkKWVolumeComposite()
   this->HiResTextureID = 
     this->LODVolume->AddLOD( this->HiResTextureMapper,
 			     this->VolumeProperty, 0.0 );
+  this->LODVolume->SetLODLevel( this->HiResTextureID, 1.0 );
 
   this->RayCastID = 
     this->LODVolume->AddLOD( this->RayCastMapper,
 			     this->VolumeProperty, 11.0 );
+  this->LODVolume->SetLODLevel( this->HiResTextureID, 0.0 );
 
   this->LowResTextureID   = -1;
   this->MedResTextureID   = -1;
@@ -340,6 +342,7 @@ void vtkKWVolumeComposite::SetInput(vtkImageData *input)
       this->LowResTextureID = 
         this->LODVolume->AddLOD( this->LowResTextureMapper,
                                  this->VolumeProperty, 0.0 );
+      this->LODVolume->SetLODLevel( this->LowResTextureID, 3.0 );
     }
     
     // if there is an opportunity for a 1/4th size volume then do it
@@ -417,6 +420,7 @@ void vtkKWVolumeComposite::SetInput(vtkImageData *input)
       this->MedResTextureID = 
         this->LODVolume->AddLOD( this->MedResTextureMapper,
                                  this->VolumeProperty, 0.0 );
+      this->LODVolume->SetLODLevel( this->MedResTextureID, 2.0 );
       }
     }
 
@@ -453,5 +457,5 @@ void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.16 $");
+  this->ExtractRevision(os,"$Revision: 1.17 $");
 }
