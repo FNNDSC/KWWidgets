@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkVector.txx,v $
   Language:  C++
-  Date:      $Date: 2002-03-25 23:37:23 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-03-28 14:31:31 $
+  Version:   $Revision: 1.5 $
 
   Copyright (c) 1993-2002 Ken Martin, Will Schroeder, Bill Lorensen 
   All rights reserved.
@@ -212,8 +212,7 @@ int vtkVector<DType>::FindItem(DType a, unsigned long &res)
 // not found. The location of the item is returned in res.
 template <class DType>
 int vtkVector<DType>::FindItem(DType a, 
-			       vtkAbstractList<DType>::CompareFunction 
-			       compare, 
+			       vtkAbstractListCompareFunction(DType, compare),
 			       unsigned long &res) 
 {
   unsigned long i;

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkVector.h,v $
   Language:  C++
-  Date:      $Date: 2002-03-25 23:37:23 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-03-28 14:31:31 $
+  Version:   $Revision: 1.7 $
 
 
 Copyright (c) 1993-2001 Ken Martin, Will Schroeder, Bill Lorensen 
@@ -45,6 +45,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define __vtkVector_h
 
 #include "vtkAbstractList.h"
+
+#define vtkAbstractListCompareFunction(DType, CompareFunction) \
+    int (*CompareFunction)(DType item1, DType item2)
+
 
 template <class DType>
 class vtkVector : public vtkAbstractList<DType>
@@ -94,7 +98,7 @@ public:
   // Find an item in the vector using a comparison routine. 
   // Return one if it was found, zero if it was
   // not found. The location of the item is returned in res.
-  int FindItem(DType a, vtkAbstractList<DType>::CompareFunction compare, 
+  int FindItem(DType a, vtkAbstractListCompareFunction(DType, compare), 
 	       unsigned long &res);
   
   // Description:
