@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-04-20 15:50:47 $
-  Version:   $Revision: 1.36 $
+  Date:      $Date: 2001-08-16 20:59:36 $
+  Version:   $Revision: 1.37 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,7 +45,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #ifdef _WIN32
 #include "vtkWin32OpenGLRenderWindow.h"
 #else
-#include "vtkXRenderWindow.h"
+#include "vtkXOpenGLRenderWindow.h"
 
 int vtkKWViewFoundMatch;
 Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event, 
@@ -305,7 +305,7 @@ int vtkKWView::ShouldIAbort()
   XEvent report;
   
   vtkKWViewFoundMatch = 0;
-  Display *dpy = ((vtkXRenderWindow*)this->GetRenderWindow())->GetDisplayId();
+  Display *dpy = ((vtkXOpenGLRenderWindow*)this->GetRenderWindow())->GetDisplayId();
   XSync(dpy,0);
   XCheckIfEvent(dpy, &report, vtkKWRenderViewPredProc, NULL);
   XSync(dpy,0);
@@ -1194,7 +1194,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.36 $");
+  this->ExtractRevision(os,"$Revision: 1.37 $");
 }
 
 void vtkKWView::SetupMemoryRendering(int x, int y, void *cd) 
