@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-11 15:38:20 $
-  Version:   $Revision: 1.42 $
+  Date:      $Date: 2002-06-12 18:22:56 $
+  Version:   $Revision: 1.43 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -132,6 +132,7 @@ public:
   void SimpleScript(const char *EventString);
   const char* EvaluateString(const char *String, ...);
   const char* ExpandFileName(const char *String, ...);
+  int EvaluateBooleanExpression(const char*Expression, ...);
 //ETX
 
   // Description:
