@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCallbackSpecification.h,v $
   Language:  C++
-  Date:      $Date: 2000-05-22 05:50:21 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-05-26 05:35:49 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,12 +46,15 @@ class VTK_EXPORT vtkKWCallbackSpecification : public vtkKWObject
   vtkSetStringMacro( CommandString );
   vtkGetStringMacro( CommandString );
 
+  // Don't use a set macro since we don't want to reference count this
   void SetCalledObject( vtkKWObject *object ) {this->CalledObject = object;};
   vtkGetObjectMacro( CalledObject, vtkKWObject );
 
+  // Don't use a set macro since we don't want to reference count this
   void SetWindow( vtkKWWindow *window ) {this->Window = window;};
   vtkGetObjectMacro( Window, vtkKWWindow );
 
+  // We do want to reference count this one
   vtkSetObjectMacro( NextCallback, vtkKWCallbackSpecification );
   vtkGetObjectMacro( NextCallback, vtkKWCallbackSpecification );
   
