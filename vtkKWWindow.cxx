@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-12-10 18:36:31 $
-  Version:   $Revision: 1.31 $
+  Date:      $Date: 2001-12-12 15:45:32 $
+  Version:   $Revision: 1.32 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -238,6 +238,8 @@ void vtkKWWindow::Exit()
   ostrstream str;
   str << "Are you sure you want to exit " << this->GetApplication()->GetApplicationName() << "?" << ends;
   dlg->SetText(str.str());
+  dlg->SetIcon(vtkKWMessageDialog::Question);
+  
   int ret = dlg->Invoke();  
   dlg->Delete();
   if (ret)
@@ -814,5 +816,5 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.31 $");
+  this->ExtractRevision(os,"$Revision: 1.32 $");
 }
