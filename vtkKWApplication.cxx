@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-05-30 20:50:06 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2000-07-14 16:20:05 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -63,6 +63,8 @@ int vtkKWApplicationCommand(ClientData cd, Tcl_Interp *interp,
 
 vtkKWApplication::vtkKWApplication()
 {
+  this->CommandFunction = vtkKWApplicationCommand;
+  
   this->ApplicationName = new char[strlen("Kitware")+1];
   strcpy(this->ApplicationName, "Kitware" );
 
