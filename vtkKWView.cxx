@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-01 19:42:04 $
-  Version:   $Revision: 1.19 $
+  Date:      $Date: 2000-08-04 18:35:31 $
+  Version:   $Revision: 1.20 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -420,7 +420,10 @@ void vtkKWView::AddComposite(vtkKWComposite *c)
     return;
     }
   this->Composites->AddItem(c);
-  this->GetViewport()->AddProp(c->GetProp());
+  if (c->GetProp() != NULL)
+    {
+    this->GetViewport()->AddProp(c->GetProp());
+    }
 }
 void vtkKWView::RemoveComposite(vtkKWComposite *c)
 {
@@ -1008,5 +1011,5 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.19 $");
+  this->ExtractRevision(os,"$Revision: 1.20 $");
 }
