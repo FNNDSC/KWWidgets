@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-27 20:15:04 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-04-03 18:45:24 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -68,6 +68,8 @@ public:
   vtkGetMacro( HiResTextureID, int );
 
   vtkGetObjectMacro( VolumeProMapper, vtkVolumeProMapper );
+
+  vtkGetObjectMacro( VolumeProperty, vtkVolumeProperty );
 
 
 protected:
