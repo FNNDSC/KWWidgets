@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledLabel.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-14 00:48:27 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2003-02-21 22:35:53 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,6 +50,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkKWLabeledWidget.h"
 
+class vtkKWLabel;
+
 class VTK_EXPORT vtkKWLabeledLabel : public vtkKWLabeledWidget
 {
 public:
@@ -76,6 +78,12 @@ public:
   vtkGetMacro(PackHorizontally, int);
 
   // Description:
+  // Set the 2nd label to auto-expand (does not by default).
+  virtual void SetExpandLabel2(int);
+  vtkBooleanMacro(ExpandLabel2, int);
+  vtkGetMacro(ExpandLabel2, int);
+
+  // Description:
   // Set the string that enables balloon help for this widget.
   // Override to pass down to children.
   virtual void SetBalloonHelpString(const char *str);
@@ -86,6 +94,7 @@ protected:
   ~vtkKWLabeledLabel();
 
   int PackHorizontally;
+  int ExpandLabel2;
 
   vtkKWLabel *Label2;
 
