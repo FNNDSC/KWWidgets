@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.h,v $
   Language:  C++
-  Date:      $Date: 2003-03-10 22:14:05 $
-  Version:   $Revision: 1.28 $
+  Date:      $Date: 2003-03-11 19:40:01 $
+  Version:   $Revision: 1.29 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -168,6 +168,7 @@ public:
   void TogglePageVisibility(const char *title);
   int  CanBeHidden(int id);
   int  CanBeHidden(const char *title);
+  void HideAllPages();
 
   // Description:
   // Return the number of visible pages in the notebook.
@@ -382,6 +383,7 @@ protected:
   char* GetPageTitle(Page*);
 
   int AddToMostRecentPages(Page*);
+  int RemoveFromMostRecentPages(Page*);
   int PutOnTopOfMostRecentPages(Page*);
 
   // Update the tab frame color of a page given a selection status
