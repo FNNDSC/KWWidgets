@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSelectionFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-13 14:41:38 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-12-18 19:29:25 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -69,6 +69,8 @@ public:
 
   void SetSelectCommand(vtkKWObject *object, const char *methodAndArgString);
 
+  void SelectionMenuCallback(const char *menuItem);
+  
 protected:
   vtkKWSelectionFrame();
   ~vtkKWSelectionFrame();

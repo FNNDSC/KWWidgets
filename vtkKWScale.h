@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-13 14:41:38 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2002-12-18 19:29:25 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -206,8 +206,12 @@ protected:
   
   char *NormalLabel;
   char *ShortLabel;
+  int LongWidth;
   int MediumWidth;
+  int MediumShortWidth;
   int ShortWidth;
+  int PackEntry;
+  int PackRange;
   
   vtkSetStringMacro(NormalLabel);
   

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-17 21:45:56 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-12-18 19:29:25 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,12 +51,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkProp.h"
 #include "vtkRenderWindow.h"
 #include "vtkRenderer.h"
+#include "vtkTextProperty.h"
 
 #ifdef _WIN32
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.6 $");
 
 vtkKWRenderWidget::vtkKWRenderWidget()
 {
@@ -463,6 +464,19 @@ float* vtkKWRenderWidget::GetBackgroundColor()
 void vtkKWRenderWidget::Close()
 {
   this->RemoveBindings();
+}
+
+void vtkKWRenderWidget::SetCornerTextColor(float r, float g, float b)
+{
+  this->CornerAnnotation->GetTextProperty()->SetColor(r, g, b);
+  this->Render();
+}
+
+float* vtkKWRenderWidget::GetCornerTextColor()
+{
+  float rgb[3];
+  this->CornerAnnotation->GetTextProperty()->GetColor(rgb);
+  return rgb;
 }
 
 void vtkKWRenderWidget::PrintSelf(ostream& os, vtkIndent indent)
