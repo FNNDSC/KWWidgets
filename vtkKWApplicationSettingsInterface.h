@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplicationSettingsInterface.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-06 20:56:37 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-12-10 18:24:25 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -104,15 +104,19 @@ public:
 
   // Description:
   // Callback used when interaction has been performed.
-  void ConfirmExitCheckButtonCallback();
-  void SaveGeometryCheckButtonCallback();
-  void ShowSplashScreenCheckButtonCallback();
-  void ShowBalloonHelpCheckButtonCallback();
+  void ConfirmExitCallback();
+  void SaveGeometryCallback();
+  void ShowSplashScreenCallback();
+  void ShowBalloonHelpCallback();
 
   // Description:
   // Access to some sub-widgets. Note that they might be NULL until the Create()
   // function is called.
   vtkGetObjectMacro(InterfaceSettingsFrame, vtkKWLabeledFrame);
+
+  // Description:
+  // Refresh the interface given the ivars.
+  virtual void Update() {};
 
 protected:
   vtkKWApplicationSettingsInterface();
