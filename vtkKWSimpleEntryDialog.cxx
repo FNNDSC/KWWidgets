@@ -22,7 +22,7 @@
 //----------------------------------------------------------------------------
 
 vtkStandardNewMacro( vtkKWSimpleEntryDialog );
-vtkCxxRevisionMacro(vtkKWSimpleEntryDialog, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWSimpleEntryDialog, "$Revision: 1.6 $");
 
 int vtkKWSimpleEntryDialogCommand(ClientData cd, Tcl_Interp *interp,
                                   int argc, char *argv[]);
@@ -48,7 +48,13 @@ vtkKWSimpleEntryDialog::~vtkKWSimpleEntryDialog()
 //----------------------------------------------------------------------------
 void vtkKWSimpleEntryDialog::Create(vtkKWApplication *app, const char *args)
 {
-  // Invoke super method
+  // Check if already created
+
+  if (this->IsCreated())
+    {
+    vtkErrorMacro("SimpleEntryDialog already created");
+    return;
+    }
 
   this->Superclass::Create(app, args);
   
