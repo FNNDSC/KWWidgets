@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:39 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2001-10-15 17:48:39 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -78,7 +78,7 @@ public:
   // Description:
   // Add/Remove/Get a child to this Widget
   void AddChild(vtkKWWidget *w) {this->Children->AddItem(w);};
-  void RemoveChild(vtkKWWidget *w) {this->Children->RemoveItem(w);};
+  void RemoveChild(vtkKWWidget *w);
   vtkKWWidgetCollection *GetChildren() {return this->Children;};
   
   // Description::
