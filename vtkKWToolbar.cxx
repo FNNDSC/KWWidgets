@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-13 12:36:04 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2002-08-15 19:12:09 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -54,8 +54,13 @@ template class VTK_EXPORT vtkVectorIterator<vtkKWWidget*>;
 
 #endif
 
+#ifdef _WIN32
+static int vtkKWToolbarGlobalFlatAspect = 1;
+static int vtkKWToolbarGlobalWidgetsFlatAspect = 1;
+#else
 static int vtkKWToolbarGlobalFlatAspect = 0;
 static int vtkKWToolbarGlobalWidgetsFlatAspect = 0;
+#endif
 
 int vtkKWToolbar::GetGlobalFlatAspect() 
 { 
@@ -77,7 +82,7 @@ void vtkKWToolbar::SetGlobalWidgetsFlatAspect(int val)
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
-vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.21 $");
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.22 $");
 
 
 int vtkKWToolbarCommand(ClientData cd, Tcl_Interp *interp,
@@ -267,6 +272,19 @@ void vtkKWToolbar::UpdateWidgetsAspect()
           int bd = this->GetIntegerResult(this->Application);
           s << widget->GetWidgetName() << " config -bd "
             << (this->WidgetsFlatAspect ? -abs(bd) : abs(bd)) << endl;
+          }
+        }
+      if (widget->HasConfigurationOption("-selectcolor"))
+        {
+        if (this->WidgetsFlatAspect)
+          {
+          this->Script("%s configure -selectcolor [%s cget -bg]", 
+                       widget->GetWidgetName(), widget->GetWidgetName());
+          }
+        else
+          {
+          this->Script("%s configure -selectcolor [lindex [%s configure -selectcolor] 3]", 
+                       widget->GetWidgetName(), widget->GetWidgetName());
           }
         }
       }
