@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-17 12:12:55 $
-  Version:   $Revision: 1.55 $
+  Date:      $Date: 2003-03-06 18:38:00 $
+  Version:   $Revision: 1.56 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -80,6 +80,8 @@ static const char *vtkKWEventStrings[] = {
   "Cursor3DZColorChangedEvent",
   "DistanceVisibilityChangedEvent",
   "EnableShadingEvent",
+  "FilterRedoEvent",
+  "FilterUndoEvent",
   "GradientOpacityFunctionChangedEvent",
   "GradientOpacityFunctionPresetApplyEvent",
   "GradientOpacityStateChangedEvent",

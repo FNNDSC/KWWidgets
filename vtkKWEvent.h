@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-17 12:12:55 $
-  Version:   $Revision: 1.58 $
+  Date:      $Date: 2003-03-06 18:38:00 $
+  Version:   $Revision: 1.59 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -89,6 +89,8 @@ class VTK_EXPORT vtkKWEvent
     Cursor3DZColorChangedEvent,
     DistanceVisibilityChangedEvent,
     EnableShadingEvent,
+    FilterRedoEvent,
+    FilterUndoEvent,
     GradientOpacityFunctionChangedEvent,
     GradientOpacityFunctionPresetApplyEvent,
     GradientOpacityStateChangedEvent,
