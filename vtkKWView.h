@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-07 20:15:27 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2000-08-08 21:10:19 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -266,7 +266,18 @@ public:
   // sheet entry
   vtkSetStringMacro( MenuPropertiesName );
   vtkGetStringMacro( MenuPropertiesName );
+
+  // Description:
+  // Options to enable / disable UI elements. Should be set before the
+  // UI is created.
+  vtkSetMacro( SupportSaveAsImage, int );
+  vtkGetMacro( SupportSaveAsImage, int );
+  vtkBooleanMacro( SupportSaveAsImage, int );
   
+  vtkSetMacro( SupportPrint, int );
+  vtkGetMacro( SupportPrint, int );
+  vtkBooleanMacro( SupportPrint, int );
+
 protected:
   vtkKWView();
   ~vtkKWView();
@@ -315,7 +326,11 @@ protected:
 
   char             *MenuPropertiesName;
   
-  int Printing;
+  int              Printing;
+  
+  int              SupportSaveAsImage;
+  int              SupportPrint;
+  
 };
 
 
