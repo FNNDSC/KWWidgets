@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRange.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-24 18:48:54 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2003-04-24 18:50:42 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 
 vtkStandardNewMacro( vtkKWRange );
-vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.7 $");
 
 #define VTK_KW_RANGE_MIN_SLIDER_SIZE        2
 #define VTK_KW_RANGE_MIN_THICKNESS          (2*VTK_KW_RANGE_MIN_SLIDER_SIZE+1)
@@ -126,6 +126,8 @@ vtkKWRange::vtkKWRange()
 //----------------------------------------------------------------------------
 vtkKWRange::~vtkKWRange()
 {
+  this->UnBind();
+
   if (this->Command)
     {
     delete [] this->Command;
