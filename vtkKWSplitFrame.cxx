@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplitFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-08-27 13:44:20 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2001-08-27 14:08:20 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -288,6 +288,11 @@ void vtkKWSplitFrame::SetSeparatorWidth(int width)
 
 void vtkKWSplitFrame::Update()
 {
+  if (this->Application == NULL)
+    {
+    return;
+    }
+  
   this->Script("place %s -relx 0 -rely 0 -width %d -relheight 1.0",
                this->Frame1->GetWidgetName(), this->Frame1Width);
   this->Script("place %s -x %d -rely 0 -width %d -relheight 1.0",
