@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-14 21:05:43 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2002-03-20 19:13:29 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -217,7 +217,8 @@ int vtkKWMessageDialog::Invoke()
 		 x, y);
     }
   this->Script("wm resizable %s 0 0", this->GetWidgetName());
-
+  this->Script("update idletasks");
+  
   return vtkKWDialog::Invoke();
 }
 

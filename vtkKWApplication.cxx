@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-04 20:33:37 $
-  Version:   $Revision: 1.63 $
+  Date:      $Date: 2002-03-20 19:15:49 $
+  Version:   $Revision: 1.64 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -466,12 +466,12 @@ void vtkKWApplication::DisplayHelp(vtkKWWindow* master)
     }
   if ( reg->ReadValue( temp, "InstalledPath", loc ) )
     {
-    sprintf(temp,"%s/%s.chm::/Introduction/Introduction.htm",
+    sprintf(temp,"%s/%s.chm::/Introduction.htm",
             loc,this->ApplicationName);
     }
   else
     {
-    sprintf(temp,"%s.chm::/Introduction/Introduction.htm",
+    sprintf(temp,"%s.chm::/Introduction.htm",
 	    this->ApplicationName);
     }
   

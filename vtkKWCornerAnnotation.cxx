@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 23:42:58 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2002-03-20 19:14:23 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -218,6 +218,7 @@ void vtkKWCornerAnnotation::SetTextColor( float r, float g, float b )
   color[1] = g;
   color[2] = b;
   this->InvokeEvent( vtkKWEvent::AnnotationColorChangedEvent, color );
+  this->InvokeEvent( vtkKWEvent::ViewAnnotationChangedEvent, 0 );
 }
 
 void vtkKWCornerAnnotation::OnDisplayCorner() 
@@ -236,6 +237,7 @@ void vtkKWCornerAnnotation::OnDisplayCorner()
     this->View->RemoveComposite(this->CornerComposite);
     this->View->Render();
     }
+  this->InvokeEvent( vtkKWEvent::ViewAnnotationChangedEvent, 0 );
 }
 
 int vtkKWCornerAnnotation::GetVisibility() 
@@ -266,6 +268,7 @@ void vtkKWCornerAnnotation::CornerChanged(int i)
     {
     this->View->Render();
     }
+  this->InvokeEvent( vtkKWEvent::ViewAnnotationChangedEvent, 0 );
 }
 
 // Description:
@@ -346,7 +349,7 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.21 $");
+  this->ExtractRevision(os,"$Revision: 1.22 $");
   vtkKWLabeledFrame::SerializeRevision(os,indent);
 }
 

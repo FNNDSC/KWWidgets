@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-15 20:42:16 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-03-20 19:13:55 $
+  Version:   $Revision: 1.9 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -99,6 +99,7 @@ class VTK_EXPORT vtkKWEvent
     ChangeMouseOperationsEvent,
     ChangeStandardInteractivityEvent,
     SwitchToVolumeProEvent,
+    ViewAnnotationChangedEvent,
     // PV
     InitializeTraceEvent
   };
