@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-14 22:41:39 $
-  Version:   $Revision: 1.27 $
+  Date:      $Date: 2003-04-24 20:04:42 $
+  Version:   $Revision: 1.28 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -96,7 +96,7 @@ public:
   // Get the corresponding internal objects.
   void DisplayEntry();  
   void DisplayLabel(const char *l);  
-  vtkGetObjectMacro(Label, vtkKWWidget);
+  vtkGetObjectMacro(Label, vtkKWLabel);
   vtkGetObjectMacro(Entry, vtkKWEntry);
   vtkSetStringMacro(ShortLabel);
   vtkGetStringMacro(ShortLabel);
@@ -206,7 +206,7 @@ protected:
 
   vtkKWWidget *Scale;
   vtkKWEntry  *Entry;
-  vtkKWWidget *Label;
+  vtkKWLabel  *Label;
   vtkKWWidget *TopLevel;
   vtkKWPushButton *PopupPushButton;
 
