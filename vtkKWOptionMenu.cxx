@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-04-24 20:17:06 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -79,7 +79,7 @@ char *vtkKWOptionMenu::GetValue()
   return this->CurrentValue;  
 }
 
-void vtkKWOptionMenu::SetValue(char *s)
+void vtkKWOptionMenu::SetValue(const char *s)
 {
   if (s)
     {
@@ -139,7 +139,7 @@ void vtkKWOptionMenu::SetCurrentEntry(const char *name)
   this->Script("set %sValue {%s}",this->GetWidgetName(), name);
 }
  
-void vtkKWOptionMenu::Create(vtkKWApplication *app, char *args)
+void vtkKWOptionMenu::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
 

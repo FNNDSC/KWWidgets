@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-07-10 18:29:04 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -113,7 +113,7 @@ vtkKWNotebook::~vtkKWNotebook()
     }
 }
 
-void vtkKWNotebook::Create(vtkKWApplication *app, char *args)
+void vtkKWNotebook::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
   

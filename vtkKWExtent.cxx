@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWExtent.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-04 18:18:51 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -91,7 +91,7 @@ vtkKWExtent::~vtkKWExtent()
   this->ZMaxScale->Delete();
 }
 
-void vtkKWExtent::Create(vtkKWApplication *app, char *args)
+void vtkKWExtent::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
 

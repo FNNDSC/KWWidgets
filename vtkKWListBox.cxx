@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWListBox.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-06-21 20:15:36 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -137,7 +137,7 @@ int vtkKWListBox::AppendUnique(const char* name)
 
 
 
-void vtkKWListBox::Create(vtkKWApplication *app, char *args)
+void vtkKWListBox::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
 

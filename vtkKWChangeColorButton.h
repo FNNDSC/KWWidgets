@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWChangeColorButton.h,v $
   Language:  C++
-  Date:      $Date: 2000-04-28 05:18:30 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,7 +44,7 @@ public:
 
   // Description:
   // Create a Tk widget
-  void Create(vtkKWApplication *app, char *args);
+  void Create(vtkKWApplication *app, const char *args);
 
   // Description:
   // Set/Get the current color

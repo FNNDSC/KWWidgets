@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-04 18:35:31 $
-  Version:   $Revision: 1.20 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.21 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -875,7 +875,7 @@ void vtkKWView::SetParentWindow(vtkKWWindow *_arg)
     } 
 } 
 
-void vtkKWView::SetTitle(char *title)
+void vtkKWView::SetTitle(const char *title)
 {
   this->Script("%s configure -text {%s}", 
                this->Label->GetWidgetName(), title);
@@ -1011,5 +1011,5 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.20 $");
+  this->ExtractRevision(os,"$Revision: 1.21 $");
 }

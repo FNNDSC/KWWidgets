@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.h,v $
   Language:  C++
-  Date:      $Date: 2000-07-05 20:33:06 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,13 +44,13 @@ public:
 
   // Description:
   // Create a Tk widget
-  void Create(vtkKWApplication *app, char *args);
+  void Create(vtkKWApplication *app, const char *args);
 
   // Description:
   // Set/Get the value of the entry in a few different formats.
   // In the SetValue method with float, the second argument is the
   // number of decimal places to display.
-  void SetValue(char *);
+  void SetValue(const char *);
   void SetValue(int a);
   void SetValue(float f,int size);
   char *GetValue();

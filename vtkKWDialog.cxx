@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-02-28 23:16:14 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -119,7 +119,7 @@ void vtkKWDialog::OK()
 }
 
 
-void vtkKWDialog::Create(vtkKWApplication *app, char *args)
+void vtkKWDialog::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
 

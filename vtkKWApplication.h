@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2000-07-19 15:43:17 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -104,7 +104,7 @@ public:
   // Description:
   // A convienience method to invoke some tcl script code and
   // perform arguement substitution.
-  void Script(char *EventString, ...);
+  void Script(const char *EventString, ...);
   void SimpleScript(char *EventString);
 //ETX
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-28 23:17:23 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,11 +44,11 @@ public:
 
   // Description:
   // Create a Tk widget
-  virtual void Create(vtkKWApplication *app, char *args);
+  virtual void Create(vtkKWApplication *app, const char *args);
 
   // Description:
   // Set/Get the state of the option menu
-  void SetValue(char *);
+  void SetValue(const char *);
   char *GetValue();
 
   // Description:

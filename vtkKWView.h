@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-01 19:42:04 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -66,7 +66,7 @@ public:
 
   // Description:
   // Create a View
-  virtual void Create(vtkKWApplication *app, char *args) = 0;
+  virtual void Create(vtkKWApplication *app, const char *args) = 0;
 
   // Description:
   // Sets up some default event handlers to allow
@@ -185,7 +185,7 @@ public:
 
   // Description::
   // Set the title of this view.
-  virtual void SetTitle(char *);
+  virtual void SetTitle(const char *);
 
   // Description:
   // Allow access to the notebook object.

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPushButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-03-10 00:17:29 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,7 +46,7 @@ vtkKWPushButton* vtkKWPushButton::New()
 
 
 
-void vtkKWPushButton::Create(vtkKWApplication *app, char *args)
+void vtkKWPushButton::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
 

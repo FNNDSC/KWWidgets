@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-07-03 03:38:14 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -73,7 +73,7 @@ void vtkKWLabel::SetLabel(const char* l)
 }
 
 
-void vtkKWLabel::Create(vtkKWApplication *app, char *args)
+void vtkKWLabel::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-07-24 17:12:33 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -123,7 +123,7 @@ vtkKWApplication::~vtkKWApplication()
   this->EventNotifier->Delete();
 }
 
-void vtkKWApplication::Script(char *format, ...)
+void vtkKWApplication::Script(const char *format, ...)
 {
   static char event[16000];
   

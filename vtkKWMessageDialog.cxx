@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-01-13 22:56:28 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -69,7 +69,7 @@ vtkKWMessageDialog::~vtkKWMessageDialog()
 }
 
 
-void vtkKWMessageDialog::Create(vtkKWApplication *app, char *args)
+void vtkKWMessageDialog::Create(vtkKWApplication *app, const char *args)
 {
   // invoke super method
   this->vtkKWDialog::Create(app,args);

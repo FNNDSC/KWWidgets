@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWExtent.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-04 18:18:51 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,7 +46,7 @@ public:
 
   // Description:
   // Create a Tk widget
-  void Create(vtkKWApplication *app, char *args);
+  void Create(vtkKWApplication *app, const char *args);
 
   // Description:
   // Set the Range of the Extent, this is the range of

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-07-05 20:33:06 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -73,7 +73,7 @@ float vtkKWEntry::GetValueAsFloat()
   return atof(this->GetValue());
 }
 
-void vtkKWEntry::SetValue(char *s)
+void vtkKWEntry::SetValue(const char *s)
 {
   this->Script("%s delete 0 end", this->GetWidgetName());
   if (s)
@@ -97,7 +97,7 @@ void vtkKWEntry::SetValue(float f, int size)
   this->Script(tmp,this->GetWidgetName(),f);
 }
 
-void vtkKWEntry::Create(vtkKWApplication *app, char *args)
+void vtkKWEntry::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
 

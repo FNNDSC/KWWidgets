@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-01 15:02:40 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -103,7 +103,7 @@ void vtkKWObject::ExtractRevision(ostream& os,const char *revIn)
 void vtkKWObject::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWObject ";
-  this->ExtractRevision(os,"$Revision: 1.7 $");
+  this->ExtractRevision(os,"$Revision: 1.8 $");
 }
 
 void vtkKWObject::Serialize(istream& is)
@@ -180,7 +180,7 @@ const char *vtkKWObject::GetTclName()
   return this->TclName;
 }
 
-void vtkKWObject::Script(char *format, ...)
+void vtkKWObject::Script(const char *format, ...)
 {
   static char event[16000];
 

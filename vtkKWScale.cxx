@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-07-07 15:51:32 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2000-08-07 20:15:27 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -115,7 +115,7 @@ void vtkKWScale::SetResolution( float r )
   this->Modified();
 }
 
-void vtkKWScale::Create(vtkKWApplication *app, char *args)
+void vtkKWScale::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
 
