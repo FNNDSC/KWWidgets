@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSerializer.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-04-28 17:59:17 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-07-24 17:26:09 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -144,7 +144,6 @@ void vtkKWSerializer::FindClosingBrace(istream *is, vtkObject *obj)
   int count = 0;
   char token[1024];
   int balance = 1;
-  int res;
   
   while (balance && vtkKWSerializer::GetNextToken(is,token))
     {
