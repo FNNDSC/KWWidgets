@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-05-22 05:50:21 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2000-05-25 15:03:14 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -676,7 +676,7 @@ void vtkKWView::Deselect(vtkKWWindow *pw)
 {
   pw->GetMenuProperties()->DeleteMenuItem("View");
   pw->GetMenuFile()->DeleteMenuItem("Print");
-  pw->GetMenuFile()->DeleteMenuItem("Save Ad Image");
+  pw->GetMenuFile()->DeleteMenuItem("Save As Image");
 
 #ifdef _WIN32
   // add the edit copy option
@@ -917,5 +917,5 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.10 $");
+  this->ExtractRevision(os,"$Revision: 1.11 $");
 }
