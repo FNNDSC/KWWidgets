@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-28 20:05:44 $
-  Version:   $Revision: 1.23 $
+  Date:      $Date: 2002-09-05 21:13:41 $
+  Version:   $Revision: 1.24 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -128,6 +128,10 @@ public:
   static int PopupOkCancel(vtkKWApplication *app, vtkKWWindow *masterWin,
                            const char* title, 
                            const char* message, int options = 0);
+
+  // Description:
+  // Retrieve the frame where the message is.
+  vtkGetObjectMacro(MessageDialogFrame, vtkKWWidget);
 
 protected:
   vtkKWMessageDialog();

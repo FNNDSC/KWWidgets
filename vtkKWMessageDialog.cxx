@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-28 22:34:58 $
-  Version:   $Revision: 1.36 $
+  Date:      $Date: 2002-09-05 21:13:41 $
+  Version:   $Revision: 1.37 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMessageDialog );
-vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.36 $");
+vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.37 $");
 
 
 
@@ -246,10 +246,13 @@ int vtkKWMessageDialog::Invoke()
     {
     this->OKButton->Focus();
     }
-  this->OKButton->SetBind("<Right>", "focus [ tk_focusNext %W ]");
-  this->OKButton->SetBind("<Left>",  "focus [ tk_focusPrev %W ]");
-  this->CancelButton->SetBind("<Right>", "focus [ tk_focusNext %W ]");
-  this->CancelButton->SetBind("<Left>",  "focus [ tk_focusPrev %W ]");
+  if ( this->OKButton->IsCreated() && this->CancelButton->IsCreated() )
+    {
+    this->OKButton->SetBind("<Right>", "focus [ tk_focusNext %W ]");
+    this->OKButton->SetBind("<Left>",  "focus [ tk_focusPrev %W ]");
+    this->CancelButton->SetBind("<Right>", "focus [ tk_focusNext %W ]");
+    this->CancelButton->SetBind("<Left>",  "focus [ tk_focusPrev %W ]");
+    }
   
   this->Script("wm resizable %s 0 0", this->GetWidgetName());
 
