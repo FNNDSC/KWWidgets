@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEventNotifier.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-05-26 05:35:49 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-06-28 15:43:03 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -197,7 +197,16 @@ void vtkKWEventNotifier::RemoveCallback( const char *event,
     }
 }
 
+
 void vtkKWEventNotifier::InvokeCallbacks( const char *event,
+					  vtkKWWindow *window,
+					  const char *args )
+{
+  this->InvokeCallbacks( NULL, event, window, args );
+}
+
+void vtkKWEventNotifier::InvokeCallbacks( vtkKWObject *object,
+                                          const char *event,
 					  vtkKWWindow *window,
 					  const char *args )
 {
@@ -214,10 +223,13 @@ void vtkKWEventNotifier::InvokeCallbacks( const char *event,
     while (tmp)
       {
       // If we have a match, invoke it. Either a window is NULL, or the
-      // window arguments must match as well as the event string
+      // window arguments must match as well as the event string. The object
+      // argument must not match - this is used to exclude the calling
+      // object from invoking its own callbacks.
       if ( !strcmp( tmp->GetEventString(), event ) &&
 	   ( window == NULL || tmp->GetWindow() == NULL ||
-	     tmp->GetWindow() == window ) )
+	     tmp->GetWindow() == window ) &&
+           tmp->GetCalledObject() != object )
 	{
 	this->Script("eval %s %s %s", tmp->GetCalledObject()->GetTclName(),
 		     tmp->GetCommandString(), args );
