@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTkUtilities.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-09 21:57:04 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-08-10 02:13:10 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,7 +55,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.2 $");
 
 //----------------------------------------------------------------------------
 void vtkKWTkUtilities::GetRGBColor(Tcl_Interp *interp,
@@ -216,7 +216,7 @@ int vtkKWTkUtilities::UpdatePhoto(Tcl_Interp *interp,
   int res = vtkKWTkUtilities::UpdatePhoto(
     interp,
     photo_name,
-    static_cast<const unsigned char*>(flip->GetOutput()->GetScalarPointer()),
+    static_cast<unsigned char*>(flip->GetOutput()->GetScalarPointer()),
     ext[1] - ext[0] + 1, 
     ext[3] - ext[2] + 1,
     image->GetNumberOfScalarComponents(),
