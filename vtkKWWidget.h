@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-08 17:58:37 $
-  Version:   $Revision: 1.29 $
+  Date:      $Date: 2002-08-08 21:18:17 $
+  Version:   $Revision: 1.30 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -173,6 +173,11 @@ public:
   // Description:
   // Query if widget is packed
   int IsPacked();
+  
+  // Description:
+  // Unpack widget, unpack siblings (slave's of parent widget)
+  void UnPack();
+  void UnPackSiblings();
   
   // Description:
   // Adjusts the placement of the baloon help
