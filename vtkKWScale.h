@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-13 22:56:28 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-18 19:59:35 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,10 +39,8 @@ class vtkKWApplication;
 class VTK_EXPORT vtkKWScale : public vtkKWWidget
 {
 public:
-  vtkKWScale();
-  ~vtkKWScale();
   static vtkKWScale* New();
-  const char *GetClassName() {return "vtkKWScale";};
+  vtkTypeMacro(vtkKWScale,vtkKWWidget);
 
   // Description:
   // Create a Tk widget
@@ -77,7 +75,13 @@ public:
   virtual void SetCommand(vtkKWObject* Object, const char *MethodAndArgString);
   virtual void SetStartCommand(vtkKWObject* Object, const char *MethodAndArgString);
   virtual void SetEndCommand(vtkKWObject* Object, const char *MethodAndArgString);
+
 protected:
+  vtkKWScale();
+  ~vtkKWScale();
+  vtkKWScale(const vtkKWScale&) {};
+  void operator=(const vtkKWScale&) {};
+
   char        *Command;
   char        *StartCommand;
   char        *EndCommand;

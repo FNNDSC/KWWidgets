@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindowCollection.h,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-18 19:59:35 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -40,9 +40,9 @@ class vtkKWWindow;
 
 class VTK_EXPORT vtkKWWindowCollection : public vtkCollection
 {
- public:
+public:
   static vtkKWWindowCollection *New();
-  const char *GetClassName() {return "vtkKWWindowCollection";};
+  vtkTypeMacro(vtkKWWindowCollection,vtkCollection);
 
   // Description:
   // Add an KWWindow to the list.
@@ -64,6 +64,12 @@ class VTK_EXPORT vtkKWWindowCollection : public vtkCollection
   // Description:
   // Get the last KWWindow in the list.
   vtkKWWindow *GetLastKWWindow();
+
+protected:
+  vtkKWWindowCollection() {};
+  ~vtkKWWindowCollection() {};
+  vtkKWWindowCollection(const vtkKWWindowCollection&) {};
+  void operator=(const vtkKWWindowCollection&) {};
 };
 
 inline void vtkKWWindowCollection::AddItem(vtkKWWindow *a) 

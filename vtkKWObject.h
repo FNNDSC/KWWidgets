@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-13 22:56:28 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-01-18 19:59:35 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -56,10 +56,8 @@ class vtkKWApplication;
 class VTK_EXPORT vtkKWObject : public vtkObject
 {
 public:
-  vtkKWObject();
-  ~vtkKWObject();
   static vtkKWObject* New();
-  const char *GetClassName() {return "vtkKWObject";};
+  vtkTypeMacro(vtkKWObject,vtkObject);
 
   // Description:
   // Get the name of the tcl object this instance represents.
@@ -93,6 +91,11 @@ private:
   char *TclName;
 
 protected:
+  vtkKWObject();
+  ~vtkKWObject();
+  vtkKWObject(const vtkKWObject&) {};
+  void operator=(const vtkKWObject&) {};
+
   vtkKWApplication *Application;
 
   // this instance variable holds the command functions for this class.

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-13 22:56:28 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-18 19:59:35 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -40,10 +40,8 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 class VTK_EXPORT vtkKWMenu : public vtkKWWidget
 {
 public:
-  vtkKWMenu();
-  ~vtkKWMenu();
   static vtkKWMenu* New();
-  const char *GetClassName() {return "vtkKWMenu";};
+  vtkTypeMacro(vtkKWMenu,vtkKWWidget);
   
   void Create(vtkKWApplication* app, const char* args);
   
@@ -97,6 +95,12 @@ public:
   int GetIndex(const char* menuname);
   
 protected:
+  vtkKWMenu();
+  ~vtkKWMenu();
+  vtkKWMenu(const vtkKWMenu&) {};
+  void operator=(const   
+                 &) {};
+
   void AddGeneric(const char* addtype, const char* label, vtkKWObject* Object,
 		  const char* MethodAndArgString, const char* extra);
   void InsertGeneric(int position, const char* addtype, const char* label, 

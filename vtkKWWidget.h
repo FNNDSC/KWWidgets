@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-13 22:56:28 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-18 19:59:35 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -43,10 +43,8 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 class VTK_EXPORT vtkKWWidget : public vtkKWObject
 {
 public:
-  vtkKWWidget();
-  ~vtkKWWidget();
   static vtkKWWidget* New();
-  const char *GetClassName() {return "vtkKWWidget";};
+  vtkTypeMacro(vtkKWWidget,vtkKWObject);
 
   // Description:
   // Create a Tk widget
@@ -85,7 +83,13 @@ public:
   // Description: a method to create a callback string from a KWObject.
   // The caller is resposible for deleting the returned string.  
   char* CreateCommand(vtkKWObject* Object, const char* MethodAndArgString);
+
 protected:
+  vtkKWWidget();
+  ~vtkKWWidget();
+  vtkKWWidget(const vtkKWWidget&) {};
+  void operator=(const vtkKWWidget&) {};
+
   char *WidgetName;
   vtkKWWidget *Parent;
   vtkKWWidgetCollection *Children; 

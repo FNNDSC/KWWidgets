@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWComposite.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-07 17:26:48 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-18 19:59:35 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,9 +45,7 @@ class vtkKWWidget;
 class VTK_EXPORT vtkKWComposite : public vtkKWObject
 {
 public:
-  vtkKWComposite();
-  ~vtkKWComposite();
-  const char *GetClassName() {return "vtkKWComposite";};
+  vtkTypeMacro(vtkKWComposite,vtkKWObject);
 
   // Description:
   // Get the View for this class.
@@ -92,6 +90,11 @@ public:
   virtual void Close() {};
 
 protected:
+  vtkKWComposite();
+  ~vtkKWComposite();
+  vtkKWComposite(const vtkKWComposite&) {};
+  void operator=(const vtkKWComposite&) {};
+
   vtkKWNotebook *Notebook;
   vtkKWNotebook *Notebook2;
   int PropertiesCreated;

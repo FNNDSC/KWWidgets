@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWExtent.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-13 22:56:28 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-18 19:59:35 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -41,10 +41,8 @@ class vtkKWApplication;
 class VTK_EXPORT vtkKWExtent : public vtkKWWidget
 {
 public:
-  vtkKWExtent();
-  ~vtkKWExtent();
   static vtkKWExtent* New();
-  const char *GetClassName() {return "vtkKWExtent";};
+  vtkTypeMacro(vtkKWExtent,vtkKWWidget);
 
   // Description:
   // Create a Tk widget
@@ -84,6 +82,11 @@ public:
   virtual void SetCommand(vtkKWObject* Object, const char *MethodAndArgString);
 
 protected:
+  vtkKWExtent();
+  ~vtkKWExtent();
+  vtkKWExtent(const vtkKWExtent&) {};
+  void operator=(const vtkKWExtent&) {};
+
   char *Command;
   int Extent[6];
   vtkKWScale  *XMinScale;

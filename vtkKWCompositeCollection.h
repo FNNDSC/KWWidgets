@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCompositeCollection.h,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-18 19:59:35 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -34,9 +34,9 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 class VTK_EXPORT vtkKWCompositeCollection : public vtkCollection
 {
- public:
+public:
   static vtkKWCompositeCollection *New();
-  const char *GetClassName() {return "vtkKWCompositeCollection";};
+  vtkTypeMacro(vtkKWCompositeCollection,vtkCollection);
 
   // Description:
   // Add an KWComposite to the list.
@@ -58,6 +58,13 @@ class VTK_EXPORT vtkKWCompositeCollection : public vtkCollection
   // Description:
   // Get the last KWComposite in the list.
   vtkKWComposite *GetLastKWComposite();
+
+protected:
+  vtkKWCompositeCollection() {};
+  ~vtkKWCompositeCollection() {};
+  vtkKWCompositeCollection(const vtkKWCompositeCollection&) {};
+  void operator=(const vtkKWCompositeCollection&) {};
+
 };
 
 inline void vtkKWCompositeCollection::AddItem(vtkKWComposite *a) 

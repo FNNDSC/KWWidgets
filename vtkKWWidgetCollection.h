@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidgetCollection.h,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-18 19:59:35 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -37,9 +37,9 @@ class vtkKWWidget;
 
 class VTK_EXPORT vtkKWWidgetCollection : public vtkCollection
 {
- public:
+public:
   static vtkKWWidgetCollection *New();
-  const char *GetClassName() {return "vtkKWWidgetCollection";};
+  vtkTypeMacro(vtkKWWidgetCollection,vtkCollection);
 
   // Description:
   // Add an KWWidget to the list.
@@ -61,6 +61,13 @@ class VTK_EXPORT vtkKWWidgetCollection : public vtkCollection
   // Description:
   // Get the last KWWidget in the list.
   vtkKWWidget *GetLastKWWidget();
+
+protected:
+  vtkKWWidgetCollection() {};
+  ~vtkKWWidgetCollection() {};
+  vtkKWWidgetCollection(const vtkKWWidgetCollection&) {};
+  void operator=(const vtkKWWidgetCollection&) {};
+
 };
 
 inline void vtkKWWidgetCollection::AddItem(vtkKWWidget *a) 

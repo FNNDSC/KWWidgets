@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-13 22:56:28 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-18 19:59:35 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -38,10 +38,8 @@ class vtkKWApplication;
 class VTK_EXPORT vtkKWDialog : public vtkKWWidget
 {
 public:
-  vtkKWDialog();
-  ~vtkKWDialog();
   static vtkKWDialog* New();
-  const char *GetClassName() {return "vtkKWDialog";};
+  vtkTypeMacro(vtkKWDialog,vtkKWWidget);
 
   // Description:
   // Create a Tk widget
@@ -78,6 +76,11 @@ public:
   virtual void SetCommand(vtkKWObject* CalledObject, const char *CommandString);
 
 protected:
+  vtkKWDialog();
+  ~vtkKWDialog();
+  vtkKWDialog(const vtkKWDialog&) {};
+  void operator=(const vtkKWDialog&) {};
+
   char *Command;
   int Done;
 };

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-07 17:26:48 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-18 19:59:35 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,9 +58,7 @@ class vtkViewport;
 class VTK_EXPORT vtkKWView : public vtkKWWidget
 {
 public:
-  vtkKWView();
-  ~vtkKWView();
-  const char *GetClassName() {return "vtkKWView";};
+  vtkTypeMacro(vtkKWView,vtkKWWidget);
 
   // Description:
   // Create a View
@@ -240,6 +238,11 @@ public:
   virtual void SerializeToken(istream& is,const char token[1024]);
 
 protected:
+  vtkKWView();
+  ~vtkKWView();
+  vtkKWView(const vtkKWView&) {};
+  void operator=(const vtkKWView&) {};
+
   vtkKWNotebook *Notebook;
   int InExpose;
   int SharedPropertiesParent;

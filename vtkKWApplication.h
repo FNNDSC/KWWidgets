@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-13 22:56:28 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-01-18 19:59:35 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,10 +45,8 @@ class vtkKWWidget;
 class VTK_EXPORT vtkKWApplication : public vtkKWObject
 {
 public:
-  vtkKWApplication();
-  ~vtkKWApplication();
   static vtkKWApplication* New();
-  const char *GetClassName() {return "vtkKWApplication";};
+  vtkTypeMacro(vtkKWApplication,vtkKWObject);
   
   virtual vtkKWApplication *GetApplication()  { return this;  }
   virtual void SetApplication (vtkKWApplication* arg) 
@@ -99,6 +97,11 @@ public:
 //ETX
   
 protected:
+  vtkKWApplication();
+  ~vtkKWApplication();
+  vtkKWApplication(const vtkKWApplication&) {};
+  void operator=(const vtkKWApplication&) {};
+
   Tk_Window MainWindow;
   Tcl_Interp *MainInterp;
   vtkKWWindowCollection *Windows;

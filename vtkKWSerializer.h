@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSerializer.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-13 22:56:28 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-18 19:59:35 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ class VTK_EXPORT vtkKWSerializer : public vtkObject
 {
 public:
   static vtkKWSerializer* New();
-  const char *GetClassName() {return "vtkKWSerializer";};
+  vtkTypeMacro(vtkKWSerializer,vtkObject);
 
   // Description:
   // The primary helper functions instances can invoke.
@@ -59,6 +59,11 @@ public:
   static void WriteSafeString(ostream& os, const char *val);
   
 protected:
+  vtkKWSerializer() {};
+  ~vtkKWSerializer() {};
+  vtkKWSerializer(const vtkKWSerializer&) {};
+  void operator=(const vtkKWSerializer&) {};
+
   static void EatWhiteSpace(istream *is);
 };
 

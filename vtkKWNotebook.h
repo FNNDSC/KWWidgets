@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.h,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-01-18 19:59:35 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,10 +39,8 @@ class vtkKWApplication;
 class VTK_EXPORT vtkKWNotebook : public vtkKWWidget
 {
 public:
-  vtkKWNotebook();
-  ~vtkKWNotebook();
   static vtkKWNotebook* New();
-  const char *GetClassName() {return "vtkKWNotebook";};
+  vtkTypeMacro(vtkKWNotebook,vtkKWWidget);
 
   // Description:
   // Create a Tk widget
@@ -82,6 +80,11 @@ public:
   vtkGetMacro(MinimumHeight,int);
   
 protected:
+  vtkKWNotebook();
+  ~vtkKWNotebook();
+  vtkKWNotebook(const vtkKWNotebook&) {};
+  void operator=(const vtkKWNotebook&) {};
+
   int MinimumWidth;
   int MinimumHeight;
   int Current;

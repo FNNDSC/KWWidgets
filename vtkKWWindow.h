@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-17 03:02:43 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-01-18 19:59:35 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -41,10 +41,8 @@ class vtkKWApplication;
 class VTK_EXPORT vtkKWWindow : public vtkKWWidget
 {
 public:
-  vtkKWWindow();
-  ~vtkKWWindow();
   static vtkKWWindow* New();
-  const char *GetClassName() {return "vtkKWWindow";};
+  vtkTypeMacro(vtkKWWindow,vtkKWWidget);
 
   // Description:
   // Create a Tk widget
@@ -132,6 +130,11 @@ public:
   vtkGetObjectMacro(ToolbarFrame, vtkKWWidget);
  
 protected:
+  vtkKWWindow();
+  ~vtkKWWindow();
+  vtkKWWindow(const vtkKWWindow&) {};
+  void operator=(const vtkKWWindow&) {};
+
   void CreateStatusImage();
   int NumberOfMRUFiles;
   vtkKWView *SelectedView;
