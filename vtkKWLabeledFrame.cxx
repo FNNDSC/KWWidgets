@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-09 23:16:01 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-03-12 01:05:11 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -116,6 +116,7 @@ void vtkKWLabeledFrame::Create(vtkKWApplication *app)
   this->Frame->Create(app,"frame","-borderwidth 0 -relief flat");
   this->Icon->Create(app,"");
   this->Icon->SetImageData(this->IconData);
+  this->Icon->SetBalloonHelpString("Shrink or expand the frame");
   
   this->Script("pack %s -fill x -side top", this->Border->GetWidgetName());
   this->Script("pack %s -fill x -side top", this->Groove->GetWidgetName());
