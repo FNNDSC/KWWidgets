@@ -3,8 +3,8 @@
 Program:   Visualization Toolkit
 Module:    $RCSfile: vtkKWNotebook.cxx,v $
 Language:  C++
-Date:      $Date: 2003-03-11 19:40:01 $
-Version:   $Revision: 1.48 $
+Date:      $Date: 2003-03-13 14:11:02 $
+Version:   $Revision: 1.49 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -86,7 +86,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.48 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.49 $");
 
 //------------------------------------------------------------------------------
 int vtkKWNotebookCommand(ClientData cd, Tcl_Interp *interp,
@@ -1437,7 +1437,7 @@ int vtkKWNotebook::RemoveFromMostRecentPages(vtkKWNotebook::Page *page)
     return 0;
     }
 
-  vtkIdType idx;
+  vtkIdType idx = 0;
   while (this->MostRecentPages->FindItem(page, idx) == VTK_OK)
     {
     this->MostRecentPages->RemoveItem(idx);
