@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWComposite.h,v $
   Language:  C++
-  Date:      $Date: 2000-06-02 17:55:48 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2000-07-03 20:22:37 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -93,6 +93,10 @@ public:
   // Chaining method to serialize an object and its superclasses.
   virtual void SerializeRevision(ostream& os, vtkIndent indent);
 
+  // Description:
+  // A chance for the composite to reset itself
+  virtual void Reset() {};
+  
 protected:
   vtkKWComposite();
   ~vtkKWComposite();
