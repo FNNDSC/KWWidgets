@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 20:17:43 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-01-17 18:43:09 $
+  Version:   $Revision: 1.4 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -89,7 +89,7 @@ class vtkKWEvent
     ContourAnnotationChangeColorEvent,
     ContourAnnotationChangeLineWidthEvent,
     // PV
-    InitializeTraceEvent,
+    InitializeTraceEvent
   };
 };
 

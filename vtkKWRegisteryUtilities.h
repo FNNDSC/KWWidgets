@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRegisteryUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-16 19:12:30 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-01-17 18:43:09 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -93,7 +93,7 @@ class VTK_EXPORT vtkKWRegisteryUtilities : public vtkKWObject
 
   enum {
     READONLY,
-    READWRITE,
+    READWRITE
   };
 
   protected:
