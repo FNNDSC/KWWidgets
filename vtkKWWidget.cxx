@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-11-28 15:33:10 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2001-12-06 14:45:16 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -205,11 +205,6 @@ void vtkKWWidget::RemoveChild(vtkKWWidget *w)
 
 void vtkKWWidget::UnRegister(vtkObject *o)
 {
-  if (((int)this) == 0x03bda490)
-    {
-    this->BreakOnError();
-    }
-
   if (!this->DeletingChildren)
     {
     // delete the children if we are about to be deleted
@@ -286,7 +281,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.17 $");
+  this->ExtractRevision(os,"$Revision: 1.18 $");
 }
 
 vtkKWWindow* vtkKWWidget::GetWindow()
