@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-06 17:20:49 $
-  Version:   $Revision: 1.59 $
+  Date:      $Date: 2002-09-09 21:30:41 $
+  Version:   $Revision: 1.60 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -211,6 +211,10 @@ public:
   vtkGetObjectMacro(ToolbarFrame, vtkKWWidget);
 
   // Description:
+  // The status frame.
+  vtkGetObjectMacro(StatusFrame, vtkKWWidget);
+
+  // Description:
   // Get the progress gauge widget.  The progress gauge is displayed
   // in the Status frame on the bottom right of the window.
   vtkGetObjectMacro(ProgressGauge, vtkKWProgressGauge);
@@ -225,6 +229,11 @@ public:
   // Class of the window. Passed to the toplevel command.
   vtkSetStringMacro(WindowClass);
   vtkGetStringMacro(WindowClass);
+
+  // Description:
+  // Title of the window (if empty, try to use the app name). 
+  virtual void SetTitle(const char*);
+  virtual char* GetTitle();
 
   //Description:
   // Set/Get PromptBeforeClose
@@ -367,6 +376,7 @@ protected:
   char  *ScriptType;
   int   SupportHelp;
   char  *WindowClass;
+  char  *Title;
   int   PromptBeforeClose;
   int   InExit;
   int   PropertiesHidden;
