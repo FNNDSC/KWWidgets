@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:31 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2001-10-16 13:45:37 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -125,6 +125,7 @@ public:
   // perform arguement substitution.
   void Script(const char *EventString, ...);
   void SimpleScript(char *EventString);
+  void SimpleScript(const char *EventString);
 //ETX
 
   // Description:

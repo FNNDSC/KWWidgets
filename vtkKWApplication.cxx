@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:31 $
-  Version:   $Revision: 1.31 $
+  Date:      $Date: 2001-10-16 13:45:38 $
+  Version:   $Revision: 1.32 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -164,6 +164,30 @@ void vtkKWApplication::SimpleScript(char *event)
     vtkErrorMacro("\n    Script: \n" << event << "\n    Returned Error: \n"  
 		  << this->MainInterp->result << endl);
     }
+}
+
+void vtkKWApplication::SimpleScript(const char *event)
+{
+//#define VTK_DEBUG_SCRIPT
+#ifdef VTK_DEBUG_SCRIPT
+  vtkOutputWindow::GetInstance()->DisplayText(event);
+  vtkOutputWindow::GetInstance()->DisplayText("\n");
+#endif
+  
+  int len = strlen(event);
+  if (!event || (len < 1))
+    {
+    return;
+    }
+  char* script = new char[len+1];
+  strcpy(script, event);
+
+  if (Tcl_GlobalEval(this->MainInterp, script) != TCL_OK)
+    {
+    vtkErrorMacro("\n    Script: \n" << event << "\n    Returned Error: \n"  
+		  << this->MainInterp->result << endl);
+    }
+  delete[] script;
 }
 
 void vtkKWApplication::SetApplicationName(const char *_arg)
