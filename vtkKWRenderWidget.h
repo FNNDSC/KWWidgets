@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-03 16:47:26 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2003-01-03 18:05:58 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -158,6 +158,14 @@ public:
   vtkGetMacro(ScalarShift, float);
   vtkSetMacro(ScalarScale, float);
   vtkGetMacro(ScalarScale, float);
+
+  // Description:
+  // Set / Get the collapsing of renders. If this is set to true, then
+  // all renders will be collapsed. Once this is set to false, if
+  // there are any pending render requests. The widget will render.
+  void SetCollapsingRenders(int);
+  vtkBooleanMacro(CollapsingRenders, int);
+  vtkGetMacro(CollapsingRenders, int);
   
 protected:
   vtkKWRenderWidget();
@@ -186,6 +194,9 @@ protected:
 
   float ScalarShift;
   float ScalarScale;
+
+  int CollapsingRenders;
+  int CollapsingRendersCount;
   
 private:
   vtkKWRenderWidget(const vtkKWRenderWidget&);  // Not implemented

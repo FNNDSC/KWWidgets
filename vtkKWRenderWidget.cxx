@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-03 16:47:26 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2003-01-03 18:05:58 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,7 +58,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.13 $");
 
 vtkKWRenderWidget::vtkKWRenderWidget()
 {
@@ -93,6 +93,8 @@ vtkKWRenderWidget::vtkKWRenderWidget()
 
   this->ScalarShift = 0;
   this->ScalarScale = 1;  
+
+  this->CollapsingRenders = 0;
 }
 
 vtkKWRenderWidget::~vtkKWRenderWidget()
@@ -327,6 +329,11 @@ void vtkKWRenderWidget::Configure(int width, int height)
 
 void vtkKWRenderWidget::Render()
 {
+  if ( this->CollapsingRenders )
+    {
+    this->CollapsingRendersCount ++;
+    return;
+    }
   this->RenderWindow->Render();
 }
 
@@ -519,6 +526,24 @@ void vtkKWRenderWidget::SetCornerTextColor(float r, float g, float b)
     if (rgb[0] != r || rgb[1] != g || rgb[2] != b)
       {
       this->CornerAnnotation->GetTextProperty()->SetColor(r, g, b);
+      this->Render();
+      }
+    }
+}
+
+void vtkKWRenderWidget::SetCollapsingRenders(int r)
+{
+  if ( r )
+    {
+    this->CollapsingRenders = 1;
+    this->CollapsingRendersCount = 0;
+    }
+  else
+    {
+    this->CollapsingRenders = 0;
+    if ( this->CollapsingRendersCount )
+      {
+      cout << "With render" << endl;
       this->Render();
       }
     }
