@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-07-24 17:12:56 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2000-08-01 15:02:40 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -76,6 +76,8 @@ vtkKWObject::~vtkKWObject()
     {
     delete [] this->Versions;
     }
+  
+  this->SetApplication(NULL);
 }
 
 
@@ -101,7 +103,7 @@ void vtkKWObject::ExtractRevision(ostream& os,const char *revIn)
 void vtkKWObject::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWObject ";
-  this->ExtractRevision(os,"$Revision: 1.6 $");
+  this->ExtractRevision(os,"$Revision: 1.7 $");
 }
 
 void vtkKWObject::Serialize(istream& is)
@@ -296,6 +298,7 @@ int vtkKWObject::CompareVersions(const char *v1, const char *v2)
       {
       return 1;
       }    
+		pos++;
     }
   // revisions match but maybe one has more .2.3.4.2
   if (nVer1 < nVer2)
@@ -316,7 +319,7 @@ const char *vtkKWObject::GetVersion(const char *cname)
     {
     if (!strcmp(this->Versions[i*2],cname))
       {
-      return this->Versions[i*2];
+      return this->Versions[i*2+1];
       }
     }
   return NULL;
