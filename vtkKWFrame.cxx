@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-14 19:30:16 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2003-01-14 20:08:58 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFrame );
-vtkCxxRevisionMacro(vtkKWFrame, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWFrame, "$Revision: 1.12 $");
 
 vtkKWFrame::vtkKWFrame()
 {
@@ -70,13 +70,7 @@ vtkKWFrame::~vtkKWFrame()
 
 
 void vtkKWFrame::Create(vtkKWApplication *app, const char* args)
-{
-  
-  if (args)
-    {
-    int a = *(int *)0;
-    }
-  
+{  
   const char *wname;
   
   // Set the application
