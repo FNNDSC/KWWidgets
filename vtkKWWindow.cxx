@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-17 23:09:23 $
-  Version:   $Revision: 1.58 $
+  Date:      $Date: 2002-01-18 17:33:07 $
+  Version:   $Revision: 1.59 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -899,7 +899,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.58 $");
+  this->ExtractRevision(os,"$Revision: 1.59 $");
 }
 
 int vtkKWWindow::ExitDialog()
@@ -1076,4 +1076,34 @@ void vtkKWWindow::PrintRecentFiles()
       cout << " -- null " << endl;
       }
     }
+}
+
+
+int vtkKWWindow::SetRegisteryValue(const char* subkey, const char* key, 
+				   const char*value)
+{
+  int res = 0;
+  vtkKWRegisteryUtilities *reg 
+    = this->GetApplication()->GetRegistery(
+      this->GetApplication()->GetApplicationName());
+  res = reg->SetValue(subkey, key, value);
+  cout << "SetRegisteryValue(" << subkey << ", " << key << ", "
+       << value << ")" << endl;
+  return res;
+}
+int vtkKWWindow::GetRegisteryValue(const char* subkey, const char* key, 
+				   char*value)
+{
+  int res = 0;
+  char buffer[1024];
+  *value = 0;
+  vtkKWRegisteryUtilities *reg 
+    = this->GetApplication()->GetRegistery(
+      this->GetApplication()->GetApplicationName());
+  res = reg->ReadValue(subkey, key, buffer);
+  if ( *buffer )
+    {
+    strcpy(value, buffer);
+    }  
+  return res;
 }

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-17 23:09:23 $
-  Version:   $Revision: 1.30 $
+  Date:      $Date: 2002-01-18 17:33:08 $
+  Version:   $Revision: 1.31 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -199,6 +199,13 @@ public:
   // Set/Get Number of recent files in the menu.
   vtkSetClampMacro(NumberOfRecentFiles, unsigned int, 4, 10);
   vtkGetMacro(NumberOfRecentFiles, unsigned int);
+
+  //Description:
+  // Set or get the registry value for the application.
+  int SetRegisteryValue(const char* subkey, const char* key, 
+			const char*value);
+  int GetRegisteryValue(const char* subkey, const char* key, 
+			char*value);
   
 protected:
   vtkKWWindow();
