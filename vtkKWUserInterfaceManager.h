@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceManager.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-02 23:00:59 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-12-03 13:59:56 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -157,7 +157,7 @@ protected:
   // by RemovePanel() and should be overloaded if the concrete implementation
   // of the manager needs to unmap/unpack widgets before everything is deleted.
   // Return 1 on success, 0 on error.
-  virtual int RemovePageWidgets(vtkKWUserInterfacePanel *panel) 
+  virtual int RemovePageWidgets(vtkKWUserInterfacePanel *) 
     { return 1; };
 
   int IdCounter;
