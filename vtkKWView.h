@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.36 $
+  Date:      $Date: 2002-06-05 12:19:27 $
+  Version:   $Revision: 1.37 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -76,7 +76,7 @@ class vtkRenderer;
 class vtkRenderWindow;
 class vtkTextMapper;
 class vtkKWGenericComposite;
-class vtkScaledTextActor;
+class vtkTextActor;
 class vtkKWText;
 
 class VTK_EXPORT vtkKWView : public vtkKWWidget
@@ -381,7 +381,7 @@ class VTK_EXPORT vtkKWView : public vtkKWWidget
   vtkKWCheckButton       *HeaderButton;
   vtkKWWidget            *HeaderLabel;
   vtkKWEntry             *HeaderEntry;
-  vtkScaledTextActor     *HeaderProp;
+  vtkTextActor     *HeaderProp;
   vtkTextMapper          *HeaderMapper;
 
   vtkKWWidget            *GeneralProperties;
