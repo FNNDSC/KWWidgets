@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-27 15:25:56 $
-  Version:   $Revision: 1.33 $
+  Date:      $Date: 2002-03-01 18:00:13 $
+  Version:   $Revision: 1.34 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -102,7 +102,6 @@ public:
   // Add a window to this application.
   void AddWindow(vtkKWWindow *w);
   vtkKWWindowCollection *GetWindows();
-  vtkKWWindow *GetMainWindow();
   
   // Description:
   // Set/Get the ApplicationName
