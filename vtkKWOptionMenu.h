@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-18 19:59:35 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-02-17 03:20:01 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -25,7 +25,7 @@ PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE IS PROVIDED ON AN
 MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 =========================================================================*/
-// .NAME vtkKWOptionMenu
+// .NAME vtkKWOptionMenu - an option menu widget
 // .SECTION Description
 // A widget that looks like a button but when pressed provides a list
 // of options that the user can select.

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-18 19:59:35 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-02-17 03:20:01 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -25,7 +25,7 @@ PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE IS PROVIDED ON AN
 MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 =========================================================================*/
-// .NAME vtkKWView
+// .NAME vtkKWView - a view superclass
 // .SECTION Description
 // The view class normally sits within a vtkKWWindow and holds a
 // vtkWindow. Normally you will not create this class but instead use

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-28 21:30:55 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-02-17 03:20:01 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -25,9 +25,9 @@ PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE IS PROVIDED ON AN
 MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 =========================================================================*/
-// .NAME vtkKWNotebook
+// .NAME vtkKWNotebook - a tabbed notebook of UI pages
 // .SECTION Description
-// The notebook reprsents a tabbed notebook component where you can
+// The notebook represents a tabbed notebook component where you can
 // add or remove pages.
 
 #ifndef __vtkKWNotebook_h

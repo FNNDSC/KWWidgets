@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-03 14:52:07 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-02-17 03:20:01 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -25,7 +25,7 @@ PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE IS PROVIDED ON AN
 MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 =========================================================================*/
-// .NAME vtkKWToolbar
+// .NAME vtkKWToolbar - a frame that holds tool buttons
 // .SECTION Description
 // Simply a frame to hold a bunch of tools.  It uses bindings to control
 // the height of the frame.

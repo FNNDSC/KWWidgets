@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCompositeCollection.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-18 19:59:35 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-02-17 03:20:01 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -25,6 +25,12 @@ PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE IS PROVIDED ON AN
 MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 =========================================================================*/
+// .NAME vtkKWCompositeCollection - a collection of composites
+// .SECTION Description
+// vtkKWCompositeCollection represents and provides methods to manipulate a 
+// list of composites (i.e., vtkKWComposite and subclasses). The list is 
+// unsorted and duplicate entries are not prevented.
+
 
 #ifndef __vtkKWCompositeC_h
 #define __vtkKWCompositeC_h

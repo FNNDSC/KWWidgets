@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-02 20:02:30 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-02-17 03:20:01 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -25,7 +25,7 @@ PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE IS PROVIDED ON AN
 MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 =========================================================================*/
-// .NAME vtkKWMenu
+// .NAME vtkKWMenu - a menu widget
 // .SECTION Description
 // This class is the Menu abstraction for the
 // Kitware toolkit. It provides a c++ interface to

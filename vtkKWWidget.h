@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-01 02:34:11 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-02-17 03:20:01 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -25,7 +25,7 @@ PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE IS PROVIDED ON AN
 MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 =========================================================================*/
-// .NAME vtkKWWidget
+// .NAME vtkKWWidget - superclass of KW widgets
 // .SECTION Description
 // This class is the superclass of all UI based objects in the
 // Kitware toolkit. It contains common methods such as specifying
