@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWProgressGauge.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:36 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-02-01 14:55:32 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -79,14 +79,15 @@ public:
 protected:
   vtkKWProgressGauge();
   ~vtkKWProgressGauge();
-  vtkKWProgressGauge(const vtkKWProgressGauge&) {};
-  void operator=(const vtkKWProgressGauge&) {};
 private:
   int Length;
   int Height;
   char* BarColor;
   char* BackgroundColor;
   int Value;
+private:
+  vtkKWProgressGauge(const vtkKWProgressGauge&); // Not implemented
+  void operator=(const vtkKWProgressGauge&); // Not implemented
 };
 
 

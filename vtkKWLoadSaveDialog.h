@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-29 20:21:07 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-02-01 14:55:30 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -116,8 +116,6 @@ protected:
   vtkKWLoadSaveDialog();
   ~vtkKWLoadSaveDialog();
 
-  vtkKWLoadSaveDialog(const vtkKWLoadSaveDialog&) {};
-  void operator=(const vtkKWLoadSaveDialog&) {};
 
   char *FileTypes;
   char *InitialDir;  
@@ -127,6 +125,9 @@ protected:
   char *LastPath;
   int SaveDialog;
   int Done;
+private:
+  vtkKWLoadSaveDialog(const vtkKWLoadSaveDialog&); // Not implemented
+  void operator=(const vtkKWLoadSaveDialog&); // Not implemented
 };
 
 

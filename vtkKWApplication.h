@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-28 19:37:41 $
-  Version:   $Revision: 1.30 $
+  Date:      $Date: 2002-02-01 14:55:27 $
+  Version:   $Revision: 1.31 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -186,8 +186,6 @@ public:
 protected:
   vtkKWApplication();
   ~vtkKWApplication();
-  vtkKWApplication(const vtkKWApplication&) {};
-  void operator=(const vtkKWApplication&) {};
 
   Tk_Window MainWindow;
   Tcl_Interp *MainInterp;
@@ -213,6 +211,10 @@ protected:
   vtkKWRegisteryUtilities *Registery;
   int RegisteryLevel;
   int BalloonHelpDelay;
+
+private:
+  vtkKWApplication(const vtkKWApplication&);   // Not implemented.
+  void operator=(const vtkKWApplication&);  // Not implemented.
 };
 
 #endif

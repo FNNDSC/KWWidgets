@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-28 19:37:42 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-02-01 14:55:30 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -78,8 +78,6 @@ public:
 protected:
   vtkKWLabeledFrame();
   ~vtkKWLabeledFrame();
-  vtkKWLabeledFrame(const vtkKWLabeledFrame&) {};
-  void operator=(const vtkKWLabeledFrame&) {};
 
   vtkKWWidget *Border;
   vtkKWWidget *Border2;
@@ -89,6 +87,9 @@ protected:
   vtkKWWidget *Icon;
   int Displayed;
   static int AllowShowHide;
+private:
+  vtkKWLabeledFrame(const vtkKWLabeledFrame&); // Not implemented
+  void operator=(const vtkKWLabeledFrame&); // Not implemented
 };
 
 

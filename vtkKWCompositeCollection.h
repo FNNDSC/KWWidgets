@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCompositeCollection.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:32 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-02-01 14:55:28 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -82,9 +82,10 @@ public:
 protected:
   vtkKWCompositeCollection() {};
   ~vtkKWCompositeCollection() {};
-  vtkKWCompositeCollection(const vtkKWCompositeCollection&) {};
-  void operator=(const vtkKWCompositeCollection&) {};
 
+private:
+  vtkKWCompositeCollection(const vtkKWCompositeCollection&); // Not implemented
+  void operator=(const vtkKWCompositeCollection&); // Not Implemented
 };
 
 inline void vtkKWCompositeCollection::AddItem(vtkKWComposite *a) 

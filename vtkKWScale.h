@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-14 21:36:32 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-02-01 14:55:33 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -108,8 +108,6 @@ public:
 protected:
   vtkKWScale();
   ~vtkKWScale();
-  vtkKWScale(const vtkKWScale&) {};
-  void operator=(const vtkKWScale&) {};
 
   char        *Command;
   char        *StartCommand;
@@ -120,6 +118,9 @@ protected:
   vtkKWWidget *ScaleWidget;
   vtkKWWidget *ScaleLabel;
   float Range[2];
+private:
+  vtkKWScale(const vtkKWScale&); // Not implemented
+  void operator=(const vtkKWScale&); // Not implemented
 };
 
 

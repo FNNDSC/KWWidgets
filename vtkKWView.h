@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-25 20:21:36 $
-  Version:   $Revision: 1.32 $
+  Date:      $Date: 2002-02-01 14:55:34 $
+  Version:   $Revision: 1.33 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -348,8 +348,6 @@ class VTK_EXPORT vtkKWView : public vtkKWWidget
   protected:
   vtkKWView();
   ~vtkKWView();
-  vtkKWView(const vtkKWView&) {};
-  void operator=(const vtkKWView&) {};
 
   vtkKWCornerAnnotation *CornerAnnotation;
   
@@ -406,6 +404,9 @@ class VTK_EXPORT vtkKWView : public vtkKWWidget
   int              SupportPrint;
   int              SupportControlFrame;
   
+private:
+  vtkKWView(const vtkKWView&); // Not implemented
+  void operator=(const vtkKWView&); // Not implemented
 };
 
 

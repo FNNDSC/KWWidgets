@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-28 19:37:43 $
-  Version:   $Revision: 1.34 $
+  Date:      $Date: 2002-02-01 14:55:35 $
+  Version:   $Revision: 1.35 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -234,8 +234,6 @@ public:
 protected:
   vtkKWWindow();
   ~vtkKWWindow();
-  vtkKWWindow(const vtkKWWindow&) {};
-  void operator=(const vtkKWWindow&) {};
   virtual void SerializeRevision(ostream& os, vtkIndent indent);
 
   void InsertRecentFileToMenu(const char *filename, 
@@ -286,6 +284,9 @@ protected:
   vtkKWPointerArray *RecentFiles;
   
   void PrintRecentFiles();
+private:
+  vtkKWWindow(const vtkKWWindow&); // Not implemented
+  void operator=(const vtkKWWindow&); // Not implemented
 };
 
 

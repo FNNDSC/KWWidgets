@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWActorComposite.h,v $
   Language:  C++
-  Date:      $Date: 2001-12-28 23:00:39 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-02-01 14:55:27 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -84,11 +84,13 @@ public:
 protected:
   vtkKWActorComposite();
   ~vtkKWActorComposite();
-  vtkKWActorComposite(const vtkKWActorComposite&) {};
-  void operator=(const vtkKWActorComposite&) {};
 
   vtkActor *Actor;
   vtkPolyDataMapper *Mapper;
+
+private:
+  vtkKWActorComposite(const vtkKWActorComposite&);  // Not implemented.
+  void operator=(const vtkKWActorComposite&);  // Not implemented.
 };
 
 

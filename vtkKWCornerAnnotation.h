@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-21 20:59:13 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-02-01 14:55:28 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -110,8 +110,6 @@ public:
 protected:
   vtkKWCornerAnnotation();
   ~vtkKWCornerAnnotation();
-  vtkKWCornerAnnotation(const vtkKWCornerAnnotation&) {};
-  void operator=(const vtkKWCornerAnnotation&) {};
 
   vtkKWWidget            *CornerDisplayFrame;
   vtkKWChangeColorButton *CornerColor;
@@ -127,6 +125,9 @@ protected:
   vtkKWGenericComposite  *CornerComposite;
 
   vtkKWView *View;
+private:
+  vtkKWCornerAnnotation(const vtkKWCornerAnnotation&); // Not implemented
+  void operator=(const vtkKWCornerAnnotation&); // Not Implemented
 };
 
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenuButton.h,v $
   Language:  C++
-  Date:      $Date: 2001-10-11 20:12:56 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-02-01 14:55:31 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -69,10 +69,11 @@ public:
 protected:
   vtkKWMenuButton();
   ~vtkKWMenuButton();
-  vtkKWMenuButton(const vtkKWMenuButton&) {};
-  void operator=(const vtkKWMenuButton&) {};
   
   vtkKWMenu *Menu;
+private:
+  vtkKWMenuButton(const vtkKWMenuButton&); // Not implemented
+  void operator=(const vtkKWMenuButton&); // Not implemented
 };
 
 #endif

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-25 12:22:42 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2002-02-01 14:55:34 $
+  Version:   $Revision: 1.19 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -165,8 +165,6 @@ public:
 protected:
   vtkKWWidget();
   ~vtkKWWidget();
-  vtkKWWidget(const vtkKWWidget&) {};
-  void operator=(const vtkKWWidget&) {};
   virtual void SerializeRevision(ostream& os, vtkIndent indent);
 
   char *WidgetName;
@@ -190,6 +188,9 @@ protected:
   // is unfortunate, but necessary.  With out this name set, the
   // trace cannot be initialized for this widget.
   char *TraceName;
+private:
+  vtkKWWidget(const vtkKWWidget&); // Not implemented
+  void operator=(const vtkKWWidget&); // Not implemented
 };
 
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWGenericComposite.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:34 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-02-01 14:55:29 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -69,10 +69,11 @@ public:
 protected:
   vtkKWGenericComposite();
   ~vtkKWGenericComposite();
-  vtkKWGenericComposite(const vtkKWGenericComposite&) {};
-  void operator=(const vtkKWGenericComposite&) {};
 
   vtkProp *Prop;
+private:
+  vtkKWGenericComposite(const vtkKWGenericComposite&); // Not implemented
+  void operator=(const vtkKWGenericComposite&); // Not implemented
 };
 
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTclInteractor.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-25 20:21:36 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-02-01 14:55:33 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -94,8 +94,6 @@ public:
 protected:
   vtkKWTclInteractor();
   ~vtkKWTclInteractor();
-  vtkKWTclInteractor(const vtkKWTclInteractor&) {};
-  void operator=(const vtkKWTclInteractor&) {};
 
   vtkKWWindow* MasterWindow;
 
@@ -111,6 +109,9 @@ protected:
   char *Title;
   int TagNumber;
   int CommandIndex;
+private:
+  vtkKWTclInteractor(const vtkKWTclInteractor&); // Not implemented
+  void operator=(const vtkKWTclInteractor&); // Not implemented
 };
 
 #endif

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidgetCollection.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:39 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-02-01 14:55:35 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -80,9 +80,10 @@ public:
 protected:
   vtkKWWidgetCollection() {};
   ~vtkKWWidgetCollection() {};
-  vtkKWWidgetCollection(const vtkKWWidgetCollection&) {};
-  void operator=(const vtkKWWidgetCollection&) {};
 
+private:
+  vtkKWWidgetCollection(const vtkKWWidgetCollection&); // Not implemented
+  void operator=(const vtkKWWidgetCollection&); // Not implemented
 };
 
 inline void vtkKWWidgetCollection::AddItem(vtkKWWidget *a) 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:36 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-02-01 14:55:32 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -87,11 +87,12 @@ public:
 protected:
   vtkKWOptionMenu();
   ~vtkKWOptionMenu();
-  vtkKWOptionMenu(const vtkKWOptionMenu&) {};
-  void operator=(const vtkKWOptionMenu&) {};
 
   char *CurrentValue;  
   vtkKWWidget *Menu;
+private:
+  vtkKWOptionMenu(const vtkKWOptionMenu&); // Not implemented
+  void operator=(const vtkKWOptionMenu&); // Not implemented
 };
 
 

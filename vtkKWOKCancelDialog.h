@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOKCancelDialog.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:36 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-02-01 14:55:31 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -66,13 +66,14 @@ public:
 protected:
   vtkKWOKCancelDialog();
   ~vtkKWOKCancelDialog();
-  vtkKWOKCancelDialog(const vtkKWOKCancelDialog&) {};
-  void operator=(const vtkKWOKCancelDialog&) {};
 
   vtkKWWidget *Message;
   vtkKWWidget *ButtonFrame;
   vtkKWWidget *OKButton;
   vtkKWWidget *CancelButton;
+private:
+  vtkKWOKCancelDialog(const vtkKWOKCancelDialog&); // Not implemented
+  void operator=(const vtkKWOKCancelDialog&); // Not implemented
 };
 
 

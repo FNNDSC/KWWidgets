@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWListBox.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:34 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-02-01 14:55:30 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -112,14 +112,15 @@ public:
 protected:
   vtkKWListBox();
   ~vtkKWListBox();
-  vtkKWListBox(const vtkKWListBox&) {};
-  void operator=(const vtkKWListBox&) {};
   char* CurrentSelection;	// store last call of CurrentSelection
   char* Item;			// store last call of GetItem
   
   vtkKWWidget *Scrollbar;
   vtkKWWidget *Listbox;
   
+private:
+  vtkKWListBox(const vtkKWListBox&); // Not implemented
+  void operator=(const vtkKWListBox&); // Not implemented
 };
 
 

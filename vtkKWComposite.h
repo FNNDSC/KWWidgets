@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWComposite.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:32 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-02-01 14:55:28 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -121,8 +121,6 @@ public:
 protected:
   vtkKWComposite();
   ~vtkKWComposite();
-  vtkKWComposite(const vtkKWComposite&) {};
-  void operator=(const vtkKWComposite&) {};
 
   vtkKWNotebook *Notebook;
   vtkKWNotebook *Notebook2;
@@ -132,6 +130,9 @@ protected:
   vtkKWView *View;
 
   vtkKWWidget *PropertiesParent;
+private:
+  vtkKWComposite(const vtkKWComposite&); // Not implemented
+  void operator=(const vtkKWComposite&); // Not Implemented
 };
 
 

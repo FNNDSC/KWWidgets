@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-25 21:07:13 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-02-01 14:55:31 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -101,8 +101,6 @@ public:
 protected:
   vtkKWNotebook();
   ~vtkKWNotebook();
-  vtkKWNotebook(const vtkKWNotebook&) {};
-  void operator=(const vtkKWNotebook&) {};
 
   int MinimumWidth;
   int MinimumHeight;
@@ -123,6 +121,9 @@ protected:
   vtkKWWidget **Frames;
   vtkKWWidget **Buttons;
   char **Titles;
+private:
+  vtkKWNotebook(const vtkKWNotebook&); // Not implemented
+  void operator=(const vtkKWNotebook&); // Not implemented
 };
 
 

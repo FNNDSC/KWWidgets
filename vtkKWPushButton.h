@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPushButton.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:36 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-02-01 14:55:32 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -64,9 +64,10 @@ public:
 protected:
   vtkKWPushButton() {};
   ~vtkKWPushButton() {};
-  vtkKWPushButton(const vtkKWPushButton&) {};
-  void operator=(const vtkKWPushButton&) {};
   
+private:
+  vtkKWPushButton(const vtkKWPushButton&); // Not implemented
+  void operator=(const vtkKWPushButton&); // Not implemented
 };
 
 

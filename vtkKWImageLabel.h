@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWImageLabel.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-30 21:43:37 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-02-01 14:55:29 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -67,14 +67,14 @@ public:
 protected:
   vtkKWImageLabel();
   ~vtkKWImageLabel();
-  vtkKWImageLabel(const vtkKWImageLabel&) {};
-  void operator=(const vtkKWImageLabel&) {};
 
   vtkSetStringMacro(ImageDataLabel);
   vtkGetStringMacro(ImageDataLabel);
 
 private:
   char *ImageDataLabel;
+  vtkKWImageLabel(const vtkKWImageLabel&); // Not implemented
+  void operator=(const vtkKWImageLabel&); // Not implemented
 };
 
 

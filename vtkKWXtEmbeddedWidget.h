@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWXtEmbeddedWidget.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:40 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-02-01 14:55:36 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -75,10 +75,11 @@ public:
 protected:
   vtkKWXtEmbeddedWidget();
   ~vtkKWXtEmbeddedWidget();
-  vtkKWXtEmbeddedWidget(const vtkKWXtEmbeddedWidget&) {};
-  void operator=(const vtkKWXtEmbeddedWidget&) {};
 
   void* WindowId;
+private:
+  vtkKWXtEmbeddedWidget(const vtkKWXtEmbeddedWidget&); // Not implemented
+  void operator=(const vtkKWXtEmbeddedWidget&); // Not implemented
 };
 
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-25 12:22:19 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2002-02-01 14:55:31 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -133,8 +133,6 @@ private:
 protected:
   vtkKWObject();
   ~vtkKWObject();
-  vtkKWObject(const vtkKWObject&) {};
-  void operator=(const vtkKWObject&) {};
 
   vtkKWApplication *Application;
 
@@ -161,6 +159,9 @@ protected:
 
 //ETX
 
+private:
+  vtkKWObject(const vtkKWObject&); // Not implemented
+  void operator=(const vtkKWObject&); // Not implemented
 };
 
 #endif

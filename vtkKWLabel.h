@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-30 21:43:38 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-02-01 14:55:29 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -90,12 +90,12 @@ public:
 protected:
   vtkKWLabel();
   ~vtkKWLabel();
-  vtkKWLabel(const vtkKWLabel&) {};
-  void operator=(const vtkKWLabel&) {};
 private:
   char* Label;
   int LineType;
   int Width;
+  vtkKWLabel(const vtkKWLabel&); // Not implemented
+  void operator=(const vtkKWLabel&); // Not implemented
 };
 
 

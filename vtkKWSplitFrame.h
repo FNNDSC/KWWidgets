@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplitFrame.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:38 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-02-01 14:55:33 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -97,8 +97,6 @@ public:
 protected:
   vtkKWSplitFrame();
   ~vtkKWSplitFrame();
-  vtkKWSplitFrame(const vtkKWSplitFrame&) {};
-  void operator=(const vtkKWSplitFrame&) {};
 
   vtkKWWidget *Frame1;
   vtkKWWidget *Separator;
@@ -114,6 +112,9 @@ protected:
 
   // Reset the actual windows to match our width IVars.
   void Update();
+private:
+  vtkKWSplitFrame(const vtkKWSplitFrame&); // Not implemented
+  void operator=(const vtkKWSplitFrame&); // Not implemented
 };
 
 

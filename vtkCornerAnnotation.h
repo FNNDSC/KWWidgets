@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-16 15:50:55 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-02-01 14:55:27 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -109,8 +109,6 @@ public:
 protected:
   vtkCornerAnnotation();
   ~vtkCornerAnnotation();
-  vtkCornerAnnotation(const vtkCornerAnnotation&) {};
-  void operator=(const vtkCornerAnnotation&) {};
 
   float MaximumLineHeight;
 
@@ -130,6 +128,8 @@ protected:
   // search for replacable tokens and replace
   void ReplaceText(vtkImageActor *ia,  vtkImageMapToWindowLevelColors *wl);
 private:
+  vtkCornerAnnotation(const vtkCornerAnnotation&);  // Not implemented.
+  void operator=(const vtkCornerAnnotation&);  // Not implemented.
 };
 
 
