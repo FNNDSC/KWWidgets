@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWActorComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-04 18:35:31 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2001-01-08 18:45:22 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -62,8 +62,17 @@ vtkKWActorComposite::vtkKWActorComposite()
 
 vtkKWActorComposite::~vtkKWActorComposite()
 {
-  this->Actor->Delete();
-  this->Mapper->Delete();
+  if (this->Actor)
+    {
+    this->Actor->Delete();
+    this->Actor = NULL;
+    }
+  
+  if (this->Mapper)
+    {
+    this->Mapper->Delete();
+    this->Mapper = NULL;
+    }
 }
 
 void vtkKWActorComposite::SetInput(vtkPolyData *input)
