@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPointerArray.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-08 22:21:02 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-01-11 18:35:24 $
+  Version:   $Revision: 1.3 $
 
 
 Copyright (c) 1993-2001 Ken Martin, Will Schroeder, Bill Lorensen 
@@ -47,17 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 //------------------------------------------------------------------------------
-vtkKWPointerArray* vtkKWPointerArray::New()
-{
-  // First try to create the object from the vtkObjectFactory
-  vtkObject* ret = vtkObjectFactory::CreateInstance("vtkKWPointerArray");
-  if(ret)
-    {
-    return (vtkKWPointerArray*)ret;
-    }
-  // If the factory was unable to create the object, then create it here.
-  return new vtkKWPointerArray;
-}
+vtkStandardNewMacro( vtkKWPointerArray );
 
 vtkKWPointerArray::vtkKWPointerArray()
 {

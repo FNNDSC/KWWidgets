@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 17:56:45 $
-  Version:   $Revision: 1.42 $
+  Date:      $Date: 2002-01-11 18:35:22 $
+  Version:   $Revision: 1.43 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,17 +58,7 @@ int vtkKWApplication::WidgetVisibility = 1;
 
 
 //------------------------------------------------------------------------------
-vtkKWApplication* vtkKWApplication::New()
-{
-  // First try to create the object from the vtkObjectFactory
-  vtkObject* ret = vtkObjectFactory::CreateInstance("vtkKWApplication");
-  if(ret)
-    {
-    return (vtkKWApplication*)ret;
-    }
-  // If the factory was unable to create the object, then create it here.
-  return new vtkKWApplication;
-}
+vtkStandardNewMacro( vtkKWApplication );
 
 
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWListBox.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:34 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-01-11 18:35:23 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,17 +45,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 //------------------------------------------------------------------------------
-vtkKWListBox* vtkKWListBox::New()
-{
-  // First try to create the object from the vtkObjectFactory
-  vtkObject* ret = vtkObjectFactory::CreateInstance("vtkKWListBox");
-  if(ret)
-    {
-    return (vtkKWListBox*)ret;
-    }
-  // If the factory was unable to create the object, then create it here.
-  return new vtkKWListBox;
-}
+vtkStandardNewMacro( vtkKWListBox );
 
 
 int vtkKWListBoxCommand(ClientData cd, Tcl_Interp *interp,

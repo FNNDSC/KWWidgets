@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-04 22:57:28 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2002-01-11 18:35:24 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,17 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 //------------------------------------------------------------------------------
-vtkKWScale* vtkKWScale::New()
-{
-  // First try to create the object from the vtkObjectFactory
-  vtkObject* ret = vtkObjectFactory::CreateInstance("vtkKWScale");
-  if(ret)
-    {
-    return (vtkKWScale*)ret;
-    }
-  // If the factory was unable to create the object, then create it here.
-  return new vtkKWScale;
-}
+vtkStandardNewMacro( vtkKWScale );
 
 
 

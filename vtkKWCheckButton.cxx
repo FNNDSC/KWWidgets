@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCheckButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-12-18 19:01:00 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-01-11 18:35:22 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,17 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 //------------------------------------------------------------------------------
-vtkKWCheckButton* vtkKWCheckButton::New()
-{
-  // First try to create the object from the vtkObjectFactory
-  vtkObject* ret = vtkObjectFactory::CreateInstance("vtkKWCheckButton");
-  if(ret)
-    {
-    return (vtkKWCheckButton*)ret;
-    }
-  // If the factory was unable to create the object, then create it here.
-  return new vtkKWCheckButton;
-}
+vtkStandardNewMacro( vtkKWCheckButton );
 
 
 vtkKWCheckButton::vtkKWCheckButton() 

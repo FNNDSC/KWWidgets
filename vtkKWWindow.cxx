@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 17:52:09 $
-  Version:   $Revision: 1.47 $
+  Date:      $Date: 2002-01-11 18:35:25 $
+  Version:   $Revision: 1.48 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -191,17 +191,7 @@ int vtkKWWindowMenuEntry::InsertToMenu( int pos, vtkKWMenu *menu )
 }
 
 //------------------------------------------------------------------------------
-vtkKWWindow* vtkKWWindow::New()
-{
-  // First try to create the object from the vtkObjectFactory
-  vtkObject* ret = vtkObjectFactory::CreateInstance("vtkKWWindow");
-  if(ret)
-    {
-    return (vtkKWWindow*)ret;
-    }
-  // If the factory was unable to create the object, then create it here.
-  return new vtkKWWindow;
-}
+vtkStandardNewMacro(vtkKWWindow );
 
 int vtkKWWindowCommand(ClientData cd, Tcl_Interp *interp,
                              int argc, char *argv[]);
@@ -923,7 +913,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.47 $");
+  this->ExtractRevision(os,"$Revision: 1.48 $");
 }
 
 int vtkKWWindow::ExitDialog()

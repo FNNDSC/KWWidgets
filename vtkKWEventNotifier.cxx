@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEventNotifier.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:33 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-01-11 18:35:22 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,17 +44,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ctype.h>
 
 
-vtkKWEventNotifier* vtkKWEventNotifier::New()
-{
-  // First try to create the object from the vtkObjectFactory
-  vtkObject* ret = vtkObjectFactory::CreateInstance("vtkKWEventNotifier");
-  if(ret)
-    {
-    return (vtkKWEventNotifier*)ret;
-    }
-  // If the factory was unable to create the object, then create it here.
-  return new vtkKWEventNotifier;
-}
+vtkStandardNewMacro( vtkKWEventNotifier );
 
 
 int vtkKWEventNotifierCommand(ClientData cd, Tcl_Interp *interp,

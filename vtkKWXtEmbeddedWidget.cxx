@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWXtEmbeddedWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:40 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-01-11 18:35:25 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,20 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 //------------------------------------------------------------------------------
-vtkKWXtEmbeddedWidget* vtkKWXtEmbeddedWidget::New()
-{
-  // First try to create the object from the vtkObjectFactory
-  vtkObject* ret = vtkObjectFactory::CreateInstance("vtkKWXtEmbeddedWidget");
-  if(ret)
-    {
-    return (vtkKWXtEmbeddedWidget*)ret;
-    }
-  // If the factory was unable to create the object, then create it here.
-  return new vtkKWXtEmbeddedWidget;
-}
-
-
-
+vtkStandardNewMacro(vtkKWXtEmbeddedWidget);
 
 int vtkKWXtEmbeddedWidgetCommand(ClientData cd, Tcl_Interp *interp,
                              int argc, char *argv[]);

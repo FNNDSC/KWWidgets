@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-04 15:27:25 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-01-11 18:35:23 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,17 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 //-----------------------------------------------------------------------------
-vtkKWMessageDialog* vtkKWMessageDialog::New()
-{
-  // First try to create the object from the vtkObjectFactory
-  vtkObject* ret = vtkObjectFactory::CreateInstance("vtkKWMessageDialog");
-  if(ret)
-    {
-    return (vtkKWMessageDialog*)ret;
-    }
-  // If the factory was unable to create the object, then create it here.
-  return new vtkKWMessageDialog;
-}
+vtkStandardNewMacro( vtkKWMessageDialog );
 
 
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-10-17 22:13:04 $
-  Version:   $Revision: 1.24 $
+  Date:      $Date: 2002-01-11 18:35:24 $
+  Version:   $Revision: 1.25 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -61,20 +61,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWProgressGauge.h"
 
 //------------------------------------------------------------------------------
-vtkKWVolumeComposite* vtkKWVolumeComposite::New()
-{
-  // First try to create the object from the vtkObjectFactory
-  vtkObject* ret = vtkObjectFactory::CreateInstance("vtkKWVolumeComposite");
-  if(ret)
-    {
-    return (vtkKWVolumeComposite*)ret;
-    }
-  // If the factory was unable to create the object, then create it here.
-  return new vtkKWVolumeComposite;
-}
-
-
-
+vtkStandardNewMacro( vtkKWVolumeComposite );
 
 int vtkKWVolumeCompositeCommand(ClientData cd, Tcl_Interp *interp,
 				int argc, char *argv[]);
@@ -500,5 +487,5 @@ void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.24 $");
+  this->ExtractRevision(os,"$Revision: 1.25 $");
 }

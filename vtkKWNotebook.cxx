@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:35 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-01-11 18:35:23 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,17 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 //------------------------------------------------------------------------------
-vtkKWNotebook* vtkKWNotebook::New()
-{
-  // First try to create the object from the vtkObjectFactory
-  vtkObject* ret = vtkObjectFactory::CreateInstance("vtkKWNotebook");
-  if(ret)
-    {
-    return (vtkKWNotebook*)ret;
-    }
-  // If the factory was unable to create the object, then create it here.
-  return new vtkKWNotebook;
-}
+vtkStandardNewMacro( vtkKWNotebook );
 
 
 

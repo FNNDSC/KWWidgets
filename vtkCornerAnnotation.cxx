@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-08 22:24:30 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-01-11 18:35:21 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,20 +44,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 //------------------------------------------------------------------------------
-vtkCornerAnnotation* vtkCornerAnnotation::New()
-{
-  // First try to create the object from the vtkObjectFactory
-  vtkObject* ret = vtkObjectFactory::CreateInstance("vtkCornerAnnotation");
-  if(ret)
-    {
-    return (vtkCornerAnnotation*)ret;
-    }
-  // If the factory was unable to create the object, then create it here.
-  return new vtkCornerAnnotation;
-}
-
-
-
+vtkStandardNewMacro(vtkCornerAnnotation);
 
 vtkCornerAnnotation::vtkCornerAnnotation()
 {
