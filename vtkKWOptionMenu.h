@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-30 20:12:55 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2003-03-20 20:51:48 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -73,17 +73,17 @@ public:
   vtkGetObjectMacro(Menu, vtkKWWidget);
 
   // Description:
-  // Add entries to an option menu, with or without a command.
+  // Add/Insert entries to an option menu, with or without a command.
   void AddEntry(const char *name);
   void AddEntryWithCommand(const char *name, const char *obj,
                            const char *method, const char *options = 0);
   void AddEntryWithCommand(const char *name, vtkKWObject *obj,
-                           const char *methodAndArgs, const char *options = 0);
-  void AddImageEntryWithCommand(const char *imageName, const char *obj,
+                           const char *method, const char *options = 0);
+  void AddImageEntryWithCommand(const char *image_name, const char *obj,
                                 const char *method, const char *options = 0);
-  void AddImageEntryWithCommand(const char *ImageName, vtkKWObject *obj,
-                                const char *methodAndArgs,
-                                const char *options = 0);
+  void AddImageEntryWithCommand(const char *image_name, vtkKWObject *obj,
+                                const char *method, const char *options = 0);
+  void AddSeparator();
 
   // Description:
   // Remove entry from an option menu.

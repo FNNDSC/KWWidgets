@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-30 20:12:55 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2003-03-20 20:51:48 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWOptionMenu );
-vtkCxxRevisionMacro(vtkKWOptionMenu, "$Revision: 1.21 $");
+vtkCxxRevisionMacro(vtkKWOptionMenu, "$Revision: 1.22 $");
 
 //-----------------------------------------------------------------------------
 vtkKWOptionMenu::vtkKWOptionMenu()
@@ -138,11 +138,11 @@ int vtkKWOptionMenu::GetNumberOfEntries()
 //-----------------------------------------------------------------------------
 void vtkKWOptionMenu::AddEntry(const char *name)
 {
-  if (this->Application)
+  if (this->IsCreated())
     {
-    this->Script("%s add radiobutton -label {%s} -variable %sValue",
-                 this->Menu->GetWidgetName(), name, 
-                 this->GetWidgetName());
+    this->Script(
+      "%s add radiobutton -label {%s} -variable %sValue",
+      this->Menu->GetWidgetName(), name, this->GetWidgetName());
     }
 }
 
@@ -152,43 +152,55 @@ void vtkKWOptionMenu::AddEntryWithCommand(const char *name,
                                           const char *method,
                                           const char *options)
 {
-  this->Script(
-    "%s add radiobutton -label {%s} -variable %sValue -command {%s %s} %s",
-    this->Menu->GetWidgetName(), name, 
-    this->GetWidgetName(), obj, method, (options ? options : ""));
+  if (this->IsCreated())
+    {
+    this->Script(
+      "%s add radiobutton -label {%s} -variable %sValue -command {%s %s} %s",
+      this->Menu->GetWidgetName(), name, this->GetWidgetName(), 
+      obj, method, (options ? options : ""));
+    }
 }
 
 //-----------------------------------------------------------------------------
 void vtkKWOptionMenu::AddEntryWithCommand(const char *name, 
                                           vtkKWObject *obj, 
-                                          const char *methodAndArgs,
+                                          const char *method,
                                           const char *options)
 {
-  this->AddEntryWithCommand(name, obj->GetTclName(), methodAndArgs, options);
+  this->AddEntryWithCommand(name, obj->GetTclName(), method, options);
 }
 
 //-----------------------------------------------------------------------------
-void vtkKWOptionMenu::AddImageEntryWithCommand(const char *imageName, 
+void vtkKWOptionMenu::AddImageEntryWithCommand(const char *image_name, 
                                                const char *obj, 
                                                const char *method,
                                                const char *options)
 {
-  this->Script(
-    "%s add radiobutton -image %s -selectimage %s -label {%s} -variable %sValue -command {%s %s} %s",
-    this->Menu->GetWidgetName(), imageName, imageName, imageName,
-    this->GetWidgetName(), obj, method, (options ? options : ""));
+  if (this->IsCreated())
+    {
+    this->Script(
+      "%s add radiobutton -image %s -selectimage %s -label {%s} -variable %sValue -command {%s %s} %s",
+      this->Menu->GetWidgetName(), image_name, image_name, image_name,
+      this->GetWidgetName(), obj, method, (options ? options : ""));
+    }
 }
 
 //-----------------------------------------------------------------------------
-void vtkKWOptionMenu::AddImageEntryWithCommand(const char *imageName, 
+void vtkKWOptionMenu::AddImageEntryWithCommand(const char *image_name, 
                                                vtkKWObject *obj, 
-                                               const char *methodAndArgs,
+                                               const char *method,
                                                const char *options)
 {
-  this->AddEntryWithCommand(imageName, 
-                            obj->GetTclName(), 
-                            methodAndArgs,
-                            options);
+  this->AddEntryWithCommand(image_name, obj->GetTclName(), method, options);
+}
+
+//-----------------------------------------------------------------------------
+void vtkKWOptionMenu::AddSeparator()
+{
+  if (this->IsCreated())
+    {
+    this->Script("%s add separator", this->Menu->GetWidgetName());
+    }
 }
 
 //-----------------------------------------------------------------------------
