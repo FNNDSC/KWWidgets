@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-14 21:05:24 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2003-03-18 21:45:07 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -113,6 +113,14 @@ public:
   vtkGetMacro( SaveDialog, int );
 
   // Description:
+  // Set or reset the ChooseDirectory ivar.
+  // If set to 1, the dialog will ask the user for a directory, not a file
+  // If set to 0, the usual file dialog is displayed (default)
+  vtkSetClampMacro(ChooseDirectory, int, 0, 1);
+  vtkBooleanMacro(ChooseDirectory, int);
+  vtkGetMacro(ChooseDirectory, int);
+
+  // Description:
   // Set the title string of the dialog window. Should be called before
   // create otherwise it will have no effect.
   vtkSetStringMacro(Title);
@@ -137,7 +145,9 @@ protected:
   char *DefaultExtension;
   char *LastPath;
   int SaveDialog;
+  int ChooseDirectory;
   int Done;
+
 private:
   vtkKWLoadSaveDialog(const vtkKWLoadSaveDialog&); // Not implemented
   void operator=(const vtkKWLoadSaveDialog&); // Not implemented
