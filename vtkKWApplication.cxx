@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-04-17 19:00:54 $
-  Version:   $Revision: 1.69 $
+  Date:      $Date: 2002-04-18 10:55:17 $
+  Version:   $Revision: 1.70 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -482,11 +482,12 @@ void vtkKWApplication::DisplayHelp(vtkKWWindow* master)
   if ( !HtmlHelp(NULL, temp, HH_DISPLAY_TOPIC, 0) )
     {
     vtkKWMessageDialog::PopupMessage(
-      this, master, vtkKWMessageDialog::Error,
+      this, master,
       "Loading Help Error",
       "Help file cannot be displayed. This can be a result of "
       "the program being wrongly installed or help file being "
-      "corrupted. Please reinstall this program.");
+      "corrupted. Please reinstall this program.", 
+      vtkKWMessageDialog::ErrorIcon);
     }
 #else
   vtkKWMessageDialog *dlg = vtkKWMessageDialog::New();
