@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2000-04-18 18:50:03 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2000-04-19 17:56:37 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -112,8 +112,7 @@ public:
   // Add to the menu a list of recently used files. Specify a key,
   // which if it is null it will just use the classname. The command
   // is the command to execute when a file is selected.
-  virtual void AddRecentFilesToMenu(char *key, vtkKWObject *target, 
-                                    const char *command);
+  virtual void AddRecentFilesToMenu(char *key, vtkKWObject *target);
   virtual void AddRecentFile(char *key, char *name, vtkKWObject *target,
                              const char *command);
   
