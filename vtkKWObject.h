@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 23:31:25 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2002-01-14 14:38:52 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -124,6 +124,4 @@ protected:
 //ETX
 };
 
-
 #endif
-
