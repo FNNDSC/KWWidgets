@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-12 19:22:21 $
-  Version:   $Revision: 1.57 $
+  Date:      $Date: 2002-09-05 16:02:33 $
+  Version:   $Revision: 1.58 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -181,8 +181,8 @@ public:
   // which will be used to position menu. Pick NULL if you want to use
   // "Close". The command
   // is the command to execute when a file is selected.
-  virtual void AddRecentFilesToMenu(char *menuEntry, vtkKWObject *target);
-  virtual void AddRecentFile(char *key, char *name, vtkKWObject *target,
+  virtual void AddRecentFilesToMenu(const char *menuEntry, vtkKWObject *target);
+  virtual void AddRecentFile(const char *key, const char *name, vtkKWObject *target,
                              const char *command);
   
   // Description:
@@ -307,8 +307,8 @@ protected:
   void InsertRecentFileToMenu(const char *filename, 
                               vtkKWObject *taret, 
                               const char *command);
-  void UpdateRecentMenu(char *key);
-  void StoreRecentMenuToRegistery(char *key);
+  void UpdateRecentMenu(const char *key);
+  void StoreRecentMenuToRegistery(const char *key);
 
   unsigned int NumberOfRecentFiles;
 
