@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPushButtonSet.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-08 23:21:23 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2003-01-31 22:04:41 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -98,6 +98,10 @@ public:
   void ShowButton(int id);
   void SetButtonVisibility(int id, int flag);
   int GetNumberOfVisibleButtons();
+
+  // Description:
+  // Remove all buttons
+  void DeleteAllButtons();
 
   // Description:
   // Set the widget packing order to be horizontal (default is vertical).

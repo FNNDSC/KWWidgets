@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPushButtonSet.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-15 05:09:32 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2003-01-31 22:04:41 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //------------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWPushButtonSet);
-vtkCxxRevisionMacro(vtkKWPushButtonSet, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWPushButtonSet, "$Revision: 1.6 $");
 
 int vtkvtkKWPushButtonSetCommand(ClientData cd, Tcl_Interp *interp,
                                   int argc, char *argv[]);
@@ -68,6 +68,16 @@ vtkKWPushButtonSet::vtkKWPushButtonSet()
 
 //----------------------------------------------------------------------------
 vtkKWPushButtonSet::~vtkKWPushButtonSet()
+{
+  this->DeleteAllButtons();
+
+  // Delete the container
+
+  this->Buttons->Delete();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWPushButtonSet::DeleteAllButtons()
 {
   // Delete all pushbuttons
 
@@ -91,9 +101,7 @@ vtkKWPushButtonSet::~vtkKWPushButtonSet()
     }
   it->Delete();
 
-  // Delete the container
-
-  this->Buttons->Delete();
+  this->Buttons->RemoveAllItems();
 }
 
 //----------------------------------------------------------------------------
