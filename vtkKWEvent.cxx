@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-15 23:04:01 $
-  Version:   $Revision: 1.45 $
+  Date:      $Date: 2003-01-17 21:06:19 $
+  Version:   $Revision: 1.46 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -116,6 +116,8 @@ static const char *vtkKWEventStrings[] = {
   "MultiPassStillRenderEndEvent",
   "MultiPassStillRenderStageChangedEvent",
   "PerspectiveViewAngleChangedEvent",
+  "PluginFilterApplyEvent",
+  "PluginFilterSelectEvent",
   "PrinterDPIChangedEvent",
   "ProbeInformationChangedEvent",
   "ProjectionTypeChangedEvent",
