@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-05-03 14:29:13 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2000-05-22 05:50:21 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -820,7 +820,16 @@ void vtkKWView::HeaderChanged()
     }
 }
 
+void vtkKWView::InteractOn()
+{
+  this->SetRenderModeToInteractive();
+}
 
+void vtkKWView::InteractOff()
+{
+  this->SetRenderModeToStill();
+  this->Render();
+}
 
 // Description:
 // Chaining method to serialize an object and its superclasses.
@@ -908,5 +917,5 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.9 $");
+  this->ExtractRevision(os,"$Revision: 1.10 $");
 }

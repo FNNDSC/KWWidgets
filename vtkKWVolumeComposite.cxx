@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-04-27 19:21:14 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2000-05-22 05:50:21 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -109,7 +109,7 @@ vtkKWVolumeComposite::vtkKWVolumeComposite()
 
   this->RayCastID = 
     this->LODVolume->AddLOD( this->RayCastMapper,
-			     this->VolumeProperty, 11.0 );
+			     this->VolumeProperty, 11.0e10 );
 
   this->LowResTextureID = -1;
   this->MedResTextureID = -1;
@@ -348,5 +348,5 @@ void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.6 $");
+  this->ExtractRevision(os,"$Revision: 1.7 $");
 }

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2000-03-13 21:11:59 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2000-05-22 05:50:21 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -38,9 +38,11 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "vtkKWObject.h"
 #include "tcl.h"
 #include "tk.h"
+
 class vtkKWWindowCollection;
 class vtkKWWindow;
 class vtkKWWidget;
+class vtkKWEventNotifier;
 
 class VTK_EXPORT vtkKWApplication : public vtkKWObject
 {
@@ -108,6 +110,10 @@ public:
   void BalloonHelpDisplay(vtkKWWidget *widget);
   void BalloonHelpCancel();
   
+  // Description:
+  // Get the event notifier so that callback can be set or events invoked.
+  vtkGetObjectMacro( EventNotifier, vtkKWEventNotifier );
+
 protected:
   vtkKWApplication();
   ~vtkKWApplication();
@@ -127,6 +133,8 @@ protected:
   vtkSetStringMacro(BalloonHelpPending);
 
   virtual int GetApplicationKey() {return -1;};
+
+  vtkKWEventNotifier *EventNotifier;
 };
 
 #endif
