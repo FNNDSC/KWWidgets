@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSelectionFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-18 19:29:25 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2003-01-22 14:53:57 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -65,6 +65,7 @@ public:
   // Description:
   // Must be called after Create
   void SetTitle(const char *title);
+  const char* GetTitle();
   void SetSelectionList(int num, const char **list);
 
   void SetSelectCommand(vtkKWObject *object, const char *methodAndArgString);
