@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRange.h,v $
   Language:  C++
-  Date:      $Date: 2003-04-28 21:21:31 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2003-04-29 21:09:01 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -114,6 +114,14 @@ public:
     { this->SetOrientation(vtkKWRange::ORIENTATION_HORIZONTAL); };
   virtual void SetOrientationToVertical() 
     { this->SetOrientation(vtkKWRange::ORIENTATION_VERTICAL); };
+
+  // Description:
+  // Set/Get the order of the sliders (inverted means that the first slider
+  // will be associated to Range[1], the last to Range[0])
+  virtual void SetInverted(int);
+  vtkBooleanMacro(Inverted, int);
+  vtkGetMacro(Inverted, int);
+  
 
   // Description:
   // Set/Get the desired narrow dimension of the widget. For horizontal widget
@@ -263,6 +271,7 @@ protected:
   float Range[2];
   float Resolution;
   int   AdjustResolution;
+  int   Inverted;
   int   Thickness;
   float InternalThickness;
   int   Orientation;
