@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-05-30 19:14:58 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2000-05-30 20:03:20 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -193,10 +193,8 @@ char* vtkKWWidget::CreateCommand(vtkKWObject* CalledObject, const char * Command
   event << this->GetWidgetName() << " configure -command {" 
 	<< CalledObject->GetTclName() 
 	<< " " << CommandString << "} " << ends;
-  char *rval = new char [strlen(event.str())+1];
-  strcpy(rval,event.str());
-  event.rdbuf()->freeze(0);
-  return rval;
+
+  return event.str();
 }
 
 void vtkKWWidget::SetBalloonHelpString(char *str)
@@ -249,7 +247,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.8 $");
+  this->ExtractRevision(os,"$Revision: 1.9 $");
 }
 
 vtkKWWindow* vtkKWWidget::GetWindow()

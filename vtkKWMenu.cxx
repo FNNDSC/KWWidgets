@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-05-30 18:58:45 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-05-30 20:03:34 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -108,7 +108,7 @@ void vtkKWMenu::AddGeneric(const char* addtype,
   str << ends;
   
   this->Application->SimpleScript(str.str());
-  str.rdbuf()->freeze(0);
+  delete [] str.str();
   if(!help)
     {
     help = label;
@@ -141,7 +141,7 @@ void vtkKWMenu::InsertGeneric(int position, const char* addtype,
     help = label;
     }
   this->Application->SimpleScript(str.str());
-  str.rdbuf()->freeze(0);
+  delete [] str.str();
   this->Script("set {%sHelpArray(%s)} {%s}", this->GetTclName(), 
 	       label, help);
 
@@ -154,7 +154,7 @@ void vtkKWMenu::AddCascade(const char* label, vtkKWMenu* menu,
   str << this->GetWidgetName() << " add cascade -label \"" << label << "\" -menu " 
       << menu->GetWidgetName() << " -underline " << underline << ends;
   this->Application->SimpleScript(str.str());
-  str.rdbuf()->freeze(0);
+  delete [] str.str();
   if(!help)
     {
     help = label;
@@ -177,7 +177,7 @@ void  vtkKWMenu::InsertCascade(int position,
       << " cascade -label \"" << label << "\" -menu " 
       << menu->GetWidgetName() << " -underline " << underline << ends;
   this->Application->SimpleScript(str.str());
-  str.rdbuf()->freeze(0);
+  delete [] str.str();
   if(!help)
     {
     help = label;
@@ -193,7 +193,7 @@ void  vtkKWMenu::AddCheckButton(const char* label, vtkKWObject* Object,
   ostrstream str;
   str << "-variable " << this->GetWidgetName() << "TempVar" << count++ << ends;
   this->AddGeneric("checkbutton", label, Object, MethodAndArgString, str.str(), help);
-  str.rdbuf()->freeze(0);
+  delete [] str.str();
 }
 
 
@@ -206,7 +206,7 @@ void vtkKWMenu::InsertCheckButton(int position,
   str << "-variable " << this->GetWidgetName() << count++ << "TempVar " << ends;
   this->InsertGeneric(position, "checkbutton", label, Object, 
 		      MethodAndArgString, str.str(), help);
-  str.rdbuf()->freeze(0);
+  delete [] str.str();
 }
 
 
@@ -243,7 +243,7 @@ void vtkKWMenu::AddRadioButton(int value, const char* label, const char* buttonV
   str << "-value " << value << " -variable " << buttonVar << ends;
   this->AddGeneric("radiobutton", label, Object,
 		   MethodAndArgString, str.str(), help);
-  str.rdbuf()->freeze(0);
+  delete [] str.str();
 }
 
 
@@ -257,7 +257,7 @@ void vtkKWMenu::InsertRadioButton(int position, int value, const char* label,
   str << "-value " << value << " -variable " << buttonVar << ends;
   this->InsertGeneric(position, "radiobutton", label, Object,
 		      MethodAndArgString, str.str(), help);
-  str.rdbuf()->freeze(0);
+  delete [] str.str();
 }
 
 void vtkKWMenu::Invoke(int position)
