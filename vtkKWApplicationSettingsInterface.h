@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplicationSettingsInterface.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-10 18:24:25 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-12-20 14:17:18 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,6 +52,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWUserInterfacePanel.h"
 
 //------------------------------------------------------------------------------
+
+#define VTK_VV_ASI_LABEL                        "Application Settings"
 
 #define VTK_KW_ASI_PREFERENCES_LABEL            "Preferences"
 
