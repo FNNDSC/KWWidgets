@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-30 19:59:11 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2003-04-16 14:34:42 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -99,6 +99,8 @@ public:
 protected:
   vtkKWLabel();
   ~vtkKWLabel();
+
+  virtual void UpdateBindings();
 
 private:
   char* Label;

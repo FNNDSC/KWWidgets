@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-14 15:42:30 $
-  Version:   $Revision: 1.20 $
+  Date:      $Date: 2003-04-16 14:34:42 $
+  Version:   $Revision: 1.21 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ int vtkKWLabelCommand(ClientData cd, Tcl_Interp *interp,
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabel );
-vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.20 $");
+vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.21 $");
 
 //----------------------------------------------------------------------------
 vtkKWLabel::vtkKWLabel()
@@ -114,6 +114,10 @@ void vtkKWLabel::Create(vtkKWApplication *app, const char *args)
                  wname, this->Label, this->Width, (args?args:""));
     }
 
+  // Set bindings (if any)
+  
+  this->UpdateBindings();
+
   // Update enable state
 
   this->UpdateEnableState();
@@ -173,18 +177,7 @@ void vtkKWLabel::SetAdjustWrapLengthToWidth(int v)
   this->AdjustWrapLengthToWidth = v;
   this->Modified();
 
-  if (this->IsCreated())
-    {
-    if (this->AdjustWrapLengthToWidth)
-      {
-      this->Script("bind %s <Configure> {%s AdjustWrapLengthToWidthCallback}",
-                   this->GetWidgetName(), this->GetTclName());
-      }
-    else
-      {
-      this->Script("bind %s <Configure>", this->GetWidgetName());
-      }
-    }
+  this->UpdateBindings();
 }
 
 //----------------------------------------------------------------------------
@@ -211,6 +204,25 @@ void vtkKWLabel::AdjustWrapLengthToWidthCallback()
   if (width < (wraplength - 5) || width > (wraplength + 5))
     {
     this->Script("%s config -wraplength %d", this->GetWidgetName(), width);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWLabel::UpdateBindings()
+{
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
+  if (this->AdjustWrapLengthToWidth)
+    {
+    this->Script("bind %s <Configure> {%s AdjustWrapLengthToWidthCallback}",
+                 this->GetWidgetName(), this->GetTclName());
+    }
+  else
+    {
+    this->Script("bind %s <Configure>", this->GetWidgetName());
     }
 }
 
