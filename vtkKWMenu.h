@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-17 03:20:01 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-03-10 17:18:13 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -98,8 +98,7 @@ protected:
   vtkKWMenu();
   ~vtkKWMenu();
   vtkKWMenu(const vtkKWMenu&) {};
-  void operator=(const   
-                 &) {};
+  void operator=(const vtkKWMenu&) {};
 
   void AddGeneric(const char* addtype, const char* label, vtkKWObject* Object,
 		  const char* MethodAndArgString, const char* extra);
