@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-18 19:04:53 $
-  Version:   $Revision: 1.39 $
+  Date:      $Date: 2002-07-03 14:07:57 $
+  Version:   $Revision: 1.40 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -128,6 +128,7 @@ class VTK_EXPORT vtkKWView : public vtkKWWidget
   // Description:
   // Handle the file save as image menu option.
   virtual void SaveAsImage();
+  virtual void SaveAsImage(const char* filename);
 
   // Description
   // Printthe image. This may pop up a dialog box etc.
