@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-07-15 12:42:15 $
-  Version:   $Revision: 1.52 $
+  Date:      $Date: 2002-07-15 15:31:02 $
+  Version:   $Revision: 1.53 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -181,10 +181,8 @@ public:
   void InstallMenu(vtkKWMenu* menu);
 
   // Description:
-  // Callbacks used to set the print quality
-  void OnPrint1(int propagate);
-  void OnPrint2(int propagate);
-  void OnPrint3(int propagate);
+  // Callbacks used to set the print quality.
+  void OnPrint(int propagate, int resolution);
   vtkGetMacro(PrintTargetDPI,float);
   
   // Description:
@@ -288,6 +286,11 @@ public:
 
 //ETX
   
+  // Description:
+  // Print a list of recent files to the standard output for debug
+  // purposes.
+  void PrintRecentFiles();
+  
 protected:
   vtkKWWindow();
   ~vtkKWWindow();
@@ -298,7 +301,6 @@ protected:
                               const char *command);
   void UpdateRecentMenu(char *key);
   void StoreRecentMenuToRegistery(char *key);
-  void PrintRecentFiles();
 
   unsigned int NumberOfRecentFiles;
 
