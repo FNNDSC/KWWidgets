@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-30 04:29:09 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2003-01-10 04:43:14 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,7 +45,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry );
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.15 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
@@ -85,17 +85,30 @@ float vtkKWEntry::GetValueAsFloat()
 void vtkKWEntry::SetValue(const char *s)
 {
   int ro = 0;
-  if ( this->ReadOnly )
+  if (this->ReadOnly)
     {
     this->ReadOnlyOff();
     ro = 1;
     }
+
+  int was_disabled = !this->Enabled;
+  if (was_disabled)
+    {
+    this->SetEnabled(1);
+    }
+
   this->Script("%s delete 0 end", this->GetWidgetName());
   if (s)
     {
     this->Script("%s insert 0 {%s}", this->GetWidgetName(),s);
     }
-  if ( ro )
+
+  if (was_disabled)
+    {
+    this->SetEnabled(0);
+    }
+
+  if (ro)
     {
     this->ReadOnlyOn();
     }
