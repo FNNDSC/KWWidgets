@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-16 13:00:06 $
-  Version:   $Revision: 1.20 $
+  Date:      $Date: 2003-04-16 18:26:33 $
+  Version:   $Revision: 1.21 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -70,7 +70,7 @@ public:
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry );
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.20 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.21 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
@@ -413,7 +413,7 @@ void vtkKWEntry::DeleteAllValues()
 //----------------------------------------------------------------------------
 void vtkKWEntry::DeleteValue(int idx)
 {
-  if ( idx < this->Internals->Entries.size() )
+  if ( idx < (int)this->Internals->Entries.size() )
     {
     vtkErrorMacro("This entry has only: " << this->Internals->Entries.size() << 
       " elements. Index " << idx << " is too high");
