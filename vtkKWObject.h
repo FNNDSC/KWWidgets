@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-11 15:38:20 $
-  Version:   $Revision: 1.20 $
+  Date:      $Date: 2002-06-13 13:34:57 $
+  Version:   $Revision: 1.21 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -53,9 +53,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __vtkKWObject_h
 #define __vtkKWObject_h
 
-class vtkKWApplication;
 #include "vtkObject.h"
+
+// This has to be here because on HP varargs are included in 
+// tcl.h and they have different prototypes for va_start so
+// the build fails. Defining HAS_STDARG prevents that.
+#if defined(__hpux) && !defined(HAS_STDARG)
+#  define HAS_STDARG
+#endif
+
 #include "tcl.h"
+
+class vtkKWApplication;
 
 class VTK_EXPORT vtkKWObject : public vtkObject
 {
