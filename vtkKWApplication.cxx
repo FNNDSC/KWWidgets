@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-12 20:59:52 $
-  Version:   $Revision: 1.86 $
+  Date:      $Date: 2002-07-15 12:36:46 $
+  Version:   $Revision: 1.87 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -902,6 +902,67 @@ int vtkKWApplication::LoadScript(const char* filename)
     }
   return res;
 }
+
+//----------------------------------------------------------------------------
+float vtkKWApplication::GetFloatRegisteryValue(int level, const char* subkey, 
+                                               const char* key)
+{
+  if ( this->GetRegisteryLevel() < 0 ||
+       this->GetRegisteryLevel() < level )
+    {
+    return 0;
+    }
+  float res = 0;
+  char buffer[1024];
+  if ( this->GetRegisteryValue( 
+         level, subkey, key, buffer ) )
+    {
+    res = atof(buffer);
+    }
+  return res;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWApplication::GetIntRegisteryValue(int level, const char* subkey, 
+                                      const char* key)
+{
+  if ( this->GetRegisteryLevel() < 0 ||
+       this->GetRegisteryLevel() < level )
+    {
+    return 0;
+    }
+
+  int res = 0;
+  char buffer[1024];
+  if ( this->GetRegisteryValue( 
+         level, subkey, key, buffer ) )
+    {
+    res = atoi(buffer);
+    }
+  return res;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWApplication::BooleanRegisteryCheck(int level, const char* key, 
+                                            const char* trueval)
+{
+  if ( this->GetRegisteryLevel() < 0 ||
+       this->GetRegisteryLevel() < level )
+    {
+    return 0;
+    }
+  char buffer[1024];
+  int allset = 0;
+  if ( this->GetRegisteryValue(level, "RunTime", key, buffer) )
+    {
+    if ( !strncmp(buffer+1, trueval+1, vtkString::Length(trueval)-1) )
+      {
+      allset = 1;
+      }
+    }
+  return allset;
+}
+
 
 //----------------------------------------------------------------------------
 void vtkKWApplication::PrintSelf(ostream& os, vtkIndent indent)
