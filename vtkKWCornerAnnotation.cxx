@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-14 00:13:58 $
-  Version:   $Revision: 1.32 $
+  Date:      $Date: 2002-10-14 13:44:44 $
+  Version:   $Revision: 1.33 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -57,7 +57,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCornerAnnotation );
-vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.32 $");
+vtkCxxRevisionMacro(vtkKWCornerAnnotation, "$Revision: 1.33 $");
 
 vtkSetObjectImplementationMacro(vtkKWCornerAnnotation,View,vtkKWView);
 
@@ -163,7 +163,8 @@ void vtkKWCornerAnnotation::Create(vtkKWApplication *app)
     this->CornerTopFrame->GetWidgetName(),
     this->CornerBottomFrame->GetWidgetName() );
 
-  for (int i = 0; i < 4; i++)
+  int i;
+  for (i = 0; i < 4; i++)
     {
     this->CornerFrame[i]->SetParent( 
       (i<2)?(this->CornerBottomFrame):(this->CornerTopFrame) );
@@ -477,7 +478,7 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.32 $");
+  this->ExtractRevision(os,"$Revision: 1.33 $");
   vtkKWLabeledFrame::SerializeRevision(os,indent);
 }
 
