@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-21 23:01:37 $
-  Version:   $Revision: 1.59 $
+  Date:      $Date: 2002-02-26 22:08:13 $
+  Version:   $Revision: 1.60 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -151,6 +151,20 @@ vtkKWApplication::~vtkKWApplication()
 }
 
 
+const char* vtkKWApplication::EvaluateString(const char *String, ...)
+{
+  char event[16000];
+  
+  va_list var_args;
+  va_start(var_args, String);
+  vsprintf(event, String, var_args);
+  va_end(var_args);
+  ostrstream str;
+  str << "eval return " << event << ends;
+  str.rdbuf()->freeze(0);
+  this->SimpleScript(str.str());
+  return this->MainInterp->result;
+}
 void vtkKWApplication::Script(const char *format, ...)
 {
   char event[16000];
