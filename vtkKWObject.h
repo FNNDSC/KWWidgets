@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-12 16:18:23 $
-  Version:   $Revision: 1.26 $
+  Date:      $Date: 2003-01-23 18:50:29 $
+  Version:   $Revision: 1.27 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -90,9 +90,9 @@ public:
 
   // Description:
   // Chaining method to serialize an object and its superclasses.
-  void Serialize(ostream& os, vtkIndent indent);
+  virtual void Serialize(ostream& os, vtkIndent indent);
   virtual void SerializeRevision(ostream& os, vtkIndent indent);
-  void Serialize(istream& is);
+  virtual void Serialize(istream& is);
   virtual void SerializeSelf(ostream& /*os*/, vtkIndent /*indent*/) {};
   virtual void SerializeToken(istream& is, const char token[1024]);
   virtual const char *GetVersion(const char *);
