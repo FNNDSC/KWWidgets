@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-27 22:39:22 $
-  Version:   $Revision: 1.44 $
+  Date:      $Date: 2003-02-28 15:16:13 $
+  Version:   $Revision: 1.45 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -233,7 +233,14 @@ public:
   vtkGetMacro(EnableDragAndDrop, int);
 
   // Description:
-  // Add a Drag & Drop target. Set its callbacks/commands.
+  // Add/Query/Remove a Drag & Drop target. 
+  virtual int AddDragAndDropTarget(vtkKWWidget *target);
+  virtual int RemoveDragAndDropTarget(vtkKWWidget *target);
+  virtual int HasDragAndDropTarget(vtkKWWidget *target);
+  virtual int GetNumberOfDragAndDropTargets();
+
+  // Description:
+  // Set a Drag & Drop target callbacks/commands.
   // You have to add a target before settings its commands.
   // The StartCommand of all targets is called when Drag & Drop is initiated.
   // The PerformCommand of all targets is called while Drag & Drop is performed.
@@ -244,14 +251,12 @@ public:
   // same most of the times), i.e. the last 4 parameters are: int, int, 
   // vtkKWWidget*, vtkKWWidget*). Additionally, EndCommand is passed a 5th 
   // parameter, the target (vtkKWWidget *).
-  virtual int AddDragAndDropTarget(vtkKWWidget *target);
   virtual int SetDragAndDropStartCommand(
     vtkKWWidget *target, vtkKWObject *object, const char *method);
   virtual int SetDragAndDropPerformCommand(
     vtkKWWidget *target, vtkKWObject *object, const char *method);
   virtual int SetDragAndDropEndCommand(
     vtkKWWidget *target, vtkKWObject *object, const char *method);
-  virtual int HasDragAndDropTarget(vtkKWWidget *target);
 
   // Description:
   // Set/Get the Drag and Drop anchor. This is the actual widget (or part of)
