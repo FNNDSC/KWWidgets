@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 04:20:05 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2003-01-27 22:50:26 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -104,6 +104,16 @@ public:
   void RemoveWidget(vtkKWWidget* widget);
 
   // Description:
+  // Convenience method to create and add a specific type of widget 
+  vtkKWWidget* AddRadioButtonImage(int value, 
+                                   const char *image_name, 
+                                   const char *select_image_name, 
+                                   const char *variable_name,
+                                   vtkKWObject *object, 
+                                   const char *method, 
+                                   const char *help = 0);
+  
+  // Description:
   // Returns the main frame of the toolbar. Put all the widgets
   // in the main frame.
   vtkGetObjectMacro(Frame, vtkKWWidget);
@@ -160,6 +170,10 @@ protected:
   int Resizable;
 
   vtkKWRadioButton *DefaultOptionsWidget;
+
+  // Update the enable state. This should propagate similar calls to the
+  // internal widgets.
+  virtual void UpdateEnableState();
 
 private:
   vtkKWToolbar(const vtkKWToolbar&); // Not implemented
