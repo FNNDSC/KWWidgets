@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-08 21:45:28 $
-  Version:   $Revision: 1.25 $
+  Date:      $Date: 2002-01-09 16:04:36 $
+  Version:   $Revision: 1.26 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -284,7 +284,7 @@ public:
 
   // Description:
   // Set the background color
-  virtual void SetBackgroundColor( float r, float g, float b ) {};
+  virtual void SetBackgroundColor( float r, float g, float b );
 
   // Description:
   // Set the name to be used in the Properties menu for the view properties

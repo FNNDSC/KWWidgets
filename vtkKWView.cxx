@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-08 21:45:28 $
-  Version:   $Revision: 1.45 $
+  Date:      $Date: 2002-01-09 16:04:36 $
+  Version:   $Revision: 1.46 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -1243,7 +1243,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.45 $");
+  this->ExtractRevision(os,"$Revision: 1.46 $");
 }
 
 void vtkKWView::SetupMemoryRendering(int x, int y, void *cd) 
@@ -1283,3 +1283,10 @@ unsigned char *vtkKWView::GetMemoryData()
 #endif
   return NULL;
 }
+
+void vtkKWView::SetBackgroundColor( float r, float g, float b )
+{
+  this->Renderer->SetBackground( r, g, b );
+  this->Render();
+}
+

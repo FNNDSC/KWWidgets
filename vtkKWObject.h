@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-07 05:48:33 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-01-09 16:04:36 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -114,13 +114,8 @@ public:
     GradientOpacityFunctionChangedEvent,
     GradientOpacityStateChangedEvent,
     GrayScaleImageEvent,
-    ImageBackgroundColorChangedEvent,
     InteractiveRenderStartEvent,
     LeftMouseOptionChangedEvent,
-    LightboxCornerAnnoChangedEvent,
-    LightboxHeaderChangedEvent,
-    LightboxRedrawEvent,
-    LightboxSliceChangedEvent,
     Cursor3DOffEvent,
     Cursor3DOnEvent,
     Cursor3DPositionChangedEvent,
