@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 17:03:53 $
-  Version:   $Revision: 1.43 $
+  Date:      $Date: 2003-01-02 15:55:45 $
+  Version:   $Revision: 1.44 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // ---------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWScale );
-vtkCxxRevisionMacro(vtkKWScale, "$Revision: 1.43 $");
+vtkCxxRevisionMacro(vtkKWScale, "$Revision: 1.44 $");
 
 int vtkKWScaleCommand(ClientData cd, Tcl_Interp *interp,
                       int argc, char *argv[]);
@@ -695,7 +695,7 @@ void vtkKWScale::SetRange(float min, float max)
     {
     if (this->Resolution >= 1)
       {
-      this->Script("%s configure -text %.f",
+      this->Script("%s configure -text %.0f",
                    this->RangeMinLabel->GetWidgetName(), min);
       }
     else
@@ -708,7 +708,7 @@ void vtkKWScale::SetRange(float min, float max)
     {
     if (this->Resolution >= 1)
       {
-      this->Script("%s configure -text %.f",
+      this->Script("%s configure -text %.0f",
                    this->RangeMaxLabel->GetWidgetName(), max);
       }
     else
@@ -990,7 +990,7 @@ void vtkKWScale::Resize()
       {
       if (this->Resolution >= 1)
         {
-        sprintf(labelText, "(%.f)", this->Range[0]);
+        sprintf(labelText, "(%.0f)", this->Range[0]);
         }
       else
         {
@@ -1003,7 +1003,7 @@ void vtkKWScale::Resize()
       {
       if (this->Resolution >= 1)
         {
-        sprintf(labelText, "(%.f)", this->Range[1]);
+        sprintf(labelText, "(%.0f)", this->Range[1]);
         }
       else
         {
@@ -1035,7 +1035,7 @@ void vtkKWScale::SetDisplayRange(int flag)
     this->RangeMinLabel->SetParent(this);
     if (this->Resolution >= 1)
       {
-      sprintf(labelText, "(%.f)", this->Range[0]);
+      sprintf(labelText, "(%.0f)", this->Range[0]);
       }
     else
       {
@@ -1050,7 +1050,7 @@ void vtkKWScale::SetDisplayRange(int flag)
     this->RangeMaxLabel->SetParent(this);
     if (this->Resolution >= 1)
       {
-      sprintf(labelText, "(%.f)", this->Range[1]);
+      sprintf(labelText, "(%.0f)", this->Range[1]);
       }
     else
       {
