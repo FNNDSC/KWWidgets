@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-04 16:53:58 $
-  Version:   $Revision: 1.52 $
+  Date:      $Date: 2002-11-08 17:36:07 $
+  Version:   $Revision: 1.53 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -53,11 +53,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "tcl.h" // Needed for Tcl_Interp
 #include "tk.h" // Needed for Tk_Window
 
-class vtkKWWindowCollection;
-class vtkKWWindow;
-class vtkKWWidget;
+class vtkKWLabel;
 class vtkKWRegisteryUtilities;
 class vtkKWSplashScreen;
+class vtkKWWidget;
+class vtkKWWindow;
+class vtkKWWindowCollection;
 
 //BTX
 template<class KeyType,class DataType> class vtkAbstractMap;
@@ -287,7 +288,7 @@ protected:
 
   // For Balloon help
   vtkKWWidget *BalloonHelpWindow;
-  vtkKWWidget *BalloonHelpLabel;
+  vtkKWLabel *BalloonHelpLabel;
   char *BalloonHelpPending;
   vtkSetStringMacro(BalloonHelpPending);
   vtkKWWidget *BalloonHelpWidget;
