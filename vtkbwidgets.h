@@ -1,12 +1,6 @@
 /*=========================================================================
 
-  Program:   Visualization Toolkit
-  Module:    $RCSfile: vtkbwidgets.h,v $
-  Language:  C++
-  Date:      $Date: 2002-07-15 12:42:15 $
-  Version:   $Revision: 1.8 $
-
-Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
+Copyright (c) 1998-2003 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
 All rights reserved.
 
@@ -21,7 +15,7 @@ modification, are permitted provided that the following conditions are met:
    and/or other materials provided with the distribution.
 
  * Neither the name of Kitware nor the names of any contributors may be used
-   to endorse or promote products derived from this software without specific 
+   to endorse or promote products derived from this software without specific
    prior written permission.
 
  * Modified source versions must be plainly marked as such, and must not be
@@ -88,7 +82,7 @@ const char* bwidgets1 =
 "# ----------------------------------------------------------------------------\n"
 "#  widget.tcl\n"
 "#  This file is part of Unifix BWidget Toolkit\n"
-"#  $Id: vtkbwidgets.h,v 1.8 2002-07-15 12:42:15 andy Exp $\n"
+"#  $Id: vtkbwidgets.h,v 1.9 2003-05-08 15:11:56 henderson Exp $\n"
 "# ----------------------------------------------------------------------------\n"
 "namespace eval Widget {\n"
 "    variable _optiontype\n"
@@ -1007,7 +1001,7 @@ const char* bwidgets2 =
 "# ------------------------------------------------------------------------------\n"
 "#  scrollframe.tcl\n"
 "#  This file is part of Unifix BWidget Toolkit\n"
-"#  $Id: vtkbwidgets.h,v 1.8 2002-07-15 12:42:15 andy Exp $\n"
+"#  $Id: vtkbwidgets.h,v 1.9 2003-05-08 15:11:56 henderson Exp $\n"
 "# ------------------------------------------------------------------------------\n"
 "\n"
 "namespace eval ScrollableFrame {\n"
@@ -1152,7 +1146,7 @@ const char* bwidgets3 =
 "# -----------------------------------------------------------------------------\n"
 "#  scrollw.tcl\n"
 "#  This file is part of Unifix BWidget Toolkit\n"
-"#  $Id: vtkbwidgets.h,v 1.8 2002-07-15 12:42:15 andy Exp $\n"
+"#  $Id: vtkbwidgets.h,v 1.9 2003-05-08 15:11:56 henderson Exp $\n"
 "# -----------------------------------------------------------------------------\n"
 "namespace eval ScrolledWindow {\n"
 "    Widget::declare ScrolledWindow {\n"
@@ -3310,3 +3304,5 @@ const char* bwidgets4 =
 "}\n"
 "\n"
 "\n";
+
+
