@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-15 22:32:19 $
-  Version:   $Revision: 1.73 $
+  Date:      $Date: 2002-02-18 20:05:56 $
+  Version:   $Revision: 1.74 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -415,7 +415,10 @@ void vtkKWWindow::Exit()
     this->PromptBeforeClose = 0;
     this->Application->Exit();
     }
-  this->InExit = 0;
+  else
+    {
+    this->InExit = 0;
+    }
 }
 
 // invoke the apps close when selected
@@ -956,7 +959,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.73 $");
+  this->ExtractRevision(os,"$Revision: 1.74 $");
 }
 
 int vtkKWWindow::ExitDialog()
