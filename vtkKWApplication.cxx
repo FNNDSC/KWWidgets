@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-10-15 16:23:06 $
-  Version:   $Revision: 1.25 $
+  Date:      $Date: 2000-10-20 19:04:10 $
+  Version:   $Revision: 1.26 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -79,7 +79,7 @@ vtkKWApplication::vtkKWApplication()
   strcpy(this->ApplicationReleaseName, "unknown" );
 
   // setup tcl stuff
-  this->MainInterp = vtkTclGetGlobalInterp();  
+  this->MainInterp = Et_Interp;
   this->Windows = vtkKWWindowCollection::New();  
   
   // add the application as $app
