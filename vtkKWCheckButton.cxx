@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCheckButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:22 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-03-04 14:07:32 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -82,11 +82,15 @@ void vtkKWCheckButton::SetText(const char* txt)
     {
     if (this->MyText)
       {
-      this->Script("%s configure -text %s", this->GetWidgetName(), this->MyText);
+      this->Script("%s configure -text {%s}", this->GetWidgetName(), this->MyText);
       }
     }
 }
 
+const char* vtkKWCheckButton::GetText()
+{
+  return this->MyText;
+}
 
 int vtkKWCheckButton::GetState()
 {

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCheckButton.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:27 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-03-04 14:07:32 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -72,6 +72,7 @@ public:
   // Description:
   // Set the text.
   void SetText(const char* txt);
+  const char* GetText();
 
 protected:
 
