@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCheckButtonSet.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 16:01:22 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2003-01-15 05:09:31 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //------------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWCheckButtonSet);
-vtkCxxRevisionMacro(vtkKWCheckButtonSet, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWCheckButtonSet, "$Revision: 1.4 $");
 
 int vtkvtkKWCheckButtonSetCommand(ClientData cd, Tcl_Interp *interp,
                                   int argc, char *argv[]);
@@ -224,6 +224,7 @@ int vtkKWCheckButtonSet::AddButton(int id,
 
   button_slot->Button->SetParent(this);
   button_slot->Button->Create(this->Application, 0);
+  button_slot->Button->SetEnabled(this->Enabled);
 
   // Set text command and balloon help, if any
 

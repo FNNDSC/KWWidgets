@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWThumbWheel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 17:06:03 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2003-01-15 05:09:32 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -60,7 +60,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // ---------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWThumbWheel );
-vtkCxxRevisionMacro(vtkKWThumbWheel, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWThumbWheel, "$Revision: 1.6 $");
 
 // ---------------------------------------------------------------------------
 int vtkKWThumbWheelCommand(ClientData cd, 
@@ -444,6 +444,7 @@ void vtkKWThumbWheel::CreateEntry()
   this->Entry = vtkKWEntry::New();
   this->Entry->SetParent(this);
   this->Entry->Create(this->Application, "-width 7");
+  this->Entry->SetEnabled(this->Enabled);
   this->UpdateEntryResolution();
   this->Entry->SetValue(this->GetValue(), this->EntryResolution);
 }
@@ -479,6 +480,7 @@ void vtkKWThumbWheel::CreateLabel()
   this->Label = vtkKWLabel::New();
   this->Label->SetParent(this);
   this->Label->Create(this->Application, "");
+  this->Label->SetEnabled(this->Enabled);
 }
 
 // ---------------------------------------------------------------------------

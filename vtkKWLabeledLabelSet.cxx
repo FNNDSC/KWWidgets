@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledLabelSet.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-02 05:58:36 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2003-01-15 05:09:32 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -53,7 +53,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //------------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWLabeledLabelSet);
-vtkCxxRevisionMacro(vtkKWLabeledLabelSet, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWLabeledLabelSet, "$Revision: 1.2 $");
 
 int vtkvtkKWLabeledLabelSetCommand(ClientData cd, Tcl_Interp *interp,
                                   int argc, char *argv[]);
@@ -224,6 +224,7 @@ int vtkKWLabeledLabelSet::AddLabeledLabel(int id,
 
   labeledlabel_slot->LabeledLabel->SetParent(this);
   labeledlabel_slot->LabeledLabel->Create(this->Application, 0);
+  labeledlabel_slot->LabeledLabel->SetEnabled(this->Enabled);
 
   // Set text balloon help, if any
 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRadioButtonSet.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 17:02:26 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2003-01-15 05:09:32 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //------------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWRadioButtonSet);
-vtkCxxRevisionMacro(vtkKWRadioButtonSet, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWRadioButtonSet, "$Revision: 1.4 $");
 
 int vtkvtkKWRadioButtonSetCommand(ClientData cd, Tcl_Interp *interp,
                                   int argc, char *argv[]);
@@ -225,6 +225,7 @@ int vtkKWRadioButtonSet::AddButton(int id,
   button_slot->Button->SetParent(this);
   button_slot->Button->Create(this->Application, 0);
   button_slot->Button->SetValue(id);
+  button_slot->Button->SetEnabled(this->Enabled);
 
   // All radiobuttons share the same var name
 

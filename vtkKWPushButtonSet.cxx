@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPushButtonSet.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-08 23:38:13 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2003-01-15 05:09:32 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //------------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWPushButtonSet);
-vtkCxxRevisionMacro(vtkKWPushButtonSet, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWPushButtonSet, "$Revision: 1.5 $");
 
 int vtkvtkKWPushButtonSetCommand(ClientData cd, Tcl_Interp *interp,
                                   int argc, char *argv[]);
@@ -227,6 +227,7 @@ int vtkKWPushButtonSet::AddButton(int id,
 
   button_slot->Button->SetParent(this);
   button_slot->Button->Create(this->Application, 0);
+  button_slot->Button->SetEnabled(this->Enabled);
 
   // Set text command and balloon help, if any
 
