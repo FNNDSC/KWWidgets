@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2002-11-08 00:18:07 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -84,6 +84,10 @@ public:
   // Returns 0 if the dialog is active e.g. displayed
   // 1 if it was Canceled 2 if it was OK.
   int GetStatus() {return this->Done;};
+
+  // Description:
+  // Return frame to pack into.
+  vtkKWWidget* GetFrame() { return this; }
 
   // Description:
   // A method to set callback functions on objects.  The first argument is
