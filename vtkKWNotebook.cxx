@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-08 20:28:20 $
-  Version:   $Revision: 1.20 $
+  Date:      $Date: 2002-02-19 22:42:04 $
+  Version:   $Revision: 1.21 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -265,7 +265,7 @@ void vtkKWNotebook::Raise(int num)
 #ifdef _WIN32    
   int h0 = bw * 2; // Should be 3
   int ww = 1;
-  int hh = 2;
+  int hh = 3;
 #else
   int h0 = bw * 2 + 2;
   int ww = 0;
