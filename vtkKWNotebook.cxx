@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-06 21:59:42 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2002-02-07 01:55:57 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -216,17 +216,23 @@ void vtkKWNotebook::Raise(int num)
 		   this->Buttons[this->Current]->GetWidgetName(),
 		   this->ForeColor, this->ForeColor,
 		   this->ForeColor);
-      this->Script("%s configure -bg %s",
-		   this->Icons[this->Current]->GetWidgetName(),
-		   this->ForeColor);
+      if ( this->Icons[this->Current] )
+	{
+	this->Script("%s configure -bg %s",
+		     this->Icons[this->Current]->GetWidgetName(),
+		     this->ForeColor);
+	}
       }
     this->Script("pack %s -fill both -anchor n",
                  this->Frames[num]->GetWidgetName());
     this->Script("%s configure -disabledforeground black -state disabled"
 		 " -bg %s -height 1",
 		 this->Buttons[num]->GetWidgetName(), this->BackColor);
-    this->Script("%s configure -bg %s",
-		 this->Icons[num]->GetWidgetName(), this->BackColor);
+    if ( this->Icons[num] )
+      {
+      this->Script("%s configure -bg %s",
+		   this->Icons[num]->GetWidgetName(), this->BackColor);
+      }
     this->Script("focus %s", this->Frames[num]->GetWidgetName());
     }
 
