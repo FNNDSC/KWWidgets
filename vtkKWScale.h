@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-10 23:08:55 $
-  Version:   $Revision: 1.25 $
+  Date:      $Date: 2003-01-14 00:49:00 $
+  Version:   $Revision: 1.26 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -178,7 +178,8 @@ public:
   void Resize();
 
   // Description
-  // Advanced access to some internal widgets
+  // Convenience method to set the width of the label
+  virtual void SetLabelWidth(int width);
 
 protected:
   vtkKWScale();
