@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-02 21:30:30 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-01-03 15:20:09 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -121,6 +121,8 @@ protected:
   vtkKWWidget *OKButton;
   vtkKWWidget *CancelButton;  
   vtkKWWidget *Icon;
+  vtkKWWidget *OKFrame;
+  vtkKWWidget *CancelFrame;
 };
 
 
