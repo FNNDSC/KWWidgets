@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-06-04 14:37:46 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -79,6 +79,12 @@ public:
   void SetWidth(int width);
   vtkGetMacro(Width, int);
 
+  // Description:
+  // Set or get readonly flag. This flags makes entry read only.
+  void SetReadOnly(int);
+  vtkBooleanMacro(ReadOnly, int);
+  vtkGetMacro(ReadOnly, int);
+
 protected:
   vtkKWEntry();
   ~vtkKWEntry();
@@ -88,6 +94,8 @@ protected:
   
   char *ValueString;
   int Width;
+  int ReadOnly;
+
 private:
   vtkKWEntry(const vtkKWEntry&); // Not implemented
   void operator=(const vtkKWEntry&); // Not Implemented
