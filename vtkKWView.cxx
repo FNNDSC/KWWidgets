@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-14 20:08:58 $
-  Version:   $Revision: 1.106 $
+  Date:      $Date: 2003-01-15 15:34:03 $
+  Version:   $Revision: 1.107 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -104,7 +104,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.106 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.107 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -525,7 +525,8 @@ void vtkKWView::CreateViewProperties()
 
   
   this->GeneralProperties->SetParent(this->Notebook->GetFrame("General"));
-  this->GeneralProperties->Create(app,"-scrollable");
+  this->GeneralProperties->ScrollableOn();
+  this->GeneralProperties->Create(app,0);
   this->Script("pack %s -pady 2 -padx 2 -fill both -expand yes -anchor n",
                this->Notebook->GetWidgetName());
   this->Script("pack %s -pady 2 -fill both -expand yes -anchor n",
@@ -1525,7 +1526,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.106 $");
+  this->ExtractRevision(os,"$Revision: 1.107 $");
 }
 
 //----------------------------------------------------------------------------
