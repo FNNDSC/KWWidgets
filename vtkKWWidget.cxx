@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-17 21:05:39 $
-  Version:   $Revision: 1.58 $
+  Date:      $Date: 2003-01-27 22:50:58 $
+  Version:   $Revision: 1.59 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.58 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.59 $");
 
 int vtkKWWidgetCommand(ClientData cd, Tcl_Interp *interp,
                        int argc, char *argv[]);
@@ -329,7 +329,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   this->Superclass::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.58 $");
+  this->ExtractRevision(os,"$Revision: 1.59 $");
 }
 
 //------------------------------------------------------------------------------
@@ -509,13 +509,6 @@ int vtkKWWidget::GetConfigurationOptionAsInt(const char* option)
 }
 
 //------------------------------------------------------------------------------
-int vtkKWWidget::IsPacked()
-{
-  return !this->Application->EvaluateBooleanExpression(
-    "catch {pack info %s}", this->GetWidgetName());
-}
-
-//------------------------------------------------------------------------------
 int vtkKWWidget::IsAlive()
 {
   if (!this->IsCreated())
@@ -524,6 +517,19 @@ int vtkKWWidget::IsAlive()
     }
 
   return atoi(this->Script("winfo exists %s", this->GetWidgetName()));
+}
+
+//------------------------------------------------------------------------------
+int vtkKWWidget::IsPacked()
+{
+  return !this->Application->EvaluateBooleanExpression(
+    "catch {pack info %s}", this->GetWidgetName());
+}
+
+//------------------------------------------------------------------------------
+int vtkKWWidget::GetNumberOfPackedChildren()
+{
+  return atoi(this->Script("llength [pack slaves %s]", this->GetWidgetName()));
 }
 
 //------------------------------------------------------------------------------

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-17 21:05:39 $
-  Version:   $Revision: 1.41 $
+  Date:      $Date: 2003-01-27 22:50:58 $
+  Version:   $Revision: 1.42 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -174,12 +174,13 @@ public:
   int GetConfigurationOptionAsInt(const char* option);
   
   // Description:
-  // Query if widget is packed
-  int IsPacked();
-  
-  // Description:
   // Query if widget is "alive"
   int IsAlive();
+  
+  // Description:
+  // Query if widget is packed
+  int IsPacked();
+  int GetNumberOfPackedChildren();
   
   // Description:
   // Unpack widget, unpack siblings (slave's of parent widget)
