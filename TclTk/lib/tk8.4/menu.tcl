@@ -4,7 +4,7 @@
 # It also implements keyboard traversal of menus and implements a few
 # other utility procedures related to menus.
 #
-# RCS: @(#) $Id: menu.tcl,v 1.1 2003-06-06 20:31:42 barre Exp $
+# RCS: @(#) $Id: menu.tcl,v 1.2 2003-07-25 14:04:35 barre Exp $
 #
 # Copyright (c) 1992-1994 The Regents of the University of California.
 # Copyright (c) 1994-1997 Sun Microsystems, Inc.
