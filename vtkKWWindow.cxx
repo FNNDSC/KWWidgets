@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-03 14:51:33 $
-  Version:   $Revision: 1.133 $
+  Date:      $Date: 2002-12-06 21:01:15 $
+  Version:   $Revision: 1.134 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -70,7 +70,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define VTK_KW_WINDOW_GEOMETRY_REG_KEY "WindowGeometry"
 #define VTK_KW_WINDOW_FRAME1_SIZE_REG_KEY "WindowFrame1Size"
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.133 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.134 $");
 vtkCxxSetObjectMacro(vtkKWWindow, PropertiesParent, vtkKWWidget);
 
 class vtkKWWindowMenuEntry
@@ -416,7 +416,7 @@ void vtkKWWindow::SetSelectedView(vtkKWView *_arg)
   if (this->SelectedView != _arg) 
     { 
     if (this->SelectedView != NULL) 
-      { 
+      {
       this->SelectedView->Deselect(this);
       this->SelectedView->UnRegister(this); 
       }
@@ -1107,7 +1107,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.133 $");
+  this->ExtractRevision(os,"$Revision: 1.134 $");
 }
 
 int vtkKWWindow::ExitDialog()
@@ -1143,12 +1143,12 @@ int vtkKWWindow::ExitDialog()
   delete[] msg;
   delete[] ttl;
  
-  vtkKWApplicationSettingsInterface *asi = 
+  vtkKWApplicationSettingsInterface *asi =  
     this->GetApplicationSettingsInterface();
-  if (asi && asi->GetConfirmExitCheckButton())
+  if (asi)
     {
     int r = this->Application->GetMessageDialogResponse(VTK_KW_EXIT_DIALOG_NAME);
-    asi->GetConfirmExitCheckButton()->SetState(r == 1 ? 0 : 1);
+    asi->SetConfirmExit(r ? 0 : 1);
     }
  
   return ret;
