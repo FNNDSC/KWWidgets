@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-10-15 17:48:38 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2001-11-28 15:33:10 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -137,11 +137,11 @@ const char *vtkKWWidget::GetWidgetName()
   if (this->Parent)
     {
     const char *tmp = this->Parent->GetWidgetName();
-    sprintf(local,"%s.%u",tmp,count);
+    sprintf(local,"%s.%lu",tmp,count);
     }
   else
     {
-    sprintf(local,".%u",count);
+    sprintf(local,".%lu",count);
     }
   count++;
   this->WidgetName = new char [strlen(local)+1];
@@ -286,7 +286,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.16 $");
+  this->ExtractRevision(os,"$Revision: 1.17 $");
 }
 
 vtkKWWindow* vtkKWWidget::GetWindow()
