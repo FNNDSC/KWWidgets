@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledEntry.h,v $
   Language:  C++
-  Date:      $Date: 2000-09-20 14:45:03 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-09-20 18:07:57 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -54,6 +54,10 @@ public:
   void SetLabel(const char *);
   
   // Description:
+  // get the internal entry
+  vtkKWEntry *GetEntry() { return this->Entry; }
+  
+  // Description:
   // Set/Get the value of the entry in a few different formats.
   // In the SetValue method with float, the second argument is the
   // number of decimal places to display.
@@ -76,5 +80,3 @@ protected:
 
 
 #endif
-
-
