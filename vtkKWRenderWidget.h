@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-03-28 22:49:45 $
-  Version:   $Revision: 1.25 $
+  Date:      $Date: 2003-04-14 19:59:03 $
+  Version:   $Revision: 1.26 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -204,6 +204,14 @@ public:
   // Get the renderer and render window
   vtkGetObjectMacro(Renderer, vtkRenderer);
   vtkGetObjectMacro(RenderWindow, vtkRenderWindow);
+
+  // Description:
+  // If the widget supports multiple renderers:
+  // GetNthRenderer() gets the Nth renderer (or NULL if it does not exist),
+  // GetRendererId() gets the id of a given renderer (or -1 if this renderer
+  // does not belong to this widget)
+  virtual vtkRenderer* GetNthRenderer(int id);
+  virtual int GetRendererId(vtkRenderer*);
 
   // Description:
   // Get the VTK widget
