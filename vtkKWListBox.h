@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWListBox.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-28 23:16:49 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-03-29 22:19:01 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,8 @@ public:
   // Description:
   // Get the current selected string in the list
   const char *GetSelection();
-
+  int GetSelectionIndex();
+  
   // Description:
   // Add entries to an option menu, with or without a command.
   void InsertEntry(int index, const char *name);

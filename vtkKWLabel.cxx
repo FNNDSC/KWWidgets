@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-03-10 00:17:29 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-03-29 22:19:01 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,6 +44,28 @@ vtkKWLabel* vtkKWLabel::New()
   return new vtkKWLabel;
 }
 
+vtkKWLabel::vtkKWLabel()
+{
+  this->Label = new char[1];
+  this->Label[0] = 0;
+}
+
+vtkKWLabel::~vtkKWLabel()
+{
+  delete [] this->Label;
+}
+
+void vtkKWLabel::SetLabel(const char* l)
+{
+  delete [] this->Label;
+  this->Label = strcpy(new char[strlen(l)+1], l);
+  if(this->Application)
+    {
+    // if this has been created then change the text
+    this->Script("%s configure -text {%s}", this->GetWidgetName(), 
+		 this->Label);
+    }
+}
 
 
 void vtkKWLabel::Create(vtkKWApplication *app, char *args)
@@ -61,6 +83,6 @@ void vtkKWLabel::Create(vtkKWApplication *app, char *args)
 
   // create the top level
   wname = this->GetWidgetName();
-  this->Script("label %s %s", wname,args);
+  this->Script("label %s -text {%s}", wname, this->Label);
 }
 

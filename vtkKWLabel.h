@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.h,v $
   Language:  C++
-  Date:      $Date: 2000-03-10 00:17:29 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-03-29 22:19:01 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,13 +45,20 @@ public:
   // Description:
   // Create a Tk widget
   virtual void Create(vtkKWApplication *app, char *args);
-
+  
+  const char* GetLabel() 
+    {
+      return this->Label;
+    }
+  void SetLabel(const char*);
+  
 protected:
-  vtkKWLabel() {};
-  ~vtkKWLabel() {};
+  vtkKWLabel();
+  ~vtkKWLabel();
   vtkKWLabel(const vtkKWLabel&) {};
   void operator=(const vtkKWLabel&) {};
-  
+private:
+  char* Label;
 };
 
 
