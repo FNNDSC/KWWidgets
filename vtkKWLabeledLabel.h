@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledLabel.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 04:20:05 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-12-03 18:49:59 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -41,7 +41,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 =========================================================================*/
 // .NAME vtkKWLabeledLabel - an entry with a label
 // .SECTION Description
-// The LabeledLabel creates an entry with a label in front of it; both are
+// The LabeledLabel creates a label with another label in front of it; both are
 // contained in a frame
 
 
@@ -66,9 +66,13 @@ public:
   virtual void Create(vtkKWApplication *app);
 
   // Description:
-  // get the internal labels
-  vtkKWLabel *GetLabel1() { return this->Label1; }
-  vtkKWLabel *GetLabel2() { return this->Label2; }
+  // Get the internal objects
+  vtkGetObjectMacro(Label1, vtkKWLabel);
+  vtkGetObjectMacro(Label2, vtkKWLabel);
+
+  // Description:
+  // Set or get enabled state.
+  virtual void SetEnabled(int);
 
 protected:
   vtkKWLabeledLabel();
