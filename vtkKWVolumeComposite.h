@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-19 20:42:20 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2002-02-19 20:57:49 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -132,11 +132,6 @@ public:
   void RegisterIntermixIntersectingGeometry();
   void DeregisterIntermixIntersectingGeometry();
 
-  // Description:
-  // Use or stop using cursor.
-  void UseCursor();
-  void StopUsingCursor();
-  
 protected:
   vtkKWVolumeComposite();
   ~vtkKWVolumeComposite();
@@ -178,8 +173,6 @@ protected:
   int                                  CanDoHardwareCursor;
 
   int                                  UseIntermixIntersectingGeometry;
-
-  int                                  Use3DCursor;
 
 private:
   vtkKWVolumeComposite(const vtkKWVolumeComposite&); // Not implemented
