@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-13 20:56:49 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2002-09-14 16:30:53 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabeledFrame );
-vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.18 $");
 
 
 
@@ -103,7 +103,7 @@ void vtkKWLabeledFrame::SetLabel(const char *text)
     }
 
   const char *ptr;
-  char *buffer;
+  char *buffer = 0;
 
   if (vtkKWLabeledFrame::LabelCase == VTK_KW_LABEL_CASE_USER_SPECIFIED)
     {
