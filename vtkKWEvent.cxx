@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-22 17:30:14 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-07-24 21:19:13 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -95,6 +95,7 @@ static const char *vtkKWEventStrings[] = {
   "ErrorMessageEvent",
   "WarningMessageEvent",
   "ManipulatorModifiedEvent",
+  "WidgetModifiedEvent",
   "FinalBogusNotUsedEvent"
 };
 

@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2002-07-22 17:30:15 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-07-24 21:19:13 $
+  Version:   $Revision: 1.12 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -106,6 +106,7 @@ class VTK_EXPORT vtkKWEvent
     ErrorMessageEvent,
     WarningMessageEvent,
     ManipulatorModifiedEvent,
+    WidgetModifiedEvent,
     // 
     FinalBogusNotUsedEvent
   };
