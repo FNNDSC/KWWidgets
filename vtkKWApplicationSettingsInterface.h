@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplicationSettingsInterface.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-27 19:57:07 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2003-01-27 22:49:50 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -92,12 +92,12 @@ public:
 
   // Description:
   // Callback used when interaction has been performed.
-  void ConfirmExitCallback();
-  void SaveGeometryCallback();
-  void ShowSplashScreenCallback();
-  void ShowBalloonHelpCallback();
-  void FlatFrameCallback();
-  void FlatButtonsCallback();
+  virtual void ConfirmExitCallback();
+  virtual void SaveGeometryCallback();
+  virtual void ShowSplashScreenCallback();
+  virtual void ShowBalloonHelpCallback();
+  virtual void FlatFrameCallback();
+  virtual void FlatButtonsCallback();
 
 protected:
   vtkKWApplicationSettingsInterface();
