@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-13 22:56:29 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-01-17 03:02:43 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -121,11 +121,16 @@ public:
   // in the file menu. This is useful because most menu options
   // go above the MRU list, hence above this index.
   int GetFileMenuIndex();
-  
+
   // Description:
   // Install a menu bar into this window.
   void InstallMenu(vtkKWMenu* menu);
-  
+
+  // Description:
+  // This toolbar frame is below the menu. It is empty initially.
+  // Subclasses can add toolbars buttons as necessary.
+  vtkGetObjectMacro(ToolbarFrame, vtkKWWidget);
+ 
 protected:
   void CreateStatusImage();
   int NumberOfMRUFiles;
@@ -141,8 +146,10 @@ protected:
   vtkKWWidget *StatusImage;
   vtkKWWidget *StatusLabel;
   char        *StatusImageName;
+  vtkKWWidget *MiddleFrame; // Contains view frame and properties parent.
   vtkKWWidget *PropertiesParent;
   vtkKWWidget *ViewFrame;
+  vtkKWWidget *ToolbarFrame;
 };
 
 
