@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-10-17 22:13:03 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2001-10-23 20:49:51 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -160,7 +160,6 @@ void vtkKWComposite::CreateProperties()
     if (this->View && this->View->GetPropertiesParent())
       { // if we have a view then use its attachment point
       this->SetPropertiesParent(this->View->GetPropertiesParent());
-      this->Notebook2->SetParent(this->View->GetPropertiesParent());
       }
     else
       {
@@ -174,7 +173,7 @@ void vtkKWComposite::CreateProperties()
       this->SetPropertiesParent(this->TopLevel);
       }
     }
-  
+
   this->Notebook->SetParent(this->PropertiesParent);
   this->Notebook2->SetParent(this->PropertiesParent);
   this->Notebook->Create(this->Application,"");
@@ -212,5 +211,5 @@ void vtkKWComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWComposite ";
-  this->ExtractRevision(os,"$Revision: 1.10 $");
+  this->ExtractRevision(os,"$Revision: 1.11 $");
 }
