@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 22:42:14 $
-  Version:   $Revision: 1.36 $
+  Date:      $Date: 2002-02-04 20:33:56 $
+  Version:   $Revision: 1.37 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -290,8 +290,6 @@ protected:
   int InExit;
 
   vtkKWPointerArray *RecentFiles;
-  
-  void PrintRecentFiles();
 private:
   vtkKWWindow(const vtkKWWindow&); // Not implemented
   void operator=(const vtkKWWindow&); // Not implemented

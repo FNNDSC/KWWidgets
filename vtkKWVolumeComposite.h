@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:34 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-02-04 20:33:56 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -76,7 +76,7 @@ public:
 
   // Description:
   // Get the prop for this composite
-  virtual vtkProp *GetProp() {return (vtkProp *)this->LODVolume;};
+  virtual vtkProp *GetProp();
 
   vtkGetObjectMacro( LODVolume, vtkLODProp3D );
   vtkGetMacro( RayCastID, int );

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWHashTable.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-16 19:12:29 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-02-04 20:33:55 $
+  Version:   $Revision: 1.4 $
 
 
 Copyright (c) 1993-2001 Ken Martin, Will Schroeder, Bill Lorensen 
@@ -93,7 +93,6 @@ vtkKWHashTable::~vtkKWHashTable()
 {
   this->Clean();
   delete [] this->Table;
-  //cout << "Items left: " << vtkKWHashTableItem::Count << endl;
 }
 
 
@@ -138,13 +137,11 @@ vtkKWHashTable::Lookup( unsigned long item )
   vtkKWHashTableItem *tmp;
 
   tmp = this->Table[slot];
-  //cout << "Looking " << slot << " in " << tmp << endl;
 
   while (tmp) 
     {
     if (tmp->Key == item) 
       {
-      //cout << "We found it" << endl;
       return tmp->Data;
       }
     tmp = tmp->Next;

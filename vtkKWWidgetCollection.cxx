@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidgetCollection.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:25 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-02-04 20:33:56 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -63,3 +63,17 @@ vtkKWWidget *vtkKWWidgetCollection::GetLastKWWidget()
     }
 }
 
+void vtkKWWidgetCollection::AddItem(vtkKWWidget *a) 
+{
+  this->vtkCollection::AddItem(static_cast<vtkObject *>(a));
+}
+
+void vtkKWWidgetCollection::RemoveItem(vtkKWWidget *a) 
+{
+  this->vtkCollection::RemoveItem(static_cast<vtkObject *>(a));
+}
+
+int vtkKWWidgetCollection::IsItemPresent(vtkKWWidget *a) 
+{
+  return this->vtkCollection::IsItemPresent(static_cast<vtkObject *>(a));
+}

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-31 21:27:07 $
-  Version:   $Revision: 1.26 $
+  Date:      $Date: 2002-02-04 20:33:56 $
+  Version:   $Revision: 1.27 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -153,7 +153,7 @@ vtkKWVolumeComposite::vtkKWVolumeComposite()
                                this->VolumeProperty, 1.0 );
     this->RenderMethod = VTK_VOLUMECOMPOSITE_VOLUMEPRO_METHOD;
     this->VolumeProMapperAvailable = 1;
-    this->SoftwareMapperAvailable = 0;
+    this->SoftwareMapperAvailable = 1;
     this->LODVolume->AutomaticLODSelectionOff();
     this->LODVolume->SetSelectedLODID( this->VolumeProID );
     }
@@ -232,7 +232,7 @@ void vtkKWVolumeComposite::SetInput(vtkImageData *input)
     {
     this->GetView()->GetWindow()->GetProgressGauge()->SetValue(5);
     }
-  
+
   input->Update();
 
   if ( this->GetView() )
@@ -488,5 +488,10 @@ void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.26 $");
+  this->ExtractRevision(os,"$Revision: 1.27 $");
+}
+
+vtkProp *vtkKWVolumeComposite::GetProp() 
+{
+  return static_cast<vtkProp *>(this->LODVolume);
 }

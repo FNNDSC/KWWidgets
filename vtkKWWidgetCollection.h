@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidgetCollection.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:35 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-02-04 20:33:56 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -85,21 +85,6 @@ private:
   vtkKWWidgetCollection(const vtkKWWidgetCollection&); // Not implemented
   void operator=(const vtkKWWidgetCollection&); // Not implemented
 };
-
-inline void vtkKWWidgetCollection::AddItem(vtkKWWidget *a) 
-{
-  this->vtkCollection::AddItem((vtkObject *)a);
-}
-
-inline void vtkKWWidgetCollection::RemoveItem(vtkKWWidget *a) 
-{
-  this->vtkCollection::RemoveItem((vtkObject *)a);
-}
-
-inline int vtkKWWidgetCollection::IsItemPresent(vtkKWWidget *a) 
-{
-  return this->vtkCollection::IsItemPresent((vtkObject *)a);
-}
 
 #endif
 

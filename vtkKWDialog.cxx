@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-30 22:29:40 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2002-02-04 20:33:54 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -79,6 +79,7 @@ int vtkKWDialog::Invoke()
   // map the window
   this->Script("wm deiconify %s",this->GetWidgetName());
   this->Script("focus %s",this->GetWidgetName());
+  this->Script("update idletasks");
   this->Script("grab %s",this->GetWidgetName());
   if ( this->Beep )
     {
@@ -104,6 +105,7 @@ void vtkKWDialog::Display()
   // map the window
   this->Script("wm deiconify %s",this->GetWidgetName());
   this->Script("focus %s",this->GetWidgetName());
+  this->Script("update idletasks");
   this->Script("grab %s",this->GetWidgetName());
 }
 
