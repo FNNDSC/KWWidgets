@@ -16,12 +16,14 @@ vtkKWView
 
 CONCRETE = \
 vtkKWApplication \
+vtkKWCallbackSpecification \
 vtkKWChangeColorButton \
 vtkKWCheckButton \
 vtkKWCompositeCollection \
 vtkKWCornerAnnotation \
 vtkKWDialog \
 vtkKWEntry \
+vtkKWEventNotifier \
 vtkKWExtent \
 vtkKWGenericComposite \
 vtkKWLabeledFrame \
