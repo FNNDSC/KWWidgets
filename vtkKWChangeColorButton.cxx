@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWChangeColorButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-12 21:50:15 $
-  Version:   $Revision: 1.25 $
+  Date:      $Date: 2002-12-16 19:07:56 $
+  Version:   $Revision: 1.26 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWChangeColorButton);
-vtkCxxRevisionMacro(vtkKWChangeColorButton, "$Revision: 1.25 $");
+vtkCxxRevisionMacro(vtkKWChangeColorButton, "$Revision: 1.26 $");
 
 int vtkKWChangeColorButtonCommand(ClientData cd, Tcl_Interp *interp,
                                   int argc, char *argv[]);
@@ -234,6 +234,9 @@ void vtkKWChangeColorButton::UpdateColorButton()
 
   if (this->Enabled)
     {
+    if ( this->Color[0] < 0 ) { this->Color[0] = 0; }
+    if ( this->Color[1] < 0 ) { this->Color[1] = 0; }
+    if ( this->Color[2] < 0 ) { this->Color[2] = 0; }
     char color[256];
     sprintf(color, "#%02x%02x%02x", 
             (int)(this->Color[0] * 255.5), 
@@ -489,7 +492,7 @@ void vtkKWChangeColorButton::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWChangeColorButton ";
-  this->ExtractRevision(os,"$Revision: 1.25 $");
+  this->ExtractRevision(os,"$Revision: 1.26 $");
 }
 
 //----------------------------------------------------------------------------
