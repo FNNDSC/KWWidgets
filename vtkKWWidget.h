@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2001-10-15 17:48:39 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2002-01-02 21:28:06 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -95,6 +95,11 @@ public:
   // name of the method to be called and any arguments in string form.
   // The calling is done via TCL wrappers for the KWObject.
   virtual void SetCommand( vtkKWObject* Object, const char* MethodAndArgString);
+  
+  // Description:
+  // A method to set binding on the object
+  void SetBind(vtkKWObject* CalledObject, const char *Event, const char *CommandString);
+
   // Description: a method to create a callback string from a KWObject.
   // The caller is resposible for deleting the returned string.  
   char* CreateCommand(vtkKWObject* Object, const char* MethodAndArgString);

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-12-06 14:45:16 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2002-01-02 21:28:06 $
+  Version:   $Revision: 1.19 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -227,6 +227,11 @@ void vtkKWWidget::UnRegister(vtkObject *o)
 }
 
 
+void vtkKWWidget::SetBind(vtkKWObject* CalledObject, const char *Event, const char *CommandString)
+{
+  this->Application->Script("bind %s %s", Event, CommandString);
+}
+
 void vtkKWWidget::SetCommand(vtkKWObject* CalledObject, const char * CommandString)
 {
   char* command = this->CreateCommand(CalledObject, CommandString);
@@ -281,7 +286,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.18 $");
+  this->ExtractRevision(os,"$Revision: 1.19 $");
 }
 
 vtkKWWindow* vtkKWWidget::GetWindow()
