@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-30 20:00:05 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2003-01-02 15:04:29 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -57,7 +57,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.11 $");
 
 vtkKWRenderWidget::vtkKWRenderWidget()
 {
@@ -234,7 +234,7 @@ void vtkKWRenderWidget::RemoveBindings()
   this->Script("bind %s <Configure> {}", wname);
 }
 
-void vtkKWRenderWidget::MouseMove(int num, int x, int y)
+void vtkKWRenderWidget::MouseMove(int vtkNotUsed(num), int x, int y)
 {
   this->Interactor->SetMoveEventInformationFlipY(x, y);
   this->Interactor->MouseMoveEvent();
