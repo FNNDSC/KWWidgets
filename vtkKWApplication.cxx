@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-09 22:08:04 $
-  Version:   $Revision: 1.40 $
+  Date:      $Date: 2002-01-10 22:08:50 $
+  Version:   $Revision: 1.41 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -589,13 +589,15 @@ void vtkKWApplication::DisplayAbout(vtkKWWindow *win)
   delete[] msg;
 }
 
+
 //----------------------------------------------------------------------------
-void vtkKWApplication::AddTraceEntry(char *format, ...)
+void vtkKWApplication::AddTraceEntry(const char *format, ...)
 {
   if (this->TraceFile == NULL)
     {
     return;
     }
+  
   char event[6000];
 
   va_list var_args;
@@ -605,4 +607,3 @@ void vtkKWApplication::AddTraceEntry(char *format, ...)
 
   *(this->TraceFile) << event << endl;
 }
-

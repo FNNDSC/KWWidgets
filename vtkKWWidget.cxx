@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-04 15:26:27 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2002-01-10 22:08:50 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -77,6 +77,9 @@ vtkKWWidget::vtkKWWidget()
   this->BalloonHelpString        = NULL;  
   this->BalloonHelpJustification = 0;
   this->BalloonHelpInitialized   = 0;
+
+  this->TraceInitialized = 0;
+  this->TraceName = NULL;
 }
 
 vtkKWWidget::~vtkKWWidget()
@@ -86,6 +89,7 @@ vtkKWWidget::~vtkKWWidget()
     this->SetBalloonHelpString(NULL);
     }
   this->Children->UnRegister(this);
+  this->Children = NULL;
   
   if (this->Application)
     {
@@ -97,6 +101,7 @@ vtkKWWidget::~vtkKWWidget()
     }
   this->SetParent(NULL);
   this->SetApplication(NULL);
+  this->SetTraceName(NULL);
 }
 
 void vtkKWWidget::SetParent(vtkKWWidget *p)
@@ -315,7 +320,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.21 $");
+  this->ExtractRevision(os,"$Revision: 1.22 $");
 }
 
 vtkKWWindow* vtkKWWidget::GetWindow()
@@ -332,3 +337,78 @@ vtkKWWindow* vtkKWWidget::GetWindow()
     }
   return win;
 }
+
+
+
+//----------------------------------------------------------------------------
+// Methods for tracing.
+
+vtkKWWidget *vtkKWWidget::GetChildWidget(const char *traceName)
+{
+  vtkKWWidget *child;
+
+  this->Children->InitTraversal();
+  while ( (child = this->Children->GetNextKWWidget()) )
+    {
+    if (child->GetTraceName())
+      {
+      if (strcmp(traceName, child->GetTraceName()) == 0)
+        {
+        return child;
+        }
+      }
+    }
+  return NULL;
+}
+       
+
+int vtkKWWidget::InitializeTrace()
+{
+  if (this->TraceInitialized)
+    {
+    return 1;
+    }
+
+  if (this->Parent == NULL || this->TraceName == NULL)
+    {
+    return 0;
+    }
+  if ( ! this->Parent->InitializeTrace())
+    {
+    return 0;
+    }
+    
+  // Set the variable becasue AddTraceEntry also calls InitializeTrace.
+  this->TraceInitialized = 1;
+  this->AddTraceEntry("set $kw($s) [$kw(%s) GetChildWidget %s]",
+                      this->GetTclName(), this->Parent->GetTclName(),
+                      this->TraceName);
+  return 1;
+}  
+
+int vtkKWWidget::AddTraceEntry(const char *format, ...)
+{
+  ostream *os;
+
+  if (this->Application == NULL || this->InitializeTrace() == 0)
+    {
+    return 0;
+    }
+  os = this->Application->GetTraceFile();
+  if (os == NULL)
+    {
+    return 0;
+    }
+
+  char event[6000];
+
+  va_list var_args;
+  va_start(var_args, format);
+  vsprintf(event, format, var_args);
+  va_end(var_args);
+
+  *os << event << endl;
+
+  return 1;
+}
+

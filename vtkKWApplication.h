@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-09 22:08:04 $
-  Version:   $Revision: 1.23 $
+  Date:      $Date: 2002-01-10 22:08:50 $
+  Version:   $Revision: 1.24 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -143,14 +143,13 @@ public:
   static int GetWidgetVisibility();
   vtkBooleanMacro(WidgetVisibility, int);
   
-//BTX
   // Description:
-  // This can be esed to trace the actions of the user.
-  // It only works when the TraceFile has been set.
-  void AddTraceEntry(char *format, ...);
+  // This can be used to trace the application.
+  // Look at vtkKWWidgets to see how it is used.
   ofstream *GetTraceFile() {return this->TraceFile;}
+//BTX
+  void AddTraceEntry(const char *format, ...);
 //ETX
-
   virtual int GetApplicationKey() {return -1;};
 
 
