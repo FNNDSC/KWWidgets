@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 19:57:31 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2002-03-22 22:37:12 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,8 +49,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkKWWidget.h"
 class vtkKWApplication;
-class vtkKWImageLabel;
+class vtkKWFrame;
 class vtkKWIcon;
+class vtkKWImageLabel;
 
 class VTK_EXPORT vtkKWNotebook : public vtkKWWidget
 {
@@ -122,7 +123,7 @@ protected:
   vtkKWWidget *MaskRight;
   vtkKWWidget *MaskRight2;
   int NumberOfPages;
-  vtkKWWidget **Frames;
+  vtkKWFrame **Frames;
   vtkKWWidget **Buttons;
   vtkKWImageLabel **Icons;
   char **Titles;

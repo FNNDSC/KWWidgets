@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-20 19:15:49 $
-  Version:   $Revision: 1.64 $
+  Date:      $Date: 2002-03-22 22:37:11 $
+  Version:   $Revision: 1.65 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -177,7 +177,7 @@ const char* vtkKWApplication::ExpandFileName(const char *String, ...)
   vsprintf(event, String, var_args);
   va_end(var_args);
   ostrstream str;
-  str << "eval file join \"" << event << "\"" << ends;
+  str << "eval file join {\"" << event << "\"}" << ends;
   this->SimpleScript(str.str());
   str.rdbuf()->freeze(0);
   return this->MainInterp->result;
