@@ -3,8 +3,8 @@
 Program:   Visualization Toolkit
 Module:    $RCSfile: vtkKWNotebook.cxx,v $
 Language:  C++
-Date:      $Date: 2002-12-03 13:59:56 $
-Version:   $Revision: 1.32 $
+Date:      $Date: 2002-12-03 14:11:58 $
+Version:   $Revision: 1.33 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -84,7 +84,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.32 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.33 $");
 
 //------------------------------------------------------------------------------
 int vtkKWNotebookCommand(ClientData cd, Tcl_Interp *interp,
@@ -585,7 +585,7 @@ int vtkKWNotebook::RemovePage(vtkKWNotebook::Page *page)
     return 0;
     }
 
-  int pos = 0;
+  vtkIdType pos = 0;
   if (this->Pages->FindItem(page, pos) != VTK_OK)
     {
     vtkErrorMacro("Error while removing a page from the notebook "

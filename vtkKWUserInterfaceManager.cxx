@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceManager.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-03 13:59:56 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-12-03 14:11:58 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 
 //------------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWUserInterfaceManager, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManager, "$Revision: 1.3 $");
 
 int vtkKWUserInterfaceManagerCommand(ClientData cd, Tcl_Interp *interp,
                                      int argc, char *argv[]);
@@ -257,7 +257,7 @@ int vtkKWUserInterfaceManager::RemovePanel(vtkKWUserInterfacePanel *panel)
 
   vtkKWUserInterfaceManager::PanelSlot *panel_slot = this->GetPanelSlot(panel);
 
-  int pos = 0;
+  vtkIdType pos = 0;
   if (this->Panels->FindItem(panel_slot, pos) != VTK_OK)
     {
     vtkErrorMacro("Error while removing a panel from the manager "
