@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWOptionMenu.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:32 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-07-08 20:02:39 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -64,6 +64,10 @@ public:
   // Set/Get the state of the option menu
   void SetValue(const char *);
   char *GetValue();
+
+  // Description:
+  // Get the menu.
+  vtkGetObjectMacro(Menu, vtkKWWidget);
 
   // Description:
   // Add entries to an option menu, with or without a command.

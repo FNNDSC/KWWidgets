@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2002-06-12 20:09:00 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2002-07-08 20:02:39 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -180,6 +180,13 @@ public:
   // Set state of the menu entry with a given index.
   void SetState(int index, int state);
   void SetState(const char* item, int state);
+
+  // Description:
+  // Set cascade menu for menu entry.
+  void SetCascade(int index, vtkKWMenu*);
+  void SetCascade(const char* item, vtkKWMenu*);
+  void SetCascade(int index, const char*);
+  void SetCascade(const char* item, const char*);
 
   // Description:
   // Set command of the menu entry with a given index.
