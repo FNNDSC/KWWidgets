@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-05 23:23:07 $
-  Version:   $Revision: 1.29 $
+  Date:      $Date: 2002-02-06 15:15:32 $
+  Version:   $Revision: 1.30 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -85,6 +85,7 @@ vtkKWVolumeComposite::vtkKWVolumeComposite()
   this->LowResVolumeProMapper = vtkVolumeProMapper::New();
   this->VProResampler         = vtkImageResample::New();
   
+  this->RayCastMapper->IntermixIntersectingGeometryOff();
 
   gradientEstimator = vtkFiniteDifferenceGradientEstimator::New();
   directionEncoder  = vtkRecursiveSphereDirectionEncoder::New();
@@ -145,6 +146,9 @@ vtkKWVolumeComposite::vtkKWVolumeComposite()
   this->VolumeProperty->SetColor(ctf);
   
   this->CommandFunction = vtkKWVolumeCompositeCommand;
+  this->CanDoIntermixGeometry = 1;
+  this->CanDoHardwareCursor   = 0;
+  this->UseIntermixIntersectingGeometry = 0;
 
   if ( this->VolumeProMapper->GetNumberOfBoards() > 0 )
     {
@@ -152,11 +156,6 @@ vtkKWVolumeComposite::vtkKWVolumeComposite()
       {
       this->CanDoIntermixGeometry = 0;
       this->CanDoHardwareCursor   = 1;
-      }
-    else
-      {
-      this->CanDoIntermixGeometry = 1;
-      this->CanDoHardwareCursor   = 0;
       }
     this->VolumeProID = 
       this->LODVolume->AddLOD( this->VolumeProMapper,
@@ -166,6 +165,7 @@ vtkKWVolumeComposite::vtkKWVolumeComposite()
     this->SoftwareMapperAvailable = 1;
     this->LODVolume->AutomaticLODSelectionOff();
     this->LODVolume->SetSelectedLODID( this->VolumeProID );
+    this->VolumeProMapper->IntermixIntersectingGeometryOff();
     }
   else
     {
@@ -498,10 +498,66 @@ void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.29 $");
+  this->ExtractRevision(os,"$Revision: 1.30 $");
 }
 
 vtkProp *vtkKWVolumeComposite::GetProp() 
 {
   return static_cast<vtkProp *>(this->LODVolume);
 }
+
+void vtkKWVolumeComposite::RegisterIntermixIntersectingGeometry()
+{
+  //cout << "vtkKWVolumeComposite::RegisterIntermixIntersectingGeometry()" 
+  //     << endl;
+  if ( !this->UseIntermixIntersectingGeometry )
+    {
+    this->RayCastMapper->IntermixIntersectingGeometryOn();
+    if ( this->CanDoIntermixGeometry )
+      {
+      this->VolumeProMapper->IntermixIntersectingGeometryOn();
+      }
+    }
+  this->UseIntermixIntersectingGeometry++;
+}
+void vtkKWVolumeComposite::DeregisterIntermixIntersectingGeometry()
+{
+  //cout << "vtkKWVolumeComposite::DeregisterIntermixIntersectingGeometry()" 
+  //<< endl;
+  if ( this->UseIntermixIntersectingGeometry <= 0 )
+    {
+    this->UseIntermixIntersectingGeometry = 0;
+    vtkErrorMacro("Reference count for intermix intersecting geometry cannot "
+		  "be less than zero.");
+    }
+  else
+    {
+    this->UseIntermixIntersectingGeometry--;
+    }
+
+  if ( !this->UseIntermixIntersectingGeometry )
+    {
+    this->RayCastMapper->IntermixIntersectingGeometryOff();
+    if ( this->CanDoIntermixGeometry )
+      {
+      this->VolumeProMapper->IntermixIntersectingGeometryOff();
+      }
+    }
+}
+
+void vtkKWVolumeComposite::UseCursor()
+{
+  if ( !this->CanDoHardwareCursor )
+    {
+    this->RegisterIntermixIntersectingGeometry();
+    }
+}
+
+void vtkKWVolumeComposite::StopUsingCursor()
+{
+  if ( !this->CanDoHardwareCursor )
+    {
+    this->DeregisterIntermixIntersectingGeometry();
+    }
+}
+

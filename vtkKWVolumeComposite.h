@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-05 23:23:07 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-02-06 15:15:32 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -126,6 +126,16 @@ public:
   // True if the volume pro mapper can do the task.
   vtkGetMacro(CanDoIntermixGeometry, int);
   vtkGetMacro(CanDoHardwareCursor, int);
+
+  // Description:
+  // Register and deregister the use of intermix intersecting geometry.
+  void RegisterIntermixIntersectingGeometry();
+  void DeregisterIntermixIntersectingGeometry();
+
+  // Description:
+  // Use or stop using cursor.
+  void UseCursor();
+  void StopUsingCursor();
   
 protected:
   vtkKWVolumeComposite();
@@ -164,6 +174,9 @@ protected:
   int                                  LowResVolumeProID;
   int                                  CanDoIntermixGeometry;
   int                                  CanDoHardwareCursor;
+
+  int                                  UseIntermixIntersectingGeometry;
+
 private:
   vtkKWVolumeComposite(const vtkKWVolumeComposite&); // Not implemented
   void operator=(const vtkKWVolumeComposite&); // Not implemented
