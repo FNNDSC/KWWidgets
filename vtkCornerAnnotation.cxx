@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-13 21:01:58 $
-  Version:   $Revision: 1.24 $
+  Date:      $Date: 2002-11-11 21:55:52 $
+  Version:   $Revision: 1.25 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,7 +52,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkCornerAnnotation);
-vtkCxxRevisionMacro(vtkCornerAnnotation, "$Revision: 1.24 $");
+vtkCxxRevisionMacro(vtkCornerAnnotation, "$Revision: 1.25 $");
 
 vtkSetObjectImplementationMacro(vtkCornerAnnotation,ImageActor,vtkImageActor);
 vtkSetObjectImplementationMacro(vtkCornerAnnotation,WindowLevel,
@@ -410,7 +410,7 @@ int vtkCornerAnnotation::RenderOpaqueGeometry(vtkViewport *viewport)
         fontSize++;
         for (i = 0; i < 4; i++)
           {
-          this->TextMapper[i]->SetFontSize(fontSize);
+          this->TextMapper[i]->GetTextProperty()->SetFontSize(fontSize);
           this->TextMapper[i]->GetSize(viewport, tempi + i * 2);
           }
         height_02 = tempi[1] + tempi[5];
@@ -432,7 +432,7 @@ int vtkCornerAnnotation::RenderOpaqueGeometry(vtkViewport *viewport)
         fontSize--;
         for (i = 0; i < 4; i++)
           {
-          this->TextMapper[i]->SetFontSize(fontSize);
+          this->TextMapper[i]->GetTextProperty()->SetFontSize(fontSize);
           this->TextMapper[i]->GetSize(viewport, tempi + i * 2);
           }
         height_02 = tempi[1] + tempi[5];
