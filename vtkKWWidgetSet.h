@@ -1,6 +1,6 @@
 /*=========================================================================
 
-  Module:    $RCSfile: vtkKWWidgetSet.h.in,v $
+  Module:    $RCSfile: vtkKWWidgetSet.h,v $
 
   Copyright (c) Kitware, Inc.
   All rights reserved.
@@ -11,33 +11,33 @@
      PURPOSE.  See the above copyright notice for more information.
 
 =========================================================================*/
-// .NAME vtkKW@WidgetType@Set - a set of vtkKW@WidgetType@
+// .NAME vtkKWWidgetSet - an abstract set of vtkKWWidget
 // .SECTION Description
-// A composite widget to conveniently store a set of vtkKW@WidgetType@. 
-// Each vtkKW@WidgetType@ is created, removed or queried based
+// A composite widget to conveniently store a set of vtkKWWidget. 
+// Each vtkKWWidget is created, removed or queried based
 // on a unique ID provided by the user (ids are *not* handled by the class
 // since it is likely that they will be defined as enum's or #define by
 // the user for easier retrieval).
 // Widgets are packed (gridded) in the order they were added.
+// Subclasses need to implement AllocateAndCreateWidget
 
-#ifndef __vtkKW@WidgetType@Set_h
-#define __vtkKW@WidgetType@Set_h
+#ifndef __vtkKWWidgetSet_h
+#define __vtkKWWidgetSet_h
 
 #include "vtkKWWidget.h"
 
 class vtkKWApplication;
-class vtkKW@WidgetType@;
+class vtkKWWidget;
 
 //BTX
 template<class DataType> class vtkLinkedList;
 template<class DataType> class vtkLinkedListIterator;
 //ETX
 
-class VTK_EXPORT vtkKW@WidgetType@Set : public vtkKWWidget
+class VTK_EXPORT vtkKWWidgetSet : public vtkKWWidget
 {
 public:
-  static vtkKW@WidgetType@Set* New();
-  vtkTypeRevisionMacro(vtkKW@WidgetType@Set,vtkKWWidget);
+  vtkTypeRevisionMacro(vtkKWWidgetSet,vtkKWWidget);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
@@ -45,32 +45,21 @@ public:
   virtual void Create(vtkKWApplication *app, const char *args);
 
   // Description:
-  // Add a vtkKW@WidgetType@ to the set.
-  // The id has to be unique among the set.
-  // Return a pointer to the vtkKW@WidgetType@, or NULL on error.
-  virtual vtkKW@WidgetType@* AddWidget(int id);
-
-  // Description:
-  // Get a vtkKW@WidgetType@ from the set, given its unique id.
-  // Return a pointer to the vtkKW@WidgetType@, or NULL on error.
-  virtual vtkKW@WidgetType@* GetWidget(int id);
-
-  // Description:
-  // Get the number of vtkKW@WidgetType@ in the set, and retrieve
-  // the n-th vtkKW@WidgetType@ (don't confuse the n-th rank with the id)
-  // or the id of the n-th vtkKW@WidgetType@ (-1 if not found)
+  // Get the number of vtkKWWidget in the set.
   virtual int GetNumberOfWidgets();
-  virtual vtkKW@WidgetType@* GetNthWidget(int rank);
+
+  // Description:
+  // Retrieve the id of the n-th vtkKWWidget (-1 if not found)
   virtual int GetNthWidgetId(int rank);
 
   // Description:
-  // Check if a vtkKW@WidgetType@ is in the set, given its unique id.
+  // Check if a vtkKWWidget is in the set, given its unique id.
   // Return 1 if exists, 0 otherwise.
   virtual int HasWidget(int id);
 
   // Description:
-  // Hide/show a vtkKW@WidgetType@, given its unique id.
-  // Get the number of visible vtkKW@WidgetType@ in the set.
+  // Hide/show a vtkKWWidget, given its unique id.
+  // Get the number of visible vtkKWWidget in the set.
   virtual void HideWidget(int id);
   virtual void ShowWidget(int id);
   virtual int GetWidgetVisibility(int id);
@@ -78,7 +67,7 @@ public:
   virtual int GetNumberOfVisibleWidgets();
 
   // Description:
-  // Delete all vtkKW@WidgetType@ widgets
+  // Delete all vtkKWWidget widgets
   virtual void DeleteAllWidgets();
 
   // Description:
@@ -116,8 +105,8 @@ public:
   virtual void UpdateEnableState();
 
 protected:
-  vtkKW@WidgetType@Set();
-  ~vtkKW@WidgetType@Set();
+  vtkKWWidgetSet();
+  ~vtkKWWidgetSet();
 
   int PackHorizontally;
   int MaximumNumberOfWidgetsInPackingDirection;
@@ -127,7 +116,7 @@ protected:
 
   //BTX
 
-  // A WidgetSlot associates a vtkKW@WidgetType@ to a unique Id
+  // A WidgetSlot associates a vtkKWWidget to a unique Id
   // I don't want to use a map between those two, for the following reasons:
   // a), we might need more information in the future, b) a map 
   // Register/Unregister pointers if they are pointers to VTK objects.
@@ -136,7 +125,7 @@ protected:
   {
   public:
     int Id;
-    vtkKW@WidgetType@ *Widget;
+    vtkKWWidget *Widget;
   };
 
   typedef vtkLinkedList<WidgetSlot*> WidgetsContainer;
@@ -147,14 +136,16 @@ protected:
 
   virtual WidgetSlot* GetWidgetSlot(int id);
   virtual WidgetSlot* GetNthWidgetSlot(int rank);
+  virtual vtkKWWidget* AddWidgetInternal(int id);
+  virtual vtkKWWidget* AllocateAndCreateWidget() = 0;
 
   //ETX
 
   virtual void Pack();
 
 private:
-  vtkKW@WidgetType@Set(const vtkKW@WidgetType@Set&); // Not implemented
-  void operator=(const vtkKW@WidgetType@Set&); // Not implemented
+  vtkKWWidgetSet(const vtkKWWidgetSet&); // Not implemented
+  void operator=(const vtkKWWidgetSet&); // Not implemented
 };
 
 #endif

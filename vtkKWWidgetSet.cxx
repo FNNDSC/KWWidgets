@@ -1,6 +1,6 @@
 /*=========================================================================
 
-  Module:    $RCSfile: vtkKWWidgetSet.cxx.in,v $
+  Module:    $RCSfile: vtkKWWidgetSet.cxx,v $
 
   Copyright (c) Kitware, Inc.
   All rights reserved.
@@ -12,35 +12,35 @@
 
 =========================================================================*/
 
-#include "vtkKW@WidgetType@Set.h"
+#include "vtkKWWidgetSet.h"
 
 #include "vtkKWApplication.h"
-#include "vtkKW@WidgetType@.h"
+#include "vtkKWWidget.h"
 #include "vtkLinkedList.txx"
 #include "vtkLinkedListIterator.txx"
 #include "vtkObjectFactory.h"
 
 //----------------------------------------------------------------------------
 
-vtkStandardNewMacro(vtkKW@WidgetType@Set);
-vtkCxxRevisionMacro(vtkKW@WidgetType@Set, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWWidgetSet, "$Revision: 1.1 $");
 
-int vtkvtkKW@WidgetType@SetCommand(ClientData cd, Tcl_Interp *interp,
-                                   int argc, char *argv[]);
+int vtkKWWidgetSetCommand(ClientData cd, Tcl_Interp *interp,
+                          int argc, char *argv[]);
 
 //----------------------------------------------------------------------------
-vtkKW@WidgetType@Set::vtkKW@WidgetType@Set()
+vtkKWWidgetSet::vtkKWWidgetSet()
 {
+  this->CommandFunction = vtkKWWidgetSetCommand;
   this->PackHorizontally = 0;
   this->MaximumNumberOfWidgetsInPackingDirection = 0;
   this->PadX = 0;
   this->PadY = 0;
   this->ExpandWidgets = 0;
-  this->Widgets = vtkKW@WidgetType@Set::WidgetsContainer::New();
+  this->Widgets = vtkKWWidgetSet::WidgetsContainer::New();
 }
 
 //----------------------------------------------------------------------------
-vtkKW@WidgetType@Set::~vtkKW@WidgetType@Set()
+vtkKWWidgetSet::~vtkKWWidgetSet()
 {
   // Delete all widgets
 
@@ -52,12 +52,12 @@ vtkKW@WidgetType@Set::~vtkKW@WidgetType@Set()
 }
 
 //----------------------------------------------------------------------------
-void vtkKW@WidgetType@Set::DeleteAllWidgets()
+void vtkKWWidgetSet::DeleteAllWidgets()
 {
   // Delete all widgets
 
-  vtkKW@WidgetType@Set::WidgetSlot *widget_slot = NULL;
-  vtkKW@WidgetType@Set::WidgetsContainerIterator *it = 
+  vtkKWWidgetSet::WidgetSlot *widget_slot = NULL;
+  vtkKWWidgetSet::WidgetsContainerIterator *it = 
     this->Widgets->NewIterator();
 
   it->InitTraversal();
@@ -80,12 +80,12 @@ void vtkKW@WidgetType@Set::DeleteAllWidgets()
 }
 
 //----------------------------------------------------------------------------
-vtkKW@WidgetType@Set::WidgetSlot* 
-vtkKW@WidgetType@Set::GetWidgetSlot(int id)
+vtkKWWidgetSet::WidgetSlot* 
+vtkKWWidgetSet::GetWidgetSlot(int id)
 {
-  vtkKW@WidgetType@Set::WidgetSlot *widget_slot = NULL;
-  vtkKW@WidgetType@Set::WidgetSlot *found = NULL;
-  vtkKW@WidgetType@Set::WidgetsContainerIterator *it = 
+  vtkKWWidgetSet::WidgetSlot *widget_slot = NULL;
+  vtkKWWidgetSet::WidgetSlot *found = NULL;
+  vtkKWWidgetSet::WidgetsContainerIterator *it = 
     this->Widgets->NewIterator();
 
   it->InitTraversal();
@@ -104,12 +104,12 @@ vtkKW@WidgetType@Set::GetWidgetSlot(int id)
 }
 
 //----------------------------------------------------------------------------
-vtkKW@WidgetType@Set::WidgetSlot* 
-vtkKW@WidgetType@Set::GetNthWidgetSlot(int rank)
+vtkKWWidgetSet::WidgetSlot* 
+vtkKWWidgetSet::GetNthWidgetSlot(int rank)
 {
-  vtkKW@WidgetType@Set::WidgetSlot *widget_slot = NULL;
-  vtkKW@WidgetType@Set::WidgetSlot *found = NULL;
-  vtkKW@WidgetType@Set::WidgetsContainerIterator *it = 
+  vtkKWWidgetSet::WidgetSlot *widget_slot = NULL;
+  vtkKWWidgetSet::WidgetSlot *found = NULL;
+  vtkKWWidgetSet::WidgetsContainerIterator *it = 
     this->Widgets->NewIterator();
 
   it->InitTraversal();
@@ -128,49 +128,21 @@ vtkKW@WidgetType@Set::GetNthWidgetSlot(int rank)
 }
 
 //----------------------------------------------------------------------------
-vtkKW@WidgetType@* vtkKW@WidgetType@Set::GetWidget(int id)
-{
-  vtkKW@WidgetType@Set::WidgetSlot *widget_slot = 
-    this->GetWidgetSlot(id);
-
-  if (!widget_slot)
-    {
-    return NULL;
-    }
-
-  return widget_slot->Widget;
-}
-
-//----------------------------------------------------------------------------
-int vtkKW@WidgetType@Set::HasWidget(int id)
+int vtkKWWidgetSet::HasWidget(int id)
 {
   return this->GetWidgetSlot(id) ? 1 : 0;
 }
 
 //----------------------------------------------------------------------------
-int vtkKW@WidgetType@Set::GetNumberOfWidgets()
+int vtkKWWidgetSet::GetNumberOfWidgets()
 {
   return this->Widgets ? this->Widgets->GetNumberOfItems() : 0;
 }
 
 //----------------------------------------------------------------------------
-vtkKW@WidgetType@* vtkKW@WidgetType@Set::GetNthWidget(int rank)
+int vtkKWWidgetSet::GetNthWidgetId(int rank)
 {
-  vtkKW@WidgetType@Set::WidgetSlot *widget_slot = 
-    this->GetNthWidgetSlot(rank);
-
-  if (!widget_slot)
-    {
-    return NULL;
-    }
-
-  return widget_slot->Widget;
-}
-
-//----------------------------------------------------------------------------
-int vtkKW@WidgetType@Set::GetNthWidgetId(int rank)
-{
-  vtkKW@WidgetType@Set::WidgetSlot *widget_slot = 
+  vtkKWWidgetSet::WidgetSlot *widget_slot = 
     this->GetNthWidgetSlot(rank);
 
   if (!widget_slot)
@@ -182,7 +154,7 @@ int vtkKW@WidgetType@Set::GetNthWidgetId(int rank)
 }
 
 //----------------------------------------------------------------------------
-void vtkKW@WidgetType@Set::Create(vtkKWApplication *app, const char *args)
+void vtkKWWidgetSet::Create(vtkKWApplication *app, const char *args)
 {
   // Call the superclass to create the widget and set the appropriate flags
 
@@ -198,12 +170,12 @@ void vtkKW@WidgetType@Set::Create(vtkKWApplication *app, const char *args)
 }
 
 //----------------------------------------------------------------------------
-void vtkKW@WidgetType@Set::UpdateEnableState()
+void vtkKWWidgetSet::UpdateEnableState()
 {
   this->Superclass::UpdateEnableState();
 
-  vtkKW@WidgetType@Set::WidgetSlot *widget_slot = NULL;
-  vtkKW@WidgetType@Set::WidgetsContainerIterator *it = 
+  vtkKWWidgetSet::WidgetSlot *widget_slot = NULL;
+  vtkKWWidgetSet::WidgetsContainerIterator *it = 
     this->Widgets->NewIterator();
 
   it->InitTraversal();
@@ -219,14 +191,14 @@ void vtkKW@WidgetType@Set::UpdateEnableState()
 }
 
 //----------------------------------------------------------------------------
-vtkKW@WidgetType@* vtkKW@WidgetType@Set::AddWidget(int id)
+vtkKWWidget* vtkKWWidgetSet::AddWidgetInternal(int id)
 {
   // Widget must have been created
 
   if (!this->IsCreated())
     {
-    vtkErrorMacro("The vtkKW@WidgetType@Set set must be created before any "
-                  "@WidgetType@ can be added.");
+    vtkErrorMacro("The vtkKWWidgetSet set must be created before any "
+                  "Widget can be added.");
     return NULL;
     }
 
@@ -234,30 +206,27 @@ vtkKW@WidgetType@* vtkKW@WidgetType@Set::AddWidget(int id)
 
   if (this->HasWidget(id))
     {
-    vtkErrorMacro("A @WidgetType@ with that id (" << id << ") already exists "
+    vtkErrorMacro("A Widget with that id (" << id << ") already exists "
                   "in the set.");
     return NULL;
     }
 
   // Add the widget slot to the manager
 
-  vtkKW@WidgetType@Set::WidgetSlot *widget_slot = 
-    new vtkKW@WidgetType@Set::WidgetSlot;
+  vtkKWWidgetSet::WidgetSlot *widget_slot = 
+    new vtkKWWidgetSet::WidgetSlot;
 
   if (this->Widgets->AppendItem(widget_slot) != VTK_OK)
     {
-    vtkErrorMacro("Error while adding a @WidgetType@ to the set.");
+    vtkErrorMacro("Error while adding a Widget to the set.");
     delete widget_slot;
     return NULL;
     }
   
   // Create the widget
 
-  widget_slot->Widget = vtkKW@WidgetType@::New();
   widget_slot->Id = id;
-
-  widget_slot->Widget->SetParent(this);
-  widget_slot->Widget->Create(this->GetApplication(), 0);
+  widget_slot->Widget = this->AllocateAndCreateWidget();
   widget_slot->Widget->SetEnabled(this->Enabled);
 
   // Pack the set
@@ -268,7 +237,7 @@ vtkKW@WidgetType@* vtkKW@WidgetType@Set::AddWidget(int id)
 }
 
 // ----------------------------------------------------------------------------
-void vtkKW@WidgetType@Set::Pack()
+void vtkKWWidgetSet::Pack()
 {
   if (!this->IsCreated())
     {
@@ -280,14 +249,14 @@ void vtkKW@WidgetType@Set::Pack()
   tk_cmd << "catch {eval grid forget [grid slaves " << this->GetWidgetName() 
          << "]}" << endl;
 
-  vtkKW@WidgetType@Set::WidgetSlot *widget_slot = NULL;
-  vtkKW@WidgetType@Set::WidgetsContainerIterator *it = 
+  vtkKWWidgetSet::WidgetSlot *widget_slot = NULL;
+  vtkKWWidgetSet::WidgetsContainerIterator *it = 
     this->Widgets->NewIterator();
 
   int col = 0;
   int row = 0;
   const char *sticky = 
-    (this->ExpandWidgets ? "news" : (this->PackHorizontally ? "news" : "nsw"));
+    (this->ExpandWidgets ? "news" : (this->PackHorizontally ? "ews" : "nsw"));
 
   it->InitTraversal();
   while (!it->IsDoneWithTraversal())
@@ -338,7 +307,7 @@ void vtkKW@WidgetType@Set::Pack()
 }
 
 // ----------------------------------------------------------------------------
-void vtkKW@WidgetType@Set::SetPackHorizontally(int _arg)
+void vtkKWWidgetSet::SetPackHorizontally(int _arg)
 {
   if (this->PackHorizontally == _arg)
     {
@@ -351,7 +320,7 @@ void vtkKW@WidgetType@Set::SetPackHorizontally(int _arg)
 }
 
 // ----------------------------------------------------------------------------
-void vtkKW@WidgetType@Set::SetMaximumNumberOfWidgetsInPackingDirection(int _arg)
+void vtkKWWidgetSet::SetMaximumNumberOfWidgetsInPackingDirection(int _arg)
 {
   if (this->MaximumNumberOfWidgetsInPackingDirection == _arg)
     {
@@ -364,7 +333,7 @@ void vtkKW@WidgetType@Set::SetMaximumNumberOfWidgetsInPackingDirection(int _arg)
 }
 
 // ----------------------------------------------------------------------------
-void vtkKW@WidgetType@Set::SetPadding(int x, int y)
+void vtkKWWidgetSet::SetPadding(int x, int y)
 {
   if (this->PadX == x && this->PadY == y)
     {
@@ -380,7 +349,7 @@ void vtkKW@WidgetType@Set::SetPadding(int x, int y)
 }
 
 // ----------------------------------------------------------------------------
-void vtkKW@WidgetType@Set::SetExpandWidgets(int _arg)
+void vtkKWWidgetSet::SetExpandWidgets(int _arg)
 {
   if (this->ExpandWidgets == _arg)
     {
@@ -395,21 +364,21 @@ void vtkKW@WidgetType@Set::SetExpandWidgets(int _arg)
 }
 
 //----------------------------------------------------------------------------
-void vtkKW@WidgetType@Set::HideWidget(int id)
+void vtkKWWidgetSet::HideWidget(int id)
 {
   this->SetWidgetVisibility(id, 0);
 }
 
 //----------------------------------------------------------------------------
-void vtkKW@WidgetType@Set::ShowWidget(int id)
+void vtkKWWidgetSet::ShowWidget(int id)
 {
   this->SetWidgetVisibility(id, 1);
 }
 
 //----------------------------------------------------------------------------
-int vtkKW@WidgetType@Set::GetWidgetVisibility(int id)
+int vtkKWWidgetSet::GetWidgetVisibility(int id)
 {
-  vtkKW@WidgetType@Set::WidgetSlot *widget_slot = 
+  vtkKWWidgetSet::WidgetSlot *widget_slot = 
     this->GetWidgetSlot(id);
 
   return (widget_slot && 
@@ -420,9 +389,9 @@ int vtkKW@WidgetType@Set::GetWidgetVisibility(int id)
 }
 
 //----------------------------------------------------------------------------
-void vtkKW@WidgetType@Set::SetWidgetVisibility(int id, int flag)
+void vtkKWWidgetSet::SetWidgetVisibility(int id, int flag)
 {
-  vtkKW@WidgetType@Set::WidgetSlot *widget_slot = 
+  vtkKWWidgetSet::WidgetSlot *widget_slot = 
     this->GetWidgetSlot(id);
 
   if (widget_slot && widget_slot->Widget && widget_slot->Widget->IsCreated())
@@ -434,7 +403,7 @@ void vtkKW@WidgetType@Set::SetWidgetVisibility(int id, int flag)
 }
 
 //----------------------------------------------------------------------------
-int vtkKW@WidgetType@Set::GetNumberOfVisibleWidgets()
+int vtkKWWidgetSet::GetNumberOfVisibleWidgets()
 {
   if (!this->IsCreated())
     {
@@ -444,7 +413,7 @@ int vtkKW@WidgetType@Set::GetNumberOfVisibleWidgets()
 }
 
 //----------------------------------------------------------------------------
-void vtkKW@WidgetType@Set::PrintSelf(ostream& os, vtkIndent indent)
+void vtkKWWidgetSet::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
 
