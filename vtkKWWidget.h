@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-08 04:29:59 $
-  Version:   $Revision: 1.28 $
+  Date:      $Date: 2002-08-08 17:58:37 $
+  Version:   $Revision: 1.29 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -169,6 +169,10 @@ public:
   // Description:
   // Query if widget has Tk configuration option
   int HasConfigurationOption(const char* option);
+  
+  // Description:
+  // Query if widget is packed
+  int IsPacked();
   
   // Description:
   // Adjusts the placement of the baloon help

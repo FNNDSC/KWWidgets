@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-08 04:29:59 $
-  Version:   $Revision: 1.43 $
+  Date:      $Date: 2002-08-08 17:58:37 $
+  Version:   $Revision: 1.44 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.43 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.44 $");
 
 int vtkKWWidgetCommand(ClientData cd, Tcl_Interp *interp,
                        int argc, char *argv[]);
@@ -344,7 +344,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   this->Superclass::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.43 $");
+  this->ExtractRevision(os,"$Revision: 1.44 $");
 }
 
 //------------------------------------------------------------------------------
@@ -508,6 +508,13 @@ int vtkKWWidget::HasConfigurationOption(const char* option)
   return !this->Application->EvaluateBooleanExpression(
     "catch {%s cget %s}",
     this->GetWidgetName(), option);
+}
+
+//------------------------------------------------------------------------------
+int vtkKWWidget::IsPacked()
+{
+  return !this->Application->EvaluateBooleanExpression(
+    "catch {pack info %s}", this->GetWidgetName());
 }
 
 //------------------------------------------------------------------------------
