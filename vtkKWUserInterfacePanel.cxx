@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfacePanel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-02 23:00:59 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-12-17 21:44:33 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfacePanel);
-vtkCxxRevisionMacro(vtkKWUserInterfacePanel, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWUserInterfacePanel, "$Revision: 1.2 $");
 
 int vtkKWUserInterfacePanelCommand(ClientData cd, Tcl_Interp *interp,
                                    int argc, char *argv[]);
@@ -191,16 +191,26 @@ void vtkKWUserInterfacePanel::RaisePage(const char *title)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWUserInterfacePanel::Show()
+int vtkKWUserInterfacePanel::Show()
 {
   if (this->UserInterfaceManager == NULL)
     {
     vtkErrorMacro("The UserInterfaceManager manager needs to be set before "
                   "all pages can be shown.");
-    return;
+    return 0;
     }
 
-  this->UserInterfaceManager->Show(this);
+  return this->UserInterfaceManager->Show(this);
+}
+
+//----------------------------------------------------------------------------
+int vtkKWUserInterfacePanel::Raise()
+{
+  if (this->Show() && this->UserInterfaceManager)
+    {
+    return this->UserInterfaceManager->Raise(this);
+    }
+  return 0;
 }
 
 //----------------------------------------------------------------------------

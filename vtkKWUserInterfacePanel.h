@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfacePanel.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-10 20:03:21 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-12-17 21:44:33 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -135,7 +135,11 @@ public:
   // Note that if the panel has not been created at this point, the manager 
   // will call the panel's Create() method automatically, allowing the 
   // creation of the panel to be delayed until it is really needed.
-  virtual void Show();
+  // Raise() behaves like Show(), but it will also instruct the manager to bring
+  // up the first page of the panel to the front.
+  // Return 1 on success, 0 on error.
+  virtual int Show();
+  virtual int Raise();
 
   // Description:
   // Refresh the interface.
