@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWIcon.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-05 20:22:56 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-03-09 23:16:01 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -169,6 +169,14 @@ void vtkKWIcon::SetImageData(int image)
     case vtkKWIcon::ICON_WARNING:
       this->SetInternalData(image_warning, image_warning_width, 
 			    image_warning_height);
+      break;
+    case vtkKWIcon::ICON_SHRINK:
+      this->SetInternalData(image_shrink, image_shrink_width, 
+			    image_shrink_height);
+      break;
+    case vtkKWIcon::ICON_EXPAND:
+      this->SetInternalData(image_expand, image_expand_width, 
+			    image_expand_height);
       break;
     }
   this->Internal = image;

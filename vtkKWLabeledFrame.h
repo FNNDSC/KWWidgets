@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:30 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-03-09 23:16:01 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,6 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define __vtkKWLabeledFrame_h
 
 #include "vtkKWWidget.h"
+#include "vtkKWImageLabel.h"
 class vtkKWApplication;
 
 class VTK_EXPORT vtkKWLabeledFrame : public vtkKWWidget
@@ -84,7 +85,8 @@ protected:
   vtkKWWidget *Frame;
   vtkKWWidget *Groove;
   vtkKWWidget *Label;
-  vtkKWWidget *Icon;
+  vtkKWImageLabel *Icon;
+  vtkKWIcon       *IconData;
   int Displayed;
   static int AllowShowHide;
 private:
