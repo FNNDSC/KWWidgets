@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTkUtilities.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-14 13:43:27 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2002-10-17 01:26:59 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,7 +58,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.14 $");
 
 //----------------------------------------------------------------------------
 void vtkKWTkUtilities::GetRGBColor(Tcl_Interp *interp,
@@ -283,40 +283,51 @@ int vtkKWTkUtilities::UpdatePhoto(Tcl_Interp *interp,
                                   const char *blend_with_name,
                                   const char *color_option)
 {
-  if (!image )
+  vtkImageData *input = image;
+
+  if (!input)
     {
     vtkGenericWarningMacro(<< "No image data specified");
     return 0;
     }
-  image->Update();
+  input->Update();
 
-  int *ext = image->GetWholeExtent();
+#define FLIP 1
+#if FLIP
+  vtkImageFlip *flip = vtkImageFlip::New();
+  flip->SetInput(input);
+  flip->SetFilteredAxis(1);
+  flip->Update();
+  input = flip->GetOutput();
+#endif
+
+  int *ext = input->GetWholeExtent();
   if ((ext[5] - ext[4]) > 0)
     {
-    vtkGenericWarningMacro(<< "Can only handle 2D image data");
+    vtkGenericWarningMacro(<< "Can only handle 2D input data");
+#if FLIP
+    flip->Delete();
+#endif
     return 0;
     }
 
-  vtkImageFlip *flip = vtkImageFlip::New();
-  flip->SetInput(image);
-  flip->SetFilteredAxis(1);
-  flip->Update();
-
   int width = ext[1] - ext[0] + 1;
   int height = ext[3] - ext[2] + 1;
-  int pixel_size = image->GetNumberOfScalarComponents();
+  int pixel_size = input->GetNumberOfScalarComponents();
 
   int res = vtkKWTkUtilities::UpdatePhoto(
     interp,
     photo_name,
-    static_cast<unsigned char*>(flip->GetOutput()->GetScalarPointer()),
+    static_cast<unsigned char*>(input->GetScalarPointer()),
     width, height,
     pixel_size,
     width * height * pixel_size,
     blend_with_name,
     color_option);
 
+#if FLIP
   flip->Delete();
+#endif
   return res;
 }
 
