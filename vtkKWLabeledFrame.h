@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-26 21:03:53 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2003-02-27 21:30:34 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -128,6 +128,7 @@ public:
   static void BoldLabelOff();
 
 protected:
+
   vtkKWLabeledFrame();
   ~vtkKWLabeledFrame();
 

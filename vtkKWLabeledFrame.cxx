@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-02-26 21:03:53 $
-  Version:   $Revision: 1.24 $
+  Date:      $Date: 2003-02-27 21:30:34 $
+  Version:   $Revision: 1.25 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,7 +52,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabeledFrame );
-vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.24 $");
+vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.25 $");
 
 int vtkKWLabeledFrameCommand(ClientData cd, Tcl_Interp *interp,
                       int argc, char *argv[]);
@@ -80,6 +80,8 @@ vtkKWLabeledFrame::vtkKWLabeledFrame()
   this->IconData->SetImageData(vtkKWIcon::ICON_SHRINK);
   this->Displayed = 1;
   this->ShowHideFrame = 0;
+
+  this->DragAndDropAnchor = this->Label;
 }
 
 //----------------------------------------------------------------------------
