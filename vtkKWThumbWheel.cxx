@@ -31,7 +31,7 @@
 
 // ---------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWThumbWheel );
-vtkCxxRevisionMacro(vtkKWThumbWheel, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWThumbWheel, "$Revision: 1.18 $");
 
 // ---------------------------------------------------------------------------
 int vtkKWThumbWheelCommand(ClientData cd, 
@@ -244,6 +244,8 @@ void vtkKWThumbWheel::SetValue(double arg)
 
   if (this->Value == arg)
     {
+    // Pass the value to the entry to keep it in sync with the thumb wheel
+    this->RefreshValue();
     return;
     }
 
