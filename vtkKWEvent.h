@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-22 20:39:13 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-02-15 20:42:16 $
+  Version:   $Revision: 1.8 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -53,11 +53,12 @@ class VTK_EXPORT vtkKWEvent
   static const char* GetStringFromEventId(unsigned long event);
   enum {
     KWWidgetEvents = 2000,
-    // VV
-    WindowLevelChangedEvent = 2000,
+    // VV    
+    WindowLevelChangedEvent = 2000,    
     WindowLevelChangingEvent,
     WindowLevelChangedImageCompositeEvent,
     WindowLevelChangingImageCompositeEvent,
+    ViewSelectedEvent,
     ColorImageEvent,
     GradientOpacityFunctionChangedEvent,
     GradientOpacityStateChangedEvent,

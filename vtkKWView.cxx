@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 23:42:59 $
-  Version:   $Revision: 1.57 $
+  Date:      $Date: 2002-02-15 20:42:16 $
+  Version:   $Revision: 1.58 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -580,8 +580,11 @@ void vtkKWView::ShowViewProperties()
     }
   
   // make sure the variable is set, otherwise set it
-  this->ParentWindow->GetMenuProperties()->CheckRadioButton(
-    this->ParentWindow->GetMenuProperties(),"Radio",10);
+  if ( this->ParentWindow->GetUseMenuProperties() )
+    {
+    this->ParentWindow->GetMenuProperties()->CheckRadioButton(
+      this->ParentWindow->GetMenuProperties(),"Radio",10);
+    }
 
   // unpack any current children
   this->Script("catch {eval pack forget [pack slaves %s]}",
@@ -968,18 +971,21 @@ void vtkKWView::EditCopy()
 void vtkKWView::Select(vtkKWWindow *pw)
 {
   // now add property options
-  char *rbv = 
-    pw->GetMenuProperties()->CreateRadioButtonVariable(
-      pw->GetMenuProperties(),"Radio");
-  pw->GetMenuProperties()->AddRadioButton(10, 
-					  this->MenuPropertiesName, 
-					  rbv, this, "ShowViewProperties", 
-					  this->GetMenuPropertiesUnderline(),
-					  this->MenuPropertiesHelp ? 
-					  this->MenuPropertiesHelp :
-					  this->MenuPropertiesName
-					  );
-  delete [] rbv;
+  if ( pw->GetUseMenuProperties() )
+    {
+    char *rbv = 
+      pw->GetMenuProperties()->CreateRadioButtonVariable(
+	pw->GetMenuProperties(),"Radio");
+    pw->GetMenuProperties()->AddRadioButton(10, 
+					    this->MenuPropertiesName, 
+					    rbv, this, "ShowViewProperties", 
+					    this->GetMenuPropertiesUnderline(),
+					    this->MenuPropertiesHelp ? 
+					    this->MenuPropertiesHelp :
+					    this->MenuPropertiesName
+      );
+    delete [] rbv;
+    }
 
   if ( this->SupportSaveAsImage )
     {
@@ -1013,22 +1019,29 @@ void vtkKWView::Select(vtkKWWindow *pw)
   // map the property sheet as needed
   if (this->SharedPropertiesParent)
     {
-    // if the window prop is empty then pack this one
-    if (this->ParentWindow->GetMenuProperties()->GetRadioButtonValue(
-      this->ParentWindow->GetMenuProperties(),"Radio") >= 10)
+    if ( this->ParentWindow->GetUseMenuProperties() )
       {
-      this->Script("pack %s -side left -anchor nw -fill y",
-                   this->PropertiesParent->GetWidgetName());
+      // if the window prop is empty then pack this one
+      if (this->ParentWindow->GetMenuProperties()->GetRadioButtonValue(
+	this->ParentWindow->GetMenuProperties(),"Radio") >= 10)
+	{
+	this->Script("pack %s -side left -anchor nw -fill y",
+		     this->PropertiesParent->GetWidgetName());
+	}
       }
     }
+  this->InvokeEvent(vtkKWEvent::ViewSelectedEvent, 0);
 }
 
 
 
 void vtkKWView::Deselect(vtkKWWindow *pw)
 {
-  pw->GetMenuProperties()->DeleteMenuItem( this->MenuPropertiesName );
-  
+  if ( this->ParentWindow->GetUseMenuProperties() )
+    {      
+    pw->GetMenuProperties()->DeleteMenuItem( this->MenuPropertiesName );
+    }
+      
   if ( this->SupportPrint )
     {
     pw->GetMenuFile()->DeleteMenuItem("Print");
@@ -1300,7 +1313,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.57 $");
+  this->ExtractRevision(os,"$Revision: 1.58 $");
 }
 
 void vtkKWView::SetupMemoryRendering(int x, int y, void *cd) 

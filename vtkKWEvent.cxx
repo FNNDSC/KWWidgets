@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-22 20:39:13 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-02-15 20:42:16 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,6 +49,7 @@ static const char *vtkKWEventStrings[] = {
   "WindowLevelChangingEvent",
   "WindowLevelChangedImageCompositeEvent",
   "WindowLevelChangingImageCompositeEvent",
+  "ViewSelectedEvent",
   "ColorImageEvent",
   "GradientOpacityFunctionChangedEvent",
   "GradientOpacityStateChangedEvent",
