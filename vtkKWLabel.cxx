@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-05-01 21:02:30 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2003-05-07 13:25:34 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ int vtkKWLabelCommand(ClientData cd, Tcl_Interp *interp,
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabel );
-vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.22 $");
+vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.23 $");
 
 //----------------------------------------------------------------------------
 vtkKWLabel::vtkKWLabel()
@@ -258,4 +258,13 @@ void vtkKWLabel::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "Width: " << this->GetWidth() << endl;
   os << indent << "AdjustWrapLengthToWidth: " 
      << (this->AdjustWrapLengthToWidth ? "On" : "Off") << endl;
+  os << indent << "Label: ";
+  if (this->Label)
+    {
+    os << this->Label << endl;
+    }
+  else
+    {
+    os << "(none)" << endl;
+    }
 }
