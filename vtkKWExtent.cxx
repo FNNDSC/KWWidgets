@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWExtent.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-21 18:43:37 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -257,4 +257,11 @@ void vtkKWExtent::SetCommand(vtkKWObject* CalledObject, const char *CommandStrin
   command << CalledObject->GetTclName() << " " << CommandString << ends;
 
   this->Command = command.str();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWExtent::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "Extent: " << this->GetExtent() << endl;
 }

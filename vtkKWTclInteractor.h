@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTclInteractor.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:33 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -59,6 +59,7 @@ class VTK_EXPORT vtkKWTclInteractor : public vtkKWWidget
 public:
   static vtkKWTclInteractor* New();
   vtkTypeMacro(vtkKWTclInteractor, vtkKWWidget);
+  void PrintSelf(ostream& os, vtkIndent indent);
   
   // Description:
   // Create a Tk widget
@@ -73,8 +74,9 @@ public:
   void Evaluate();
 
   // Description:
-  // Set the title of the TclInteractor to appear in the titlebar
+  // Set and get the title of the TclInteractor to appear in the titlebar
   vtkSetStringMacro(Title);
+  vtkGetStringMacro(Title);
   
   // Description:
   // Callback for the down arrow key

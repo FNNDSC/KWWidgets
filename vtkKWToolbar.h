@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:34 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,10 +55,9 @@ class vtkKWApplication;
 class VTK_EXPORT vtkKWToolbar : public vtkKWWidget
 {
 public:
-  vtkKWToolbar();
-  ~vtkKWToolbar();
   static vtkKWToolbar* New();
-  const char *GetClassName() {return "vtkKWToolbar";};
+  vtkTypeMacro(vtkKWToolbar, vtkKWWidget);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Create a Tk widget
@@ -76,6 +75,8 @@ public:
 
 
 protected:
+  vtkKWToolbar();
+  ~vtkKWToolbar();
 
   // Height stuf is not working (ask ken)
   int Height;

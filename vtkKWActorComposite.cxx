@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWActorComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 23:42:58 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-05-12 15:28:18 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -102,4 +102,11 @@ vtkPolyData *vtkKWActorComposite::GetInput()
 vtkProp *vtkKWActorComposite::GetProp() 
 {
   return this->Actor;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWActorComposite::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "Mapper: " << this->GetMapper() << endl;
 }

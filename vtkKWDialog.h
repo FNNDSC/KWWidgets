@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:28 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,6 +55,7 @@ class VTK_EXPORT vtkKWDialog : public vtkKWWidget
 public:
   static vtkKWDialog* New();
   vtkTypeMacro(vtkKWDialog,vtkKWWidget);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Create a Tk widget
@@ -94,10 +95,12 @@ public:
   // Play beep when the dialog is displayed
   vtkSetClampMacro( Beep, int, 0, 1 );
   vtkBooleanMacro( Beep, int );
+  vtkGetMacro( Beep, int );
 
   // Description:
   // Sets the beep type
   vtkSetMacro( BeepType, int );
+  vtkGetMacro( BeepType, int );
 
   // Description:
   // Set the title of the dialog. Default is "Kitware Dialog".

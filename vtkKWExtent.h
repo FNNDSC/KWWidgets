@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWExtent.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:29 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,6 +58,7 @@ class VTK_EXPORT vtkKWExtent : public vtkKWWidget
 public:
   static vtkKWExtent* New();
   vtkTypeMacro(vtkKWExtent,vtkKWWidget);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Create a Tk widget

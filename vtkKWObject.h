@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:31 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.19 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -71,6 +71,7 @@ class VTK_EXPORT vtkKWObject : public vtkObject
 public:
   static vtkKWObject* New();
   vtkTypeMacro(vtkKWObject,vtkObject);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Get the name of the tcl object this instance represents.

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWToolbar.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:24 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -112,3 +112,10 @@ void vtkKWToolbar::Resize()
   this->Expanding = 0;
 }
 
+
+//----------------------------------------------------------------------------
+void vtkKWToolbar::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "Height: " << this->GetHeight() << endl;
+}

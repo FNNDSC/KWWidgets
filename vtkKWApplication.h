@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-04-17 19:00:55 $
-  Version:   $Revision: 1.39 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.40 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -67,6 +67,7 @@ class VTK_EXPORT vtkKWApplication : public vtkKWObject
 public:
   static vtkKWApplication* New();
   vtkTypeMacro(vtkKWApplication,vtkKWObject);
+  void PrintSelf(ostream& os, vtkIndent indent);
   
   virtual vtkKWApplication *GetApplication()  { return this;  }
   virtual void SetApplication (vtkKWApplication*) 
@@ -146,6 +147,7 @@ public:
   // Set the delay for the balloon help in seconds.
   // To disable balloon help, set it to 0.
   vtkSetClampMacro(BalloonHelpDelay, int, 0, 5);
+  vtkGetMacro(BalloonHelpDelay, int);
 
   // Description:
   // This variable can be used to hide the user interface.  

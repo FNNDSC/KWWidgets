@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-13 02:14:17 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -166,4 +166,11 @@ void vtkKWLabeledFrame::AllowShowHideOn()
 void vtkKWLabeledFrame::AllowShowHideOff() 
 { 
   vtkKWLabeledFrame::AllowShowHide = 0; 
+}
+
+//----------------------------------------------------------------------------
+void vtkKWLabeledFrame::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "ShowHideFrame: " << this->GetShowHideFrame() << endl;
 }

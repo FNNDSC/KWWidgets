@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-30 21:43:37 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -130,6 +130,9 @@ void vtkKWLabel::SetLineType( int type )
   this->LineType = type;
 }
 
-
-
-
+//----------------------------------------------------------------------------
+void vtkKWLabel::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "Width: " << this->GetWidth() << endl;
+}

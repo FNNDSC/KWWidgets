@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWProgressGauge.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:32 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,15 +55,18 @@ class VTK_EXPORT vtkKWProgressGauge : public vtkKWWidget
 public:
   static vtkKWProgressGauge* New();
   vtkTypeMacro(vtkKWProgressGauge,vtkKWWidget);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Create a Tk widget
   void Create(vtkKWApplication *app, char *args);
 
   // Description:
-  // Set the length and width of the widget
+  // Set and get the length and width of the widget
   vtkSetMacro(Length, int);
+  vtkGetMacro(Length, int);
   vtkSetMacro(Height, int);
+  vtkGetMacro(Height, int);
   
   // Description:
   // Set the percentage displayed.  This number is forced to be in
@@ -72,9 +75,13 @@ public:
   
   // Description:
   // Set the color of the progress bar, the default is blue.
-  // Set the color of the background, the default is gray.
   vtkSetStringMacro(BarColor);
+  vtkGetStringMacro(BarColor);
+
+  // Description:
+  // Set get the color of the background, the default is gray.
   vtkSetStringMacro(BackgroundColor);
+  vtkGetStringMacro(BackgroundColor);
 
 protected:
   vtkKWProgressGauge();

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplitFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-25 13:32:33 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -305,4 +305,17 @@ void vtkKWSplitFrame::Update()
   this->Script("place %s -x %d -rely 0 -width %d -relheight 1.0",
                this->Frame2->GetWidgetName(), 
                this->Frame1Width+this->SeparatorWidth, this->Frame2Width);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSplitFrame::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "Frame1MinimumWidth: " << this->GetFrame1MinimumWidth() 
+     << endl;
+  os << indent << "Frame1Width: " << this->GetFrame1Width() << endl;
+  os << indent << "Frame2MinimumWidth: " << this->GetFrame2MinimumWidth() 
+     << endl;
+  os << indent << "Frame2Width: " << this->GetFrame2Width() << endl;
+  os << indent << "SeparatorWidth: " << this->GetSeparatorWidth() << endl;
 }

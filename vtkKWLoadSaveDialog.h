@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:30 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,6 +55,7 @@ class VTK_EXPORT vtkKWLoadSaveDialog : public vtkKWWidget
 public:
   static vtkKWLoadSaveDialog* New();
   vtkTypeMacro(vtkKWLoadSaveDialog,vtkKWWidget);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Create a Tk widget
@@ -76,14 +77,17 @@ public:
   // Set the file types the dialog will open or save
   // Should be in TK format
   vtkSetStringMacro( FileTypes );
+  vtkGetStringMacro( FileTypes );
 
   // Description:
   // Set the initial directory for the dialog.
   vtkSetStringMacro(InitialDir);
+  vtkGetStringMacro(InitialDir);
 
   // Description:
   // Retrieve the file path that the user selected
   vtkGetStringMacro(FileName);
+
   // Description:
   // Set the file path that the user selected
   vtkSetStringMacro(FileName);
@@ -91,6 +95,7 @@ public:
   // Description:
   // Set default extention.
   vtkSetStringMacro(DefaultExt);
+  vtkGetStringMacro(DefaultExt);
 
   // Description:
   // Set or reset the SaveDialog. If set, the dialog will be
@@ -104,7 +109,7 @@ public:
   // Set the title string of the dialog window. Should be called before
   // create otherwise it will have no effect.
   vtkSetStringMacro(Title);
-  
+  vtkGetStringMacro(Title);  
 
   // Description:
   // Set/Get last path

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-25 12:22:14 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -113,7 +113,7 @@ void vtkKWObject::ExtractRevision(ostream& os,const char *revIn)
 void vtkKWObject::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWObject ";
-  this->ExtractRevision(os,"$Revision: 1.15 $");
+  this->ExtractRevision(os,"$Revision: 1.16 $");
 }
 
 void vtkKWObject::Serialize(istream& is)
@@ -390,3 +390,15 @@ void vtkKWObject::AddTraceEntry(const char *format, ...)
   *os << event << endl;
 }
 
+
+//----------------------------------------------------------------------------
+void vtkKWObject::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "Application: " << this->GetApplication() << endl;
+  os << indent << "TraceInitialized: " << this->GetTraceInitialized() << endl;
+  os << indent << "TraceReferenceCommand: " 
+     << this->GetTraceReferenceCommand() << endl;
+  os << indent << "TraceReferenceObject: " 
+     << this->GetTraceReferenceObject() << endl;
+}

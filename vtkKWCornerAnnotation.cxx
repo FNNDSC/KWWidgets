@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-20 19:14:23 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -349,7 +349,7 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.22 $");
+  this->ExtractRevision(os,"$Revision: 1.23 $");
   vtkKWLabeledFrame::SerializeRevision(os,indent);
 }
 
@@ -361,4 +361,12 @@ char *vtkKWCornerAnnotation::GetCornerText(int i)
 float *vtkKWCornerAnnotation::GetTextColor() 
 {
   return this->CornerProp->GetProperty()->GetColor();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWCornerAnnotation::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "CornerProp: " << this->GetCornerProp() << endl;
+  os << indent << "View: " << this->GetView() << endl;
 }

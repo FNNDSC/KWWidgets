@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSaveImageDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:33 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -54,6 +54,7 @@ class VTK_EXPORT vtkKWSaveImageDialog : public vtkKWWidget
 public:
   static vtkKWSaveImageDialog* New();
   vtkTypeMacro(vtkKWSaveImageDialog,vtkKWWidget);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Create a Tk widget

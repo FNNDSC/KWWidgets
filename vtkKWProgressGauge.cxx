@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWProgressGauge.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 20:17:44 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -142,4 +142,14 @@ void vtkKWProgressGauge::SetValue(int value)
     }
   // do an update
   this->Script("update idletasks");
+}
+
+//----------------------------------------------------------------------------
+void vtkKWProgressGauge::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "BackgroundColor: " << this->GetBackgroundColor() << endl;
+  os << indent << "BarColor: " << this->GetBarColor() << endl;
+  os << indent << "Height: " << this->GetHeight() << endl;
+  os << indent << "Length: " << this->GetLength() << endl;
 }

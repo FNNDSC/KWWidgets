@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-04 20:33:38 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -209,3 +209,10 @@ void vtkKWDialog::SetTitle( const char* title )
     }
 }
 
+//----------------------------------------------------------------------------
+void vtkKWDialog::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "Beep: " << this->GetBeep() << endl;
+  os << indent << "BeepType: " << this->GetBeepType() << endl;
+}

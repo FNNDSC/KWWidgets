@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-15 22:32:43 $
-  Version:   $Revision: 1.19 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.20 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -56,7 +56,8 @@ class VTK_EXPORT vtkKWMenu : public vtkKWWidget
 public:
   static vtkKWMenu* New();
   vtkTypeMacro(vtkKWMenu,vtkKWWidget);
-  
+  void PrintSelf(ostream& os, vtkIndent indent);
+ 
   void Create(vtkKWApplication* app, const char* args);
   
   // Description: 

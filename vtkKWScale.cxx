@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-21 18:44:16 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -319,4 +319,11 @@ void vtkKWScale::SetBalloonHelpJustification( int j )
     this->ScaleLabel->SetBalloonHelpJustification( j );
     }
   
+}
+
+//----------------------------------------------------------------------------
+void vtkKWScale::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "Resolution: " << this->GetResolution() << endl;
 }

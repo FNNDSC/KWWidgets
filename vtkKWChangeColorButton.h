@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWChangeColorButton.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:27 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,6 +55,7 @@ class VTK_EXPORT vtkKWChangeColorButton : public vtkKWWidget
 public:
   static vtkKWChangeColorButton* New();
   vtkTypeMacro(vtkKWChangeColorButton,vtkKWWidget);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Create a Tk widget

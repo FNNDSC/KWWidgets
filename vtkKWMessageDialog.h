@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-04-15 16:17:53 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.19 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,6 +58,7 @@ class VTK_EXPORT vtkKWMessageDialog : public vtkKWDialog
 public:
   static vtkKWMessageDialog* New();
   vtkTypeMacro(vtkKWMessageDialog,vtkKWDialog);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   //BTX
   enum {Message = 0,

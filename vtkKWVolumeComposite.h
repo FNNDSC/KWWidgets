@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-19 20:57:49 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -68,6 +68,7 @@ class VTK_EXPORT vtkKWVolumeComposite : public vtkKWComposite
 public:
   static vtkKWVolumeComposite* New();
   vtkTypeMacro(vtkKWVolumeComposite,vtkKWComposite);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
   // Set the input data for this volume

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTclInteractor.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-21 22:36:06 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -283,4 +283,11 @@ void vtkKWTclInteractor::UpCallback()
     this->Script("%s insert end $commandString",
                  this->CommandEntry->GetWidgetName());
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWTclInteractor::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "Title: " << this->GetTitle() << endl;
 }

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-04-18 10:55:17 $
-  Version:   $Revision: 1.70 $
+  Date:      $Date: 2002-05-12 15:28:18 $
+  Version:   $Revision: 1.71 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -839,3 +839,19 @@ int vtkKWApplication::DeleteRegisteryValue(int level, const char* subkey,
   return res;
 }
 
+//----------------------------------------------------------------------------
+void vtkKWApplication::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "ApplicationName: " << this->GetApplicationName() << endl;
+  os << indent << "ApplicationReleaseName: " 
+     << this->GetApplicationReleaseName() << endl;
+  os << indent << "ApplicationVersionName: " 
+     << this->GetApplicationVersionName() << endl;
+  os << indent << "BalloonHelpDelay: " << this->GetBalloonHelpDelay() << endl;
+  os << indent << "DialogUp: " << this->GetDialogUp() << endl;
+  os << indent << "ExitStatus: " << this->GetExitStatus() << endl;
+  os << indent << "RegisteryLevel: " << this->GetRegisteryLevel() << endl;
+  os << indent << "UseMessageDialogs: " << this->GetUseMessageDialogs() 
+     << endl;
+}

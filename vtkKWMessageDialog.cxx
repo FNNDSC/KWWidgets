@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-04-15 17:13:54 $
-  Version:   $Revision: 1.27 $
+  Date:      $Date: 2002-05-12 15:28:19 $
+  Version:   $Revision: 1.28 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -379,4 +379,13 @@ int vtkKWMessageDialog::GetRememberMessage()
 {
   int res = this->CheckButton->GetState();
   return res;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMessageDialog::PrintSelf(ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+  os << indent << "DialogName: " << this->GetDialogName() << endl;
+  os << indent << "Options: " << this->GetOptions() << endl;
+  os << indent << "Style: " << this->GetStyle() << endl;
 }
