@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.34 $
+  Date:      $Date: 2002-08-28 20:05:44 $
+  Version:   $Revision: 1.35 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMessageDialog );
-vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.34 $");
+vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.35 $");
 
 
 
@@ -236,15 +236,17 @@ int vtkKWMessageDialog::Invoke()
       }
     }
   
-  if ( this->Options & vtkKWMessageDialog::YesDefault )
-    {
-    this->OKButton->Focus();
-    }
-  else if( this->Options & vtkKWMessageDialog::NoDefault )
+  if( this->Options & vtkKWMessageDialog::NoDefault ||
+           this->Options & vtkKWMessageDialog::CancelDefault )
     {
     this->CancelButton->Focus();
     } 
-  else
+  else if ( this->Options & vtkKWMessageDialog::YesDefault ||
+            this->Options & vtkKWMessageDialog::OkDefault )
+    {
+    this->OKButton->Focus();
+    }
+  else 
     {
     this->SetBind("<Right>", "focus [ tk_focusNext %W ]");
     this->SetBind("<Left>", "focus [ tk_focusPrev %W ]");

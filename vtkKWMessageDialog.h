@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:14 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2002-08-28 20:05:44 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -65,14 +65,16 @@ public:
         YesNo,
         OkCancel};
 
-  enum {RememberYes  = 0x00002,
-        RememberNo   = 0x00004,
-        ErrorIcon    = 0x00008,
-        WarningIcon  = 0x00010,
-        QuestionIcon = 0x00020,
-        YesDefault   = 0x00040,
-        NoDefault    = 0x00080,
-        Beep         = 0x00100};
+  enum {RememberYes   = 0x00002,
+        RememberNo    = 0x00004,
+        ErrorIcon     = 0x00008,
+        WarningIcon   = 0x00010,
+        QuestionIcon  = 0x00020,
+        YesDefault    = 0x00040,
+        NoDefault     = 0x00080,
+        OkDefault     = 0x00100,
+        CancelDefault = 0x00200,
+        Beep          = 0x00400};
   //ETX
   
   // Description:
