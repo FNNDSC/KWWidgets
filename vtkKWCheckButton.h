@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCheckButton.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:32 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2001-12-18 19:01:00 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -65,12 +65,25 @@ public:
   void SetState(int );
   virtual int GetState();
 
+  // Description:
+  // Tell the widget whether it should use an indicator (check box)
+  void SetIndicator(int ind);
+
+  // Description:
+  // Set the text.
+  void SetText(const char* txt);
+
 protected:
-  vtkKWCheckButton() {};
+
+  vtkSetStringMacro(MyText);
+
+  vtkKWCheckButton();
   ~vtkKWCheckButton() {};
   vtkKWCheckButton(const vtkKWCheckButton&) {};
   void operator=(const vtkKWCheckButton&) {};
-  
+
+  int IndicatorOn;
+  char* MyText;
 };
 
 
