@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2002-07-24 21:19:13 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-08-13 21:15:57 $
+  Version:   $Revision: 1.13 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -69,6 +69,8 @@ class VTK_EXPORT vtkKWEvent
     Cursor3DOffEvent,
     Cursor3DOnEvent,
     Cursor3DPositionChangedEvent,
+    Cursor3DPositionChangingEvent,
+    CursorInteractivityChangedEvent,
     Cursor3DTypeChangedEvent,
     Cursor3DXColorChangedEvent,
     Cursor3DYColorChangedEvent,

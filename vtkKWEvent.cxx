@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-24 21:19:13 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-08-13 21:15:57 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -60,6 +60,8 @@ static const char *vtkKWEventStrings[] = {
   "Cursor3DOffEvent",
   "Cursor3DOnEvent",
   "Cursor3DPositionChangedEvent",
+  "Cursor3DPositionChangingEvent",
+  "CursorInteractivityChangedEvent",
   "Cursor3DTypeChangedEvent",
   "Cursor3DXColorChangedEvent",
   "Cursor3DYColorChangedEvent",
