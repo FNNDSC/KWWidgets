@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWOptionMenu );
-vtkCxxRevisionMacro(vtkKWOptionMenu, "$Revision: 1.31 $");
+vtkCxxRevisionMacro(vtkKWOptionMenu, "$Revision: 1.32 $");
 
 //----------------------------------------------------------------------------
 vtkKWOptionMenu::vtkKWOptionMenu()
@@ -75,8 +75,11 @@ void vtkKWOptionMenu::SetCurrentEntry(const char *name)
 //----------------------------------------------------------------------------
 void vtkKWOptionMenu::SetCurrentImageEntry(const char *image_name)
 { 
-  this->Script("%s configure -image %s", this->GetWidgetName(), image_name);
-  this->SetValue(image_name);
+  if (this->IsCreated())
+    {
+    this->Script("%s configure -image %s", this->GetWidgetName(), image_name);
+    this->SetValue(image_name);
+    }
 }
  
 //----------------------------------------------------------------------------
