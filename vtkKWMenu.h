@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2002-07-15 12:42:15 $
-  Version:   $Revision: 1.23 $
+  Date:      $Date: 2002-08-06 20:04:47 $
+  Version:   $Revision: 1.24 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -145,6 +145,17 @@ public:
                          const char* MethodAndArgString, 
                          int underline, const char* help = 0);
 
+  // Description: 
+  // Add a generic menu item (defined by addtype)
+  void AddGeneric(const char* addtype, const char* label, vtkKWObject* Object,
+                  const char* MethodAndArgString, const char* extra, 
+                  const char* help);
+  void InsertGeneric(int position, const char* addtype, const char* label, 
+                     vtkKWObject* Object,
+                     const char* MethodAndArgString, const char* extra, 
+                     const char* help);
+
+
   // Description:
   // Call the menu item callback at the given index
   void Invoke(int position);
@@ -205,12 +216,6 @@ protected:
   
   vtkKWMenu();
   ~vtkKWMenu();
-
-  void AddGeneric(const char* addtype, const char* label, vtkKWObject* Object,
-                  const char* MethodAndArgString, const char* extra, const char* help);
-  void InsertGeneric(int position, const char* addtype, const char* label, 
-                     vtkKWObject* Object,
-                     const char* MethodAndArgString, const char* extra, const char* help);
 
   int TearOff;
   
