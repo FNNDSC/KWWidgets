@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2001-12-26 22:30:13 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-01-03 22:47:28 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -108,6 +108,8 @@ public:
   enum {
     WindowLevelChangedEvent = 2000,
     WindowLevelChangingEvent,
+    WindowLevelChangedImageCompositeEvent,
+    WindowLevelChangingImageCompositeEvent,
     ColorImageEvent,
     GradientOpacityFunctionChangedEvent,
     GradientOpacityStateChangedEvent,
