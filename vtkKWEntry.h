@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEntry.h,v $
   Language:  C++
-  Date:      $Date: 2000-08-07 20:15:27 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2001-09-24 11:50:50 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -57,6 +57,12 @@ public:
   int GetValueAsInt();
   float GetValueAsFloat();
   
+  // Description:
+  // The width is the number of charaters wide the entry box can fit.
+  // To keep from changing behavior of the entry,  the default
+  // value is -1 wich means the width is not explicitely set.
+  void SetWidth(int width);
+  vtkGetMacro(Width, int);
 
 protected:
   vtkKWEntry();
@@ -68,6 +74,7 @@ protected:
   vtkGetStringMacro(ValueString);
   
   char *ValueString;
+  int Width;
   
 };
 
