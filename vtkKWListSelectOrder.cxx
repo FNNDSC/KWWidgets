@@ -26,7 +26,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWListSelectOrder );
-vtkCxxRevisionMacro(vtkKWListSelectOrder, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWListSelectOrder, "$Revision: 1.6 $");
 
 //----------------------------------------------------------------------------
 vtkKWListSelectOrder::vtkKWListSelectOrder()
@@ -420,5 +420,8 @@ void vtkKWListSelectOrder::SetEllipsisCommand(vtkKWObject* obj, const char* comm
 void vtkKWListSelectOrder::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
+  
+  os << indent << "EllipsisCommand: "
+     << (this->EllipsisCommand ? this->EllipsisCommand : "(none)") << endl;
 }
 
