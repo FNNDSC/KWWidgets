@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2000-05-24 04:33:33 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-06-05 00:44:57 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,6 +39,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "vtkKWLabeledFrame.h"
 #include "vtkKWChangeColorButton.h"
 #include "vtkKWView.h"
+class vtkCornerAnnotation;
 
 class VTK_EXPORT vtkKWCornerAnnotation : public vtkKWLabeledFrame
 {
@@ -98,9 +99,8 @@ protected:
   vtkKWWidget            *CornerFrame[4];
   vtkKWWidget            *CornerLabel[4];
   vtkKWText              *CornerText[4];
-  vtkScaledTextActor     *CornerProp[4];
-  vtkTextMapper          *CornerMapper[4];
-  vtkKWGenericComposite  *CornerComposite[4];
+  vtkCornerAnnotation    *CornerProp;
+  vtkKWGenericComposite  *CornerComposite;
 
   vtkKWView *View;
 };
