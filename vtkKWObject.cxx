@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-22 18:55:30 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2002-07-22 21:46:32 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -116,7 +116,7 @@ void vtkKWObject::ExtractRevision(ostream& os,const char *revIn)
 void vtkKWObject::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWObject ";
-  this->ExtractRevision(os,"$Revision: 1.22 $");
+  this->ExtractRevision(os,"$Revision: 1.23 $");
 }
 
 void vtkKWObject::Serialize(istream& is)
@@ -477,7 +477,7 @@ int vtkKWObject::EstimateFormatLength(const char* format, va_list ap)
         length += 128;
         
         // Eat the argument.
-        int i = va_arg(ap, int);        
+        (void)va_arg(ap, int);        
         }
       }
     }
