@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWListBox.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-17 14:59:47 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2003-04-15 15:56:08 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -86,6 +86,10 @@ public:
   // Description:
   // Set callback for double click on a list item.
   void SetDoubleClickCallback(vtkKWObject* obj, const char* methodAndArgs);
+  
+  // Description:
+  // Set callback for single click on a list item.
+  void SetSingleClickCallback(vtkKWObject* obj, const char* methodAndArgs);
   
   // Description:
   // Get number of items in the list.
