@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMessageDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-03 15:20:09 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-01-04 15:27:25 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -93,6 +93,7 @@ public:
   // Description:
   // Set the default button
   vtkSetClampMacro(Default, int, 0, 2);
+  vtkGetMacro(Default, int );
 
   // Description:
   // Set the style of the message box
