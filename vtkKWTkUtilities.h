@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTkUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-12 19:09:03 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-09-13 20:09:03 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -96,6 +96,9 @@ public:
   static int GetPhotoWidth(Tcl_Interp *interp,
                            const char *photo_name);
 
+
+  static int ChangeFontToBold(Tcl_Interp *interp,
+                              const char *widget);
   //ETX
 
 protected:
