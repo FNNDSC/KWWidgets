@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:55:34 $
-  Version:   $Revision: 1.19 $
+  Date:      $Date: 2002-02-06 21:48:35 $
+  Version:   $Revision: 1.20 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -143,6 +143,12 @@ public:
   // Setting this string enables balloon help for this widget.
   virtual void SetBalloonHelpString(const char *str);
   vtkGetStringMacro(BalloonHelpString);
+
+  // Description:
+  // Get the RGB description of a TCL color
+  void GetRGBColor(const char* color, int *r, int *g, int *b);
+
+  void GetBackgroundColor(int *r, int *g, int *b);
   
   // Description:
   // Adjusts the placement of the baloon help
