@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-03 22:47:28 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-01-07 05:48:33 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -141,7 +141,11 @@ public:
     ShiftMiddleMouseOptionChangedEvent,
     ShiftRightMouseOptionChangedEvent,
     TransferFunctionsChangedEvent,
-    TransferFunctionsChangingEvent
+    TransferFunctionsChangingEvent,
+    ContourAnnotationAddEvent,
+    ContourAnnotationRemoveEvent,
+    ContourAnnotationChangeColorEvent,
+    ContourAnnotationChangeThicknessEvent
   };
 
 private:
