@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-10 18:03:06 $
-  Version:   $Revision: 1.118 $
+  Date:      $Date: 2002-09-12 13:23:38 $
+  Version:   $Revision: 1.119 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -68,7 +68,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define VTK_KW_SHOW_PROPERTIES_LABEL "Show Left Panel"
 #define VTK_KW_EXIT_DIALOG_NAME "ExitApplication"
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.118 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.119 $");
 vtkCxxSetObjectMacro(vtkKWWindow, PropertiesParent, vtkKWWidget);
 
 class vtkKWWindowMenuEntry
@@ -1159,7 +1159,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.118 $");
+  this->ExtractRevision(os,"$Revision: 1.119 $");
 }
 
 int vtkKWWindow::ExitDialog()
@@ -1545,5 +1545,6 @@ void vtkKWWindow::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "StatusFrame: " << this->GetStatusFrame() << endl;
   os << indent << "ViewFrame: " << this->GetViewFrame() << endl;
   os << indent << "WindowClass: " << this->GetWindowClass() << endl;  
-  os << indent << "Title: " << this->GetTitle() << endl;  
+  os << indent << "Title: " 
+     << ( this->GetTitle() ? this->GetTitle() : "(none)" ) << endl;  
 }
