@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWImageLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-04 18:25:08 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-03-05 16:39:31 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -73,7 +73,6 @@ void vtkKWImageLabel::SetImageData(const unsigned char* data,
 {
   int r, g, b;
   this->GetBackgroundColor(&r, &g, &b);
-  cout << "Color: " << r << ", " << g << ", " << b << endl;
   this->Script("image create photo -height %d -width %d", width, height);
   this->SetImageDataLabel(this->Application->GetMainInterp()->result);
   Tk_PhotoHandle photo;
