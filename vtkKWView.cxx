@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-05-13 10:50:31 $
-  Version:   $Revision: 1.62 $
+  Date:      $Date: 2002-06-03 17:09:14 $
+  Version:   $Revision: 1.63 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -57,6 +57,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWMessageDialog.h"
 #include "vtkKWCornerAnnotation.h"
 #include "vtkRenderWindow.h"
+#include "vtkRenderer.h"
 #include "vtkKWProgressGauge.h"
 #include "vtkKWMenu.h"
 #include "vtkKWEvent.h"
@@ -1317,7 +1318,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.62 $");
+  this->ExtractRevision(os,"$Revision: 1.63 $");
 }
 
 void vtkKWView::SetupMemoryRendering(
