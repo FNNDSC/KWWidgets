@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-13 21:15:57 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-08-15 15:35:13 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -78,6 +78,9 @@ static const char *vtkKWEventStrings[] = {
   "ShiftLeftMouseOptionChangedEvent",
   "ShiftMiddleMouseOptionChangedEvent",
   "ShiftRightMouseOptionChangedEvent",
+  "ControlLeftMouseOptionChangedEvent",
+  "ControlMiddleMouseOptionChangedEvent",
+  "ControlRightMouseOptionChangedEvent",
   "TransferFunctionsChangedEvent",
   "TransferFunctionsChangingEvent",
   "ContourAnnotationAddEvent",
