@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-03 19:20:52 $
-  Version:   $Revision: 1.31 $
+  Date:      $Date: 2003-04-07 14:04:56 $
+  Version:   $Revision: 1.32 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -53,7 +53,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro(vtkCornerAnnotation);
-vtkCxxRevisionMacro(vtkCornerAnnotation, "$Revision: 1.31 $");
+vtkCxxRevisionMacro(vtkCornerAnnotation, "$Revision: 1.32 $");
 
 vtkSetObjectImplementationMacro(vtkCornerAnnotation,ImageActor,vtkImageActor);
 vtkSetObjectImplementationMacro(vtkCornerAnnotation,WindowLevel,
@@ -538,4 +538,5 @@ void vtkCornerAnnotation::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "LevelShift: " << this->LevelShift << endl;
   os << indent << "LevelScale: " << this->LevelScale << endl;
   os << indent << "TextProperty: " << this->TextProperty << endl;
+  os << indent << "ShowSliceAndImage: " << this->ShowSliceAndImage << endl;
 }
