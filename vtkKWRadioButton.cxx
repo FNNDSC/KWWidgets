@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRadioButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-11-16 17:15:02 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-12-22 17:02:08 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,7 +45,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWRadioButton );
-vtkCxxRevisionMacro(vtkKWRadioButton, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWRadioButton, "$Revision: 1.10 $");
 
 //------------------------------------------------------------------------------
 void vtkKWRadioButton::Create(vtkKWApplication *app, const char *args)
@@ -66,6 +66,10 @@ void vtkKWRadioButton::Create(vtkKWApplication *app, const char *args)
   this->Script("radiobutton %s -value 1", wname);
   this->Configure();
   this->Script("%s configure %s", wname, (args?args:""));
+
+  // Update enable state
+
+  this->UpdateEnableState();
 }
 
 //----------------------------------------------------------------------------
