@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2000-05-22 05:50:21 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2000-06-01 21:38:16 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -150,6 +150,10 @@ public:
   // or as a top level dialog.
   void CreateDefaultPropertiesParent();
 
+  // Description:
+  // Make sure that the Views property parent is currently packed
+  void PackProperties();
+  
   // Description:
   // Render the image.
   virtual void Render() {this->GetVTKWindow()->Render();};
