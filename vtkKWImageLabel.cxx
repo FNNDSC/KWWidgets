@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWImageLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-05-01 21:09:35 $
-  Version:   $Revision: 1.26 $
+  Date:      $Date: 2003-05-05 17:42:45 $
+  Version:   $Revision: 1.27 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWImageLabel );
-vtkCxxRevisionMacro(vtkKWImageLabel, "$Revision: 1.26 $");
+vtkCxxRevisionMacro(vtkKWImageLabel, "$Revision: 1.27 $");
 
 //----------------------------------------------------------------------------
 vtkKWImageLabel::vtkKWImageLabel()
@@ -96,6 +96,12 @@ void vtkKWImageLabel::SetImageData(const unsigned char* data,
                                    int width, int height,
                                    int pixel_size)
 {
+  if (!this->IsCreated())
+  {
+  vtkWarningMacro("Image label is not created yet !");
+  return;
+  }
+
 #if (TK_MAJOR_VERSION == 8) && (TK_MINOR_VERSION < 4)
   // This work-around is put here to "fix" what looks like a bug
   // in Tk. Without this, there seems to be some weird problems
