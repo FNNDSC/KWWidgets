@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWListBox.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-04-24 20:17:06 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2000-06-21 20:15:36 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -154,10 +154,9 @@ void vtkKWListBox::Create(vtkKWApplication *app, char *args)
   wname = this->GetWidgetName();
   
   this->Script("frame %s ", wname);
-  this->Script("pack %s", wname);
   this->Script("scrollbar %s.scroll -command \"%s.list yview\"", 
 	       wname, wname);
-  this->Script("listbox %s.list  -yscroll \"%s.scroll set\" -setgrid 1 %s", 
+  this->Script("listbox %s.list  -yscroll \"%s.scroll set\" %s", 
 	       wname, wname, args);
   this->Script("pack %s.scroll -side right -fill y", wname);
   this->Script("pack %s.list -side left -expand 1 -fill both", wname);
