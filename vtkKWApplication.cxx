@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-29 20:49:43 $
-  Version:   $Revision: 1.99 $
+  Date:      $Date: 2002-11-04 15:54:30 $
+  Version:   $Revision: 1.100 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -73,7 +73,7 @@ int vtkKWApplication::WidgetVisibility = 1;
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.99 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.100 $");
 
 extern "C" int Vtktcl_Init(Tcl_Interp *interp);
 extern "C" int Vtkkwwidgetstcl_Init(Tcl_Interp *interp);
@@ -146,6 +146,10 @@ vtkKWApplication::vtkKWApplication()
                  this->BalloonHelpWindow->GetWidgetName());
     this->Script("wm withdraw %s", this->BalloonHelpWindow->GetWidgetName());
     this->SplashScreen = vtkKWSplashScreen::New();
+    }
+  else
+    {
+    this->SplashScreen = NULL;
     }
 
   this->ExitOnReturn = 0;
