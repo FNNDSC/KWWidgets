@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-03-21 21:54:17 $
-  Version:   $Revision: 1.110 $
+  Date:      $Date: 2003-03-25 21:12:48 $
+  Version:   $Revision: 1.111 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -75,7 +75,7 @@ int vtkKWApplication::WidgetVisibility = 1;
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.110 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.111 $");
 
 extern "C" int Vtktcl_Init(Tcl_Interp *interp);
 extern "C" int Vtkkwwidgetstcl_Init(Tcl_Interp *interp);
@@ -317,10 +317,10 @@ const char* vtkKWApplication::Script(const char *format, ...)
   vsprintf(buffer, format, ap);
   va_end(ap);
 
-  //cout << "Event: " << event << endl;
-  if (Tcl_GlobalEval(this->MainInterp, event) != TCL_OK)
+  if (Tcl_GlobalEval(this->MainInterp, buffer) != TCL_OK)
     {
-    vtkErrorMacro("\n    Script: \n" << event << "\n    Returned Error on line "
+    vtkErrorMacro("\n    Script: \n" << buffer
+                  << "\n    Returned Error on line "
                   << this->MainInterp->errorLine << ": \n"  
                   << this->MainInterp->result << endl);
     }
