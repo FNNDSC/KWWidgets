@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-03-11 23:20:49 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2003-03-11 23:26:29 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLoadSaveDialog );
-vtkCxxRevisionMacro(vtkKWLoadSaveDialog, "$Revision: 1.21 $");
+vtkCxxRevisionMacro(vtkKWLoadSaveDialog, "$Revision: 1.22 $");
 
 vtkKWLoadSaveDialog::vtkKWLoadSaveDialog()
 {
@@ -121,10 +121,8 @@ int vtkKWLoadSaveDialog::Invoke()
   // convertfrom identity seems to do the trick to convert back to
   // an ASCII-8 string that can be understood by the system.
 
-#if _WIN32
   this->Script("encoding convertfrom identity %s", 
                this->Application->GetMainInterp()->result);
-#endif
 
   path = this->Application->GetMainInterp()->result;
 
