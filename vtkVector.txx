@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkVector.txx,v $
   Language:  C++
-  Date:      $Date: 2002-03-22 22:37:12 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-03-25 23:37:23 $
+  Version:   $Revision: 1.4 $
 
   Copyright (c) 1993-2002 Ken Martin, Will Schroeder, Bill Lorensen 
   All rights reserved.

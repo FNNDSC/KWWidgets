@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkVector.h,v $
   Language:  C++
-  Date:      $Date: 2002-03-22 22:37:12 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-03-25 23:37:23 $
+  Version:   $Revision: 1.6 $
 
 
 Copyright (c) 1993-2001 Ken Martin, Will Schroeder, Bill Lorensen 
@@ -50,6 +50,8 @@ template <class DType>
 class vtkVector : public vtkAbstractList<DType>
 {
 public:
+  vtkContainerTypeMacro(vtkVector<DType>, vtkAbstractList<DType>);
+  
   static vtkVector<DType> *New() { return new vtkVector<DType>(); }  
   
   // Description:
