@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.h,v $
   Language:  C++
-  Date:      $Date: 2000-04-18 18:50:03 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2000-04-21 19:29:32 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -88,7 +88,16 @@ public:
   // Setting this string enables balloon help for this widget.
   void SetBalloonHelpString(char *str);
   vtkGetStringMacro(BalloonHelpString);
-
+  
+  // Description:
+  // Adjusts the placement of the baloon help
+  vtkSetMacro(BalloonHelpJustification,int);
+  vtkGetMacro(BalloonHelpJustification,int);  
+  void SetBalloonHelpJustificationToLeft(){
+    this->SetBalloonHelpJustification(0);};
+  void SetBalloonHelpJustificationToRight(){
+    this->SetBalloonHelpJustification(2);};
+  
 protected:
   vtkKWWidget();
   ~vtkKWWidget();
@@ -102,6 +111,7 @@ protected:
   int DeletingChildren;
 
   char *BalloonHelpString;
+  int   BalloonHelpJustification;
 };
 
 
