@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-12 21:46:31 $
-  Version:   $Revision: 1.52 $
+  Date:      $Date: 2002-12-15 05:51:05 $
+  Version:   $Revision: 1.53 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.52 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.53 $");
 
 int vtkKWWidgetCommand(ClientData cd, Tcl_Interp *interp,
                        int argc, char *argv[]);
@@ -329,7 +329,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   this->Superclass::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.52 $");
+  this->ExtractRevision(os,"$Revision: 1.53 $");
 }
 
 //------------------------------------------------------------------------------
@@ -453,7 +453,8 @@ void vtkKWWidget::UpdateEnableState()
   if (this->IsCreated())
     {
     const char* type = this->GetType();
-    if (!vtkString::Equals(type, "Frame") && 
+    if (type && type[0] &&
+        !vtkString::Equals(type, "Frame") && 
         !vtkString::Equals(type, "Menu")  && 
 #if (TK_MAJOR_VERSION == 8) && (TK_MINOR_VERSION < 3)
         !vtkString::Equals(type, "Label")  &&
@@ -462,7 +463,8 @@ void vtkKWWidget::UpdateEnableState()
         !vtkString::Equals(type, "Scrollbar") && 
         !vtkString::Equals(type, "Listbox") && 
         !vtkString::Equals(type, "Toplevel") &&
-        !vtkString::Equals(type, "Tree"))
+        !vtkString::Equals(type, "Tree") &&
+        !vtkString::Equals(type, "None"))
       {
       this->Script("%s configure -state %s", 
                    this->GetWidgetName(), 
