@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-20 15:53:27 $
-  Version:   $Revision: 1.47 $
+  Date:      $Date: 2003-01-21 17:02:41 $
+  Version:   $Revision: 1.48 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -70,6 +70,10 @@ static const char *vtkKWEventStrings[] = {
   "CroppingPlanesPositionChangedEvent",
   "CroppingRegionFlagsChangedEvent",
   "CroppingRegionsVisibilityChangedEvent",
+  "Cursor2DColorChangedEvent",
+  "Cursor2DPositionChangedEvent",
+  "Cursor2DVisibilityChangedEvent",
+  "Cursor3DInteractiveStateChangedEvent",
   "Cursor3DPositionChangedEvent",
   "Cursor3DPositionChangingEvent",
   "Cursor3DTypeChangedEvent",
@@ -77,7 +81,6 @@ static const char *vtkKWEventStrings[] = {
   "Cursor3DXColorChangedEvent",
   "Cursor3DYColorChangedEvent",
   "Cursor3DZColorChangedEvent",
-  "CursorInteractivityChangedEvent",
   "DiffuseChangedEvent",
   "DistanceVisibilityChangedEvent",
   "EnableShadingEvent",

@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-20 15:53:27 $
-  Version:   $Revision: 1.50 $
+  Date:      $Date: 2003-01-21 17:02:41 $
+  Version:   $Revision: 1.51 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -79,6 +79,10 @@ class VTK_EXPORT vtkKWEvent
     CroppingPlanesPositionChangedEvent,
     CroppingRegionFlagsChangedEvent,
     CroppingRegionsVisibilityChangedEvent,
+    Cursor2DColorChangedEvent,
+    Cursor2DPositionChangedEvent,
+    Cursor2DVisibilityChangedEvent,
+    Cursor3DInteractiveStateChangedEvent,
     Cursor3DPositionChangedEvent,
     Cursor3DPositionChangingEvent,
     Cursor3DTypeChangedEvent,
@@ -86,7 +90,6 @@ class VTK_EXPORT vtkKWEvent
     Cursor3DXColorChangedEvent,
     Cursor3DYColorChangedEvent,
     Cursor3DZColorChangedEvent,
-    CursorInteractivityChangedEvent,
     DiffuseChangedEvent,
     DistanceVisibilityChangedEvent,
     EnableShadingEvent,
