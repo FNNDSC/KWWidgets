@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledLabel.h,v $
   Language:  C++
-  Date:      $Date: 2003-02-21 22:35:53 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2003-05-02 19:34:30 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -89,12 +89,19 @@ public:
   virtual void SetBalloonHelpString(const char *str);
   virtual void SetBalloonHelpJustification(int j);
 
+  // Description:
+  // Set the anchoring for the first label
+  virtual void SetLabelAnchor(int);
+  vtkBooleanMacro(LabelAnchor, int);
+  vtkGetMacro(LabelAnchor, int);
+
 protected:
   vtkKWLabeledLabel();
   ~vtkKWLabeledLabel();
 
   int PackHorizontally;
   int ExpandLabel2;
+  int LabelAnchor;
 
   vtkKWLabel *Label2;
 
