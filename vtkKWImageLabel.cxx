@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWImageLabel.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-01 14:11:18 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-02-05 20:22:56 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -42,7 +42,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWApplication.h"
 #include "vtkKWImageLabel.h"
 #include "vtkObjectFactory.h"
-
+#include "vtkKWIcon.h"
 
 
 //------------------------------------------------------------------------------
@@ -61,6 +61,11 @@ vtkKWImageLabel::~vtkKWImageLabel()
 void vtkKWImageLabel::Create(vtkKWApplication *app, const char *args)
 {
   this->vtkKWLabel::Create(app, args);
+}
+
+void vtkKWImageLabel::SetImageData(vtkKWIcon* icon)
+{
+  this->SetImageData(icon->GetData(), icon->GetWidth(), icon->GetHeight());
 }
 
 void vtkKWImageLabel::SetImageData(const unsigned char* data, 
