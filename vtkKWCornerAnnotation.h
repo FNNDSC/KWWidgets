@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-15 06:02:04 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2002-12-19 15:41:12 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -129,6 +129,7 @@ public:
   virtual void SetMaximumLineHeightNoTrace(float);
   virtual void MaximumLineHeightCallback();
   virtual void MaximumLineHeightEndCallback();
+  vtkGetObjectMacro(MaximumLineHeightScale, vtkKWScale);
 
   // Description:
   // GUI components access
@@ -146,9 +147,29 @@ public:
   // Override to pass down to children.
   virtual void SetEnabled(int);
 
+  // Description:
+  // Update the GUI according to the value of the ivars
+  void Update();
+
+  // Description:
+  // Set the event invoked when the color of the annotation is changed.
+  // The AnnotationChangedEvent will be invoked too.
+  // Defaults to vtkKWEvent::AnnotationColorChangedEvent
+  vtkSetMacro(AnnotationColorChangedEvent, int)
+  vtkGetMacro(AnnotationColorChangedEvent, int)
+
+  // Description:
+  // Set the event invoked when the anything in the annotation is changed.
+  // Defaults to vtkKWEvent::ViewAnnotationChangedEvent
+  vtkSetMacro(AnnotationChangedEvent, int);
+  vtkGetMacro(AnnotationChangedEvent, int);
+
 protected:
   vtkKWCornerAnnotation();
   ~vtkKWCornerAnnotation();
+
+  int AnnotationColorChangedEvent;
+  int AnnotationChangedEvent;
 
   vtkCornerAnnotation    *CornerProp;
 
@@ -166,9 +187,6 @@ protected:
   vtkKWScale             *MaximumLineHeightScale;
   vtkKWTextProperty      *TextPropertyWidget;
 
-  // Update the GUI according to the value of the ivars
-
-  void Update();
   void Render();
 
 private:
