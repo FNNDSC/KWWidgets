@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-03-24 20:49:51 $
-  Version:   $Revision: 1.109 $
+  Date:      $Date: 2003-04-03 20:19:45 $
+  Version:   $Revision: 1.110 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -107,7 +107,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.109 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.110 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -1167,7 +1167,7 @@ void vtkKWView::Select(vtkKWWindow *pw)
     // add the Print option
     // If there is a "Page Setup" menu, insert below
     int clidx;
-    if (pw->GetMenuFile()->IsItemPresent(VTK_KW_PAGE_SETUP_MENU_LABEL))
+    if (pw->GetMenuFile()->HasItem(VTK_KW_PAGE_SETUP_MENU_LABEL))
       {
       clidx = pw->GetMenuFile()->GetIndex(VTK_KW_PAGE_SETUP_MENU_LABEL) + 1;  
       }
@@ -1530,7 +1530,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.109 $");
+  this->ExtractRevision(os,"$Revision: 1.110 $");
 }
 
 //----------------------------------------------------------------------------
