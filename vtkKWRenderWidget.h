@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-21 15:27:01 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2003-01-21 17:03:52 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -207,6 +207,15 @@ public:
   vtkGetObjectMacro(EventMap, vtkKWEventMap);
 
   // Description:
+  // This id is a hint that should be appended to the call data and
+  // should help identify who sent the event. Of course, the client data
+  // is a pointer to who sent the event, but in some situation it is either
+  // not available nor very usable. Default to -1.
+  // Can be safely ignored in most cases.
+  vtkSetMacro(EventIdentifier, int);
+  vtkGetMacro(EventIdentifier, int);
+
+  // Description:
   // Get the renderer and render window
   vtkGetObjectMacro(Renderer, vtkRenderer);
   vtkGetObjectMacro(RenderWindow, vtkRenderWindow);
@@ -250,7 +259,8 @@ protected:
   
   vtkKWGenericRenderWindowInteractor *Interactor;
   vtkKWEventMap *EventMap;
-  
+  int EventIdentifier;
+
   int InExpose;
 
   int RenderState;
@@ -271,7 +281,6 @@ protected:
   float Cursor2DColor[3];
   int   Cursor2DPosition[2];
   
-
   vtkKWRenderWidgetObserver *Observer;
   
 private:
