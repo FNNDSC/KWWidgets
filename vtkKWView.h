@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2000-09-18 15:49:36 $
-  Version:   $Revision: 1.20 $
+  Date:      $Date: 2001-04-10 14:41:12 $
+  Version:   $Revision: 1.21 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -301,6 +301,11 @@ public:
   // Description:
   // Get the render window used by this widget
   vtkGetObjectMacro(RenderWindow,vtkRenderWindow);
+  
+  // Description:
+  // The guts of the abort check method. Made public so that it can
+  // be accessed by the render timer callback.
+  int ShouldIAbort();
   
 protected:
   vtkKWView();
