@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplashScreen.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-16 15:40:28 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-08-30 15:36:17 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWSplashScreen );
-vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.4 $");
 
 //-----------------------------------------------------------------------------
 vtkKWSplashScreen::vtkKWSplashScreen()
@@ -108,6 +108,13 @@ void vtkKWSplashScreen::Create(vtkKWApplication *app, const char *args)
                this->Image->GetWidgetName(),
                this->ProgressMessage->GetWidgetName());
 
+}
+
+//-----------------------------------------------------------------------------
+void vtkKWSplashScreen::ShowWithBind()
+{
+  this->Show();
+  this->Image->SetBind(this, "<ButtonPress>", "Hide");
 }
 
 //-----------------------------------------------------------------------------

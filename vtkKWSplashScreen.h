@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplashScreen.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-12 19:22:21 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-08-30 15:36:17 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -64,6 +64,7 @@ public:
   // Description:
   // Show/Hide the splash screen
   void Show();
+  void ShowWithBind();
   void Hide();
   
   // Description:
