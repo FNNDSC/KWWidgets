@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWMenu.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-18 19:59:35 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-02-02 20:02:30 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -84,10 +84,10 @@ public:
   void InsertCommand(int position, const char* label, vtkKWObject* Object,
 		     const char* MethodAndArgString );
   
-  char* CreateRadioButtonVar(vtkKWObject* Object, const char* varname);
+  char* CreateRadioButtonVariable(vtkKWObject* Object, const char* varname);
   
-  void InsertRadioButton(int value, int position, const char* label, const char* buttonVar, 
-			 vtkKWObject* Called, 
+  void InsertRadioButton(int position, int value, const char* label, 
+                         const char* buttonVar, vtkKWObject* Called, 
 			 const char* MethodAndArgString);
   void Invoke(int position);
   void DeleteMenuItem(int position);
