@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-05 21:46:13 $
-  Version:   $Revision: 1.28 $
+  Date:      $Date: 2002-02-05 23:23:07 $
+  Version:   $Revision: 1.29 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -151,10 +151,12 @@ vtkKWVolumeComposite::vtkKWVolumeComposite()
     if ( this->VolumeProMapper->IsA("vtkOpenGLVolumeProVG500Mapper") )
       {
       this->CanDoIntermixGeometry = 0;
+      this->CanDoHardwareCursor   = 1;
       }
     else
       {
       this->CanDoIntermixGeometry = 1;
+      this->CanDoHardwareCursor   = 0;
       }
     this->VolumeProID = 
       this->LODVolume->AddLOD( this->VolumeProMapper,
@@ -496,7 +498,7 @@ void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.28 $");
+  this->ExtractRevision(os,"$Revision: 1.29 $");
 }
 
 vtkProp *vtkKWVolumeComposite::GetProp() 

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-05 22:16:55 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2002-02-05 23:23:07 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,6 +44,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 #include "vtkKWImageLabel.h"
 #include "vtkKWIcon.h"
+#include "vtkKWWidgetsConfigure.h"
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWNotebook );
@@ -372,6 +373,7 @@ void vtkKWNotebook::AddPage(const char *title, const char *ballon,
   this->Icons = icons;
   this->Icons[this->NumberOfPages] = 0;
   char skip[100] = "";
+#ifdef USE_NOTEBOOK_ICONS
   if ( icon && icon->GetData() )
     {
     this->Icons[this->NumberOfPages] = vtkKWImageLabel::New();
@@ -380,6 +382,7 @@ void vtkKWNotebook::AddPage(const char *title, const char *ballon,
     this->Icons[this->NumberOfPages]->SetImageData(icon); 
     sprintf(skip, "      ");
     }
+#endif
   if ( ballon )
     {
     this->Buttons[this->NumberOfPages]->SetBalloonHelpString(ballon);
@@ -396,6 +399,7 @@ void vtkKWNotebook::AddPage(const char *title, const char *ballon,
   this->Script("bind %s  <Configure> {%s RaiseCurrent}",
                this->Buttons[this->NumberOfPages]->GetWidgetName(),
                this->GetTclName(),this->NumberOfPages);
+#ifdef USE_NOTEBOOK_ICONS
   if ( this->Icons[this->NumberOfPages] )
     {
     this->Script("place %s -in %s -x %d -y %d", 
@@ -411,7 +415,7 @@ void vtkKWNotebook::AddPage(const char *title, const char *ballon,
 		 this->Icons[this->NumberOfPages]->GetWidgetName(),
 		 this->Buttons[this->NumberOfPages]->GetWidgetName());    
     }
-  
+#endif  
   this->NumberOfPages++;
   
   if (this->NumberOfPages == 2)

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-05 21:46:13 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-02-05 23:23:07 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -123,8 +123,9 @@ public:
   vtkSetMacro( SoftwareMapperAvailable, int );
 
   // Description:
-  // True if the volume pro mapper can do intermix geometry.
+  // True if the volume pro mapper can do the task.
   vtkGetMacro(CanDoIntermixGeometry, int);
+  vtkGetMacro(CanDoHardwareCursor, int);
   
 protected:
   vtkKWVolumeComposite();
@@ -162,6 +163,7 @@ protected:
   int                                  VolumeProID;
   int                                  LowResVolumeProID;
   int                                  CanDoIntermixGeometry;
+  int                                  CanDoHardwareCursor;
 private:
   vtkKWVolumeComposite(const vtkKWVolumeComposite&); // Not implemented
   void operator=(const vtkKWVolumeComposite&); // Not implemented
