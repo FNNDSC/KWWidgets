@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWColorTransferFunctionEditor.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-05-07 20:48:17 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2003-05-08 13:51:01 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 
 vtkStandardNewMacro(vtkKWColorTransferFunctionEditor);
-vtkCxxRevisionMacro(vtkKWColorTransferFunctionEditor, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWColorTransferFunctionEditor, "$Revision: 1.3 $");
 
 #define VTK_KW_CTF_EDITOR_RGB_LABEL "RGB"
 #define VTK_KW_CTF_EDITOR_HSV_LABEL "HSV"
@@ -327,8 +327,12 @@ void vtkKWColorTransferFunctionEditor::Create(vtkKWApplication *app,
   this->ColorSpaceOptionMenu->SetParent(this->InfoFrame);
   this->ColorSpaceOptionMenu->Create(app, "-padx 1 -pady 1");
   this->ColorSpaceOptionMenu->IndicatorOff();
+  this->ColorSpaceOptionMenu->SetBalloonHelpString(
+    "Change the interpolation color space to RGB or HSV.");
+
   this->ColorSpaceOptionMenu->AddEntryWithCommand(
     VTK_KW_CTF_EDITOR_RGB_LABEL, this, "ColorSpaceToRGBCallback");
+
   this->ColorSpaceOptionMenu->AddEntryWithCommand(
     VTK_KW_CTF_EDITOR_HSV_LABEL, this, "ColorSpaceToHSVCallback");
 
