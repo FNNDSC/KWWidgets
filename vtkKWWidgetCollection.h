@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidgetCollection.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-17 03:58:11 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2001-01-30 17:16:37 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -84,23 +84,6 @@ inline void vtkKWWidgetCollection::RemoveItem(vtkKWWidget *a)
 inline int vtkKWWidgetCollection::IsItemPresent(vtkKWWidget *a) 
 {
   return this->vtkCollection::IsItemPresent((vtkObject *)a);
-}
-
-inline vtkKWWidget *vtkKWWidgetCollection::GetNextKWWidget() 
-{ 
-  return (vtkKWWidget *)(this->GetNextItemAsObject());
-}
-
-inline vtkKWWidget *vtkKWWidgetCollection::GetLastKWWidget() 
-{ 
-  if ( this->Bottom == NULL )
-    {
-    return NULL;
-    }
-  else
-    {
-    return (vtkKWWidget *)(this->Bottom->Item);
-    }
 }
 
 #endif

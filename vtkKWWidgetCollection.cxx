@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidgetCollection.cxx,v $
   Language:  C++
-  Date:      $Date: 1999-12-29 23:22:09 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2001-01-30 17:16:37 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -26,6 +26,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 =========================================================================*/
 
 #include "vtkKWWidgetCollection.h"
+#include "vtkKWWidget.h"
 #include "vtkObjectFactory.h"
 
 vtkKWWidgetCollection* vtkKWWidgetCollection::New()
@@ -39,3 +40,21 @@ vtkKWWidgetCollection* vtkKWWidgetCollection::New()
   // If the factory was unable to create the object, then create it here.
   return new vtkKWWidgetCollection;
 }
+
+vtkKWWidget *vtkKWWidgetCollection::GetNextKWWidget() 
+{ 
+  return vtkKWWidget::SafeDownCast(this->GetNextItemAsObject());
+}
+
+vtkKWWidget *vtkKWWidgetCollection::GetLastKWWidget() 
+{ 
+  if ( this->Bottom == NULL )
+    {
+    return NULL;
+    }
+  else
+    {
+    return vtkKWWidget::SafeDownCast(this->Bottom->Item);
+    }
+}
+

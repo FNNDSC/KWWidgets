@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWViewCollection.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-17 03:20:01 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2001-01-30 17:16:37 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -34,7 +34,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #define __vtkKWViewC_h
 
 #include "vtkCollection.h"
-class vtkKWView;
+#include "vtkKWView.h"
 
 class VTK_EXPORT vtkKWViewCollection : public vtkCollection
 {
@@ -88,7 +88,7 @@ inline int vtkKWViewCollection::IsItemPresent(vtkKWView *a)
 
 inline vtkKWView *vtkKWViewCollection::GetNextKWView() 
 { 
-  return (vtkKWView *)(this->GetNextItemAsObject());
+  return vtkKWView::SafeDownCast(this->GetNextItemAsObject());
 }
 
 inline vtkKWView *vtkKWViewCollection::GetLastKWView() 
@@ -99,7 +99,7 @@ inline vtkKWView *vtkKWViewCollection::GetLastKWView()
     }
   else
     {
-    return (vtkKWView *)(this->Bottom->Item);
+    return vtkKWView::SafeDownCast(this->Bottom->Item);
     }
 }
 
