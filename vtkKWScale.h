@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.h,v $
   Language:  C++
-  Date:      $Date: 2001-10-17 22:13:04 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-01-14 21:36:32 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -70,6 +70,7 @@ public:
   /// Description:
   // Set the range for this scale.
   void SetRange(float min, float max);
+  void GetRange(float &min, float &max);
 
   // Description:
   // Display a label and or a text entry box. These are options. 
@@ -118,6 +119,7 @@ protected:
   vtkKWEntry  *Entry;
   vtkKWWidget *ScaleWidget;
   vtkKWWidget *ScaleLabel;
+  float Range[2];
 };
 
 

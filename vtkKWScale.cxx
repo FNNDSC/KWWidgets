@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 18:35:24 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2002-01-14 21:36:32 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -66,6 +66,8 @@ vtkKWScale::vtkKWScale()
   this->ScaleLabel = NULL;
   this->ScaleWidget = vtkKWWidget::New();
   this->ScaleWidget->SetParent(this);
+  this->Range[0] = 0;
+  this->Range[1] = 1;  
 }
 
 vtkKWScale::~vtkKWScale()
@@ -151,10 +153,17 @@ void vtkKWScale::Create(vtkKWApplication *app, const char *args)
 
 void vtkKWScale::SetRange(float min, float max)
 {
+  this->Range[0] = min;
+  this->Range[1] = max;
   this->Script("%s configure -from %f -to %f",
                this->ScaleWidget->GetWidgetName(),min,max);
 }
 
+void vtkKWScale::GetRange(float &min, float &max)
+{
+  min = this->Range[0];
+  max = this->Range[1];
+}
 
 void vtkKWScale::DisplayEntry()
 {
