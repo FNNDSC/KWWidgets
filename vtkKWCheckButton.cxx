@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCheckButton.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-11-16 17:13:14 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2002-11-18 06:46:23 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,7 +45,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCheckButton );
-vtkCxxRevisionMacro(vtkKWCheckButton, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWCheckButton, "$Revision: 1.18 $");
 
 //------------------------------------------------------------------------------
 vtkKWCheckButton::vtkKWCheckButton() 
@@ -78,8 +78,11 @@ void vtkKWCheckButton::SetVariableName(const char* _arg)
   int has_old_state = 0, old_state = 0;
   if (this->VariableName) 
     { 
-    has_old_state = 1;
-    old_state = this->GetState();
+    if (_arg)
+      {
+      has_old_state = 1;
+      old_state = this->GetState();
+      }
     delete [] this->VariableName; 
     }
 
