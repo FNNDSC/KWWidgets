@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-07-03 23:05:40 $
-  Version:   $Revision: 1.84 $
+  Date:      $Date: 2002-07-06 00:05:46 $
+  Version:   $Revision: 1.85 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -883,12 +883,14 @@ int vtkKWApplication::LoadScript(const char* filename)
   int res = 1;
   char* file = vtkString::Duplicate(filename);
   // add this window as a variable
-  this->Script("set InitialWindow %s", this->GetTclName());
   if ( Tcl_EvalFile(this->MainInterp, file) != TCL_OK )
     {
     vtkErrorMacro("\n    Script: \n" << filename << "\n    Returned Error on line "
 		  << this->MainInterp->errorLine << ": \n      "  
 		  << Tcl_GetStringResult(this->MainInterp) << endl);
+    cout << "\n    Script: \n" << filename << "\n    Returned Error on line "
+	 << this->MainInterp->errorLine << ": \n      "  
+	 << Tcl_GetStringResult(this->MainInterp) << endl;
     res = 0;
     }
   delete [] file;
