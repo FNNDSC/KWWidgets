@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.h,v $
   Language:  C++
-  Date:      $Date: 2001-12-28 23:41:10 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-01-21 20:59:13 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -86,6 +86,10 @@ public:
   vtkGetStringMacro(OpenFile);
 
   // Description:
+  // Set default extention.
+  vtkSetStringMacro(DefaultExt);
+
+  // Description:
   // Set or reset the SaveDialog. If set, the dialog will be
   // save file dialog. If reset, the dialog will be load 
   // dialog
@@ -114,6 +118,7 @@ protected:
     char *InitialDir;  
     char *Title;
     char *OpenFile;
+    char *DefaultExt;
 
     int SaveDialog;
     int Done;

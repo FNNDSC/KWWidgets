@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-17 23:09:22 $
-  Version:   $Revision: 1.49 $
+  Date:      $Date: 2002-01-21 20:59:12 $
+  Version:   $Revision: 1.50 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -616,6 +616,7 @@ void vtkKWApplication::AddTraceEntry(const char *format, ...)
 
 vtkKWRegisteryUtilities *vtkKWApplication::GetRegistery( const char*toplevel )
 {
+  this->GetRegistery();
   this->Registery->SetTopLevel( toplevel );
   return this->Registery;
 }

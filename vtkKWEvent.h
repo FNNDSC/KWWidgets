@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-17 18:43:09 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-01-21 20:59:13 $
+  Version:   $Revision: 1.5 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -45,11 +45,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define __vtkKWEvent_h
 
 
+#include "vtkKWObject.h"
 
-
-class vtkKWEvent
+class VTK_EXPORT vtkKWEvent
 {
   public:
+  static const char* GetStringFromEventId(unsigned long event);
   enum {
     KWWidgetEvents = 2000,
     // VV
@@ -88,6 +89,12 @@ class vtkKWEvent
     ContourAnnotationRemoveEvent,
     ContourAnnotationChangeColorEvent,
     ContourAnnotationChangeLineWidthEvent,
+    BackgroundColorChangedEvent,
+    AnnotationColorChangedEvent,
+    ChangeProjectionEvent,
+    PerspectiveViewAngleChangedEvent,
+    LightboxResolutionChangedEvent,
+    ChangePrinterDPIEvent,
     // PV
     InitializeTraceEvent
   };

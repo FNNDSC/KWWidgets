@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-18 17:33:08 $
-  Version:   $Revision: 1.31 $
+  Date:      $Date: 2002-01-21 20:59:14 $
+  Version:   $Revision: 1.32 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -151,9 +151,9 @@ public:
 
   // Description:
   // Callbacks used to set the print quality
-  void OnPrint1();
-  void OnPrint2();
-  void OnPrint3();
+  void OnPrint1(int propagate);
+  void OnPrint2(int propagate);
+  void OnPrint3(int propagate);
   vtkGetMacro(PrintTargetDPI,float);
   
   // Description:
@@ -200,12 +200,21 @@ public:
   vtkSetClampMacro(NumberOfRecentFiles, unsigned int, 4, 10);
   vtkGetMacro(NumberOfRecentFiles, unsigned int);
 
+//BTX
   //Description:
-  // Set or get the registry value for the application.
+  // Set or get the registery value for the application.
+  // When storing multiple arguments, separate with spaces
   int SetRegisteryValue(const char* subkey, const char* key, 
-			const char*value);
+			const char* format, ...);
   int GetRegisteryValue(const char* subkey, const char* key, 
 			char*value);
+  int DeleteRegisteryValue(const char* subkey, const char* key);
+  
+  // Description:
+  // Get float registery value (zero if not found).
+  float GetFloatRegisteryValue(const char* subkey, const char* key);
+  int   GetIntRegisteryValue(const char* subkey, const char* key);
+//ETX
   
 protected:
   vtkKWWindow();

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-11 23:31:25 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-01-21 20:59:13 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -57,6 +57,7 @@ vtkKWLoadSaveDialog::vtkKWLoadSaveDialog()
   this->OpenFile = 0;
 
   this->SaveDialog = 0;
+  this->DefaultExt = 0;
 
   this->SetTitle("Open Text Document");
   this->SetFileTypes("{{Text Document} {.txt}}");
@@ -69,6 +70,7 @@ vtkKWLoadSaveDialog::~vtkKWLoadSaveDialog()
   this->SetInitialDir(0);
   this->SetTitle(0);
   this->SetOpenFile(0);
+  this->SetDefaultExt(0);
 }
 
 void vtkKWLoadSaveDialog::Create(vtkKWApplication *app, const char* /*args*/)
@@ -87,7 +89,11 @@ void vtkKWLoadSaveDialog::Create(vtkKWApplication *app, const char* /*args*/)
 int vtkKWLoadSaveDialog::Invoke()
 {
   char *path = NULL;
-  this->Script("%s -title \"%s\" -filetypes {%s} -initialdir {%s}", (this->SaveDialog) ? "tk_getSaveFile" : "tk_getOpenFile", this->Title, this->FileTypes, this->InitialDir);
+  this->Script("%s -title \"%s\" -defaultextension {%s} "
+	       "-filetypes {%s} -initialdir {%s}", 
+	       (this->SaveDialog) ? "tk_getSaveFile" : "tk_getOpenFile", 
+	       this->DefaultExt ? this->DefaultExt : "",
+	       this->Title, this->FileTypes, this->InitialDir);
   path = this->Application->GetMainInterp()->result;
   if ( path && strlen(path) )
     {

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-09 16:04:36 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2002-01-21 20:59:13 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -98,6 +98,8 @@ public:
   // Description:
   // Change the color of the annotation
   void SetTextColor(float r, float g, float b);
+  void SetTextColor(float *rgb)
+    { this->SetTextColor(rgb[0], rgb[1], rgb[2]); }
   float *GetTextColor() {return this->CornerProp->GetProperty()->GetColor();};
 
   
