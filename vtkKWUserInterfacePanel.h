@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfacePanel.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-17 21:44:33 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-12-22 15:54:39 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -103,7 +103,9 @@ public:
   // Description:
   // Enable/Disable this panel. This should propagate SetEnabled() calls to the
   // internal widgets.
-  virtual void SetEnabled(int) {};
+  virtual void SetEnabled(int);
+  vtkBooleanMacro(Enabled, int);
+  vtkGetMacro(Enabled, int);
 
   // Description:
   // Add a page to the panel (this will, in turn, instructs the manager to 
@@ -143,13 +145,18 @@ public:
 
   // Description:
   // Refresh the interface.
-  virtual void Update() {};
+  virtual void Update();
 
 protected:
   vtkKWUserInterfacePanel();
   ~vtkKWUserInterfacePanel();
 
   vtkKWUserInterfaceManager *UserInterfaceManager;
+
+  // Update the enable state. This should propagate similar calls to the
+  // internal widgets.
+  virtual void UpdateEnableState() {};
+  int Enabled;
 
 private:
 
