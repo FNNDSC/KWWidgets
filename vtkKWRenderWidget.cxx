@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-23 14:48:58 $
-  Version:   $Revision: 1.32 $
+  Date:      $Date: 2003-01-24 21:55:57 $
+  Version:   $Revision: 1.33 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -60,7 +60,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.32 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.33 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetObserver : public vtkCommand
@@ -109,7 +109,7 @@ vtkKWRenderWidget::vtkKWRenderWidget()
 
   this->CornerAnnotation = vtkCornerAnnotation::New();
   this->CornerAnnotation->SetMaximumLineHeight(0.07);
-  this->CornerAnnotation->VisibilityOff();
+  this->CornerAnnotation->VisibilityOn();
 
   this->HeaderProp = vtkTextActor::New();
   this->HeaderProp->GetTextProperty()->SetJustificationToCentered();
@@ -545,8 +545,10 @@ void vtkKWRenderWidget::Close()
   if (this->GetCornerAnnotation())
     {
     this->GetCornerAnnotation()->ClearAllTexts();
-    this->GetCornerAnnotation()->VisibilityOff();
     }
+
+  this->SetCornerAnnotationVisibility(0);
+  this->SetHeaderAnnotationVisibility(0);
 }
 
 //----------------------------------------------------------------------------
