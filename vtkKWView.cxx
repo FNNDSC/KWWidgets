@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-22 15:19:17 $
-  Version:   $Revision: 1.52 $
+  Date:      $Date: 2002-01-22 21:03:31 $
+  Version:   $Revision: 1.53 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -181,7 +181,7 @@ vtkKWView::vtkKWView()
   
   this->MenuPropertiesName = NULL;
   this->MenuPropertiesUnderline = -1;
-  this->SetMenuPropertiesName("  View");
+  this->SetMenuPropertiesName(" View");
   
   this->Renderer = vtkRenderer::New();
   this->RenderWindow = vtkRenderWindow::New();
@@ -1275,7 +1275,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.52 $");
+  this->ExtractRevision(os,"$Revision: 1.53 $");
 }
 
 void vtkKWView::SetupMemoryRendering(int x, int y, void *cd) 
