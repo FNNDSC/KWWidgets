@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWVolumeComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-08-10 17:21:41 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2000-08-10 17:42:24 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -187,7 +187,7 @@ void vtkKWVolumeComposite::SetInput(vtkImageData *input)
   this->VolumeProMapper->SetInput(input);
   this->HiResTextureMapper->SetInput(input);
   
-  this->RayCastMapper->GetGradientEstimator()->Update();
+  //this->RayCastMapper->GetGradientEstimator()->Update();
   
   input->GetDimensions( size );
 
@@ -254,7 +254,7 @@ void vtkKWVolumeComposite::SetInput(vtkImageData *input)
     this->LowResTextureMapper->SetInput( this->LowResResampler->GetOutput() );
     
     this->LowResTextureMapper->GetGradientEstimator()->ZeroPadOff();
-    this->LowResTextureMapper->GetGradientEstimator()->Update();
+    //this->LowResTextureMapper->GetGradientEstimator()->Update();
     
     this->LowResTextureID = 
       this->LODVolume->AddLOD( this->LowResTextureMapper,
@@ -322,7 +322,7 @@ void vtkKWVolumeComposite::SetInput(vtkImageData *input)
     this->MedResTextureMapper->SetInput( this->MedResResampler->GetOutput() );
 
     this->MedResTextureMapper->GetGradientEstimator()->ZeroPadOff();
-    this->MedResTextureMapper->GetGradientEstimator()->Update();
+    //this->MedResTextureMapper->GetGradientEstimator()->Update();
     
     this->MedResTextureID = 
       this->LODVolume->AddLOD( this->MedResTextureMapper,
@@ -362,5 +362,5 @@ void vtkKWVolumeComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWComposite::SerializeRevision(os,indent);
   os << indent << "vtkKWVolumeComposite ";
-  this->ExtractRevision(os,"$Revision: 1.11 $");
+  this->ExtractRevision(os,"$Revision: 1.12 $");
 }
