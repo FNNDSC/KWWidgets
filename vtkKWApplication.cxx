@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-13 13:54:28 $
-  Version:   $Revision: 1.94 $
+  Date:      $Date: 2002-08-13 13:54:49 $
+  Version:   $Revision: 1.95 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -72,7 +72,7 @@ int vtkKWApplication::WidgetVisibility = 1;
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.94 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.95 $");
 
 
 
@@ -157,7 +157,6 @@ vtkKWApplication::vtkKWApplication()
 
 vtkKWApplication::~vtkKWApplication()
 {
-  cout << "Fooo" << endl;
   if ( this->BalloonHelpWindow )
     {
     this->BalloonHelpWindow->Delete();
