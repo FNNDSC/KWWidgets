@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-19 22:42:04 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2002-02-21 19:34:30 $
+  Version:   $Revision: 1.22 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -263,7 +263,7 @@ void vtkKWNotebook::Raise(int num)
   int width = vtkKWObject::GetIntegerResult(app);
   
 #ifdef _WIN32    
-  int h0 = bw * 2; // Should be 3
+  int h0 = bw * 2 + 2; // Should be 3
   int ww = 1;
   int hh = 3;
 #else
@@ -466,7 +466,7 @@ void vtkKWNotebook::AddPage(const char *title, const char *ballon,
 # endif
 
 #else
-    int h0 = 1;
+    int h0 = 3;
 #endif
     
     this->Script("place %s -x 10 -y 0 -relwidth 1.0 -height %d",
