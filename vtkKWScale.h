@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 04:20:05 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2002-12-02 18:30:19 $
+  Version:   $Revision: 1.19 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -90,6 +90,9 @@ public:
   vtkGetObjectMacro(Label, vtkKWWidget);
   vtkGetObjectMacro(Entry, vtkKWEntry);
 
+  vtkSetStringMacro(ShortLabel);
+  vtkGetStringMacro(ShortLabel);
+  
   // Description:
   // Set/Get the position of the label and/or entry (on top, or on the side).
   virtual void SetDisplayEntryAndLabelOnTop(int flag);
@@ -153,6 +156,8 @@ public:
   void Bind();
   void UnBind();
 
+  void Resize();
+  
 protected:
   vtkKWScale();
   ~vtkKWScale();
@@ -178,6 +183,13 @@ protected:
   vtkKWWidget *TopLevel;
   vtkKWPushButton *PopupPushButton;
 
+  char *NormalLabel;
+  char *ShortLabel;
+  int MediumWidth;
+  int ShortWidth;
+  
+  vtkSetStringMacro(NormalLabel);
+  
   void PackWidget();
   void UpdateEntryResolution();
 
