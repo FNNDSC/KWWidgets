@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-27 19:57:07 $
-  Version:   $Revision: 1.71 $
+  Date:      $Date: 2003-01-27 22:51:50 $
+  Version:   $Revision: 1.72 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -425,12 +425,13 @@ protected:
 
   vtkKWTclInteractor *TclInteractor;
 
+  // Update the enable state. This should propagate similar calls to the
+  // internal widgets.
+  virtual void UpdateEnableState();
+
 private:
   vtkKWWindow(const vtkKWWindow&); // Not implemented
   void operator=(const vtkKWWindow&); // Not implemented
 };
 
-
 #endif
-
-
