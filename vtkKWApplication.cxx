@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-03-13 21:11:59 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2000-03-17 23:00:10 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -131,6 +131,7 @@ void vtkKWApplication::Script(char *format, ...)
 }
 void vtkKWApplication::SimpleScript(char *event)
 {
+//#define VTK_DEBUG_SCRIPT
 #ifdef VTK_DEBUG_SCRIPT
     vtkOutputWindow::GetInstance()->DisplayText(event);
     vtkOutputWindow::GetInstance()->DisplayText("\n");

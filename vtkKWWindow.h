@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-17 03:20:01 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2000-03-17 23:00:10 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -35,6 +35,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include "vtkKWWidget.h"
 class vtkKWApplication;
+#include "vtkKWProgressGauge.h"
 #include "vtkKWViewCollection.h"
 #include "vtkKWMenu.h"
 
@@ -130,6 +131,11 @@ public:
   // This toolbar frame is below the menu. It is empty initially.
   // Subclasses can add toolbars buttons as necessary.
   vtkGetObjectMacro(ToolbarFrame, vtkKWWidget);
+
+  // Description:
+  // Get the progress gauge widget.  The progress gauge is displayed
+  // in the Status frame on the bottom right of the window.
+  vtkGetObjectMacro(ProgressGauge, vtkKWProgressGauge);
  
 protected:
   vtkKWWindow();
@@ -150,6 +156,8 @@ protected:
   vtkKWWidget *StatusFrame;
   vtkKWWidget *StatusImage;
   vtkKWWidget *StatusLabel;
+  vtkKWProgressGauge* ProgressGauge;
+  vtkKWWidget* ProgressFrame;
   char        *StatusImageName;
   vtkKWWidget *MiddleFrame; // Contains view frame and properties parent.
   vtkKWWidget *PropertiesParent;
