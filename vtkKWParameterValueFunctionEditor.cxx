@@ -33,7 +33,7 @@
 
 #include <vtkstd/string>
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.29 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.30 $");
 
 int vtkKWParameterValueFunctionEditorCommand(ClientData cd, Tcl_Interp *interp, int argc, char *argv[]);
 
@@ -400,6 +400,7 @@ vtkKWParameterValueFunctionEditor::~vtkKWParameterValueFunctionEditor()
     }
 
   this->SetParameterTicksFormat(NULL);
+  this->SetValueTicksFormat(NULL);
 }
 
 //----------------------------------------------------------------------------
