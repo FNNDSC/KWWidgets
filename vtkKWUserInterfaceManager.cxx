@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceManager.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-10 20:02:39 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-12-20 18:46:19 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkObjectFactory.h"
 
 //------------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWUserInterfaceManager, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManager, "$Revision: 1.6 $");
 
 int vtkKWUserInterfaceManagerCommand(ClientData cd, Tcl_Interp *interp,
                                      int argc, char *argv[]);
@@ -191,6 +191,7 @@ void vtkKWUserInterfaceManager::SetEnabled(int arg)
     if (it->GetData(panel_slot) == VTK_OK)
       {
       panel_slot->Panel->SetEnabled(arg);
+      panel_slot->Panel->Update();
       }
     it->GoToNextItem();
     }
