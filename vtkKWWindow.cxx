@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-04 16:53:59 $
-  Version:   $Revision: 1.124 $
+  Date:      $Date: 2002-10-08 15:03:45 $
+  Version:   $Revision: 1.125 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -70,7 +70,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define VTK_KW_WINDOW_GEOMETRY_REG_KEY "WindowGeometry"
 #define VTK_KW_WINDOW_FRAME1_SIZE_REG_KEY "WindowFrame1Size"
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.124 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.125 $");
 vtkCxxSetObjectMacro(vtkKWWindow, PropertiesParent, vtkKWWidget);
 
 class vtkKWWindowMenuEntry
@@ -367,11 +367,8 @@ vtkKWWindow::~vtkKWWindow()
     {
     this->MenuWindow->Delete();
     }
-  if (this->StatusImageName)
-    {
-    delete [] this->StatusImageName;
-    }
 
+  this->SetStatusImageName(0);
   this->SetWindowClass(0);
   this->SetTitle(0);
   this->SetScriptExtension(0);
@@ -668,8 +665,8 @@ void vtkKWWindow::Create(vtkKWApplication *app, char *args)
 
   this->StatusFrame->Create(app,"frame","");
 
-  this->Script("image create photo");
-  this->StatusImageName = vtkString::Duplicate(interp->result);
+  
+  this->SetStatusImageName(this->Script("image create photo"));
   this->CreateStatusImage();
   this->StatusImage->Create(app,"label",
                             "-relief sunken -bd 1 -fg #ffffff -bg #ffffff -highlightbackground #ffffff -highlightcolor #ffffff -highlightthickness 0 -padx 0 -pady 0");
@@ -1302,7 +1299,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.124 $");
+  this->ExtractRevision(os,"$Revision: 1.125 $");
 }
 
 int vtkKWWindow::ExitDialog()

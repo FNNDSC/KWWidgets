@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-04 16:53:59 $
-  Version:   $Revision: 1.63 $
+  Date:      $Date: 2002-10-08 15:03:45 $
+  Version:   $Revision: 1.64 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -366,6 +366,7 @@ protected:
 
   vtkKWLabel *StatusLabel;
   char       *StatusImageName;
+  vtkSetStringMacro(StatusImageName);
 
   vtkKWWidget *PropertiesParent;
   vtkKWWidget *ViewFrame;
