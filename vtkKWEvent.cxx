@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-14 23:48:07 $
-  Version:   $Revision: 1.41 $
+  Date:      $Date: 2003-01-15 17:21:42 $
+  Version:   $Revision: 1.42 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -137,12 +137,15 @@ static const char *vtkKWEventStrings[] = {
   "VolumeBlendModeChangedEvent",
   "VolumeBoundingBoxColorChangedEvent",
   "VolumeBoundingBoxVisibilityChangedEvent",
+  "VolumeColorFunctionPresetApplyEvent",
   "VolumeCornerAnnotationChangedEvent",
   "VolumeCornerAnnotationColorChangedEvent",
   "VolumeDistanceVisibilityChangedEvent",
   "VolumeFlySpeedChangedEvent",
+  "VolumeGradientFunctionPresetApplyEvent",
   "VolumeHeaderAnnotationColorChangedEvent",
   "VolumeMouseBindingChangedEvent",
+  "VolumeOpacityFunctionPresetApplyEvent",
   "VolumeOrientationMarkerColorChangedEvent",
   "VolumeOrientationMarkerVisibilityChangedEvent",
   "VolumeReformatBoxVisibilityChangedEvent",
