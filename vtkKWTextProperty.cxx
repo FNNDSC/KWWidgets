@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTextProperty.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-02 23:26:18 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2003-01-06 22:37:40 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -129,7 +129,7 @@ static unsigned char image_copy[] =
 
 // ----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTextProperty);
-vtkCxxRevisionMacro(vtkKWTextProperty, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWTextProperty, "$Revision: 1.15 $");
 
 int vtkKWTextPropertyCommand(ClientData cd, Tcl_Interp *interp,
                       int argc, char *argv[]);
@@ -575,6 +575,12 @@ void vtkKWTextProperty::Pack()
     vtkKWTkUtilities::SynchroniseLabelsMaximumWidth(
       this->Application->GetMainInterp(), nb, labels, "-anchor w");
     }
+}
+
+// ----------------------------------------------------------------------------
+void vtkKWTextProperty::Update()
+{
+  this->UpdateInterface();
 }
 
 // ----------------------------------------------------------------------------
@@ -1252,6 +1258,46 @@ void vtkKWTextProperty::UpdateEnableState()
     {
     this->OpacityScale->SetEnabled(this->Enabled);
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWTextProperty::FillEvent(vtkKWTextProperty::EventStruct *event)
+{
+  if (!event || !this->IsCreated() || !this->GetTextProperty())
+    {
+    return;
+    }
+
+  vtkTextProperty *tprop = this->GetTextProperty();
+
+  float *color = this->GetColor();
+  event->Color[0] = color[0];
+  event->Color[1] = color[1];
+  event->Color[2] = color[2];
+
+  event->FontFamily = tprop->GetFontFamily();
+  event->Bold = tprop->GetBold();
+  event->Italic = tprop->GetItalic();
+  event->Shadow = tprop->GetShadow();
+  event->Opacity = tprop->GetOpacity();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWTextProperty::UpdateTextPropertyAccordingToEvent(
+  vtkTextProperty *tprop,
+  vtkKWTextProperty::EventStruct *event)
+{
+  if (!tprop || !event)
+    {
+    return;
+    }
+
+  tprop->SetColor(event->Color);
+  tprop->SetFontFamily(event->FontFamily);
+  tprop->SetBold(event->Bold);
+  tprop->SetItalic(event->Italic);
+  tprop->SetShadow(event->Shadow);
+  tprop->SetOpacity(event->Opacity);
 }
 
 //----------------------------------------------------------------------------

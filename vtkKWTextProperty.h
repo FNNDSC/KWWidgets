@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTextProperty.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-02 23:26:18 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2003-01-06 22:37:40 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -71,6 +71,11 @@ public:
   // Description:
   // Create a Tk widget
   virtual void Create(vtkKWApplication *app);
+
+  // Description
+  // Refresh/Update the interface according to the value of the text property
+  // and actor2d
+  virtual void Update();
 
   // Description:
   // Set/Get the text property to control.
@@ -176,6 +181,24 @@ public:
   // Description:
   // Save out the text properties to a file.
   void SaveInTclScript(ofstream *file, const char *tcl_name = 0);
+
+  // Description:
+  // Event structure, and update the UI according to this event
+  //BTX
+  class EventStruct
+  {
+  public:
+    float Color[3];
+    int   FontFamily;
+    int   Bold;
+    int   Italic;
+    int   Shadow;
+    float Opacity;
+  };
+  virtual void FillEvent(EventStruct *event);
+  static void UpdateTextPropertyAccordingToEvent(
+    vtkTextProperty *tprop, EventStruct *event);
+  //ETX
 
 protected:
   vtkKWTextProperty();
