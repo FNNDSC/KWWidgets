@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2000-10-05 20:15:56 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2001-08-23 12:50:01 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,6 +39,7 @@ class vtkKWApplication;
 #include "vtkKWViewCollection.h"
 #include "vtkKWMenu.h"
 #include "vtkKWNotebook.h"
+#include "vtkKWSplitFrame.h"
 
 class VTK_EXPORT vtkKWWindow : public vtkKWWidget
 {
@@ -180,7 +181,7 @@ protected:
   vtkKWProgressGauge* ProgressGauge;
   vtkKWWidget* ProgressFrame;
   char        *StatusImageName;
-  vtkKWWidget *MiddleFrame; // Contains view frame and properties parent.
+  vtkKWSplitFrame *MiddleFrame; // Contains view frame and properties parent.
   vtkKWWidget *PropertiesParent;
   vtkKWWidget *ViewFrame;
   vtkKWWidget *ToolbarFrame;
