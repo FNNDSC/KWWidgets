@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2002-06-12 13:30:31 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -59,6 +59,7 @@ vtkKWDialog::vtkKWDialog()
   this->TitleString = 0;
   this->SetTitleString("Kitware Dialog");
   this->Beep = 0;
+  this->BeepType = 0;
   this->MasterWindow = 0;
 }
 

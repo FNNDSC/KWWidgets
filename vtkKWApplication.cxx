@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-05-30 17:22:18 $
-  Version:   $Revision: 1.73 $
+  Date:      $Date: 2002-06-12 13:30:31 $
+  Version:   $Revision: 1.74 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -40,21 +40,23 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =========================================================================*/
 #include "vtkKWApplication.h"
-#include "vtkKWWindowCollection.h"
+
+#include "vtkArrayMap.txx"
+#include "vtkKWMessageDialog.h"
+#include "vtkKWObject.h"
 #include "vtkKWRegisteryUtilities.h"
+#include "vtkKWWindow.h"
+#include "vtkKWWindowCollection.h"
+#include "vtkObjectFactory.h"
+#include "vtkOutputWindow.h"
+#include "vtkTclUtil.h"
+#include "vtkbwidgets.h"
+
+#include <stdarg.h>
+#include "kwinit.h"
 #ifdef _WIN32
 #include <htmlhelp.h>
 #endif
-#include "vtkKWObject.h"
-#include "vtkTclUtil.h"
-#include "vtkKWMessageDialog.h"
-#include "vtkObjectFactory.h"
-#include "vtkOutputWindow.h"
-#include "vtkKWWindow.h"
-#include "kwinit.h"
-#include "vtkbwidgets.h"
- 
-#include "vtkArrayMap.txx"
 
 
 int vtkKWApplication::WidgetVisibility = 1;

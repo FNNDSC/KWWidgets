@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-11 15:38:20 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2002-06-12 13:30:31 $
+  Version:   $Revision: 1.19 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,6 +46,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWSerializer.h"
 #include "vtkObjectFactory.h"
 #include "vtkTclUtil.h"
+
+#include <stdarg.h>
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWObject );
@@ -113,7 +115,7 @@ void vtkKWObject::ExtractRevision(ostream& os,const char *revIn)
 void vtkKWObject::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWObject ";
-  this->ExtractRevision(os,"$Revision: 1.18 $");
+  this->ExtractRevision(os,"$Revision: 1.19 $");
 }
 
 void vtkKWObject::Serialize(istream& is)
