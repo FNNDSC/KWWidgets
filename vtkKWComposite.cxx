@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:32 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2001-10-15 11:15:27 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -84,7 +84,7 @@ vtkKWComposite::~vtkKWComposite()
   
   if (this->PropertiesParent)
     {
-    this->PropertiesParent->Delete();
+    this->PropertiesParent->UnRegister(this);
     this->PropertiesParent = NULL;
     }
 }
@@ -211,5 +211,5 @@ void vtkKWComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWComposite ";
-  this->ExtractRevision(os,"$Revision: 1.8 $");
+  this->ExtractRevision(os,"$Revision: 1.9 $");
 }
