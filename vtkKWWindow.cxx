@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-02-28 14:37:23 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2000-02-29 21:09:12 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -2412,6 +2412,7 @@ vtkKWMenu *vtkKWWindow::GetMenuEdit()
   this->MenuEdit = vtkKWMenu::New();
   this->MenuEdit->SetParent(this->GetMenu());
   this->MenuEdit->Create(this->Application,"-tearoff 0");
+  // Make sure Edit menu is next to file menu
   this->Menu->InsertCascade(1, "Edit", this->MenuEdit, 0);
   return this->MenuEdit;
 }
@@ -2422,10 +2423,11 @@ vtkKWMenu *vtkKWWindow::GetMenuView()
     {
     return this->MenuView;
     }
-  
+
   this->MenuView = vtkKWMenu::New();
   this->MenuView->SetParent(this->GetMenu());
   this->MenuView->Create(this->Application, "-tearoff 0");
+  // make sure Help menu is on the right
   if (this->MenuEdit)
     { 
     this->Menu->InsertCascade(2, "View", this->MenuView, 0);
@@ -2448,6 +2450,7 @@ vtkKWMenu *vtkKWWindow::GetMenuProperties()
   this->MenuProperties = vtkKWMenu::New();
   this->MenuProperties->SetParent(this->GetMenu());
   this->MenuProperties->Create(this->Application,"-tearoff 0");
+  // make sure Help menu is on the right
   if (this->MenuView && this->MenuEdit)
     {
     this->Menu->InsertCascade(3, "Properties", this->MenuProperties, 0);
