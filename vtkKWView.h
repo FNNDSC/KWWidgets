@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-06 20:59:33 $
-  Version:   $Revision: 1.52 $
+  Date:      $Date: 2002-12-09 21:26:15 $
+  Version:   $Revision: 1.53 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -382,6 +382,10 @@ class VTK_EXPORT vtkKWView : public vtkKWWidget
   vtkBooleanMacro(UseProgressGauge, int);
 
   vtkGetObjectMacro(ProgressGauge, vtkKWSegmentedProgressGauge);
+
+  // Description:
+  // Check if the application needs to abort.
+  virtual int CheckForOtherAbort() { return 0; }
   
 protected:
   vtkKWView();

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-02 23:00:59 $
-  Version:   $Revision: 1.66 $
+  Date:      $Date: 2002-12-09 21:26:15 $
+  Version:   $Revision: 1.67 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -319,6 +319,10 @@ public:
   // Access to the Tcl interactor.
   vtkGetObjectMacro(TclInteractor, vtkKWTclInteractor);
 
+  // Description:
+  // Check if the application needs to abort.
+  virtual int CheckForOtherAbort() { return 0; }
+  
 protected:
   vtkKWWindow();
   ~vtkKWWindow();
