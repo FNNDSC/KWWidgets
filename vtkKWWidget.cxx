@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-09 21:17:08 $
-  Version:   $Revision: 1.47 $
+  Date:      $Date: 2002-08-09 21:55:12 $
+  Version:   $Revision: 1.48 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -42,6 +42,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWWidget.h"
 
 #include "vtkKWApplication.h"
+#include "vtkKWTkUtilities.h"
 #include "vtkKWWidgetCollection.h"
 #include "vtkKWWindow.h"
 #include "vtkObjectFactory.h"
@@ -49,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.47 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.48 $");
 
 int vtkKWWidgetCommand(ClientData cd, Tcl_Interp *interp,
                        int argc, char *argv[]);
@@ -344,7 +345,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   this->Superclass::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.47 $");
+  this->ExtractRevision(os,"$Revision: 1.48 $");
 }
 
 //------------------------------------------------------------------------------
@@ -481,18 +482,18 @@ void vtkKWWidget::SetEnabled(int e)
 void vtkKWWidget::GetRGBColor(const char* color,
                               int *rr, int *gg, int *bb)
 {
-  vtkKWObject::GetRGBColor(this->Application->GetMainInterp(),
-                           this->GetWidgetName(), 
-                           color, 
-                           rr, gg, bb);
+  vtkKWTkUtilities::GetRGBColor(this->Application->GetMainInterp(),
+                                this->GetWidgetName(), 
+                                color, 
+                                rr, gg, bb);
 }
 
 //------------------------------------------------------------------------------
 void vtkKWWidget::GetBackgroundColor(int *r, int *g, int *b)
 {
-  vtkKWObject::GetBackgroundColor(this->Application->GetMainInterp(),
-                                  this->GetWidgetName(), 
-                                  r, g, b);
+  vtkKWTkUtilities::GetBackgroundColor(this->Application->GetMainInterp(),
+                                       this->GetWidgetName(), 
+                                       r, g, b);
 }
 
 //------------------------------------------------------------------------------

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWBWidgets.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:13 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2002-08-09 21:55:12 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -44,12 +44,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWApplication.h"
 #include "vtkObjectFactory.h"
 #include "vtkbwidgets.h"
+#include "vtkKWTkUtilities.h"
 
 #include <tk.h>
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWBWidgets );
-vtkCxxRevisionMacro(vtkKWBWidgets, "$Revision: 1.7 $");
+vtkCxxRevisionMacro(vtkKWBWidgets, "$Revision: 1.8 $");
 
 int vtkKWBWidgetsCommand(ClientData cd, Tcl_Interp *interp,
                             int argc, char *argv[]);
@@ -242,41 +243,22 @@ vtkKWBWidgets::~vtkKWBWidgets()
 int vtkKWBWidgets::CreatePhoto(Tcl_Interp* interp, char *name, 
                                 unsigned char *data, int width, int height)
 {
-  Tk_PhotoHandle photo;
-  Tk_PhotoImageBlock block;
-
   ostrstream command;
   command << "image create photo " << name << " -height "
           << height << " -width " << width << ends;
   if (Tcl_GlobalEval(interp, command.str()) != TCL_OK)
     {
-    vtkGenericWarningMacro(<< "Unable to create image. Error:" 
-    << interp->result);
+    vtkGenericWarningMacro(<< "Unable to create image: " << interp->result);
     command.rdbuf()->freeze(0);     
     return VTK_ERROR;
     }
   command.rdbuf()->freeze(0);     
-  
-  block.width = width;
-  block.height = height;
-  block.pixelSize = 3;
-  block.pitch = block.width*block.pixelSize;
-  block.offset[0] = 0;
-  block.offset[1] = 1;
-  block.offset[2] = 2;
-  block.pixelPtr = data;
 
-  photo = Tk_FindPhoto(interp, name);
-  if (!photo)
+  if (!vtkKWTkUtilities::UpdatePhoto(interp, name, data, width, height, 3))
     {
-    vtkGenericWarningMacro("error looking up color ramp image");
-    return VTK_ERROR;
-    }  
-#if (TK_MAJOR_VERSION == 8) && (TK_MINOR_VERSION >= 4)
-  Tk_PhotoPutBlock(photo, &block, 0, 0, block.width, block.height, TK_PHOTO_COMPOSITE_SET);
-#else
-  Tk_PhotoPutBlock(photo, &block, 0, 0, block.width, block.height);
-#endif
+    vtkGenericWarningMacro(<< "Error updating Tk photo " << name);
+    }
+  
   return VTK_OK;
 
 }

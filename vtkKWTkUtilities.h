@@ -1,10 +1,10 @@
 /*=========================================================================
 
   Program:   Visualization Toolkit
-  Module:    $RCSfile: vtkKWImageLabel.h,v $
+  Module:    $RCSfile: vtkKWTkUtilities.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-09 21:55:12 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2002-08-09 21:57:04 $
+  Version:   $Revision: 1.1 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,52 +39,63 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =========================================================================*/
-// .NAME vtkKWImageLabel - image label widget
+// .NAME vtkKWTkUtilities - class that supports basic Tk functions
 // .SECTION Description
-// A simple subclass of the label widget which holds image. The image
-// can have transparency. It has to be defined as vtkKWIcon or
-// as array of unsigned char values, four per pixel (RGBA).
+// vtkKWTkUtilities provides methods to perform common Tk operations.
 
-#ifndef __vtkKWImageLabel_h
-#define __vtkKWImageLabel_h
+#ifndef __vtkKWTkUtilities_h
+#define __vtkKWTkUtilities_h
 
-#include "vtkKWLabel.h"
-class vtkKWApplication;
-class vtkKWIcon;
+#include "vtkObject.h"
 
-class VTK_EXPORT vtkKWImageLabel : public vtkKWLabel
+class vtkImageData;
+struct Tcl_Interp;
+
+class VTK_EXPORT vtkKWTkUtilities : public vtkObject
 {
 public:
-  static vtkKWImageLabel* New();
-  vtkTypeRevisionMacro(vtkKWImageLabel,vtkKWLabel);
-  void PrintSelf(ostream& os, vtkIndent indent);
+  static vtkKWTkUtilities* New();
+  vtkTypeRevisionMacro(vtkKWTkUtilities,vtkObject);
 
-  // Description:
-  // Create a Tk widget
-  virtual void Create(vtkKWApplication *app, const char *args);
+  // Get RGB component for color (given a window)
+  //BTX  
+  static void GetRGBColor(Tcl_Interp *interp,
+                          const char *window, 
+                          const char *color, 
+                          int *rr, int *gg, int *bb);
+  //ETX
 
-  // Description:
-  // Set image data (either using icon, or pixel data).
-  void SetImageData(vtkKWIcon *icon);
-  void SetImageData(const unsigned char* data, int width, int height, int pixel_size = 4);
+  // Get background color of window/widget
+  //BTX  
+  static void GetBackgroundColor(Tcl_Interp *interp,
+                                 const char *window, 
+                                 int *r, int *g, int *b);
+  //ETX
   
-protected:
-  vtkKWImageLabel();
-  ~vtkKWImageLabel();
+  // Update a photo given a pixel structure. 
+  // If RGBA (pixel_size > 3), blend pixels with background color of
+  // the blend_with_name widget (otherwise 0.5, 0.5, 0.5 gray)
+  //BTX  
+  static int UpdatePhoto(Tcl_Interp *interp,
+                         const char *photo_name,
+                         const unsigned char *pixels, 
+                         int width, int height,
+                         int pixel_size,
+                         const char *blend_with_name = 0);
 
-  // Description:
-  // Set and get the TK name of the image.
-  vtkSetStringMacro(ImageDataLabel);
-  vtkGetStringMacro(ImageDataLabel);
+  static int UpdatePhoto(Tcl_Interp *interp,
+                         const char *photo_name,
+                         vtkImageData *image, 
+                         const char *blend_with_name = 0);
+  //ETX
+
+protected:
+  vtkKWTkUtilities() {};
+  ~vtkKWTkUtilities() {};
 
 private:
-  char *ImageDataLabel;
-
-  vtkKWImageLabel(const vtkKWImageLabel&); // Not implemented
-  void operator=(const vtkKWImageLabel&); // Not implemented
+  vtkKWTkUtilities(const vtkKWTkUtilities&); // Not implemented
+  void operator=(const vtkKWTkUtilities&); // Not implemented
 };
 
-
 #endif
-
-
