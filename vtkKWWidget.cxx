@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-14 15:42:31 $
-  Version:   $Revision: 1.67 $
+  Date:      $Date: 2003-04-23 20:58:42 $
+  Version:   $Revision: 1.68 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,7 +52,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.67 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.68 $");
 
 int vtkKWWidgetCommand(ClientData cd, Tcl_Interp *interp,
                        int argc, char *argv[]);
@@ -300,7 +300,7 @@ char* vtkKWWidget::CreateCommand(vtkKWObject* CalledObject, const char * Command
 {
   ostrstream event;
   event << this->GetWidgetName() << " configure -command {" 
-        << CalledObject->GetTclName() 
+        << (CalledObject?CalledObject->GetTclName():"")
         << " " << CommandString << "} " << ends;
 
   return event.str();
@@ -346,7 +346,7 @@ void vtkKWWidget::SerializeRevision(ostream& os, vtkIndent indent)
 {
   this->Superclass::SerializeRevision(os,indent);
   os << indent << "vtkKWWidget ";
-  this->ExtractRevision(os,"$Revision: 1.67 $");
+  this->ExtractRevision(os,"$Revision: 1.68 $");
 }
 
 //----------------------------------------------------------------------------
