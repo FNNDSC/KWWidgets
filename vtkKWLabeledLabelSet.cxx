@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledLabelSet.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-15 05:09:32 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2003-02-21 22:36:12 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -43,7 +43,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWLabeledLabelSet.h"
 
 #include "vtkKWApplication.h"
-#include "vtkKWLabel.h"
+#include "vtkKWImageLabel.h"
 #include "vtkKWLabeledLabel.h"
 #include "vtkKWTkUtilities.h"
 #include "vtkLinkedList.txx"
@@ -53,7 +53,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //------------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWLabeledLabelSet);
-vtkCxxRevisionMacro(vtkKWLabeledLabelSet, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWLabeledLabelSet, "$Revision: 1.3 $");
 
 int vtkvtkKWLabeledLabelSetCommand(ClientData cd, Tcl_Interp *interp,
                                   int argc, char *argv[]);

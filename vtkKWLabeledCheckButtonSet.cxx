@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledCheckButtonSet.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 16:04:49 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2003-02-21 22:36:12 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -43,12 +43,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWLabeledCheckButtonSet.h"
 
 #include "vtkKWCheckButtonSet.h"
-#include "vtkKWLabel.h"
+#include "vtkKWImageLabel.h"
 #include "vtkObjectFactory.h"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLabeledCheckButtonSet);
-vtkCxxRevisionMacro(vtkKWLabeledCheckButtonSet, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWLabeledCheckButtonSet, "$Revision: 1.4 $");
 
 int vtkKWLabeledCheckButtonSetCommand(ClientData cd, Tcl_Interp *interp,
                                       int argc, char *argv[]);

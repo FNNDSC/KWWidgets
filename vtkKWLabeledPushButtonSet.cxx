@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledPushButtonSet.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 16:57:51 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2003-02-21 22:36:12 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -42,13 +42,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkKWLabeledPushButtonSet.h"
 
+#include "vtkKWImageLabel.h"
 #include "vtkKWPushButtonSet.h"
-#include "vtkKWLabel.h"
 #include "vtkObjectFactory.h"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLabeledPushButtonSet);
-vtkCxxRevisionMacro(vtkKWLabeledPushButtonSet, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWLabeledPushButtonSet, "$Revision: 1.3 $");
 
 int vtkKWLabeledPushButtonSetCommand(ClientData cd, Tcl_Interp *interp,
                                       int argc, char *argv[]);

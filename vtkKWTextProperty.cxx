@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTextProperty.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-14 22:41:52 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2003-02-21 22:36:12 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,7 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWChangeColorButton.h"
 #include "vtkKWCheckButton.h"
 #include "vtkKWCheckButtonSet.h"
-#include "vtkKWLabel.h"
+#include "vtkKWImageLabel.h"
 #include "vtkKWLabeledCheckButtonSet.h"
 #include "vtkKWLabeledOptionMenu.h"
 #include "vtkKWLabeledPushButtonSet.h"
@@ -128,7 +128,7 @@ static unsigned char image_copy[] =
 
 // ----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTextProperty);
-vtkCxxRevisionMacro(vtkKWTextProperty, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWTextProperty, "$Revision: 1.17 $");
 
 int vtkKWTextPropertyCommand(ClientData cd, Tcl_Interp *interp,
                       int argc, char *argv[]);

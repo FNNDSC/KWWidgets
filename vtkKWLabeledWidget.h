@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledWidget.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-15 23:04:22 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2003-02-21 22:35:21 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -52,7 +52,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWWidget.h"
 
 class vtkKWApplication;
-class vtkKWLabel;
+class vtkKWImageLabel;
 
 class VTK_EXPORT vtkKWLabeledWidget : public vtkKWWidget
 {
@@ -67,7 +67,7 @@ public:
 
   // Description:
   // Get the internal label
-  vtkGetObjectMacro(Label, vtkKWLabel);
+  vtkGetObjectMacro(Label, vtkKWImageLabel);
 
   // Description:
   // Convenience method to set the contents label.
@@ -94,7 +94,7 @@ protected:
   vtkKWLabeledWidget();
   ~vtkKWLabeledWidget();
 
-  vtkKWLabel      *Label;
+  vtkKWImageLabel      *Label;
 
   int ShowLabel;
 

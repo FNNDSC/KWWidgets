@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledOptionMenu.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-16 19:53:19 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2003-02-21 22:36:12 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -42,13 +42,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkKWLabeledOptionMenu.h"
 
-#include "vtkKWLabel.h"
+#include "vtkKWImageLabel.h"
 #include "vtkKWOptionMenu.h"
 #include "vtkObjectFactory.h"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLabeledOptionMenu);
-vtkCxxRevisionMacro(vtkKWLabeledOptionMenu, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWLabeledOptionMenu, "$Revision: 1.7 $");
 
 int vtkKWLabeledOptionMenuCommand(ClientData cd, Tcl_Interp *interp,
                                   int argc, char *argv[]);
