@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCallbackSpecification.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-05-22 05:50:21 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2000-06-30 21:22:32 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,6 +46,8 @@ vtkKWCallbackSpecification::vtkKWCallbackSpecification()
 vtkKWCallbackSpecification::~vtkKWCallbackSpecification()
 {
   this->SetNextCallback(NULL);
+  delete [] this->CommandString;
+  delete [] this->EventString;
 }
 
 vtkKWCallbackSpecification* vtkKWCallbackSpecification::New()
