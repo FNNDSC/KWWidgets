@@ -19,7 +19,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWProgressGauge );
-vtkCxxRevisionMacro(vtkKWProgressGauge, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWProgressGauge, "$Revision: 1.17 $");
 
 int vtkKWProgressGaugeCommand(ClientData cd, Tcl_Interp *interp,
                               int argc, char *argv[]);
@@ -42,7 +42,7 @@ vtkKWProgressGauge::~vtkKWProgressGauge()
   this->BarColor = NULL;
 }
 
-void vtkKWProgressGauge::Create(vtkKWApplication *app, char *args)
+void vtkKWProgressGauge::Create(vtkKWApplication *app, const char *args)
 {
   const char *wname;
 
