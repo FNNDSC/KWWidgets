@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.h,v $
   Language:  C++
-  Date:      $Date: 2001-12-20 16:00:20 $
-  Version:   $Revision: 1.23 $
+  Date:      $Date: 2002-01-03 22:48:05 $
+  Version:   $Revision: 1.24 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -295,6 +295,8 @@ public:
   // sheet entry
   vtkSetStringMacro( MenuPropertiesName );
   vtkGetStringMacro( MenuPropertiesName );
+  vtkSetMacro( MenuPropertiesUnderline, int );
+  vtkGetMacro( MenuPropertiesUnderline, int );
 
   // Description:
   // Options to enable / disable UI elements. Should be set before the
@@ -378,6 +380,7 @@ protected:
   int              RenderState;
   
   char             *MenuPropertiesName;
+  int              MenuPropertiesUnderline;
   
   int              Printing;
   
