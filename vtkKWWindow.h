@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2001-10-17 22:13:04 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2001-10-31 22:13:43 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -172,7 +172,12 @@ public:
   vtkSetClampMacro( SupportHelp, int, 0, 1 );
   vtkGetMacro( SupportHelp, int );
   vtkBooleanMacro( SupportHelp, int );
-  
+
+  // Description:
+  // Class of the window. Passed to the toplevel command.
+  vtkSetStringMacro(WindowClass);
+  vtkGetStringMacro(WindowClass);
+
 protected:
   vtkKWWindow();
   ~vtkKWWindow();
@@ -205,6 +210,7 @@ protected:
   vtkKWMenu *PageMenu;
 
   int SupportHelp;
+  char *WindowClass;
 };
 
 

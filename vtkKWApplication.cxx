@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-10-17 15:25:00 $
-  Version:   $Revision: 1.33 $
+  Date:      $Date: 2001-10-31 22:13:42 $
+  Version:   $Revision: 1.34 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -43,6 +43,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWWindowCollection.h"
 #ifdef _WIN32
 #include <htmlhelp.h>
+#include "vtkKWRegisteryUtilities.h"
 #endif
 #include "vtkKWObject.h"
 #include "vtkTclUtil.h"
@@ -390,21 +391,6 @@ void vtkKWApplication::Start(int argc, char *argv[])
 }
 
 
-#ifdef _WIN32
-static void ReadAValue(HKEY hKey,char *val,char *key, char *adefault)
-{
-  DWORD dwType, dwSize;
-  
-  dwType = REG_SZ;
-  dwSize = 1023;
-  if(RegQueryValueEx(hKey,key, NULL, &dwType, 
-                     (BYTE *)val, &dwSize) != ERROR_SUCCESS)
-    {
-    strcpy(val,adefault);
-    }
-}
-#endif
-
 void vtkKWApplication::DisplayHelp()
 {
 #ifdef _WIN32
@@ -416,7 +402,7 @@ void vtkKWApplication::DisplayHelp()
   if(RegOpenKeyEx(HKEY_CURRENT_USER, fkey, 
 		  0, KEY_READ, &hKey) == ERROR_SUCCESS)
     {
-    ReadAValue(hKey, loc,"Loc","");
+    vtkKWRegisteryUtilities::ReadAValue(hKey, loc,"Loc","");
     RegCloseKey(hKey);
     sprintf(temp,"%s/%s.chm::/Introduction/Introduction.htm",
             loc,this->ApplicationName);
