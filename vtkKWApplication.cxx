@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-16 19:40:17 $
-  Version:   $Revision: 1.46 $
+  Date:      $Date: 2002-01-16 22:36:32 $
+  Version:   $Revision: 1.47 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -328,8 +328,13 @@ void vtkKWApplication::Exit()
   return;
 }
     
+/* The following constants define internal paths (not on disk)   */
+/* for Tcl/Tk to use when looking for initialization scripts     */
+/* which are in this file. They do not represent any hardwired   */
+/* paths                                                         */
 #define ET_TCL_LIBRARY "/ThisIsNotAPath/Tcl/lib/tcl8.2"
 #define ET_TK_LIBRARY "/ThisIsNotAPath/Tcl/lib/tk8.2"
+
 Tcl_Interp *vtkKWApplication::InitializeTcl(int argc, char *argv[])
 {
   Tcl_Interp *interp;
