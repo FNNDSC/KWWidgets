@@ -26,7 +26,7 @@
 #include "vtkPiecewiseFunction.h"
 
 vtkStandardNewMacro(vtkKWPiecewiseFunctionEditor);
-vtkCxxRevisionMacro(vtkKWPiecewiseFunctionEditor, "$Revision: 1.20 $");
+vtkCxxRevisionMacro(vtkKWPiecewiseFunctionEditor, "$Revision: 1.21 $");
 
 
 int vtkKWPiecewiseFunctionEditorCommand(ClientData cd, Tcl_Interp *interp,
@@ -448,7 +448,7 @@ void vtkKWPiecewiseFunctionEditor::CreateValueEntry(
     this->ValueEntry->SetParent(this->TopRightFrame);
     this->ValueEntry->Create(app, "");
     this->ValueEntry->GetWidget()->SetWidth(6);
-    this->ValueEntry->SetLabel("V:");
+    this->ValueEntry->GetLabel()->SetText("V:");
 
     this->UpdatePointEntries(this->SelectedPoint);
 
