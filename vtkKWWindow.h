@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 23:43:00 $
-  Version:   $Revision: 1.39 $
+  Date:      $Date: 2002-02-15 20:42:49 $
+  Version:   $Revision: 1.40 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -213,6 +213,12 @@ public:
   vtkGetStringMacro(ScriptType);
 
   // Description:
+  // Use or not use the Properties menu. By default is set to use.
+  vtkSetMacro(UseMenuProperties, int);
+  vtkBooleanMacro(UseMenuProperties, int);
+  vtkGetMacro(UseMenuProperties, int);
+
+  // Description:
   // Call render on all views
   void Render();
 
@@ -291,6 +297,7 @@ protected:
   int PromptBeforeClose;
 
   int InExit;
+  int UseMenuProperties;
 
   vtkKWPointerArray *RecentFiles;
 private:

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-02-07 23:42:58 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2002-02-15 20:42:48 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -188,9 +188,12 @@ void vtkKWComposite::CreateProperties()
 
 void vtkKWComposite::Deselect(vtkKWView *v)
 {
-  this->LastSelectedProperty = 
-    v->GetParentWindow()->GetMenuProperties()->GetRadioButtonValue(
-      v->GetParentWindow()->GetMenuProperties(),"Radio");
+  if ( v->GetParentWindow()->GetUseMenuProperties() )
+    {
+    this->LastSelectedProperty = 
+      v->GetParentWindow()->GetMenuProperties()->GetRadioButtonValue(
+	v->GetParentWindow()->GetMenuProperties(),"Radio");
+    }
 }
 
 void vtkKWComposite::Select(vtkKWView* /*v*/)
@@ -213,5 +216,5 @@ void vtkKWComposite::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWObject::SerializeRevision(os,indent);
   os << indent << "vtkKWComposite ";
-  this->ExtractRevision(os,"$Revision: 1.13 $");
+  this->ExtractRevision(os,"$Revision: 1.14 $");
 }
