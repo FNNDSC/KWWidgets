@@ -19,11 +19,11 @@
 #include "vtkcombobox.h"
 #include "vtkKWTkUtilities.h"
 
-#include <vtkTk.h>
+#include "vtkTk.h"
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWBWidgets );
-vtkCxxRevisionMacro(vtkKWBWidgets, "$Revision: 1.18 $");
+vtkCxxRevisionMacro(vtkKWBWidgets, "$Revision: 1.19 $");
 
 int vtkKWBWidgetsCommand(ClientData cd, Tcl_Interp *interp,
                             int argc, char *argv[]);
