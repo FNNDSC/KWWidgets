@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-28 19:37:41 $
-  Version:   $Revision: 1.54 $
+  Date:      $Date: 2002-01-30 22:29:40 $
+  Version:   $Revision: 1.55 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -424,6 +424,16 @@ void vtkKWApplication::DisplayHelp(vtkKWWindow* master)
   char loc[1024];
   sprintf(temp, "%i", this->GetApplicationKey());
   vtkKWRegisteryUtilities *reg = this->GetRegistery(temp);
+  if ( reg )
+    {
+    vtkKWMessageDialog *dlg = vtkKWMessageDialog::New();
+    dlg->SetMasterWindow(master);
+    dlg->Create(this,"");
+    dlg->SetText(
+      "Internal error... Cannot get the registery.");
+    dlg->Invoke();  
+    dlg->Delete();
+    }
   if ( reg->ReadValue( "Inst", "Loc", loc ) )
     {
     sprintf(temp,"%s/%s.chm::/Introduction/Introduction.htm",

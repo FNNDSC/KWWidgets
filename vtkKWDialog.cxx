@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-01-25 20:21:35 $
-  Version:   $Revision: 1.12 $
+  Date:      $Date: 2002-01-30 22:29:40 $
+  Version:   $Revision: 1.13 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -157,6 +157,11 @@ void vtkKWDialog::Create(vtkKWApplication *app, const char *args)
 		 this->MasterWindow->GetWidgetName());
     }
 
+}
+
+vtkKWWindow *vtkKWDialog::GetMasterWindow()
+{
+  return this->MasterWindow;
 }
 
 void vtkKWDialog::SetMasterWindow(vtkKWWindow* win)

@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWDialog.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-25 20:21:36 $
-  Version:   $Revision: 1.10 $
+  Date:      $Date: 2002-01-30 22:29:40 $
+  Version:   $Revision: 1.11 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -109,6 +109,7 @@ public:
   // window and will minimize with it (assuming that the windowing
   // system supports this)
   void SetMasterWindow(vtkKWWindow* win);
+  vtkKWWindow *GetMasterWindow();
 
 protected:
   // Description:
