@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2000-03-17 23:00:10 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2000-04-07 18:52:21 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -143,7 +143,7 @@ protected:
   vtkKWWindow(const vtkKWWindow&) {};
   void operator=(const vtkKWWindow&) {};
 
-  void CreateStatusImage();
+  virtual void CreateStatusImage();
   int NumberOfMRUFiles;
   vtkKWView *SelectedView;
   vtkKWViewCollection *Views;
