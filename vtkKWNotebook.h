@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-17 03:20:01 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-07-10 18:29:08 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -65,7 +65,7 @@ public:
 
   // Description:
   // Set/Get the number of pages in the notebook.
-  void AddPage(char *title);
+  void AddPage(const char *title);
   vtkGetMacro(NumberOfPages,int);
   
   // Description:
