@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplashScreen.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 17:04:42 $
-  Version:   $Revision: 1.8 $
+  Date:      $Date: 2003-01-18 00:01:24 $
+  Version:   $Revision: 1.9 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -46,7 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //-----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWSplashScreen );
-vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.9 $");
 
 //-----------------------------------------------------------------------------
 vtkKWSplashScreen::vtkKWSplashScreen()
@@ -96,6 +96,8 @@ void vtkKWSplashScreen::Create(vtkKWApplication *app, const char *args)
   this->Script("pack %s -side top -fill both -expand y",
                this->Canvas->GetWidgetName());
 
+  this->Canvas->SetBind(this, "<ButtonPress>", "Hide");
+
   // Insert the image
 
   this->Script("%s create image 0 0 -tags image -anchor nw", 
@@ -138,17 +140,6 @@ void vtkKWSplashScreen::UpdateProgressMessagePosition()
                  (ProgressMessageVerticalOffset < 0 
                   ? height + ProgressMessageVerticalOffset 
                   : ProgressMessageVerticalOffset));
-    }
-}
-
-//-----------------------------------------------------------------------------
-void vtkKWSplashScreen::ShowWithBind()
-{
-  this->SetProgressMessage(0);
-  this->Show();
-  if (this->Canvas)
-    {
-    this->Canvas->SetBind(this, "<ButtonPress>", "Hide");
     }
 }
 
