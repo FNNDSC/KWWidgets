@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScrollableFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-26 20:07:57 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2002-03-31 19:20:09 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -136,7 +136,7 @@ void vtkKWScrollableFrame::CalculateBBox(vtkKWWidget* canvas, char* name,
 void vtkKWScrollableFrame::ResizeFrame()
 {
   this->Script("winfo width %s", this->Frame->GetWidgetName());
-  int widthFrame = this->GetIntegerResult(this->Application);
+  //int widthFrame = this->GetIntegerResult(this->Application);
 
   int bbox[4];
   this->CalculateBBox(this->Canvas, "all", bbox);
@@ -148,7 +148,7 @@ void vtkKWScrollableFrame::ResizeFrame()
 void vtkKWScrollableFrame::ResizeCanvas()
 {
   this->Script("winfo width %s", this->Frame->GetWidgetName());
-  int widthFrame = this->GetIntegerResult(this->Application);
+  //int widthFrame = this->GetIntegerResult(this->Application);
 
   int bbox[4], heightCanvas, heightFrame;
 
