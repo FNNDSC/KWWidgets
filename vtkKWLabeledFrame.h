@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.h,v $
   Language:  C++
-  Date:      $Date: 2002-09-13 18:40:57 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2002-09-13 20:09:59 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -118,6 +118,12 @@ public:
   static void SetLabelCaseToLowercaseFirst() 
     {vtkKWLabeledFrame::SetLabelCase(VTK_KW_LABEL_CASE_LOWERCASE_FIRST);};
 
+  // Description:
+  // Globally enable or disable bold label.
+  // By default it is globally disabled.
+  static void BoldLabelOn();
+  static void BoldLabelOff();
+
 protected:
   vtkKWLabeledFrame();
   ~vtkKWLabeledFrame();
@@ -132,6 +138,7 @@ protected:
   vtkKWIcon       *IconData;
   int Displayed;
   static int AllowShowHide;
+  static int BoldLabel;
   static int LabelCase;
   int ShowHideFrame;
 private:

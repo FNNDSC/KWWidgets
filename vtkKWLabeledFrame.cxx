@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-13 18:49:26 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2002-09-13 20:09:59 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -39,17 +39,19 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =========================================================================*/
-#include "vtkKWApplication.h"
 #include "vtkKWLabeledFrame.h"
-#include "vtkObjectFactory.h"
-#include "vtkKWImageLabel.h"
+
+#include "vtkKWApplication.h"
 #include "vtkKWIcon.h"
+#include "vtkKWImageLabel.h"
+#include "vtkKWTkUtilities.h"
+#include "vtkObjectFactory.h"
 
 #include <ctype.h>
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabeledFrame );
-vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.15 $");
+vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.16 $");
 
 
 
@@ -180,11 +182,22 @@ void vtkKWLabeledFrame::Create(vtkKWApplication *app)
   this->Script("frame %s -borderwidth 0 -relief flat",wname);
 
   this->Border->Create(app,"frame","-height 10 -borderwidth 0 -relief flat");
+
   this->Groove->Create(app,"frame","-borderwidth 2 -relief groove");
+
   this->Border2->Create(app,"frame","-height 10 -borderwidth 0 -relief flat");
+
   this->Frame->Create(app,"frame","-borderwidth 0 -relief flat");
+
   this->LabelFrame->Create(app,"frame","-borderwidth 0 -relief flat");
+
   this->Label->Create(app,"label","");
+  if (vtkKWLabeledFrame::BoldLabel)
+    {
+    vtkKWTkUtilities::ChangeFontToBold(this->Application->GetMainInterp(),
+                                       this->Label->GetWidgetName());
+    }
+
   this->Icon->Create(app,"");
   this->Icon->SetImageData(this->IconData);
   this->Icon->SetBalloonHelpString("Shrink or expand the frame");
@@ -239,6 +252,18 @@ void vtkKWLabeledFrame::AllowShowHideOn()
 void vtkKWLabeledFrame::AllowShowHideOff() 
 { 
   vtkKWLabeledFrame::AllowShowHide = 0; 
+}
+
+//----------------------------------------------------------------------------
+int vtkKWLabeledFrame::BoldLabel = 0;
+
+void vtkKWLabeledFrame::BoldLabelOn() 
+{ 
+  vtkKWLabeledFrame::BoldLabel = 1; 
+}
+void vtkKWLabeledFrame::BoldLabelOff() 
+{ 
+  vtkKWLabeledFrame::BoldLabel = 0; 
 }
 
 //----------------------------------------------------------------------------
