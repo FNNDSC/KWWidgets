@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWUserInterfaceManager.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-03 13:59:56 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-12-10 20:02:39 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -90,6 +90,11 @@ public:
   // Enable/Disable this interface. This propagates SetEnabled() calls to all
   // panels.
   virtual void SetEnabled(int);
+
+  // Description:
+  // Iterate over all panels and call Update() for each one. This will refresh
+  // the panels (provided that Update() has been reimplemented).
+  virtual void Update();
 
   // Description:
   // Add a panel to the manager.
