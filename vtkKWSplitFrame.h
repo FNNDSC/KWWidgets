@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWSplitFrame.h,v $
   Language:  C++
-  Date:      $Date: 2001-08-22 14:11:08 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2001-08-23 12:48:20 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -70,6 +70,12 @@ public:
   vtkGetMacro(Frame2Width, int);
   void SetFrame1Width(int minWidth);
 
+  // Description:
+  // This sets the separator width.  if the width is 0, then
+  // the two frames cannot be adjusted by the user.
+  void SetSeparatorWidth(int width);
+  vtkGetMacro(SeparatorWidth, int);
+
   // Callbacks used internally to adjust the widths,
   void DragCallback();
   void ConfigureCallback();
@@ -87,6 +93,7 @@ protected:
   int Width;
   int Frame1Width;
   int Frame2Width;
+  int SeparatorWidth;
 
   int Frame1MinimumWidth;
   int Frame2MinimumWidth;
