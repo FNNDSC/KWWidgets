@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-10-20 19:04:10 $
-  Version:   $Revision: 1.26 $
+  Date:      $Date: 2000-10-31 18:50:33 $
+  Version:   $Revision: 1.27 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -278,26 +278,41 @@ Tcl_Interp *vtkKWApplication::InitializeTcl(int argc, char *argv[])
 {
   Tcl_Interp *interp;
   
-  putenv("TCL_LIBRARY=" ET_TCL_LIBRARY);
-
-  if (vtkKWApplication::WidgetVisibility)
+  if (vtkKWApplication::WidgetVisibility == 0)
     {
-    putenv("TK_LIBRARY=" ET_TK_LIBRARY);
-    }
+    interp = Tcl_CreateInterp();
+    // vtkKWApplication depends on this variable being set.
+    Et_Interp = interp;
+    
+    // initialize VTK
+    Vtktcl_Init(interp);
+  
+    if (Tcl_Init(interp) == TCL_ERROR) 
+      {
+      cerr << "Init Tcl error\n";
+      }
+    //if (Vtkkwwidgetstcl_Init(interp) == TCL_ERROR) 
+    //  {
+    //  cerr << "Init KWWidgets error\n";
+    //  }
+
+    return interp;
+    }  
+  
+  putenv("TCL_LIBRARY=" ET_TCL_LIBRARY);
+  putenv("TK_LIBRARY=" ET_TK_LIBRARY);
   
   Tcl_FindExecutable(argv[0]);
   interp = Tcl_CreateInterp();
   Tcl_SetVar(interp, "tcl_interactive", "0", TCL_GLOBAL_ONLY);
+
   Et_DoInit(interp);
   
   // initialize VTK
   Vtktcl_Init(interp);
-  
-  if (vtkKWApplication::WidgetVisibility)
-    {
-    // initialize Widgets
-    Vtkkwwidgetstcl_Init(interp);
-    }
+
+  // initialize Widgets
+  Vtkkwwidgetstcl_Init(interp);
   
   return interp;
 }
