@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWChangeColorButton.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-18 04:20:05 $
-  Version:   $Revision: 1.11 $
+  Date:      $Date: 2002-12-02 14:58:25 $
+  Version:   $Revision: 1.12 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -74,8 +74,7 @@ public:
   // Set the label to be used on the button
   vtkSetStringMacro(Text);
   vtkGetStringMacro(Text);
-
-  
+ 
   // Description:
   // Handle button press and release events
   void AButtonPress(int x, int y);
@@ -94,14 +93,18 @@ public:
   virtual void SerializeToken(istream& is,const char token[1024]);
   virtual void SerializeRevision(ostream& os, vtkIndent indent);
 
+  // Description:
+  // Access to the label
+  vtkGetObjectMacro(Label, vtkKWLabel);
+
   void        ChangeColor();
 
 protected:
   vtkKWChangeColorButton();
   ~vtkKWChangeColorButton();
 
-  vtkKWLabel *Label1;
-  vtkKWFrame *Label2;
+  vtkKWLabel *Label;
+  vtkKWFrame *ColorFrame;
   char        *Command;
   char        *Text;
   float       Color[3];
