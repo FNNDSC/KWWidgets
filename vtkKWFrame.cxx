@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-03-31 20:13:40 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-04-03 18:02:17 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -97,7 +97,7 @@ void vtkKWFrame::Create(vtkKWApplication *app, int scrollable)
     this->Canvas = vtkKWWidget::New();
     this->ScrollBar = vtkKWWidget::New();
     this->Canvas->SetParent(this);
-    this->Canvas->Create(this->Application, "canvas", " -height 800"); 
+    this->Canvas->Create(this->Application, "canvas", " -height 800 -highlightthickness 0"); 
     
     ostrstream command;
     this->ScrollBar->SetParent(this);
