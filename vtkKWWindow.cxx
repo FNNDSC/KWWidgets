@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-11-08 17:47:28 $
-  Version:   $Revision: 1.129 $
+  Date:      $Date: 2002-11-12 22:28:25 $
+  Version:   $Revision: 1.130 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -70,7 +70,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define VTK_KW_WINDOW_GEOMETRY_REG_KEY "WindowGeometry"
 #define VTK_KW_WINDOW_FRAME1_SIZE_REG_KEY "WindowFrame1Size"
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.129 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.130 $");
 vtkCxxSetObjectMacro(vtkKWWindow, PropertiesParent, vtkKWWidget);
 
 class vtkKWWindowMenuEntry
@@ -1300,7 +1300,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.129 $");
+  this->ExtractRevision(os,"$Revision: 1.130 $");
 }
 
 int vtkKWWindow::ExitDialog()
@@ -1648,7 +1648,7 @@ void vtkKWWindow::SetTitle (const char* _arg)
 
   this->Modified();
 
-  if (this->Application)
+  if (this->Application && this->Title)
     {
     this->Script("wm title %s {%s}", this->GetWidgetName(), this->GetTitle());
     }
