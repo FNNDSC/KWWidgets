@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:34 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2002-01-28 19:37:42 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -69,6 +69,12 @@ public:
   // Get the vtkKWWidget for the internal frame.
   vtkKWWidget *GetFrame() {return this->Frame;};
 
+  // Description:
+  // Show or hide the frame.
+  void ShowHideFrame();
+  static void AllowShowHideOn();
+  static void AllowShowHideOff();
+
 protected:
   vtkKWLabeledFrame();
   ~vtkKWLabeledFrame();
@@ -80,6 +86,9 @@ protected:
   vtkKWWidget *Frame;
   vtkKWWidget *Groove;
   vtkKWWidget *Label;
+  vtkKWWidget *Icon;
+  int Displayed;
+  static int AllowShowHide;
 };
 
 

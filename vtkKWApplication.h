@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-01-28 13:54:56 $
-  Version:   $Revision: 1.29 $
+  Date:      $Date: 2002-01-28 19:37:41 $
+  Version:   $Revision: 1.30 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -135,6 +135,7 @@ public:
   void BalloonHelpDisplay(vtkKWWidget *widget);
   void BalloonHelpCancel();
   void BalloonHelpWithdraw();
+  void SetBalloonHelpWidget(vtkKWWidget *widget);
 
   // Description:
   // Set the delay for the balloon help in seconds.
@@ -160,11 +161,19 @@ public:
 
 //BTX
   // Description:
-  // Return the Registry object. It is created on first use
+  // Return the Registery object. It is created on first use
   // and deleted on exiting the application.
   vtkKWRegisteryUtilities *GetRegistery( const char* toplevel);
   vtkKWRegisteryUtilities *GetRegistery( );
 //ETX
+
+  // Description:
+  // Set or get the current registery level. If the called
+  // registery level is lower than current one, the operation is 
+  // successfull. Registery level -1 means to ignore all the 
+  // registery operations.
+  vtkSetClampMacro(RegisteryLevel, int, -1, 10);
+  vtkGetMacro(RegisteryLevel, int);
 
   // Description:
   // This value will be returned by application1 at exit.
@@ -202,6 +211,7 @@ protected:
   ofstream *TraceFile;
 
   vtkKWRegisteryUtilities *Registery;
+  int RegisteryLevel;
   int BalloonHelpDelay;
 };
 
