@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2002-11-26 21:12:36 $
-  Version:   $Revision: 1.18 $
+  Date:      $Date: 2002-12-04 22:09:52 $
+  Version:   $Revision: 1.19 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -100,6 +100,10 @@ class VTK_EXPORT vtkKWEvent
     DiffuseChangedEvent,
     SpecularChangedEvent,
     SpecularPowerChangedEvent,
+    LightPositionChangedEvent,
+    LightVisibilityChangedEvent,
+    LightColorChangedEvent,
+    LightIntensityChangedEvent,
     TransferFunctionsChangedEvent,
     TransferFunctionsChangingEvent,
     ContourAnnotationAddEvent,

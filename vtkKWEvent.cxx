@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-11-26 21:12:36 $
-  Version:   $Revision: 1.15 $
+  Date:      $Date: 2002-12-04 22:09:52 $
+  Version:   $Revision: 1.16 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -91,6 +91,10 @@ static const char *vtkKWEventStrings[] = {
   "DiffuseChangedEvent",
   "SpecularChangedEvent",
   "SpecularPowerChangedEvent",
+  "LightPositionChangedEvent",
+  "LightVisibilityChangedEvent",
+  "LightColorChangedEvent",
+  "LightIntensityChangedEvent",
   "TransferFunctionsChangedEvent",
   "TransferFunctionsChangingEvent",
   "ContourAnnotationAddEvent",
