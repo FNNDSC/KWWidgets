@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWExtent.h,v $
   Language:  C++
-  Date:      $Date: 2003-01-13 04:49:43 $
-  Version:   $Revision: 1.13 $
+  Date:      $Date: 2003-01-13 05:10:54 $
+  Version:   $Revision: 1.14 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -111,6 +111,12 @@ public:
   virtual void SetDisableCommands(int);
   vtkBooleanMacro(DisableCommands, int);
 
+  // Description:
+  // Pack the min and max scale together on the same line.
+  virtual void SetPackMinMaxTogether(int);
+  vtkBooleanMacro(PackMinMaxTogether, int);
+  vtkGetMacro(PackMinMaxTogether, int);
+
 protected:
   vtkKWExtent();
   ~vtkKWExtent();
@@ -123,6 +129,12 @@ protected:
   vtkKWScale  *YMaxScale;
   vtkKWScale  *ZMinScale;
   vtkKWScale  *ZMaxScale;
+
+  int PackMinMaxTogether;
+
+  // Pack or repack the widget
+
+  virtual void Pack();
 
   // Update the enable state. This should propagate similar calls to the
   // internal widgets.
