@@ -3,8 +3,8 @@
   Program:   Widgets
   Module:    $RCSfile: vtkKWEvent.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-19 15:36:22 $
-  Version:   $Revision: 1.21 $
+  Date:      $Date: 2002-12-27 22:33:12 $
+  Version:   $Revision: 1.22 $
   
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -99,6 +99,7 @@ class VTK_EXPORT vtkKWEvent
     LightIntensityChangedEvent,
     LightPositionChangedEvent,
     LightVisibilityChangedEvent,
+    LightboxOrientationChangedEvent,
     LightboxResolutionChangedEvent,
     MiddleMouseOptionChangedEvent,
     MultiPassStillRenderEndEvent,
@@ -130,6 +131,7 @@ class VTK_EXPORT vtkKWEvent
     WindowLevelChangedImageCompositeEvent,
     WindowLevelChangingEvent,
     WindowLevelChangingImageCompositeEvent,
+    WindowLevelResetEvent,
     // PV
     ErrorMessageEvent,
     InitializeTraceEvent,
