@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWidgetCollection.h,v $
   Language:  C++
-  Date:      $Date: 2000-01-18 19:59:35 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2000-02-17 03:58:11 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -25,9 +25,10 @@ PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE IS PROVIDED ON AN
 MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 =========================================================================*/
-// .NAME vtkKWWidget
+// .NAME vtkKWWidgetCollection - a collection of widgets
 // .SECTION DescriptionCollection
-// A simple collection class for holding vtkKWWidgets.
+// vtkKWWidgetCollection represents and provides methods to manipulate a list 
+// of widgets. The list is unsorted and duplicate entries are not prevented.
 
 #ifndef __vtkKWWidgetC_h
 #define __vtkKWWidgetC_h
