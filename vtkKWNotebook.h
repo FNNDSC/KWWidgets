@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWNotebook.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-17 21:46:44 $
-  Version:   $Revision: 1.22 $
+  Date:      $Date: 2003-01-17 17:03:18 $
+  Version:   $Revision: 1.23 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -217,7 +217,7 @@ public:
   // Some callback routines.
   void ScheduleResize();
   void Resize();
-  void PinPageToggle(int id);
+  void PinPageToggleCallback(int id);
   
 protected:
   vtkKWNotebook();
