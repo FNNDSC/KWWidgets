@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLoadSaveDialog.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-27 16:23:08 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2003-01-27 22:54:24 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLoadSaveDialog );
-vtkCxxRevisionMacro(vtkKWLoadSaveDialog, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWLoadSaveDialog, "$Revision: 1.18 $");
 
 vtkKWLoadSaveDialog::vtkKWLoadSaveDialog()
 {
@@ -119,6 +119,7 @@ int vtkKWLoadSaveDialog::Invoke()
     {
     this->SetFileName(path);
     this->GenerateLastPath(path);
+    res = 1;
     }
   else
     {
