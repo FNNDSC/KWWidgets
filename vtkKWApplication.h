@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2001-11-20 20:12:08 $
-  Version:   $Revision: 1.19 $
+  Date:      $Date: 2001-11-26 18:59:10 $
+  Version:   $Revision: 1.20 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -102,6 +102,7 @@ public:
   // Add a window to this application.
   void AddWindow(vtkKWWindow *w);
   vtkKWWindowCollection *GetWindows();
+  vtkKWWindow *GetMainWindow();
   
   // Description:
   // Set/Get the ApplicationName
@@ -152,6 +153,7 @@ public:
   // This can be esed to trace the actions of the user.
   // It only works when the TraceFile has been set.
   void AddTraceEntry(char *format, ...);
+  ofstream *GetTraceFile() {return this->TraceFile;}
 //ETX
 
 protected:
