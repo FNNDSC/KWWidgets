@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-07-03 15:15:14 $
-  Version:   $Revision: 1.44 $
+  Date:      $Date: 2002-07-03 23:05:40 $
+  Version:   $Revision: 1.45 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -104,6 +104,14 @@ public:
   virtual void DisplayAbout(vtkKWWindow *master);
 
   // Description:
+  // Set or get the ExitOnReturn flag. If this flag is set, then 
+  // the next tcl script will make application exit when return.
+  // Useful for tests. 
+  vtkSetClampMacro(ExitOnReturn, int, 0, 1);
+  vtkBooleanMacro(ExitOnReturn, int);
+  vtkGetMacro(ExitOnReturn, int);
+
+  // Description:
   // Add a window to this application.
   void AddWindow(vtkKWWindow *w);
   vtkKWWindowCollection *GetWindows();
@@ -124,6 +132,10 @@ public:
   void SetApplicationReleaseName(const char *);
   vtkGetStringMacro(ApplicationReleaseName);
   
+  // Description:
+  // Load script from a file. Resturn if script was successful.
+  int LoadScript(const char* filename);
+
 //BTX
   // Description:
   // A convienience method to invoke some tcl script code and
@@ -263,6 +275,8 @@ protected:
   int BalloonHelpDelay;
 
   int UseMessageDialogs;
+
+  int ExitOnReturn;
 
 private:
   vtkKWApplication(const vtkKWApplication&);   // Not implemented.
