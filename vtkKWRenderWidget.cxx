@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-01-07 19:30:30 $
-  Version:   $Revision: 1.17 $
+  Date:      $Date: 2003-01-08 06:27:06 $
+  Version:   $Revision: 1.18 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -58,7 +58,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.18 $");
 
 vtkKWRenderWidget::vtkKWRenderWidget()
 {
@@ -484,6 +484,12 @@ float* vtkKWRenderWidget::GetBackgroundColor()
 void vtkKWRenderWidget::Close()
 {
   this->RemoveBindings();
+
+  if (this->GetCornerAnnotation())
+    {
+    this->GetCornerAnnotation()->ClearAllTexts();
+    this->GetCornerAnnotation()->VisibilityOff();
+    }
 }
 
 void vtkKWRenderWidget::SetCornerAnnotationVisibility(int v)
