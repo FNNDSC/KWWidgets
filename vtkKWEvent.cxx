@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWEvent.cxx,v $
   Language:  C++
-  Date:      $Date: 2003-04-25 18:41:53 $
-  Version:   $Revision: 1.64 $
+  Date:      $Date: 2003-04-28 14:29:20 $
+  Version:   $Revision: 1.65 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -188,7 +188,6 @@ static const char *vtkKWEventStrings[] = {
   "WindowLayoutChangedEvent",
   "WindowLevelChangedEvent",
   "WindowLevelChangingEvent",
-  "WindowLevelEndEvent",
   "WindowLevelResetEvent",
   // PV
   "ErrorMessageEvent",
