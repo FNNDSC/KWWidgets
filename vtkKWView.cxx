@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-06-15 15:39:26 $
-  Version:   $Revision: 1.14 $
+  Date:      $Date: 2000-06-30 19:12:03 $
+  Version:   $Revision: 1.15 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -786,7 +786,7 @@ void vtkKWView::UnRegister(vtkObject *o)
     {
     // delete the children if we are about to be deleted
     if (this->ReferenceCount == this->Composites->GetNumberOfItems() + 
-        this->Children->GetNumberOfItems() + 1)
+        this->Children->GetNumberOfItems() + 2)
       {
       if (!(this->Composites->IsItemPresent((vtkKWComposite *)o) ||
             this->Children->IsItemPresent((vtkKWWidget *)o)))
@@ -805,6 +805,7 @@ void vtkKWView::UnRegister(vtkObject *o)
           {
           c->SetView(NULL);
           }
+        this->CornerAnnotation->SetView(NULL);
         this->DeletingChildren = 0;
         }
       }
@@ -952,5 +953,5 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.14 $");
+  this->ExtractRevision(os,"$Revision: 1.15 $");
 }
