@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-02-02 20:02:30 $
-  Version:   $Revision: 1.6 $
+  Date:      $Date: 2000-02-28 14:37:23 $
+  Version:   $Revision: 1.7 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -2702,7 +2702,7 @@ void vtkKWWindow::AddRecentFilesToMenu(char *key, vtkKWObject *target,
       if (strlen(File) > 1)
         {
         char cmd[1024];
-        sprintf(cmd,"%s %s",command, File);
+        sprintf(cmd,"%s {%s}",command, File);
         this->GetMenuFile()->InsertCommand(
           this->GetMenuFile()->GetIndex("Close") - 1,
           File, target, cmd);
@@ -2785,14 +2785,14 @@ void vtkKWWindow::AddRecentFile(char *key, char *name,vtkKWObject *target,
     if (strlen(File) > 1)
       {
       char cmd[1024];
-      sprintf(cmd,"%s %s",command, File);
+      sprintf(cmd,"%s {%s}",command, File);
       this->GetMenuFile()->InsertCommand(
         this->GetFileMenuIndex()+2,name,target,cmd);
       }
     else
       {
       char cmd[1024];
-      sprintf(cmd,"%s %s",command, File);
+      sprintf(cmd,"%s {%s}",command, File);
       this->GetMenuFile()->InsertCommand(
         this->GetMenuFile()->GetIndex("Close")-1,name,target,cmd);
       }
