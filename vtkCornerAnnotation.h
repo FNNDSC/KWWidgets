@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2000-07-07 14:42:05 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-07-11 17:11:14 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -38,6 +38,8 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include "vtkActor2D.h"
 #include "vtkTextMapper.h"
+#include "vtkImageMapToWindowLevelColors.h"
+#include "vtkImageActor.h"
 
 class VTK_EXPORT vtkCornerAnnotation : public vtkActor2D
 {
@@ -78,6 +80,17 @@ public:
   // Description:
   // Set the text to be displayed for each corner
   void SetText(int i,const char *text);
+
+  // Description:
+  // Set an image actor to look at for slice information
+  vtkSetObjectMacro(ImageActor,vtkImageActor);
+  vtkGetObjectMacro(ImageActor,vtkImageActor);
+  
+  // Description:
+  // Set an instance of vtkImageMapToWindowLevelColors to use for
+  // looking at window level changes
+  vtkSetObjectMacro(WindowLevel,vtkImageMapToWindowLevelColors);
+  vtkGetObjectMacro(WindowLevel,vtkImageMapToWindowLevelColors);
   
 protected:
   vtkCornerAnnotation();
@@ -87,12 +100,20 @@ protected:
 
   float MaximumLineHeight;
 
+  vtkImageMapToWindowLevelColors *WindowLevel;
+  vtkImageActor *ImageActor;
+
+  char *CornerText[4];
+  
   int FontSize;
   vtkActor2D    *TextActor[4];
   vtkTimeStamp   BuildTime;
   int            LastSize[2];
   vtkTextMapper *TextMapper[4];
   int MinimumFontSize;
+  
+  // search for replacable tokens and replace
+  void ReplaceText();
 private:
 };
 
