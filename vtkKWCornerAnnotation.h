@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.h,v $
   Language:  C++
-  Date:      $Date: 2002-10-13 21:02:25 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2002-10-14 00:13:58 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -105,6 +105,7 @@ public:
   void SetTextColor(float *rgb)
     { this->SetTextColor(rgb[0], rgb[1], rgb[2]); }
   float *GetTextColor();
+  void OnTextColorChangeCallback();
 
   // Description:
   // Set/Get the maximum line height.
@@ -119,13 +120,14 @@ public:
   
   // Description:
   // GUI components access
-  vtkGetObjectMacro(TextProperty, vtkKWTextProperty);
+  vtkGetObjectMacro(TextPropertyWidget, vtkKWTextProperty);
+  void OnTextChangeCallback();
 
 protected:
   vtkKWCornerAnnotation();
   ~vtkKWCornerAnnotation();
 
-  vtkKWTextProperty *TextProperty;
+  vtkKWTextProperty *TextPropertyWidget;
 
   vtkKWCheckButton       *CornerVisibilityButton;
 
