@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWRenderWidget.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-13 22:22:39 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2002-12-16 15:10:13 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,7 +55,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkWin32OpenGLRenderWindow.h"
 #endif
 
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.3 $");
 
 vtkKWRenderWidget::vtkKWRenderWidget()
 {
@@ -459,4 +459,12 @@ void vtkKWRenderWidget::PrintSelf(ostream& os, vtkIndent indent)
   this->Superclass::PrintSelf(os, indent);
 
   os << indent << "CornerAnnotation: " << this->CornerAnnotation << endl;
+  os << indent << "Printing: " << this->Printing << endl;
+  os << indent << "VTKWidget: " << this->VTKWidget << endl;
+  os << indent << "RenderWindow: " << this->RenderWindow << endl;
+  os << indent << "ParentWindow: "
+     << (this->ParentWindow ? this->ParentWindow : "(none)") << endl;
+  os << indent << "RenderMode: " << this->RenderMode << endl;
+  os << indent << "RenderState: " << this->RenderState << endl;
+  os << indent << "Renderer: " << this->Renderer << endl;
 }

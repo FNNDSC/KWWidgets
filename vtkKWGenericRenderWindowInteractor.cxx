@@ -3,8 +3,8 @@
   Program:   ParaView
   Module:    $RCSfile: vtkKWGenericRenderWindowInteractor.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-12-13 14:41:38 $
-  Version:   $Revision: 1.1 $
+  Date:      $Date: 2002-12-16 15:10:13 $
+  Version:   $Revision: 1.2 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWGenericRenderWindowInteractor);
-vtkCxxRevisionMacro(vtkKWGenericRenderWindowInteractor, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWGenericRenderWindowInteractor, "$Revision: 1.2 $");
 
 //----------------------------------------------------------------------------
 vtkKWGenericRenderWindowInteractor::vtkKWGenericRenderWindowInteractor()
@@ -131,4 +131,5 @@ void vtkKWGenericRenderWindowInteractor::PrintSelf(ostream& os, vtkIndent indent
   os << indent << "LastEventPosition: (" << this->LastEventPosition[0] << ", "
      << this->LastEventPosition[1] << ", " << this->LastEventPosition[2]
      << ")" << endl;
+  os << indent << "RenderWidget: " << this->RenderWidget << endl;
 }
