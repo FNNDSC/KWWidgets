@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-12 15:28:19 $
-  Version:   $Revision: 1.19 $
+  Date:      $Date: 2002-06-11 15:38:20 $
+  Version:   $Revision: 1.20 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -55,15 +55,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 class vtkKWApplication;
 #include "vtkObject.h"
-#include "vtkKWSerializer.h"
-
-// var args
-#ifndef _WIN32
-#include <unistd.h>
-#endif
-#include <stdarg.h>
-#include <stdlib.h>
-#include <string.h>
 #include "tcl.h"
 
 class VTK_EXPORT vtkKWObject : public vtkObject

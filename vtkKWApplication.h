@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-05-30 17:22:18 $
-  Version:   $Revision: 1.41 $
+  Date:      $Date: 2002-06-11 15:38:20 $
+  Version:   $Revision: 1.42 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -71,9 +71,9 @@ public:
   
   virtual vtkKWApplication *GetApplication()  { return this;  }
   virtual void SetApplication (vtkKWApplication*) 
-  { 
-  vtkErrorMacro( << "Do not set the Application on an Application" << endl ); 
-  }
+    { 
+    vtkErrorMacro( << "Do not set the Application on an Application" << endl ); 
+    }
   
   
   // Description:

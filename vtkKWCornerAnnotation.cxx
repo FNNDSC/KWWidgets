@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWCornerAnnotation.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-06-08 01:09:15 $
-  Version:   $Revision: 1.24 $
+  Date:      $Date: 2002-06-11 15:38:20 $
+  Version:   $Revision: 1.25 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -47,6 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWCheckButton.h"
 #include "vtkKWEvent.h"
 #include "vtkKWGenericComposite.h"
+#include "vtkKWSerializer.h"
 #include "vtkKWText.h"
 #include "vtkKWView.h"
 #include "vtkKWWindow.h"
@@ -351,7 +352,7 @@ void vtkKWCornerAnnotation::SerializeToken(istream& is,
 void vtkKWCornerAnnotation::SerializeRevision(ostream& os, vtkIndent indent)
 {
   os << indent << "vtkKWCornerAnnotation ";
-  this->ExtractRevision(os,"$Revision: 1.24 $");
+  this->ExtractRevision(os,"$Revision: 1.25 $");
   vtkKWLabeledFrame::SerializeRevision(os,indent);
 }
 
