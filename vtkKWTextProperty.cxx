@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWTextProperty.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-13 23:48:13 $
-  Version:   $Revision: 1.5 $
+  Date:      $Date: 2002-10-14 17:02:39 $
+  Version:   $Revision: 1.6 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -118,7 +118,7 @@ static unsigned char image_copy[] =
 
 // ----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTextProperty);
-vtkCxxRevisionMacro(vtkKWTextProperty, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWTextProperty, "$Revision: 1.6 $");
 
 int vtkKWTextPropertyCommand(ClientData cd, Tcl_Interp *interp,
                       int argc, char *argv[]);
@@ -1058,6 +1058,7 @@ void vtkKWTextProperty::PrintSelf(ostream& os, vtkIndent indent)
     {
     os << indent << "Actor2D: None" << endl;
     }
+  os << indent << "ShowLabel: " << (this->ShowLabel ? "On" : "Off") << endl;
   os << indent << "ShowColor: " << (this->ShowColor ? "On" : "Off") << endl;
   os << indent << "ShowFontFamily: " 
      << (this->ShowFontFamily ? "On" : "Off") << endl;
