@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:13 $
-  Version:   $Revision: 1.48 $
+  Date:      $Date: 2002-08-07 18:36:01 $
+  Version:   $Revision: 1.49 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -241,6 +241,7 @@ public:
   int GetRegisteryValue(int level, const char* subkey, const char* key, 
                         char* value);
   int DeleteRegisteryValue(int level, const char* subkey, const char* key);
+  int HasRegisteryValue(int level, const char* subkey, const char* key);
   
   // Description:
   // Perform a boolean check of the value in registery. If the value

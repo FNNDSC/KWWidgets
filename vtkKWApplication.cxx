@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWApplication.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 13:52:13 $
-  Version:   $Revision: 1.91 $
+  Date:      $Date: 2002-08-07 18:36:01 $
+  Version:   $Revision: 1.92 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -71,7 +71,7 @@ int vtkKWApplication::WidgetVisibility = 1;
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.91 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.92 $");
 
 
 
@@ -957,6 +957,14 @@ int vtkKWApplication::DeleteRegisteryValue(int level, const char* subkey,
     = this->GetRegistery(this->GetApplicationName());
   res = reg->DeleteValue(buffer, key);
   return res;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWApplication::HasRegisteryValue(int level, const char* subkey, 
+                                        const char* key)
+{
+  char buffer[1024];
+  return this->GetRegisteryValue(level, subkey, key, buffer);
 }
 
 //----------------------------------------------------------------------------
