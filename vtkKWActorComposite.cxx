@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWActorComposite.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:31 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2001-10-17 22:13:03 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -91,7 +91,7 @@ vtkKWActorComposite::~vtkKWActorComposite()
 
 void vtkKWActorComposite::SetInput(vtkPolyData *input)
 {
-  this->Mapper->SetInput(input);
+  this->Mapper->SetInput(input); 
 }
 
 void vtkKWActorComposite::CreateProperties()

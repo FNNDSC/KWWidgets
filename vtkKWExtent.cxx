@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWExtent.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:33 $
-  Version:   $Revision: 1.9 $
+  Date:      $Date: 2001-10-17 22:13:03 $
+  Version:   $Revision: 1.10 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -42,7 +42,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWApplication.h"
 #include "vtkKWExtent.h"
 #include "vtkObjectFactory.h"
-
+#include "vtkKWScale.h"
 
 
 //------------------------------------------------------------------------------

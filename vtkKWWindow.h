@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2001-09-24 20:38:39 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2001-10-17 22:13:04 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -48,12 +48,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define __vtkKWWindow_h
 
 #include "vtkKWWidget.h"
+
 class vtkKWApplication;
-#include "vtkKWProgressGauge.h"
-#include "vtkKWViewCollection.h"
-#include "vtkKWMenu.h"
-#include "vtkKWNotebook.h"
-#include "vtkKWSplitFrame.h"
+class vtkKWSplitFrame;
+class vtkKWNotebook;
+class vtkKWViewCollection;
+class vtkKWMenu;
+class vtkKWProgressGauge;
+class vtkKWView;
 
 class VTK_EXPORT vtkKWWindow : public vtkKWWidget
 {
