@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWPushButtonSet.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-22 17:01:39 $
-  Version:   $Revision: 1.2 $
+  Date:      $Date: 2003-01-08 23:21:23 $
+  Version:   $Revision: 1.3 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -101,15 +101,32 @@ public:
 
   // Description:
   // Set the widget packing order to be horizontal (default is vertical).
+  // This means that given the insertion order of the button in the set,
+  // the buttons will be packed in the horizontal direction.
   void SetPackHorizontally(int);
   vtkBooleanMacro(PackHorizontally, int);
   vtkGetMacro(PackHorizontally, int);
+
+  // Description:
+  // Set the maximum number of widgets that will be packed in the packing
+  // direction (i.e. horizontally or vertically). Default is 0, meaning that
+  // all widgets are packed along the same direction. If 3 (for example) and
+  // direction is horizontal, you end up with 3 columns.
+  void SetMaximumNumberOfWidgetInPackingDirection(int);
+  vtkGetMacro(MaximumNumberOfWidgetInPackingDirection, int);
+
+  // Description:
+  // Set the button padding.
+  virtual void SetPadding(int x, int y);
 
 protected:
   vtkKWPushButtonSet();
   ~vtkKWPushButtonSet();
 
   int PackHorizontally;
+  int MaximumNumberOfWidgetInPackingDirection;
+  int PadX;
+  int PadY;
 
   //BTX
 
