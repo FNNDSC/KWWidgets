@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.cxx,v $
   Language:  C++
-  Date:      $Date: 2000-05-30 20:03:20 $
-  Version:   $Revision: 1.7 $
+  Date:      $Date: 2000-07-07 15:51:32 $
+  Version:   $Revision: 1.8 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -57,6 +57,7 @@ vtkKWScale::vtkKWScale()
   this->StartCommand = NULL;
   this->EndCommand = NULL;
   this->Value = 0;
+  this->Resolution = 1;
   this->Entry = NULL;
   this->ScaleLabel = NULL;
   this->ScaleWidget = vtkKWWidget::New();
@@ -101,6 +102,19 @@ void vtkKWScale::SetValue(float s)
 }
 
 
+void vtkKWScale::SetResolution( float r )
+{
+  this->Resolution = r;
+  
+  if ( this->Application )
+    {
+    this->Script("%s configure -resolution %f",
+                 this->ScaleWidget->GetWidgetName(), r);
+    }
+  
+  this->Modified();
+}
+
 void vtkKWScale::Create(vtkKWApplication *app, char *args)
 {
   const char *wname;
@@ -119,6 +133,8 @@ void vtkKWScale::Create(vtkKWApplication *app, char *args)
   this->Script("frame %s",wname);
   this->ScaleWidget->Create(app,"scale","-orient horizontal -showvalue no");
   this->Script("%s configure %s",this->ScaleWidget->GetWidgetName(),args);
+  this->Script("%s configure -resolution %f",
+               this->ScaleWidget->GetWidgetName(),this->Resolution);
   this->ScaleWidget->SetCommand(this, "ScaleValueChanged");
   this->Script("pack %s -side bottom -fill x -expand yes",
                this->ScaleWidget->GetWidgetName());

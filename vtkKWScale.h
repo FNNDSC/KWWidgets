@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWScale.h,v $
   Language:  C++
-  Date:      $Date: 2000-02-17 03:20:01 $
-  Version:   $Revision: 1.4 $
+  Date:      $Date: 2000-07-07 15:51:32 $
+  Version:   $Revision: 1.5 $
 
 Copyright (c) 1998-1999 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -66,6 +66,11 @@ public:
   virtual void EntryValueChanged();
   virtual void InvokeStartCommand();
   virtual void InvokeEndCommand();
+
+  // Description:
+  // Method to set / get the resolution of the slider
+  vtkGetMacro( Resolution, float );
+  void SetResolution( float r );
   
   // Description:
   // A method to set callback functions on objects.  The first argument is
@@ -86,6 +91,7 @@ protected:
   char        *StartCommand;
   char        *EndCommand;
   float       Value;
+  float       Resolution;
   vtkKWEntry  *Entry;
   vtkKWWidget *ScaleWidget;
   vtkKWWidget *ScaleLabel;
