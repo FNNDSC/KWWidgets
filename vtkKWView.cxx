@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-08-07 19:06:07 $
-  Version:   $Revision: 1.79 $
+  Date:      $Date: 2002-08-13 04:23:40 $
+  Version:   $Revision: 1.80 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -97,7 +97,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.79 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.80 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -1065,7 +1065,7 @@ void vtkKWView::Select(vtkKWWindow *pw)
   
 #ifdef _WIN32
   // add the edit copy option
-  pw->GetMenuEdit()->AddCommand("Copy",this,"EditCopy", 0);
+  pw->GetMenuEdit()->AddCommand("Copy view",this,"EditCopy", "Copy the contents of the current view to the clipboard");
 #endif
   // change the color of the frame
   this->Script("%s configure -bg #008", this->Label->GetWidgetName());
@@ -1388,7 +1388,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.79 $");
+  this->ExtractRevision(os,"$Revision: 1.80 $");
 }
 
 //----------------------------------------------------------------------------
