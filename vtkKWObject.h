@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWObject.h,v $
   Language:  C++
-  Date:      $Date: 2002-08-09 21:55:12 $
-  Version:   $Revision: 1.25 $
+  Date:      $Date: 2002-08-12 16:18:23 $
+  Version:   $Revision: 1.26 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -66,7 +66,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdarg.h> // Needed for "va_list" argument of EstimateFormatLength.
 
 class vtkKWApplication;
-class vtkImageData;
 
 class VTK_EXPORT vtkKWObject : public vtkObject
 {
