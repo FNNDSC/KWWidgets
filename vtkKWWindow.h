@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.h,v $
   Language:  C++
-  Date:      $Date: 2001-12-10 18:36:31 $
-  Version:   $Revision: 1.19 $
+  Date:      $Date: 2001-12-12 19:40:05 $
+  Version:   $Revision: 1.20 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -184,6 +184,8 @@ protected:
   vtkKWWindow(const vtkKWWindow&) {};
   void operator=(const vtkKWWindow&) {};
   virtual void SerializeRevision(ostream& os, vtkIndent indent);
+  
+  int ExitDialog();
 
   vtkKWNotebook *Notebook;
   virtual void CreateStatusImage();
@@ -211,6 +213,7 @@ protected:
 
   int SupportHelp;
   char *WindowClass;
+  int ExitingApplication;
 };
 
 

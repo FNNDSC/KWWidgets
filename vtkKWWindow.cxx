@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2001-12-12 16:34:39 $
-  Version:   $Revision: 1.33 $
+  Date:      $Date: 2001-12-12 19:40:05 $
+  Version:   $Revision: 1.34 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -50,6 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWViewCollection.h"
 #include "vtkKWNotebook.h"
 #include "vtkKWSplitFrame.h"
+#include "vtkKWWindowCollection.h"
 #ifdef _WIN32
 #include "vtkKWRegisteryUtilities.h"
 #endif
@@ -130,6 +131,8 @@ vtkKWWindow::vtkKWWindow()
 
   this->WindowClass = NULL;
   this->SetWindowClass("KitwareWidget");
+
+  this->ExitingApplication = 0;
 }
 
 vtkKWWindow::~vtkKWWindow()
@@ -231,28 +234,10 @@ void vtkKWWindow::SetSelectedView(vtkKWView *_arg)
 
 // invoke the apps exit when selected
 void vtkKWWindow::Exit()
-{
-  vtkKWMessageDialog *dlg = vtkKWMessageDialog::New();
-  dlg->SetStyleToYesNo();
-
-  ostrstream title;
-  title << "Exit " << this->GetApplication()->GetApplicationName() << ends;
-  char* ttl = title.str();
-  dlg->SetTitle(ttl);
-  delete[] ttl;
-
-  dlg->Create(this->GetApplication(),"");
-  ostrstream str;
-  str << "Are you sure you want to exit " << this->GetApplication()->GetApplicationName() << "?" << ends;
-  char* msg = str.str();
-  dlg->SetText(msg);
-  dlg->SetIcon(vtkKWMessageDialog::Question);
-  
-  int ret = dlg->Invoke();  
-  dlg->Delete();
-  delete[] msg;
-  if (ret)
+{  
+  if ( this->ExitDialog() )
     {
+    this->ExitingApplication = 1;
     this->Application->Exit();
     }
 }
@@ -260,6 +245,15 @@ void vtkKWWindow::Exit()
 // invoke the apps close when selected
 void vtkKWWindow::Close()
 {
+  if ( ! this->ExitingApplication &&
+       this->Application->GetWindows()->GetNumberOfItems() <= 1 )
+    {
+    if ( !this->ExitDialog() )
+      {
+      return;
+      }
+    }
+
   vtkKWView *v;
 
   // Give each view a chance to close
@@ -825,5 +819,30 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.33 $");
+  this->ExtractRevision(os,"$Revision: 1.34 $");
+}
+
+int vtkKWWindow::ExitDialog()
+{
+   vtkKWMessageDialog *dlg = vtkKWMessageDialog::New();
+  dlg->SetStyleToYesNo();
+
+  ostrstream title;
+  title << "Exit " << this->GetApplication()->GetApplicationName() << ends;
+  char* ttl = title.str();
+  dlg->SetTitle(ttl);
+  delete[] ttl;
+
+  dlg->Create(this->GetApplication(),"");
+  ostrstream str;
+  str << "Are you sure you want to exit " << this->GetApplication()->GetApplicationName() << "?" << ends;
+  char* msg = str.str();
+  dlg->SetText(msg);
+  dlg->SetIcon(vtkKWMessageDialog::Question);
+  
+  int ret = dlg->Invoke();  
+  dlg->Delete();
+  delete[] msg;
+ 
+  return ret;
 }
