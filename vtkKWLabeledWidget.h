@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledWidget.h,v $
   Language:  C++
-  Date:      $Date: 2002-12-26 01:54:03 $
-  Version:   $Revision: 1.3 $
+  Date:      $Date: 2003-01-15 23:04:22 $
+  Version:   $Revision: 1.4 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -74,8 +74,9 @@ public:
   void SetLabel(const char *);
   
   // Description:
-  // Convenience method to set the label width.
+  // Convenience method to set/get the label width.
   void SetLabelWidth(int width);
+  int GetLabelWidth();
   
   // Description:
   // Show/Hide the label.
