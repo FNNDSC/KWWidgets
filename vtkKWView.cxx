@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWView.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-29 20:49:43 $
-  Version:   $Revision: 1.90 $
+  Date:      $Date: 2002-11-08 17:47:28 $
+  Version:   $Revision: 1.91 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -98,7 +98,7 @@ Bool vtkKWRenderViewPredProc(Display *vtkNotUsed(disp), XEvent *event,
 }
 #endif
 
-vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.90 $");
+vtkCxxRevisionMacro(vtkKWView, "$Revision: 1.91 $");
 
 //----------------------------------------------------------------------------
 int vtkKWViewCommand(ClientData cd, Tcl_Interp *interp,
@@ -451,7 +451,7 @@ void vtkKWView::CreateViewProperties()
   
   // create the anno widgets
   this->HeaderFrame->SetParent( this->AnnotationProperties->GetParent() );  
-  this->HeaderFrame->Create(app);
+  this->HeaderFrame->Create(app, 0);
   this->HeaderFrame->SetLabel("Header Annotation");
   this->HeaderDisplayFrame->SetParent(this->HeaderFrame->GetFrame());
   this->HeaderDisplayFrame->Create(app,"frame","");
@@ -507,7 +507,7 @@ void vtkKWView::CreateViewProperties()
 
   this->ColorsFrame->SetParent( this->GeneralProperties->GetFrame() );
   this->ColorsFrame->ShowHideFrameOn();
-  this->ColorsFrame->Create( app );
+  this->ColorsFrame->Create( app,0 );
   this->ColorsFrame->SetLabel("Colors");
   this->Script("pack %s -padx 2 -pady 2 -fill x -expand yes -anchor w",
                this->ColorsFrame->GetWidgetName());
@@ -1491,7 +1491,7 @@ void vtkKWView::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWView ";
-  this->ExtractRevision(os,"$Revision: 1.90 $");
+  this->ExtractRevision(os,"$Revision: 1.91 $");
 }
 
 //----------------------------------------------------------------------------

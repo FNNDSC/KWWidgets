@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWWindow.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-10-29 20:49:43 $
-  Version:   $Revision: 1.128 $
+  Date:      $Date: 2002-11-08 17:47:28 $
+  Version:   $Revision: 1.129 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -70,7 +70,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define VTK_KW_WINDOW_GEOMETRY_REG_KEY "WindowGeometry"
 #define VTK_KW_WINDOW_FRAME1_SIZE_REG_KEY "WindowFrame1Size"
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.128 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.129 $");
 vtkCxxSetObjectMacro(vtkKWWindow, PropertiesParent, vtkKWWidget);
 
 class vtkKWWindowMenuEntry
@@ -876,7 +876,7 @@ void vtkKWWindow::CreatePreferencesProperties()
   this->InterfaceSettingsFrame->SetParent(
     this->Notebook->GetFrame(VTK_KW_PREFERENCES_PAGE_LABEL));
   this->InterfaceSettingsFrame->ShowHideFrameOn();
-  this->InterfaceSettingsFrame->Create(this->Application);
+  this->InterfaceSettingsFrame->Create(this->Application, 0);
   this->InterfaceSettingsFrame->SetLabel("Interface Settings");
   
   // Confirm on exit ?
@@ -1300,7 +1300,7 @@ void vtkKWWindow::SerializeRevision(ostream& os, vtkIndent indent)
 {
   vtkKWWidget::SerializeRevision(os,indent);
   os << indent << "vtkKWWindow ";
-  this->ExtractRevision(os,"$Revision: 1.128 $");
+  this->ExtractRevision(os,"$Revision: 1.129 $");
 }
 
 int vtkKWWindow::ExitDialog()
