@@ -3,8 +3,8 @@
   Program:   Visualization Toolkit
   Module:    $RCSfile: vtkKWLabeledFrame.cxx,v $
   Language:  C++
-  Date:      $Date: 2002-09-13 20:09:59 $
-  Version:   $Revision: 1.16 $
+  Date:      $Date: 2002-09-13 20:56:49 $
+  Version:   $Revision: 1.17 $
 
 Copyright (c) 2000-2001 Kitware Inc. 469 Clifton Corporate Parkway,
 Clifton Park, NY, 12065, USA.
@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //------------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabeledFrame );
-vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWLabeledFrame, "$Revision: 1.17 $");
 
 
 
@@ -205,7 +205,8 @@ void vtkKWLabeledFrame::Create(vtkKWApplication *app)
   this->Script("pack %s -fill x -side top", this->Border->GetWidgetName());
   this->Script("pack %s -fill x -side top", this->Groove->GetWidgetName());
   this->Script("pack %s -fill x -side top", this->Border2->GetWidgetName());
-  this->Script("pack %s -fill both -expand yes",this->Frame->GetWidgetName());
+  this->Script("pack %s -padx 2 -pady 2 -fill both -expand yes",
+               this->Frame->GetWidgetName());
   this->Script("pack %s -anchor nw -side left -fill both -expand y",
                this->Label->GetWidgetName());
   this->Script("place %s -relx 0 -x 5 -y 0 -anchor nw",
