@@ -17,7 +17,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWPushButton );
-vtkCxxRevisionMacro(vtkKWPushButton, "$Revision: 1.19 $");
+vtkCxxRevisionMacro(vtkKWPushButton, "$Revision: 1.20 $");
 
 //----------------------------------------------------------------------------
 vtkKWPushButton::vtkKWPushButton()
@@ -83,7 +83,7 @@ void vtkKWPushButton::UpdateEnableState()
 {
   this->Superclass::UpdateEnableState();
 
-  this->SetStateOption(this->Enabled);
+  this->SetStateOption(this->GetEnabled());
 }
 
 //----------------------------------------------------------------------------

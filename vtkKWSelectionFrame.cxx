@@ -27,7 +27,7 @@
 #include <kwsys/stl/string>
 
 vtkStandardNewMacro(vtkKWSelectionFrame);
-vtkCxxRevisionMacro(vtkKWSelectionFrame, "$Revision: 1.31 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrame, "$Revision: 1.32 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameInternals
@@ -722,7 +722,7 @@ void vtkKWSelectionFrame::UpdateEnableState()
     this->SelectionList->SetEnabled(0);
     }
 
-  if (this->Enabled)
+  if (this->GetEnabled())
     {
     this->Bind();
     }
