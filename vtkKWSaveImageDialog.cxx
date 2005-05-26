@@ -16,12 +16,11 @@
 #include "vtkKWApplication.h"
 #include "vtkKWLoadSaveDialog.h"
 #include "vtkKWMessageDialog.h"
-#include "vtkKWWindow.h"
 #include "vtkObjectFactory.h"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWSaveImageDialog );
-vtkCxxRevisionMacro(vtkKWSaveImageDialog, "$Revision: 1.26 $");
+vtkCxxRevisionMacro(vtkKWSaveImageDialog, "$Revision: 1.27 $");
 
 int vtkKWSaveImageDialogCommand(ClientData cd, Tcl_Interp *interp,
                                 int argc, char *argv[]);
