@@ -32,16 +32,11 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCornerAnnotationEditor );
-vtkCxxRevisionMacro(vtkKWCornerAnnotationEditor, "$Revision: 1.5 $");
-
-int vtkKWCornerAnnotationEditorCommand(ClientData cd, Tcl_Interp *interp,
-                                 int argc, char *argv[]);
+vtkCxxRevisionMacro(vtkKWCornerAnnotationEditor, "$Revision: 1.6 $");
 
 //----------------------------------------------------------------------------
 vtkKWCornerAnnotationEditor::vtkKWCornerAnnotationEditor()
 {
-  this->CommandFunction = vtkKWCornerAnnotationEditorCommand;
-
   this->AnnotationChangedEvent = vtkKWEvent::ViewAnnotationChangedEvent;
 
   // CornerAnnotation will either point to:

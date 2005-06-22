@@ -34,10 +34,7 @@
 //----------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWToolbarSet);
-vtkCxxRevisionMacro(vtkKWToolbarSet, "$Revision: 1.23 $");
-
-int vtkvtkKWToolbarSetCommand(ClientData cd, Tcl_Interp *interp,
-                                  int argc, char *argv[]);
+vtkCxxRevisionMacro(vtkKWToolbarSet, "$Revision: 1.24 $");
 
 //----------------------------------------------------------------------------
 class vtkKWToolbarSetInternals

@@ -24,16 +24,11 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPopupButton);
-vtkCxxRevisionMacro(vtkKWPopupButton, "$Revision: 1.21 $");
-
-int vtkKWPopupButtonCommand(ClientData cd, Tcl_Interp *interp,
-                            int argc, char *argv[]);
+vtkCxxRevisionMacro(vtkKWPopupButton, "$Revision: 1.22 $");
 
 //----------------------------------------------------------------------------
 vtkKWPopupButton::vtkKWPopupButton()
 {
-  this->CommandFunction = vtkKWPopupButtonCommand;
-
   this->PopupTopLevel = vtkKWTopLevel::New();
 
   this->PopupFrame = vtkKWFrame::New();

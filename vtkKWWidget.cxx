@@ -28,10 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.132 $");
-
-int vtkKWWidgetCommand(ClientData cd, Tcl_Interp *interp,
-                       int argc, char *argv[]);
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.133 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetInternals
@@ -52,8 +49,6 @@ vtkKWWidget::vtkKWWidget()
   // Instantiate the PIMPL Encapsulation for STL containers
 
   this->Internals = new vtkKWWidgetInternals;
-
-  this->CommandFunction          = vtkKWWidgetCommand;
 
   this->WidgetName               = NULL;
   this->Parent                   = NULL;

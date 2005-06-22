@@ -20,16 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWSaveImageDialog );
-vtkCxxRevisionMacro(vtkKWSaveImageDialog, "$Revision: 1.28 $");
-
-int vtkKWSaveImageDialogCommand(ClientData cd, Tcl_Interp *interp,
-                                int argc, char *argv[]);
-
-//----------------------------------------------------------------------------
-vtkKWSaveImageDialog::vtkKWSaveImageDialog()
-{
-  this->CommandFunction = vtkKWSaveImageDialogCommand;
-}
+vtkCxxRevisionMacro(vtkKWSaveImageDialog, "$Revision: 1.29 $");
 
 //----------------------------------------------------------------------------
 int vtkKWSaveImageDialog::Invoke()

@@ -22,15 +22,11 @@
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTopLevel );
-vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.15 $");
-
-int vtkKWTopLevelCommand(ClientData cd, Tcl_Interp *interp,
-                         int argc, char *argv[]);
+vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.16 $");
 
 //----------------------------------------------------------------------------
 vtkKWTopLevel::vtkKWTopLevel()
 {
-  this->CommandFunction = vtkKWTopLevelCommand;
   this->Title           = NULL;
   this->WindowClass     = NULL;
   this->MasterWindow    = NULL;

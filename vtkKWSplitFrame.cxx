@@ -17,16 +17,11 @@
 #include "vtkObjectFactory.h"
 
 vtkStandardNewMacro( vtkKWSplitFrame );
-vtkCxxRevisionMacro(vtkKWSplitFrame, "$Revision: 1.32 $");
-
-int vtkKWSplitFrameCommand(ClientData cd, Tcl_Interp *interp,
-                      int argc, char *argv[]);
+vtkCxxRevisionMacro(vtkKWSplitFrame, "$Revision: 1.33 $");
 
 //----------------------------------------------------------------------------
 vtkKWSplitFrame::vtkKWSplitFrame()
 {
-  this->CommandFunction = vtkKWSplitFrameCommand;
-
   this->Frame1 = vtkKWFrame::New();
   this->Separator = vtkKWFrame::New();
   this->Frame2 = vtkKWFrame::New();

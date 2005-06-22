@@ -15,18 +15,13 @@
 #include "vtkKWLabel.h"
 #include "vtkObjectFactory.h"
 
-int vtkKWLabelCommand(ClientData cd, Tcl_Interp *interp,
-                      int argc, char *argv[]);
-
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabel );
-vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.39 $");
+vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.40 $");
 
 //----------------------------------------------------------------------------
 vtkKWLabel::vtkKWLabel()
 {
-  this->CommandFunction         = vtkKWLabelCommand;
-
   this->Text                    = NULL;
   this->LineType                = vtkKWLabel::SingleLine;
   this->Width                   = 0;

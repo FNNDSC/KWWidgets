@@ -22,16 +22,11 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLoadSaveButton);
-vtkCxxRevisionMacro(vtkKWLoadSaveButton, "$Revision: 1.11 $");
-
-int vtkKWLoadSaveButtonCommand(ClientData cd, Tcl_Interp *interp,
-                               int argc, char *argv[]);
+vtkCxxRevisionMacro(vtkKWLoadSaveButton, "$Revision: 1.12 $");
 
 //----------------------------------------------------------------------------
 vtkKWLoadSaveButton::vtkKWLoadSaveButton()
 {
-  this->CommandFunction = vtkKWLoadSaveButtonCommand;
-
   this->LoadSaveDialog = vtkKWLoadSaveDialog::New();
 
   this->MaximumFileNameLength = 30;

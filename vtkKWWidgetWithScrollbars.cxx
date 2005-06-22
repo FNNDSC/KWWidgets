@@ -19,15 +19,11 @@
 #include <vtksys/stl/string>
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWWidgetWithScrollbars, "$Revision: 1.2 $");
-
-int vtkKWWidgetWithScrollbarsCommand(ClientData cd, Tcl_Interp *interp,
-                                     int argc, char *argv[]);
+vtkCxxRevisionMacro(vtkKWWidgetWithScrollbars, "$Revision: 1.3 $");
 
 //----------------------------------------------------------------------------
 vtkKWWidgetWithScrollbars::vtkKWWidgetWithScrollbars()
 {
-  this->CommandFunction = vtkKWWidgetWithScrollbarsCommand;
   this->VerticalScrollBar   = NULL;
   this->HorizontalScrollBar = NULL;
   this->ShowVerticalScrollbar = 1;
