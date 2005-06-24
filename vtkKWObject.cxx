@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWObject);
-vtkCxxRevisionMacro(vtkKWObject, "$Revision: 1.54 $");
+vtkCxxRevisionMacro(vtkKWObject, "$Revision: 1.55 $");
 
 vtkCxxSetObjectMacro(vtkKWObject, Application, vtkKWApplication);
 
@@ -109,7 +109,7 @@ void vtkKWObject::SetObjectMethodCommand(
     vtkKWObject *kw_object = vtkKWObject::SafeDownCast(object);
     if (kw_object)
       {
-      object_name = object->GetTclName();
+      object_name = kw_object->GetTclName();
       }
     else
       {

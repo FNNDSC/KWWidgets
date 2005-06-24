@@ -22,7 +22,7 @@
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTopLevel );
-vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.17 $");
 
 //----------------------------------------------------------------------------
 vtkKWTopLevel::vtkKWTopLevel()
@@ -472,7 +472,7 @@ vtkKWMenu *vtkKWTopLevel::GetMenu()
 
 //----------------------------------------------------------------------------
 void vtkKWTopLevel::SetDeleteWindowProtocolCommand(
-  vtkKWObject *obj, const char *command)
+  vtkObject *obj, const char *command)
 { 
   if (this->IsCreated())
     {
