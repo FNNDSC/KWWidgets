@@ -26,7 +26,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMessageDialog );
-vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.78 $");
+vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.79 $");
 
 //----------------------------------------------------------------------------
 vtkKWMessageDialog::vtkKWMessageDialog()
@@ -389,15 +389,15 @@ void vtkKWMessageDialog::SetIcon()
 {
   if ( this->Options & vtkKWMessageDialog::ErrorIcon )
     {
-    this->Icon->SetImageOption(vtkKWIcon::IconError);
+    this->Icon->SetImageToPredefinedIcon(vtkKWIcon::IconError);
     }
   else if ( this->Options & vtkKWMessageDialog::QuestionIcon )
     {
-    this->Icon->SetImageOption(vtkKWIcon::IconQuestion);
+    this->Icon->SetImageToPredefinedIcon(vtkKWIcon::IconQuestion);
     }
   else if ( this->Options & vtkKWMessageDialog::WarningIcon )
     {
-    this->Icon->SetImageOption(vtkKWIcon::IconWarning);
+    this->Icon->SetImageToPredefinedIcon(vtkKWIcon::IconWarning);
     }
   else
     {
