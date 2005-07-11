@@ -17,7 +17,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWScrollbar);
-vtkCxxRevisionMacro(vtkKWScrollbar, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWScrollbar, "$Revision: 1.2 $");
 
 //----------------------------------------------------------------------------
 void vtkKWScrollbar::Create(vtkKWApplication *app)
@@ -43,6 +43,18 @@ int vtkKWScrollbar::GetOrientation()
 {
   return vtkKWTkOptions::GetOrientationFromTkOptionValue(
     this->GetConfigurationOption("-orient"));
+}
+
+//----------------------------------------------------------------------------
+void vtkKWScrollbar::SetCommand(vtkObject *object, const char *method)
+{
+  if (this->IsCreated())
+    {
+    char *command = NULL;
+    this->SetObjectMethodCommand(&command, object, method);
+    this->SetConfigurationOption("-command", command);
+    delete [] command;
+    }
 }
 
 //----------------------------------------------------------------------------
