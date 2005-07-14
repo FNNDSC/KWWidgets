@@ -1,6 +1,6 @@
 /*=========================================================================
 
-  Module:    $RCSfile: vtkKWUserInterfaceNotebookManager.h,v $
+  Module:    $RCSfile: vtkKWUserInterfaceManagerNotebook.h,v $
 
   Copyright (c) Kitware, Inc.
   All rights reserved.

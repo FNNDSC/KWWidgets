@@ -1,6 +1,6 @@
 /*=========================================================================
 
-  Module:    $RCSfile: vtkKWUserInterfaceNotebookManager.cxx,v $
+  Module:    $RCSfile: vtkKWUserInterfaceManagerNotebook.cxx,v $
 
   Copyright (c) Kitware, Inc.
   All rights reserved.
@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceNotebookManager);
-vtkCxxRevisionMacro(vtkKWUserInterfaceNotebookManager, "$Revision: 1.43 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceNotebookManager, "$Revision: 1.1 $");
 
 //----------------------------------------------------------------------------
 class vtkKWUserInterfaceNotebookManagerInternals
