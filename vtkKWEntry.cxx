@@ -16,12 +16,9 @@
 #include "vtkObjectFactory.h"
 #include "vtkKWApplication.h"
 
-#include <vtkstd/vector>
-#include <vtkstd/string>
-
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry );
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.62 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.63 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
