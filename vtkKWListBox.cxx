@@ -18,7 +18,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWListBox);
-vtkCxxRevisionMacro(vtkKWListBox, "$Revision: 1.43 $");
+vtkCxxRevisionMacro(vtkKWListBox, "$Revision: 1.44 $");
 
 //----------------------------------------------------------------------------
 vtkKWListBox::vtkKWListBox()
@@ -304,7 +304,7 @@ void vtkKWListBox::UpdateEnableState()
 {
   this->Superclass::UpdateEnableState();
 
-  this->SetStateOption(this->GetEnabled());
+  this->SetState(this->GetEnabled());
 }
 
 //----------------------------------------------------------------------------

@@ -39,7 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCanvas );
-vtkCxxRevisionMacro(vtkKWCanvas, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWCanvas, "$Revision: 1.7 $");
 
 //----------------------------------------------------------------------------
 void vtkKWCanvas::Create(vtkKWApplication *app)
@@ -80,7 +80,7 @@ void vtkKWCanvas::UpdateEnableState()
 {
   this->Superclass::UpdateEnableState();
 
-  this->SetStateOption(this->GetEnabled());
+  this->SetState(this->GetEnabled());
 }
 
 //----------------------------------------------------------------------------
