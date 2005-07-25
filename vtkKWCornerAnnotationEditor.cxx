@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCornerAnnotationEditor );
-vtkCxxRevisionMacro(vtkKWCornerAnnotationEditor, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWCornerAnnotationEditor, "$Revision: 1.11 $");
 
 //----------------------------------------------------------------------------
 vtkKWCornerAnnotationEditor::vtkKWCornerAnnotationEditor()
@@ -336,7 +336,7 @@ void vtkKWCornerAnnotationEditor::Create(vtkKWApplication *app)
 
   this->TextPropertyWidget->LongFormatOn();
   this->TextPropertyWidget->LabelOnTopOn();
-  this->TextPropertyWidget->ShowLabelOn();
+  this->TextPropertyWidget->LabelVisibilityOn();
   this->TextPropertyWidget->Create(app);
   this->TextPropertyWidget->GetLabel()->SetText("Text properties:");
   this->TextPropertyWidget->SetChangedCommand(this, "TextPropertyCallback");
