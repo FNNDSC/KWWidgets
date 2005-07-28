@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 #  tree.tcl
 #  This file is part of Unifix BWidget Toolkit
-#  $Id: tree.tcl,v 1.1 2005-07-19 20:43:42 barre Exp $
+#  $Id: tree.tcl,v 1.2 2005-07-28 17:22:18 barre Exp $
 # ----------------------------------------------------------------------------
 #  Index of commands:
 #     - Tree::create
@@ -708,6 +708,11 @@ proc Tree::selection { path cmd args } {
         }
         default {
             return
+        }
+    }
+    switch -- $cmd {
+        "add" - "clear" - "remove" - "set" - "toggle" {
+            event generate $path <<TreeSelect>>
         }
     }
     _redraw_idle $path 1
@@ -2175,11 +2180,6 @@ proc Tree::_set_help { path node } {
 
 proc Tree::_mouse_select { path cmd args } {
     eval selection [list $path] [list $cmd] $args
-    switch -- $cmd {
-        "add" - "clear" - "remove" - "set" - "toggle" {
-            event generate $path <<TreeSelect>>
-        }
-    }
 }
 
 
