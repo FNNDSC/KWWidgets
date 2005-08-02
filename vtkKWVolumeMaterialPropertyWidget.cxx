@@ -22,14 +22,14 @@
 #include "vtkKWFrameWithLabel.h"
 #include "vtkKWMenuButtonWithLabel.h"
 #include "vtkKWScalarComponentSelectionWidget.h"
-#include "vtkKWScale.h"
+#include "vtkKWScaleWithEntry.h"
 #include "vtkObjectFactory.h"
 #include "vtkVolumeProperty.h"
 
 //----------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWVolumeMaterialPropertyWidget);
-vtkCxxRevisionMacro(vtkKWVolumeMaterialPropertyWidget, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWVolumeMaterialPropertyWidget, "$Revision: 1.13 $");
 
 //----------------------------------------------------------------------------
 vtkKWVolumeMaterialPropertyWidget::vtkKWVolumeMaterialPropertyWidget()
