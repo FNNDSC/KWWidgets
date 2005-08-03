@@ -29,7 +29,7 @@
 //----------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWVolumeMaterialPropertyWidget);
-vtkCxxRevisionMacro(vtkKWVolumeMaterialPropertyWidget, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWVolumeMaterialPropertyWidget, "$Revision: 1.14 $");
 
 //----------------------------------------------------------------------------
 vtkKWVolumeMaterialPropertyWidget::vtkKWVolumeMaterialPropertyWidget()
@@ -217,7 +217,7 @@ void vtkKWVolumeMaterialPropertyWidget::Update()
       this->VolumeProperty ? 0 : this->GetEnabled());
     }
 
-  // Ambient
+  // Parameters
 
   if (this->VolumeProperty)
     {
