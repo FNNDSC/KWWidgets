@@ -1,6 +1,6 @@
 /*=========================================================================
 
-  Module:    $RCSfile: vtkKWBWidgets.h,v $
+  Module:    $RCSfile: vtkKWTablelistInit.h,v $
 
   Copyright (c) Kitware, Inc.
   All rights reserved.
@@ -11,31 +11,31 @@
      PURPOSE.  See the above copyright notice for more information.
 
 =========================================================================*/
-// .NAME vtkKWBWidgets - class used to initialize BWidgets
+// .NAME vtkKWTablelistInit - class used to initialize Tablelist
 // .SECTION Description
-// This class is used to initialize the BWidgets library.
+// This class is used to initialize the Tablelist library.
 
-#ifndef __vtkKWBWidgets_h
-#define __vtkKWBWidgets_h
+#ifndef __vtkKWTablelistInit_h
+#define __vtkKWTablelistInit_h
 
 #include "vtkObject.h"
 #include "vtkKWWidgets.h" // Needed for export symbols directives
 #include "vtkTcl.h" // Needed for Tcl interpreter
 
-class KWWIDGETS_EXPORT vtkKWBWidgets : public vtkObject
+class KWWIDGETS_EXPORT vtkKWTablelistInit : public vtkObject
 {
 public:
-  static vtkKWBWidgets* New();
-  vtkTypeRevisionMacro(vtkKWBWidgets,vtkObject);
+  static vtkKWTablelistInit* New();
+  vtkTypeRevisionMacro(vtkKWTablelistInit,vtkObject);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
-  // Load the BWidgets library.
+  // Load the Tablelist library.
   static void Initialize(Tcl_Interp*);
 
 protected:
-  vtkKWBWidgets() {};
-  ~vtkKWBWidgets() {};
+  vtkKWTablelistInit() {};
+  ~vtkKWTablelistInit() {};
 
   static void Execute(Tcl_Interp* interp, 
                       const unsigned char *buffer, 
@@ -45,8 +45,8 @@ protected:
   static int Initialized;
 
 private:
-  vtkKWBWidgets(const vtkKWBWidgets&);   // Not implemented.
-  void operator=(const vtkKWBWidgets&);  // Not implemented.
+  vtkKWTablelistInit(const vtkKWTablelistInit&);   // Not implemented.
+  void operator=(const vtkKWTablelistInit&);  // Not implemented.
 };
 
 #endif
