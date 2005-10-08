@@ -26,7 +26,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.26 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.27 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -2702,7 +2702,7 @@ void vtkKWMultiColumnList::InvokePotentialCellBackgroundColorChangedCommand()
 
 //----------------------------------------------------------------------------
 const char* vtkKWMultiColumnList::EditStartCallback(
-  const char *widget, int row, int col, const char *text)
+  const char *, int row, int col, const char *text)
 {
   // Save the position of the cell that is being edited, so that
   // CellUpdatedCallback can find and propagate which one it was
@@ -2718,7 +2718,7 @@ const char* vtkKWMultiColumnList::EditStartCallback(
 
 //----------------------------------------------------------------------------
 const char* vtkKWMultiColumnList::EditEndCallback(
-  const char *widget, int row, int col, const char *text)
+  const char *, int row, int col, const char *text)
 {
   return this->InvokeEditEndCommand(row, col, text);
 }
