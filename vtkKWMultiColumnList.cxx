@@ -30,7 +30,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.41 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.42 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -147,9 +147,10 @@ void vtkKWMultiColumnList::Create(vtkKWApplication *app)
   delete [] command;
 
   this->AddBinding("<<TablelistSelect>>", this, "SelectionCallback");
+  this->AddBinding("<<TablelistSelectionLost>>", this, "SelectionCallback");
   this->AddBinding("<<TablelistCellUpdated>>", this, "CellUpdatedCallback");
   this->AddBinding("<<TablelistColumnSorted>>", this, "ColumnSortedCallback");
-  
+
   // Update enable state
 
   this->UpdateEnableState();
