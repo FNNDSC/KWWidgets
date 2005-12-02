@@ -17,14 +17,13 @@
 #include "vtkObjectFactory.h"
 #include "vtkKWCoreWidget.h"
 #include "vtkKWTkUtilities.h"
-#include "vtkKWApplication.h"
 
 #include <vtksys/stl/list>
 #include <vtksys/stl/algorithm>
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDragAndDropTargetSet );
-vtkCxxRevisionMacro(vtkKWDragAndDropTargetSet, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWDragAndDropTargetSet, "$Revision: 1.11 $");
 
 //----------------------------------------------------------------------------
 class vtkKWDragAndDropTargetSetInternals

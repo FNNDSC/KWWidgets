@@ -14,15 +14,14 @@
 #include "vtkKWParameterValueFunctionInterface.h"
 
 #include "vtkCallbackCommand.h"
-#include "vtkKWApplication.h"
 #include "vtkObjectFactory.h"
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionInterface, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionInterface, "$Revision: 1.6 $");
 
 //----------------------------------------------------------------------------
-void vtkKWParameterValueFunctionInterface::Create(vtkKWApplication *app)
+void vtkKWParameterValueFunctionInterface::Create()
 {
-  this->Superclass::Create(app);
+  this->Superclass::Create();
 }
 
 //----------------------------------------------------------------------------
