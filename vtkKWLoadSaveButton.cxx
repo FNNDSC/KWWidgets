@@ -21,7 +21,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLoadSaveButton);
-vtkCxxRevisionMacro(vtkKWLoadSaveButton, "$Revision: 1.19 $");
+vtkCxxRevisionMacro(vtkKWLoadSaveButton, "$Revision: 1.20 $");
 
 //----------------------------------------------------------------------------
 vtkKWLoadSaveButton::vtkKWLoadSaveButton()
@@ -185,7 +185,8 @@ void vtkKWLoadSaveButton::InvokeLoadSaveDialogCallback()
 
   if (this->UserCommand && *this->UserCommand)
     {
-    this->Script("eval %s", this->UserCommand);
+    //this->Script("eval %s", this->UserCommand);
+    this->Script(this->UserCommand);
     }
 }
 
