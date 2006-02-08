@@ -57,7 +57,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.36 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.37 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -2456,7 +2456,7 @@ void vtkKWPresetSelector::PresetSelectionCallback()
 
 //---------------------------------------------------------------------------
 void vtkKWPresetSelector::PresetRightClickCallback(
-  int row, int col, int x, int y)
+  int row, int vtkNotUsed(col), int x, int y)
 {
   int id = this->GetPresetAtRowId(row);
   if (!this->HasPreset(id))
