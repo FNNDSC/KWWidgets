@@ -21,7 +21,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLoadSaveButton);
-vtkCxxRevisionMacro(vtkKWLoadSaveButton, "$Revision: 1.21 $");
+vtkCxxRevisionMacro(vtkKWLoadSaveButton, "$Revision: 1.22 $");
 
 //----------------------------------------------------------------------------
 vtkKWLoadSaveButton::vtkKWLoadSaveButton()
@@ -110,7 +110,11 @@ void vtkKWLoadSaveButton::SetCommand(vtkObject *object,
 //----------------------------------------------------------------------------
 char* vtkKWLoadSaveButton::GetFileName()
 {
-  return this->LoadSaveDialog->GetFileName();
+  if (this->LoadSaveDialog)
+    {
+    return this->LoadSaveDialog->GetFileName();
+    }
+  return NULL;
 } 
 
 //----------------------------------------------------------------------------
