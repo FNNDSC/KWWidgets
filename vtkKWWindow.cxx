@@ -33,7 +33,7 @@
 
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.276 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.277 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindow );
@@ -320,6 +320,7 @@ void vtkKWWindow::Create()
     this, "DisplayTclInteractor");
   this->GetWindowMenu()->SetItemHelpString(
     idx, k_("Display a prompt to interact with the Tcl engine"));
+  this->GetWindowMenu()->SetItemAccelerator(idx, "Ctrl+T");
 
   // Udpate the enable state
 
