@@ -17,7 +17,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMessage );
-vtkCxxRevisionMacro(vtkKWMessage, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWMessage, "$Revision: 1.4 $");
 
 //----------------------------------------------------------------------------
 vtkKWMessage::vtkKWMessage()
@@ -84,7 +84,7 @@ void vtkKWMessage::Create()
   // Call the superclass to set the appropriate flags then create manually
 
   if (!this->Superclass::CreateSpecificTkWidget(
-        "message", "-justify left"))
+        "message", "-justify left -highlightthickness 0"))
     {
     vtkErrorMacro("Failed creating widget " << this->GetClassName());
     return;
