@@ -26,13 +26,12 @@
 #include <vtksys/stl/vector>
 #include <vtksys/stl/algorithm>
 #include <vtksys/SystemTools.hxx>
-#include <vtksys/stl/map>
 
 #include "Utilities/Tablelist/vtkKWTablelistInit.h"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.59 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.60 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
