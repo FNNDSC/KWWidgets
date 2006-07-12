@@ -1,6 +1,6 @@
 /*=========================================================================
 
-  Module:    $RCSfile: vtkKWWidgetsConfigure.h.in,v $
+  Module:    $RCSfile: vtkKWWidgetsVersion.cxx,v $
 
   Copyright (c) Kitware, Inc.
   All rights reserved.
@@ -11,16 +11,9 @@
      PURPOSE.  See the above copyright notice for more information.
 
 =========================================================================*/
-#ifndef __vtkKWWidgetsConfigure_h
-#define __vtkKWWidgetsConfigure_h
 
-#cmakedefine KWWidgets_BUILD_SHARED_LIBS
-#cmakedefine KWWidgets_USE_HTML_HELP
-#cmakedefine KWWidgets_USE_INTERNATIONALIZATION
+#include "vtkKWWidgetsVersion.h"
+#include "vtkObjectFactory.h"
 
-#define KWWidgets_MAJOR_VERSION @KWWidgets_MAJOR_VERSION@
-#define KWWidgets_MINOR_VERSION @KWWidgets_MINOR_VERSION@
-#define KWWidgets_PATCH_VERSION @KWWidgets_PATCH_VERSION@
-#define KWWidgets_VERSION "@KWWidgets_VERSION@"
-
-#endif
+vtkCxxRevisionMacro(vtkKWWidgetsVersion, "$Revision: 1.1 $");
+vtkStandardNewMacro(vtkKWWidgetsVersion);
