@@ -186,7 +186,7 @@ proc ::tkcon::Init {args} {
             alias clear dir dump echo idebug lremove
             tkcon_puts tkcon_gets observe observe_var unalias which what
         }
-        RCS                {RCS: @(#) $Id: tkcon.tcl,v 1.2 2006-07-19 19:40:38 barre Exp $}
+        RCS                {RCS: @(#) $Id: tkcon.tcl,v 1.3 2006-07-21 16:10:03 barre Exp $}
         HEADURL                {http://cvs.sourceforge.net/viewcvs.py/*checkout*/tkcon/tkcon/tkcon.tcl?rev=HEAD}
 
         docs                "http://tkcon.sourceforge.net/"
@@ -4876,7 +4876,7 @@ proc ::tkcon::Bindings {} {
         <<TkCon_ClearLine>>        <Control-u>
         <<TkCon_SaveCommand>>        <Control-z>
         <<TkCon_Popup>>                <Button-3>
-        <<TkCon_BracketPair>>          <Control-]>
+        <<TkCon_BracketPair>>          <Control-bracketright>
         <<TkCon_ExpandSubcommand>>        <Shift-Tab>
     }] {
         event add $ev $key
