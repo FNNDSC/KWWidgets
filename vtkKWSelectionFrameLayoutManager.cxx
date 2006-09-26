@@ -73,7 +73,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.67 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.68 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -1536,6 +1536,8 @@ void vtkKWSelectionFrameLayoutManager::SetSelectionChangedCommand(
 void vtkKWSelectionFrameLayoutManager::InvokeSelectionChangedCommand()
 {
   this->InvokeObjectMethodCommand(this->SelectionChangedCommand);
+  this->InvokeEvent(
+    vtkKWSelectionFrameLayoutManager::SelectionChangedEvent, NULL);
 }
 
 //----------------------------------------------------------------------------
