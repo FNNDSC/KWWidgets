@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWHeaderAnnotationEditor );
-vtkCxxRevisionMacro(vtkKWHeaderAnnotationEditor, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWHeaderAnnotationEditor, "$Revision: 1.17 $");
 
 //----------------------------------------------------------------------------
 vtkKWHeaderAnnotationEditor::vtkKWHeaderAnnotationEditor()
@@ -77,7 +77,7 @@ vtkKWHeaderAnnotationEditor::~vtkKWHeaderAnnotationEditor()
     this->TextPropertyPopupButton = NULL;
     }
 
-  this->SetRenderWidget(NULL);
+  this->RenderWidget = NULL;
 }
 
 //----------------------------------------------------------------------------
