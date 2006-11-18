@@ -25,7 +25,7 @@
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTopLevel );
-vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.29 $");
+vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.30 $");
 
 //----------------------------------------------------------------------------
 vtkKWTopLevel::vtkKWTopLevel()
@@ -176,6 +176,8 @@ void vtkKWTopLevel::Display()
 
   this->Focus();
 
+  this->InvokeEvent(vtkKWTopLevel::DisplayEvent);
+  
   if (this->Modal)
     {
     this->Grab();
@@ -190,6 +192,7 @@ void vtkKWTopLevel::Withdraw()
     {
     this->ReleaseGrab();
     }
+  this->InvokeEvent(vtkKWTopLevel::WithdrawEvent);
 }
 
 //----------------------------------------------------------------------------
