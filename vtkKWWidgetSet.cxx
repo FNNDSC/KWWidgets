@@ -22,7 +22,7 @@
 #include <vtksys/stl/vector>
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWWidgetSet, "1.16");
+vtkCxxRevisionMacro(vtkKWWidgetSet, "$Revision: 1.20 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetSetInternals
