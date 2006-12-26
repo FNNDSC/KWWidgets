@@ -26,7 +26,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWizardWorkflow);
-vtkCxxRevisionMacro(vtkKWWizardWorkflow, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWWizardWorkflow, "$Revision: 1.3 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWizardWorkflowInternals
@@ -559,11 +559,11 @@ vtkKWWizardStep* vtkKWWizardWorkflow::PopStepFromNavigationStack()
 {
   if (this->GetNumberOfStepsInNavigationStack())
     {
-    vtkKWWizardStep *step = 
-      this->Internals->StepNavigationStackPool.back();
+    vtkKWWizardStep *step = this->Internals->StepNavigationStackPool.back();
     this->Internals->StepNavigationStackPool.pop_back();
-    this->InvokeNavigationStackedChangedCommand();
-    this->InvokeEvent(vtkKWWizardWorkflow::NavigationStackedChangedEvent);
+    /* Do NOT call the event/callback, popping is only use to clean up
+       the stack to enable smart 'back' navigation 
+    */
     return step;
     }
   return NULL;
