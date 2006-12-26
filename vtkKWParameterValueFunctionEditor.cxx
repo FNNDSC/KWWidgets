@@ -39,7 +39,7 @@
 #include <vtksys/stl/algorithm>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.101 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.102 $");
 
 //----------------------------------------------------------------------------
 #define VTK_KW_PVFE_POINT_RADIUS_MIN         2
@@ -7822,8 +7822,11 @@ void vtkKWParameterValueFunctionEditor::ProcessSynchronizationEvents(
     
     case vtkKWParameterValueFunctionEditor::VisibleParameterRangeChangedEvent:
     case vtkKWParameterValueFunctionEditor::VisibleParameterRangeChangingEvent:
-      pvfe->GetRelativeVisibleParameterRange(range);
-      this->SetRelativeVisibleParameterRange(range);
+      if (pvfe && pfve != this)
+        {
+        pvfe->GetRelativeVisibleParameterRange(range);
+        this->SetRelativeVisibleParameterRange(range);
+        }
       break;
       
     // Synchronize points
