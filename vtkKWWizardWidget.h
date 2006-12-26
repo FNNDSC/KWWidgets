@@ -148,6 +148,9 @@ public:
   virtual void SetCancelButtonVisibility(int);
   vtkGetMacro(CancelButtonVisibility,int);
   vtkBooleanMacro(CancelButtonVisibility,int);
+  virtual void SetHelpButtonVisibility(int);
+  vtkGetMacro(HelpButtonVisibility,int);
+  vtkBooleanMacro(HelpButtonVisibility,int);
   virtual void SetOKButtonVisibility(int);
   vtkGetMacro(OKButtonVisibility,int);
   vtkBooleanMacro(OKButtonVisibility,int);
@@ -156,6 +159,7 @@ public:
   // Get and customize some UI elements.
   vtkGetObjectMacro(CancelButton, vtkKWPushButton);
   vtkGetObjectMacro(OKButton, vtkKWPushButton);
+  vtkGetObjectMacro(HelpButton, vtkKWPushButton);
   vtkGetObjectMacro(SeparatorBeforeButtons, vtkKWSeparator);
   vtkGetObjectMacro(SubTitleLabel, vtkKWLabel);
   vtkGetObjectMacro(TitleLabel, vtkKWLabel);
@@ -193,6 +197,7 @@ protected:
   int NextButtonVisibility;
   int FinishButtonVisibility;
   int CancelButtonVisibility;
+  int HelpButtonVisibility;
   int OKButtonVisibility;
 
   vtkKWWizardWorkflow *WizardWorkflow;
@@ -217,6 +222,7 @@ protected:
   vtkKWPushButton     *NextButton;
   vtkKWPushButton     *FinishButton;
   vtkKWPushButton     *CancelButton;
+  vtkKWPushButton     *HelpButton;
   vtkKWPushButton     *OKButton;
 
   // Description:

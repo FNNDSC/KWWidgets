@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWizardWidget);
-vtkCxxRevisionMacro(vtkKWWizardWidget, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWWizardWidget, "$Revision: 1.7 $");
 
 //----------------------------------------------------------------------------
 vtkKWWizardWidget::vtkKWWizardWidget()
@@ -57,6 +57,7 @@ vtkKWWizardWidget::vtkKWWizardWidget()
   this->NextButton              = NULL;
   this->FinishButton            = NULL;
   this->CancelButton            = NULL;
+  this->HelpButton              = NULL;
   this->OKButton                = NULL;
 
   this->WizardWorkflow          = vtkKWWizardWorkflow::New();
@@ -65,6 +66,7 @@ vtkKWWizardWidget::vtkKWWizardWidget()
   this->NextButtonVisibility    = 1;
   this->FinishButtonVisibility  = 1;
   this->CancelButtonVisibility  = 1;
+  this->HelpButtonVisibility    = 0;
   this->OKButtonVisibility      = 1;
 }
 
@@ -171,6 +173,12 @@ vtkKWWizardWidget::~vtkKWWizardWidget()
     {
     this->CancelButton->Delete();
     this->CancelButton = NULL;
+    }
+
+  if (this->HelpButton)
+    {
+    this->HelpButton->Delete();
+    this->HelpButton = NULL;
     }
 
   if (this->OKButton)
@@ -471,6 +479,18 @@ void vtkKWWizardWidget::CreateWidget()
   this->CancelButton->SetWidth(8);
 
   // -------------------------------------------------------------------
+  // Button frame: Cancel
+
+  if (!this->HelpButton)
+    {
+    this->HelpButton = vtkKWPushButton::New();
+    }
+  this->HelpButton->SetParent(this->ButtonFrame);
+  this->HelpButton->SetText(ks_("Wizard|Button|Help"));
+  this->HelpButton->Create();
+  this->HelpButton->SetWidth(8);
+
+  // -------------------------------------------------------------------
   // Button frame: OK
 
   if (!this->OKButton)
@@ -565,11 +585,19 @@ void vtkKWWizardWidget::PackButtons()
   vtkKWWizardStep *finish_step = 
     this->WizardWorkflow->GetFinishStep();
 
+  if (this->HelpButtonVisibility && 
+      this->HelpButton && this->HelpButton->IsCreated())
+    {
+    this->Script("pack %s -side right", 
+                 this->HelpButton->GetWidgetName());
+    }
+
   if (this->CancelButtonVisibility && 
       this->CancelButton && this->CancelButton->IsCreated())
     {
-    this->Script("pack %s -side right", 
-                 this->CancelButton->GetWidgetName());
+    this->Script("pack %s -side right -padx %d", 
+                 this->CancelButton->GetWidgetName(),
+                 this->HelpButtonVisibility ? 4 : 0);
     }
 
   if (this->OKButtonVisibility && 
@@ -750,6 +778,20 @@ void vtkKWWizardWidget::SetCancelButtonVisibility(int arg)
 }
 
 //----------------------------------------------------------------------------
+void vtkKWWizardWidget::SetHelpButtonVisibility(int arg)
+{
+  if (this->HelpButtonVisibility == arg)
+    {
+    return;
+    }
+
+  this->HelpButtonVisibility = arg;
+  this->Modified();
+
+  this->PackButtons();
+}
+
+//----------------------------------------------------------------------------
 void vtkKWWizardWidget::SetOKButtonVisibility(int arg)
 {
   if (this->OKButtonVisibility == arg)
@@ -881,6 +923,7 @@ void vtkKWWizardWidget::UpdateEnableState()
   this->PropagateEnableState(this->BackButton);
   this->PropagateEnableState(this->NextButton);
   this->PropagateEnableState(this->CancelButton);
+  this->PropagateEnableState(this->HelpButton);
   this->PropagateEnableState(this->OKButton);
   this->PropagateEnableState(this->FinishButton);
 }
@@ -901,6 +944,9 @@ void vtkKWWizardWidget::PrintSelf(ostream& os, vtkIndent indent)
 
   os << indent << "CancelButtonVisibility: " 
      << (this->CancelButtonVisibility ? "On" : "Off") << endl;
+
+  os << indent << "HelpButtonVisibility: " 
+     << (this->HelpButtonVisibility ? "On" : "Off") << endl;
 
   os << indent << "OKButtonVisibility: " 
      << (this->OKButtonVisibility ? "On" : "Off") << endl;
