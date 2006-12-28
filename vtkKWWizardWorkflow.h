@@ -72,13 +72,14 @@ public:
   // More specifically, this method creates a transition from the origin's
   // ValidationState state to the destination's InteractionState, triggered
   // by next_input. The transition's StartCommand callback is automatically
-  // set to invoke the originating step's HideUserInterfaceCommand callback,
+  // set to invoke the originating step's HideUserInterface method (which
+  // calls the HideUserInterfaceCommand callback as well),
   // effectively hiding the originating step's UI before the destination
   // state is reached.
   // This method is used by the AddNextStep() method to connect a newly added
   // step to a previously added step (if any). The input used in that case is
   // vtkKWWizardStep::ValidationSucceededInput, and is expected to be pushed
-  // by the previously added step's ValidationCommand callback.
+  // by the previously added step's Validate method/callback.
   virtual int CreateNextTransition(
     vtkKWWizardStep *origin, 
     vtkKWStateMachineInput *next_input,
@@ -93,7 +94,8 @@ public:
   // destination's InteractionState state to the origin's InteractionState 
   // state, triggered by the origin step's GoBackToSelfInput input. 
   // The transition's StartCommand callback is automatically set to invoke
-  // the destination step's HideUserInterfaceCommand callback,
+  // the destination step's HideUserInterface method (which calls the
+  // HideUserInterfaceCommand callback as well),
   // effectively hiding the destination step's UI before the origin state
   // is reached back.
   virtual int CreateBackTransition(
@@ -115,9 +117,9 @@ public:
   //    GoToSelfInput input. The transition's EndCommand callback is 
   //    automatically set to invoke the TryToGoToStepCallback callback, 
   //    which is in turn responsible for checking if the destination step can
-  //    be reached, by invoking its CanGoToSelfCommand callback. On success, 
+  //    be reached, by invoking its CanGoToSelf method/callback. On success, 
   //    the destination step's UI is hidden by calling its 
-  //    HideUserInterfaceCommand callback, and its GoToSelfInput input is 
+  //    HideUserInterface method, and its GoToSelfInput input is 
   //    pushed again to trigger transition 2). On error, the origin step's
   //    GoBackToSelfInput input is pushed to trigger transition 3).
   // 2) A transition from the internal GoToState hub state to the
@@ -149,7 +151,8 @@ public:
   // Note that the initial state can not be reset.
   // Note that setting the initial state is actually the same as entering
   // it (i.e. the state's Enter() method will be called). In this case,
-  // this will trigger the step's ShowUserInterfaceCommand callback, 
+  // this will trigger the step's ShowUserInterfaceCommand callback (by
+  // calling the step's ShowUserInterface method), 
   // effectively showing this step's UI. For that reason, this method should
   // be the last method you call after setting up the whole workflow.
   // Return 1 on success, 0 otherwise.

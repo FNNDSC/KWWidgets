@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWizardStep);
-vtkCxxRevisionMacro(vtkKWWizardStep, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWWizardStep, "$Revision: 1.2 $");
 
 vtkIdType vtkKWWizardStep::IdCounter = 1;
 vtkKWWizardStepCleanup vtkKWWizardStep::Cleanup;
@@ -53,7 +53,7 @@ vtkKWWizardStep::vtkKWWizardStep()
   this->GoBackToSelfInput          = NULL;
   this->ShowUserInterfaceCommand   = NULL;
   this->HideUserInterfaceCommand   = NULL;
-  this->ValidationCommand          = NULL;
+  this->ValidateCommand            = NULL;
   this->CanGoToSelfCommand         = NULL;
 }
 
@@ -108,10 +108,10 @@ vtkKWWizardStep::~vtkKWWizardStep()
     this->HideUserInterfaceCommand = NULL;
     }
 
-  if (this->ValidationCommand)
+  if (this->ValidateCommand)
     {
-    delete [] this->ValidationCommand;
-    this->ValidationCommand = NULL;
+    delete [] this->ValidateCommand;
+    this->ValidateCommand = NULL;
     }
 
   if (this->CanGoToSelfCommand)
@@ -337,6 +337,12 @@ void vtkKWWizardStep::SetValidationFailedInput(vtkKWStateMachineInput *input)
 }
 
 //----------------------------------------------------------------------------
+void vtkKWWizardStep::ShowUserInterface()
+{
+  this->InvokeShowUserInterfaceCommand();
+}
+
+//----------------------------------------------------------------------------
 void vtkKWWizardStep::SetShowUserInterfaceCommand(
   vtkObject *object, const char *method)
 {
@@ -356,6 +362,12 @@ void vtkKWWizardStep::InvokeShowUserInterfaceCommand()
 int vtkKWWizardStep::HasShowUserInterfaceCommand()
 {
   return this->ShowUserInterfaceCommand && *this->ShowUserInterfaceCommand;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWizardStep::HideUserInterface()
+{
+  this->InvokeHideUserInterfaceCommand();
 }
 
 //----------------------------------------------------------------------------
@@ -381,25 +393,41 @@ int vtkKWWizardStep::HasHideUserInterfaceCommand()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWWizardStep::SetValidationCommand(
-  vtkObject *object, const char *method)
+void vtkKWWizardStep::Validate()
 {
-  this->SetObjectMethodCommand(&this->ValidationCommand, object, method);
+  this->InvokeValidateCommand();
 }
 
 //----------------------------------------------------------------------------
-void vtkKWWizardStep::InvokeValidationCommand()
+void vtkKWWizardStep::SetValidateCommand(
+  vtkObject *object, const char *method)
 {
-  if (this->HasValidationCommand())
+  this->SetObjectMethodCommand(&this->ValidateCommand, object, method);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWizardStep::InvokeValidateCommand()
+{
+  if (this->HasValidateCommand())
     {
-    this->InvokeObjectMethodCommand(this->ValidationCommand);
+    this->InvokeObjectMethodCommand(this->ValidateCommand);
     }
 }
 
 //----------------------------------------------------------------------------
-int vtkKWWizardStep::HasValidationCommand()
+int vtkKWWizardStep::HasValidateCommand()
 {
-  return this->ValidationCommand && *this->ValidationCommand;
+  return this->ValidateCommand && *this->ValidateCommand;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWWizardStep::CanGoToSelf()
+{
+  if (this->HasCanGoToSelfCommand())
+    {
+    return this->InvokeCanGoToSelfCommand();
+    }
+  return 0;
 }
 
 //----------------------------------------------------------------------------
@@ -454,7 +482,7 @@ void vtkKWWizardStep::ProcessCallbackCommandEvents(vtkObject *caller,
     switch (event)
       {
       case vtkKWStateMachineState::EnterEvent:
-        this->InvokeShowUserInterfaceCommand();
+        this->ShowUserInterface();
         break;
       }
     }
@@ -463,7 +491,7 @@ void vtkKWWizardStep::ProcessCallbackCommandEvents(vtkObject *caller,
     switch (event)
       {
       case vtkKWStateMachineTransition::EndEvent:
-        this->InvokeValidationCommand();
+        this->Validate();
         break;
       }
     }

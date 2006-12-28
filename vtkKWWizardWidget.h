@@ -54,7 +54,8 @@ public:
   // Get the client area. This is where user content should be placed.
   // A wizard workflow is made of steps (vtkKWWizardStep). Each step
   // should set its vtkKWWizardStep::ShowUserInterfaceCommand callback to point
-  // to a method that will display this step's UI. Within that method,
+  // to a method that will display this step's UI (or reimplement
+  // vtkKWWizardStep::ShowUserInterface). Within that method,
   // all widgets should be children of this ClientArea.
   vtkGetObjectMacro(ClientArea, vtkKWFrame);
 
@@ -66,7 +67,7 @@ public:
   // Refresh the interface.
   // This important method will refresh the state of the buttons, depending
   // on the current workflow navigation stack. If the workflow's FinishStep
-  // step is defined, it will invoke its CanGoToSelfCommand callback to check
+  // step is defined, it will invoke its CanGoToSelf method/callback to check
   // if it can be reached directly, and enable the Finish button accordingly.
   // This method should be called each time modifying the UI of the current
   // step may have an impact on navigating the workflow. For example, updating
@@ -121,8 +122,8 @@ public:
   // Description:
   // Set the error text, i.e. the contents of a convenience text section
   // placed just below the client area. It is prefixed with an error icon.
-  // This is typically used by a step's vtkKWWizardStep::ValidationCommand 
-  // callback to report an error when validating the UI failed.
+  // This is typically used by a step's vtkKWWizardStep::Validate
+  // method/callback to report an error when validating the UI failed.
   virtual void SetErrorText(const char *);
   virtual char* GetErrorText();
 
@@ -130,7 +131,8 @@ public:
   // Unpack all children in the client-area and set all pre-/post-/title label
   // to empty strings.
   // This is typically used by a step's 
-  // vtkKWWizardStep::HideUserInterfaceCommand callback to hide the step's UI
+  // vtkKWWizardStep::HideUserInterfaceCommand callback (or the 
+  // vtkKWWizardStep::HideUserInterface method) to hide the step's UI
   // or release resources that were allocated specifically for a step's UI.
   virtual void ClearPage();
   

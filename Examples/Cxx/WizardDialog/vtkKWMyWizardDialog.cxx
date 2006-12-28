@@ -16,7 +16,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMyWizardDialog );
-vtkCxxRevisionMacro(vtkKWMyWizardDialog, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWMyWizardDialog, "$Revision: 1.3 $");
 
 //----------------------------------------------------------------------------
 vtkKWMyWizardDialog::vtkKWMyWizardDialog()
@@ -134,7 +134,7 @@ void vtkKWMyWizardDialog::CreateWidget()
   this->OperatorStep->SetShowUserInterfaceCommand(
     this, "ShowOperatorUserInterfaceCallback");
   this->OperatorStep->SetHideUserInterfaceCommand(wizard_widget, "ClearPage");
-  this->OperatorStep->SetValidationCommand(this, "ValidateOperatorCallback");
+  this->OperatorStep->SetValidateCommand(this, "ValidateOperatorCallback");
 
   wizard_workflow->AddStep(this->OperatorStep);
 
@@ -151,7 +151,7 @@ void vtkKWMyWizardDialog::CreateWidget()
     this, "ShowOperand1UserInterfaceCallback");
   this->Operand1Of2Step->SetHideUserInterfaceCommand(
     wizard_widget, "ClearPage");
-  this->Operand1Of2Step->SetValidationCommand(
+  this->Operand1Of2Step->SetValidateCommand(
     this, "ValidateOperand1Callback");
 
   wizard_workflow->AddNextStep(this->Operand1Of2Step);
@@ -168,7 +168,7 @@ void vtkKWMyWizardDialog::CreateWidget()
   this->Operand2Step->SetShowUserInterfaceCommand(
     this, "ShowOperand2UserInterfaceCallback");
   this->Operand2Step->SetHideUserInterfaceCommand(wizard_widget, "ClearPage");
-  this->Operand2Step->SetValidationCommand(this, "ValidateOperand2Callback");
+  this->Operand2Step->SetValidateCommand(this, "ValidateOperand2Callback");
 
   wizard_workflow->AddNextStep(this->Operand2Step);
 
@@ -201,7 +201,7 @@ void vtkKWMyWizardDialog::CreateWidget()
     this, "ShowOperand1UserInterfaceCallback");
   this->Operand1Of1Step->SetHideUserInterfaceCommand(
     wizard_widget, "ClearPage");
-  this->Operand1Of1Step->SetValidationCommand(
+  this->Operand1Of1Step->SetValidateCommand(
     this, "ValidateOperand1Callback");
 
   wizard_workflow->AddStep(this->Operand1Of1Step);

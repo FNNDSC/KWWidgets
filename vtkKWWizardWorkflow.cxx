@@ -26,7 +26,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWizardWorkflow);
-vtkCxxRevisionMacro(vtkKWWizardWorkflow, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWWizardWorkflow, "$Revision: 1.4 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWizardWorkflowInternals
@@ -198,7 +198,7 @@ int vtkKWWizardWorkflow::CreateNextTransition(
 
   if (transition)
     {
-    transition->SetStartCommand(origin, "InvokeHideUserInterfaceCommand");
+    transition->SetStartCommand(origin, "HideUserInterface");
     }
 
   return  1;
@@ -234,8 +234,7 @@ int vtkKWWizardWorkflow::CreateBackTransition(
 
     if (transition)
       {
-      transition->SetStartCommand(
-        destination, "InvokeHideUserInterfaceCommand");
+      transition->SetStartCommand(destination, "HideUserInterface");
       }
     }
 
@@ -664,9 +663,9 @@ void vtkKWWizardWorkflow::TryToGoToStepCallback(
 {
   // We can go to destination, hide the origin UI, and go
 
-  if (destination->InvokeCanGoToSelfCommand())
+  if (destination->CanGoToSelf())
     {
-    origin->InvokeHideUserInterfaceCommand();
+    origin->HideUserInterface();
     this->PushInput(destination->GetGoToSelfInput());
     }
   

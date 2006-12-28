@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWizardWidget);
-vtkCxxRevisionMacro(vtkKWWizardWidget, "$Revision: 1.7 $");
+vtkCxxRevisionMacro(vtkKWWizardWidget, "$Revision: 1.8 $");
 
 //----------------------------------------------------------------------------
 vtkKWWizardWidget::vtkKWWizardWidget()
@@ -563,7 +563,7 @@ void vtkKWWizardWidget::Update()
     {
     int can_go = (finish_step && 
                   finish_step != current_step && 
-                  finish_step->InvokeCanGoToSelfCommand());
+                  finish_step->CanGoToSelf());
     this->FinishButton->SetEnabled(can_go ? this->GetEnabled() : 0);
     }
 

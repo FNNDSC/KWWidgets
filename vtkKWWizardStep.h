@@ -68,55 +68,60 @@ public:
   vtkSetStringMacro(Description);
 
   // Description:
-  // Specifies a command to associate with this step. This command is 
-  // typically invoked when the user interface for that step needs
-  // to be shown.
-  // Wizard developpers should set ShowUserInterfaceCommand to point to a
-  // method of their choice to display the step's UI; it will be invoked 
-  // automatically when the state machine enters the step's InteractionState
-  // state.
+  // Show the user interface associated to that step. Wizard developpers can
+  // either reimplement the ShowUserInterface method in a vtkKWWizardStep 
+  // subclass (*do* call the superclass' ShowUserInterface first), or create a 
+  // vtkKWWizardStep instance and set the ShowUserInterfaceCommand to point to
+  // a callback of their choice.
+  // Either ways, these methods will be invoked automatically when the state
+  // machine enters the step's InteractionState state. 
   // The 'object' argument is the object that will have the method called on
   // it. The 'method' argument is the name of the method to be called and any
   // arguments in string form. If the object is NULL, the method is still
   // evaluated as a simple command. 
+  virtual void ShowUserInterface();
   virtual void SetShowUserInterfaceCommand(
     vtkObject *object, const char *method);
   virtual void InvokeShowUserInterfaceCommand();
   virtual int HasShowUserInterfaceCommand();
 
   // Description:
-  // Specifies a command to associate with this step. This command is 
-  // typically invoked when the user interface for that step needs 
-  // to be hidden.
-  // Wizard developpers should set HideUserInterfaceCommand to point to a
-  // method of their choice to hide the step's UI; it will be invoked 
-  // automatically by transitions that move the state machine from
-  // one step to another step, such as the ones created by 
-  // the vtkKWWizardWorkflow::AddNextStep(), 
+  // Hide the user interface associated to that step. Wizard developpers can
+  // either reimplement the HideUserInterface method in a vtkKWWizardStep 
+  // subclass (*do* call the superclass' HideUserInterface first), or create a 
+  // vtkKWWizardStep instance and set the HideUserInterfaceCommand to point to
+  // a callback of their choice.
+  // Either ways, these methods will be invoked automatically by transitions 
+  // that move the state machine from one step to another step, such as the
+  // ones created by the vtkKWWizardWorkflow::AddNextStep(), 
   // vtkKWWizardWorkflow::CreateNextTransition() or 
   // vtkKWWizardWorkflow::CreateBackTransition() methods.
-  // While this callback can be used to release resources that were allocated
-  // specifically for a step's UI, most of the time calling the
-  // vtkKWWizardWidget::ClearPage() method will do the trick when the wizard
-  // workflow is working in conjunction with a vtkKWWizardWidget.
+  // While this method/callback can be used to release resources that were
+  // allocated specifically for a step's UI, calling the
+  // vtkKWWizardWidget::ClearPage() method will do the trick most of the time 
+  // when the wizard workflow is working in conjunction with a 
+  // vtkKWWizardWidget.
   // The 'object' argument is the object that will have the method called on
   // it. The 'method' argument is the name of the method to be called and any
   // arguments in string form. If the object is NULL, the method is still
   // evaluated as a simple command. 
+  virtual void HideUserInterface();
   virtual void SetHideUserInterfaceCommand(
     vtkObject *object, const char *method);
   virtual void InvokeHideUserInterfaceCommand();
   virtual int HasHideUserInterfaceCommand();
 
   // Description:
-  // Specifies a command to associate with this step. This command is 
-  // typically invoked when the user interface for that step needs 
-  // to be validated.
-  // This very important method is called when the ValidationTransition
-  // transition is triggered by the ValidationInput input, effectively moving
-  // the state machine from the InteractionState state to the ValidationState
-  // state.
-  // It is the responsibility of this callback to push inputs that will
+  // Validate the user interface associated to that step. Wizard developpers
+  // can either reimplement the Validate method in a 
+  // vtkKWWizardStep subclass (*do* call the superclass' Validate
+  // first), or create a vtkKWWizardStep instance and set the
+  // ValidateCommand to point to a callback of their choice.
+  // Either ways, these important methods are called when the 
+  // ValidationTransition transition is triggered by the ValidationInput input,
+  // effectively moving the state machine from the InteractionState state to
+  // the ValidationState state.
+  // It is the responsibility of this method/callback to push inputs that will
   // move the state machine to the next step (using the 
   // ValidationSucceededInput input for example), or back to the 
   // InteractionState on error (using the ValidationFailedInput input and the
@@ -129,24 +134,30 @@ public:
   // it. The 'method' argument is the name of the method to be called and any
   // arguments in string form. If the object is NULL, the method is still
   // evaluated as a simple command. 
-  virtual void SetValidationCommand(
-    vtkObject *object, const char *method);
-  virtual void InvokeValidationCommand();
-  virtual int HasValidationCommand();
+  virtual void Validate();
+  virtual void SetValidateCommand(vtkObject *object, const char *method);
+  virtual void InvokeValidateCommand();
+  virtual int HasValidateCommand();
 
   // Description:
-  // Specifies a command to associate with this step. This command is 
-  // typically invoked when there is a need to know if one can go
-  // directly to this step, effectively bypassing all others steps: this
-  // should be used *very* carefully, and is provided only to implement
-  // features such as the "Finish" button in a wizard widget.
-  // This command should return 1 if the step can be reached, 0 otherwise.
+  // Check if one can go directly to this step, given the model associated
+  // to the wizard workflow. Wizard developpers can either reimplement the
+  // CanGoToSelf method in a vtkKWWizardStep subclass (*do* check if
+  // the CanGoToSelfCommand is set though, and invoke it in priority), or
+  // create a vtkKWWizardStep instance and
+  // set the CanGoToSelfCommand to point to a callback of their choice.
+  // Either ways, these methods can be used when there is a need to know
+  // if one can go directly to this step, effectively bypassing all others
+  // steps: this should be used *very* carefully, and is provided to
+  // implement features such as the "Finish" button in a wizard widget.
+  // This method/command should return 1 if the step can be reached, 0 
+  // otherwise.
   // The 'object' argument is the object that will have the method called on
   // it. The 'method' argument is the name of the method to be called and any
   // arguments in string form. If the object is NULL, the method is still
   // evaluated as a simple command. 
-  virtual void SetCanGoToSelfCommand(
-    vtkObject *object, const char *method);
+  virtual int CanGoToSelf();
+  virtual void SetCanGoToSelfCommand(vtkObject *object, const char *method);
   virtual int InvokeCanGoToSelfCommand();
   virtual int HasCanGoToSelfCommand();
 
@@ -155,14 +166,12 @@ public:
   // display the user interface pertaining to this step, then wait for more
   // user inputs. Note that this class listens to the InteractionState's 
   // vtkKWStateMachineState::EnterEvent event; as this event is triggered, the 
-  // InvokeShowUserInterfaceCommand() method is automatically called.
-  // Wizard developpers should set ShowUserInterfaceCommand to point to a
-  // method of their choice to display the step's UI; it will be invoked 
-  // automatically when the state machine enters the step's InteractionState
-  // state.
+  // ShowUserInterface() method is automatically called (hence the 
+  // InvokeShowUserInterfaceCommand() as well).
   // Access to this state is given for advanced customization. In the vast
-  // majority of wizards, it should be ignored; ShowUserInterfaceCommand
-  // is however the key component to define for this state to work as expected.
+  // majority of wizards, it should be ignored; the ShowUserInterface method
+  // or callback is however the key component to define for this state to work
+  // as expected.
   virtual vtkKWStateMachineState* GetInteractionState();
 
   // Description:
@@ -171,12 +180,14 @@ public:
   // state), then branch to the next step's InteractionState state on success,
   // or back to the current step's InteractionState state on error. The state
   // acts as a hub:  the validation itself is performed by the 
-  // ValidationCommand callback attached to the ValidationTransition 
+  // ValidateCommand callback (or Validate method for the corresponding
+  // step) attached to the ValidationTransition 
   // transition that sits between the InteractionState state and the 
   // ValidationState state.
   // Access to this state is given for advanced customization. In the vast
-  // majority of wizards, it should be ignored; ValidationCommand
-  // is however the key component to define for this state to work as expected.
+  // majority of wizards, it should be ignored; the ValidateCommand (or
+  // the Validate method) is however the key component to define for this
+  // state to work as expected.
   virtual vtkKWStateMachineState* GetValidationState();
 
   // Description:
@@ -190,25 +201,29 @@ public:
   //   - it is triggered by the ValidationInput input. 
   // Note that this class listens to the ValidationTransition's 
   // vtkKWStateMachineTransition::EndEvent event; as this even is triggered, 
-  // the InvokeValidationCommand() method is automatically called.
-  // Wizard developpers should set ValidationCommand to point to a
-  // method of their choice to validate the step's UI; it will be invoked
-  // automatically when the state machine triggers the ValidationTransition
-  // transition. The wizard workflow (or wizard widget) will typically push a 
+  // the Validate() method is automatically called (hence the
+  // InvokeValidateCommand() method as well).
+  // Wizard developpers reimplement the Validate method or can set 
+  // ValidateCommand to point to a method of their choice to validate the
+  // step's UI; it will be invoked automatically when the state machine
+  // triggers the ValidationTransition transition. 
+  // The wizard workflow (or wizard widget) will typically push a 
   // ValidationInput input on the queue to request a step to be validated
   // and move to the next step. If the state machine is at an InteractionState
   // state, the corresponding step's ValidationTransition transition will be
   // triggered, the state machine will move to the ValidationState state and
-  // validation will occur through the ValidationCommand callback. This 
-  // callback will push inputs that in turn will move the state machine to
-  // the next step (using the ValidationSucceededInput input for example), or
-  // back to the InteractionState on error (using the ValidationFailedInput 
-  // input and the ValidationFailedTransition transition).
+  // validation will occur through the ValidateCommand callback or Validate
+  // method. This method/callback will push inputs that in turn will move the
+  // state machine to the next step (using the ValidationSucceededInput input
+  // for example), or back to the InteractionState on error (using the
+  // ValidationFailedInput input and the ValidationFailedTransition 
+  // transition).
   // Access to this transition is given for advanced customization. In the vast
-  // majority of wizards, it should be ignored; ValidationCommand is
-  // however the key component to define for this transition to work as
-  // expected, since it is where the ValidationSucceededInput, 
-  // ValidationFailedInput and user-defined inputs should be pushed.
+  // majority of wizards, it should be ignored; the ValidateCommand (or
+  // Validate method) is however the key component to define for this
+  // transition to work as expected, since it is where the
+  // ValidationSucceededInput, ValidationFailedInput and user-defined inputs
+  // should be pushed.
   virtual vtkKWStateMachineTransition* GetValidationTransition();
 
   // Description:
@@ -222,12 +237,12 @@ public:
   // machine is at an InteractionState state, the corresponding step's 
   // ValidationTransition transition will be triggered, the state machine will
   // move to the ValidationState state and validation will occur through the
-  // ValidationCommand callback.
+  // ValidateCommand callback (or Validate method).
   static vtkKWStateMachineInput* GetValidationInput();
 
   // Description:
   // Get the step's validation successful input. This singleton input is used 
-  // in the ValidationCommand callback and in conjunction with the 
+  // in the ValidateCommand callback and in conjunction with the 
   // workflow class (vtkKWWizardWorkflow) to trigger a transition from the
   // step's ValidationState state to the next step's InteractionState state. 
   // It is, as far as the workflow is concerned, the input that moves
@@ -235,16 +250,18 @@ public:
   // transition can be created automatically by the
   // vtkKWWizardWorkflow::AddNextStep() or 
   // vtkKWWizardWorkflow::CreateNextTransition() methods.
-  // ValidationCommand is the key component where this input is used.
+  // The ValidateCommand callback (or Validate method) is the key component
+  // where this input is used.
   static vtkKWStateMachineInput* GetValidationSucceededInput();
 
   // Description:
   // Get the step's validation failed input. This singleton input is used 
-  // in the ValidationCommand callback and in conjunction with the workflow
-  // class (vtkKWWizardWorkflow) to trigger the ValidationFailedTransition 
-  // transition from the step's ValidationState state back to the step's 
-  // InteractionState state. 
-  // ValidationCommand is the key component where this input is used.
+  // in the ValidateCommand callback (or Validate method) and in conjunction
+  // with the workflow class (vtkKWWizardWorkflow) to trigger the
+  // ValidationFailedTransition transition from the step's ValidationState
+  // state back to the step's InteractionState state. 
+  // The ValidateCommand callback (or Validate method) is the key component
+  // where this input is used.
   static vtkKWStateMachineInput* GetValidationFailedInput();
 
   // Description:
@@ -258,12 +275,13 @@ public:
   //   - it is triggered by the ValidationFailedInput input. 
   // Important: it is up to the wizard developpers to push the
   // ValidationFailedInput input on the state machine queue *from* the 
-  // ValidationCommand callback for the state machine to trigger that 
-  // transition and go back to the InteractionState state.
+  // ValidateCommand callback (or Validate method) for the state machine to
+  // trigger that transition and go back to the InteractionState state.
   // Access to this transition is given for advanced customization. In the vast
-  // majority of wizards, it should be ignored; ValidationCommand is however
-  // the key component to define for this transition to work as expected,
-  // since it is where the ValidationFailedInput input should be pushed.
+  // majority of wizards, it should be ignored; the ValidateCommand callback
+  // (or Validate method) is the key component to define for this transition
+  // to work as expected, since it is where the ValidationFailedInput input 
+  // should be pushed.
   virtual vtkKWStateMachineTransition* GetValidationFailedTransition();
 
   // Description:
@@ -307,7 +325,7 @@ protected:
 
   char *ShowUserInterfaceCommand;
   char *HideUserInterfaceCommand;
-  char *ValidationCommand;
+  char *ValidateCommand;
   char *CanGoToSelfCommand;
 
   // Description:
