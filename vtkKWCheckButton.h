@@ -241,7 +241,7 @@ public:
   // is specified then it overrides other options that specify a bitmap or
   // textual value to display in the widget. Invoke vtkKWWidget's 
   // SetConfigurationOption("-image", imagename) to use a specific 
-  // pre-existing Tk image, or call one of the following functions.
+  // pre-existing Tk image, or call one of the following functions:
   // The SetImageToPredefinedIcon method accepts an index to one of the
   // predefined icon listed in vtkKWIcon.
   // The SetImageToPixels method sets the image using pixel data. It expects
@@ -257,6 +257,33 @@ public:
   virtual void SetImageToIcon(vtkKWIcon *icon);
   virtual void SetImageToPredefinedIcon(int icon_index);
   virtual void SetImageToPixels(
+    const unsigned char *pixels, int width, int height, int pixel_size,
+    unsigned long buffer_length = 0);
+  
+  // Description:
+  // Specifies an image to display in the widget when the button is selected. 
+  // This option is ignored unless an image has been set for the unselected
+  // state of the button already (see SetImageToIcon).
+  // Typically, if the image is specified then it overrides other options that
+  // specify a bitmap or textual value to display in the widget. 
+  // Invoke vtkKWWidget's SetConfigurationOption("-selectimage", imagename)
+  // to use a specific pre-existing Tk image, or call one of the following 
+  // functions:
+  // The SetSelectImageToPredefinedIcon method accepts an index to one of the
+  // predefined icon listed in vtkKWIcon.
+  // The SetSelectImageToPixels method sets the image using pixel data. It
+  // expects a pointer to the pixels and the structure of the image, i.e. its
+  // width, height and the pixel_size (how many bytes per pixel, say 3 for RGB,
+  // or 1 for grayscale). If buffer_length = 0, it is computed automatically
+  // from the previous parameters. If it is not, it will most likely indicate
+  // that the buffer has been encoded using base64 and/or zlib.
+  // If pixel_size > 3 (i.e. RGBA), the image is blend the with background
+  // color of the widget.
+  // Check the SetCompoundMode method if you want to display both the
+  // image and the label at the same time.
+  virtual void SetSelectImageToIcon(vtkKWIcon *icon);
+  virtual void SetSelectImageToPredefinedIcon(int icon_index);
+  virtual void SetSelectImageToPixels(
     const unsigned char *pixels, int width, int height, int pixel_size,
     unsigned long buffer_length = 0);
   

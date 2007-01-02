@@ -22,7 +22,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCheckButton );
-vtkCxxRevisionMacro(vtkKWCheckButton, "$Revision: 1.58 $");
+vtkCxxRevisionMacro(vtkKWCheckButton, "$Revision: 1.59 $");
 
 //----------------------------------------------------------------------------
 vtkKWCheckButton::vtkKWCheckButton() 
@@ -577,7 +577,6 @@ void vtkKWCheckButton::SetImageToIcon(vtkKWIcon* icon)
   else
     {
     this->SetConfigurationOption("-image", "");
-    this->SetConfigurationOption("-selectimage", "");
     }
 }
 
@@ -591,7 +590,40 @@ void vtkKWCheckButton::SetImageToPixels(
 {
   vtkKWTkUtilities::SetImageOptionToPixels(
     this, pixels, width, height, pixel_size, buffer_length);
+}
 
+//----------------------------------------------------------------------------
+void vtkKWCheckButton::SetSelectImageToPredefinedIcon(int icon_index)
+{
+  vtkKWIcon *icon = vtkKWIcon::New();
+  icon->SetImage(icon_index);
+  this->SetSelectImageToIcon(icon);
+  icon->Delete();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWCheckButton::SetSelectImageToIcon(vtkKWIcon* icon)
+{
+  if (icon)
+    {
+    this->SetSelectImageToPixels(
+      icon->GetData(), 
+      icon->GetWidth(), icon->GetHeight(), icon->GetPixelSize());
+    }
+  else
+    {
+    this->SetConfigurationOption("-selectimage", "");
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWCheckButton::SetSelectImageToPixels(
+  const unsigned char* pixels, 
+  int width, 
+  int height,
+  int pixel_size,
+  unsigned long buffer_length)
+{
   vtkKWTkUtilities::SetImageOptionToPixels(
     this, pixels, width, height, pixel_size, buffer_length, "-selectimage");
 }
