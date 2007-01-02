@@ -354,6 +354,14 @@ public:
   // binding to the toplevel this menu is attached to. For example:
   //   menu->SetItemAccelerator(1, "Ctrl+0");
   //   menu->SetBindingForItemAccelerator(1, menu->GetParentTopLevel());
+  // this last line is pretty much the same as this one below:
+  //   menu->GetParentTopLevel()->SetBinding(
+  //          "<Control-0>", menu->GetItemCommand(1));
+  // but the accelerator to key-binding conversion is done automatically.
+  // Note that if the accelerator has not been set (or if it has been reset
+  // to an empty string or NULL), this method will *not* remove the binding
+  // (since it has no knowledge of what the previous accelerator was), this
+  // is up to the developper to do so by calling RemoveBinding for example.
   virtual void SetBindingForItemAccelerator(int index, vtkKWWidget*);
 
   // Description:

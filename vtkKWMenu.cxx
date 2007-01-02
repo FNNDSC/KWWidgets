@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.117 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.118 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMenuInternals
@@ -1416,27 +1416,6 @@ void vtkKWMenu::SetItemAccelerator(int index, const char *accelerator)
       !this->HasItemOption(index, "-accelerator"))
     {
     return;
-    }
-
-  // Remove the old accelerator, if any
-
-  if (!accelerator || !*accelerator)
-    {
-    const char *old_accelerator = this->GetItemOption(index, "-accelerator");
-    if (old_accelerator && *old_accelerator)
-      {
-      char *keybinding = NULL;
-      this->ConvertItemAcceleratorToKeyBinding(old_accelerator, &keybinding);
-      if (keybinding && *keybinding)
-        {
-        vtkKWTopLevel *toplevel = this->GetParentTopLevel();
-        if (toplevel)
-          {
-          toplevel->SetBinding(keybinding, NULL);
-          }
-        }
-      delete [] keybinding;
-      }
     }
 
   // Install the new one
