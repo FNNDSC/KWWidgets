@@ -34,7 +34,7 @@
 
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.284 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.285 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindow );
@@ -295,6 +295,7 @@ void vtkKWWindow::CreateWidget()
                          this, "MainPanelVisibilityCallback");
   menu->SetItemAccelerator(
     idx, this->GetMainPanelVisibilityKeyAccelerator());
+  menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
 
   // Menu : Window
 
@@ -303,6 +304,7 @@ void vtkKWWindow::CreateWidget()
                          this, "SecondaryPanelVisibilityCallback");
   menu->SetItemAccelerator(
     idx, this->GetSecondaryPanelVisibilityKeyAccelerator());
+  menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
 
   // Menu : View : Application Settings
 
@@ -318,28 +320,31 @@ void vtkKWWindow::CreateWidget()
 
   // Menu : Window : Tcl Interactor
 
+  menu = this->GetWindowMenu();
   if (!this->GetApplication()->GetReleaseMode())
     {
-    this->GetWindowMenu()->AddSeparator();
+    menu->AddSeparator();
     
     cmd = "DisplayLogDialog {";
     cmd += this->GetTclName();
     cmd += "}";
-    idx = this->GetWindowMenu()->AddCommand(
+    idx = menu->AddCommand(
       this->GetLogDialogMenuLabel(), 
       this->GetApplication(), cmd.c_str());
-    this->GetWindowMenu()->SetItemHelpString(
+    menu->SetItemHelpString(
       idx, k_("Display the &error log dialog"));
-    this->GetWindowMenu()->SetItemAccelerator(idx, "Ctrl+Alt+E");
+    menu->SetItemAccelerator(idx, "Ctrl+Alt+E");
+    menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
 
-    this->GetWindowMenu()->AddSeparator();
+    menu->AddSeparator();
     
-    idx = this->GetWindowMenu()->AddCommand(
+    idx = menu->AddCommand(
       this->GetTclInteractorMenuLabel(), 
       this, "DisplayTclInteractor");
-    this->GetWindowMenu()->SetItemHelpString(
+    menu->SetItemHelpString(
       idx, k_("Display a prompt to interact with the Tcl engine"));
-    this->GetWindowMenu()->SetItemAccelerator(idx, "Ctrl+T");
+    menu->SetItemAccelerator(idx, "Ctrl+T");
+    menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
     }
 }
 

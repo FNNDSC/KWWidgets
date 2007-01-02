@@ -337,11 +337,24 @@ public:
   // Specifies a string to display at the right side of the menu entry. 
   // Normally describes an accelerator keystroke sequence that may be typed
   // to invoke the same function as the menu entry. This is an arbitrary
-  // string, not a key binding per say; yet, as a convenience, the 
-  // accelerator will also be interpreted and added as a key binding to
-  // the toplevel this menu is a child (or sub-child) of. It can recognizes
-  // keyword like Ctrl+0.
+  // string, not a key binding per say, i.e. pressing the accelerator
+  // key does not automatically call the command associated to this
+  // menu item. To do so, the corresponding key binding must be set and
+  // associated to the item's command, if any. The SetBindingForItemAccelerator
+  // method can be used to that effect.
   virtual void SetItemAccelerator(int index, const char *accelerator);
+
+  // Description:
+  // This method retrieves the accelerator attached to a menu item, convert
+  // it to the proper keybinding (say, Ctrl+0 is converted into <Control-0>),
+  // and set that binding on a specific 'widget' so that whenever that widget
+  // has the focus and that key binding is pressed, the item's command will
+  // be invokved. A typical use for this method is to set a menu item's
+  // accelerator using SetItemAccelerator, then associate the corresponding
+  // binding to the toplevel this menu is attached to. For example:
+  //   menu->SetItemAccelerator(1, "Ctrl+0");
+  //   menu->SetBindingForItemAccelerator(1, menu->GetParentTopLevel());
+  virtual void SetBindingForItemAccelerator(int index, vtkKWWidget*);
 
   // Description:
   // Set/Get the help string for a given item specified by its index.
@@ -636,8 +649,7 @@ protected:
   const char* GetSuffixOutOfCreatedItemVariableName(const char *varname);
 
   // Description:
-  // Install accelerator binding to toplevel
-  virtual void InstallItemAcceleratorBindingOnToplevel(int index);
+  // Convert key accelerator to binding
   virtual void ConvertItemAcceleratorToKeyBinding(
     const char *accelerator, char **keybinding);
 

@@ -35,6 +35,7 @@ proc vtkKWMenuEntryPoint {parent win} {
   set index [$menu1 AddCommand \
       "&Left Justification" $message1 "SetJustificationToLeft"] 
   $menu1 SetItemAccelerator $index "F8"
+  $menu1 SetBindingForItemAccelerator $index [menu1 GetParentTopLevel]
   $menu1 SetItemHelpString $index "Set the message justification to left."
 
   set index [$menu1 AddCommand \

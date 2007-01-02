@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.116 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.117 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMenuInternals
@@ -259,8 +259,6 @@ void vtkKWMenu::SetItemCommand(int index,
     this->GetWidgetName(), index, this->GetTclName(), command);
 
   delete [] command;
-
-  this->InstallItemAcceleratorBindingOnToplevel(index);
 }
 
 //----------------------------------------------------------------------------
@@ -1445,15 +1443,13 @@ void vtkKWMenu::SetItemAccelerator(int index, const char *accelerator)
 
   this->Script("%s entryconfigure %d -accelerator {%s}", 
                this->GetWidgetName(), index, accelerator ? accelerator : "");
-
-  this->InstallItemAcceleratorBindingOnToplevel(index);
 }
 
 //----------------------------------------------------------------------------
-void vtkKWMenu::InstallItemAcceleratorBindingOnToplevel(int index)
+void vtkKWMenu::SetBindingForItemAccelerator(int index, vtkKWWidget *widget)
 {
   const char *accelerator = this->GetItemOption(index, "-accelerator");
-  if (accelerator && *accelerator)
+  if (accelerator && *accelerator && widget)
     {
     char *keybinding = NULL;
     this->ConvertItemAcceleratorToKeyBinding(accelerator, &keybinding);
@@ -1463,11 +1459,7 @@ void vtkKWMenu::InstallItemAcceleratorBindingOnToplevel(int index)
       if (command && *command)
         {
         vtksys_stl::string command_safe(command);
-        vtkKWTopLevel *toplevel = this->GetParentTopLevel();
-        if (toplevel)
-          {
-          toplevel->SetBinding(keybinding, command_safe.c_str());
-          }
+        widget->SetBinding(keybinding, command_safe.c_str());
         }
       }
     delete [] keybinding;

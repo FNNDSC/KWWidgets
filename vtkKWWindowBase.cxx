@@ -34,7 +34,7 @@
 
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.57 $");
+vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.58 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindowBase );
@@ -351,6 +351,7 @@ void vtkKWWindowBase::CreateWidget()
     cmd += this->GetTclName();
     index = menu->AddCommand(this->GetHelpTopicsMenuLabel(), app, cmd.c_str());
     menu->SetItemAccelerator(index, "F1");
+    menu->SetBindingForItemAccelerator(index, menu->GetParentTopLevel());
     }
 
   if (app->HasCheckForUpdates())
