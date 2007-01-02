@@ -207,7 +207,7 @@ public:
   // is specified then it overrides other options that specify a bitmap or
   // textual value to display in the widget. Invoke vtkKWWidget's 
   // SetConfigurationOption("-image", imagename) to use a specific 
-  // pre-existing Tk image, or call one of the following functions.
+  // pre-existing Tk image, or call one of the following functions:
   // The SetImageToPredefinedIcon method accepts an index to one of the
   // predefined icon listed in vtkKWIcon.
   // The SetImageToPixels method sets the image using pixel data. It expects
