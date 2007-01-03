@@ -123,6 +123,10 @@ public:
   vtkGetObjectMacro(BottomFrame, vtkKWFrame);
 
   // Description:
+  // Get the main edit frame, so that it can be collapsed manually
+  vtkGetObjectMacro(EditorFrame, vtkKWFrameWithLabel);
+
+  // Description:
   // Set/Get the material widget + enable shading visibility
   vtkBooleanMacro(MaterialPropertyVisibility, int);
   virtual void SetMaterialPropertyVisibility(int);
