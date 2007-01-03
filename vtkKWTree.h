@@ -361,6 +361,17 @@ public:
   // The following parameters are also passed to the command:
   // - path to the closed node: const char*
   virtual void SetCloseCommand(vtkObject *object, const char *method);
+  
+  // Description:
+  // Set a binding to a widget, i.e. the command that is invoked
+  // whenever the 'event' is triggered on the widget.
+  // SetBinding will replace any old bindings.
+  // The 'object' argument is the object that will have the method called on
+  // it. The 'method' argument is the name of the method to be called and any
+  // arguments in string form. If the object is NULL, the method is still
+  // evaluated as a simple command. 
+  virtual void SetBinding(
+    const char *event, vtkObject *object, const char *method);
 
   // Description:
   // Specifies a command to execute whenever the event sequence given 
@@ -403,20 +414,6 @@ public:
   virtual void SetSelectionChangedCommand(
     vtkObject *object, const char *method);
   
-  // Description:
-  // Specifies a command to associate with the widget. This command is 
-  // typically invoked when the "Delete" Key is pressed, but this will only
-  // invoke the 'method' passed in. This 'method' of the 'object' needs to 
-  // decide what to do with this <KeyPress-Delete> event. For examples, if
-  // user wants to go ahead and delete, the 'object' needs to find out the 
-  // selected nodes and delete them using API of this class.
-  // The 'object' argument is the object that will have the method called on
-  // it. The 'method' argument is the name of the method to be called and any
-  // arguments in string form. If the object is NULL, the method is still
-  // evaluated as a simple command. 
-  virtual void SetKeyPressDeleteCommand(
-    vtkObject *object, const char *method);
-
   // Description:
   // Specifies a command to associate with the widget. This command is 
   // typically invoked when a node is reparented interactively.
@@ -468,7 +465,6 @@ public:
   // Callbacks. Internal, do not use.
   virtual void SelectionCallback();
   virtual void RightClickOnNodeCallback(const char *node);
-  virtual void KeyPressDeleteCallback();
   virtual void KeyNavigationCallback(const char* key);
   virtual void DropOverNodeCallback(const char*, const char*, const char*, const char*, const char*, const char*);
 
@@ -486,9 +482,6 @@ protected:
   char *SelectionChangedCommand;
   virtual void InvokeSelectionChangedCommand();
   
-  char *KeyPressDeleteCommand;
-  virtual void InvokeKeyPressDeleteCommand();
-
   char *NodeParentChangedCommand;
   virtual void InvokeNodeParentChangedCommand(
     const char *node, const char *new_parent, const char *previous_parent);

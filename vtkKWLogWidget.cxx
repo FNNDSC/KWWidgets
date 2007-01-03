@@ -41,7 +41,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLogWidget );
-vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.7 $");
+vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.8 $");
 
 vtkIdType vtkKWLogWidget::IdCounter = 1;
 
@@ -303,7 +303,7 @@ void vtkKWLogWidget::CreateRecordList()
   tablelist->ClearStripeBackgroundColor();
   tablelist->SetRowSpacing(0);
   tablelist->SetSelectionModeToExtended();
-  tablelist->SetKeyPressDeleteCommand(this, "RemoveSelectedRecordsCallback");
+  tablelist->SetBinding("<Delete>", this, "RemoveSelectedRecordsCallback");
   tablelist->SetSelectionChangedCommand(this, "SelectionChangedCallback");
 
   int col_index;

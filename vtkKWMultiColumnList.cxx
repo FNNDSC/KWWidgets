@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.74 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.75 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -84,7 +84,6 @@ public:
 vtkKWMultiColumnList::vtkKWMultiColumnList()
 {
   this->EditStartCommand = NULL;
-  this->KeyPressDeleteCommand = NULL;
   this->EditEndCommand = NULL;
   this->CellUpdatedCommand = NULL;
   this->SelectionCommand = NULL;
@@ -112,11 +111,6 @@ vtkKWMultiColumnList::~vtkKWMultiColumnList()
     {
     delete [] this->EditStartCommand;
     this->EditStartCommand = NULL;
-    }
-  if (this->KeyPressDeleteCommand)
-    {
-    delete [] this->KeyPressDeleteCommand;
-    this->KeyPressDeleteCommand = NULL;
     }
   if (this->EditEndCommand)
     {
@@ -206,9 +200,21 @@ void vtkKWMultiColumnList::CreateWidget()
 
   this->Script("bind [%s bodytag] <<Button3>> [list %s RightClickCallback %%W %%x %%y %%X %%Y]",
                this->GetWidgetName(), this->GetTclName());
- 
-  this->Script("bind [%s bodytag] <Delete> [list %s KeyPressDeleteCallback]",
-               this->GetWidgetName(), this->GetTclName());
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::SetBinding(const char *event, 
+                             vtkObject *object, const char *method)
+{
+  this->Superclass::SetBinding(event, object, method);
+  if (this->IsCreated())
+    {
+    char *command = NULL;
+    this->SetObjectMethodCommand(&command, object, method);
+    this->Script("bind TablelistBody %s {%s}", event, command);
+    
+    delete [] command;
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -1226,16 +1232,6 @@ void vtkKWMultiColumnList::SetColumnSortCommand(int col_index,
 void vtkKWMultiColumnList::SetColumnFormatCommandToEmptyOutput(int col_index)
 {
   this->SetColumnFormatCommand(col_index, NULL, "tablelist::emptyStr");
-}
-
-//----------------------------------------------------------------------------
-void vtkKWMultiColumnList::KeyPressDeleteCallback()
-{
-  if (this->IsCreated() && (this->GetNumberOfSelectedCells() > 0 ||
-                            this->GetNumberOfSelectedRows() > 0))
-    {
-    this->InvokeKeyPressDeleteCommand();
-    }
 }
 
 //----------------------------------------------------------------------------
@@ -4204,19 +4200,6 @@ void vtkKWMultiColumnList::SetEditStartCommand(
   vtkObject *object, const char *method)
 {
   this->SetObjectMethodCommand(&this->EditStartCommand, object, method);
-}
-
-//----------------------------------------------------------------------------
-void vtkKWMultiColumnList::InvokeKeyPressDeleteCommand()
-{
-  this->InvokeObjectMethodCommand(this->KeyPressDeleteCommand);
-}
-
-//----------------------------------------------------------------------------
-void vtkKWMultiColumnList::SetKeyPressDeleteCommand(
-     vtkObject *object, const char *method)
-{
-  this->SetObjectMethodCommand(&this->KeyPressDeleteCommand, object, method);
 }
 
 //----------------------------------------------------------------------------

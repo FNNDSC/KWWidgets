@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTree );
-vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.32 $");
+vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.33 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTreeInternals
@@ -72,7 +72,6 @@ vtkKWTree::vtkKWTree()
   this->EnableReparenting = 0;
 
   this->SelectionChangedCommand = NULL;
-  this->KeyPressDeleteCommand = NULL;
   this->NodeParentChangedCommand = NULL;
   
   this->Internals = new vtkKWTreeInternals;
@@ -85,12 +84,6 @@ vtkKWTree::~vtkKWTree()
     {
     delete [] this->SelectionChangedCommand;
     this->SelectionChangedCommand = NULL;
-    }
-
-  if (this->KeyPressDeleteCommand)
-    {
-    delete [] this->KeyPressDeleteCommand;
-    this->KeyPressDeleteCommand = NULL;
     }
 
   if (this->NodeParentChangedCommand)
@@ -130,23 +123,26 @@ void vtkKWTree::CreateWidget()
 
   // Bind some extra hotkeys 
 
-  this->Script(
-    "bind %s.c <KeyPress-Delete> [list %s KeyPressDeleteCallback]",
-    this->GetWidgetName(), this->GetTclName());
-  this->Script(
-    "bind %s.c <KeyPress-Next> [list %s KeyNavigationCallback Next]",
-    this->GetWidgetName(), this->GetTclName());
-  this->Script(
-    "bind %s.c <KeyPress-Prior> [list %s KeyNavigationCallback Prior]",
-    this->GetWidgetName(), this->GetTclName());
-  this->Script(
-    "bind %s.c <KeyPress-Home> [list %s KeyNavigationCallback Home]",
-    this->GetWidgetName(), this->GetTclName());
-  this->Script(
-    "bind %s.c <KeyPress-End> [list %s KeyNavigationCallback End]",
-    this->GetWidgetName(), this->GetTclName());
+  this->SetBinding("<Next>", this, "KeyNavigationCallback Next");
+  this->SetBinding("<Prior>", this, "KeyNavigationCallback Prior");
+  this->SetBinding("<Home>", this, "KeyNavigationCallback Home");
+  this->SetBinding("<End>", this, "KeyNavigationCallback End");
 
   this->UpdateDragAndDrop();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWTree::SetBinding(const char *event, 
+                             vtkObject *object, const char *method)
+{
+  this->Superclass::SetBinding(event, object, method);
+  if (this->IsCreated())
+    {
+    char *command = NULL;
+    this->SetObjectMethodCommand(&command, object, method);
+    this->Script("bind %s.c %s {%s}", this->GetWidgetName(), event, command);
+    delete [] command;
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -216,15 +212,6 @@ void vtkKWTree::RightClickOnNodeCallback(const char *node)
   if (node)
     {
     this->InvokeEvent(vtkKWTree::RightClickOnNodeEvent, (void*)node);
-    }
-}
-
-//----------------------------------------------------------------------------
-void vtkKWTree::KeyPressDeleteCallback()
-{
-  if (this->IsCreated() && this->HasSelection())
-    {
-    this->InvokeKeyPressDeleteCommand();
     }
 }
 
@@ -352,19 +339,6 @@ void vtkKWTree::InvokeSelectionChangedCommand()
 {
   this->InvokeObjectMethodCommand(this->SelectionChangedCommand);
   this->InvokeEvent(vtkKWTree::SelectionChangedEvent, NULL);
-}
-
-//----------------------------------------------------------------------------
-void vtkKWTree::SetKeyPressDeleteCommand(
-  vtkObject *object, const char *method)
-{
-  this->SetObjectMethodCommand(&this->KeyPressDeleteCommand, object, method);
-}
-
-//----------------------------------------------------------------------------
-void vtkKWTree::InvokeKeyPressDeleteCommand()
-{
-  this->InvokeObjectMethodCommand(this->KeyPressDeleteCommand);
 }
 
 //----------------------------------------------------------------------------
