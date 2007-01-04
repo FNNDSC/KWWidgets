@@ -76,7 +76,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.313 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.314 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -921,7 +921,7 @@ Tcl_Interp *vtkKWApplication::InitializeTcl(Tcl_Interp *interp, ostream *err)
       }
     }
 
-#endif KWWidgets_USE_INCR_TCL
+#endif
 
   // Initialize VTK
 
