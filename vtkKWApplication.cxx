@@ -76,7 +76,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.312 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.313 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -104,6 +104,12 @@ extern "C" int Vtkparalleltcl_Init(Tcl_Interp *interp);
 #endif // VTK_USE_PARALLEL
 #endif // VTK_WRAP_TCL
 #endif // KWWidgets_BUILD_VTK_WIDGETS
+
+#ifdef KWWidgets_USE_INCR_TCL
+extern "C" int Itcl_Init(Tcl_Interp *interp);
+extern "C" int Itk_Init(Tcl_Interp *interp);
+#endif
+
 
 //----------------------------------------------------------------------------
 class KWWidgets_EXPORT vtkKWOutputWindow : public vtkOutputWindow
@@ -882,6 +888,40 @@ Tcl_Interp *vtkKWApplication::InitializeTcl(Tcl_Interp *interp, ostream *err)
 #ifdef _WIN32
   vtkKWSetApplicationIconTclCommand_DoInit(interp);
 #endif
+
+#ifdef KWWidgets_USE_INCR_TCL
+
+  // Initialize [incr Tcl]
+
+  if (!Tcl_PkgPresent(interp, "Itcl", NULL, 0))
+    {
+    status = Itcl_Init(interp);
+    if (status != TCL_OK)
+      {
+      if (err)
+        {
+        *err << "Itcl_Init error: " << Tcl_GetStringResult(interp) << endl;
+        }
+      return NULL;
+      }
+    }
+
+  // Initialize [incr Tk]
+
+  if (!Tcl_PkgPresent(interp, "Itk", NULL, 0))
+    {
+    status = Itk_Init(interp);
+    if (status != TCL_OK)
+      {
+      if (err)
+        {
+        *err << "Itk_Init error: " << Tcl_GetStringResult(interp) << endl;
+        }
+      return NULL;
+      }
+    }
+
+#endif KWWidgets_USE_INCR_TCL
 
   // Initialize VTK
 

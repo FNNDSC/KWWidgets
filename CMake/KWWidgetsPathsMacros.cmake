@@ -485,6 +485,26 @@ MACRO(KWWidgets_GENERATE_SETUP_PATHS_FOR_ONE_CONFIGURATION_TYPE
     ENDIF(gettext_path)
   ENDIF(KWWidgets_USE_INTERNATIONALIZATION)
 
+  # [incr Tcl]
+
+  IF(KWWidgets_USE_INCR_TCL)
+    IF(NOT INCR_TCL_LIBRARY AND NOT INCR_TK_LIBRARY)
+      INCLUDE("${KWWidgets_CMAKE_DIR}/FindIncrTCL.cmake")
+    ENDIF(NOT INCR_TCL_LIBRARY AND NOT INCR_TK_LIBRARY)
+    IF(INCR_TCL_LIBRARY)
+      GET_FILENAME_COMPONENT(path "${INCR_TCL_LIBRARY}" PATH)
+      IF(path)
+        SET(KWWidgets_PATH_ENV ${KWWidgets_PATH_ENV} "${path}")
+      ENDIF(path)
+    ENDIF(INCR_TCL_LIBRARY)
+    IF(INCR_TK_LIBRARY)
+      GET_FILENAME_COMPONENT(path "${INCR_TK_LIBRARY}" PATH)
+      IF(path)
+        SET(KWWidgets_PATH_ENV ${KWWidgets_PATH_ENV} "${path}")
+      ENDIF(path)
+    ENDIF(INCR_TK_LIBRARY)
+  ENDIF(KWWidgets_USE_INCR_TCL)
+
   # If we have no TCL_LIBRARY or TCL_TCLSH, then we are probably being invoked
   # from an out-of-source example that is using either an installed VTK or
   # an installed KWWidgets. None of those projects export TCL_* variables
@@ -539,6 +559,21 @@ MACRO(KWWidgets_GENERATE_SETUP_PATHS_FOR_ONE_CONFIGURATION_TYPE
       ENDIF(path)
     ENDIF(GETTEXT_INTL_LIBRARY)
   ENDIF(KWWidgets_USE_INTERNATIONALIZATION)
+
+  IF(KWWidgets_USE_INCR_TCL)
+    IF(INCR_TCL_LIBRARY)
+      GET_FILENAME_COMPONENT(path "${INCR_TCL_LIBRARY}" PATH)
+      IF(path)
+        SET(extra_runtime_paths ${extra_runtime_paths} ${path})
+      ENDIF(path)
+    ENDIF(INCR_TCL_LIBRARY)
+    IF(INCR_TK_LIBRARY)
+      GET_FILENAME_COMPONENT(path "${INCR_TK_LIBRARY}" PATH)
+      IF(path)
+        SET(extra_runtime_paths ${extra_runtime_paths} ${path})
+      ENDIF(path)
+    ENDIF(INCR_TK_LIBRARY)
+  ENDIF(KWWidgets_USE_INCR_TCL)
 
   # For LD_LIBRARY_PATH or equivalent
   
