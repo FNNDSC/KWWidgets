@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.75 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.76 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -214,6 +214,16 @@ void vtkKWMultiColumnList::SetBinding(const char *event,
     this->Script("bind TablelistBody %s {%s}", event, command);
     
     delete [] command;
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::Focus()
+{
+  this->Superclass::Focus();
+  if (this->IsCreated())
+    {
+    this->Script("focus [%s bodypath]", this->GetWidgetName());
     }
 }
 

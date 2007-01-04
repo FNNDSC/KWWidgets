@@ -462,6 +462,10 @@ public:
   virtual void UpdateEnableState();
 
   // Description:
+  // Set focus to this widget.
+  virtual void Focus();
+
+  // Description:
   // Callbacks. Internal, do not use.
   virtual void SelectionCallback();
   virtual void RightClickOnNodeCallback(const char *node);

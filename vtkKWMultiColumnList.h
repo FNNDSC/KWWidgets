@@ -63,6 +63,10 @@ public:
     const char *event, vtkObject *object, const char *method);
 
   // Description:
+  // Set focus to this widget.
+  virtual void Focus();
+
+  // Description:
   // Set the width (in chars) and height (in lines).
   // If width is set to 0, the widget will be large enough to show
   // all columns. If set to a different value, columns will stretch
