@@ -54,6 +54,9 @@ int main(int argc, char** argv)
   char pythonpath_env[MAX_PATH_len];
   const char *old_pythonpath_env;
 
+  char itcl_library_env[MAX_PATH_len];
+  char itk_library_env[MAX_PATH_len];
+
   char message[MAX_PATH_len];
   char **arg;
 
@@ -115,6 +118,18 @@ int main(int argc, char** argv)
     strcat(pythonpath_env, old_pythonpath_env);
     }
   putenv(pythonpath_env);
+
+  /* ITCL_LIBRARY */
+
+  strcpy(itcl_library_env, 
+         "ITCL_LIBRARY=@KWWidgets_ITCL_LIBRARY_ENV@");
+  putenv(itcl_library_env);
+
+  /* ITK_LIBRARY */
+
+  strcpy(itk_library_env, 
+         "ITK_LIBRARY=@KWWidgets_ITK_LIBRARY_ENV@");
+  putenv(itk_library_env);
 
   /* Save the native form of the current executable path so that we can set
      our working dir to its location later on. */

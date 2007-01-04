@@ -14,3 +14,5 @@ if ( $?PYTHONPATH ) then
 else
   setenv PYTHONPATH "${KWWidgets_PYTHONPATH_ENV}"
 endif
+setenv ITCL_LIBRARY "${KWWidgets_ITCL_LIBRARY_ENV}"
+setenv ITK_LIBRARY "${KWWidgets_ITK_LIBRARY_ENV}"

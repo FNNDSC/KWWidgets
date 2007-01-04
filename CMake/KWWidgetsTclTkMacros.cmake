@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 # INCR_TCL_GET_VERSION
-# Return the major/minor version of the [incr Tcl] library.
+# Try to find the major/minor version of the [incr Tcl] library.
 #
 # in: major_version: name of the var the major version is written to
 #     minor_version: name of the var the minor version is written to
@@ -48,6 +48,56 @@ MACRO(INCR_TCL_GET_VERSION major_version minor_version)
   ENDIF(NOT ${major_version} AND NOT ${minor_version})
 
 ENDMACRO(INCR_TCL_GET_VERSION)
+
+# ----------------------------------------------------------------------------
+# INCR_TCL_GET_SUPPORT_DIR, INCR_TK_GET_SUPPORT_DIR
+# Try to find the [incr Tcl] or [incr Tk] support lib dir.
+#
+# in: incr_tcl_support_lib_dir: name of the var the support dir is written to
+#     incr_tk_support_lib_dir: name of the var the support dir is written to
+#
+# ex: 
+# INCR_TCL_GET_SUPPORT_LIB_DIR("INCR_TCL_SUPPORT_LIB_DIR")
+
+MACRO(INCR_TCL_GET_SUPPORT_LIB_DIR incr_tcl_support_lib_dir)
+
+  SET(${incr_tcl_support_lib_dir} "")
+  IF(INCR_TCL_LIBRARY)
+    GET_FILENAME_COMPONENT(incr_tcl_path "${INCR_TCL_LIBRARY}" PATH)
+    # On Win32, the lib is into the support dir, on Unix it's one up.
+    INCR_TCL_GET_VERSION("INCR_TCL_MAJOR_VERSION" "INCR_TCL_MINOR_VERSION")
+    SET(INCR_TCL_VERSION "${INCR_TCL_MAJOR_VERSION}.${INCR_TCL_MINOR_VERSION}")
+    IF(EXISTS "${incr_tcl_path}/itcl.tcl")
+      SET(${incr_tcl_support_lib_dir} "${incr_tcl_path}")
+    ELSE(EXISTS "${incr_tcl_path}/itcl.tcl")
+      SET(incr_tcl_path "${incr_tcl_path}/itcl${INCR_TCL_VERSION}")
+      IF(EXISTS "${incr_tcl_path}/itcl.tcl")
+        SET(${incr_tcl_support_lib_dir} "${incr_tcl_path}")
+      ENDIF(EXISTS "${incr_tcl_path}/itcl.tcl")
+    ENDIF(EXISTS "${incr_tcl_path}/itcl.tcl")
+  ENDIF(INCR_TCL_LIBRARY)
+
+ENDMACRO(INCR_TCL_GET_SUPPORT_LIB_DIR)
+
+MACRO(INCR_TK_GET_SUPPORT_LIB_DIR incr_tk_support_lib_dir)
+
+  SET(${incr_tk_support_lib_dir} "")
+  IF(INCR_TK_LIBRARY)
+    GET_FILENAME_COMPONENT(incr_tk_path "${INCR_TK_LIBRARY}" PATH)
+    # On Win32, the lib is into the support dir, on Unix it's one up.
+    INCR_TCL_GET_VERSION("INCR_TCL_MAJOR_VERSION" "INCR_TCL_MINOR_VERSION")
+    SET(INCR_TCL_VERSION "${INCR_TCL_MAJOR_VERSION}.${INCR_TCL_MINOR_VERSION}")
+    IF(EXISTS "${incr_tk_path}/itk.tcl")
+      SET(${incr_tk_support_lib_dir} "${incr_tk_path}")
+    ELSE(EXISTS "${incr_tk_path}/itk.tcl")
+      SET(incr_tk_path "${incr_tk_path}/itk${INCR_TCL_VERSION}")
+      IF(EXISTS "${incr_tk_path}/itk.tcl")
+        SET(${incr_tk_support_lib_dir} "${incr_tk_path}")
+      ENDIF(EXISTS "${incr_tk_path}/itk.tcl")
+    ENDIF(EXISTS "${incr_tk_path}/itk.tcl")
+  ENDIF(INCR_TK_LIBRARY)
+
+ENDMACRO(INCR_TK_GET_SUPPORT_LIB_DIR)
 
 # ----------------------------------------------------------------------------
 # INCR_TCL_GET_SUPPORT_FILES, INCR_TK_GET_SUPPORT_FILES
@@ -298,16 +348,14 @@ MACRO(KWWidgets_COPY_TCL_TK_SUPPORT_FILES dir)
     # [incr Tcl/Tk] support files
 
     IF(KWWidgets_USE_INCR_TCL)
-      IF(INCR_TCL_LIBRARY AND INCR_TK_LIBRARY)
-        GET_FILENAME_COMPONENT(
-          INCR_TCL_LIBRARY_PATH "${INCR_TCL_LIBRARY}" PATH)
-        GET_FILENAME_COMPONENT(
-          INCR_TK_LIBRARY_PATH "${INCR_TK_LIBRARY}" PATH)
+      INCR_TCL_GET_SUPPORT_LIB_DIR("INCR_TCL_SUPPORT_LIB_DIR")
+      INCR_TK_GET_SUPPORT_LIB_DIR("INCR_TK_SUPPORT_LIB_DIR")
+      IF(INCR_TCL_SUPPORT_LIB_DIR AND INCR_TK_SUPPORT_LIB_DIR)
         INCR_TCLTK_COPY_SUPPORT_FILES_TO_DIR(
-          ${INCR_TCL_LIBRARY_PATH} 
-          ${INCR_TK_LIBRARY_PATH}
+          ${INCR_TCL_SUPPORT_LIB_DIR} 
+          ${INCR_TK_SUPPORT_LIB_DIR}
           "${dir}")
-      ENDIF(INCR_TCL_LIBRARY AND INCR_TK_LIBRARY)
+      ENDIF(INCR_TCL_SUPPORT_LIB_DIR AND INCR_TK_SUPPORT_LIB_DIR)
     ENDIF(KWWidgets_USE_INCR_TCL)
 
   ENDIF(VTK_TCL_TK_COPY_SUPPORT_LIBRARY)
@@ -346,27 +394,15 @@ MACRO(KWWidgets_INSTALL_TCL_TK_SUPPORT_FILES dir)
     # [incr Tcl/Tk] support files
 
     IF(KWWidgets_USE_INCR_TCL)
-      IF(INCR_TCL_LIBRARY AND INCR_TK_LIBRARY)
-        GET_FILENAME_COMPONENT(
-          INCR_TCL_LIBRARY_PATH "${INCR_TCL_LIBRARY}" PATH)
-        # On Win32, the lib is right into the support lib dir, on Unix it's
-        # one up.
-        IF(NOT EXISTS "${INCR_TCL_LIBRARY_PATH}/itcl.tcl")
-          GET_FILENAME_COMPONENT(
-            INCR_TCL_LIBRARY_PATH "${INCR_TCL_LIBRARY_PATH}" PATH)
-        ENDIF(NOT EXISTS "${INCR_TCL_LIBRARY_PATH}/itcl.tcl")
-        GET_FILENAME_COMPONENT(
-          INCR_TK_LIBRARY_PATH "${INCR_TK_LIBRARY}" PATH)
-        IF(NOT EXISTS "${INCR_TK_LIBRARY_PATH}/itk.tcl")
-          GET_FILENAME_COMPONENT(
-            INCR_TK_LIBRARY_PATH "${INCR_TK_LIBRARY_PATH}" PATH)
-        ENDIF(NOT EXISTS "${INCR_TK_LIBRARY_PATH}/itk.tcl")
+      INCR_TCL_GET_SUPPORT_LIB_DIR("INCR_TCL_SUPPORT_LIB_DIR")
+      INCR_TK_GET_SUPPORT_LIB_DIR("INCR_TK_SUPPORT_LIB_DIR")
+      IF(INCR_TCL_SUPPORT_LIB_DIR AND INCR_TK_SUPPORT_LIB_DIR)
         INCR_TCLTK_COPY_SUPPORT_FILES_TO_DIR(
-          ${INCR_TCL_LIBRARY_PATH} 
-          ${INCR_TK_LIBRARY_PATH}
+          ${INCR_TCL_SUPPORT_LIB_DIR} 
+          ${INCR_TK_SUPPORT_LIB_DIR}
           "${dir}" 
           INSTALL)
-        ENDIF(INCR_TCL_LIBRARY AND INCR_TK_LIBRARY)
+      ENDIF(INCR_TCL_SUPPORT_LIB_DIR AND INCR_TK_SUPPORT_LIB_DIR)
     ENDIF(KWWidgets_USE_INCR_TCL)
 
   ENDIF(VTK_TCL_TK_COPY_SUPPORT_LIBRARY)
