@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.76 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.77 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -4286,6 +4286,7 @@ void vtkKWMultiColumnList::SetSelectionChangedCommand(
 void vtkKWMultiColumnList::InvokeSelectionChangedCommand()
 {
   this->InvokeObjectMethodCommand(this->SelectionChangedCommand);
+  this->InvokeEvent(vtkKWMultiColumnList::SelectionChangedEvent, NULL);
 }
 
 //----------------------------------------------------------------------------

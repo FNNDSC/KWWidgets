@@ -1284,6 +1284,16 @@ public:
   virtual void UpdateEnableState();
  
   // Description:
+  // Events. The SelectionChangedEvent is triggered when the selection is 
+  // changed (see SetSelectionCommand for more details).
+  //BTX
+  enum
+  {
+    SelectionChangedEvent = 10000
+  };
+  //ETX
+
+  // Description:
   // Callbacks. Internal, do not use.
   virtual void SelectionCallback();
   virtual void CellWindowDestroyRemoveChildCallback(
