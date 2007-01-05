@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.77 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.78 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -215,6 +215,61 @@ void vtkKWMultiColumnList::SetBinding(const char *event,
     
     delete [] command;
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::SetBinding(const char *event, const char *command)
+{
+  this->Superclass::SetBinding(event, command);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::AddBinding(const char *event, 
+                             vtkObject *object, const char *method)
+{
+  this->Superclass::AddBinding(event, object, method);
+  if (this->IsCreated())
+    {
+    char *command = NULL;
+    this->SetObjectMethodCommand(&command, object, method);
+    this->Script("bind TablelistBody %s {+%s}", event, command);
+    delete [] command;
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::AddBinding(const char *event, const char *command)
+{
+  this->Superclass::AddBinding(event, command);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::RemoveBinding(const char *event, 
+                                vtkObject *object, const char *method)
+{
+  this->Superclass::RemoveBinding(event, object, method);
+  if (this->IsCreated())
+    {
+    char *command = NULL;
+    this->SetObjectMethodCommand(&command, object, method);
+
+    // Retrieve the bindings, remove the command, re-assign
+
+    vtksys_stl::string bindings(
+      this->Script("bind TablelistBody %s", event));
+
+    vtksys::SystemTools::ReplaceString(bindings, command, "");
+  
+    this->Script(
+      "bind TablelistBody %s {%s}", event, bindings.c_str());
+    delete [] command;
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::RemoveBinding(const char *event)
+{
+  this->Superclass::RemoveBinding(event);
 }
 
 //----------------------------------------------------------------------------

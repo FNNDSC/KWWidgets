@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTree );
-vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.34 $");
+vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.35 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTreeInternals
@@ -143,6 +143,62 @@ void vtkKWTree::SetBinding(const char *event,
     this->Script("bind %s.c %s {%s}", this->GetWidgetName(), event, command);
     delete [] command;
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWTree::SetBinding(const char *event, const char *command)
+{
+  this->Superclass::SetBinding(event, command);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWTree::AddBinding(const char *event, 
+                             vtkObject *object, const char *method)
+{
+  this->Superclass::AddBinding(event, object, method);
+  if (this->IsCreated())
+    {
+    char *command = NULL;
+    this->SetObjectMethodCommand(&command, object, method);
+    this->Script("bind %s.c %s {+%s}", this->GetWidgetName(), 
+      event, command);
+    delete [] command;
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWTree::AddBinding(const char *event, const char *command)
+{
+  this->Superclass::AddBinding(event, command);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWTree::RemoveBinding(const char *event, 
+                                vtkObject *object, const char *method)
+{
+  this->Superclass::RemoveBinding(event, object, method);
+  if (this->IsCreated())
+    {
+    char *command = NULL;
+    this->SetObjectMethodCommand(&command, object, method);
+
+    // Retrieve the bindings, remove the command, re-assign
+
+    vtksys_stl::string bindings(
+      this->Script("bind %s.c %s", this->GetWidgetName(), event));
+
+    vtksys::SystemTools::ReplaceString(bindings, command, "");
+  
+    this->Script("bind %s.c %s {%s}", this->GetWidgetName(), 
+      event, bindings.c_str());
+    delete [] command;
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWTree::RemoveBinding(const char *event)
+{
+  this->Superclass::RemoveBinding(event);
 }
 
 //----------------------------------------------------------------------------
