@@ -93,6 +93,16 @@ public:
   virtual void SetFinalListChangedCommand(vtkObject *obj, const char *method);
 
   // Description:
+  // Events. The FinalListChangedEvent is triggered when the values in the
+  // FinalList are changed.
+  //BTX
+  enum
+  {
+    FinalListChangedEvent = 10000
+  };
+  //ETX
+
+  // Description:
   // Update the "enable" state of the object and its internal parts.
   // Depending on different Ivars (this->Enabled, the application's 
   // Limited Edition Mode, etc.), the "enable" state of the object is updated

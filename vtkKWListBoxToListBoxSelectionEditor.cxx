@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWListBoxToListBoxSelectionEditor );
-vtkCxxRevisionMacro(vtkKWListBoxToListBoxSelectionEditor, "$Revision: 1.25 $");
+vtkCxxRevisionMacro(vtkKWListBoxToListBoxSelectionEditor, "$Revision: 1.26 $");
 
 //----------------------------------------------------------------------------
 vtkKWListBoxToListBoxSelectionEditor::vtkKWListBoxToListBoxSelectionEditor()
@@ -573,9 +573,11 @@ void vtkKWListBoxToListBoxSelectionEditor::InvokeFinalListChangedCommand()
 {
   if(this->FinalListChangedCommand &&
     *this->FinalListChangedCommand)
-  {
-  this->InvokeObjectMethodCommand(this->FinalListChangedCommand);
-  }
+    {
+    this->InvokeObjectMethodCommand(this->FinalListChangedCommand);
+    }
+  this->InvokeEvent(
+    vtkKWListBoxToListBoxSelectionEditor::FinalListChangedEvent, NULL);
 }
 
 //-----------------------------------------------------------------------------
