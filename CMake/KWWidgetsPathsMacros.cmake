@@ -607,6 +607,12 @@ MACRO(KWWidgets_GENERATE_SETUP_PATHS_FOR_ONE_CONFIGURATION_TYPE
         ${sov_runtime_paths}
         ${kwwidgets_runtime_paths}
         ${extra_runtime_paths})
+    IF(CMAKE_SKIP_RPATH)
+      SET(KWWidgets_SHARED_LIBRARY_PATH_ENV 
+        ${KWWidgets_SHARED_LIBRARY_PATH_ENV}
+        ${EXECUTABLE_OUTPUT_PATH} 
+        ${LIBRARY_OUTPUT_PATH})
+    ENDIF(CMAKE_SKIP_RPATH)
   ENDIF (WIN32)
 
   # For ITCL_LIBRARY and ITK_LIBRARY
