@@ -6,4 +6,3 @@ if [ "${KWWidgets_USE_INCR_TCL_ENV}" == "1" ]; then
   export ITCL_LIBRARY="${KWWidgets_ITCL_LIBRARY_ENV}"
   export ITK_LIBRARY="${KWWidgets_ITK_LIBRARY_ENV}"
 fi
-
