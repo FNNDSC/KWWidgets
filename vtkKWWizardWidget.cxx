@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWizardWidget);
-vtkCxxRevisionMacro(vtkKWWizardWidget, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWWizardWidget, "$Revision: 1.9 $");
 
 //----------------------------------------------------------------------------
 vtkKWWizardWidget::vtkKWWizardWidget()
@@ -68,6 +68,8 @@ vtkKWWizardWidget::vtkKWWizardWidget()
   this->CancelButtonVisibility  = 1;
   this->HelpButtonVisibility    = 0;
   this->OKButtonVisibility      = 1;
+
+  this->ButtonsPosition   = vtkKWWizardWidget::ButtonsPositionBottom;
 }
 
 //----------------------------------------------------------------------------
@@ -403,9 +405,6 @@ void vtkKWWizardWidget::CreateWidget()
   this->SeparatorBeforeButtons->SetParent(this);
   this->SeparatorBeforeButtons->Create();
 
-  this->Script("pack %s -side top -fill x -pady 2", 
-               this->SeparatorBeforeButtons->GetWidgetName());
-
   // -------------------------------------------------------------------
   // Button frame
 
@@ -416,9 +415,6 @@ void vtkKWWizardWidget::CreateWidget()
   this->ButtonFrame->SetParent(this);
   this->ButtonFrame->Create();
   this->ButtonFrame->SetBorderWidth(0);
-
-  this->Script("pack %s -side top -fill x -padx 0 -pady 0", 
-               this->ButtonFrame->GetWidgetName());
 
   // -------------------------------------------------------------------
   // Button frame: Back
@@ -578,6 +574,27 @@ void vtkKWWizardWidget::Update()
 //----------------------------------------------------------------------------
 void vtkKWWizardWidget::PackButtons()
 {
+  if (this->ButtonsPosition == vtkKWWizardWidget::ButtonsPositionBottom)
+    {
+    this->Script("pack %s -side top -fill x -pady 2 -after %s", 
+                 this->SeparatorBeforeButtons->GetWidgetName(),
+                 this->LayoutFrame->GetWidgetName());
+    
+    this->Script("pack %s -side top -fill x -padx 0 -pady 0 -after %s", 
+                 this->ButtonFrame->GetWidgetName(),
+                 this->SeparatorBeforeButtons->GetWidgetName());
+    }
+  else
+    {
+    this->Script("pack %s -side top -fill x -pady {2 1} -before %s", 
+                 this->SeparatorBeforeButtons->GetWidgetName(),
+                 this->TitleFrame->GetWidgetName());
+    
+    this->Script("pack %s -side top -fill x -padx 0 -pady 0 -before %s", 
+                 this->ButtonFrame->GetWidgetName(),
+                 this->SeparatorBeforeButtons->GetWidgetName());
+    }
+
   this->ButtonFrame->UnpackChildren();
 
   vtkKWWizardStep *current_step = 
@@ -629,6 +646,30 @@ void vtkKWWizardWidget::PackButtons()
     this->Script("pack %s -side right", 
                  this->BackButton->GetWidgetName());
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWizardWidget::SetButtonsPosition(int arg)
+{
+  if (arg < vtkKWWizardWidget::ButtonsPositionTop)
+    {
+    arg = vtkKWWizardWidget::ButtonsPositionTop;
+    }
+  else if (arg > vtkKWWizardWidget::ButtonsPositionBottom)
+    {
+    arg = vtkKWWizardWidget::ButtonsPositionBottom;
+    }
+
+  if (this->ButtonsPosition == arg)
+    {
+    return;
+    }
+
+  this->ButtonsPosition = arg;
+
+  this->Modified();
+
+  this->PackButtons();
 }
 
 //----------------------------------------------------------------------------
@@ -950,4 +991,6 @@ void vtkKWWizardWidget::PrintSelf(ostream& os, vtkIndent indent)
 
   os << indent << "OKButtonVisibility: " 
      << (this->OKButtonVisibility ? "On" : "Off") << endl;
+
+  os << indent << "ButtonsPosition: " << this->ButtonsPosition << endl;
 }

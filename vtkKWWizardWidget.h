@@ -167,6 +167,24 @@ public:
   vtkGetObjectMacro(TitleLabel, vtkKWLabel);
 
   // Description:
+  // If supported, set the label position in regards to the rest of
+  // the composite widget. Check the subclass for more information about
+  // what the Default position is, and if specific positions are supported.
+  //BTX
+  enum
+  {
+    ButtonsPositionTop = 0,
+    ButtonsPositionBottom,
+  };
+  //ETX
+  virtual void SetButtonsPosition(int);
+  vtkGetMacro(ButtonsPosition, int);
+  virtual void SetButtonsPositionToTop()
+    { this->SetButtonsPosition(vtkKWWizardWidget::ButtonsPositionTop); };
+  virtual void SetButtonsPositionToBottom()
+    { this->SetButtonsPosition(vtkKWWizardWidget::ButtonsPositionBottom); };
+  
+  // Description:
   // Add all the default observers needed by that object, or remove
   // all the observers that were added through AddCallbackCommandObserver.
   // Subclasses can override these methods to add/remove their own default
@@ -194,6 +212,8 @@ protected:
   // Description:
   // Pack the buttons.
   virtual void PackButtons();
+
+  int ButtonsPosition;
 
   int BackButtonVisibility;
   int NextButtonVisibility;
