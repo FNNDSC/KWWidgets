@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.78 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.79 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -166,7 +166,7 @@ void vtkKWMultiColumnList::CreateWidget()
 
   // Call the superclass to set the appropriate flags then create manually
 
-  vtksys_stl::string options("-bg #ffffff -stripebackground #dfe7ef -showseparators 1 -showarrow 1  -highlightthickness 0 -selectmode browse -relief sunken -bd 2 -spacing 2 -exportselection 0 -activestyle none -fg #000000 -selectforeground #ffffff -width 0 -setfocus 1");
+  vtksys_stl::string options("-background #ffffff -stripebackground #dfe7ef -showseparators 1 -showarrow 1  -highlightthickness 0 -selectmode browse -relief sunken -bd 2 -spacing 2 -exportselection 0 -activestyle none -foreground #000000 -selectforeground #ffffff -width 0 -setfocus 1");
 #ifdef _WIN32
   options += " -selectbackground #092369";
 #else
@@ -806,7 +806,7 @@ void vtkKWMultiColumnList::GetColumnBackgroundColor(
   int col_index, double *r, double *g, double *b)
 {
   vtksys_stl::string color(
-    this->GetColumnConfigurationOption(col_index, "-bg"));
+    this->GetColumnConfigurationOption(col_index, "-background"));
   vtkKWTkUtilities::GetRGBColor(this, color.c_str(), r, g, b);
 }
 
@@ -827,7 +827,7 @@ void vtkKWMultiColumnList::SetColumnBackgroundColor(
     char color[10];
     sprintf(color, "#%02x%02x%02x", 
             (int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0));
-    this->SetColumnConfigurationOption(col_index, "-bg", color);
+    this->SetColumnConfigurationOption(col_index, "-background", color);
     this->InvokePotentialCellColorsChangedCommand();
     }
 }
@@ -835,7 +835,7 @@ void vtkKWMultiColumnList::SetColumnBackgroundColor(
 //----------------------------------------------------------------------------
 void vtkKWMultiColumnList::ClearColumnBackgroundColor(int col_index)
 {
-  this->SetColumnConfigurationOptionAsText(col_index, "-bg", "");
+  this->SetColumnConfigurationOptionAsText(col_index, "-background", "");
   this->InvokePotentialCellColorsChangedCommand();
 }
 
@@ -844,7 +844,7 @@ void vtkKWMultiColumnList::GetColumnForegroundColor(
   int col_index, double *r, double *g, double *b)
 {
   vtksys_stl::string color(
-    this->GetColumnConfigurationOption(col_index, "-fg"));
+    this->GetColumnConfigurationOption(col_index, "-foreground"));
   vtkKWTkUtilities::GetRGBColor(this, color.c_str(), r, g, b);
 }
 
@@ -865,7 +865,7 @@ void vtkKWMultiColumnList::SetColumnForegroundColor(
     char color[10];
     sprintf(color, "#%02x%02x%02x", 
             (int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0));
-    this->SetColumnConfigurationOption(col_index, "-fg", color);
+    this->SetColumnConfigurationOption(col_index, "-foreground", color);
     this->InvokePotentialCellColorsChangedCommand();
     }
 }
@@ -1479,7 +1479,7 @@ void vtkKWMultiColumnList::GetRowBackgroundColor(
   int row_index, double *r, double *g, double *b)
 {
   vtksys_stl::string color(
-    this->GetRowConfigurationOption(row_index, "-bg"));
+    this->GetRowConfigurationOption(row_index, "-background"));
   vtkKWTkUtilities::GetRGBColor(this, color.c_str(), r, g, b);
 }
 
@@ -1500,7 +1500,7 @@ void vtkKWMultiColumnList::SetRowBackgroundColor(
     char color[10];
     sprintf(color, "#%02x%02x%02x", 
             (int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0));
-    this->SetRowConfigurationOption(row_index, "-bg", color);
+    this->SetRowConfigurationOption(row_index, "-background", color);
     this->InvokePotentialCellColorsChangedCommand();
     }
 }
@@ -1508,7 +1508,7 @@ void vtkKWMultiColumnList::SetRowBackgroundColor(
 //----------------------------------------------------------------------------
 void vtkKWMultiColumnList::ClearRowBackgroundColor(int row_index)
 {
-  this->SetRowConfigurationOption(row_index, "-bg", "");
+  this->SetRowConfigurationOption(row_index, "-background", "");
   this->InvokePotentialCellColorsChangedCommand();
 }
 
@@ -1517,7 +1517,7 @@ void vtkKWMultiColumnList::GetRowForegroundColor(
   int row_index, double *r, double *g, double *b)
 {
   vtksys_stl::string color(
-    this->GetRowConfigurationOption(row_index, "-fg"));
+    this->GetRowConfigurationOption(row_index, "-foreground"));
   vtkKWTkUtilities::GetRGBColor(this, color.c_str(), r, g, b);
 }
 
@@ -1538,7 +1538,7 @@ void vtkKWMultiColumnList::SetRowForegroundColor(
     char color[10];
     sprintf(color, "#%02x%02x%02x", 
             (int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0));
-    this->SetRowConfigurationOption(row_index, "-fg", color);
+    this->SetRowConfigurationOption(row_index, "-foreground", color);
     this->InvokePotentialCellColorsChangedCommand();
     }
 }
@@ -1924,7 +1924,7 @@ void vtkKWMultiColumnList::GetCellBackgroundColor(
   int row_index, int col_index, double *r, double *g, double *b)
 {
   vtksys_stl::string color(
-    this->GetCellConfigurationOption(row_index, col_index, "-bg"));
+    this->GetCellConfigurationOption(row_index, col_index, "-background"));
   vtkKWTkUtilities::GetRGBColor(this, color.c_str(), r, g, b);
 }
 
@@ -1946,7 +1946,7 @@ void vtkKWMultiColumnList::SetCellBackgroundColor(
     char color[10];
     sprintf(color, "#%02x%02x%02x", 
             (int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0));
-    this->SetCellConfigurationOption(row_index, col_index, "-bg", color);
+    this->SetCellConfigurationOption(row_index, col_index, "-background", color);
     this->InvokePotentialCellColorsChangedCommand();
     }
 }
@@ -1955,7 +1955,7 @@ void vtkKWMultiColumnList::SetCellBackgroundColor(
 void vtkKWMultiColumnList::ClearCellBackgroundColor(
   int row_index, int col_index)
 {
-  this->SetCellConfigurationOption(row_index, col_index, "-bg", "");
+  this->SetCellConfigurationOption(row_index, col_index, "-background", "");
   this->InvokePotentialCellColorsChangedCommand();
 }
 
@@ -1964,7 +1964,7 @@ void vtkKWMultiColumnList::GetCellForegroundColor(
   int row_index, int col_index, double *r, double *g, double *b)
 {
   vtksys_stl::string color(
-    this->GetCellConfigurationOption(row_index, col_index, "-fg"));
+    this->GetCellConfigurationOption(row_index, col_index, "-foreground"));
   vtkKWTkUtilities::GetRGBColor(this, color.c_str(), r, g, b);
 }
 
@@ -1985,7 +1985,7 @@ void vtkKWMultiColumnList::SetCellForegroundColor(
     char color[10];
     sprintf(color, "#%02x%02x%02x", 
             (int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0));
-    this->SetCellConfigurationOption(row_index, col_index, "-fg", color);
+    this->SetCellConfigurationOption(row_index, col_index, "-foreground", color);
     this->InvokePotentialCellColorsChangedCommand();
     }
 }
@@ -2039,7 +2039,7 @@ void vtkKWMultiColumnList::GetCellCurrentBackgroundColor(
 
   // Cell color has priority
 
-  bgcolor =  this->GetCellConfigurationOption(row_index, col_index, "-bg");
+  bgcolor =  this->GetCellConfigurationOption(row_index, col_index, "-background");
   if (bgcolor && *bgcolor)
     {
     this->GetCellBackgroundColor(row_index, col_index, r, g, b);
@@ -2048,7 +2048,7 @@ void vtkKWMultiColumnList::GetCellCurrentBackgroundColor(
   
   // Then row color
 
-  bgcolor = this->GetRowConfigurationOption(row_index, "-bg");
+  bgcolor = this->GetRowConfigurationOption(row_index, "-background");
   if (bgcolor && *bgcolor)
     {
     this->GetRowBackgroundColor(row_index, r, g, b);
@@ -2070,7 +2070,7 @@ void vtkKWMultiColumnList::GetCellCurrentBackgroundColor(
   
   // Then column color
 
-  bgcolor = this->GetColumnConfigurationOption(col_index, "-bg");
+  bgcolor = this->GetColumnConfigurationOption(col_index, "-background");
   if (bgcolor && *bgcolor)
     {
     this->GetColumnBackgroundColor(col_index, r, g, b);
@@ -2141,7 +2141,7 @@ void vtkKWMultiColumnList::GetCellCurrentForegroundColor(
 
   // Cell color has priority
 
-  fgcolor =  this->GetCellConfigurationOption(row_index, col_index, "-fg");
+  fgcolor =  this->GetCellConfigurationOption(row_index, col_index, "-foreground");
   if (fgcolor && *fgcolor)
     {
     this->GetCellForegroundColor(row_index, col_index, r, g, b);
@@ -2150,7 +2150,7 @@ void vtkKWMultiColumnList::GetCellCurrentForegroundColor(
   
   // Then row color
 
-  fgcolor = this->GetRowConfigurationOption(row_index, "-fg");
+  fgcolor = this->GetRowConfigurationOption(row_index, "-foreground");
   if (fgcolor && *fgcolor)
     {
     this->GetRowForegroundColor(row_index, r, g, b);
@@ -2172,7 +2172,7 @@ void vtkKWMultiColumnList::GetCellCurrentForegroundColor(
   
   // Then column color
 
-  fgcolor = this->GetColumnConfigurationOption(col_index, "-fg");
+  fgcolor = this->GetColumnConfigurationOption(col_index, "-foreground");
   if (fgcolor && *fgcolor)
     {
     this->GetColumnForegroundColor(col_index, r, g, b);
@@ -2727,7 +2727,7 @@ void vtkKWMultiColumnList::RefreshColorsOfCellWithWindowCommand(
             }
           else
             {
-            child->SetConfigurationOptionAsColor("-bg", br, bg, bb);
+            child->SetConfigurationOptionAsColor("-background", br, bg, bb);
             }
           }
         // If it is a frame, no foreground color option. If it is a check
@@ -2743,7 +2743,7 @@ void vtkKWMultiColumnList::RefreshColorsOfCellWithWindowCommand(
             }
           else
             {
-            child->SetConfigurationOptionAsColor("-fg", fr, fg, fb);
+            child->SetConfigurationOptionAsColor("-foreground", fr, fg, fb);
             }
           }
         for (int i = 0; i < nb_grand_children; i++)
@@ -2774,7 +2774,7 @@ void vtkKWMultiColumnList::RefreshColorsOfCellWithWindowCommand(
               }
             else
               {
-              grand_child->SetConfigurationOptionAsColor("-bg", br, bg, bb);
+              grand_child->SetConfigurationOptionAsColor("-background", br, bg, bb);
               }
             if (!child_as_frame && 
                 !child_as_checkbutton && 
@@ -2786,7 +2786,7 @@ void vtkKWMultiColumnList::RefreshColorsOfCellWithWindowCommand(
                 }
               else
                 {
-                grand_child->SetConfigurationOptionAsColor("-fg", fr, fg, fb);
+                grand_child->SetConfigurationOptionAsColor("-foreground", fr, fg, fb);
                 }
               }
             }
