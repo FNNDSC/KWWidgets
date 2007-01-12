@@ -43,7 +43,7 @@
 #include <vtksys/stl/vector>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.149 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.150 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -277,8 +277,8 @@ void vtkKWRenderWidget::CreateWidget()
 
   // Create the VTK Tk render widget in VTKWidget
 
-  char opts[256];
-  sprintf(opts, "-rw Addr=%p", this->RenderWindow);
+  char opts[1024];
+  sprintf(opts, "-rw Addr=%p -width 10 -height 10", this->RenderWindow);
 
   this->VTKWidget->SetParent(this);
   vtkKWWidget::CreateSpecificTkWidget(
