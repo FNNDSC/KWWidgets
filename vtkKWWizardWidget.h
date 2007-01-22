@@ -174,7 +174,7 @@ public:
   enum
   {
     ButtonsPositionTop = 0,
-    ButtonsPositionBottom,
+    ButtonsPositionBottom
   };
   //ETX
   virtual void SetButtonsPosition(int);
