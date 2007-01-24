@@ -41,6 +41,7 @@
 #include "vtkJPEGWriter.h"
 #include "vtkTIFFWriter.h"
 #include "vtkKWWidgetsBuildConfigure.h" // VTK_USE_VIDEO_FOR_WINDOWS
+#include "vtkGenericMovieWriter.h"
 
 #ifdef VTK_USE_VIDEO_FOR_WINDOWS 
 #include "vtkAVIWriter.h"
@@ -75,7 +76,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSimpleAnimationWidget);
-vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.30 $");
+vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.31 $");
 
 //----------------------------------------------------------------------------
 vtkKWSimpleAnimationWidget::vtkKWSimpleAnimationWidget()
