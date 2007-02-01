@@ -30,7 +30,7 @@
 //----------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWHistogram);
-vtkCxxRevisionMacro(vtkKWHistogram, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWHistogram, "$Revision: 1.12 $");
 
 //----------------------------------------------------------------------------
 vtkKWHistogram::vtkKWHistogram()
@@ -179,7 +179,9 @@ void vtkKWHistogramBuildFloat(
 
   double range[2];
   self->GetRange(range);
-  double bin_width = (double)self->GetNumberOfBins() / (range[1] - range[0]);
+  double bin_width = 
+    (range[1] == range[0] ? 1 : 
+     (double)self->GetNumberOfBins() / (range[1] - range[0]));
 
   double *bins_ptr = self->GetBins()->GetPointer(0);
 
@@ -847,8 +849,9 @@ int vtkKWHistogram::RefreshImage(ImageDescriptor *desc)
 
   // width of bins in the original histogram.
 
-  double bin_width =
-    (this->Range[1] - this->Range[0]) / (double)this->GetNumberOfBins();
+  double bin_width = 
+    (this->Range[1] == this->Range[0] ? 1 : 
+     (this->Range[1] - this->Range[0]) / (double)this->GetNumberOfBins());
 
   // Range of the original histogram that is visible in the interface.
 
@@ -935,7 +938,7 @@ int vtkKWHistogram::RefreshImage(ImageDescriptor *desc)
       // we should divide by the range of values that are now mapped in a
       // single bin on the histogram visible on the interface.
 
-      resampled_histogram[x] = occurrence / x_scale;
+      resampled_histogram[x] = x_scale ? (occurrence / x_scale) : 0;
       if( resampled_histogram[x] > max_occurrence )
         {
         max_occurrence = resampled_histogram[x];
@@ -1283,7 +1286,9 @@ double vtkKWHistogram::GetOccurenceAtValue(double value)
     return 0;
     }
 
-  double bin_width = (this->Range[1] - this->Range[0]) / (double)nb_of_bins;
+  double bin_width = 
+    (this->Range[1] == this->Range[0] ? 1 : 
+     (this->Range[1] - this->Range[0]) / (double)nb_of_bins);
 
   double *bins_ptr = this->Bins->GetPointer(0) 
     + (vtkIdType)((value - this->Range[0]) / bin_width);
@@ -1296,8 +1301,10 @@ double vtkKWHistogram::GetValueAtAccumulatedOccurence(
   double acc, double *exclude_value)
 {
   double total = 0.0;
+
   double bin_width = 
-    (this->Range[1] - this->Range[0]) / (double)this->GetNumberOfBins();
+    (this->Range[1] == this->Range[0] ? 0 : 
+     (this->Range[1] - this->Range[0]) / (double)this->GetNumberOfBins());
 
   double *bins_ptr = this->Bins->GetPointer(0);
   double *bins_ptr_end = bins_ptr + this->GetNumberOfBins();
