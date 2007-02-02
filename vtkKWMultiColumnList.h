@@ -942,8 +942,11 @@ public:
 
   // Description:
   // Edit cell (or cancel edit). If supported, edit cell contents interactively
+  // CancelEditing attempts to cancel the current interactive editing.  
+  // FinishEditing attempts to terminate the current interactive editing.  
   virtual void EditCell(int row_index, int col_index);
   virtual void CancelEditing();
+  virtual void FinishEditing();
 
   // Description:
   // Set/Get the selection background and foreground colors.

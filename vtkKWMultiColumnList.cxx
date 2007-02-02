@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.79 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.80 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -200,6 +200,8 @@ void vtkKWMultiColumnList::CreateWidget()
 
   this->Script("bind [%s bodytag] <<Button3>> [list %s RightClickCallback %%W %%x %%y %%X %%Y]",
                this->GetWidgetName(), this->GetTclName());
+
+  this->AddBinding("<FocusOut>", this, "FinishEditing");
 }
 
 //----------------------------------------------------------------------------
@@ -1459,6 +1461,7 @@ void vtkKWMultiColumnList::DeleteAllRows()
 {
   if (this->IsCreated())
     {
+    this->FinishEditing(); // as a convenience
     int nb_rows = this->GetNumberOfRows();
     int old_state = this->GetState();
     if (this->GetState() != vtkKWOptions::StateNormal)
@@ -3339,6 +3342,15 @@ void vtkKWMultiColumnList::CancelEditing()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWMultiColumnList::FinishEditing()
+{
+  if (this->IsCreated())
+    {
+    this->Script("%s finishediting",  this->GetWidgetName());
+    }
+}
+
+//----------------------------------------------------------------------------
 void vtkKWMultiColumnList::RejectInput()
 {
   if (this->IsCreated())
@@ -4556,6 +4568,7 @@ void vtkKWMultiColumnList::HasSelectionChanged()
                      col_indices + nb_of_selected_cells, 
                      this->Internals->LastSelectionColIndices.begin());
   
+    this->FinishEditing();
     this->InvokeSelectionChangedCommand();
     this->InvokePotentialCellColorsChangedCommand();
     }
