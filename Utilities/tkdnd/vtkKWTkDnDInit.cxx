@@ -18,7 +18,7 @@
 
 #include "vtkTk.h"
 
-#include "Utilities/TkDnD/vtkKWTkDnDTclLibrary.h"
+#include "Utilities/tkdnd/vtkKWTkDnDTclLibrary.h"
 
 #if defined(_WIN32) || defined(UNIX)
 extern "C" int Tkdnd_Init(Tcl_Interp *interp);
@@ -26,7 +26,7 @@ extern "C" int Tkdnd_Init(Tcl_Interp *interp);
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTkDnDInit );
-vtkCxxRevisionMacro(vtkKWTkDnDInit, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWTkDnDInit, "$Revision: 1.2 $");
 
 int vtkKWTkDnDInit::Initialized = 0;
 
