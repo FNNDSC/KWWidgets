@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWResourceUtilities);
-vtkCxxRevisionMacro(vtkKWResourceUtilities, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWResourceUtilities, "$Revision: 1.18 $");
 
 //----------------------------------------------------------------------------
 int vtkKWResourceUtilities::ReadImage(
@@ -519,6 +519,7 @@ int vtkKWResourceUtilities::ConvertImageToHeader(
       prefix = "file_";
       vtksys_stl::string filename_base_clean(filename_base);
       vtksys::SystemTools::ReplaceString(filename_base_clean, ".", "_");
+      vtksys::SystemTools::ReplaceString(filename_base_clean, "-", "_");
       prefix += filename_base_clean;
       }
     

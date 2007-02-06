@@ -79,6 +79,15 @@ public:
     vtkKWApplication *app, const char *str);
 
   // Description:
+  // Evaluate a Tcl string that was encoded in a buffer using zlib 
+  // and/or base64. 
+  static const char* EvaluateEncodedString(
+    Tcl_Interp *interp, 
+    const unsigned char *buffer, 
+    unsigned long length,
+    unsigned long decoded_length);
+  
+  // Description:
   // Create a Tcl callback command.
   // The 'command' argument is a pointer to the command to be created.
   // The 'object' argument is the object that will have the method called on

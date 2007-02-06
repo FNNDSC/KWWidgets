@@ -37,11 +37,6 @@ protected:
   vtkKWBWidgetsInit() {};
   ~vtkKWBWidgetsInit() {};
 
-  static void Execute(Tcl_Interp* interp, 
-                      const unsigned char *buffer, 
-                      unsigned long length,
-                      unsigned long decoded_length);
-
   static int Initialized;
 
 private:

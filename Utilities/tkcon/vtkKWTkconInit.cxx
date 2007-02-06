@@ -14,7 +14,7 @@
 #include "vtkKWTkconInit.h"
 
 #include "vtkObjectFactory.h"
-#include "vtkKWResourceUtilities.h"
+#include "vtkKWTkUtilities.h"
 
 #include "vtkTk.h"
 
@@ -22,7 +22,7 @@
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTkconInit );
-vtkCxxRevisionMacro(vtkKWTkconInit, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWTkconInit, "$Revision: 1.3 $");
 
 int vtkKWTkconInit::Initialized = 0;
 
@@ -57,46 +57,13 @@ void vtkKWTkconInit::Initialize(Tcl_Interp* interp)
     cur_pos += len;
     }
 
-  vtkKWTkconInit::Execute(interp, 
-                      buffer, 
-                      file_tkcon_tcl_length,
-                      file_tkcon_tcl_decoded_length);
+  vtkKWTkUtilities::EvaluateEncodedString(
+    interp, 
+    buffer, 
+    file_tkcon_tcl_length,
+    file_tkcon_tcl_decoded_length);
   
   delete [] buffer;
-}
-
-//----------------------------------------------------------------------------
-void vtkKWTkconInit::Execute(Tcl_Interp* interp, 
-                            const unsigned char *buffer, 
-                            unsigned long length,
-                            unsigned long decoded_length)
-{
-  // Is the data encoded (zlib and/or base64) ?
-
-  unsigned char *decoded_buffer = NULL;
-  if (length && length != decoded_length)
-    {
-    if (!vtkKWResourceUtilities::DecodeBuffer(
-          buffer, length, &decoded_buffer, decoded_length))
-      {
-      vtkGenericWarningMacro(<<"Error while decoding library");
-      return;
-      }
-    buffer = decoded_buffer;
-    length = decoded_length;
-    }
-
-  if (buffer && 
-      Tcl_EvalEx(interp, (const char*)buffer, length, TCL_EVAL_GLOBAL)!=TCL_OK)
-    {
-    vtkGenericWarningMacro(
-      << " Failed to initialize. Error:" << Tcl_GetStringResult(interp));
-    }
-
-  if (decoded_buffer)
-    {
-    delete [] decoded_buffer;
-    }
 }
 
 //----------------------------------------------------------------------------

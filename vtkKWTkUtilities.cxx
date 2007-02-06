@@ -37,7 +37,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.82 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.83 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -224,6 +224,43 @@ const char* vtkKWTkUtilities::EvaluateSimpleStringInternal(
   
   // Convert the Tcl result to its string representation.
   
+  return Tcl_GetStringResult(interp);
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWTkUtilities::EvaluateEncodedString(
+    Tcl_Interp *interp, 
+    const unsigned char *buffer, 
+    unsigned long length,
+    unsigned long decoded_length)
+{
+  // Is the data encoded (zlib and/or base64) ?
+
+  unsigned char *decoded_buffer = NULL;
+  if (length && length != decoded_length)
+    {
+    if (!vtkKWResourceUtilities::DecodeBuffer(
+          buffer, length, &decoded_buffer, decoded_length))
+      {
+      vtkGenericWarningMacro(<<"Error while decoding library");
+      return "Error while decoding library";
+      }
+    buffer = decoded_buffer;
+    length = decoded_length;
+    }
+
+  if (buffer && 
+      Tcl_EvalEx(interp, (const char*)buffer, length, TCL_EVAL_GLOBAL)!=TCL_OK)
+    {
+    vtkGenericWarningMacro(
+      << " Failed to initialize. Error:" << Tcl_GetStringResult(interp));
+    }
+
+  if (decoded_buffer)
+    {
+    delete [] decoded_buffer;
+    }
+
   return Tcl_GetStringResult(interp);
 }
 

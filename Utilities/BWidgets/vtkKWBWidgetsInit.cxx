@@ -15,7 +15,6 @@
 
 #include "vtkObjectFactory.h"
 #include "vtkKWTkUtilities.h"
-#include "vtkKWResourceUtilities.h"
 
 #include "vtkTk.h"
 
@@ -23,7 +22,7 @@
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWBWidgetsInit );
-vtkCxxRevisionMacro(vtkKWBWidgetsInit, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWBWidgetsInit, "$Revision: 1.3 $");
 
 int vtkKWBWidgetsInit::Initialized = 0;
 
@@ -78,105 +77,71 @@ void vtkKWBWidgetsInit::Initialize(Tcl_Interp* interp)
 
   // Evaluate the library
   
-  vtkKWBWidgetsInit::Execute(interp, 
+  vtkKWTkUtilities::EvaluateEncodedString(interp, 
                          file_utils_tcl, 
                          file_utils_tcl_length,
                          file_utils_tcl_decoded_length);
 
-  vtkKWBWidgetsInit::Execute(interp, 
+  vtkKWTkUtilities::EvaluateEncodedString(interp, 
                          file_widget_tcl, 
                          file_widget_tcl_length,
                          file_widget_tcl_decoded_length);
 
-  vtkKWBWidgetsInit::Execute(interp, 
+  vtkKWTkUtilities::EvaluateEncodedString(interp, 
                          file_dragsite_tcl, 
                          file_dragsite_tcl_length,
                          file_dragsite_tcl_decoded_length);
 
-  vtkKWBWidgetsInit::Execute(interp, 
+  vtkKWTkUtilities::EvaluateEncodedString(interp, 
                          file_dropsite_tcl, 
                          file_dropsite_tcl_length,
                          file_dropsite_tcl_decoded_length);
 
-  vtkKWBWidgetsInit::Execute(interp, 
+  vtkKWTkUtilities::EvaluateEncodedString(interp, 
                          file_dynhelp_tcl, 
                          file_dynhelp_tcl_length,
                          file_dynhelp_tcl_decoded_length);
 
   // Combobox
 
-  vtkKWBWidgetsInit::Execute(interp, 
+  vtkKWTkUtilities::EvaluateEncodedString(interp, 
                          file_arrow_tcl, 
                          file_arrow_tcl_length,
                          file_arrow_tcl_decoded_length);
 
-  vtkKWBWidgetsInit::Execute(interp, 
+  vtkKWTkUtilities::EvaluateEncodedString(interp, 
                          file_entry_tcl, 
                          file_entry_tcl_length,
                          file_entry_tcl_decoded_length);
 
-  vtkKWBWidgetsInit::Execute(interp, 
+  vtkKWTkUtilities::EvaluateEncodedString(interp, 
                          file_listbox_tcl, 
                          file_listbox_tcl_length,
                          file_listbox_tcl_decoded_length);
 
-  vtkKWBWidgetsInit::Execute(interp, 
+  vtkKWTkUtilities::EvaluateEncodedString(interp, 
                          file_combobox_tcl, 
                          file_combobox_tcl_length,
                          file_combobox_tcl_decoded_length);
 
   // ScrolledWindow/Frame
 
-  vtkKWBWidgetsInit::Execute(interp, 
+  vtkKWTkUtilities::EvaluateEncodedString(interp, 
                          file_scrollframe_tcl, 
                          file_scrollframe_tcl_length,
                          file_scrollframe_tcl_decoded_length);
 
-  vtkKWBWidgetsInit::Execute(interp, 
+  vtkKWTkUtilities::EvaluateEncodedString(interp, 
                          file_scrollw_tcl, 
                          file_scrollw_tcl_length,
                          file_scrollw_tcl_decoded_length);
 
   // Tree
 
-  vtkKWBWidgetsInit::Execute(interp, 
+  vtkKWTkUtilities::EvaluateEncodedString(interp, 
                          file_tree_tcl, 
                          file_tree_tcl_length,
                          file_tree_tcl_decoded_length);
-}
-
-//----------------------------------------------------------------------------
-void vtkKWBWidgetsInit::Execute(Tcl_Interp* interp, 
-                                const unsigned char *buffer, 
-                                unsigned long length,
-                                unsigned long decoded_length)
-{
-  // Is the data encoded (zlib and/or base64) ?
-
-  unsigned char *decoded_buffer = NULL;
-  if (length && length != decoded_length)
-    {
-    if (!vtkKWResourceUtilities::DecodeBuffer(
-          buffer, length, &decoded_buffer, decoded_length))
-      {
-      vtkGenericWarningMacro(<<"Error while decoding library");
-      return;
-      }
-    buffer = decoded_buffer;
-    length = decoded_length;
-    }
-
-  if (buffer && 
-      Tcl_EvalEx(interp, (const char*)buffer, length, TCL_EVAL_GLOBAL)!=TCL_OK)
-    {
-    vtkGenericWarningMacro(
-      << " Failed to initialize. Error:" << Tcl_GetStringResult(interp));
-    }
-
-  if (decoded_buffer)
-    {
-    delete [] decoded_buffer;
-    }
 }
 
 //----------------------------------------------------------------------------
