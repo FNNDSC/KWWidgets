@@ -63,6 +63,9 @@ extern DndClass *dnd;
 #define TKDND_BUTTONS     0x00001F00
 #endif /* __WIN32__ */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 static char *TkDND_GetField _ANSI_ARGS_((char *p, char *copy, int size));
 #ifdef __WIN32__
@@ -83,6 +86,19 @@ extern int   TkDND_FindMatchingScript(Tcl_HashTable *table,
                   int matchExactly, DndType **typePtrPtr, DndInfo **infoPtrPtr);
 #endif /* __WIN32__ */
 extern char *TkDND_TypeToString(int type);
+
+int        TkDND_ParseEventDescription(Tcl_Interp *interp,
+                char *eventStringPtr, unsigned long *eventTypePtr,
+                unsigned long *eventMaskPtr);
+
+extern int TkDND_GetCurrentScript(Tcl_Interp *interp, Tk_Window topwin,
+                Tcl_HashTable *table, char *windowPath, char *typeStr,
+                unsigned long eventType, unsigned long eventMask);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 /*
  *---------------------------------------------------------------------------

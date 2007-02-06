@@ -11,3 +11,13 @@ with
 add the following two lines *before* any other #include:
 #include "vtkTcl.h"
 #include "vtkTk.h"
+
+- in generic/tkDND.c
+move:
+  #ifdef __cplusplus
+  }
+  #endif
+down after all the other declarations, i.e. after 
+  extern int TkDND_GetCurrentScript(Tcl_Interp *interp, Tk_Window topwin,
+                Tcl_HashTable *table, char *windowPath, char *typeStr,
+                unsigned long eventType, unsigned long eventMask);

@@ -42,7 +42,7 @@
  * NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
  * MODIFICATIONS.
  *
- * RCS: @(#) $Id: tkDND.c,v 1.1 2007-02-06 20:40:01 barre Exp $
+ * RCS: @(#) $Id: tkDND.c,v 1.2 2007-02-06 21:44:39 barre Exp $
  */
 
 #include "tkDND.h"
@@ -69,9 +69,6 @@ extern "C" {
 #endif
 DLLEXPORT int Tkdnd_Init(Tcl_Interp *interp);
 DLLEXPORT int Tkdnd_SafeInit(Tcl_Interp *interp);
-#ifdef __cplusplus
-}
-#endif
 
 int        TkDND_DndObjCmd(ClientData clientData, Tcl_Interp *interp,
                 int objc,Tcl_Obj *CONST objv[]);
@@ -116,6 +113,19 @@ int        TkDND_Update(Display *display, int idle);
 extern int TkDND_GetCurrentScript(Tcl_Interp *interp, Tk_Window topwin,
                 Tcl_HashTable *table, char *windowPath, char *typeStr,
                 unsigned long eventType, unsigned long eventMask);
+
+extern void  TkDND_ExpandPercents(DndInfo *infoPtr, DndType *typePtr,
+                                    char *before, Tcl_DString *dsPtr,
+                                    LONG x, LONG y);
+
+extern Tcl_Obj 
+            *TkDND_CreateDataObjAccordingToType(DndType *typePtr, void *info,
+                                    unsigned char *data, int length);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 /*
  *----------------------------------------------------------------------
