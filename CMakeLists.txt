@@ -280,12 +280,12 @@ SET(KWWidgets_UTILS_SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/BWidgets/vtkKWBWidgetsInit.cxx
   ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/Tablelist/vtkKWTablelistInit.cxx
   ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/tkcon/vtkKWTkconInit.cxx
-  ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/tkdnd/vtkKWTkDnDInit.cxx
+#  ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/tkdnd/vtkKWTkDnDInit.cxx
   )
 IF(UNIX)
-  SET_SOURCE_FILES_PROPERTIES(
-    ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/tkdnd/vtkKWTkDnDInit.cxx
-    COMPILE_FLAGS "-DUNIX") 
+#  SET_SOURCE_FILES_PROPERTIES(
+#    ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/tkdnd/vtkKWTkDnDInit.cxx
+#    COMPILE_FLAGS "-DUNIX") 
 ENDIF(UNIX)
 
 # Abstract/pure virtual classes
@@ -724,7 +724,7 @@ IF(KWWidgets_USE_INCR_TCL AND INCR_TCL_FOUND)
 ENDIF(KWWidgets_USE_INCR_TCL AND INCR_TCL_FOUND)
 
 IF(UNIX OR WIN32)
-  TARGET_LINK_LIBRARIES(KWWidgets kwtkdnd)
+#  TARGET_LINK_LIBRARIES(KWWidgets kwtkdnd)
 ENDIF(UNIX OR WIN32)
 
 IF(NOT KWWidgets_INSTALL_NO_LIBRARIES)
