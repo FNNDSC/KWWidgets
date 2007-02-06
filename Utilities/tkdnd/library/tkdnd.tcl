@@ -1,7 +1,7 @@
 #
 # tkdnd.tcl --
 # 
-#    This file implements some utility procedures that are used by the TkDND
+#    This file implements some utility procedures that are used by the tkDND
 #    package.
 #
 # This software is copyrighted by:
@@ -36,268 +36,261 @@
 # MODIFICATIONS.
 #
 
-package require Tk
-
-namespace eval tkdnd {
-  variable _topw ".drag"
-  variable _tabops
-  variable _state
-  variable _x0
-  variable _y0
-  variable _platform_namespace
-  variable _drop_file_temp_dir
-  variable _auto_update 1
-
-  bind TkDND_Drag1 <ButtonPress-1> {tkdnd::_begin_drag press  %W %s %X %Y}
-  bind TkDND_Drag1 <B1-Motion>     {tkdnd::_begin_drag motion %W %s %X %Y}
-  bind TkDND_Drag2 <ButtonPress-2> {tkdnd::_begin_drag press  %W %s %X %Y}
-  bind TkDND_Drag2 <B2-Motion>     {tkdnd::_begin_drag motion %W %s %X %Y}
-  bind TkDND_Drag3 <ButtonPress-3> {tkdnd::_begin_drag press  %W %s %X %Y}
-  bind TkDND_Drag3 <B3-Motion>     {tkdnd::_begin_drag motion %W %s %X %Y}
-  
-  # ----------------------------------------------------------------------------
-  #  Command tkdnd::initialise: Initialise the TkDND package.
-  # ----------------------------------------------------------------------------
-  proc initialise { dir } {
-    variable _platform_namespace
-    variable _drop_file_temp_dir
-    global env
-
-    ## Get User's home directory: We try to locate the proper path from a set of
-    ## environmental variables...
-    foreach var {HOME HOMEPATH USERPROFILE ALLUSERSPROFILE APPDATA} {
-      if {[info exists env($var)]} {
-        if {[file isdirectory $env($var)]} {
-          set UserHomeDir $env($var)
-          break
-        }
-      }
-    }
-    ## Under windows we have to also combine HOMEDRIVE & HOMEPATH...
-    if {![info exists UserHomeDir] && 
-         [string equal $tcl_platform(platform) windows] &&
-         [info exist env(HOMEDRIVE)] && [info exist env(HOMEPATH)]} {
-      if {[file isdirectory $env(HOMEDRIVE)$env(HOMEPATH)]} {
-        set UserHomeDir $env(HOMEDRIVE)$env(HOMEPATH)
-      }
-    }
-    ## Have we located the needed path?
-    if {![info exists UserHomeDir]} {
-      set UserHomeDir [pwd]
-    }
+namespace eval ::dnd {
+    variable AskSelectedAction
     
-    ## Try to locate a temporary directory...
-    foreach var {TKDND_TEMP_DIR TEMP TMP} {
-      if {[info exists env($var)]} {
-        if {[file isdirectory $env($var)] && [file writable $env($var)]} {
-          set _drop_file_temp_dir $env($var)
-          break
-        }
-      }
+    # This procedure is used just to ensure that the object given as its
+    # argument can be accessed as a binary object. Many thanks to Paul Duffin
+    # for the idea :-)
+    proc ConvertToBinary {object} {
+  binary scan $object {}
+  return $object
     }
-    if {![info exists _drop_file_temp_dir]} {
-      foreach _dir [list $UserHomeDir/Local Settings/Temp /tmp \
-        C:/WINDOWS/Temp C:/Temp C:/tmp D:/WINDOWS/Temp D:/Temp D:/tmp] {
-        if {[file isdirectory $_dir] && [file writable $_dir]} {
-          set _drop_file_temp_dir $_dir
-          break
-        }
-      }
-    }
-    if {![info exists _drop_file_temp_dir]} {
-      set _drop_file_temp_dir $UserAppDir
-    }
-    set _drop_file_temp_dir [file native $_drop_file_temp_dir]
-    
-    switch $::tcl_platform(platform) {
-      unix {
-#        source $dir/library/tkdnd_unix.tcl
-        set _platform_namespace xdnd
-#        load $dir/libtkdnd20.so TkDND
-      }
-      windows {
-#        source $dir/library/tkdnd_windows.tcl
-        set _platform_namespace olednd
-#        load $dir/libtkdnd20.dll TkDND
-      }
-    }
-#    source $dir/library/tkdnd_compat.tcl
-  };# initialise
 
-  proc GetDropFileTempDirectory { } {
-    variable _drop_file_temp_dir
-    return $_drop_file_temp_dir
+    # This procedure handles the special case where we want items into a canvas
+    # widget to be drop targets. It emulates this case as follows:
+    #
+    #  The tkDND extension is able to deliver events only to real windows
+    #  (that means tk widgets). This procedure can be the binding script of all
+    #  dnd events we are interested in being received by the canvas items.
+    #  When this function is called, it tries to find the item that the mouse
+    #  is over (if any). Then it examines its bindings, and if it finds the
+    #  dnd related event that is processing it delivers this event to the
+    #  particular item. Fianlly, it tries to emulate <DragEnter>/<DragLeave>
+    #  on every canvas item...
+    proc CanvasDeliverEvent {
+  event actions action button source_codes curr_code data descriptions
+  mods type source_types win X x Y y
+    } {
+  # This function will find the topmost item that the mouse is over, and
+  # Deliver the event specified by the "event" arg to this item...
+  global CanvasDeliverEventStatus
+  switch $event {
+      <DragEnter>  -
+      <<DragEnter>> {set CanvasDeliverEventStatus(item) {}}
+      default {}
   }
-  proc SetDropFileTempDirectory { dir } {
-    variable _drop_file_temp_dir
-    set _drop_file_temp_dir $dir
+
+  # Translate mouse coordinates to canvas coordinates...
+  set cx [$win canvasx $x]
+  set cy [$win canvasy $y]
+  set cx_1 [expr {$cx+1}]
+  set cy_1 [expr {$cy+1}]
+  # Find all tags that are under the mouse...
+  set tags [$win find overlapping $cx $cy $cx_1 $cy_1]
+  # ... and select the topmost...
+  set length [llength $tags]
+
+  # If no tags under the mouse, return...
+  if {!$length} {
+      #puts -->$CanvasDeliverEventStatus(item)
+      if {[string length $CanvasDeliverEventStatus(item)]} {
+    # Send <<DragLeave>>...
+    set _id $CanvasDeliverEventStatus(item)
+    set _binding {}
+    foreach _tag [concat $_id [$win gettags $_id]] {
+        set _binding [$win bind $_tag <<DragLeave>>]
+        if {[string length $_binding]} {break}
+    }
+    # puts "Sending <DragLeave> (1) to $_id ($_binding)"
+    set script {}
+    foreach element $_binding {
+        switch $element {
+      %% {lappend script %}       
+      %A {lappend script $action}
+      %a {lappend script $actions}
+      %b {lappend script $button}
+      %C {lappend script $source_codes}
+      %c {lappend script $curr_code}
+      %D {lappend script $data}
+      %d {lappend script $descriptions}
+      %m {lappend script $mods}
+      %T {lappend script $type}
+      %t {lappend script $source_types}
+      %W {lappend script $win}
+      %X {lappend script $X}
+      %x {lappend script $x}
+      %Y {lappend script $Y}
+      %y {lappend script $y}
+      %I {lappend script $_id}
+      default {lappend script $element}
+        }
+    }
+    if {[llength $script]} {uplevel 1 $script}
+      }
+      set CanvasDeliverEventStatus(item) {}
+      update
+      if {[string equal $event <<Drag>>]} {
+    return -code break
+      }
+      return $action
+  }
+  if {$length == 1} {
+      set id $tags
+  } else {
+      set id [$win find closest $cx $cy]
+  }
+
+  # Now in "id" we have the tag of the item below the mouse...
+  # Has this item a binding?
+  foreach tag [concat $id [$win gettags $id]] {
+      set binding [$win bind $tag $event]
+      if {[string length $binding]} {break}
   }
   
-};# namespace tkdnd
-
-# ----------------------------------------------------------------------------
-#  Command tkdnd::drag_source
-# ----------------------------------------------------------------------------
-proc tkdnd::drag_source { mode path { types {} } { event 1 } } {
-  set tags [bindtags $path]
-  set idx  [lsearch $tags "TkDND_Drag*"]
-  switch -- $mode {
-    register {
-      if { $idx != -1 } {
-        bindtags $path [lreplace $tags $idx $idx TkDND_Drag$event]
-      } else {
-        bindtags $path [concat $tags TkDND_Drag$event]
-      }
-      set types [platform_specific_types $types]
-      set old_types [bind $path <<DragSourceTypes>>]
-      foreach type $types {
-        if {[lsearch $old_types $type] < 0} {lappend old_types $type}
-      }
-      bind $path <<DragSourceTypes>> $old_types
+  # Is this tag the same as the last one? If is different, we
+  # have to send a leave event to the previous item and an enter
+  # event to this one...
+  if {$CanvasDeliverEventStatus(item) != $id} {
+      if {[string length $CanvasDeliverEventStatus(item)]} {
+    # Send <<DragLeave>>...
+    set _id $CanvasDeliverEventStatus(item)
+    set _binding {}
+    foreach _tag [concat $_id [$win gettags $_id]] {
+        set _binding [$win bind $_tag <<DragLeave>>]
+        if {[string length $_binding]} {break}
     }
-    unregister {
-      if { $idx != -1 } {
-        bindtags $path [lreplace $tags $idx $idx]
-      }
-    }
-  }
-};# tkdnd::drag_source
-
-# ----------------------------------------------------------------------------
-#  Command tkdnd::drop_target
-# ----------------------------------------------------------------------------
-proc tkdnd::drop_target { mode path { types {} } } {
-  switch -- $mode {
-    set types [platform_specific_types $types]
-    register {
-      switch $::tcl_platform(platform) {
-        unix {
-          _register_types $path [winfo toplevel $path] $types
+    # puts "Sending <DragLeave> (2) to $_id ($_binding)"
+    set script {}
+    foreach element $_binding {
+        switch $element {
+      %% {lappend script %}       
+      %A {lappend script $action}
+      %a {lappend script $actions}
+      %b {lappend script $button}
+      %C {lappend script $source_codes}
+      %c {lappend script $curr_code}
+      %D {lappend script $data}
+      %d {lappend script $descriptions}
+      %m {lappend script $mods}
+      %T {lappend script $type}
+      %t {lappend script $source_types}
+      %W {lappend script $win}
+      %X {lappend script $X}
+      %x {lappend script $x}
+      %Y {lappend script $Y}
+      %y {lappend script $y}
+      %I {lappend script $_id}
+      default {lappend script $element}
         }
-        windows {
-          _RegisterDragDrop $path
-          bind <Destroy> $path {+ tkdnd::_RevokeDragDrop %W}
-        }
-      }
-      set old_types [bind $path <<DropTargetTypes>>]
-      foreach type $types {
-        if {[lsearch $old_types $type] < 0} {lappend old_types $type}
-      }
-      bind $path <<DropTargetTypes>> $old_types
     }
-    unregister {
-      switch $::tcl_platform(platform) {
-        unix {
-        }
-        windows {
-          _RevokeDragDrop $path
-        }
+    if {[llength $script]} {uplevel 1 $script}
       }
-      bind $path <<DropTargetTypes>> {}
+      # Send <<DndEnter>>...
+      set _id $id
+      set _binding {}
+      foreach _tag [concat $_id [$win gettags $_id]] {
+    set _binding [$win bind $_tag <<DragEnter>>]
+    if {[string length $_binding]} {break}
+      }
+      # puts "Sending <DragEnter> to $tag ($_binding)"
+      set script {}
+      foreach element $_binding {
+    switch $element {
+        %% {lappend script %}       
+        %A {lappend script $action}
+        %a {lappend script $actions}
+        %b {lappend script $button}
+        %C {lappend script $source_codes}
+        %c {lappend script $curr_code}
+        %D {lappend script $data}
+        %d {lappend script $descriptions}
+        %m {lappend script $mods}
+        %T {lappend script $type}
+        %t {lappend script $source_types}
+        %W {lappend script $win}
+        %X {lappend script $X}
+        %x {lappend script $x}
+        %Y {lappend script $Y}
+        %y {lappend script $y}
+        %I {lappend script $_id}
+        default {lappend script $element}
     }
+      }
+      if {[llength $script]} {uplevel 1 $script}
+      set CanvasDeliverEventStatus(item) $id
   }
-};# tkdnd::drop_target
 
-# ----------------------------------------------------------------------------
-#  Command tkdnd::_begin_drag
-# ----------------------------------------------------------------------------
-proc tkdnd::_begin_drag { event source state X Y } {
-  variable _x0
-  variable _y0
-  variable _state
-
-  switch -- $event {
-    press {
-      set _x0    $X
-      set _y0    $Y
-      set _state "press"
-    }
-    motion {
-      if { ![info exists _state] } {
-        # This is just extra protection. There seem to be
-        # rare cases where the motion comes before the press.
-        return
+  set script {}
+  foreach element $binding {
+      switch $element {
+    %% {lappend script %}       
+    %A {lappend script $action}
+    %a {lappend script $actions}
+    %b {lappend script $button}
+    %C {lappend script $source_codes}
+    %c {lappend script $curr_code}
+    %D {lappend script $data}
+    %d {lappend script $descriptions}
+    %m {lappend script $mods}
+    %T {lappend script $type}
+    %t {lappend script $source_types}
+    %W {lappend script $win}
+    %X {lappend script $X}
+    %x {lappend script $x}
+    %Y {lappend script $Y}
+    %y {lappend script $y}
+    %I {lappend script $id}
+    default {lappend script $element}
       }
-      if { [string equal $_state "press"] } {
-        if { abs($_x0-$X) > 3 || abs($_y0-$Y) > 3 } {
-          set _state "done"
-          _init_drag $source $state $X $Y
-        }
+  }
+  if {[llength $script]} {
+      return [uplevel 1 $script]
+  }
+  set CanvasDeliverEventStatus(item) {}
+  update
+  if {[string equal $event <<Drag>>]} {
+      return -code break
+  }
+  return $action
+    }
+
+    # ChooseAskAction --
+    #   This procedure displays a dialog with the help of which the user can
+    #   select one of the supported actions...
+    proc ChooseAskAction {window x y actions descriptions args} {
+  variable AskSelectedAction
+  set title {Please Select Action:}
+  foreach action $actions descr $descriptions {
+      if {[string equal $action ask]} {
+    set title $descr
+    break
       }
-    }
   }
-};# tkdnd::_begin_drag
 
-# ----------------------------------------------------------------------------
-#  Command tkdnd::_init_drag
-# ----------------------------------------------------------------------------
-proc tkdnd::_init_drag { source state rootX rootY } {
-  # Call the <<DragInitCmd>> binding.
-  set cmd [bind $source <<DragInitCmd>>]
-  if {[string length $cmd]} {
-    set cmd [string map [list %W $source %X $rootX %Y $rootY \
-        %S $state %e <<DragInitCmd>> %A \{\} \
-        %t [bind $source <<DragSourceTypes>>]] $cmd]
-    set info [uplevel \#0 $cmd]
-    if { $info != "" } {
-      foreach { actions types data } $info { break }
-      set types [platform_specific_types $types]
-      set action [_DoDragDrop $source $actions $types $data]
-      _end_drag $source {} $action {} $data {} $state $rootX $rootY
-    }
+  set menu $window.__tk_dnd[pwd]__action_ask__Drop_window_[pid]
+  catch {destroy $menu}
+  menu $menu -title $title -tearoff 0 -disabledforeground darkgreen
+  $menu add command -font {helvetica 12 bold} \
+    -label $title -command "destroy $menu" -state disabled
+  $menu add separator
+
+  set items 0
+  foreach action $actions descr $descriptions {
+      if {[string equal $action ask]} continue
+      $menu add command -label $descr -command \
+        "set ::dnd::AskSelectedAction $action; destroy $menu"
+      incr items
   }
-};# tkdnd::_init_drag
-
-# ----------------------------------------------------------------------------
-#  Command tkdnd::_end_drag
-# ----------------------------------------------------------------------------
-proc tkdnd::_end_drag { source target action type data result
-                        state rootX rootY } {
-  set rootX 0
-  set rootY 0
-  # Call the <<DragEndCmd>> binding.
-  set cmd [bind $source <<DragEndCmd>>]
-  if {[string length $cmd]} {
-    set cmd [string map [list %W $source %X $rootX %Y $rootY \
-        %S $state %e <<DragEndCmd>> %A \{$action\}] $cmd]
-    set info [uplevel \#0 $cmd]
-    if { $info != "" } {
-      foreach { actions types data } $info { break }
-      set types [platform_specific_types $types]
-      set action [_DoDragDrop $source $actions $types $data]
-      _end_drag $source {} $action {} $data {}
-    }
+  if {!$items} {
+      # The drag source accepts the ask action, but has no defined
+      # action list? Add copy action at least...
+      $menu add command -label Copy -command \
+        "set ::dnd::AskSelectedAction copy; destroy $menu"
   }
-};# tkdnd::_end_drag
+  
+  $menu add separator
+  $menu add command -label {Cancel Drop} -command \
+    "set ::dnd::AskSelectedAction none; destroy $menu"
 
-# ----------------------------------------------------------------------------
-#  Command tkdnd::platform_specific_types
-# ----------------------------------------------------------------------------
-proc tkdnd::platform_specific_types { types } {
-  variable _platform_namespace
-  return [${_platform_namespace}::_platform_specific_types $types]
-}; # tkdnd::platform_specific_types
+  set AskSelectedAction none
+  tk_popup $menu $x $y
+  update
+  bind $menu <Unmap> {after idle {catch {destroy %W}}}
+  tkwait window $menu
+  
+  return $AskSelectedAction
+    }
+};# namespace eval ::dnd
 
-# ----------------------------------------------------------------------------
-#  Command tkdnd::platform_independent_types
-# ----------------------------------------------------------------------------
-proc tkdnd::platform_independent_types { types } {
-  variable _platform_namespace
-  return [${_platform_namespace}::_platform_independent_types $types]
-}; # tkdnd::platform_independent_types
-
-# ----------------------------------------------------------------------------
-#  Command tkdnd::platform_specific_type
-# ----------------------------------------------------------------------------
-proc tkdnd::platform_specific_type { type } {
-  variable _platform_namespace
-  return [${_platform_namespace}::_platform_specific_type $type]
-}; # tkdnd::platform_specific_type
-
-# ----------------------------------------------------------------------------
-#  Command tkdnd::platform_independent_type
-# ----------------------------------------------------------------------------
-proc tkdnd::platform_independent_type { type } {
-  variable _platform_namespace
-  return [${_platform_namespace}::_platform_independent_type $type]
-}; # tkdnd::platform_independent_type
+# EOF

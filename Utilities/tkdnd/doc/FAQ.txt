@@ -1,0 +1,36 @@
+
+                     SOME COMMON PROBLEMS AND THEIR ANSWERS
+                  ---------------------------------------------
+                    George Petasis, petasis@iit.demokritos.gr
+
+1) What is tkdnd?
+   "tkdnd" is a tk extension that adds native support for drag and drop (dnd)
+   under some platforms (typically unix and windows). Under unix there is
+   support for the Motif and the XDND protocol. Under windows, OLE dnd is
+   used.
+
+2) I have a widget that is able to accept a specific type as a drop target,
+   but dropping on this widget from another application does not seem to work
+   correctly. What is wrong?
+
+   Try to define a binding script for the <DragEnter> event. Remember that a
+   well behaved drop target widget must have a binding script for each one of
+   the following events: <DragEnter>, <Drag>, <Drop>. <DragLeave> is not
+   important for drag & drop, but it is important for reseting the widget to
+   its normal appearence.
+   
+## UNIX Related Questions:
+-----------------------------------
+3) Other Unix applications do not recognise my toplevels as drop targets. I am
+   able to use dnd within the same tk application, but not with other apps.
+
+   You probably have forget to call "update" before defining drag sources/drop
+   targets. Usually, after doing a drag from a tk toplevel, the widgets in this
+   toplevel are then recognised by other applications as drop targets. Make
+   sure that you use "update" before using the "dnd" command on any tk widget.
+   The recomended strategy is to first create all widgets in the window, place
+   them, call update and then arrange the dnd stuff...
+   
+## Windows Related Questions:
+----------------------------------
+   None.

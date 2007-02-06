@@ -20,13 +20,11 @@
 
 #include "Utilities/tkdnd/vtkKWTkDnDTclLibrary.h"
 
-#if defined(_WIN32) || defined(UNIX)
 extern "C" int Tkdnd_Init(Tcl_Interp *interp);
-#endif
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTkDnDInit );
-vtkCxxRevisionMacro(vtkKWTkDnDInit, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWTkDnDInit, "$Revision: 1.3 $");
 
 int vtkKWTkDnDInit::Initialized = 0;
 
@@ -45,8 +43,6 @@ void vtkKWTkDnDInit::Initialize(Tcl_Interp* interp)
     return;
     }
 
-#if defined(_WIN32) || defined(UNIX)
-
   vtkKWTkDnDInit::Initialized = 1;
 
   // Evaluate the library
@@ -58,34 +54,7 @@ void vtkKWTkDnDInit::Initialize(Tcl_Interp* interp)
     file_tkdnd_tcl_length,
     file_tkdnd_tcl_decoded_length);
 
-  vtkKWTkUtilities::EvaluateSimpleString(
-    interp, "tkdnd::initialise \"\"\n");
-
-#if defined(_WIN32)
-  vtkKWTkUtilities::EvaluateEncodedString(
-    interp, 
-    file_tkdnd_windows_tcl, 
-    file_tkdnd_windows_tcl_length,
-    file_tkdnd_windows_tcl_decoded_length);
-#endif
-
-#if defined(UNIX)
-  vtkKWTkUtilities::EvaluateEncodedString(
-    interp, 
-    file_tkdnd_unix_tcl, 
-    file_tkdnd_unix_tcl_length,
-    file_tkdnd_unix_tcl_decoded_length);
-#endif
-
   Tkdnd_Init(interp);
-
-  vtkKWTkUtilities::EvaluateEncodedString(
-    interp, 
-    file_tkdnd_compat_tcl, 
-    file_tkdnd_compat_tcl_length,
-    file_tkdnd_compat_tcl_decoded_length);
-
-#endif
 }
 
 //----------------------------------------------------------------------------
