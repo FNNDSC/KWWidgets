@@ -1052,7 +1052,8 @@ static int TkDND_WidgetGetData(DndClass *dnd, Window source,
                 if (curr->matchedType == None) {
                   curr->matchedType = dnd->DesiredType;
                 }
-                result = TkDND_GetDataAccordingToType(infoPtr, 
+                result = (unsigned char *)
+                  TkDND_GetDataAccordingToType(infoPtr, 
                         Tcl_GetObjResult(infoPtr->interp),
                         curr, length);
                 curr->matchedType = None;
@@ -1815,7 +1816,7 @@ int TkDND_GetDataFromImage(DndInfo *info, char *imageName,
  * Notes:
  *----------------------------------------------------------------------
  */
-static TkDND_LocalErrorHandler(Display *display, XErrorEvent *error) {
+static int TkDND_LocalErrorHandler(Display *display, XErrorEvent *error) {
     char buffer[512];
     int  return_val = 0;
     if (error->error_code == BadWindow &&

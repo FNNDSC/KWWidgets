@@ -1048,7 +1048,7 @@ XDND_BOOL XDND_SendDNDSelection(XDND *dnd, XSelectionRequestEvent *request) {
     XDND_DEBUG3("XDND_SendDNDSelection: Sending \"%s\" (%d)\n",
       dnd->data, dnd->index);
     XChangeProperty(dnd->display, request->requestor, request->property,
-      request->target, 8, PropModeReplace, dnd->data, dnd->index);
+      request->target, 8, PropModeReplace, (const unsigned char*)dnd->data, dnd->index);
     xEvent.xselection.type      = SelectionNotify;
     xEvent.xselection.property  = request->property;
     xEvent.xselection.display   = request->display;
@@ -2333,7 +2333,7 @@ int XDND_HandleDNDDrop(XDND *dnd, XClientMessageEvent clientMessage) {
     dnd->index = 0;
     if (data == NULL) return TCL_ERROR;
       } else {
-    data = (unsigned char *) Tcl_Realloc(data, 
+    data = (unsigned char *) Tcl_Realloc((char*)data, 
       sizeof(unsigned char)*(read+2));
       }
       memcpy(&(data)[dnd->index], s, read);
@@ -2343,7 +2343,7 @@ int XDND_HandleDNDDrop(XDND *dnd, XClientMessageEvent clientMessage) {
          actualType, read, s); */
       XFree (s);
   } while (remaining);
-  dnd->data = data;
+  dnd->data = (char*)data;
   dnd->index = read;
 #ifdef XDND_USE_TK_GET_SELECTION
     }
