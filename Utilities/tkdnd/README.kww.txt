@@ -12,12 +12,30 @@ add the following two lines *before* any other #include:
 #include "vtkTcl.h"
 #include "vtkTk.h"
 
-- in generic/tkDND.c
-move:
-  #ifdef __cplusplus
-  }
-  #endif
-down after all the other declarations, i.e. after 
-  extern int TkDND_GetCurrentScript(Tcl_Interp *interp, Tk_Window topwin,
-                Tcl_HashTable *table, char *windowPath, char *typeStr,
-                unsigned long eventType, unsigned long eventMask);
+- in unix/tkXDND.c
+replace:
+     result = TkDND_GetDataAccordingToType(infoPtr, 
+
+by:
+     result = (unsigned char *)TkDND_GetDataAccordingToType(infoPtr, 
+
+replace:
+  static TkDND_LocalErrorHandler(Display *display, XErrorEvent *error) {
+by
+  static int TkDND_LocalErrorHandler(Display *display, XErrorEvent *error) {
+
+- in unix/XDND.c
+replace:
+    XChangeProperty(dnd->display, request->requestor, request->property,
+      request->target, 8, PropModeReplace, dnd->data, dnd->index);
+by:
+    XChangeProperty(dnd->display, request->requestor, request->property,
+      request->target, 8, PropModeReplace, (const unsigned char*)dnd->data, dnd->index);
+
+replace:
+  dnd->data = data;	
+  dnd->index = read;
+
+by:
+  dnd->data = (char*)data;
+  dnd->index = read;
