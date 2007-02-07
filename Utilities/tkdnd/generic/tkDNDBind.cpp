@@ -172,7 +172,7 @@ TkDND_ParseEventDescription(
   return TCL_OK;
 
 error:
-  Tcl_SetResult(interp, "invalid event type \"", TCL_STATIC);
+  Tcl_SetResult(interp, (char*)"invalid event type \"", TCL_STATIC);
   Tcl_AppendResult(interp, eventStringPtr, "\"", (char *) NULL);
   return TCL_ERROR;
 } /* TkDND_ParseEventDescription */
@@ -295,7 +295,7 @@ TkDND_FindMatchingScript(
     return TCL_OK;
   } else if (matchExactly) {
     if (infoPtr != NULL) {
-      Tcl_SetResult(infoPtr->interp, "script not found", TCL_STATIC);
+      Tcl_SetResult(infoPtr->interp, (char*)"script not found", TCL_STATIC);
     }
     return TCL_ERROR;
   }

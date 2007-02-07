@@ -908,7 +908,7 @@ static int TkDND_WidgetAsk(DndClass *dnd, Window source, Window target,
     DndInfo *infoPtr;
     DndType *curr;
     char *pathName,
-        *script = "::dnd::ChooseAskAction %W %X %Y %a %d";
+        *script = (char*)"::dnd::ChooseAskAction %W %X %Y %a %d";
     int ret;
   
     dnd->CallbackStatus = TCL_OK;
@@ -1192,9 +1192,9 @@ static int TkDND_SetCursor(DndClass *dnd, int cursor) {
             if (current_cursor > XDND_NODROP_CURSOR) {
                 type.typeStr = (char *)
                                Tk_GetAtomName(info.tkwin, dnd->DesiredType);
-                type.script  = "";
+                type.script  = (char*)"";
             } else {
-                type.typeStr = "";
+                type.typeStr = (char*)"";
                 type.script  = NULL;
             }
             Tcl_Preserve((ClientData) dnd->interp);
@@ -1336,56 +1336,56 @@ int TkDND_AddHandler(Tcl_Interp *interp, Tk_Window topwin,
         /*
          * Here we handle our platform independed way to transer UTF strings...
          */
-        ActualType[i++] = "text/plain;charset=UTF-8"; /* XDND  Protocol */
-        ActualType[i++] = "CF_UNICODETEXT";           /* OLE DND Protocol */
+        ActualType[i++] = (char*)"text/plain;charset=UTF-8"; /* XDND  Protocol */
+        ActualType[i++] = (char*)"CF_UNICODETEXT";           /* OLE DND Protocol */
         ActualType[i++] = NULL;
     } else if (strcmp(typeStr, "text/plain") == 0) {
         /*
          * Here we handle our platform independed way to pass ASCII strings
          */
-        ActualType[i++] = "text/plain";               /* XDND  Protocol */
-        ActualType[i++] = "STRING";                   /* Motif Protocol */
-        ActualType[i++] = "TEXT";                     /* Motif Protocol */
-        ActualType[i++] = "COMPOUND_TEXT";            /* Motif Protocol */
-        ActualType[i++] = "CF_TEXT";                  /* OLE DND Protocol */
-        ActualType[i++] = "CF_OEMTEXT";               /* OLE DND Protocol */
+        ActualType[i++] = (char*)"text/plain";               /* XDND  Protocol */
+        ActualType[i++] = (char*)"STRING";                   /* Motif Protocol */
+        ActualType[i++] = (char*)"TEXT";                     /* Motif Protocol */
+        ActualType[i++] = (char*)"COMPOUND_TEXT";            /* Motif Protocol */
+        ActualType[i++] = (char*)"CF_TEXT";                  /* OLE DND Protocol */
+        ActualType[i++] = (char*)"CF_OEMTEXT";               /* OLE DND Protocol */
         ActualType[i++] = NULL;
     } else if (strcmp(typeStr, "text/uri-list") == 0 ||
             strcmp(typeStr, "Files")         == 0   ) {
         /*
          * Here we handle our platform independed way to transer File Names...
          */
-        ActualType[i++] = "text/uri-list";            /* XDND  Protocol */
-        ActualType[i++] = "text/file";                /* XDND  Protocol */
-        ActualType[i++] = "text/url";                 /* XDND  Protocol */
-        ActualType[i++] = "url/url";                  /* XDND  Protocol */
-        ActualType[i++] = "FILE_NAME";                /* Motif Protocol */
-        ActualType[i++] = "SGI_FILE";                 /* Motif Protocol */
-        ActualType[i++] = "_NETSCAPE_URL";            /* Motif Protocol */
-        ActualType[i++] = "_MOZILLA_URL";             /* Motif Protocol */
-        ActualType[i++] = "_SGI_URL";                 /* Motif Protocol */
-        ActualType[i++] = "CF_HDROP";                 /* OLE DND  Protocol */
+        ActualType[i++] = (char*)"text/uri-list";            /* XDND  Protocol */
+        ActualType[i++] = (char*)"text/file";                /* XDND  Protocol */
+        ActualType[i++] = (char*)"text/url";                 /* XDND  Protocol */
+        ActualType[i++] = (char*)"url/url";                  /* XDND  Protocol */
+        ActualType[i++] = (char*)"FILE_NAME";                /* Motif Protocol */
+        ActualType[i++] = (char*)"SGI_FILE";                 /* Motif Protocol */
+        ActualType[i++] = (char*)"_NETSCAPE_URL";            /* Motif Protocol */
+        ActualType[i++] = (char*)"_MOZILLA_URL";             /* Motif Protocol */
+        ActualType[i++] = (char*)"_SGI_URL";                 /* Motif Protocol */
+        ActualType[i++] = (char*)"CF_HDROP";                 /* OLE DND  Protocol */
         ActualType[i++] = NULL;
     } else if (strcmp(typeStr, "Text") == 0) {
         /*
          * Here we handle our platform independed way to all supported text
          * formats...
          */
-        ActualType[i++] = "text/plain;charset=UTF-8"; /* XDND  Protocol */
-        ActualType[i++] = "text/plain";               /* XDND  Protocol */
-        ActualType[i++] = "STRING";                   /* Motif Protocol */
-        ActualType[i++] = "TEXT";                     /* Motif Protocol */
-        ActualType[i++] = "COMPOUND_TEXT";            /* Motif Protocol */
-        ActualType[i++] = "CF_UNICODETEXT";           /* OLE DND Protocol */
-        ActualType[i++] = "CF_OEMTEXT";               /* OLE DND Protocol */
-        ActualType[i++] = "CF_TEXT";                  /* OLE DND Protocol */
+        ActualType[i++] = (char*)"text/plain;charset=UTF-8"; /* XDND  Protocol */
+        ActualType[i++] = (char*)"text/plain";               /* XDND  Protocol */
+        ActualType[i++] = (char*)"STRING";                   /* Motif Protocol */
+        ActualType[i++] = (char*)"TEXT";                     /* Motif Protocol */
+        ActualType[i++] = (char*)"COMPOUND_TEXT";            /* Motif Protocol */
+        ActualType[i++] = (char*)"CF_UNICODETEXT";           /* OLE DND Protocol */
+        ActualType[i++] = (char*)"CF_OEMTEXT";               /* OLE DND Protocol */
+        ActualType[i++] = (char*)"CF_TEXT";                  /* OLE DND Protocol */
         ActualType[i++] = NULL;
     } else if (strcmp(typeStr, "Image") == 0) {
         /*
          * Here we handle our platform independed way to all supported text
          * formats...
          */
-        ActualType[i++] = "CF_DIB";                   /* OLE DND Protocol */
+        ActualType[i++] = (char*)"CF_DIB";                   /* OLE DND Protocol */
         ActualType[i++] = NULL;
     } else {
         /*
@@ -1509,12 +1509,12 @@ char *TkDND_GetCurrentTypeCode(void) {
 char *TkDND_GetCurrentActionName(void) {
     Atom action = dnd->SupportedAction;
 
-    if (action == dnd->DNDActionCopyXAtom)    return "copy";
-    if (action == dnd->DNDActionMoveXAtom)    return "move";
-    if (action == dnd->DNDActionLinkXAtom)    return "link";
-    if (action == dnd->DNDActionAskXAtom)     return "ask";
-    if (action == dnd->DNDActionPrivateXAtom) return "private";
-    return "unknown";
+    if (action == dnd->DNDActionCopyXAtom)    return (char*)"copy";
+    if (action == dnd->DNDActionMoveXAtom)    return (char*)"move";
+    if (action == dnd->DNDActionLinkXAtom)    return (char*)"link";
+    if (action == dnd->DNDActionAskXAtom)     return (char*)"ask";
+    if (action == dnd->DNDActionPrivateXAtom) return (char*)"private";
+    return (char*)"unknown";
 } /* TkDND_GetCurrentActionName */
 
 /*
@@ -1593,12 +1593,12 @@ char *TkDND_GetSourceActions(void) {
     Tcl_DStringInit(&ds);
     if (action != NULL) {
         while (*action != None) {
-            if (*action == dnd->DNDActionCopyXAtom)         str = "copy";
-            else if (*action == dnd->DNDActionMoveXAtom)    str = "move";
-            else if (*action == dnd->DNDActionLinkXAtom)    str = "link";
-            else if (*action == dnd->DNDActionAskXAtom)     str = "ask";
-            else if (*action == dnd->DNDActionPrivateXAtom) str = "private";
-            else                                            str = "unknown";
+            if (*action == dnd->DNDActionCopyXAtom)         str = (char*)"copy";
+            else if (*action == dnd->DNDActionMoveXAtom)    str = (char*)"move";
+            else if (*action == dnd->DNDActionLinkXAtom)    str = (char*)"link";
+            else if (*action == dnd->DNDActionAskXAtom)     str = (char*)"ask";
+            else if (*action == dnd->DNDActionPrivateXAtom) str = (char*)"private";
+            else                                            str = (char*)"unknown";
             Tcl_DStringAppendElement(&ds, str);
             action++;
         }

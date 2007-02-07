@@ -42,7 +42,7 @@
  * NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
  * MODIFICATIONS.
  *
- * RCS: @(#) $Id: tkDND.cpp,v 1.2 2007-02-07 20:37:00 barre Exp $
+ * RCS: @(#) $Id: tkDND.cpp,v 1.3 2007-02-07 20:41:57 barre Exp $
  */
 
 #include "tkDND.h"
@@ -751,7 +751,7 @@ void TkDND_ExpandPercents(DndInfo *infoPtr, DndType *typePtr,
          * There's a percent sequence here.  Process it.
          */
         number = 0;
-        string = "??";
+        string = (char*)"??";
         switch (before[1]) {
             case 'A':
                 if (typePtr->script == NULL && *typePtr->typeStr == '\0') {
@@ -761,7 +761,7 @@ void TkDND_ExpandPercents(DndInfo *infoPtr, DndType *typePtr,
                      * a window that does not supports dnd. So, return an empty
                      * action...
                      */
-                    string = "";
+                    string = (char*)"";
                 } else {
                     string = TkDND_GetCurrentActionName();
                 }
@@ -789,7 +789,7 @@ void TkDND_ExpandPercents(DndInfo *infoPtr, DndType *typePtr,
                  * dropped data.  We must leave it as %D. It will be
                  * substituted during execution...
                  */
-                string = "%D";
+                string = (char*)"%D";
                 free_string = False;
                 goto doString;
             case 'd':

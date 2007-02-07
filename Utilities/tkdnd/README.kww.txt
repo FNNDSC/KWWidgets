@@ -42,3 +42,15 @@ replace:
 by:
   dnd->data = (char*)data;
   dnd->index = read;
+
+- in unix/tkXDND.c
+replace:
+  DndClass *TkDND_Init(Tcl_Interp *interp, Tk_Window topwin) {
+by:
+  void *TkDND_Init(Tcl_Interp *interp, Tk_Window topwin) {
+
+- in generic/tkDND.cpp and generic/tkDNDBind.cpp
+replace all 
+   Tcl_SetResult(interp, "...", ...);
+with 
+   Tcl_SetResult(interp, (char*)"...", ...);
