@@ -86,6 +86,13 @@ SET(KWWidgets_CONFIGURATION_TYPES ${CMAKE_CONFIGURATION_TYPES})
 
 MARK_AS_ADVANCED(CMAKE_BACKWARDS_COMPATIBILITY)
 
+SET(KWWidgets_USE_TKDND 1)
+IF(APPLE)
+  IF(VTK_USE_CARBON OR VTK_USE_COCOA)
+    SET(KWWidgets_USE_TKDND 0)
+  ENDIF(VTK_USE_CARBON OR VTK_USE_COCOA)
+ENDIF(APPLE)
+
 # --------------------------------------------------------------------------
 # Install directories
 
@@ -280,8 +287,13 @@ SET(KWWidgets_UTILS_SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/BWidgets/vtkKWBWidgetsInit.cxx
   ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/Tablelist/vtkKWTablelistInit.cxx
   ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/tkcon/vtkKWTkconInit.cxx
-  ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/tkdnd/vtkKWTkDnDInit.cxx
   )
+
+IF(KWWidgets_USE_TKDND)
+  SET(KWWidgets_UTILS_SRCS ${KWWidgets_UTILS_SRCS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/tkdnd/vtkKWTkDnDInit.cxx
+    )
+ENDIF(KWWidgets_USE_TKDND)
 
 # Abstract/pure virtual classes
 
@@ -718,7 +730,9 @@ IF(KWWidgets_USE_INCR_TCL AND INCR_TCL_FOUND)
   TARGET_LINK_LIBRARIES(KWWidgets ${INCR_TCL_LIBRARY} ${INCR_TK_LIBRARY})
 ENDIF(KWWidgets_USE_INCR_TCL AND INCR_TCL_FOUND)
 
-TARGET_LINK_LIBRARIES(KWWidgets kwtkdnd)
+IF(KWWidgets_USE_TKDND)
+  TARGET_LINK_LIBRARIES(KWWidgets kwtkdnd)
+ENDIF(KWWidgets_USE_TKDND)
 
 IF(NOT KWWidgets_INSTALL_NO_LIBRARIES)
   INSTALL_TARGETS(

@@ -57,7 +57,9 @@
 
 static Tcl_Interp *Et_Interp = 0;
 
+#ifdef KWWidgets_USE_TKDND
 #include "Utilities/tkdnd/vtkKWTkDnDInit.h"
+#endif
 
 #ifdef _WIN32
 #include "vtkWindows.h"
@@ -78,7 +80,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.317 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.318 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -927,7 +929,9 @@ Tcl_Interp *vtkKWApplication::InitializeTcl(Tcl_Interp *interp, ostream *err)
 
   // Initialize tkdnd
 
+#ifdef KWWidgets_USE_TKDND
   vtkKWTkDnDInit::Initialize(interp);
+#endif
 
   // Initialize VTK
 

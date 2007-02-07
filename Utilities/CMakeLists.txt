@@ -3,5 +3,8 @@ TARGET_LINK_LIBRARIES(KWConvertImageToHeader ${KWWidgets_LIBRARIES})
 
 SUBDIRS(
   Doxygen
-  tkdnd
   )
+
+IF(KWWidgets_USE_TKDND)
+  SUBDIRS(tkdnd)
+ENDIF(KWWidgets_USE_TKDND)
