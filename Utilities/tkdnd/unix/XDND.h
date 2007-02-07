@@ -41,6 +41,8 @@
 
 #ifndef _X_DND_H
 #define _X_DND_H
+#include "vtkTcl.h"
+#include "vtkTk.h"
 #include <tcl.h>
 #include <tk.h>
 #include "tkDND.h"

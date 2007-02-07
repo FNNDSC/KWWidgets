@@ -46,6 +46,8 @@
 #include <X11/X.h>
 #include <X11/Xatom.h>
 #include <X11/keysym.h>
+#include "vtkTcl.h"
+#include "vtkTk.h"
 #include <tcl.h>
 #include <tk.h>
 #include <XDND.h>

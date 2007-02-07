@@ -6,6 +6,7 @@
  *  under windows.
  *  TODO: Provide the needed functionality :-)
  */
+#include "vtkTcl.h"
 #include <tcl.h>
 
 static int tkDND_ShapeObjCmd(ClientData clientData, Tcl_Interp *interp,
