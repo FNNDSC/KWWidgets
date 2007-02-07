@@ -190,7 +190,7 @@ Atom TkDND_StringToType(char *typeStr) {
  *
  *----------------------------------------------------------------------
  */
-DndClass *TkDND_Init(Tcl_Interp *interp, Tk_Window topwin) {
+void *TkDND_Init(Tcl_Interp *interp, Tk_Window topwin) {
     DndClass *dndp;
     XColor black, white;
     Pixmap image_pixmap, mask_pixmap;

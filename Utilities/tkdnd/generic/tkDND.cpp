@@ -42,7 +42,7 @@
  * NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
  * MODIFICATIONS.
  *
- * RCS: @(#) $Id: tkDND.cpp,v 1.1 2007-02-07 20:15:36 barre Exp $
+ * RCS: @(#) $Id: tkDND.cpp,v 1.2 2007-02-07 20:37:00 barre Exp $
  */
 
 #include "tkDND.h"
@@ -162,7 +162,7 @@ int DLLEXPORT Tkdnd_Init(Tcl_Interp *interp)
          */
         Tcl_GetVersion(&major, &minor, &patchlevel, NULL);
         if ((major == 8) && (minor == 3) && (patchlevel < 3)) {
-            Tcl_SetResult(interp, "tkdnd requires Tk 8.3.3 or greater",
+            Tcl_SetResult(interp, (char*)"tkdnd requires Tk 8.3.3 or greater",
                     TCL_STATIC);
             return TCL_ERROR;
         }
@@ -255,7 +255,7 @@ int TkDND_DndObjCmd(ClientData clientData, Tcl_Interp *interp,
             
             if (objc >= 4) {
               if (strchr(Tcl_GetString(objv[3]), '*') != NULL) {
-                Tcl_SetResult(interp, "the character \"*\" should not be "
+                Tcl_SetResult(interp, (char*)"the character \"*\" should not be "
                    "contained in the type of a drag source!", TCL_STATIC);
                 return TCL_ERROR;
               }
@@ -295,7 +295,7 @@ int TkDND_DndObjCmd(ClientData clientData, Tcl_Interp *interp,
                 }
                 if (strlen(Tcl_GetString(objv[4])) == 0) {
                     Tcl_SetResult(interp,
-                            "when priority is specified an empty script "
+                            (char*)"when priority is specified an empty script "
                             "is not permitted", TCL_STATIC);
                     return TCL_ERROR;
                 }
@@ -439,7 +439,7 @@ int TkDND_DndObjCmd(ClientData clientData, Tcl_Interp *interp,
                     if (status != TCL_OK) return status;
                     if (elem_nu > 5) {
                         Tcl_SetResult(interp,
-                                "too many actions specified: at most 5 are "
+                                (char*)"too many actions specified: at most 5 are "
                                 "allowed, which must be from the following"
                                 " ones:\ncopy, move, link, ask, private",
                                 TCL_STATIC);
@@ -454,7 +454,7 @@ int TkDND_DndObjCmd(ClientData clientData, Tcl_Interp *interp,
                                 strcmp(action, "link") != 0 &&
                                 strcmp(action, "ask" ) != 0 &&
                                 strcmp(action, "private") != 0) {
-                            Tcl_SetResult(interp, "unknown action \"",
+                            Tcl_SetResult(interp, (char*)"unknown action \"",
                                     TCL_STATIC);
                             Tcl_AppendResult(interp, action, "\"!",
                                     (char *) NULL);
@@ -467,7 +467,7 @@ int TkDND_DndObjCmd(ClientData clientData, Tcl_Interp *interp,
                 } else if (strncmp(Tcl_GetString(objv[i]), "-d", 2) == 0) {
                     if (Actions == NULL) {
                         Tcl_SetResult(interp,
-                                "-actions option must be specified before "
+                                (char*)"-actions option must be specified before "
                                 "the -descriptions options", TCL_STATIC);
                         if (CursorCallbackObject != NULL) {
                             Tcl_DecrRefCount(CursorCallbackObject);
@@ -480,7 +480,7 @@ int TkDND_DndObjCmd(ClientData clientData, Tcl_Interp *interp,
                     if (strlen(Tcl_GetString(objv[i+1])) >= 
                             TKDND_MAX_DESCRIPTIONS_LENGTH - 10) {
                         Tcl_SetResult(interp,
-                                "the total length of descriptions cannot "
+                                (char*)"the total length of descriptions cannot "
                                 "exceed " TKDND_MAX_DESCRIPTIONS_LENGTH_STR
                                 " characters", TCL_STATIC);
                         if (CursorCallbackObject != NULL) {
@@ -498,7 +498,7 @@ int TkDND_DndObjCmd(ClientData clientData, Tcl_Interp *interp,
                     if (status != TCL_OK) return status;
                     if (elem_nu != des_nu) {
                         Tcl_SetResult(interp,
-                                "description number must be equal to the "
+                                (char*)"description number must be equal to the "
                                 "action number, as they describe the actions.",
                                 TCL_STATIC);
                         if (CursorCallbackObject != NULL) {
