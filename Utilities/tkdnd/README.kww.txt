@@ -1,12 +1,15 @@
 The changes to TkDnD for KWWidgets are:
 
+- in generic
+  rename all .c to .cpp (they are C++ files)
+
 - in generic/TkDND.h
 replace:
   extern "C" HWND Tk_GetHWND(Window win);
 with
   EXTERN HWND Tk_GetHWND(Window win);
 
-- in generic/TkDND.h, generic/TkDNDBind.c, win/OleDND.cpp, win/OleDND.h, win/tkOleDND.cpp, win/tkShape.cpp
+- in all files that include either tcl.h or tk.h
 
 add the following two lines *before* any other #include:
 #include "vtkTcl.h"
