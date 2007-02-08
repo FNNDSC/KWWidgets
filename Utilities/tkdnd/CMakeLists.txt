@@ -16,8 +16,14 @@ IF(WIN32)
     )
   SET(TkDnD_SRCS ${TkDnD_SRCS} ${TkDnD_Win32_SRCS})
   IF(NOT BORLAND)
-    SET_SOURCE_FILES_PROPERTIES(${TkDnD_SRCS}
-      COMPILE_FLAGS "-DDND_ENABLE_DROP_TARGET_HELPER") 
+    # Can't use ATL because it is not support by Visual Studio Express 2005
+    # We should either detect if we are using Express or Full 2005. This
+    # would however not solve the problem for NMake mode with 2005 settings,
+    # unless we read the entire atlbase.h file and search for the evil
+    # atlthunk.lib reference.
+    # This seems to be problematic for Visual Studio 6 as well.
+    #SET_SOURCE_FILES_PROPERTIES(${TkDnD_SRCS}
+    #  COMPILE_FLAGS "-DDND_ENABLE_DROP_TARGET_HELPER") 
   ENDIF(NOT BORLAND)
 ELSE(WIN32)
   INCLUDE_DIRECTORIES(
