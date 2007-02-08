@@ -1,50 +1,10 @@
 PROJECT(TkDnD)
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/generic)
-SET(TkDnD_SRCS
-  ${CMAKE_CURRENT_SOURCE_DIR}/generic/tkDND.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/generic/tkDNDBind.cpp
-)
-
-IF(WIN32)
-  INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/win)
-  SET(TkDnD_Win32_SRCS
-    ${CMAKE_CURRENT_SOURCE_DIR}/win/OleDND.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/win/tkOleDND.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/win/tkOleDND_TEnumFormatEtc.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/win/tkShape.cpp
-    )
-  SET(TkDnD_SRCS ${TkDnD_SRCS} ${TkDnD_Win32_SRCS})
-  IF(NOT BORLAND)
-    # Can't use ATL because it is not support by Visual Studio Express 2005
-    # We should either detect if we are using Express or Full 2005. This
-    # would however not solve the problem for NMake mode with 2005 settings,
-    # unless we read the entire atlbase.h file and search for the evil
-    # atlthunk.lib reference.
-    # This seems to be problematic for Visual Studio 6 as well.
-    #SET_SOURCE_FILES_PROPERTIES(${TkDnD_SRCS}
-    #  COMPILE_FLAGS "-DDND_ENABLE_DROP_TARGET_HELPER") 
-  ENDIF(NOT BORLAND)
-ELSE(WIN32)
-  INCLUDE_DIRECTORIES(
-    ${CMAKE_CURRENT_SOURCE_DIR}/unix
-    ${CMAKE_CURRENT_SOURCE_DIR}/unix/Motif/lib
-    )
-  SET(TkDnD_Unix_SRCS
-    ${CMAKE_CURRENT_SOURCE_DIR}/unix/Motif.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/unix/tkXDND.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/unix/XDND.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/unix/Motif/lib/Dnd.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/unix/Motif/lib/Target.c
-    )
-  SET_SOURCE_FILES_PROPERTIES(${TkDnD_SRCS}
-    COMPILE_FLAGS "-DTKDND_ENABLE_MOTIF_DROPS")
-  SET_SOURCE_FILES_PROPERTIES(${TkDnD_Unix_SRCS}
-    COMPILE_FLAGS "-DTKDND_ENABLE_MOTIF_DROPS -DUSE_TK_STUBS")
-  SET(TkDnD_SRCS ${TkDnD_SRCS} ${TkDnD_Unix_SRCS})
-ENDIF(WIN32)
-
-SET_SOURCE_FILES_PROPERTIES(${TkDnD_SRCS}
-  PROPERTIES LANGUAGE CXX)
-ADD_LIBRARY(kwtkdnd STATIC ${TkDnD_SRCS})
-TARGET_LINK_LIBRARIES(kwtkdnd ${TCL_LIBRARY} ${TK_LIBRARY})
+IF(0)
+  INCLUDE(TkDnD.cmake)
+  TkDnD_GET_LIBRARY(supported sources includes libs)
+  
+  INCLUDE_DIRECTORIES(${includes})
+  ADD_LIBRARY(kwtkdnd STATIC ${sources})
+  TARGET_LINK_LIBRARIES(kwtkdnd ${libs})
+ENDIF(0)
