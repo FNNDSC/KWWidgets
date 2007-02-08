@@ -243,6 +243,7 @@ TEnumFormatEtc::Next(ULONG numFormats, LPFORMATETC pOutList, ULONG *pNumOut)
   *pNumOut = i;
     }
 
+    (void)cReturn;
     return S_OK;
 }
 

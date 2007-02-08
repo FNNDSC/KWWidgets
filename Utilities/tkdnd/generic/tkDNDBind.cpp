@@ -554,6 +554,7 @@ TkDND_FindScript(
   XDND_DEBUG2("<FindScript> findmatching = %d\n", found);
 
   *typePtrPtr = curr;
+  (void)AtomName;
   return found;
 } /* TkDND_FindScript */
 

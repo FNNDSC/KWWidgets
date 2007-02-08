@@ -16,6 +16,7 @@ static int tkDND_ShapeObjCmd(ClientData clientData, Tcl_Interp *interp,
     Tcl_WrongNumArgs(interp, 1, objv, "subcommand ?window arg ...?");
     return TCL_ERROR;
   }
+  (void)clientData;
   return TCL_OK;
 } /* tkShapeObjCmd */
 

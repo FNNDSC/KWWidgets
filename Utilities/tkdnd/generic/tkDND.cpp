@@ -42,7 +42,7 @@
  * NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
  * MODIFICATIONS.
  *
- * RCS: @(#) $Id: tkDND.cpp,v 1.3 2007-02-07 20:41:57 barre Exp $
+ * RCS: @(#) $Id: tkDND.cpp,v 1.4 2007-02-08 14:54:28 barre Exp $
  */
 
 #include "tkDND.h"
@@ -533,6 +533,7 @@ int TkDND_DndObjCmd(ClientData clientData, Tcl_Interp *interp,
         } /* DRAG */
     }
     return TCL_OK;
+    (void)window;
 } /* TkDND_DndObjCmd */
 
 /*
@@ -900,9 +901,10 @@ int TkDND_ExecuteBinding(Tcl_Interp *interp, char *script, int numBytes,
      * Just a simple check. If %D is not in the script, just execute the
      * binding...don't try to execute
      */
+    status = TCL_OK;
     data_insert = strstr(script, "%D");
     if (data_insert == NULL) {
-        return Tcl_EvalEx(interp, script, numBytes, TCL_EVAL_GLOBAL);
+        status = Tcl_EvalEx(interp, script, numBytes, TCL_EVAL_GLOBAL);
     } else {
         /*
          * Actually, here we have a small problem, if the objPtr holds
@@ -939,9 +941,8 @@ int TkDND_ExecuteBinding(Tcl_Interp *interp, char *script, int numBytes,
         status = Tcl_EvalEx(interp, Tcl_DStringValue(&ds),
                 Tcl_DStringLength(&ds), TCL_EVAL_GLOBAL);
         Tcl_DStringFree(&ds);
-        return status;
     }
-    return TCL_OK;
+    return status;
 } /* TkDND_ExecuteBinding */
 
 /*
@@ -1354,6 +1355,7 @@ int TkDND_Update(Display *display, int idle)
         }
     }
     return TCL_OK;
+    (void)display;
 } /* TkDND_Update */
 
 /* 

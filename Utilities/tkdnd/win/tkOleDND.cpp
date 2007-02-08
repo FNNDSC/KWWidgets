@@ -185,7 +185,7 @@ CLIPFORMAT TkDND_StringToType(char *typeStr) {
   else if (strcmp(typeStr, "CF_DSPMETAFILEPICT")== 0) return CF_DSPMETAFILEPICT;
   else if (strcmp(typeStr, "CF_DSPENHMETAFILE") == 0) return CF_DSPENHMETAFILE;
   else return RegisterClipboardFormat(typeStr);
-  return 0;
+  //  return 0; // unreachable
 } /* TkDND_StringToType */
 
 /*
@@ -538,6 +538,7 @@ char *TkDND_GetCurrentModifiers(Tk_Window tkwin) {
   str = Tcl_Alloc(sizeof(char) * (Tcl_DStringLength(&ds)+1));
   memcpy(str, Tcl_DStringValue(&ds), Tcl_DStringLength(&ds)+1);
   Tcl_DStringFree(&ds);
+  (void)tkwin;
   return str;
 } /* TkDND_GetCurrentModifiers */
 
@@ -600,6 +601,7 @@ char *TkDND_GetSourceActionDescriptions(void) {
   str = Tcl_Alloc(sizeof(char) * (Tcl_DStringLength(&ds)+1));
   memcpy(str, Tcl_DStringValue(&ds), Tcl_DStringLength(&ds)+1);
   Tcl_DStringFree(&ds);
+  (void)descriptions;
   return str;
 } /* TkDND_GetSourceActionDescriptions */
 
@@ -784,6 +786,7 @@ int TkDND_DndDrag(Tcl_Interp *interp, char *windowPath, int button,
    */
   DropSource->Release();
   DataObject->Release();
+  (void)hr;
   return TCL_OK;
 } /* TkDND_DndDrag */
 
@@ -882,6 +885,7 @@ int TkDND_GetDataFromImage(DndInfo *info, char *imageName,
     }
     return 1;
   }
+  (void)info;
   return 0;
 } /* TkDND_GetDataFromImage */
 
@@ -1037,7 +1041,8 @@ HANDLE DibFromBitmap(HBITMAP hbm, DWORD biStyle, WORD biBits, HPALETTE hpal,
 
     /*  realloc the buffer big enough to hold all the bits */
     dwLen = bi.biSize + PaletteSize(&bi) + bi.biSizeImage;
-    if (h = GlobalReAlloc(hdib,dwLen,0))
+    h = GlobalReAlloc(hdib,dwLen,0);
+    if (h)
         hdib = h;
     else{
         GlobalFree(hdib);

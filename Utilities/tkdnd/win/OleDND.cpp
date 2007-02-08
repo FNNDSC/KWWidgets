@@ -654,6 +654,8 @@ TkDND_DataObject::GetData(LPFORMATETC pFormatEtcIn, STGMEDIUM *pMedium) {
  */
 STDMETHODIMP
 TkDND_DataObject::GetDataHere(LPFORMATETC pformatetc, LPSTGMEDIUM pmedium) {
+  (void)pformatetc;
+  (void)pmedium;
   return ResultFromScode(E_NOTIMPL);
 } /* TkDND_DataObject::GetDataHere */
 
@@ -686,6 +688,8 @@ STDMETHODIMP TkDND_DataObject::QueryGetData(LPFORMATETC pFormatEtcIn) {
  */
 STDMETHODIMP TkDND_DataObject::GetCanonicalFormatEtc(LPFORMATETC pFormatEtcIn,
                                                 LPFORMATETC pFormatEtcOut) {
+  (void)pFormatEtcIn;
+  (void)pFormatEtcOut;
   return ResultFromScode(E_NOTIMPL);
 } /* TkDND_DataObject::GetCanonicalFormatEtc */
 
@@ -698,6 +702,9 @@ STDMETHODIMP TkDND_DataObject::GetCanonicalFormatEtc(LPFORMATETC pFormatEtcIn,
  */
 STDMETHODIMP TkDND_DataObject::SetData(LPFORMATETC pFormatEtc,
                                        LPSTGMEDIUM pMedium, BOOL fRelease) {
+  (void)pFormatEtc;
+  (void)pMedium;
+  (void)fRelease;
   return ResultFromScode(E_NOTIMPL);
 } /* TkDND_DataObject::SetData */
 
@@ -736,6 +743,10 @@ STDMETHODIMP TkDND_DataObject::EnumFormatEtc(DWORD dwDirection,
  */
 STDMETHODIMP TkDND_DataObject::DAdvise(LPFORMATETC pFormatEtc, DWORD advf,
                                   LPADVISESINK pAdvSink, DWORD *pdwConnection) {
+  (void)pFormatEtc;
+  (void)advf;
+  (void)pAdvSink;
+  (void)pdwConnection;
   return ResultFromScode(OLE_E_ADVISENOTSUPPORTED);
 } /* TkDND_DataObject::DAdvise */
 
@@ -747,6 +758,7 @@ STDMETHODIMP TkDND_DataObject::DAdvise(LPFORMATETC pFormatEtc, DWORD advf,
  *----------------------------------------------------------------------
  */
 STDMETHODIMP TkDND_DataObject::DUnadvise(DWORD dwConnection) {
+  (void)dwConnection;
   return ResultFromScode(OLE_E_NOCONNECTION);
 } /* TkDND_DataObject::DUnadvise */
 
@@ -758,6 +770,7 @@ STDMETHODIMP TkDND_DataObject::DUnadvise(DWORD dwConnection) {
  *----------------------------------------------------------------------
  */
 STDMETHODIMP TkDND_DataObject::EnumDAdvise(IEnumSTATDATA **ppEnumAdvise) {
+  (void)ppEnumAdvise;
   return ResultFromScode(OLE_E_ADVISENOTSUPPORTED);
 } /* TkDND_DataObject::EnumDAdvise */
 
@@ -785,7 +798,7 @@ int TkDND_DataObject::AddDataType(UINT clipFormat) {
    * Is the requested format already in our table?
    */
   for (i = 0; i < m_numTypes; i++) {
-    if (m_typeList[i].cfFormat == clipFormat) {
+    if ((UINT)m_typeList[i].cfFormat == clipFormat) {
       return TCL_OK;
     }
   }
@@ -838,7 +851,7 @@ int TkDND_DataObject::DelDataType(UINT clipFormat) {
     return TCL_ERROR;
   }
   for (i = 0; i < m_numTypes; i++) {
-    if (m_typeList[i].cfFormat == clipFormat) {
+    if ((UINT)m_typeList[i].cfFormat == clipFormat) {
       for (j = i; j < m_numTypes; j++) {
         m_typeList[j-1] = m_typeList[j];
       }
@@ -1218,6 +1231,7 @@ STDMETHODIMP TkDND_DropTarget::DragEnter(LPDATAOBJECT pIDataSource,
 #endif /* DND_ENABLE_DROP_TARGET_HELPER */
 
   XDND_DEBUG("<DragEnter>: returning\n");
+  (void)typeStringMatch;
   return S_OK;
 } /* TkDND_DropTarget::DragEnter */
 
@@ -1250,7 +1264,7 @@ STDMETHODIMP TkDND_DropTarget::DragOver(DWORD grfKeyState, POINTL pt,
   DndType  *curr;
         
   XDND_DEBUG("############ ---- Drag Over ---- ##############\n");
-  if (DataObject == NULL || dnd->DesiredType == -1) {
+  if (DataObject == NULL || dnd->DesiredType == (CLIPFORMAT)-1) {
     strcpy(dnd->DesiredAction, "");
     *pdwEffect = DROPEFFECT_NONE;
 #ifdef DND_ENABLE_DROP_TARGET_HELPER
@@ -1383,7 +1397,7 @@ STDMETHODIMP TkDND_DropTarget::DragLeave(void) {
   }
 #endif /* DND_ENABLE_DROP_TARGET_HELPER */
 
-  if (DataObject == NULL || dnd->DesiredType == -1) {
+  if (DataObject == NULL || dnd->DesiredType == (CLIPFORMAT)-1) {
     strcpy(dnd->DesiredAction, "");
     return NOERROR;
   }
@@ -1485,7 +1499,7 @@ TkDND_DropTarget::Drop(LPDATAOBJECT pIDataSource, DWORD grfKeyState,
   DndType  *curr;
         
   XDND_DEBUG("############ ---- Drop ---- ##############\n");
-  if (DataObject == NULL || dnd->DesiredType == -1) {
+  if (DataObject == NULL || dnd->DesiredType == (CLIPFORMAT)-1) {
     strcpy(dnd->DesiredAction, "");
     *pdwEffect = DROPEFFECT_NONE;
 #ifdef DND_ENABLE_DROP_TARGET_HELPER
@@ -1557,7 +1571,7 @@ TkDND_DropTarget::Drop(LPDATAOBJECT pIDataSource, DWORD grfKeyState,
     fetc.tymed      = TYMED_HGLOBAL;
     stgMedium.tymed = TYMED_HGLOBAL;
     
-    if (type != dnd->DesiredType) {
+    if (type != (UINT)dnd->DesiredType) {
       /*
        * We have a script for another type, that best fits the current
        * buttons/modifiers. Is the type supported by the drag source?
@@ -1628,6 +1642,7 @@ TkDND_DropTarget::Drop(LPDATAOBJECT pIDataSource, DWORD grfKeyState,
   *pdwEffect = DROPEFFECT_NONE;
   DataObject->Release();
   DataObject = NULL;
+  (void)pt;
   return NOERROR;
 } /* TkDND_DropTarget::Drop */
 
