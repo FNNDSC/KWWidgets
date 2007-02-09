@@ -42,7 +42,7 @@
  * NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
  * MODIFICATIONS.
  *
- * RCS: @(#) $Id: tkDND.cpp,v 1.4 2007-02-08 14:54:28 barre Exp $
+ * RCS: @(#) $Id: tkDND.cpp,v 1.5 2007-02-09 18:50:00 barre Exp $
  */
 
 #include "tkDND.h"
@@ -532,8 +532,8 @@ int TkDND_DndObjCmd(ClientData clientData, Tcl_Interp *interp,
             return status;
         } /* DRAG */
     }
-    return TCL_OK;
     (void)window;
+    return TCL_OK;
 } /* TkDND_DndObjCmd */
 
 /*
@@ -1354,8 +1354,8 @@ int TkDND_Update(Display *display, int idle)
             break;
         }
     }
-    return TCL_OK;
     (void)display;
+    return TCL_OK;
 } /* TkDND_Update */
 
 /* 
