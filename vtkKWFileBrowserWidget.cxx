@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.2 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -118,6 +118,10 @@ void vtkKWFileBrowserWidget::CreateWidget()
 
   this->Script("pack %s -fill both -expand true",
                this->MainFrame->GetWidgetName());
+
+  this->CreateDirectoryExplorer();
+  this->CreateFileListTable(); 
+  this->CreateFavoriteDirectoriesFrame();
   
   this->Pack();
 }
@@ -126,16 +130,33 @@ void vtkKWFileBrowserWidget::CreateWidget()
 void vtkKWFileBrowserWidget::Pack()
 {
   this->MainFrame->UnpackChildren();
-    
-  if (this->DirectoryExplorerVisibility || 
-      this->FileListTableVisibility)
+  
+  if (this->DirectoryExplorerVisibility || this->FileListTableVisibility)
     {
     if (this->FavoriteDirectoriesFrameVisibility)
       {
       this->MainFrame->SetSeparatorVisibility(1);
       this->MainFrame->SetSeparatorPosition(0.25);
       }
-    this->SetupDirectoryAndFileFrame();
+
+    this->DirFileFrame->SetFrame1MinimumSize(250);
+    this->DirFileFrame->SetFrame2MinimumSize(200);
+
+    this->DirFileFrame->SetFrame1Visibility(this->DirectoryExplorerVisibility);
+    this->DirFileFrame->SetFrame2Visibility(this->FileListTableVisibility);
+  
+    if (this->FileListTableVisibility && this->DirectoryExplorerVisibility)
+      {
+      this->DirFileFrame->SetSeparatorVisibility(1);
+      this->DirFileFrame->SetSeparatorPosition(0.5);
+      }
+    else
+      {
+      this->DirFileFrame->SetSeparatorVisibility(0);
+      }
+    
+    this->Script("pack %s -side top -fill both -expand true",
+                 this->DirFileFrame->GetWidgetName());
     }
   else
     {
@@ -146,7 +167,6 @@ void vtkKWFileBrowserWidget::Pack()
   if (this->FavoriteDirectoriesFrameVisibility)
     {
     this->MainFrame->SetFrame1MinimumSize(100);
-    this->SetupFavoriteDirectoriesFrame();
     }
   else
     {
@@ -156,12 +176,27 @@ void vtkKWFileBrowserWidget::Pack()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWFileBrowserWidget::CreateDirectoryExplorerAndFileListTableFrame()
+{
+  if (this->DirectoryExplorerVisibility || this->FileListTableVisibility)
+    {
+    if (!this->DirFileFrame->IsCreated())
+      {
+      this->DirFileFrame->SetParent(this->MainFrame->GetFrame2());
+      this->DirFileFrame->Create();
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
 void vtkKWFileBrowserWidget::CreateDirectoryExplorer()
 {
   if (this->DirectoryExplorerVisibility)
     {
-    this->DirFileFrame->SetFrame1MinimumSize(250);
-
+    if (!this->DirFileFrame->IsCreated())
+      {
+      this->CreateDirectoryExplorerAndFileListTableFrame();
+      }
     if (!this->DirectoryExplorer->IsCreated())
       {
       this->DirectoryExplorer->SetParent(this->DirFileFrame->GetFrame1());
@@ -176,21 +211,26 @@ void vtkKWFileBrowserWidget::CreateDirectoryExplorer()
         &this->Internals->DefaultSelectionForegroundColor[0],
         &this->Internals->DefaultSelectionForegroundColor[1],
         &this->Internals->DefaultSelectionForegroundColor[2]);
+
+      this->DirectoryExplorer->AddBindingToInternalWidget(
+        "<FocusIn>", this, "DirectoryTreeFocusInCallback");
+      this->DirectoryExplorer->AddBindingToInternalWidget(
+        "<FocusOut>", this, "DirectoryTreeFocusOutCallback");
         
-      this->DirectoryExplorer->SetDirectoryClickedCommand(this, 
-        "DirectoryClickedCallback");
-      this->DirectoryExplorer->SetDirectoryAddedCommand(this, 
-        "DirectoryAddedCallback");
-      this->DirectoryExplorer->SetDirectoryChangedCommand(this, 
-        "DirectoryChangedCallback");
-      this->DirectoryExplorer->SetDirectoryOpenedCommand(this, 
-        "DirectoryOpenedCallback");
-      this->DirectoryExplorer->SetDirectoryClosedCommand(this, 
-        "DirectoryClosedCallback");
-      this->DirectoryExplorer->SetDirectoryRemovedCommand(this, 
-        "DirectoryRemovedCallback");
-      this->DirectoryExplorer->SetDirectoryRenamedCommand(this, 
-        "DirectoryRenamedCallback");
+      this->DirectoryExplorer->SetDirectoryClickedCommand(
+        this, "DirectoryClickedCallback");
+      this->DirectoryExplorer->SetDirectoryAddedCommand(
+        this, "DirectoryAddedCallback");
+      this->DirectoryExplorer->SetDirectoryChangedCommand(
+        this, "DirectoryChangedCallback");
+      this->DirectoryExplorer->SetDirectoryOpenedCommand(
+        this, "DirectoryOpenedCallback");
+      this->DirectoryExplorer->SetDirectoryClosedCommand(
+        this, "DirectoryClosedCallback");
+      this->DirectoryExplorer->SetDirectoryRemovedCommand(
+        this, "DirectoryRemovedCallback");
+      this->DirectoryExplorer->SetDirectoryRenamedCommand(
+        this, "DirectoryRenamedCallback");
       }
 
     this->Script(
@@ -204,8 +244,10 @@ void vtkKWFileBrowserWidget::CreateFileListTable()
 {
   if (this->FileListTableVisibility)
     {
-    this->DirFileFrame->SetFrame2MinimumSize(200);
-
+    if (!this->DirFileFrame->IsCreated())
+      {
+      this->CreateDirectoryExplorerAndFileListTableFrame();
+      }
     if (!this->FileListTable->IsCreated())
       {
       this->FileListTable->SetParent(this->DirFileFrame->GetFrame2());
@@ -224,16 +266,21 @@ void vtkKWFileBrowserWidget::CreateFileListTable()
           this->Internals->DefaultSelectionForegroundColor[2]);
         }
 
-      this->FileListTable->SetFileDoubleClickedCommand(this, 
-        "FileDoubleClickedCallback");
-      this->FileListTable->SetFileSelectedCommand(this, 
-        "FileSelectionChangedCallback");
-      this->FileListTable->SetFileRemovedCommand(this, 
-        "FileRemovedCallback");
-      this->FileListTable->SetFileRenamedCommand(this, 
-        "FileRenamedCallback");
-      this->FileListTable->SetFolderCreatedCommand(this, 
-        "FolderCreatedCallback");
+      this->FileListTable->AddBindingToInternalWidget(
+        "<FocusIn>", this, "FileTableFocusInCallback");
+      this->FileListTable->AddBindingToInternalWidget(
+        "<FocusOut>", this, "FileTableFocusOutCallback");
+
+      this->FileListTable->SetFileDoubleClickedCommand(
+        this, "FileDoubleClickedCallback");
+      this->FileListTable->SetFileSelectedCommand(
+        this, "FileSelectionChangedCallback");
+      this->FileListTable->SetFileRemovedCommand(
+        this, "FileRemovedCallback");
+      this->FileListTable->SetFileRenamedCommand(
+        this, "FileRenamedCallback");
+      this->FileListTable->SetFolderCreatedCommand(
+        this, "FolderCreatedCallback");
       }
 
     this->Script(
@@ -243,65 +290,23 @@ void vtkKWFileBrowserWidget::CreateFileListTable()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWFileBrowserWidget::SetupDirectoryAndFileFrame()
+void vtkKWFileBrowserWidget::CreateFavoriteDirectoriesFrame()
 {
-  if (!this->DirFileFrame->IsCreated())
+  if (this->FavoriteDirectoriesFrameVisibility)
     {
-    this->DirFileFrame->SetParent(this->MainFrame->GetFrame2());
-    this->DirFileFrame->Create();
-    }
-  
-  this->DirFileFrame->SetFrame1Visibility(
-    this->DirectoryExplorerVisibility);
-  this->DirFileFrame->SetFrame2Visibility(
-    this->FileListTableVisibility);
-  
-  if (this->FileListTableVisibility 
-    && this->DirectoryExplorerVisibility)
-    {
-    this->DirFileFrame->SetSeparatorVisibility(1);
-    this->DirFileFrame->SetSeparatorPosition(0.5);
-    }
-  else
-    {
-    this->DirFileFrame->SetSeparatorVisibility(0);
-    }
-    
-  this->Script("pack %s -side top -fill both -expand true",
-    this->DirFileFrame->GetWidgetName());
-  
-  this->CreateDirectoryExplorer();
-  
-  this->CreateFileListTable(); 
+    if (!this->FavoriteDirectoriesFrame->IsCreated())
+      {
+      this->FavoriteDirectoriesFrame->SetParent(this->MainFrame->GetFrame1());
+      this->FavoriteDirectoriesFrame->Create();
+      this->FavoriteDirectoriesFrame->SetFavoriteDirectoryAddingCommand(
+        this, "AddFavoriteDirectoryCallback");
+      this->FavoriteDirectoriesFrame->SetFavoriteDirectorySelectedCommand(
+        this, "FavoriteDirectorySelectedCallback");
+      }
 
-  if (this->FileListTableVisibility && this->DirectoryExplorerVisibility)
-    {
-    this->DirectoryExplorer->AddBindingToInternalWidget(
-      "<FocusIn>", this, "DirectoryTreeFocusInCallback");
-    this->FileListTable->AddBindingToInternalWidget(
-      "<FocusIn>", this, "FileTableFocusInCallback");
-    this->DirectoryExplorer->AddBindingToInternalWidget(
-      "<FocusOut>", this, "DirectoryTreeFocusOutCallback");
-    this->FileListTable->AddBindingToInternalWidget(
-      "<FocusOut>", this, "FileTableFocusOutCallback");
+    this->Script("pack %s -fill x -expand true",
+                 this->FavoriteDirectoriesFrame->GetWidgetName());
     }
-}
-
-//----------------------------------------------------------------------------
-void vtkKWFileBrowserWidget::SetupFavoriteDirectoriesFrame()
-{
-  if (!this->FavoriteDirectoriesFrame->IsCreated())
-    {
-    this->FavoriteDirectoriesFrame->SetParent(this->MainFrame->GetFrame1());
-    this->FavoriteDirectoriesFrame->SetFavoriteDirectoryAddingCommand(this, 
-      "AddFavoriteDirectoryCallback");
-    this->FavoriteDirectoriesFrame->SetFavoriteDirectorySelectedCommand(this, 
-      "FavoriteDirectorySelectedCallback");
-    this->FavoriteDirectoriesFrame->Create();
-    }
-
-  this->Script("pack %s -fill x -expand true",
-    this->FavoriteDirectoriesFrame->GetWidgetName());
 }
 
 //----------------------------------------------------------------------------
@@ -315,7 +320,9 @@ void vtkKWFileBrowserWidget::SetFavoriteDirectoriesFrameVisibility(int arg)
   this->FavoriteDirectoriesFrameVisibility = arg;
   this->Modified();
 
+  this->CreateFavoriteDirectoriesFrame();
   this->Pack();
+  this->UpdateForCurrentDirectory();
 }
 
 //----------------------------------------------------------------------------
@@ -329,6 +336,7 @@ void vtkKWFileBrowserWidget::SetDirectoryExplorerVisibility(int arg)
   this->DirectoryExplorerVisibility = arg;
   this->Modified();
 
+  this->CreateDirectoryExplorer();
   this->Pack();
 }
 
@@ -343,7 +351,10 @@ void vtkKWFileBrowserWidget::SetFileListTableVisibility(int arg)
   this->FileListTableVisibility = arg;
   this->Modified();
 
+  this->CreateFileListTable(); 
   this->Pack();
+  this->PropagateMultipleSelection();
+  this->UpdateForCurrentDirectory();
 }
 
 //----------------------------------------------------------------------------
@@ -358,6 +369,12 @@ void vtkKWFileBrowserWidget::SetMultipleSelection(int arg)
   this->MultipleSelection = arg;
   this->Modified();
 
+  this->PropagateMultipleSelection();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFileBrowserWidget::PropagateMultipleSelection()
+{
   int option = vtkKWOptions::SelectionModeSingle;
   if (this->MultipleSelection)
     {
@@ -438,7 +455,7 @@ void vtkKWFileBrowserWidget::UpdateFileSelectionColor(int infocus)
         this->Internals->DefaultSelectionForegroundColor[1],
         this->Internals->DefaultSelectionForegroundColor[2]);
     }
-  else if (this->FileListTable->GetNumberOfSelectedFiles()>0)
+  else if (this->FileListTable->GetNumberOfSelectedFiles() > 0)
     {
     this->FileListTable->SetSelectionBackgroundColor(
         this->Internals->SelectedGrayColor[0],
@@ -498,14 +515,13 @@ void vtkKWFileBrowserWidget::AddFavoriteDirectoryCallback()
       this->GetApplication(), this, 
       ks_("File Browser|Title|Error!"),
       k_("Please select a directory first."), 
-      vtkKWMessageDialog::ErrorIcon | 
-      vtkKWMessageDialog::InvokeAtPointer);
+      vtkKWMessageDialog::ErrorIcon | vtkKWMessageDialog::InvokeAtPointer);
     return;
     }
   
   vtksys_stl::string favoritedir = 
     this->DirectoryExplorer->GetSelectedDirectory();
-  vtksys_stl::string textname = 
+  vtksys_stl::string defaultname = 
     vtksys::SystemTools::GetFilenameName(favoritedir);
   
   // Check if the favorite folder is already there, 
@@ -515,13 +531,12 @@ void vtkKWFileBrowserWidget::AddFavoriteDirectoryCallback()
         favoritedir.c_str()))
     {
     vtksys_stl::string message = 
-      "The selected directoy ha already been added.";
+      "The selected directoy has already been added.";
     vtkKWMessageDialog::PopupMessage(
       this->GetApplication(), this, 
       ks_("File Browser|Title|Warning!"),
       message.c_str(), 
-      vtkKWMessageDialog::WarningIcon | 
-      vtkKWMessageDialog::InvokeAtPointer);
+      vtkKWMessageDialog::WarningIcon | vtkKWMessageDialog::InvokeAtPointer);
     return;
     }
     
@@ -531,13 +546,12 @@ void vtkKWFileBrowserWidget::AddFavoriteDirectoryCallback()
   dlg->SetParent(this);
   dlg->SetMasterWindow(this->GetParentTopLevel());
   dlg->SetDisplayPositionToPointer();
-  dlg->SetTitle(
-    ks_("File Browser|Dialog|Title|Add favorite"));
+  dlg->SetTitle(ks_("File Browser|Dialog|Title|Add favorite"));
   dlg->SetStyleToOkCancel();
   dlg->Create();
   dlg->GetEntry()->GetLabel()->SetText(
     ks_("File Browser|Dialog|Favorite name:"));
-  dlg->GetEntry()->GetWidget()->SetValue(textname.c_str());
+  dlg->GetEntry()->GetWidget()->SetValue(defaultname.c_str());
   dlg->SetText(
     ks_("File Browser|Dialog|Enter a name for this favorite"));
   
@@ -546,54 +560,48 @@ void vtkKWFileBrowserWidget::AddFavoriteDirectoryCallback()
   dlg->GetOKButton()->SetBinding("<Return>", dlg, "OK");
   dlg->GetCancelButton()->SetBinding("<Return>", dlg, "Cancel");
   
-  vtksys_stl::string dirname;
   int ok = dlg->Invoke();
+  vtksys_stl::string favoritename = dlg->GetEntry()->GetWidget()->GetValue();
+  dlg->Delete();
   if (ok)
     {
-    dirname = dlg->GetEntry()->GetWidget()->GetValue();
-    if (dirname.empty())
+    if (favoritename.empty())
       {
       vtkKWMessageDialog::PopupMessage(
         this->GetApplication(), this, 
         ks_("File Browser|Title|Error!"),
-        "You must enter a valid directory name!", 
-        vtkKWMessageDialog::ErrorIcon | 
-        vtkKWMessageDialog::InvokeAtPointer);
-      dlg->Delete();
+        "You can not enter an empty name!", 
+        vtkKWMessageDialog::ErrorIcon | vtkKWMessageDialog::InvokeAtPointer);
       return;
       }
-    else
+
+    // Check if the folder text is already used, 
+    // if yes, popup error message
+    
+    if (this->FavoriteDirectoriesFrame->HasFavoriteDirectoryWithName(
+          favoritename.c_str()))
       {
-      // Check if the folder text is already used, 
-      // if yes, popup error message
-      if (this->FavoriteDirectoriesFrame->HasFavoriteDirectoryWithName(
-            dirname.c_str()))
-        {
-        vtksys_stl::string message = 
-            "The name for this favorite is already used: ";
-        message.append(dirname.c_str());
-        vtkKWMessageDialog::PopupMessage(
-          this->GetApplication(), this, 
-          ks_("File Browser|Title|Error!"),
-          message.c_str(), 
+      vtksys_stl::string message = 
+        "The name for this favorite is already used: ";
+      message.append(favoritename.c_str());
+      vtkKWMessageDialog::PopupMessage(
+        this->GetApplication(), this, 
+        ks_("File Browser|Title|Error!"),
+        message.c_str(), 
           vtkKWMessageDialog::WarningIcon | 
-          vtkKWMessageDialog::InvokeAtPointer);
-        dlg->Delete();
-        return;
-        }
+        vtkKWMessageDialog::InvokeAtPointer);
+      return;
       }
-    dlg->Delete();
     }
   else
     {
-    dlg->Delete();
     return;
     }    
   
-  // Add selected folder to the FavoriateDirFrame 
+  // Add selected folder to the favorites
+
   this->FavoriteDirectoriesFrame->AddFavoriteDirectory(
-    favoritedir.c_str(),
-    dirname.c_str());
+    favoritedir.c_str(), favoritename.c_str());
   this->FavoriteDirectoriesFrame->SelectFavoriteDirectory(
     favoritedir.c_str());
 }
@@ -609,11 +617,34 @@ void vtkKWFileBrowserWidget::FavoriteDirectorySelectedCallback(
 //----------------------------------------------------------------------------
 void vtkKWFileBrowserWidget::DirectoryClickedCallback()
 {
-  if (this->FileListTableVisibility)
-    {
-    this->UpdateFileSelectionColor(0);
-    }
-  this->UpdateDirectorySelectionColor(1);
+  //  this->UpdateDirectorySelectionColor(1);
+  //  this->UpdateFileSelectionColor(0);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFileBrowserWidget::DirectoryChangedCallback(
+  const char* fullname)
+{
+  //  this->UpdateDirectorySelectionColor(1);
+  //  this->UpdateFileSelectionColor(0);
+
+  this->UpdateForCurrentDirectory();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFileBrowserWidget::DirectoryOpenedCallback(
+  const char* fullname)
+{
+  //  this->UpdateDirectorySelectionColor(1);
+  // this->UpdateFileSelectionColor(0);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFileBrowserWidget::DirectoryClosedCallback(
+  const char* fullname)
+{
+  //  this->UpdateDirectorySelectionColor(1);
+  //  this->UpdateFileSelectionColor(0);
 }
 
 //----------------------------------------------------------------------------
@@ -625,42 +656,17 @@ void vtkKWFileBrowserWidget::DirectoryAddedCallback(
 }
 
 //----------------------------------------------------------------------------
-void vtkKWFileBrowserWidget::DirectoryChangedCallback(
-  const char* fullname)
+void vtkKWFileBrowserWidget::UpdateForCurrentDirectory()
 {
-  this->UpdateDirectorySelectionColor(1);
-  
   if (this->FavoriteDirectoriesFrameVisibility)
     {
-    this->FavoriteDirectoriesFrame->SelectFavoriteDirectory(fullname);
+    this->FavoriteDirectoriesFrame->SelectFavoriteDirectory(
+      this->DirectoryExplorer->GetSelectedDirectory());
     }
     
   if (this->FileListTableVisibility)
     {
-    this->UpdateFileSelectionColor(0);
     this->FilterFilesByExtensions(this->Internals->CurrentFileExts.c_str());
-    }
-}
-
-//----------------------------------------------------------------------------
-void vtkKWFileBrowserWidget::DirectoryOpenedCallback(
-  const char* fullname)
-{
-  if (this->FileListTableVisibility)
-    {
-    this->UpdateFileSelectionColor(0);
-    }
-  this->UpdateDirectorySelectionColor(1);
-}
-
-//----------------------------------------------------------------------------
-void vtkKWFileBrowserWidget::DirectoryClosedCallback(
-  const char* fullname)
-{
-  this->UpdateDirectorySelectionColor(1);
-  if (this->FileListTableVisibility)
-    {
-    this->UpdateFileSelectionColor(0);
     }
 }
 
@@ -686,10 +692,8 @@ void vtkKWFileBrowserWidget::DirectoryRenamedCallback(
     // this->FavoriteDirectoriesFrame->RelocateFavoriteDirectory(
     // oldname, newname);
     }
-  if (this->FileListTableVisibility)
-    {
-    this->FileListTable->SetParentDirectory(newname);
-    }
+
+  this->FileListTable->SetParentDirectory(newname);
   this->SetFocusToDirectoryExplorer();
 }
 
@@ -728,11 +732,8 @@ void vtkKWFileBrowserWidget::FolderCreatedCallback(const char* filename)
 void vtkKWFileBrowserWidget::FileSelectionChangedCallback(
   const char* fullname)
 {
-  if (this->DirectoryExplorerVisibility)
-    {
-    this->UpdateDirectorySelectionColor(0);
-    }
-  this->UpdateFileSelectionColor(1);
+  //this->UpdateDirectorySelectionColor(0);
+  //this->UpdateFileSelectionColor(1);
 }
 
 //----------------------------------------------------------------------------

@@ -150,19 +150,18 @@ protected:
   
   // Description:
   // Setup all the frames with widgets.
-  virtual void SetupFavoriteDirectoriesFrame();
-  virtual void SetupDirectoryAndFileFrame();
+  virtual void CreateFavoriteDirectoriesFrame();
+  virtual void CreateDirectoryExplorerAndFileListTableFrame();
   virtual void CreateDirectoryExplorer();
   virtual void CreateFileListTable();
 
   // Description:
-  // Function to update the selected Background/Foreground color of the tree.
+  // Function to update the selected Background/Foreground.
   virtual void UpdateDirectorySelectionColor(int infocus);
-  
-  // Description:
-  // Function to update the selected Background/Foreground color of the file
-  // list table.
   virtual void UpdateFileSelectionColor(int infocus);
+  
+  virtual void UpdateForCurrentDirectory();
+  virtual void PropagateMultipleSelection();
 
   // Description:
   // Member variable
