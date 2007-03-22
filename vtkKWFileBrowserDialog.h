@@ -196,12 +196,9 @@ protected:
   virtual int ConfirmOverwrite(const char* filename);
 
   // Description:
-  // Final step on the selected file(s).
-  virtual void FinalFileOK();
-
-  // Description:
-  // Final step on the selected directory(s).
-  virtual void FinalDirectoryOK();
+  // Final step on the selected files or directories
+  virtual int FileOK();
+  virtual int DirectoryOK();
 
   // Description:
   // Internal PIMPL class for STL purposes.

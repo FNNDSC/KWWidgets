@@ -40,7 +40,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.2 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -462,22 +462,25 @@ void vtkKWFileBrowserDialog::Cancel()
 void vtkKWFileBrowserDialog::OK()
 {
   this->FileNames->Reset();
-  if (this->ChooseDirectory)
+
+  int res = this->ChooseDirectory ? this->DirectoryOK() : this->FileOK();
+  if (!res || !this->GetNumberOfFileNames())
     {
-    this->FinalDirectoryOK();
+    return;
     }
-  else
-    {
-    this->FinalFileOK();
-    }
+
+  this->GenerateLastPath(this->GetFileName());
+  this->InvokeFileNameChangedCommand(this->GetFileName());
+
+  this->Superclass::OK();
 }
 
 //----------------------------------------------------------------------------
-void vtkKWFileBrowserDialog::FinalDirectoryOK()
+int vtkKWFileBrowserDialog::DirectoryOK()
 {
   if (!this->FileBrowserWidget->GetDirectoryExplorer()->HasSelection())
     {
-    return;
+    return 0;
     }
 
   int num_files = this->FileBrowserWidget->GetDirectoryExplorer()->
@@ -489,17 +492,16 @@ void vtkKWFileBrowserDialog::FinalDirectoryOK()
       GetDirectoryExplorer()->GetNthSelectedDirectory(i));
     }
 
-  this->GenerateLastPath(this->GetFileName());
-  this->InvokeFileNameChangedCommand(this->GetFileName());
-
-  this->Superclass::OK();
+  return 1;
 }
 
 //----------------------------------------------------------------------------
-void vtkKWFileBrowserDialog::FinalFileOK()
+int vtkKWFileBrowserDialog::FileOK()
 {
-  int num_files = this->FileBrowserWidget->GetFileListTable()->
-    GetNumberOfSelectedFiles();
+  int num_files = 
+    this->FileBrowserWidget->GetFileListTable()->GetNumberOfSelectedFiles();
+
+  // More than one file selected
 
   if (num_files > 1)
     {
@@ -514,108 +516,111 @@ void vtkKWFileBrowserDialog::FinalFileOK()
           this->GetApplication(), this, 
           ks_("File Browser|Title|Error!"),
           k_("A directory can't be part of the selection."), 
-          vtkKWMessageDialog::ErrorIcon | 
-          vtkKWMessageDialog::InvokeAtPointer);
+          vtkKWMessageDialog::ErrorIcon | vtkKWMessageDialog::InvokeAtPointer);
         this->FileNames->Reset();
-        return;
+        return 0;
         }
       this->FileNames->InsertNextValue(selfile.c_str());
       }
 
+#if 0
     if (this->SaveDialog)
       {
       if (!this->ConfirmOverwrite(
-        this->FileBrowserWidget->GetFileListTable()->GetNthSelectedFile(0)))
+         this->FileBrowserWidget->GetFileListTable()->GetNthSelectedFile(0)))
         {
         this->FileNames->Reset();
-        return;
+        return 0;
         }
       }
+#endif
 
-    this->GenerateLastPath(this->GetFileName());
-    this->InvokeFileNameChangedCommand(this->GetFileName());
-    this->Superclass::OK();
+    return 1;
     }
-  else
+
+  // If the filename box has a value, check if it is a valid file  
+  // This also happens if there was only one single file selected
+  // since its name get copied over automatically to the filenametext
+
+  if (this->FileNameText->GetValue() && *(this->FileNameText->GetValue()))
     {
-    // If the filename box has a value, check if it is a valid file  
-    if (this->FileNameText->GetValue() &&
-      *(this->FileNameText->GetValue()))
+    char * realname = vtksys::SystemTools::RemoveChars(
+      this->FileNameText->GetValue(), " \r\n\t");
+    if (!realname || !*(realname))
       {
-      char * realname = vtksys::SystemTools::RemoveChars(
-        this->FileNameText->GetValue(), " \r\n\t");
-      if (!realname || !*(realname))
-        {
-        this->FileNameText->SetValue(NULL);
-        return;
-        }
+      this->FileNameText->SetValue(NULL);
+      return 0;
+      }
 
-      vtksys_stl::string fullname = 
-        this->FileBrowserWidget->GetFileListTable()->GetParentDirectory();
-      if (strcmp(fullname.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY)!=0)
-        {
-        fullname.append(KWFileBrowser_PATH_SEPARATOR);
-        }
-      fullname.append(realname);
+    vtksys_stl::string fullname = 
+      this->FileBrowserWidget->GetFileListTable()->GetParentDirectory();
+    if (strcmp(fullname.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY) != 0)
+      {
+      fullname.append(KWFileBrowser_PATH_SEPARATOR);
+      }
+    fullname.append(realname);
       
-      if (vtksys::SystemTools::FileExists(fullname.c_str()))
-        {
-        // If this is a directory, open the node
-        if (vtksys::SystemTools::FileIsDirectory(fullname.c_str()))
-          {
-          this->FileBrowserWidget->OpenDirectory(fullname.c_str());
-          }
-        // if this is a file, OK()
-        else
-          {
-          if (this->SaveDialog)
-            {
-            if (!this->ConfirmOverwrite(fullname.c_str()))
-              {
-              return;
-              }
-            }
-
-          this->FileNames->InsertNextValue(fullname.c_str());
-          this->GenerateLastPath(this->GetFileName());
-          this->InvokeFileNameChangedCommand(this->GetFileName());
-          this->Superclass::OK();
-          }
-        }
-      else
-        {
-        this->FileBrowserWidget->GetFileListTable()->ShowFileList(
-          this->FileBrowserWidget->GetFileListTable()->GetParentDirectory(),
-          realname, NULL);
-        }
-      }  
-    // If the filename box is empty, 
-    // but there is a selected item in the file list.
-    else if (num_files == 1)
+    if (vtksys::SystemTools::FileExists(fullname.c_str()))
       {
-      vtksys_stl::string fullname = 
-        this->FileBrowserWidget->GetFileListTable()->GetNthSelectedFile(0);
       // If this is a directory, open the node
       if (vtksys::SystemTools::FileIsDirectory(fullname.c_str()))
         {
-        this->FileBrowserWidget->GetDirectoryExplorer()->OpenDirectory(fullname.c_str());
+        this->FileBrowserWidget->OpenDirectory(fullname.c_str());
+        return 0;
         }
+
+      // If this is a file, OK
+#if 0
+      if (this->SaveDialog)
+        {
+        if (!this->ConfirmOverwrite(fullname.c_str()))
+          {
+          return 0;
+          }
+        }
+#endif
+      this->FileNames->InsertNextValue(fullname.c_str());
+      return 1;
+      }
+
+    // File in the filename box does not exist
+
+    this->FileBrowserWidget->GetFileListTable()->ShowFileList(
+      this->FileBrowserWidget->GetFileListTable()->GetParentDirectory(),
+      realname, NULL);
+    return 0;
+    }
+
+  // If the filename box is empty, but there is a selected item in the 
+  // file list, it has to be a directory
+
+  if (num_files == 1)
+    {
+    vtksys_stl::string fullname = 
+      this->FileBrowserWidget->GetFileListTable()->GetNthSelectedFile(0);
+    if (vtksys::SystemTools::FileIsDirectory(fullname.c_str()))
+      {
+      this->FileBrowserWidget->GetDirectoryExplorer()->OpenDirectory(
+        fullname.c_str());
       }
     }
+
+  return 0;
 }
 
 //----------------------------------------------------------------------------
 int vtkKWFileBrowserDialog::ConfirmOverwrite(const char* filename)
 {
   vtksys_stl::string message = "The file, ";
-  message.append(filename).append(", already exists. \n Do you want to overwrite it?");
-  // Prompt the user for confirmation
+  message.append(filename).append(
+    ", already exists. \n Do you want to overwrite it?");
   return vtkKWMessageDialog::PopupYesNo( 
           this->GetApplication(), 
           this, 
           ks_("File Browser Dialog|Title|Save file"),
           k_(message.c_str()),
-          vtkKWMessageDialog::WarningIcon | vtkKWMessageDialog::InvokeAtPointer);
+          vtkKWMessageDialog::WarningIcon | 
+          vtkKWMessageDialog::InvokeAtPointer);
 }
 
 //----------------------------------------------------------------------------
@@ -659,19 +664,17 @@ void vtkKWFileBrowserDialog::FileTypeChangedCallback(
 const char* vtkKWFileBrowserDialog::GenerateLastPath(
   const char* path)
 {
-  this->SetLastPath(NULL);
-  if (path && strlen(path) > 0)
+  if (path && *path)
     {
-    char *pth = vtksys::SystemTools::DuplicateString(path);
-    int pos = strlen(path);
-    while (pos && pth[pos] != '/' && pth[pos] != '\\')
-      {
-      pos--;
-      }
-    pth[pos] = '\0';
-    this->SetLastPath(pth);
-    delete [] pth;
+    vtksys_stl::string s(path);
+    vtksys_stl::string p = vtksys::SystemTools::GetFilenamePath(s);
+    this->SetLastPath(p.c_str());
     }
+  else
+    {
+    this->SetLastPath(NULL);
+    }
+    
   return this->LastPath;
 }
 
