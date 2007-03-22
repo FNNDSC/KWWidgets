@@ -53,7 +53,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.3 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -1736,6 +1736,10 @@ void vtkKWDirectoryExplorer::SingleClickOnNodeCallback(
   
   if (!this->Internals->IsOpeningDirectory)
     {
+    // This is invoked from vtkKWTree while single clicking on the tree node. However,
+    // it will NOT be invoked if the Ctrl key is down in case of multipleselection. 
+    // So it is OK, and necessary, to clear the selection here.
+    this->DirectoryTree->GetWidget()->ClearSelection();
     vtksys_stl::string nodeID = node;
     this->SelectDirectoryNode(nodeID.c_str());
     }
