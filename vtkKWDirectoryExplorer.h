@@ -102,8 +102,8 @@ public:
   // Description:
   // Set focus to the directory widget component of this widget
   // based on the visibility.
-  // Return 1 on success, 0 otherwise
   virtual void Focus();
+  virtual int HasFocus();
 
   // Description:
   // Add event binding to the internal component widget 

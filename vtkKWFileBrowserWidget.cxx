@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.3 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -53,15 +53,9 @@ public:
   
   vtkKWFileBrowserWidgetInternals()
   {
-    this->SelectedGrayColor[0] = 0.926;
-    this->SelectedGrayColor[1] = 0.914;
-    this->SelectedGrayColor[2] = 0.847;
     this->CurrentFileExts = ".*";
   }
   
-  double SelectedGrayColor[3];
-  double DefaultSelectionBackgroundColor[3];
-  double DefaultSelectionForegroundColor[3];
   vtksys_stl::string CurrentFileExts;
 };
 
@@ -79,6 +73,22 @@ vtkKWFileBrowserWidget::vtkKWFileBrowserWidget()
   this->FavoriteDirectoriesFrameVisibility = 1;
   this->DirectoryExplorerVisibility        = 1;
   this->FileListTableVisibility            = 1;
+
+  this->SelectionForegroundColor[0] = 1.0;
+  this->SelectionForegroundColor[1] = 1.0;
+  this->SelectionForegroundColor[2] = 1.0;
+  
+  this->SelectionBackgroundColor[0] = 10.0 / 255.0;
+  this->SelectionBackgroundColor[1] = 36.0 / 255.0;
+  this->SelectionBackgroundColor[2] = 106.0 / 255.0;
+
+  this->OutOfFocusSelectionForegroundColor[0] = 0.0;
+  this->OutOfFocusSelectionForegroundColor[1] = 0.0;
+  this->OutOfFocusSelectionForegroundColor[2] = 0.0;
+
+  this->OutOfFocusSelectionBackgroundColor[0] = 0.926;
+  this->OutOfFocusSelectionBackgroundColor[1] = 0.914;
+  this->OutOfFocusSelectionBackgroundColor[2] = 0.847;
 }
 
 //----------------------------------------------------------------------------
@@ -202,16 +212,6 @@ void vtkKWFileBrowserWidget::CreateDirectoryExplorer()
       this->DirectoryExplorer->SetParent(this->DirFileFrame->GetFrame1());
       this->DirectoryExplorer->Create();
 
-      this->DirectoryExplorer->GetSelectionBackgroundColor(
-        &this->Internals->DefaultSelectionBackgroundColor[0],
-        &this->Internals->DefaultSelectionBackgroundColor[1],
-        &this->Internals->DefaultSelectionBackgroundColor[2]);
-
-      this->DirectoryExplorer->GetSelectionForegroundColor(
-        &this->Internals->DefaultSelectionForegroundColor[0],
-        &this->Internals->DefaultSelectionForegroundColor[1],
-        &this->Internals->DefaultSelectionForegroundColor[2]);
-
       this->DirectoryExplorer->AddBindingToInternalWidget(
         "<FocusIn>", this, "DirectoryTreeFocusInCallback");
       this->DirectoryExplorer->AddBindingToInternalWidget(
@@ -233,6 +233,8 @@ void vtkKWFileBrowserWidget::CreateDirectoryExplorer()
         this, "DirectoryRenamedCallback");
       }
 
+    this->UpdateDirectorySelectionColor();
+
     this->Script(
       "pack %s -side top -fill both -expand true -padx 1 -pady 1",
       this->DirectoryExplorer->GetWidgetName());
@@ -253,19 +255,6 @@ void vtkKWFileBrowserWidget::CreateFileListTable()
       this->FileListTable->SetParent(this->DirFileFrame->GetFrame2());
       this->FileListTable->Create();
 
-      if (this->DirectoryExplorer->IsCreated())
-        {
-        this->FileListTable->SetSelectionBackgroundColor(
-          this->Internals->DefaultSelectionBackgroundColor[0],
-          this->Internals->DefaultSelectionBackgroundColor[1],
-          this->Internals->DefaultSelectionBackgroundColor[2]);
-
-        this->FileListTable->SetSelectionForegroundColor(
-          this->Internals->DefaultSelectionForegroundColor[0],
-          this->Internals->DefaultSelectionForegroundColor[1],
-          this->Internals->DefaultSelectionForegroundColor[2]);
-        }
-
       this->FileListTable->AddBindingToInternalWidget(
         "<FocusIn>", this, "FileTableFocusInCallback");
       this->FileListTable->AddBindingToInternalWidget(
@@ -282,6 +271,8 @@ void vtkKWFileBrowserWidget::CreateFileListTable()
       this->FileListTable->SetFolderCreatedCommand(
         this, "FolderCreatedCallback");
       }
+
+    this->UpdateFileSelectionColor();
 
     this->Script(
       "pack %s -side top -fill both -expand true -padx 1 -pady 1",
@@ -418,50 +409,130 @@ void vtkKWFileBrowserWidget::SetFocusToDirectoryExplorer()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWFileBrowserWidget::UpdateDirectorySelectionColor(int infocus)
+void vtkKWFileBrowserWidget::SetSelectionForegroundColor(
+  double r, double g, double b)
 {
-  if (infocus)
+  if ((r == this->SelectionForegroundColor[0] && 
+       g == this->SelectionForegroundColor[1] && 
+       b == this->SelectionForegroundColor[2]) ||
+      (r < 0.0 || r > 1.0) || (g < 0.0 || g > 1.0) || (b < 0.0 || b > 1.0))
+    {
+    return;
+    }
+
+  this->SelectionForegroundColor[0] = r;
+  this->SelectionForegroundColor[1] = g;
+  this->SelectionForegroundColor[2] = b;
+
+  this->Modified();
+
+  this->UpdateDirectorySelectionColor();
+  this->UpdateFileSelectionColor();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFileBrowserWidget::SetSelectionBackgroundColor(
+  double r, double g, double b)
+{
+  if ((r == this->SelectionBackgroundColor[0] && 
+       g == this->SelectionBackgroundColor[1] && 
+       b == this->SelectionBackgroundColor[2]) ||
+      (r < 0.0 || r > 1.0) || (g < 0.0 || g > 1.0) || (b < 0.0 || b > 1.0))
+    {
+    return;
+    }
+
+  this->SelectionBackgroundColor[0] = r;
+  this->SelectionBackgroundColor[1] = g;
+  this->SelectionBackgroundColor[2] = b;
+
+  this->Modified();
+
+  this->UpdateDirectorySelectionColor();
+  this->UpdateFileSelectionColor();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFileBrowserWidget::SetOutOfFocusSelectionForegroundColor(
+  double r, double g, double b)
+{
+  if ((r == this->OutOfFocusSelectionForegroundColor[0] && 
+       g == this->OutOfFocusSelectionForegroundColor[1] && 
+       b == this->OutOfFocusSelectionForegroundColor[2]) ||
+      (r < 0.0 || r > 1.0) || (g < 0.0 || g > 1.0) || (b < 0.0 || b > 1.0))
+    {
+    return;
+    }
+
+  this->OutOfFocusSelectionForegroundColor[0] = r;
+  this->OutOfFocusSelectionForegroundColor[1] = g;
+  this->OutOfFocusSelectionForegroundColor[2] = b;
+
+  this->Modified();
+
+  this->UpdateDirectorySelectionColor();
+  this->UpdateFileSelectionColor();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFileBrowserWidget::SetOutOfFocusSelectionBackgroundColor(
+  double r, double g, double b)
+{
+  if ((r == this->OutOfFocusSelectionBackgroundColor[0] && 
+       g == this->OutOfFocusSelectionBackgroundColor[1] && 
+       b == this->OutOfFocusSelectionBackgroundColor[2]) ||
+      (r < 0.0 || r > 1.0) || (g < 0.0 || g > 1.0) || (b < 0.0 || b > 1.0))
+    {
+    return;
+    }
+
+  this->OutOfFocusSelectionBackgroundColor[0] = r;
+  this->OutOfFocusSelectionBackgroundColor[1] = g;
+  this->OutOfFocusSelectionBackgroundColor[2] = b;
+
+  this->Modified();
+
+  this->UpdateDirectorySelectionColor();
+  this->UpdateFileSelectionColor();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFileBrowserWidget::UpdateDirectorySelectionColor(int /*infocus*/)
+{
+  //if (infocus)
+  if (this->DirectoryExplorer->HasFocus())
     {
     this->DirectoryExplorer->SetSelectionBackgroundColor(
-        this->Internals->DefaultSelectionBackgroundColor[0],
-        this->Internals->DefaultSelectionBackgroundColor[1],
-        this->Internals->DefaultSelectionBackgroundColor[2]);
+      this->SelectionBackgroundColor);
     this->DirectoryExplorer->SetSelectionForegroundColor(
-        this->Internals->DefaultSelectionForegroundColor[0],
-        this->Internals->DefaultSelectionForegroundColor[1],
-        this->Internals->DefaultSelectionForegroundColor[2]);
+      this->SelectionForegroundColor);
     }
   else if (this->DirectoryExplorer->HasSelection())
     {
     this->DirectoryExplorer->SetSelectionBackgroundColor(
-        this->Internals->SelectedGrayColor[0],
-        this->Internals->SelectedGrayColor[1],
-        this->Internals->SelectedGrayColor[2]);
-    this->DirectoryExplorer->SetSelectionForegroundColor(0, 0, 0);
+      this->OutOfFocusSelectionBackgroundColor);
+    this->DirectoryExplorer->SetSelectionForegroundColor(
+      this->OutOfFocusSelectionForegroundColor);
     }
 }
 
 //----------------------------------------------------------------------------
-void vtkKWFileBrowserWidget::UpdateFileSelectionColor(int infocus)
+void vtkKWFileBrowserWidget::UpdateFileSelectionColor(int /*infocus*/)
 {
-  if (infocus)
+  //if (infocus)
+  if (this->FileListTable->HasFocus())
     {
     this->FileListTable->SetSelectionBackgroundColor(
-        this->Internals->DefaultSelectionBackgroundColor[0],
-        this->Internals->DefaultSelectionBackgroundColor[1],
-        this->Internals->DefaultSelectionBackgroundColor[2]);
+      this->SelectionBackgroundColor);
     this->FileListTable->SetSelectionForegroundColor(
-        this->Internals->DefaultSelectionForegroundColor[0],
-        this->Internals->DefaultSelectionForegroundColor[1],
-        this->Internals->DefaultSelectionForegroundColor[2]);
+      this->SelectionForegroundColor);
     }
   else if (this->FileListTable->GetNumberOfSelectedFiles() > 0)
     {
     this->FileListTable->SetSelectionBackgroundColor(
-        this->Internals->SelectedGrayColor[0],
-        this->Internals->SelectedGrayColor[1],
-        this->Internals->SelectedGrayColor[2]);
-    this->FileListTable->SetSelectionForegroundColor(0, 0, 0);
+      this->OutOfFocusSelectionBackgroundColor);
+    this->FileListTable->SetSelectionForegroundColor(
+      this->OutOfFocusSelectionForegroundColor);
     }
 }
 

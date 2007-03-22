@@ -132,6 +132,7 @@ public:
   // Set focus to the file list component of this widget.
   // Based on the visibility
   virtual void Focus();
+  virtual int HasFocus();
 
   // Description:
   // Add event binding to the internal file list 

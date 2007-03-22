@@ -53,7 +53,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.2 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -767,6 +767,17 @@ void vtkKWDirectoryExplorer::Focus()
     // force the focus of the window to the dir tree.
     this->DirectoryTree->GetWidget()->Focus();
     }
+}
+
+//----------------------------------------------------------------------------
+int vtkKWDirectoryExplorer::HasFocus()
+{
+  if (this->IsCreated())
+    {
+    // force the focus of the window to the dir tree.
+    return this->DirectoryTree->GetWidget()->HasFocus();
+    }
+  return 0;
 }
 
 //----------------------------------------------------------------------------

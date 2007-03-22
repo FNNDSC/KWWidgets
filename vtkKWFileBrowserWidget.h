@@ -84,6 +84,28 @@ public:
   vtkGetMacro(MultipleSelection, int);
   
   // Description:
+  // Set/Get the foreground/background color of selected items, when
+  // in focus or out of focus.
+  vtkGetVector3Macro(SelectionForegroundColor, double);
+  virtual void SetSelectionForegroundColor(double r, double g, double b);
+  virtual void SetSelectionForegroundColor(double rgb[3])
+    { this->SetSelectionForegroundColor(rgb[0], rgb[1], rgb[2]); };
+  vtkGetVector3Macro(SelectionBackgroundColor, double);
+  virtual void SetSelectionBackgroundColor(double r, double g, double b);
+  virtual void SetSelectionBackgroundColor(double rgb[3])
+    { this->SetSelectionBackgroundColor(rgb[0], rgb[1], rgb[2]); };
+  vtkGetVector3Macro(OutOfFocusSelectionForegroundColor, double);
+  virtual void SetOutOfFocusSelectionForegroundColor(
+    double r, double g, double b);
+  virtual void SetOutOfFocusSelectionForegroundColor(double rgb[3])
+    { this->SetOutOfFocusSelectionForegroundColor(rgb[0], rgb[1], rgb[2]); };
+  vtkGetVector3Macro(OutOfFocusSelectionBackgroundColor, double);
+  virtual void SetOutOfFocusSelectionBackgroundColor(
+    double r, double g, double b);
+  virtual void SetOutOfFocusSelectionBackgroundColor(double rgb[3])
+    { this->SetOutOfFocusSelectionBackgroundColor(rgb[0], rgb[1], rgb[2]); };
+  
+  // Description:
   // Set focus to directory explorer or file list table.
   virtual void SetFocusToDirectoryExplorer();
   virtual void SetFocusToFileListTable();
@@ -157,8 +179,8 @@ protected:
 
   // Description:
   // Function to update the selected Background/Foreground.
-  virtual void UpdateDirectorySelectionColor(int infocus);
-  virtual void UpdateFileSelectionColor(int infocus);
+  virtual void UpdateDirectorySelectionColor(int infocus = 0);
+  virtual void UpdateFileSelectionColor(int infocus = 0);
   
   virtual void UpdateForCurrentDirectory();
   virtual void PropagateMultipleSelection();
@@ -189,6 +211,13 @@ protected:
   int FavoriteDirectoriesFrameVisibility;
   int FileListTableVisibility;
   int MultipleSelection;
+
+  // Description:
+  // Colors
+  double SelectionForegroundColor[3];
+  double SelectionBackgroundColor[3];
+  double OutOfFocusSelectionForegroundColor[3];
+  double OutOfFocusSelectionBackgroundColor[3];
 
 private:
   vtkKWFileBrowserWidget(const vtkKWFileBrowserWidget&); // Not implemented
