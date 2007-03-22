@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTree );
-vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.35 $");
+vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.36 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTreeInternals
@@ -225,10 +225,24 @@ void vtkKWTree::UpdateDragAndDrop()
 void vtkKWTree::Focus()
 {
   this->Superclass::Focus();
+
   if (this->IsCreated())
     {
     this->Script("focus %s.c", this->GetWidgetName());
     }
+}
+
+//----------------------------------------------------------------------------
+int vtkKWTree::HasFocus()
+{
+  if (this->IsCreated())
+    {
+    vtksys_stl::string infocus(this->Script("focus"));
+    vtksys_stl::string shouldfocus(this->GetWidgetName());
+    shouldfocus += ".c";
+    return infocus.length() && !strcmp(infocus.c_str(), shouldfocus.c_str());
+    }
+  return 0;
 }
 
 //----------------------------------------------------------------------------

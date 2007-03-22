@@ -97,8 +97,9 @@ public:
   virtual int IsMapped();
   
   // Description:
-  // Set focus to this widget.
+  // Set/query focus to this widget.
   virtual void Focus();
+  virtual int HasFocus();
 
   // Description:
   // Set/Get the enabled state.

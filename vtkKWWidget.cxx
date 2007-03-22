@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.149 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.150 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetInternals
@@ -459,6 +459,17 @@ void vtkKWWidget::Focus()
     {
     this->Script("focus %s", this->GetWidgetName());
     }
+}
+
+//----------------------------------------------------------------------------
+int vtkKWWidget::HasFocus()
+{
+  if (this->IsCreated())
+    {
+    vtksys_stl::string infocus(this->Script("focus"));
+    return infocus.length() && !strcmp(infocus.c_str(), this->GetWidgetName());
+    }
+  return 0;
 }
 
 //----------------------------------------------------------------------------

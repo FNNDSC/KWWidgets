@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.80 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.81 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -282,6 +282,19 @@ void vtkKWMultiColumnList::Focus()
     {
     this->Script("focus [%s bodypath]", this->GetWidgetName());
     }
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMultiColumnList::HasFocus()
+{
+  if (this->IsCreated())
+    {
+    vtksys_stl::string infocus(this->Script("focus"));
+    vtksys_stl::string shouldfocus(
+      this->Script("%s bodypath", this->GetWidgetName()));
+    return infocus.length() && !strcmp(infocus.c_str(), shouldfocus.c_str());
+    }
+  return 0;
 }
 
 //----------------------------------------------------------------------------

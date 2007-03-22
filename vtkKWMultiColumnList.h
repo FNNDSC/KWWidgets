@@ -76,6 +76,7 @@ public:
   // Description:
   // Set focus to this widget.
   virtual void Focus();
+  virtual int HasFocus();
 
   // Description:
   // Set the width (in chars) and height (in lines).

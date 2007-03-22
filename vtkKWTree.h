@@ -475,6 +475,7 @@ public:
   // Description:
   // Set focus to this widget.
   virtual void Focus();
+  virtual int HasFocus();
 
   // Description:
   // Callbacks. Internal, do not use.
