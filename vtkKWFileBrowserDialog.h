@@ -66,13 +66,14 @@ public:
 
   // Description:
   // Set/Get the file types the dialog will open or save.
-  // Should be in TK format. Default is: "{{Text Document} {.txt}}"
-  vtkSetStringMacro(FileTypes);
+  // Should be in TK format. 
+  // Example: "{{Text Document} {.txt}} {{JPEG image} {.jpg .jpeg}}"
+  virtual void SetFileTypes(const char *);
   vtkGetStringMacro(FileTypes);
 
   // Description:
   // Set/Get the default file extension.
-  vtkSetStringMacro(DefaultExtension);
+  virtual void SetDefaultExtension(const char *);
   vtkGetStringMacro(DefaultExtension);
   
   // Description:

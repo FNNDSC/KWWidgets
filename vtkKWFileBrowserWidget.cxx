@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.4 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -70,6 +70,7 @@ vtkKWFileBrowserWidget::vtkKWFileBrowserWidget()
   this->DirectoryExplorer         = vtkKWDirectoryExplorer::New();
   this->FileListTable             = vtkKWFileListTable::New(); 
   
+  this->MultipleSelection                  = 0;
   this->FavoriteDirectoriesFrameVisibility = 1;
   this->DirectoryExplorerVisibility        = 1;
   this->FileListTableVisibility            = 1;
@@ -176,6 +177,7 @@ void vtkKWFileBrowserWidget::Pack()
  
   if (this->FavoriteDirectoriesFrameVisibility)
     {
+    this->MainFrame->SetFrame1Visibility(1);
     this->MainFrame->SetFrame1MinimumSize(100);
     }
   else
@@ -234,6 +236,7 @@ void vtkKWFileBrowserWidget::CreateDirectoryExplorer()
       }
 
     this->UpdateDirectorySelectionColor();
+    this->PropagateMultipleSelection();
 
     this->Script(
       "pack %s -side top -fill both -expand true -padx 1 -pady 1",
@@ -273,6 +276,7 @@ void vtkKWFileBrowserWidget::CreateFileListTable()
       }
 
     this->UpdateFileSelectionColor();
+    this->PropagateMultipleSelection();
 
     this->Script(
       "pack %s -side top -fill both -expand true -padx 1 -pady 1",

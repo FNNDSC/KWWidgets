@@ -18,6 +18,7 @@
 #include "vtkKWComboBox.h"
 #include "vtkKWDirectoryExplorer.h"
 #include "vtkKWFileBrowserWidget.h"
+#include "vtkKWFileBrowserUtilities.h"
 #include "vtkKWFileListTable.h"
 #include "vtkKWInternationalization.h"
 #include "vtkKWLabel.h"
@@ -31,16 +32,9 @@
 #include <vtksys/RegularExpression.hxx>
 #include <vtksys/SystemTools.hxx>
 
-#ifdef _WIN32
-#define KWFileBrowser_PATH_SEPARATOR "\\"
-#else
-#define KWFileBrowser_PATH_SEPARATOR "/"
-#endif
-#define KWFileBrowser_UNIX_ROOT_DIRECTORY "/"
-
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.3 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -69,7 +63,6 @@ vtkKWFileBrowserDialog::vtkKWFileBrowserDialog()
   this->FileNames        = vtkStringArray::New();
 
   this->SetTitle("Open File");
-  this->SetFileTypes("{{Text Document} {.txt}}");
 
   this->FileNameChangedCommand      = NULL;
 
@@ -204,14 +197,13 @@ void vtkKWFileBrowserDialog::Update()
   if (this->ChooseDirectory)
     {
     this->FileBrowserWidget->DirectoryExplorerVisibilityOn();
-    this->FileBrowserWidget->FavoriteDirectoriesFrameVisibilityOff();
     this->FileBrowserWidget->FileListTableVisibilityOff();
     this->SetMinimumSize(300, 300);
-    this->SetSize(500, 400);
+    this->SetSize(600, 400);
     }
   else
     {
-    this->FileBrowserWidget->FavoriteDirectoriesFrameVisibilityOn();
+    this->FileBrowserWidget->DirectoryExplorerVisibilityOn();
     this->FileBrowserWidget->FileListTableVisibilityOn();
     this->SetMinimumSize(700, 400);
     this->SetSize(808, 455);
@@ -328,8 +320,79 @@ void vtkKWFileBrowserDialog::Display()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWFileBrowserDialog::SetFileTypes(const char* _arg)
+{
+  if (this->FileTypes == NULL && _arg == NULL) 
+    { 
+    return;
+    }
+
+  if (this->FileTypes && _arg && (!strcmp(this->FileTypes, _arg))) 
+    {
+    return;
+    }
+
+  if (this->FileTypes) 
+    { 
+    delete [] this->FileTypes; 
+    }
+
+  if (_arg)
+    {
+    this->FileTypes = new char[strlen(_arg) + 1];
+    strcpy(this->FileTypes, _arg);
+    }
+  else
+    {
+    this->FileTypes = NULL;
+    }
+
+  this->Modified();
+
+  this->PopulateFileTypes();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFileBrowserDialog::SetDefaultExtension(const char* _arg)
+{
+  if (this->DefaultExtension == NULL && _arg == NULL) 
+    { 
+    return;
+    }
+
+  if (this->DefaultExtension && _arg && (!strcmp(this->DefaultExtension, _arg))) 
+    {
+    return;
+    }
+
+  if (this->DefaultExtension) 
+    { 
+    delete [] this->DefaultExtension; 
+    }
+
+  if (_arg)
+    {
+    this->DefaultExtension = new char[strlen(_arg) + 1];
+    strcpy(this->DefaultExtension, _arg);
+    }
+  else
+    {
+    this->DefaultExtension = NULL;
+    }
+
+  this->Modified();
+
+  this->PopulateFileTypes();
+}
+
+//----------------------------------------------------------------------------
 void vtkKWFileBrowserDialog::PopulateFileTypes()
 { 
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
   this->FileTypesBox->DeleteAllValues();
 
   if (!this->GetFileTypes())
@@ -344,6 +407,7 @@ void vtkKWFileBrowserDialog::PopulateFileTypes()
   vtksys_stl::string filetypeext;
   bool has_default = false;
   vtksys_stl::string defaultValue = "";
+  vtksys_stl::string firstValue = "";
 
   vtksys_stl::string strfiletypes = this->GetFileTypes();
   while (filetyperegexp.find(strfiletypes))
@@ -376,6 +440,10 @@ void vtkKWFileBrowserDialog::PopulateFileTypes()
       if (!this->FileTypesBox->HasValue(filetypetext.c_str()))
         {
         this->FileTypesBox->AddValue(filetypetext.c_str());
+        if (!firstValue.size())
+          {
+          firstValue = filetypetext;
+          }
         }
       }
     strfiletypes = 
@@ -384,15 +452,17 @@ void vtkKWFileBrowserDialog::PopulateFileTypes()
 
   if (this->FileTypesBox->GetNumberOfValues() > 0)
     {
-    this->FileTypesBox->AddValue("All Files (.*)");
     if (has_default)
       {
       this->FileTypesBox->SetValue(defaultValue.c_str());
       this->FileTypeChangedCallback(defaultValue.c_str());
-      return;
+      }
+    else
+      {
+      this->FileTypesBox->SetValue(firstValue.c_str());
+      this->FileTypeChangedCallback(firstValue.c_str());
       }
     }
-  this->FileTypesBox->SetValue("All Files (.*)");
 }
 
 //----------------------------------------------------------------------------

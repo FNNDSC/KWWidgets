@@ -180,8 +180,7 @@ protected:
    
   // Description:
   // Update favorite frame/buttons state
-  virtual void UpdateFavoriteDirectoriesFrameAfterClick(
-    const char* fullpath);
+  virtual void UpdateFavoriteDirectorySelection(const char* fullpath);
 
   // Description:
   // Update favorite directory entries in Registry according to the
@@ -199,7 +198,7 @@ protected:
 
   // Description:
   // Reset favorite frame/buttons state to unselected
-  virtual void ClearFavoriteState();
+  virtual void ClearFavoriteDirectorySelection();
 
   // Description:
   // Set/Get the default registry key the favorite dirs are saved to or

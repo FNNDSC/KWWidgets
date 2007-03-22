@@ -60,7 +60,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.2 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -282,36 +282,38 @@ void vtkKWFavoriteDirectoriesFrame::InvokeFavoriteDirectoryAddingCommand()
 void vtkKWFavoriteDirectoriesFrame::SelectFavoriteDirectory(
   const char* favdir)
 {
-  vtksys_stl::string fullpath = favdir;
-  vtksys_stl::string dirtext = "";
-  
-  if (this->Internals->FavoriteDirEntries.size()>0)
+  if (favdir)
     {
-    vtkKWFavoriteDirectoriesFrameInternals::DirEntryContainerIterator
-      it = this->Internals->FavoriteDirEntries.begin();
-    for(; it != this->Internals->FavoriteDirEntries.end(); it++)
+    vtksys_stl::string fullpath = favdir;
+    vtksys_stl::string dirtext = "";
+    
+    if (this->Internals->FavoriteDirEntries.size()>0)
       {
-      if (vtksys::SystemTools::ComparePath((*it)->FullPath.c_str(), 
-        fullpath.c_str()))
-        { 
-        dirtext=(*it)->DisplayText;
-        break;
+      vtkKWFavoriteDirectoriesFrameInternals::DirEntryContainerIterator
+        it = this->Internals->FavoriteDirEntries.begin();
+      for(; it != this->Internals->FavoriteDirEntries.end(); it++)
+        {
+        if (vtksys::SystemTools::ComparePath((*it)->FullPath.c_str(), 
+                                             fullpath.c_str()))
+          { 
+          dirtext = (*it)->DisplayText;
+          break;
+          }
         }
       }
-    }
     
-  if (strcmp(dirtext.c_str(), "")!=0)
-    {
-    this->UpdateFavoriteDirectoriesFrameAfterClick(dirtext.c_str());
+    if (strcmp(dirtext.c_str(), "") != 0)
+      {
+      this->UpdateFavoriteDirectorySelection(dirtext.c_str());
+      return;
+      }
     }
-  else
-    {
-    this->ClearFavoriteState();
-    }
+  
+  this->ClearFavoriteDirectorySelection();
 }
 
 //----------------------------------------------------------------------------
-void vtkKWFavoriteDirectoriesFrame::UpdateFavoriteDirectoriesFrameAfterClick(
+void vtkKWFavoriteDirectoriesFrame::UpdateFavoriteDirectorySelection(
   const char* text)
 {
   if (text != NULL && strcmp(text, "") !=0)
@@ -344,7 +346,7 @@ void vtkKWFavoriteDirectoriesFrame::UpdateFavoriteDirectoriesFrameAfterClick(
     }
   else
     {
-    this->ClearFavoriteState();
+    this->ClearFavoriteDirectorySelection();
     }
 }
 
@@ -1202,7 +1204,7 @@ int vtkKWFavoriteDirectoriesFrame::AddSpecialFavoriteFolder(int csidl)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWFavoriteDirectoriesFrame::ClearFavoriteState()
+void vtkKWFavoriteDirectoriesFrame::ClearFavoriteDirectorySelection()
 {
   int nb_children = this->FavoriteButtonFrame->GetFrame()->
                     GetNumberOfChildren();
