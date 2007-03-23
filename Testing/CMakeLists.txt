@@ -8,9 +8,10 @@ ENDIF (VTK_WRAP_PYTHON)
 IF(PYTHON_EXECUTABLE AND VTK_HEADER_TESTING_PY)
   ADD_TEST(KWWidgets-HeaderTesting ${PYTHON_EXECUTABLE}
            ${VTK_HEADER_TESTING_PY}
-	       "${KWWidgets_SOURCE_DIR}"
+           "${KWWidgets_SOURCE_DIR}"
            vtkKWEvent.h
            vtkKWWidgets.h
+           vtkKWFileBrowserUtilities.h
            vtkKWRenderWidgetCallbackCommand.h
            )
 ENDIF(PYTHON_EXECUTABLE AND VTK_HEADER_TESTING_PY)

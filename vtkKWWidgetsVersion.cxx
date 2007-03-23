@@ -15,5 +15,13 @@
 #include "vtkKWWidgetsVersion.h"
 #include "vtkObjectFactory.h"
 
-vtkCxxRevisionMacro(vtkKWWidgetsVersion, "$Revision: 1.1 $");
+//----------------------------------------------------------------------------
+vtkCxxRevisionMacro(vtkKWWidgetsVersion, "$Revision: 1.2 $");
 vtkStandardNewMacro(vtkKWWidgetsVersion);
+
+//----------------------------------------------------------------------------
+void vtkKWWidgetsVersion::PrintSelf(
+  ostream& os, vtkIndent indent)
+{
+  this->Superclass::PrintSelf(os,indent);
+}
