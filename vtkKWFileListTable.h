@@ -65,8 +65,10 @@ public:
   // Description:
   // Get the files that are selected.  This is meant
   // for use with MultipleSelection mode.
+  virtual const char *GetSelectedFileName()
+    {return GetNthSelectedFileName(0);}
   virtual int GetNumberOfSelectedFileNames();
-  const char *GetNthSelectedFileName(int i);
+  virtual const char *GetNthSelectedFileName(int i);
   virtual void SelectFileName(const char* filename);
   virtual void DeselectFileName(const char*);
   virtual void ClearSelection();
