@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.6 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -671,6 +671,10 @@ int vtkKWFileBrowserDialog::FileOK()
         fullname.c_str());
       }
     }
+
+  // Refresh the filetable list with current extensions
+  this->FileBrowserWidget->FilterFilesByExtensions(
+    this->Internals->CurrentFileExtensions.c_str());
 
   return 0;
 }
