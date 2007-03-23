@@ -25,13 +25,14 @@
 #include "vtkKWWidgets.h" // Needed for export symbols directives
 #include "vtkObject.h"
 
-#define KWWidgets_SOURCE_VERSION "KWWidgets version " KWWidgets_VERSION ", KWWidgets source $Revision: 1.237 $, $Date: 2007-03-23 07:41:33 $ (GMT)"
+#define KWWidgets_SOURCE_VERSION "KWWidgets version " KWWidgets_VERSION ", KWWidgets source $Revision: 1.238 $, $Date: 2007-03-23 16:55:50 $ (GMT)"
 
 class KWWidgets_EXPORT vtkKWWidgetsVersion : public vtkObject
 {
 public:
   static vtkKWWidgetsVersion *New();
   vtkTypeRevisionMacro(vtkKWWidgetsVersion,vtkObject);
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description: 
   // Return the major, minor and patch version of the KWWidgets library.
