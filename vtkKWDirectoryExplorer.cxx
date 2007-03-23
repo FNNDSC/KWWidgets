@@ -42,18 +42,14 @@
 
 #ifdef _WIN32
 #define _WIN32_WINNT 0x0501
-
 #include "vtkWindows.h" //for GetLogicalDrives on Windows
 #include <shellapi.h>
 #include <shlobj.h>
 #endif
 
-#define MAX_NUMBER_OF_DIR_IN_HISTORY 100
-#define MIN_NUMBER_OF_DIR_IN_HISTORY 1
-
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.5 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -64,35 +60,26 @@ public:
   
   vtkKWDirectoryExplorerInternals()
   {
-    RootNode = "root";
+    this->RootNode = "root";
     
-    //flags
-    IsNavigatingNode = 0;
-    IsOpeningDirectory = 0;
-    TempPath = "";
+    this->IsNavigatingNode = 0;
+    this->IsOpeningDirectory = 0;
+    this->TempPath = "";
   }
  
   // Most recent directories list (history)
-  typedef vtksys_stl::list<vtksys_stl::string> 
-    MostRecentDirContainer;
-  typedef vtksys_stl::list<vtksys_stl::string>::iterator 
-    MostRecentDirIterator;
+
+  typedef vtksys_stl::list<vtksys_stl::string> MostRecentDirContainer;
+  typedef vtksys_stl::list<vtksys_stl::string>::iterator MostRecentDirIterator;
   
   MostRecentDirContainer MostRecentDirList;
   MostRecentDirIterator MostRecentDirCurrent;
   
-  // Constants
   const char* RootNode;
-
-  // Flags
   int IsNavigatingNode;
   int IsOpeningDirectory;
-  
-  // Internal variables
   vtksys_stl::string TempPath;
   vtksys_stl::string FolderImage;
-
-private:  
 };
 
 //----------------------------------------------------------------------------
@@ -100,23 +87,23 @@ vtkKWDirectoryExplorer::vtkKWDirectoryExplorer()
 { 
   this->MaximumNumberOfDirectoriesInHistory = 20;
   
-  this->Internals          = new vtkKWDirectoryExplorerInternals;
-  this->ToolbarDir         = vtkKWToolbar::New();
-  
-  this->DirectoryTree            = vtkKWTreeWithScrollbars::New();
-  this->FolderCreatingButton  = vtkKWPushButton::New();
-  this->DirBackButton       = vtkKWPushButtonWithMenu::New();
-  this->DirForwardButton    = vtkKWPushButtonWithMenu::New();
-  this->DirUpButton         = vtkKWPushButton::New();
+  this->Internals           = new vtkKWDirectoryExplorerInternals;
+
+  this->Toolbar            = vtkKWToolbar::New();
+  this->DirectoryTree      = vtkKWTreeWithScrollbars::New();
+  this->CreateFolderButton = vtkKWPushButton::New();
+  this->BackButton         = vtkKWPushButtonWithMenu::New();
+  this->ForwardButton      = vtkKWPushButtonWithMenu::New();
+  this->UpButton           = vtkKWPushButton::New();
+  this->ContextMenu        = NULL;
   
   this->DirectoryChangedCommand = NULL;
-  this->DirectoryAddedCommand = NULL;
+  this->DirectoryAddedCommand   = NULL;
   this->DirectoryRemovedCommand = NULL;
-  this->DirectoryOpenedCommand = NULL;
-  this->DirectoryClickedCommand = NULL;
-  this->DirectoryClosedCommand = NULL;
+  this->DirectoryOpenedCommand  = NULL;
+  this->DirectoryClosedCommand  = NULL;
   this->DirectoryRenamedCommand = NULL;
-  this->ContextMenu = NULL;
+
   this->SelectedDirectory = NULL;
 }
 
@@ -124,11 +111,11 @@ vtkKWDirectoryExplorer::vtkKWDirectoryExplorer()
 vtkKWDirectoryExplorer::~vtkKWDirectoryExplorer()
 { 
   this->DirectoryTree->Delete();
-  this->FolderCreatingButton->Delete();
-  this->DirBackButton->Delete();
-  this->DirForwardButton->Delete();
-  this->DirUpButton->Delete();
-  this->ToolbarDir->Delete();
+  this->CreateFolderButton->Delete();
+  this->BackButton->Delete();
+  this->ForwardButton->Delete();
+  this->UpButton->Delete();
+  this->Toolbar->Delete();
 
   if (this->DirectoryAddedCommand)
     {
@@ -144,11 +131,6 @@ vtkKWDirectoryExplorer::~vtkKWDirectoryExplorer()
     {
     delete [] this->DirectoryOpenedCommand;
     this->DirectoryOpenedCommand = NULL;
-    }
-  if (this->DirectoryClickedCommand)
-    {
-    delete [] this->DirectoryClickedCommand;
-    this->DirectoryClickedCommand = NULL;
     }
   if (this->DirectoryClosedCommand)
     {
@@ -177,10 +159,8 @@ vtkKWDirectoryExplorer::~vtkKWDirectoryExplorer()
     this->SelectedDirectory = NULL;
     }
   
-  // Clear internals list
   if (this->Internals)
     {      
-    this->Internals->MostRecentDirList.clear();
     delete this->Internals;
     }
 }
@@ -189,6 +169,7 @@ vtkKWDirectoryExplorer::~vtkKWDirectoryExplorer()
 void vtkKWDirectoryExplorer::CreateWidget()
 {
   // Check if already created
+
   if (this->IsCreated())
     {
     vtkErrorMacro(<< this->GetClassName() << " already created");
@@ -196,142 +177,125 @@ void vtkKWDirectoryExplorer::CreateWidget()
     }
  
   // Call the superclass to create the whole widget
+
   this->Superclass::CreateWidget();
   
-  // Create this actual widget 
-  this->CreateDirectoryExplorer();
+  // Toolbar
 
-  this->Initialize();
-}
+  this->Toolbar->SetParent(this);
+  this->Toolbar->Create();
 
-//----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::CreateDirectoryExplorer()
-{
-  // --- Toolbar --- 
-  this->ToolbarDir->SetParent(this);
-  this->ToolbarDir->Create();
-  // Buttons for ToolbarDir - Go back button
-  this->DirBackButton->SetParent(this->ToolbarDir->GetFrame());
-  this->DirBackButton->Create();
-  this->DirBackButton->GetPushButton()->SetImageToPredefinedIcon(
+  // Go back button
+
+  this->BackButton->SetParent(this->Toolbar->GetFrame());
+  this->BackButton->Create();
+  this->BackButton->GetPushButton()->SetImageToPredefinedIcon(
     vtkKWIcon::IconBrowserBack);
-  this->DirBackButton->SetBalloonHelpString(
-    "Back to previous directory");
-  this->DirBackButton->GetPushButton()->SetCommand(this,  
-    "BackToPreviousDirectoryCallback");
-  this->DirBackButton->GetPushButton()->SetConfigurationOptionAsInt(
+  this->BackButton->SetBalloonHelpString("Back to previous directory");
+  this->BackButton->GetPushButton()->SetCommand(
+    this,  "BackToPreviousDirectoryCallback");
+  this->BackButton->GetPushButton()->SetConfigurationOptionAsInt(
     "-takefocus", 0);
-  this->ToolbarDir->AddWidget(this->DirBackButton);
+  this->Toolbar->AddWidget(this->BackButton);
   
-  // Buttons for ToolbarDir - Go forward button
-  this->DirForwardButton->SetParent(this->ToolbarDir->GetFrame());
-  this->DirForwardButton->Create();
-  this->DirForwardButton->GetPushButton()->SetImageToPredefinedIcon(
+  // Go forward button
+
+  this->ForwardButton->SetParent(this->Toolbar->GetFrame());
+  this->ForwardButton->Create();
+  this->ForwardButton->GetPushButton()->SetImageToPredefinedIcon(
     vtkKWIcon::IconBrowserForward);
-  this->DirForwardButton->SetBalloonHelpString(
-    "Go to next directory");
-  this->DirForwardButton->GetPushButton()->SetCommand(this, 
-    "ForwardToNextDirectoryCallback");
-  this->DirForwardButton->GetPushButton()->SetConfigurationOptionAsInt(
+  this->ForwardButton->SetBalloonHelpString("Go to next directory");
+  this->ForwardButton->GetPushButton()->SetCommand(
+    this, "ForwardToNextDirectoryCallback");
+  this->ForwardButton->GetPushButton()->SetConfigurationOptionAsInt(
     "-takefocus", 0);
-  this->ToolbarDir->AddWidget(this->DirForwardButton);
+  this->Toolbar->AddWidget(this->ForwardButton);
 
-  // Buttons for ToolbarDir - Go up button
-  this->DirUpButton->SetParent(this->ToolbarDir->GetFrame());
-  this->DirUpButton->Create();
-  this->DirUpButton->SetImageToPredefinedIcon(vtkKWIcon::IconBrowserUp);
-  this->DirUpButton->SetBalloonHelpString("Go up one directory");
-  this->DirUpButton->SetCommand(this, "GoUpDirectoryCallback");
-  this->DirUpButton->SetConfigurationOptionAsInt(
+  // Go up button
+
+  this->UpButton->SetParent(this->Toolbar->GetFrame());
+  this->UpButton->Create();
+  this->UpButton->SetImageToPredefinedIcon(vtkKWIcon::IconBrowserUp);
+  this->UpButton->SetBalloonHelpString("Go up one directory");
+  this->UpButton->SetCommand(this, "GoUpDirectoryCallback");
+  this->UpButton->SetConfigurationOptionAsInt(
     "-takefocus", 0);
-  this->ToolbarDir->AddWidget(this->DirUpButton);
+  this->Toolbar->AddWidget(this->UpButton);
   
-  // Buttons for ToolbarDir - New folder button
-  this->FolderCreatingButton->SetParent(
-    this->ToolbarDir->GetFrame());
-  this->FolderCreatingButton->Create();
-  this->FolderCreatingButton->SetImageToPredefinedIcon(
-    vtkKWIcon::IconFolderNew);
-  this->FolderCreatingButton->SetBalloonHelpString(
-    "Create new folder");
-  this->FolderCreatingButton->SetCommand(this, 
-    "CreateNewFolderCallback");
-  this->FolderCreatingButton->SetConfigurationOptionAsInt(
-    "-takefocus", 0);
-  this->ToolbarDir->AddWidget(this->FolderCreatingButton);
+  // Create folder button
 
-  this->ToolbarDir->SetToolbarAspectToFlat();
-  this->ToolbarDir->SetWidgetsAspectToFlat();
-  this->Script("pack %s -side top -anchor nw",
-               this->ToolbarDir->GetWidgetName());           
+  this->CreateFolderButton->SetParent(this->Toolbar->GetFrame());
+  this->CreateFolderButton->Create();
+  this->CreateFolderButton->SetImageToPredefinedIcon(
+    vtkKWIcon::IconFolderNew);
+  this->CreateFolderButton->SetBalloonHelpString("Create new folder");
+  this->CreateFolderButton->SetCommand(
+    this, "CreateNewFolderCallback");
+  this->CreateFolderButton->SetConfigurationOptionAsInt(
+    "-takefocus", 0);
+  this->Toolbar->AddWidget(this->CreateFolderButton);
+
+  this->Toolbar->SetToolbarAspectToFlat();
+  this->Toolbar->SetWidgetsAspectToFlat();
+
+  this->Script("pack %s -side top -anchor nw", 
+               this->Toolbar->GetWidgetName());           
    
-  // --- Directory Tree ---
+  // Directory Tree
+
   this->DirectoryTree->SetParent(this);
   this->DirectoryTree->Create();
-  this->DirectoryTree->GetVerticalScrollbar()->
-    SetConfigurationOptionAsInt("-takefocus", 0);
-  this->DirectoryTree->GetHorizontalScrollbar()->
-    SetConfigurationOptionAsInt("-takefocus", 0);
+  this->DirectoryTree->GetVerticalScrollbar()->SetConfigurationOptionAsInt(
+    "-takefocus", 0);
+  this->DirectoryTree->GetHorizontalScrollbar()->SetConfigurationOptionAsInt(
+    "-takefocus", 0);
+
   vtkKWTree *dirtree = this->DirectoryTree->GetWidget();  
-  dirtree->SetBackgroundColor(1, 1, 1);
-  // Set up directory tree 
   dirtree->SetBorderWidth(2);
   dirtree->SetReliefToGroove();
   dirtree->SetSelectionModeToSingle();
   dirtree->SelectionFillOn();
-                                         
   dirtree->SetLinesVisibility(0);
   dirtree->SetPadX(20);
+
+  dirtree->SetOpenCommand(this,"DirectoryOpenedCallback");
+  dirtree->SetCloseCommand(this, "DirectoryClosedCallback");
+  dirtree->SetSingleClickOnNodeCommand(this, "SingleClickOnNodeCallback");
+  dirtree->SetBinding("<Delete>", this, "RemoveSelectedNodeCallback");
+  dirtree->SetSelectionChangedCommand(this, "DirectoryChangedCallback");
+  dirtree->SetRightClickOnNodeCommand(this, "RightClickCallback %X %Y");
+  dirtree->SetBinding("<F2>", this, "RenameCallback");
+    
+  this->Script(
+    "pack %s -side top -fill both -expand true -padx 1 -pady 1",
+    this->DirectoryTree->GetWidgetName());
+
   // Setup the image for the tree node
+
   this->Internals->FolderImage = dirtree->GetWidgetName();
   this->Internals->FolderImage.append("_0");
   vtkKWIcon *tmpIcon = vtkKWIcon::New();
   tmpIcon->SetImage(vtkKWIcon::IconFolderXP);
   if (!vtkKWTkUtilities::UpdatePhoto(this->GetApplication(),
-    this->Internals->FolderImage.c_str(),
-    tmpIcon->GetData(), 
-    tmpIcon->GetWidth(), 
-    tmpIcon->GetHeight(), 
-    tmpIcon->GetPixelSize()))
+                                     this->Internals->FolderImage.c_str(),
+                                     tmpIcon->GetData(), 
+                                     tmpIcon->GetWidth(), 
+                                     tmpIcon->GetHeight(), 
+                                     tmpIcon->GetPixelSize()))
     {
     vtkWarningMacro(
       << "Error updating Tk photo " 
       << this->Internals->FolderImage.c_str());
     }
   tmpIcon->Delete();
-    
-  dirtree->SetOpenCommand(this,"DirectoryOpenedCallback");
-  dirtree->SetCloseCommand(this, "DirectoryClosedCallback");
-  dirtree->SetSingleClickOnNodeCommand(this, 
-    "SingleClickOnNodeCallback");
-  dirtree->SetBinding("<Delete>", this, 
-    "RemoveSelectedNodeCallback");
-  dirtree->SetSelectionChangedCommand(this, 
-    "DirectoryChangedCallback");
-  dirtree->SetRightClickOnNodeCommand(this, 
-    "RightClickCallback %X %Y");
-  dirtree->SetBinding("<F2>", this, "RenameCallback");
-  
-  this->Script(
-    "pack %s -side top -fill both -expand true -padx 1 -pady 1",
-    this->DirectoryTree->GetWidgetName());
-}
 
-//----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::Initialize()
-{
   //Load root direcotry
+
   this->LoadRootDirectory();
     
   //Update the Back/Forward button. Should be disabled
-  this->Update();
-}
 
-//----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::AddBindingToInternalWidget(const char* kwevent,
-    vtkObject *obj, const char* method)
-{
-  this->DirectoryTree->GetWidget()->AddBinding(kwevent, obj, method);
+  this->Update();
 }
 
 //----------------------------------------------------------------------------
@@ -463,25 +427,25 @@ void vtkKWDirectoryExplorer::Update()
       if (this->Internals->MostRecentDirCurrent == 
         this->Internals->MostRecentDirList.begin())
         { 
-        this->DirForwardButton->SetEnabled(0);
+        this->ForwardButton->SetEnabled(0);
         }
       //Last item in the list  
       else if (strcmp((*this->Internals->MostRecentDirCurrent).c_str(), 
         this->Internals->MostRecentDirList.back().c_str())==0)
         {
-        this->DirBackButton->SetEnabled(0);
+        this->BackButton->SetEnabled(0);
         }
       }
     else
       {
-      this->DirForwardButton->SetEnabled(0);
-      this->DirBackButton->SetEnabled(0);
+      this->ForwardButton->SetEnabled(0);
+      this->BackButton->SetEnabled(0);
       }
       
     vtkKWTree *tree = this->DirectoryTree->GetWidget();  
-    if (this->DirForwardButton->GetEnabled())
+    if (this->ForwardButton->GetEnabled())
       {
-      vtkKWMenu *menu = this->DirForwardButton->GetMenu();
+      vtkKWMenu *menu = this->ForwardButton->GetMenu();
       menu->DeleteAllItems();
       vtkKWDirectoryExplorerInternals::MostRecentDirIterator it = 
           this->Internals->MostRecentDirCurrent;
@@ -524,9 +488,9 @@ void vtkKWDirectoryExplorer::Update()
         }
       }
     
-    if (this->DirBackButton->GetEnabled())
+    if (this->BackButton->GetEnabled())
       {
-      vtkKWMenu *menu = this->DirBackButton->GetMenu();
+      vtkKWMenu *menu = this->BackButton->GetMenu();
       menu->DeleteAllItems();
       vtkKWDirectoryExplorerInternals::MostRecentDirIterator it = 
           this->Internals->MostRecentDirCurrent;
@@ -866,7 +830,7 @@ const char *vtkKWDirectoryExplorer::GetNthSelectedDirectory(int i)
 }
 
 //----------------------------------------------------------------------------
-char *vtkKWDirectoryExplorer::GetNthSelectedNode(int i)
+const char* vtkKWDirectoryExplorer::GetNthSelectedNode(int i)
 {
   if (i < 0 || i >= this->GetNumberOfSelectedDirectories())
     {
@@ -1732,8 +1696,6 @@ void vtkKWDirectoryExplorer::BackToRoot()
 void vtkKWDirectoryExplorer::SingleClickOnNodeCallback(
   const char* node)
 {
-  this->InvokeDirectoryClickedCommand();
-  
   if (!this->Internals->IsOpeningDirectory)
     {
     // This is invoked from vtkKWTree while single clicking on the tree node.
@@ -2278,24 +2240,6 @@ void vtkKWDirectoryExplorer::InvokeDirectoryOpenedCommand(
 }
 
 //----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::SetDirectoryClickedCommand(
-  vtkObject *object, const char *method)
-{
-  this->SetObjectMethodCommand(
-    &this->DirectoryClickedCommand, object, method);
-}
-
-//----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::InvokeDirectoryClickedCommand()
-{
-  if (this->DirectoryClickedCommand 
-    && *this->DirectoryClickedCommand)
-    {
-    this->Script("%s", this->DirectoryClickedCommand);
-    }
-}
-
-//----------------------------------------------------------------------------
 void vtkKWDirectoryExplorer::SetDirectoryRenamedCommand(
   vtkObject *object, const char *method)
 {
@@ -2324,7 +2268,6 @@ void vtkKWDirectoryExplorer::InvokeDirectoryRenamedCommand(
 void vtkKWDirectoryExplorer::RightClickCallback(
   int x, int y, const char* node)
 {
-  this->InvokeDirectoryClickedCommand();
   if (!node || !(*node) || !this->IsCreated())
     {
     return;
@@ -2404,19 +2347,17 @@ void vtkKWDirectoryExplorer::PopulateContextMenu(
 void vtkKWDirectoryExplorer::UpdateEnableState()
 {
   this->Superclass::UpdateEnableState();
-  if (this->DirectoryTree)
-    {
-    this->PropagateEnableState(this->DirectoryTree);
-    this->PropagateEnableState(this->ToolbarDir);
-    this->PropagateEnableState(this->DirBackButton);
-    this->PropagateEnableState(this->DirForwardButton);
-    this->PropagateEnableState(this->DirUpButton);
-    this->PropagateEnableState(this->FolderCreatingButton);
-    }
+
+  this->PropagateEnableState(this->DirectoryTree);
+  this->PropagateEnableState(this->Toolbar);
+  this->PropagateEnableState(this->BackButton);
+  this->PropagateEnableState(this->ForwardButton);
+  this->PropagateEnableState(this->UpButton);
+  this->PropagateEnableState(this->CreateFolderButton);
 }
 
 //----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::PruneDirectoriesInHistory()
+void vtkKWDirectoryExplorer::PruneMostRecentDirectoriesInHistory()
 {
   bool bCurrentChanged = false;
   bool bUpdate = false;
@@ -2451,22 +2392,30 @@ void vtkKWDirectoryExplorer::PruneDirectoriesInHistory()
 void vtkKWDirectoryExplorer::SetMaximumNumberOfDirectoriesInHistory(
   int maxnum)
 {
-  if (maxnum < MIN_NUMBER_OF_DIR_IN_HISTORY)
+  if (maxnum < 1)
     {
-    maxnum = MIN_NUMBER_OF_DIR_IN_HISTORY;
+    maxnum = 1;
     }
-  else if (maxnum > MAX_NUMBER_OF_DIR_IN_HISTORY)
+  else if (maxnum > 100)
     {
-    maxnum = MAX_NUMBER_OF_DIR_IN_HISTORY;
+    maxnum = 100;
     }
   if (this->MaximumNumberOfDirectoriesInHistory == maxnum)
-  {
-  return;
-  }
+    {
+    return;
+    }
   
   this->MaximumNumberOfDirectoriesInHistory = maxnum;
-  this->PruneDirectoriesInHistory();
   this->Modified();
+
+  this->PruneMostRecentDirectoriesInHistory();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWDirectoryExplorer::AddBindingToInternalWidget(const char* kwevent,
+    vtkObject *obj, const char* method)
+{
+  this->DirectoryTree->GetWidget()->AddBinding(kwevent, obj, method);
 }
 
 //----------------------------------------------------------------------------

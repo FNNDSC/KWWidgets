@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.5 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -219,8 +219,6 @@ void vtkKWFileBrowserWidget::CreateDirectoryExplorer()
       this->DirectoryExplorer->AddBindingToInternalWidget(
         "<FocusOut>", this, "DirectoryTreeFocusOutCallback");
         
-      this->DirectoryExplorer->SetDirectoryClickedCommand(
-        this, "DirectoryClickedCallback");
       this->DirectoryExplorer->SetDirectoryAddedCommand(
         this, "DirectoryAddedCallback");
       this->DirectoryExplorer->SetDirectoryChangedCommand(
@@ -687,13 +685,6 @@ void vtkKWFileBrowserWidget::FavoriteDirectorySelectedCallback(
 {  
   this->DirectoryExplorer->OpenDirectory(path);
   this->SetFocusToDirectoryExplorer();
-}
-
-//----------------------------------------------------------------------------
-void vtkKWFileBrowserWidget::DirectoryClickedCallback()
-{
-  //  this->UpdateDirectorySelectionColor(1);
-  //  this->UpdateFileSelectionColor(0);
 }
 
 //----------------------------------------------------------------------------

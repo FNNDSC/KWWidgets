@@ -130,7 +130,6 @@ public:
   // Description:
   // Callbacks, do NOT use
   // Callback for the vtkKWDirectoryExplorer widget.
-  virtual void DirectoryClickedCallback();
   virtual void DirectoryAddedCallback(const char* fullname);
   virtual void DirectoryChangedCallback(const char* fullname);
   virtual void DirectoryOpenedCallback(const char* fullname);

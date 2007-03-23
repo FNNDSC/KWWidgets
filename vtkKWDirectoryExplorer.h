@@ -69,8 +69,7 @@ public:
   virtual void SetSelectionModeToMultiple();
   
   // Description:
-  // Return if a directory is selected.
-  // Return 1 if yes; 0, otherwise
+  // Return if one (or more) directory is/are selected.
   virtual int HasSelection();
 
   // Description:
@@ -100,43 +99,28 @@ public:
     { this->SetSelectionForegroundColor(rgb[0], rgb[1], rgb[2]); };
   
   // Description:
-  // Set focus to the directory widget component of this widget
-  // based on the visibility.
-  virtual void Focus();
-  virtual int HasFocus();
-
-  // Description:
-  // Add event binding to the internal component widget 
-  // for the directory hierarchy, so that these events will be 
-  // invoked directly from the directory component of this widget.
-  virtual void AddBindingToInternalWidget(const char* event,
-    vtkObject *obj, const char* method);
-
-  // Description:
   // Specifies selection-related commands to associate with the widget.
-  // 'DirectoryChanged' is called whenever the selection 
-  // was changed or cleared. 
+  // DirectoryChanged is called whenever the selection is changed or cleared. 
   // The 'object' argument is the object that will have the method called on
   // it. The 'method' argument is the name of the method to be called and any
   // arguments in string form. If the object is NULL, the method is still
   // evaluated as a simple command. 
+  // - DirectoryChanged is passed the first selected directory (const char *).
+  // - DirectoryOpened and DirectoryClosed are passed the directory being 
+  //   opened or closed (const char *).
+  // - DirectoryAdded and DirectoryRemoved are passed the directory that was
+  //   added or removed (const char *).
+  // - DirectoryRenamed is passed the preview and new name (path) of the
+  //   directory that was renamed (const char *, const char *).
   virtual void SetDirectoryChangedCommand(vtkObject *obj, const char *method);
   virtual void SetDirectoryOpenedCommand(vtkObject *obj, const char *method);
   virtual void SetDirectoryClosedCommand(vtkObject *obj, const char *method);
-  virtual void SetDirectoryClickedCommand(vtkObject *obj, const char *method);
   virtual void SetDirectoryAddedCommand(vtkObject *obj, const char *method);
   virtual void SetDirectoryRemovedCommand(vtkObject *obj, const char *method);
   virtual void SetDirectoryRenamedCommand(vtkObject *obj, const char *method);
 
   // Description:
-  // Define the event types with enumeration
-  // Even though it is highly recommended to use the commands
-  // framework defined above to specify the callback methods you want to be
-  // invoked when specific event occur, you can also use the observer
-  // framework and listen to the corresponding events/
-  // Note that they are passed the same parameters as the commands, if any.
-  // If more than one numerical parameter is passed, they are all stored
-  // in the calldata as an array of double.
+  // Events are passed the same parameters as the commands, if any.
   //BTX
   enum
   {
@@ -149,35 +133,47 @@ public:
   //ETX
 
   // Description:
+  // Set focus to the directory widget component of this widget.
+  virtual void Focus();
+  virtual int HasFocus();
+
+  // Description:
+  // Add event binding to the internal component widget 
+  // for the directory hierarchy, so that these events will be 
+  // invoked directly from the directory component of this widget.
+  virtual void AddBindingToInternalWidget(
+    const char* event, vtkObject *obj, const char* method);
+
+  // Description:
   // Callback, do NOT use. 
   // When the dropdown menu button of the Back/Forward buttons
   // is clicked, navigate to the corresponding directory is the history list.
-  // -node, pointer to the unique directory node string: const char*        
-  // -offsetFromCurrentIndex, offset from current directory index
-  //                     in dir history list: int
-  virtual void OpenDirectoryNodeCallback(const char* node, 
-    int offsetFromCurrentIndex);
+  // 'node' is a pointer to the unique directory node string,
+  // 'offsetFromCurrentIndex' is the offset from current directory index in 
+  //  history list.
+  virtual void OpenDirectoryNodeCallback(
+    const char* node, int offsetFromCurrentIndex);
   
   // Description:
   // Callback, do NOT use. 
   // When the node selection is changed in the directory tree, the
-  // corresponsding directory will be refreshed, loading any new files or 
+  // corresponding directory is refreshed, loading any new files or 
   // directories underneath it.
   virtual void SingleClickOnNodeCallback(const char* node);
    
   // Description:
   // Callback, do NOT use. 
-  // Right-click to launch context menu callbacks
+  // Right-click to popup context menu.
   virtual void RightClickCallback( int x, int y, const char* node);
   
   // Description:
   // Callback, do NOT use. 
-  // Rename directory node callback from right-click context menu.
+  // Rename directory node from right-click context menu.
   virtual int RenameCallback();
   
   // Description:
   // Callback, do NOT use. 
-  // Launch native explorer callback from right-click context menu.
+  // Launch native explorer from right-click context menu.
   virtual void RightClickExploreCallback(const char*);
 
   // Description:
@@ -189,57 +185,52 @@ public:
   
   // Description:
   // Callback, do NOT use. 
-  // When a node is openned in the directory tree. The corresponding
-  // directory will be refreshed, loading new files and directories.
+  // When a node is opened in the directory tree, the corresponding
+  // directory is refreshed, loading new files and directories.
   virtual void DirectoryOpenedCallback(const char* node);
 
   // Description:
   // Callback, do NOT use. 
-  // Callback for when a node selection is changed in the directory tree. 
-  // NOTICE: The vtkKWTree is not invoking this event, if you do it
-  // programatically using SelectNode or SelectSingleNode. This is why the 
-  // InvokeDirectoryChangedCommand is called from other places in this class.
+  // When a node selection is changed in the directory tree. 
   virtual void DirectoryChangedCallback();
 
   // Description:
   // Callback, do NOT use. 
-  // Callback for when a node is closed in the directory tree. 
-  // Also need refreshing the contents of the corresponing directory.
+  // When a node is closed in the directory tree. 
+  // Also need refreshing the contents of the corresponding directory.
   virtual void DirectoryClosedCallback(const char* node);    
    
   // Description:
   // Callback, do NOT use. 
-  // When the "Create New Folder" button is clicked, the function will 
-  // be called and a dialog will popup prompting the user for a name of the 
-  // new directory. If user inputs a valid dir name, 
-  // create the new directory, add it to the dir tree, and select the node.
+  // When the "Create New Folder" button is clicked, a dialog is displayed
+  // prompting the user for the name of the new directory. If the user inputs
+  // a valid dir name, create the new directory, add it to the dir tree, and
+  // select the node.
   virtual void CreateNewFolderCallback();
   
   // Description:
   // Callback, do NOT use. 
   // When the "Back to previous directory" button is clicked, navigate
-  // to previous directory just visisted. A history of visited directories
-  // will the saved in memeory, and the max number of entries to this history
-  // defaults to MAX_NUMBER_OF_DIR_IN_HISTORY.
+  // to the previously visited directory. A history of visited directories
+  // is saved in memory.
   virtual void BackToPreviousDirectoryCallback();
    
   // Description:
   // Callback, do NOT use. 
   // When the "Go to next directory" button is clicked, navigate
-  // to next directory in the history list (see description for 
-  //  BackToPreviousDirectoryCallback).
+  // to next directory in the history list.
   virtual void ForwardToNextDirectoryCallback();
    
   // Description:
   // Callback, do NOT use. 
   // When the "Go up one directory" button is clicked, navigate
-  // to the parent directory of the current selected directory.
+  // to the parent directory of the currently selected directory.
   virtual void GoUpDirectoryCallback();
   
   // Description:
   // Callback, do NOT use. 
-  // Callbacks for when the 'Delete' key is pressed.
-  // Remove selected item from dir tree/file list
+  // When the 'Delete' key is pressed, remove the selected item from the dir
+  // tree/file list.
   virtual int RemoveSelectedNodeCallback();
 
   // Description:
@@ -261,111 +252,104 @@ protected:
   virtual void CreateWidget();
   
   // Description:
-  // Create the directory tree widget, and initialize it
-  virtual void CreateDirectoryExplorer();
-  virtual void Initialize();
-  
-  // Description:
   // Load root directory. For Win32, this will load the drives;
   // for *nix, this will load root "/" directory
   virtual void LoadRootDirectory();
   
   // Description:
-  // Close all the node till root level: drives for Win32; '/' for *nix
+  // Close all the nodes up to root level: drives for Win32; '/' for *nix
   virtual void BackToRoot();
   
   // Description:
   // When the node selection is changed in the directory tree, the
-  // corresponsding directory will be refreshed, loading any new files or 
+  // corresponding directory is refreshed, loading any new files or 
   // directories underneath it.
-  virtual void SelectDirectoryNode(const char* node, int opennode=1);
+  virtual void SelectDirectoryNode(const char* node, int opennode = 1);
      
   // Description:
   // If the directory is already loaded in the tree, navigate to 
   // and reload this input directory; if not, this function will
   // call OpenDirectory(path) to open this directory.
-  // -node, pointer to the node string: const char*  (Can be NULL)
-  // -path, pointer to absolute path of the directory: const char*
-  // Return the node assoicated with this directory
-  virtual const char* ReloadDirectory(const char* node, 
-                                     const char* path);
+  // 'node' is a pointer to the node string (can be NULL), 'path' a pointer 
+  // to the absolute path to the directory.
+  // Return the node associated with this directory.
+  virtual const char* ReloadDirectory(const char* node, const char* path);
  
-  // Description:
-  // Open a subdirectory of a parent tree node.
-  // -parentnode, the parent node of this directory.
-  // -fullname, the full path name of this sub-directory
-  // -select, a flag to indicate whether to select this 
-  //          sub node after open
-  // Return the node opened 
-  virtual void OpenSubDirectory(const char* parentnode,
-                                   const char* fullname, 
-                                   int select=1);
-     
   // Description:
   // Reload a directory node given the parent node, and the fullpath.
   // This is used to open the sub directory node of a parent node.
-  // -select, a flag to indicate whether to select this sub node after open.
-  // Return the node opened 
+  // 'select' is a flag to indicate whether to select this sub node after 
+  // opening it.
+  // Return the node opened.
   virtual const char* ReloadDirectory(const char* parentnode, 
                                       const char* dirname,
                                       int select);
    
   // Description:
-  // This is the main funtion of finding all the directories and 
+  // Open a subdirectory of a parent tree node.
+  // 'parentnode' is the parent node of this directory, 'fullname' is the full
+  // path name of this sub-directory, 'select' a flag to indicate whether to
+  // select this sub node after opening it.
+  virtual void OpenSubDirectory(const char* parentnode,
+                                const char* fullname, 
+                                int select = 1);
+     
+  // Description:
+  // This is the main funtion used to find all the directories and 
   // adding all the corresponding node to the dir tree.
   virtual void OpenDirectoryNode(const char* node, 
                                  int select = 1,
                                  int opennode = 1);
   
   // Description:
-  // Open the node, including all its parent node;
+  // Open the node, including all its parent nodes.
   virtual void OpenWholeTree(const char* node);
   
   // Description:
   // Calling OpenDirectoryNode after centain logic to determine
   // whether to open the whole tree.
-  virtual void ReloadDirectoryNode(const char* nodeID);
+  virtual void ReloadDirectoryNode(const char* node);
   
   // Description:
   // This is the actual funtion adding all the nodes to the tree,
   // called from OpenDirectoryNode.
-  virtual void UpdateDirectoryNode(const char* nodeID);
+  virtual void UpdateDirectoryNode(const char* node);
   
   // Description:
-  // Add node to the dir tree
+  // Add a node to the dir tree.
   virtual void AddDirectoryNode(
-    const char* parentnode, const char* node, 
-    const char* text, const char* fullname, 
+    const char* parentnode, 
+    const char* node, 
+    const char* text, 
+    const char* fullname, 
     vtkKWIcon *nodeicon);  
   
   // Description:
   // Get one node from a multiple selection of nodes.  An
   // error will be generated if the index is out of range.
-  char *GetNthSelectedNode(int i);
+  const char *GetNthSelectedNode(int i);
   
   // Description:
-  // Update directory history list given the most recent node
-  virtual void UpdateMostRecentDirectoryHistory(const char* nodeID);
+  // Update the directory history list given the most recent node
+  virtual void UpdateMostRecentDirectoryHistory(const char* node);
      
   // Description:
   // Update directory history list according to the
   // MaximumNumberOfDirectoriesInHistory
-  virtual void PruneDirectoriesInHistory();
+  virtual void PruneMostRecentDirectoriesInHistory();
 
   // Description:
   // Remove a directory node from the most recent history list
-  virtual void RemoveDirectoryFromHistory(const char* nodeID);
+  virtual void RemoveDirectoryFromHistory(const char* node);
 
   // Description:
-  // Remove a directory node from the most recent history list
-  virtual void PopulateContextMenu(
-    vtkKWMenu *menu, const char*, int enable);
+  // Populate the context menu.
+  virtual void PopulateContextMenu(vtkKWMenu *menu, const char*, int enable);
 
   // Description:
   // Commands
   char *DirectoryChangedCommand;
   char *DirectoryOpenedCommand;
-  char *DirectoryClickedCommand;
   char *DirectoryClosedCommand;
   char *DirectoryAddedCommand;
   char *DirectoryRemovedCommand;
@@ -376,27 +360,28 @@ protected:
   virtual void InvokeDirectoryChangedCommand(const char* path);
   virtual void InvokeDirectoryOpenedCommand(const char* path);
   virtual void InvokeDirectoryClosedCommand(const char* path);
-  virtual void InvokeDirectoryClickedCommand();
   virtual void InvokeDirectoryAddedCommand(const char* path);
   virtual void InvokeDirectoryRemovedCommand(const char* path);
-  virtual void InvokeDirectoryRenamedCommand(const char* oldname, 
-                                        const char* newname);
+  virtual void InvokeDirectoryRenamedCommand(
+    const char* oldname, const char* newname);
                                           
   // Description:
-  // Internal class to keep track of things like visited dir history, etc.                          
+  // Internal PIMPL class for STL purposes.
   vtkKWDirectoryExplorerInternals *Internals;
   
   // Description:
-  // Member variables
-  vtkKWToolbar     *ToolbarDir;
+  // GUI
+  vtkKWToolbar            *Toolbar;
   vtkKWTreeWithScrollbars *DirectoryTree;
-  vtkKWPushButton  *FolderCreatingButton;
-  vtkKWPushButtonWithMenu  *DirBackButton;
-  vtkKWPushButtonWithMenu  *DirForwardButton;
-  vtkKWPushButton  *DirUpButton;
-  vtkKWMenu *ContextMenu;
-  unsigned int  MaximumNumberOfDirectoriesInHistory;
+  vtkKWPushButton         *CreateFolderButton;
+  vtkKWPushButtonWithMenu *BackButton;
+  vtkKWPushButtonWithMenu *ForwardButton;
+  vtkKWPushButton         *UpButton;
+  vtkKWMenu               *ContextMenu;
 
+  // Description:
+  // Member variables
+  unsigned int  MaximumNumberOfDirectoriesInHistory;
   char* SelectedDirectory;
   
 private:
