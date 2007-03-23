@@ -344,7 +344,7 @@ protected:
 
   // Description:
   // Populate the context menu.
-  virtual void PopulateContextMenu(vtkKWMenu *menu, const char*, int enable);
+  virtual void PopulateContextMenu(vtkKWMenu *menu, const char*);
 
   // Description:
   // Commands
