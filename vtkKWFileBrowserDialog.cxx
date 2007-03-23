@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.5 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -381,8 +381,6 @@ void vtkKWFileBrowserDialog::SetDefaultExtension(const char* _arg)
     }
 
   this->Modified();
-
-  this->PopulateFileTypes();
 }
 
 //----------------------------------------------------------------------------
@@ -405,11 +403,10 @@ void vtkKWFileBrowserDialog::PopulateFileTypes()
   vtksys_stl::vector<vtksys_stl::string> filetypes;
   vtksys_stl::string filetypetext;
   vtksys_stl::string filetypeext;
-  bool has_default = false;
-  vtksys_stl::string defaultValue = "";
   vtksys_stl::string firstValue = "";
 
   vtksys_stl::string strfiletypes = this->GetFileTypes();
+
   while (filetyperegexp.find(strfiletypes))
     {
     filetypetext = filetyperegexp.match(0);
@@ -422,20 +419,12 @@ void vtkKWFileBrowserDialog::PopulateFileTypes()
       {
       filetypetext = filetypes.front().c_str();
       filetypeext = (*(++filetypes.begin())).c_str();
-      filetypeext = vtksys::SystemTools::RemoveChars(
-        filetypeext.c_str(), " ");
-      filetypetext.append(" (").append(filetypeext.c_str()).append(")");
-
-      // if this is the default extension, remember it for later use
-
-      if (!has_default && 
-          this->DefaultExtension && 
-          this->DefaultExtension 
-          && strcmp(this->DefaultExtension, filetypeext.c_str()) == 0)
+      if(filetypeext.length()>1)
         {
-        has_default = true;
-        defaultValue = filetypetext;
+        filetypeext = filetypeext.substr(1, filetypeext.length());
         }
+
+      filetypetext.append(" (").append(filetypeext.c_str()).append(")");
 
       if (!this->FileTypesBox->HasValue(filetypetext.c_str()))
         {
@@ -452,16 +441,8 @@ void vtkKWFileBrowserDialog::PopulateFileTypes()
 
   if (this->FileTypesBox->GetNumberOfValues() > 0)
     {
-    if (has_default)
-      {
-      this->FileTypesBox->SetValue(defaultValue.c_str());
-      this->FileTypeChangedCallback(defaultValue.c_str());
-      }
-    else
-      {
-      this->FileTypesBox->SetValue(firstValue.c_str());
-      this->FileTypeChangedCallback(firstValue.c_str());
-      }
+    this->FileTypesBox->SetValue(firstValue.c_str());
+    this->FileTypeChangedCallback(firstValue.c_str());
     }
 }
 
@@ -626,7 +607,15 @@ int vtkKWFileBrowserDialog::FileOK()
       fullname.append(KWFileBrowser_PATH_SEPARATOR);
       }
     fullname.append(realname);
-      
+
+    // If the file does not exist, append DefaultExtension if it is set
+
+    if(!vtksys::SystemTools::FileExists(fullname.c_str()) &&
+      this->DefaultExtension && *this->DefaultExtension)
+      {
+      fullname.append(this->DefaultExtension);
+      }
+
     if (vtksys::SystemTools::FileExists(fullname.c_str()))
       {
       // If this is a directory, open the node
@@ -650,8 +639,19 @@ int vtkKWFileBrowserDialog::FileOK()
       return 1;
       }
 
-    // File in the filename box does not exist
+    // File in the filename box does not exist: if SaveDialog, OK;
+    // otherwise, use the filename text as file pattern to reload
+    // the file table
 
+    if (this->SaveDialog)
+      {
+      if (!this->ConfirmOverwrite(fullname.c_str()))
+        {
+        return 0;
+        }
+      return 1;
+      }
+    
     this->FileBrowserWidget->GetFileListTable()->ShowFileList(
       this->FileBrowserWidget->GetFileListTable()->GetParentDirectory(),
       realname, NULL);

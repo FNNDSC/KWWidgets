@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.6 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -561,13 +561,30 @@ void vtkKWFileBrowserWidget::FilterFilesByExtensions(
     vtksys_stl::string::size_type pos2 = fileexts.rfind(")");
     if (pos1 != vtksys_stl::string::npos && pos2 != vtksys_stl::string::npos)
       {
-      if (strcmp(fileexts.substr(pos1+1, 
-                                 pos2-pos1-1).c_str(), ".*") != 0)
+      vtksys_stl::string tmpExts = fileexts.substr(pos1+1, pos2-pos1-1).c_str();
+      bool bUseExt = false;
+      vtksys_stl::vector<vtksys_stl::string> extlist;
+      vtksys::SystemTools::Split(tmpExts.c_str(), extlist, ' ');
+      if (extlist.size()>0)
+        {
+        // if there is a .* in the extenstions list, ignore extensions.
+        vtksys_stl::vector<vtksys_stl::string>::iterator it;
+        bUseExt = true;
+        for(it = extlist.begin(); it != extlist.end(); it++)
+          {
+          if (strcmp((*it).c_str(), ".*")==0)
+            {
+            bUseExt = false;
+            break;
+            }
+          }
+        }
+
+      if (bUseExt)
         {
         this->FileListTable->ShowFileList(
           this->DirectoryExplorer->GetSelectedDirectory(),
-          NULL, 
-          fileexts.substr(pos1+1, pos2-pos1-1).c_str());
+          NULL, tmpExts.c_str());
         this->Internals->CurrentFileExts = fileexts;
         return;
         }
