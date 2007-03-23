@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.10 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -903,6 +903,22 @@ void vtkKWFileBrowserDialog::ProcessCallbackCommandEvents(vtkObject *caller,
     }
   
   this->Superclass::ProcessCallbackCommandEvents(caller, event, calldata);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFileBrowserDialog::UpdateEnableState()
+{
+  this->Superclass::UpdateEnableState();
+
+  this->PropagateEnableState(this->FileBrowserWidget);
+  this->PropagateEnableState(this->BottomFrame);
+  this->PropagateEnableState(this->FileNameLabel);
+  this->PropagateEnableState(this->FileNameText);
+  this->PropagateEnableState(this->FileTypesLabel);
+  this->PropagateEnableState(this->FileTypesBox);
+  this->PropagateEnableState(this->OKButton);
+  this->PropagateEnableState(this->CancelButton);
+  this->PropagateEnableState(this->PreviewFrame);
 }
 
 //----------------------------------------------------------------------------

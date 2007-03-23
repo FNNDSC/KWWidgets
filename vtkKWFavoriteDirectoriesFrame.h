@@ -47,30 +47,34 @@ public:
   // Add a directory to the favorite directories, 
   // given the path of the directory and the name to display.
   virtual void AddFavoriteDirectory(const char *path, const char *name);
+
+  // Description:
+  // Set/Get the path or name of a favorite directory
+  virtual void SetFavoriteDirectoryPath(
+    const char* oldpath, const char* newpath);
+  virtual void SetFavoriteDirectoryName(
+    const char* oldname, const char* newname);
   
   // Description:
   // Remove/relocate a favorite directory.
-  virtual void RemoveFavoriteDirectory(const char *fullpath);
-  virtual void RelocateFavoriteDirectory(
-    const char* oldpath, const char* newpath);
+  virtual void RemoveFavoriteDirectory(const char *path);
    
   // Description:
-  // Select the directory, if it is in the favorite directories list;
-  // otherwise, de-select all the directories.
+  // Select a favorite directory, if it is in the favorite directories list;
+  // otherwise, de-select all the favorite directories.
   virtual void SelectFavoriteDirectory(const char *path);
   
   // Description
   // Check if the given directory has already been added
-  // Return 1 for Yes; 0 for No
   virtual int HasFavoriteDirectory(const char* path);
   
   // Description
-  // Check if the given directory name is already used 
-  // Return 1 for Yes; 0 for No
+  // Check if the given favorite name is already used 
   virtual int HasFavoriteDirectoryWithName(const char *name);
 
   // Description:
-  // Set/Get the maximum number of favorite directories in the registry 
+  // Set/Get the maximum number of favorite directories to store in the 
+  // registry.
   virtual void SetMaximumNumberOfFavoriteDirectoriesInRegistry(int);
   vtkGetMacro(MaximumNumberOfFavoriteDirectoriesInRegistry, int);
   
@@ -78,13 +82,13 @@ public:
   // Specifies commands to associate with the widget.
   // This command will be called from when the "AddFavorites" button is 
   // clicked. Since this widget does not know by itself what directory to add,
-  // it is up to developpers to call 'AddFavoriteDirectory' to add a new
-  // favorite directory (i.e. this is application specific).
+  // this callback gives you the opportunity to call 'AddFavoriteDirectory' to
+  // add a new favorite directory given your application context.
   // The 'object' argument is the object that will have the method called on
   // it. The 'method' argument is the name of the method to be called and any
   // arguments in string form. If the object is NULL, the method is still
   // evaluated as a simple command. 
-  virtual void SetFavoriteDirectoryAddingCommand(
+  virtual void SetAddFavoriteDirectoryCommand(
     vtkObject *obj, const char *method);
   
   // Description:
@@ -94,6 +98,9 @@ public:
   // it. The 'method' argument is the name of the method to be called and any
   // arguments in string form. If the object is NULL, the method is still
   // evaluated as a simple command. 
+  // The following parameters are also passed to the command:
+  // - the path to the favorite: const char*
+  // - the name of the favorite: const char*
   virtual void SetFavoriteDirectorySelectedCommand(
     vtkObject *obj, const char *method);
 
@@ -117,27 +124,27 @@ public:
 
   // Description:
   // Callback, do NOT use. 
-  virtual void DirectoryClickedCallback(
-    const char* path, const char* text);
-  virtual void DirectoryRightClickedCallback(
+  virtual void SelectFavoriteDirectoryCallback(
+    const char* path, const char*name);
+  virtual void PopupFavoriteDirectoryCallback(
     const char* path, int x, int y);
   
   // Description:
   // Callback, do NOT use. 
   // Rename directory callback from right-click context menu.
-  virtual void RightClickRenameCallback(const char* path);
+  virtual void RenameFavoriteDirectoryCallback(const char* path);
   
   // Description:
   // Callback, do NOT use. 
   // Launch native explorer callback from right-click context menu.
-  virtual void RightClickExploreCallback(const char* path);
+  virtual void ExploreFavoriteDirectoryCallback(const char* path);
   
   // Description:
   // Callbacks, do NOT use
   // A dialog will popup for user confirmation of the deleting action.
   // If user confirms the action, the favorite folder will be removed from
   // the places bar of the dialog.
-  virtual void RightClickRemoveFavoriteCallback(const char* path);
+  virtual void RemoveFavoriteDirectoryCallback(const char* path);
 
 protected:
   vtkKWFavoriteDirectoriesFrame();
@@ -148,49 +155,47 @@ protected:
   virtual void CreateWidget();
 
   // Description:
-  // Create the actual frame widget and initialize
-  virtual void CreateFavoriteDirectoriesFrame();
-  virtual void Initialize();
-     
+  // Get the name of a favorite directory given its path (NULL if not found)
+  virtual const char* GetNameOfFavoriteDirectory(const char *path);
+
   // Description:
   // Load/Save up to 'maximum_number' favorite dirs 
-  // from/to the registry under the application's 'reg_key' and 
-  // subkeys are "Place[n][type]"
+  // from/to the registry under the application's 'reg_key'.
+  // Subkeys are "Place[n][type]"
   // The parameter-less methods use RegistryKey as 'reg_key' and
   // MaximumNumberOfFavoriteDirectoriesInRegistry as 'maximum_number'.
-  virtual void RestoreDirectoriesListFromRegistry();
-  virtual void RestoreDirectoriesListFromSystemRegistry();
-  virtual void RestoreDirectoriesListFromUserRegistry(
-    const char *reg_key, int maximum_number);
-  virtual void WriteDirectoriesToRegistry();
-  virtual void WriteDirectoriesToRegistry(
+  virtual void RestoreFavoriteDirectoriesFromRegistry();
+  virtual void RestoreFavoriteDirectoriesFromSystemRegistry();
+  virtual void RestoreFavoriteDirectoriesFromUserRegistry(
     const char *reg_key, int max_nb);
-  virtual void UpdateFavoriteDirectoriesOfSystemRegistry();
+  virtual void WriteFavoriteDirectoriesToRegistry();
+  virtual void WriteFavoriteDirectoriesToRegistry(
+    const char *reg_key, int max_nb);
+  virtual void WriteFavoriteDirectoriesToSystemRegistry();
   
   // Description:
-  // Add the special folder from Win32 registry to the favorite dirs list,
+  // Update favorite directory entries in Registry according to the
+  // MaximumNumberOfFavoriteDirectoriesInRegistry
+  virtual void PruneFavoriteDirectoriesInRegistry();
+  
+  // Description:
+  // Add the special folders from Win32 registry to the favorite dirs list,
   // such as "My Documents", "Desktop"
   virtual int AddSpecialFavoriteFolder(int csidl);
       
   // Description:
-  // Add the favorite button to the favorite frame
-  virtual void AddFavoriteDirectoryButton(
-    const char* text, 
-    const char *fullpath);    
+  // Add a favorite button to the favorite frame
+  virtual void AddFavoriteDirectoryToFrame(
+    const char *path,
+    const char *name); 
    
   // Description:
-  // Update favorite frame/buttons state
-  virtual void UpdateFavoriteDirectorySelection(const char* fullpath);
+  // Select a favorite directory given its name
+  virtual void SelectFavoriteDirectoryWithName(const char* path);
 
   // Description:
-  // Update favorite directory entries in Registry according to the
-  // MaximumNumberOfFavoriteDirectoriesInRegistry
-  virtual void PruneDirectoriesInRegistry();
-  
-  // Description:
   // Remove a directory node from the most recent history list
-  virtual void PopulateContextMenu(vtkKWMenu *menu, 
-    const char* path, int enable);
+  virtual void PopulateContextMenu(vtkKWMenu *menu, const char* path);
 
   // Description:
   // Clear pointers from internal list
@@ -208,22 +213,25 @@ protected:
     
   // Description:
   // Commands
-  char *FavoriteDirectoryAddingCommand;
+  char *AddFavoriteDirectoryCommand;
   char *FavoriteDirectorySelectedCommand;
-  virtual void InvokeFavoriteDirectoryAddingCommand();
+  virtual void InvokeAddFavoriteDirectoryCommand();
   virtual void InvokeFavoriteDirectorySelectedCommand(
-    const char* path, const char* dirtext);
+    const char* path, const char *name);
   
   // Description:
-  // Internal class to keep track of things like favorite dir list
+  // Internal PIMPL class for STL purposes.
   vtkKWFavoriteDirectoriesFrameInternals *Internals;
   
   // Description:
+  // GUI
+  vtkKWToolbar            *Toolbar;
+  vtkKWFrameWithScrollbar *FavoriteDirectoryFrame;
+  vtkKWPushButton         *AddFavoriteDirectoryButton;
+  vtkKWMenu               *ContextMenu;
+
+  // Description:
   // Member variables
-  vtkKWToolbar     *ToolbarFavorite;
-  vtkKWFrameWithScrollbar *FavoriteButtonFrame;
-  vtkKWPushButton  *FavoritesAddingButton;
-  vtkKWMenu *ContextMenu;
   char *RegistryKey;
   unsigned int MaximumNumberOfFavoriteDirectoriesInRegistry;
   

@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.7 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.8 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -291,7 +291,7 @@ void vtkKWFileBrowserWidget::CreateFavoriteDirectoriesFrame()
       {
       this->FavoriteDirectoriesFrame->SetParent(this->MainFrame->GetFrame1());
       this->FavoriteDirectoriesFrame->Create();
-      this->FavoriteDirectoriesFrame->SetFavoriteDirectoryAddingCommand(
+      this->FavoriteDirectoriesFrame->SetAddFavoriteDirectoryCommand(
         this, "AddFavoriteDirectoryCallback");
       this->FavoriteDirectoriesFrame->SetFavoriteDirectorySelectedCommand(
         this, "FavoriteDirectorySelectedCallback");
@@ -885,6 +885,18 @@ void vtkKWFileBrowserWidget::DirectoryTreeFocusOutCallback()
 void vtkKWFileBrowserWidget::FileTableFocusOutCallback()
 {
   this->UpdateFileSelectionColor(0);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFileBrowserWidget::UpdateEnableState()
+{
+  this->Superclass::UpdateEnableState();
+
+  this->PropagateEnableState(this->MainFrame);
+  this->PropagateEnableState(this->DirFileFrame);
+  this->PropagateEnableState(this->FavoriteDirectoriesFrame);
+  this->PropagateEnableState(this->DirectoryExplorer);
+  this->PropagateEnableState(this->FileListTable);
 }
 
 //----------------------------------------------------------------------------
