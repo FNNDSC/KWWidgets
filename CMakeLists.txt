@@ -248,6 +248,11 @@ SET(KWWidgets_SRCS
   vtkKWWizardStep.cxx
   vtkKWWizardWidget.cxx
   vtkKWWizardWorkflow.cxx
+  vtkKWDirectoryExplorer.cxx 
+  vtkKWFileListTable.cxx 
+  vtkKWFavoriteDirectoriesFrame.cxx 
+  vtkKWFileBrowserWidget.cxx 
+  vtkKWFileBrowserDialog.cxx
 # vtkKWColorPicker.cxx
 )
 
