@@ -49,7 +49,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.6 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -65,6 +65,7 @@ public:
     this->IsNavigatingNode = 0;
     this->IsOpeningDirectory = 0;
     this->TempPath = "";
+    this->MostRecentDirCurrent = this->MostRecentDirList.begin();
   }
  
   // Most recent directories list (history)
@@ -299,75 +300,93 @@ void vtkKWDirectoryExplorer::CreateWidget()
 }
 
 //----------------------------------------------------------------------------
-#ifndef _WIN32           // UNIX flavor
 void vtkKWDirectoryExplorer::LoadRootDirectory()
 {
-  vtkIdType dirID;
-  char strDirID[20];
-  vtksys_stl::string sysroot = KWFileBrowser_UNIX_ROOT_DIRECTORY;
+#ifndef _WIN32           // UNIX flavor
+
+  vtkIdType dirID = vtkKWDirectoryExplorer::IdCounter++;
+
   vtkKWIcon *tmpIcon = vtkKWIcon::New();
   tmpIcon->SetImage(vtkKWIcon::IconFolderXP);
-  dirID = vtkKWDirectoryExplorer::IdCounter++;
+
+  char strDirID[20];
   sprintf(strDirID, "%lu", dirID);
-  this->AddDirectoryNode(this->Internals->RootNode, strDirID, 
-                   "ROOT", sysroot.c_str(), tmpIcon);
+
+  this->AddDirectoryNode(
+    this->Internals->RootNode, 
+    strDirID, 
+    "ROOT", 
+    KWFileBrowser_UNIX_ROOT_DIRECTORY, 
+    tmpIcon);
+
   tmpIcon->Delete();
-  this->UpdateDirectoryNode(strDirID);
+
+  //this->UpdateDirectoryNode(strDirID);
   this->OpenDirectoryNode(strDirID, 0, 1);
-}
+
 #else                   // Windows flavor
-void vtkKWDirectoryExplorer::LoadRootDirectory()
-{
-  vtksys_stl::string  name;
-  vtksys_stl::string  realname;
+
+  vtksys_stl::string name;
+  vtksys_stl::string realname;
   vtksys_stl::string disklabel;
   
-  DWORD           mask;
-  vtkIdType       dirID;
-  UINT            drivetype;
-  
-  char strDirID[20];
   char strVolName[MAX_PATH];
   char strFS[MAX_PATH];
   DWORD serialnum;
+
   vtkKWIcon *tmpIcon = vtkKWIcon::New();
+
   // Loop over drive letters
-  for(mask=GetLogicalDrives(),name="A:"; mask; mask>>=1,name[0]++)
+
+  DWORD mask;
+  for (mask = GetLogicalDrives(), name = "A:"; mask; mask >>= 1, name[0]++)
     {
     // Skip unavailable drives
-    if (!(mask&1)) continue;
 
-    // Find out dirve types
-    drivetype=GetDriveTypeA(name.c_str());
-    switch(drivetype)
+    if (!(mask&1)) 
+      {
+      continue;
+      }
+
+    // Find out drive types
+
+    UINT drivetype = GetDriveTypeA(name.c_str());
+
+    switch (drivetype)
       {
       case DRIVE_REMOVABLE:
-        if (name[0]=='A' || name[0]=='B')
+        if (name[0] == 'A' || name[0] == 'B')
           {
           tmpIcon->SetImage(vtkKWIcon::IconFloppyDrive);
           }
         else
-          {//maybe a zip icon?
+          {
+          //maybe a zip icon?
           tmpIcon->SetImage(vtkKWIcon::IconFloppyDrive);
           }
         disklabel = "Removable";
         break;
+
       case DRIVE_REMOTE:
         tmpIcon->SetImage(vtkKWIcon::IconNetDrive);
         disklabel = "Network";
         break;
+
       case DRIVE_CDROM:
         tmpIcon->SetImage(vtkKWIcon::IconCdRom);
         disklabel = "CD-ROM";
         break;
+
       case DRIVE_RAMDISK:
         tmpIcon->SetImage(vtkKWIcon::IconFolderXP);
         disklabel = "RAM Disk";
         break;
+
       case DRIVE_FIXED:
         tmpIcon->SetImage(vtkKWIcon::IconHardDrive);
         disklabel = "Local Disk";
         break;
+
       case DRIVE_UNKNOWN:
       case DRIVE_NO_ROOT_DIR:
       default:
@@ -376,16 +395,18 @@ void vtkKWDirectoryExplorer::LoadRootDirectory()
         break;
       }
 
-    //if there is an end backslash, remove it.
+    // if there is an end backslash, remove it.
+
     realname = name = vtksys::SystemTools::RemoveChars(
       name.c_str(), "\\");
+
     if (GetVolumeInformation(name.append("\\").c_str(),
-      strVolName, MAX_PATH, &serialnum, NULL,
-      NULL, strFS, 
-      MAX_PATH))
+                             strVolName, MAX_PATH, &serialnum, NULL,
+                             NULL, strFS, 
+                             MAX_PATH))
       {
       name = realname;
-      if (strcmp(strVolName, "")==0)
+      if (strcmp(strVolName, "") == 0)
         {
         realname = disklabel;
         }
@@ -403,122 +424,20 @@ void vtkKWDirectoryExplorer::LoadRootDirectory()
       name = realname;
       }
       
-    //Add direcotry node
-    dirID = vtkKWDirectoryExplorer::IdCounter++;
+    // Add directory node
+
+    vtkIdType dirID = vtkKWDirectoryExplorer::IdCounter++;
+    char strDirID[20];
     sprintf(strDirID, "%lu", dirID);
-    this->AddDirectoryNode(this->Internals->RootNode, strDirID, 
-      realname.c_str(), name.c_str(), tmpIcon);
+    this->AddDirectoryNode(this->Internals->RootNode, 
+                           strDirID, 
+                           realname.c_str(), 
+                           name.c_str(), 
+                           tmpIcon);
     }
+
   tmpIcon->Delete();
-}
 #endif
-
-//----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::Update()
-{
-  if (this->DirectoryTree)
-    {
-    this->UpdateEnableState();
-    vtksys_stl::string callback = "OpenDirectoryNodeCallback ";
-
-    if (this->Internals->MostRecentDirList.size() > 1)
-      {
-      //First item in the list
-      if (this->Internals->MostRecentDirCurrent == 
-        this->Internals->MostRecentDirList.begin())
-        { 
-        this->ForwardButton->SetEnabled(0);
-        }
-      //Last item in the list  
-      else if (strcmp((*this->Internals->MostRecentDirCurrent).c_str(), 
-        this->Internals->MostRecentDirList.back().c_str())==0)
-        {
-        this->BackButton->SetEnabled(0);
-        }
-      }
-    else
-      {
-      this->ForwardButton->SetEnabled(0);
-      this->BackButton->SetEnabled(0);
-      }
-      
-    vtkKWTree *tree = this->DirectoryTree->GetWidget();  
-    if (this->ForwardButton->GetEnabled())
-      {
-      vtkKWMenu *menu = this->ForwardButton->GetMenu();
-      menu->DeleteAllItems();
-      vtkKWDirectoryExplorerInternals::MostRecentDirIterator it = 
-          this->Internals->MostRecentDirCurrent;
-          
-      vtksys_stl::string menucommand;
-      vtksys_stl::string menutext;
-      int offset = -1;
-      char buff[10];
-      
-      //Keep the most recent item
-      if (it != this->Internals->MostRecentDirList.begin())
-        {
-        it--;
-        }
-        
-      while(it != this->Internals->MostRecentDirList.begin())
-        {
-        menutext = tree->GetNodeText((*it).c_str());
-        menucommand = callback;
-        menucommand.append((*it).c_str());
-        sprintf(buff, " %d", offset);
-        menucommand.append(buff);
-        menu->AddCommand(menutext.c_str(), this, menucommand.c_str());
-        offset--;
-        it--;
-        }
-      //Now, the first item of the list  
-      if (tree->HasNode((*it).c_str()))
-        {
-        menucommand = callback;
-        menutext = tree->GetNodeText((*it).c_str());
-        menucommand.append((*it).c_str());
-        sprintf(buff, " %d", offset);
-        menucommand.append(buff);
-        menu->AddCommand(menutext.c_str(), this, menucommand.c_str());
-        }
-      else
-        {
-        this->Internals->MostRecentDirList.erase(it);
-        }
-      }
-    
-    if (this->BackButton->GetEnabled())
-      {
-      vtkKWMenu *menu = this->BackButton->GetMenu();
-      menu->DeleteAllItems();
-      vtkKWDirectoryExplorerInternals::MostRecentDirIterator it = 
-          this->Internals->MostRecentDirCurrent;
-          
-      vtksys_stl::string menucommand;
-      vtksys_stl::string menutext;
-      int offset = 1;
-      char buff[10];
-      //Keep the most recent item
-      if (it != this->Internals->MostRecentDirList.end())
-        {
-        it++;
-        }
-      
-      //skip the last iterator
-      while(it != this->Internals->MostRecentDirList.end())
-        {
-        menutext = tree->GetNodeText((*it).c_str());
-        menucommand = callback;
-        menucommand.append((*it).c_str());
-        sprintf(buff, " %d", offset);
-        menucommand.append(buff);
-        menu->AddCommand(menutext.c_str(), this, menucommand.c_str());
-        it++;
-        offset++;
-        }
-      }
-    }
 }
 
 //----------------------------------------------------------------------------
@@ -532,6 +451,458 @@ void vtkKWDirectoryExplorer::AddDirectoryNode(
   this->DirectoryTree->GetWidget()->AddNode(parentnode, node, text);
   this->DirectoryTree->GetWidget()->SetNodeUserData(node, fullname);
   this->DirectoryTree->GetWidget()->SetNodeImageToIcon(node, nodeicon);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
+{
+  vtkKWTree *dirtree = this->DirectoryTree->GetWidget();
+  
+  vtksys_stl::string nodepath = dirtree->GetNodeUserData(node);
+
+#if defined (_DEBUG)  
+  cout << "-----------------UpdateDirectoryNode: " 
+       << nodepath << endl;
+  clock_t start = clock();
+#endif
+
+  vtkDirectory *dir = vtkDirectory::New();
+  if (!dir->Open(nodepath.c_str()))
+    {
+    dir->Delete();
+    return;
+    }
+  
+  int num_files = dir->GetNumberOfFiles();
+  
+#if defined (_DEBUG)  
+  double durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
+  cout << "Dir open time: " << durationopen << endl;
+  start = clock();
+#endif
+  
+  // Check if this node has children, if yes,
+  // check if those directory still there.
+
+  vtksys_stl::vector<vtksys_stl::string> children;
+  vtksys::SystemTools::Split(
+    dirtree->GetNodeChildren(node), children, ' ');
+
+#if defined (_DEBUG)  
+  durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
+  cout << "Get Node children time: " << durationopen << endl;
+#endif
+
+  bool haschildren = false, isadded = false;
+
+  vtksys_stl::vector<vtksys_stl::string>::iterator it = children.begin();
+  vtksys_stl::vector<vtksys_stl::string>::iterator end = children.end();
+  int num_children = children.size();
+  
+  vtkIdType dirID;
+  char strDirID[20];
+
+  // Have these two flags so that we do not need to do strcmp
+  // for every file in the directory
+
+  bool dotfound = false, dotdotfound = false;
+  
+  ostrstream tk_cfgcmd, tk_treecmd;
+  const char *treename = dirtree->GetWidgetName();
+
+#if defined (_DEBUG)  
+  clock_t scriptstart = clock();
+#endif
+  
+  // The following variables is for checking whether a
+  // directory has sub directories; if yes, then add the 
+  // '+' before the tree node
+
+  vtkDirectory *tmpdir = vtkDirectory::New();
+  vtksys_stl::string tmp_str, tmp_file, tmp_name;
+  
+  vtksys_stl::string treecmd = treename;
+  treecmd.append(" insert end ").append(node).append(" ");
+  
+  int num_dirfound = 0;
+  int folder_index = 0; 
+  vtksys_stl::string filename = "",fullname = "";
+  const char* image_name = this->Internals->FolderImage.c_str();
+   
+  struct stat tmp_fs;
+  struct stat fs;
+  if (strcmp(nodepath.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY) != 0)
+    {
+    nodepath += KWFileBrowser_PATH_SEPARATOR;
+    }
+
+  for (int i = 0; i < num_files; i++)
+    {
+    filename = dir->GetFile(i);
+
+    // skip . and ..
+
+    if (!dotfound || !dotdotfound)
+      { 
+      if (strcmp(filename.c_str(), ".") == 0)
+        {
+        dotfound=true;
+        continue;
+        }
+      else if (strcmp(filename.c_str(), "..") == 0)
+        {
+        dotdotfound = true;
+        continue;
+        }
+      }
+      
+    fullname = nodepath;
+    fullname += filename;
+
+    // If it's not a directory, move on
+
+    if (stat(fullname.c_str(), &fs) != 0 ||
+        !(fs.st_mode & _S_IFDIR))
+      {
+      continue;
+      }
+
+    // if the node already has children, we need to find any 
+    // new directories and add them
+
+    // TODO: THIS SHOULD BE OPTIMIZE. ONCE WE HAVE FOUND THAT A FILE IS
+    // ALREADY PRESENT IN THE CHILDREN, THERE IS NO POINT IN KEEPING THAT
+    // NODE IN THE CHILDREN, SINCE YOU DON'T NEED TO COMPARE IT ANY
+    // LONGER TO ANY OTHER FILE. THIS WILL ALSO SPEED UP THE STEP AT THE
+    // END THAT CHECKS IF THE REMAINING CHILDREN STILL EXIST
+    // SINCE WE ARE USING A VECTOR HERE, REMOVING COSTS, JUST DEALLOCATE
+    // THE STRING.
+
+    isadded = false;
+    if (num_children && num_dirfound < num_children)
+      {
+      it = children.begin();
+      for (; it != end; it++)
+        {
+        if (strcmp(dirtree->GetNodeText((*it).c_str()), 
+                   filename.c_str()) == 0)
+          {
+          isadded = true;
+          num_dirfound++;
+          break;
+          }
+        }
+      }
+
+    // if this directory is not added yet, add this new directory
+
+    if (!isadded)
+      {
+      dirID = vtkKWDirectoryExplorer::IdCounter++;
+      sprintf(strDirID, "%lu", dirID);
+      tk_treecmd << treecmd;   
+      tk_treecmd << strDirID << " -text {" 
+                 << filename << "}" << " -image {" 
+                 << image_name << "}" << " -data \"" 
+                 << vtksys::SystemTools::EscapeChars(
+                   fullname.c_str(), KWFileBrowser_ESCAPE_CHARS).c_str() 
+                 << "\"" << endl;
+        
+#if defined (_DEBUG)  
+      start = clock();
+#endif
+      // Check if this new folder has subfolders.
+
+      if (!tmpdir->Open(fullname.c_str()))
+        {
+        continue;
+        }
+        
+      tmp_str = fullname;
+      tmp_str += KWFileBrowser_PATH_SEPARATOR;
+
+      bool dot1found = false;
+      bool dot2found = false;
+
+      for(int j = 0; j < tmpdir->GetNumberOfFiles(); j++)
+        {
+        tmp_name = tmp_str;
+        tmp_file = tmpdir->GetFile(j);
+
+        // Skip . and ..
+
+        if (!dot1found || !dot2found)
+          {
+          if (!dot1found && strcmp(tmp_file.c_str(), ".") == 0)
+            {
+            dot1found = true;
+            continue;
+            }
+          if (!dot2found && strcmp(tmp_file.c_str(), "..") == 0)
+            {
+            dot2found = true;
+            continue;
+            }
+          }
+        tmp_name += tmp_file;
+        if (stat(tmp_name.c_str(), &tmp_fs) != 0)
+          {
+          continue;
+          }
+        else
+          {
+          if (tmp_fs.st_mode & _S_IFDIR)
+            {
+            tk_cfgcmd << treename << " itemconfigure " 
+                      << strDirID << " -drawcross allways" << endl;
+            break;
+            }
+          }
+        } //end for
+
+#if defined (_DEBUG)  
+      durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
+      cout << tmp_name << "---- Check sub folder time: "   
+           << durationopen << endl;
+#endif
+      }//end if (!added)
+    }//end for
+
+  tmpdir->Delete();
+    
+#if defined (_DEBUG)  
+  durationopen = (double)(clock() - scriptstart) / CLOCKS_PER_SEC;
+  cout << "Creat Script time: " << durationopen << endl;
+  start = clock();
+#endif
+
+  // Run add the tree node command if available
+
+  if (tk_treecmd.rdbuf() && 
+      tk_treecmd.rdbuf()->pcount() > (int)treecmd.size())
+    {
+    tk_treecmd << ends;
+    this->Script(tk_treecmd.str());
+    }
+  tk_treecmd.rdbuf()->freeze(0);
+  
+  // Run the script for adding/removing 'cross' image to tree node
+
+  if (tk_cfgcmd.rdbuf() && tk_cfgcmd.rdbuf()->pcount() > 0)
+    {
+    tk_cfgcmd << ends;
+    this->Script(tk_cfgcmd.str());
+    }
+  tk_cfgcmd.rdbuf()->freeze(0);
+   
+#if defined (_DEBUG)  
+  durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
+  cout << "Run script time: " << durationopen << endl;
+  start = clock();
+#endif
+
+  // The node has child nodes already, we need to make sure
+  // the child node directories are still there, 
+  // otherwise, remove them
+
+  if (num_children && num_dirfound < num_children)
+    {
+    it = children.begin();
+    for (; it != end; it++)
+      {
+      if (!vtksys::SystemTools::FileExists(
+            dirtree->GetNodeUserData((*it).c_str())))
+        {
+        dirtree->DeleteNode((*it).c_str());
+        }
+      }
+    }
+
+  dir->Delete();
+
+#if defined (_DEBUG)  
+  durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
+  cout << "Check dir exists time: " << durationopen << endl;
+#endif
+}
+
+//----------------------------------------------------------------------------
+void vtkKWDirectoryExplorer::OpenDirectoryNode(const char* node, 
+                                               int select,
+                                               int opennode)
+{
+  // Change mouse cursor to wait.
+
+  vtksys_stl::string nodeID = node;
+  if (!this->DirectoryTree->GetWidget()->HasNode(nodeID.c_str()))
+    {
+    return;
+    }
+
+  vtkKWTkUtilities::SetTopLevelMouseCursor(this, "watch");
+
+  // Set internal flag
+
+  this->Internals->IsOpeningDirectory = 1;
+
+  // Open the node
+
+  if (opennode)
+    {
+    this->DirectoryTree->GetWidget()->OpenNode(nodeID.c_str());
+    }
+    
+  // Check/Load all the directories and files under this node  
+
+  this->UpdateDirectoryNode(nodeID.c_str());
+
+  // Select the node
+
+  if (select)
+    {
+    this->DirectoryTree->GetWidget()->SelectNode(nodeID.c_str());
+    this->DirectoryTree->GetWidget()->SeeNode(nodeID.c_str());
+    this->SetSelectedDirectory(this->GetNthSelectedDirectory(0));
+    }
+    
+  // Update dir history list
+
+  if (!this->Internals->IsNavigatingNode)
+    {     
+    this->UpdateMostRecentDirectoryHistory(nodeID.c_str());
+    }
+ 
+  // Update Back/Forward button state  
+
+  this->Update();
+  
+  this->Internals->IsOpeningDirectory = 0;
+
+  // Set back mouse cursor
+
+  vtkKWTkUtilities::SetTopLevelMouseCursor(this, NULL);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWDirectoryExplorer::Update()
+{
+  if (!this->DirectoryTree->IsCreated())
+    {
+    return;
+    }
+
+  this->UpdateEnableState();
+
+  vtksys_stl::string callback = "OpenDirectoryNodeCallback ";
+
+  // History buttons
+
+  if (this->Internals->MostRecentDirList.size() > 1)
+    {
+    // First item in the list
+
+    if (this->Internals->MostRecentDirCurrent == 
+        this->Internals->MostRecentDirList.begin())
+      { 
+      this->ForwardButton->SetEnabled(0);
+      }
+    // Last item in the list  
+
+    else if (strcmp((*this->Internals->MostRecentDirCurrent).c_str(), 
+                    this->Internals->MostRecentDirList.back().c_str()) == 0)
+      {
+      this->BackButton->SetEnabled(0);
+      }
+    }
+  else
+    {
+    this->ForwardButton->SetEnabled(0);
+    this->BackButton->SetEnabled(0);
+    }
+
+  // History forward/Backward
+
+  vtkKWTree *tree = this->DirectoryTree->GetWidget();  
+
+  if (this->Internals->MostRecentDirCurrent != 
+      this->Internals->MostRecentDirList.end())
+    {
+    // History forward
+
+    vtkKWMenu *menu = this->ForwardButton->GetMenu();
+    menu->DeleteAllItems();
+
+    vtkKWDirectoryExplorerInternals::MostRecentDirIterator it = 
+      this->Internals->MostRecentDirCurrent;
+          
+    vtksys_stl::string menucommand;
+    vtksys_stl::string menutext;
+    int offset = -1;
+    char buff[10];
+  
+    // Keep the most recent item
+  
+    if (it != this->Internals->MostRecentDirList.begin())
+      {
+      it--;
+      }
+  
+    while (it != this->Internals->MostRecentDirList.begin())
+      {
+      menutext = tree->GetNodeText((*it).c_str());
+      menucommand = callback;
+      menucommand.append((*it).c_str());
+      sprintf(buff, " %d", offset);
+      menucommand.append(buff);
+      menu->AddCommand(menutext.c_str(), this, menucommand.c_str());
+      offset--;
+      it--;
+      }
+  
+    // Now, the first item of the list  
+    
+    if (tree->HasNode((*it).c_str()))
+      {
+      menucommand = callback;
+      menutext = tree->GetNodeText((*it).c_str());
+      menucommand.append((*it).c_str());
+      sprintf(buff, " %d", offset);
+      menucommand.append(buff);
+      menu->AddCommand(menutext.c_str(), this, menucommand.c_str());
+      }
+    else
+      {
+      this->Internals->MostRecentDirList.erase(it);
+      }
+    
+    // History backward
+  
+    menu = this->BackButton->GetMenu();
+    menu->DeleteAllItems();
+    it = this->Internals->MostRecentDirCurrent;
+    offset = 1;
+
+    // Keep the most recent item
+    
+    if (it != this->Internals->MostRecentDirList.end())
+      {
+      it++;
+    }
+    
+    // Skip the last iterator
+    
+    while (it != this->Internals->MostRecentDirList.end())
+      {
+      menutext = tree->GetNodeText((*it).c_str());
+      menucommand = callback;
+      menucommand.append((*it).c_str());
+      sprintf(buff, " %d", offset);
+      menucommand.append(buff);
+      menu->AddCommand(menutext.c_str(), this, menucommand.c_str());
+      it++;
+      offset++;
+      }
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -929,422 +1300,6 @@ const char* vtkKWDirectoryExplorer::ReloadDirectory(
     }
   
   return NULL;
-}
-
-//----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* nodeID)
-{
-  vtkKWTree *dirtree = this->DirectoryTree->GetWidget();
-  
-  vtksys_stl::string parentpath = dirtree->GetNodeUserData(nodeID);
-
-#if defined (_DEBUG)  
-  cout << "-----------------UpdateDirectoryNode: " 
-       << parentpath << endl;
-  clock_t start = clock();
-#endif
-
-  vtkDirectory *dir = vtkDirectory::New();
-  if (!dir->Open(parentpath.c_str()))
-    {
-    dir->Delete();
-    vtkKWTkUtilities::SetTopLevelMouseCursor(this, NULL);
-    return;
-    }
-  
-  int num_files = dir->GetNumberOfFiles();
-  
-#if defined (_DEBUG)  
-  double durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
-  cout << "Dir open time: " << durationopen << endl;
-  start = clock();
-#endif
-  
-  // Check if this node has children, if yes,
-  // check if those directory still there.
-  vtksys_stl::vector<vtksys_stl::string> children;
-  vtksys::SystemTools::Split(
-    dirtree->GetNodeChildren(nodeID), children, ' ');
-
-#if defined (_DEBUG)  
-  durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
-  cout << "Get Node children time: " << durationopen << endl;
-#endif
-
-  bool haschildren = false, isadded=false;
-  vtksys_stl::vector<vtksys_stl::string>::iterator it;
-  vtksys_stl::vector<vtksys_stl::string>::iterator end;
-  int  num_children = children.size();
-  if ( num_children > 0) 
-    {
-    haschildren = true;
-    it = children.begin();
-    end = children.end();
-    }
-  
-  vtkIdType dirID;
-  char strDirID[20];
-  // Have these two flags so that we do not need to do strcmp
-  // for every file in the directory
-  bool dotfound=false, dotdotfound=false;
-  
-  ostrstream tk_cfgcmd, tk_treecmd;
-  const char *treename = dirtree->GetWidgetName();
-
-#if defined (_DEBUG)  
-  clock_t scriptstart = clock();
-#endif
-  
-  // The following variables is for checking whether a
-  // directory has sub directories; if yes, then add the 
-  // '+' before the tree node
-  vtkDirectory *tmpdir = vtkDirectory::New();
-  vtksys_stl::string tmp_str, tmp_file, tmp_name;
-  
-  vtksys_stl::string treecmd = treename;
-  treecmd.append(" insert end ").append(nodeID).append(" ");
-  
-  int num_dirfound=0;
-  int folder_index = 0; 
-  vtksys_stl::string filename = "",fullname = "";
-  const char* image_name = this->Internals->FolderImage.c_str();
-   
-  struct stat tmp_fs;
-  struct stat fs;
-  if (strcmp(parentpath.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY)!=0)
-    {
-    parentpath += KWFileBrowser_PATH_SEPARATOR;
-    }
-
-// The purpose of branching out for windows and *nix here is to try
-// to improve performance for big directories in the sacrifice of 
-// coding efficiency.
-#if defined( _WIN32 )
-  for (int i = 0; i < num_files; i++)
-    {
-    filename = dir->GetFile(i);
-    //skip . and ..
-    if (!dotfound || !dotdotfound)
-      { 
-      if (strcmp(filename.c_str(), ".")==0)
-        {
-        dotfound=true;
-        continue;
-        }
-      else if (strcmp(filename.c_str(), "..")==0)
-        {
-        dotdotfound = true;
-        continue;
-        }
-      }
-      
-    fullname = parentpath;
-    fullname += filename;
-    if (stat(fullname.c_str(), &fs) != 0)
-      {
-      continue;
-      }
-    // if the node already has children, we need to find any 
-    // new directories and add them
-    isadded = false;
-    if (fs.st_mode & _S_IFDIR)
-      {
-      if (haschildren && num_dirfound < num_children)
-        {
-        it = children.begin();
-        for (; it != end; it++)
-          {
-          if (strcmp(dirtree->GetNodeText((*it).c_str()), 
-                             filename.c_str()) ==0)
-            {
-            isadded = true;
-            num_dirfound++;
-            break;
-            }
-          }
-        }
-      //if this directory is not added yet, add this new directory
-      if (!isadded)
-        {
-      
-        dirID = vtkKWDirectoryExplorer::IdCounter++;
-        sprintf(strDirID, "%lu", dirID);
-        tk_treecmd << treecmd;   
-        tk_treecmd << strDirID << " -text {" 
-            << filename << "}" << " -image {" 
-            << image_name << "}" << " -data \"" 
-            << vtksys::SystemTools::EscapeChars(
-                fullname.c_str(), KWFileBrowser_ESCAPE_CHARS).c_str() 
-            << "\"" << endl;
-        
-#if defined (_DEBUG)  
-        start = clock();
-#endif
-        // check if this new folder has subfolders.
-        if (!tmpdir->Open(fullname.c_str()))
-          {
-          continue;
-          }
-        
-        tmp_str = fullname;
-        tmp_str += KWFileBrowser_PATH_SEPARATOR ;
-        bool dot1found=false;
-        bool dot2found=false;
-        for(int j=0; j<tmpdir->GetNumberOfFiles(); j++)
-          {
-          tmp_name = tmp_str;
-          tmp_file = tmpdir->GetFile(j);
-          //skip . and ..
-          if (!dot1found || !dot2found)
-            {
-            if (!dot1found && strcmp(tmp_file.c_str(), ".")==0 )
-              {
-              dot1found = true;
-              continue;
-              }
-            if (!dot2found && strcmp(tmp_file.c_str(), "..")==0)
-              {
-              dot2found = true;
-              continue;
-              }
-            }
-          tmp_name += tmp_file;
-          if (stat(tmp_name.c_str(), &tmp_fs) != 0)
-            {
-            continue;
-            }
-          else
-            {
-            if (tmp_fs.st_mode & _S_IFDIR)
-              {
-              tk_cfgcmd << treename << " itemconfigure " 
-                << strDirID << " -drawcross allways" << endl;
-              break;
-              }
-            }
-          }//end for
-#if defined (_DEBUG)  
-        durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
-        cout << tmp_name << "---- Check sub folder time: "   
-             << durationopen << endl;
-#endif
-        }//end if (!added)
-      }//end if (isfolder)
-    }//end for
-#else
-  for (int i = 0; i < num_files; i++)
-    {
-    filename = dir->GetFile(i);
-    //skip . and ..
-    if (!dotfound || !dotdotfound)
-      { 
-      if (strcmp(filename.c_str(), ".")==0)
-        {
-        dotfound=true;
-        continue;
-        }
-      else if (strcmp(filename.c_str(), "..")==0)
-        {
-        dotdotfound = true;
-        continue;
-        }
-      }
-      
-    fullname = parentpath;
-    fullname += filename;
- // isfolder = false;
-    if (stat(fullname.c_str(), &fs) != 0)
-      {
-      continue;
-      }
-      
-    // if the node already has children, we need to find any 
-    // new directories and add them
-    isadded = false;
-    if (S_ISDIR(fs.st_mode))
-      {
-      if (haschildren && num_dirfound < num_children)
-        {
-        it = children.begin();
-        for (; it != end; it++)
-          {
-          if (strcmp(dirtree->GetNodeText((*it).c_str()), 
-                             filename.c_str()) ==0)
-            {
-            isadded = true;
-            num_dirfound++;
-            break;
-            }
-          }
-        }
-      //if this directory is not added yet, add this new directory
-      if (!isadded)
-        {
-        dirID = vtkKWDirectoryExplorer::IdCounter++;
-        sprintf(strDirID, "%lu", dirID);
-        tk_treecmd << treecmd;   
-        tk_treecmd << strDirID << " -text {" 
-            << filename << "}" << " -image {" 
-            << image_name << "}" << " -data \"" 
-            << vtksys::SystemTools::EscapeChars(
-                fullname.c_str(), KWFileBrowser_ESCAPE_CHARS).c_str() 
-            << "\"" << endl;
-        
-#if defined (_DEBUG)  
-        start = clock();
-#endif
-        // check if this new folder has subfolders.
-        if (!tmpdir->Open(fullname.c_str()))
-          {
-          continue;
-          }
-        
-        tmp_str = fullname;
-        tmp_str += KWFileBrowser_PATH_SEPARATOR ;
-        bool dot1found=false;
-        bool dot2found=false;
-        for(int j=0; j<tmpdir->GetNumberOfFiles(); j++)
-          {
-          tmp_name = tmp_str;
-          tmp_file = tmpdir->GetFile(j);
-          //skip . and ..
-          if (!dot1found || !dot2found)
-            {
-            if (!dot1found && strcmp(tmp_file.c_str(), ".")==0 )
-              {
-              dot1found = true;
-              continue;
-              }
-            if (!dot2found && strcmp(tmp_file.c_str(), "..")==0)
-              {
-              dot2found = true;
-              continue;
-              }
-            }
-          tmp_name += tmp_file;
-          if (stat(tmp_name.c_str(), &tmp_fs) != 0)
-            {
-            continue;
-            }
-          else
-            {
-            if (S_ISDIR(tmp_fs.st_mode))
-              {
-              tk_cfgcmd << treename << " itemconfigure " 
-                << strDirID <<" -drawcross allways" << endl;
-              break; 
-              }
-            }
-          }//end for
-#if defined (_DEBUG)  
-        durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
-        cout << tmp_name << "---- Check sub folder time: "   
-             << durationopen << endl;
-#endif
-        }//end if (!added)
-      }//end if (isfolder)
-    }//end for
-    
-#endif
-  tmpdir->Delete();
-    
-#if defined (_DEBUG)  
-  durationopen = (double)(clock() - scriptstart) / CLOCKS_PER_SEC;
-  cout << "Creat Script time: " << durationopen << endl;
-  start = clock();
-#endif
-
-  // Run add the tree node command if available
-  if (tk_treecmd.rdbuf() && 
-    tk_treecmd.rdbuf()->pcount() > (int)treecmd.size())
-    {
-    tk_treecmd << ends;
-    this->Script(tk_treecmd.str());
-    }
-  tk_treecmd.rdbuf()->freeze(0);
-  
-  // Run the script for removing 'cross' image to tree node
-  if (tk_cfgcmd.rdbuf() && tk_cfgcmd.rdbuf()->pcount() > 0)
-    {
-    tk_cfgcmd << ends;
-    this->Script(tk_cfgcmd.str());
-    }
-  tk_cfgcmd.rdbuf()->freeze(0);
-   
-#if defined (_DEBUG)  
-  durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
-  cout << "Run script time: " << durationopen << endl;
-  start = clock();
-#endif
-
-  //The the node has child nodes already, we need to make sure
-  //the child node directories are still there, 
-  //otherwise, remove them
-  if (haschildren && num_dirfound < (int)children.size())
-    {
-    it = children.begin();
-    for (; it != end; it++)
-      {
-      if (!vtksys::SystemTools::FileExists(
-          dirtree->GetNodeUserData((*it).c_str())))
-        {
-        dirtree->DeleteNode((*it).c_str());
-        }
-      }
-    }
-  dir->Delete();
-#if defined (_DEBUG)  
-  durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
-  cout << "Check dir exists time: " << durationopen << endl;
-#endif
-}
-
-//----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::OpenDirectoryNode(const char* node, 
-                                        int select,
-                                        int opennode)
-{
-  // Change mouse cursor to wait.
-  vtkKWTkUtilities::SetTopLevelMouseCursor(this, "watch");
-  vtksys_stl::string nodeID = node;
-  if (!this->DirectoryTree->GetWidget()->HasNode(nodeID.c_str()))
-    {
-    vtkKWTkUtilities::SetTopLevelMouseCursor(this, NULL);
-    return;
-    }
-  //Set internal flag
-  this->Internals->IsOpeningDirectory=1;
-  //Open the node
-  if (opennode)
-    {
-    this->DirectoryTree->GetWidget()->OpenNode(nodeID.c_str());
-    }
-    
-  // Check/Load all the directories and files under this node  
-  this->UpdateDirectoryNode(nodeID.c_str());
-
-  //Select the node
-  if (select)
-    {
-    this->DirectoryTree->GetWidget()->SelectNode(nodeID.c_str());
-    // Now show the node
-    this->DirectoryTree->GetWidget()->SeeNode(nodeID.c_str());
-      
-    this->SetSelectedDirectory(this->GetNthSelectedDirectory(0));
-    }
-    
-  // Update dir history list
-  if (!this->Internals->IsNavigatingNode)
-    {     
-    this->UpdateMostRecentDirectoryHistory(nodeID.c_str());
-    }
- 
-  // update Back/Forward button state  
-  this->Update();
-  
-  this->Internals->IsOpeningDirectory=0;
-  // Set back mouse cursor
-  vtkKWTkUtilities::SetTopLevelMouseCursor(this, NULL);
 }
 
 //----------------------------------------------------------------------------
