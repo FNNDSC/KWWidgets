@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.4 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -536,6 +536,7 @@ void vtkKWFileBrowserDialog::OK()
   int res = this->ChooseDirectory ? this->DirectoryOK() : this->FileOK();
   if (!res || !this->GetNumberOfFileNames())
     {
+    this->FileNames->Reset();
     return;
     }
 
@@ -587,23 +588,19 @@ int vtkKWFileBrowserDialog::FileOK()
           ks_("File Browser|Title|Error!"),
           k_("A directory can't be part of the selection."), 
           vtkKWMessageDialog::ErrorIcon | vtkKWMessageDialog::InvokeAtPointer);
-        this->FileNames->Reset();
         return 0;
         }
       this->FileNames->InsertNextValue(selfile.c_str());
       }
 
-#if 0
     if (this->SaveDialog)
       {
       if (!this->ConfirmOverwrite(
          this->FileBrowserWidget->GetFileListTable()->GetNthSelectedFile(0)))
         {
-        this->FileNames->Reset();
         return 0;
         }
       }
-#endif
 
     return 1;
     }
@@ -640,7 +637,7 @@ int vtkKWFileBrowserDialog::FileOK()
         }
 
       // If this is a file, OK
-#if 0
+
       if (this->SaveDialog)
         {
         if (!this->ConfirmOverwrite(fullname.c_str()))
@@ -648,7 +645,7 @@ int vtkKWFileBrowserDialog::FileOK()
           return 0;
           }
         }
-#endif
+
       this->FileNames->InsertNextValue(fullname.c_str());
       return 1;
       }
