@@ -74,10 +74,13 @@ public:
 
   // Description:
   // Get/Set the selected director(ies).
-  vtkGetStringMacro(SelectedDirectory);
-  virtual void SetSelectedDirectory(const char*);
-  int GetNumberOfSelectedDirectories();
-  const char *GetNthSelectedDirectory(int i);
+  virtual const char *GetSelectedDirectory()
+    {return GetNthSelectedDirectory(0);}
+  virtual int GetNumberOfSelectedDirectories();
+  virtual const char *GetNthSelectedDirectory(int i);
+  virtual void SelectDirectory(const char*);
+  virtual void DeselectDirectory(const char*);
+  virtual void ClearSelection();
 
   // Description:
   // Set/Get the maximum number of directories that will be stored
@@ -382,7 +385,6 @@ protected:
   // Description:
   // Member variables
   unsigned int  MaximumNumberOfDirectoriesInHistory;
-  char* SelectedDirectory;
   
 private:
 

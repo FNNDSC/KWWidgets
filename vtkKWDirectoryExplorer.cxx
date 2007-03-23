@@ -49,7 +49,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.7 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.8 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -104,8 +104,6 @@ vtkKWDirectoryExplorer::vtkKWDirectoryExplorer()
   this->DirectoryOpenedCommand  = NULL;
   this->DirectoryClosedCommand  = NULL;
   this->DirectoryRenamedCommand = NULL;
-
-  this->SelectedDirectory = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -153,13 +151,7 @@ vtkKWDirectoryExplorer::~vtkKWDirectoryExplorer()
     this->ContextMenu->Delete();
     this->ContextMenu = NULL;
     }
-
-  if (this->SelectedDirectory)
-    {
-    delete [] this->SelectedDirectory ;
-    this->SelectedDirectory = NULL;
-    }
-  
+ 
   if (this->Internals)
     {      
     delete this->Internals;
@@ -762,7 +754,7 @@ void vtkKWDirectoryExplorer::OpenDirectoryNode(const char* node,
     {
     this->DirectoryTree->GetWidget()->SelectNode(node_str.c_str());
     this->DirectoryTree->GetWidget()->SeeNode(node_str.c_str());
-    this->SetSelectedDirectory(this->GetNthSelectedDirectory(0));
+    this->InvokeDirectoryChangedCommand(this->GetNthSelectedDirectory(0));
     }
     
   // Update dir history list
@@ -921,6 +913,78 @@ void vtkKWDirectoryExplorer::ReloadDirectoryNode(const char* node)
 
     this->OpenDirectoryNode(node_str.c_str());
   }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWDirectoryExplorer::SelectDirectory(const char* dirname)
+{
+  if (!dirname || !(*dirname) ||
+    !vtksys::SystemTools::FileIsDirectory(dirname))
+    {
+    return;
+    }
+
+  vtksys_stl::string dirpath = dirname;
+  vtksys_stl::string nodedir;
+  vtksys::SystemTools::ConvertToUnixSlashes(dirpath);
+
+  vtkstd::vector<vtkstd::string> selnodes;
+  vtksys::SystemTools::Split(
+    this->DirectoryTree->GetWidget()->GetSelection(), selnodes, ' ');
+  vtksys_stl::vector<vtksys_stl::string>::iterator it;
+
+  for(it = selnodes.begin(); it != selnodes.end(); it++)
+    {
+    nodedir = this->DirectoryTree->GetWidget()->
+      GetNodeUserData((*it).c_str());
+    //Convert the path for comparing with other path
+    vtksys::SystemTools::ConvertToUnixSlashes(nodedir);
+    if (vtksys::SystemTools::ComparePath(nodedir.c_str(), 
+      dirpath.c_str()))
+      {
+      this->DirectoryTree->GetWidget()->SelectNode((*it).c_str());
+      break;
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWDirectoryExplorer::DeselectDirectory(const char* dirname)
+{
+  if (!dirname || !(*dirname) ||
+    !vtksys::SystemTools::FileIsDirectory(dirname))
+    {
+    return;
+    }
+
+  vtksys_stl::string dirpath = dirname;
+  vtksys_stl::string nodedir;
+  vtksys::SystemTools::ConvertToUnixSlashes(dirpath);
+
+  vtkstd::vector<vtkstd::string> selnodes;
+  vtksys::SystemTools::Split(
+    this->DirectoryTree->GetWidget()->GetSelection(), selnodes, ' ');
+  vtksys_stl::vector<vtksys_stl::string>::iterator it;
+
+  for(it = selnodes.begin(); it != selnodes.end(); it++)
+    {
+    nodedir = this->DirectoryTree->GetWidget()->
+      GetNodeUserData((*it).c_str());
+    //Convert the path for comparing with other path
+    vtksys::SystemTools::ConvertToUnixSlashes(nodedir);
+    if (vtksys::SystemTools::ComparePath(nodedir.c_str(), 
+      dirpath.c_str()))
+      {
+      this->DirectoryTree->GetWidget()->DeselectNode((*it).c_str());
+      break;
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWDirectoryExplorer::ClearSelection()
+{
+  this->DirectoryTree->GetWidget()->ClearSelection();
 }
 
 //----------------------------------------------------------------------------
@@ -1222,41 +1286,6 @@ const char* vtkKWDirectoryExplorer::GetNthSelectedNode(int i)
   static char buffer[100];
   strcpy(buffer, selnodes[i].c_str());
   return buffer;
-}
-
-//----------------------------------------------------------------------------
-void  vtkKWDirectoryExplorer::SetSelectedDirectory(
-  const char* arg)
-{
-  if (this->SelectedDirectory == NULL && arg == NULL) 
-    { 
-    return;
-    }
-
-  if (this->SelectedDirectory && arg && 
-      (!strcmp(this->SelectedDirectory, arg))) 
-    { 
-    return;
-    }
-
-  if (this->SelectedDirectory) 
-    { 
-    delete [] this->SelectedDirectory; 
-    }
-
-  if (arg)
-    {
-    this->SelectedDirectory = new char[strlen(arg)+1];
-    strcpy(this->SelectedDirectory,arg);
-    }
-   else
-    {
-    this->SelectedDirectory = NULL;
-    }
-
-  this->Modified();
-
-  this->InvokeDirectoryChangedCommand(this->SelectedDirectory);
 }
 
 //----------------------------------------------------------------------------
@@ -1719,7 +1748,7 @@ void vtkKWDirectoryExplorer::DirectoryClosedCallback(
       this->UpdateDirectoryNode(node);
       this->DirectoryTree->GetWidget()->SelectNode(node);
       this->UpdateMostRecentDirectoryHistory(node);
-      this->SetSelectedDirectory(this->GetNthSelectedDirectory(0));
+      this->InvokeDirectoryChangedCommand(this->GetNthSelectedDirectory(0));
       
       // update Back/Forward button state  
       this->Update();
@@ -2090,16 +2119,16 @@ void vtkKWDirectoryExplorer::SetDirectoryChangedCommand(
 void vtkKWDirectoryExplorer::InvokeDirectoryChangedCommand(
   const char* directory)
 {
-  if (this->DirectoryChangedCommand && *this->DirectoryChangedCommand && 
-      directory)
+  vtksys_stl::string dirpath = directory;
+  if (this->DirectoryChangedCommand && *this->DirectoryChangedCommand)
     {
     this->Script("%s \"%s\"", this->DirectoryChangedCommand, 
                  vtksys::SystemTools::EscapeChars(
-                   directory, 
+                   dirpath.c_str(), 
                    KWFileBrowser_ESCAPE_CHARS).c_str());
     }
   this->InvokeEvent(vtkKWDirectoryExplorer::DirectoryChangedEvent, 
-                    (void*)directory);
+                    (void*)dirpath.c_str());
 }
 
 //----------------------------------------------------------------------------
