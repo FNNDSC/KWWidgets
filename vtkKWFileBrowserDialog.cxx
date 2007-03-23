@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.9 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -551,7 +551,7 @@ int vtkKWFileBrowserDialog::DirectoryOK()
 int vtkKWFileBrowserDialog::FileOK()
 {
   int num_files = 
-    this->FileBrowserWidget->GetFileListTable()->GetNumberOfSelectedFiles();
+    this->FileBrowserWidget->GetFileListTable()->GetNumberOfSelectedFileNames();
 
   // More than one file selected
 
@@ -561,7 +561,7 @@ int vtkKWFileBrowserDialog::FileOK()
     for (int i = 0; i < num_files; i++)
       {
       selfile = 
-        this->FileBrowserWidget->GetFileListTable()->GetNthSelectedFile(i);
+        this->FileBrowserWidget->GetFileListTable()->GetNthSelectedFileName(i);
       if (vtksys::SystemTools::FileIsDirectory(selfile.c_str()))
         {
         vtkKWMessageDialog::PopupMessage(
@@ -577,7 +577,7 @@ int vtkKWFileBrowserDialog::FileOK()
     if (this->SaveDialog)
       {
       if (!this->ConfirmOverwrite(
-         this->FileBrowserWidget->GetFileListTable()->GetNthSelectedFile(0)))
+         this->FileBrowserWidget->GetFileListTable()->GetNthSelectedFileName(0)))
         {
         return 0;
         }
@@ -674,7 +674,7 @@ int vtkKWFileBrowserDialog::FileOK()
   if (num_files == 1)
     {
     vtksys_stl::string fullname = 
-      this->FileBrowserWidget->GetFileListTable()->GetNthSelectedFile(0);
+      this->FileBrowserWidget->GetFileListTable()->GetNthSelectedFileName(0);
     if (vtksys::SystemTools::FileIsDirectory(fullname.c_str()))
       {
       this->FileBrowserWidget->GetDirectoryExplorer()->OpenDirectory(

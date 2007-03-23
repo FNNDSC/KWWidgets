@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.7 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -529,7 +529,7 @@ void vtkKWFileBrowserWidget::UpdateFileSelectionColor(int /*infocus*/)
     this->FileListTable->SetSelectionForegroundColor(
       this->SelectionForegroundColor);
     }
-  else if (this->FileListTable->GetNumberOfSelectedFiles() > 0)
+  else if (this->FileListTable->GetNumberOfSelectedFileNames() > 0)
     {
     this->FileListTable->SetSelectionBackgroundColor(
       this->OutOfFocusSelectionBackgroundColor);

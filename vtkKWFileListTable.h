@@ -65,11 +65,11 @@ public:
   // Description:
   // Get the files that are selected.  This is meant
   // for use with MultipleSelection mode.
-  vtkGetStringMacro(SelectedFile);
-  void SetSelectedFile(const char*);
-  virtual int GetNumberOfSelectedFiles();
-  const char *GetNthSelectedFile(int i);
-  virtual void SelectFile(const char* filename);
+  virtual int GetNumberOfSelectedFileNames();
+  const char *GetNthSelectedFileName(int i);
+  virtual void SelectFileName(const char* filename);
+  virtual void DeselectFileName(const char*);
+  virtual void ClearSelection();
 
   // Description:
   // Set/Get the parent directory, of which this widget is 
@@ -271,7 +271,6 @@ protected:
   vtkKWFileListTableInternals *Internals;
   vtkKWMultiColumnListWithScrollbars *FileList;
   vtkKWMenu *ContextMenu;
-  char* SelectedFile;
   char* ParentDirectory;
   
 private:
