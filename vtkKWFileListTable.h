@@ -54,6 +54,12 @@ public:
     const char *fileextensions);
 
   // Description:
+  // Get the parent directory, of which this widget is 
+  // displaying the files and directories
+  vtkGetStringMacro(ParentDirectory);
+  vtkSetStringMacro(ParentDirectory);
+
+  // Description:
   // Set the one of several styles for manipulating the selection. 
   // Valid constants can be found in vtkKWOptions::SelectionModeType.
   virtual void SetSelectionMode(int);
@@ -73,12 +79,6 @@ public:
   virtual void DeselectFileName(const char*);
   virtual void ClearSelection();
 
-  // Description:
-  // Set/Get the parent directory, of which this widget is 
-  // displaying the files and directories
-  vtkGetStringMacro(ParentDirectory);
-  vtkSetStringMacro(ParentDirectory);
-  
   // Description:
   // Set/Get the selection background and foreground colors.
   virtual void GetSelectionBackgroundColor(double *r, double *g, double *b);
@@ -146,8 +146,7 @@ public:
   // Description:
   // Callback, do NOT use. 
   // Right-click context menu callbacks
-  virtual void FileRightClickCallback(
-    int row, int col, int x, int y);
+  virtual void ContextMenuCallback(int row, int col, int x, int y);
   
   // Description:
   // Callback, do NOT use. 
@@ -158,51 +157,45 @@ public:
   
   // Description:
   // Callback, do NOT use. 
-  // Rename callback from the right-click context menu
-  virtual int RenameCallback();
+  // Rename callback.
+  virtual int RenameFileCallback();
   
   // Description:
   // Callback, do NOT use. 
-  // Callback when the file list table is getting focus.
+  // Callback triggered when the file list table is getting focus.
   virtual void FocusInCallback();
   
   // Description:
   // Callback, do NOT use. 
-  // Launch native explorer callback from right-click context menu.
-  virtual void RightClickExploreCallback();
+  // Launch native explorer callback.
+  virtual void ExploreFileCallback();
 
   // Description:
   // Callback, do NOT use. 
-  // Create new folder callback from right-click context menu.
+  // Create new folder callback.
   virtual void CreateNewFolderCallback(const char* parentdir);
 
   // Description:
   // Callback, do NOT use. 
-  // Callback for when the file selection is changed in the file list. If the
-  // selected file is a file, set FileName to this file; if it is a dir,
-  // set FileName to null.
+  // Callback triggered when the file selection is changed in the file list. 
   virtual void SelectedFileChangedCallback();
   
   // Description:
   // Callback, do NOT use. 
-  // Callback for when the Navigation keys: Home/End, is pressed. 
-  // This is used to change the default behavoir of 
-  // vtkKWMultiColumnList, so that the list will behave like win exploer
-  // The reason this is not put in vtkKWMultiColumnList is that we donot
-  // want to override the native Home/End keypress behavior of that widget.
+  // Callback triggered for the Navigation keys: Home/End. 
+  // This is used to change the default behavior of the
+  // vtkKWMultiColumnList, so that the list behaves more like Win32 explorer
   virtual void KeyHomeEndNavigationCallback(const char *key);
     
   // Description:
   // Callback, do NOT use. 
-  // Callback for when an item is double clicked in the file list. 
-  // If the item is a directory, open it in the directory tree and select it;
-  // if the item is a file, set FileName to this file, and call OK().
+  // Callback triggered when an item is double clicked in the file list. 
   virtual void FileDoubleClickCallback();
   
   // Description:
   // Callback, do NOT use. 
-  // Callback for when the 'Delete' key is pressed.
-  // Remove selected item from file list
+  // Callback triggered when the 'Delete' key is pressed.
+  // Remove the selected item from the file list.
   virtual int RemoveSelectedFileCallback();
 
   // Description:
@@ -215,9 +208,7 @@ public:
   
   // Description:
   // Callback, do NOT use. 
-  // When the size column in the file list is displayed, convert 
-  // the celltext (size value in bytes) to 'KB' format.
-  // Funtion returns the formatted string that will be displayed: const char*
+  // Sort items by time.
   virtual int SortTimeCallback(const char* cell1, const char* cell2);
 
   // Description:
@@ -231,7 +222,7 @@ public:
   // Callback, do NOT use. 
   // When the Name column in the file list is displayed, convert 
   // the celltext (1 as file or 0 as folder plus real name for sorting 
-  // while keeps folders and files seperate) to real name
+  // while keeping folders and files seperate) to real name.
   // Funtion returns the real name that will be displayed: const char*       
   virtual char *GetRealNameStringCallback(const char* celltext);
   
@@ -253,12 +244,8 @@ protected:
   virtual void CreateWidget();
   
   // Description:
-  // Create the actual list table.
-  virtual void CreateFileListTable();
-  
-  // Description:
   // Populate the right-click context menu.
-  virtual void PopulateFileContextMenu(int enable, int rowselected);
+  virtual void PopulateContextMenu(int rowselected);
 
   // Description:
   // Commands
@@ -273,8 +260,8 @@ protected:
   virtual void InvokeFileSelectedCommand(const char* path);
   virtual void InvokeFileDoubleClickedCommand(const char* path);
   virtual void InvokeFileRemovedCommand(const char* path, int isDir);
-  virtual void InvokeFileRenamedCommand(const char* oldname, 
-                                        const char* newname);
+  virtual void InvokeFileRenamedCommand(
+    const char* oldname, const char* newname);
   virtual void InvokeFolderCreatedCommand(const char* filename);
   
   // Description:
@@ -289,7 +276,7 @@ private:
   void operator=(const vtkKWFileListTable&); // Not implemented
 
   // Description:
-  // Get a temparory full filename given the row index, 
+  // Get a temporary full filename given the row index, 
   // should be stored right away
   virtual char* GetRowFileName(int row);
 
