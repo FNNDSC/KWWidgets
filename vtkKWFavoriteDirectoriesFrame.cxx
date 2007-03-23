@@ -56,7 +56,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.5 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -249,57 +249,6 @@ void vtkKWFavoriteDirectoriesFrame::Update()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWFavoriteDirectoriesFrame::SelectFavoriteDirectory(
-  const char* path)
-{
-  this->SelectFavoriteDirectoryWithName(
-    this->GetNameOfFavoriteDirectory(path));
-}
-
-//----------------------------------------------------------------------------
-void vtkKWFavoriteDirectoriesFrame::SelectFavoriteDirectoryWithName(
-  const char* name)
-{
-  if (name && *name)
-    {
-    int nb_children = 
-      this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfChildren();
-    bool found = false;
-
-    // Look for which favorite button is clicked and 
-    // set it background color as selected
-
-    for (int index = 0; index < nb_children; index++)
-      {
-      vtkKWPushButton *child = vtkKWPushButton::SafeDownCast(
-        this->FavoriteDirectoryFrame->GetFrame()->GetNthChild(index));
-      if (child == NULL || child->GetText() == NULL) 
-        {
-        continue;
-        }
-      if (!found && child && child->IsPacked() && 
-          strcmp(child->GetText(), name) == 0) 
-        {
-        found = true;
-        child->SetReliefToRidge();
-        child->SetBackgroundColor(
-          this->Internals->SelectedFavoriteDirectoryBackgroundColor);
-        }
-      else
-        {
-        child->SetBackgroundColor(
-          this->FavoriteDirectoryFrame->GetBackgroundColor());
-        child->SetReliefToFlat();
-        }
-      }
-    }
-  else
-    {
-    this->ClearFavoriteDirectorySelection();
-    }
-}
-
-//----------------------------------------------------------------------------
 int vtkKWFavoriteDirectoriesFrame::HasFavoriteDirectoryWithName(
   const char* name)
 {
@@ -343,9 +292,115 @@ const char* vtkKWFavoriteDirectoriesFrame::GetNameOfFavoriteDirectory(
 }
 
 //----------------------------------------------------------------------------
+vtkKWPushButton* 
+vtkKWFavoriteDirectoriesFrame::GetButtonOfFavoriteDirectoryWithName(
+  const char* name)
+{
+  if (name && *name)
+    {
+    int nb_children = 
+      this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfChildren();
+    for (int index = 0; index < nb_children; index++)
+      {
+      vtkKWPushButton *child = vtkKWPushButton::SafeDownCast(
+        this->FavoriteDirectoryFrame->GetFrame()->GetNthChild(index));
+      if (child && child->IsPacked() && strcmp(child->GetText(), name) == 0)
+        {
+        return child;
+        }
+      }
+    }
+  return NULL;
+}
+
+//----------------------------------------------------------------------------
 int vtkKWFavoriteDirectoriesFrame::HasFavoriteDirectory(const char* path)
 {
   return this->GetNameOfFavoriteDirectory(path) ? 1 : 0;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFavoriteDirectoriesFrame::SetFavoriteDirectoryPath(
+  const char* oldpath, 
+  const char* newpath)
+{
+  vtkKWFavoriteDirectoriesFrameInternals::FavoriteDirectoryEntryIterator 
+    it = this->Internals->FavoriteDirectories.begin();
+  for(; it != this->Internals->FavoriteDirectories.end(); it++)
+    {
+    if (strcmp((*it)->Path.c_str(), oldpath) == 0)
+      { 
+      vtkKWPushButton *child = 
+        this->GetButtonOfFavoriteDirectoryWithName((*it)->Name.c_str());
+      (*it)->Path = newpath;
+      this->UpdateFavoriteDirectoryButton(
+        child, (*it)->Path.c_str(), (*it)->Name.c_str());
+      this->WriteFavoriteDirectoriesToRegistry();
+      break;
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFavoriteDirectoriesFrame::SetFavoriteDirectoryName(
+  const char* oldname, 
+  const char* newname)
+{
+  vtkKWFavoriteDirectoriesFrameInternals::FavoriteDirectoryEntryIterator 
+    it = this->Internals->FavoriteDirectories.begin();
+  for(; it != this->Internals->FavoriteDirectories.end(); it++)
+    {
+    if (strcmp((*it)->Name.c_str(), oldname) == 0)
+      { 
+      vtkKWPushButton *child = 
+        this->GetButtonOfFavoriteDirectoryWithName((*it)->Name.c_str());
+      (*it)->Name = newname;
+      this->UpdateFavoriteDirectoryButton(
+        child, (*it)->Path.c_str(), (*it)->Name.c_str());
+      this->WriteFavoriteDirectoriesToRegistry();
+      break;
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFavoriteDirectoriesFrame::SelectFavoriteDirectory(
+  const char* path)
+{
+  this->SelectFavoriteDirectoryWithName(
+    this->GetNameOfFavoriteDirectory(path));
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFavoriteDirectoriesFrame::SelectFavoriteDirectoryWithName(
+  const char* name)
+{
+  this->ClearFavoriteDirectorySelection();
+  vtkKWPushButton *child = this->GetButtonOfFavoriteDirectoryWithName(name);
+  if (child)
+    {
+    child->SetReliefToRidge();
+    child->SetBackgroundColor(
+      this->Internals->SelectedFavoriteDirectoryBackgroundColor);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFavoriteDirectoriesFrame::ClearFavoriteDirectorySelection()
+{
+  int nb_children = 
+    this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfChildren();
+  for(int index = 0; index < nb_children; index++)
+    {
+    vtkKWPushButton *child = vtkKWPushButton::SafeDownCast(
+      this->FavoriteDirectoryFrame->GetFrame()->GetNthChild(index));
+    if (child)
+      {
+      child->SetReliefToFlat();
+      child->SetBackgroundColor(
+        this->FavoriteDirectoryFrame->GetFrame()->GetBackgroundColor());
+      }
+    }    
 }
 
 //----------------------------------------------------------------------------
@@ -394,11 +449,9 @@ void vtkKWFavoriteDirectoriesFrame::AddFavoriteDirectoryToFrame(
   vtkKWPushButton *dirbutton = vtkKWPushButton::New(); 
   dirbutton->SetParent(this->FavoriteDirectoryFrame->GetFrame());
   dirbutton->Create();
-  dirbutton->SetText(name);
   dirbutton->SetReliefToFlat();
   dirbutton->SetOverReliefToRaised();
   dirbutton->SetCompoundModeToTop();
-  dirbutton->SetBalloonHelpString(path);
   dirbutton->SetImageToPredefinedIcon(vtkKWIcon::IconFolder32);
   dirbutton->SetBackgroundColor(
     this->FavoriteDirectoryFrame->GetBackgroundColor());
@@ -406,19 +459,7 @@ void vtkKWFavoriteDirectoriesFrame::AddFavoriteDirectoryToFrame(
     this->FavoriteDirectoryFrame->GetBackgroundColor());
   dirbutton->SetConfigurationOptionAsInt("-takefocus", 0);
 
-  char cmd[256];
-  sprintf(cmd, "SelectFavoriteDirectoryCallback \"%s\" \"%s\"",
-          vtksys::SystemTools::EscapeChars(
-            path, 
-            KWFileBrowser_ESCAPE_CHARS).c_str(), name);
-  dirbutton->SetCommand(this, cmd);
-
-  char rightclickcmd[256];
-  sprintf(rightclickcmd, "PopupFavoriteDirectoryCallback \"%s\" %%X %%Y",
-          vtksys::SystemTools::EscapeChars(
-            path, 
-            KWFileBrowser_ESCAPE_CHARS).c_str());
-  dirbutton->AddBinding("<Button-3>", this, rightclickcmd);
+  this->UpdateFavoriteDirectoryButton(dirbutton, path, name);
 
   int nb_children = 
     this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfPackedChildren();
@@ -441,6 +482,35 @@ void vtkKWFavoriteDirectoriesFrame::AddFavoriteDirectoryToFrame(
 }
 
 //----------------------------------------------------------------------------
+void vtkKWFavoriteDirectoriesFrame::UpdateFavoriteDirectoryButton(
+  vtkKWPushButton *button, const char *path, const char* name)
+{
+  if (!name || !path)
+    {
+    return;
+    }
+
+  button->SetText(name);
+  button->SetBalloonHelpString(path);
+
+  char cmd[256];
+  sprintf(cmd, "SelectFavoriteDirectoryCallback \"%s\" \"%s\"",
+          vtksys::SystemTools::EscapeChars(
+            path, 
+            KWFileBrowser_ESCAPE_CHARS).c_str(), 
+          name);
+  button->SetCommand(this, cmd);
+
+  char rightclickcmd[256];
+  sprintf(rightclickcmd, "PopupFavoriteDirectoryCallback \"%s\" %%X %%Y",
+          vtksys::SystemTools::EscapeChars(
+            path, 
+            KWFileBrowser_ESCAPE_CHARS).c_str());
+
+  button->AddBinding("<Button-3>", this, rightclickcmd);
+}
+
+//----------------------------------------------------------------------------
 void vtkKWFavoriteDirectoriesFrame::PopulateContextMenu(
   vtkKWMenu *menu, const char *path)
 {
@@ -449,6 +519,7 @@ void vtkKWFavoriteDirectoriesFrame::PopulateContextMenu(
 
 #ifdef _WIN32
   // Explore to open native explorer file
+
   sprintf(command, "ExploreFavoriteDirectoryCallback \"%s\"", 
           vtksys::SystemTools::EscapeChars(
             buttonpath.c_str(), 
@@ -457,6 +528,7 @@ void vtkKWFavoriteDirectoriesFrame::PopulateContextMenu(
 #endif
 
   // Rename file
+
   sprintf(command, "RenameFavoriteDirectoryCallback \"%s\"", 
           vtksys::SystemTools::EscapeChars(
             buttonpath.c_str(), 
@@ -464,6 +536,7 @@ void vtkKWFavoriteDirectoriesFrame::PopulateContextMenu(
   menu->AddCommand("Rename", this, command);
 
   // Delete file
+
   sprintf(command, "RemoveFavoriteDirectoryCallback \"%s\"", 
           vtksys::SystemTools::EscapeChars(
             buttonpath.c_str(), 
@@ -604,22 +677,7 @@ void vtkKWFavoriteDirectoriesFrame::RenameFavoriteDirectoryCallback(
     return;
     }
 
-  const char *name = NULL;
-
-  vtkKWFavoriteDirectoriesFrameInternals::FavoriteDirectoryEntryIterator 
-    it = this->Internals->FavoriteDirectories.begin();
-  vtkKWFavoriteDirectoriesFrameInternals::FavoriteDirectoryEntryIterator 
-    end = this->Internals->FavoriteDirectories.end();
-  for(; it!=end; it++)
-    {
-    if (vtksys::SystemTools::ComparePath(
-          ((*it)->Path).c_str(), path))
-      {
-      name = (*it)->Name.c_str();
-      break;
-      }
-    }
-
+  const char *name = this->GetNameOfFavoriteDirectory(path);
   if (!name)
     {
     vtkKWMessageDialog::PopupMessage(
@@ -690,21 +748,7 @@ void vtkKWFavoriteDirectoriesFrame::RenameFavoriteDirectoryCallback(
 
   // Rename
 
-  int nb_children = 
-    this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfPackedChildren();
-  for(int index = 0; index < nb_children; index++)
-    {
-    vtkKWPushButton *child = vtkKWPushButton::SafeDownCast(
-      this->FavoriteDirectoryFrame->GetFrame()->GetNthChild(index));
-    if (child && child->IsPacked()&& 
-        strcmp(child->GetText(), name) == 0)
-      {
-      (*it)->Name = newname.c_str(); 
-      child->SetText(newname.c_str());
-      this->WriteFavoriteDirectoriesToRegistry();
-      return;
-      }
-    }
+  this->SetFavoriteDirectoryName(name, newname.c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -717,106 +761,16 @@ void vtkKWFavoriteDirectoriesFrame::RemoveFavoriteDirectory(
     {
     if (strcmp((*it)->Path.c_str(), path) == 0)
       { 
-      int nb_children = 
-        this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfChildren();
-      for (int index = 0; index < nb_children; index++)
+      vtkKWPushButton *child = 
+        this->GetButtonOfFavoriteDirectoryWithName((*it)->Name.c_str());
+      if (child)
         {
-        vtkKWPushButton *child = vtkKWPushButton::SafeDownCast(
-          this->FavoriteDirectoryFrame->GetFrame()->GetNthChild(index));
-        if (child && strcmp((*it)->Name.c_str(), child->GetText()) == 0)
-          {
-          this->Internals->FavoriteDirectories.erase(it);
-          child->Unpack();
-          child->SetParent(NULL);
-          this->WriteFavoriteDirectoriesToRegistry();
-          break;
-          } 
+        child->Unpack();
+        child->SetParent(NULL);
         }
+      this->Internals->FavoriteDirectories.erase(it);
+      this->WriteFavoriteDirectoriesToRegistry();
       break;
-      }
-    }
-}
-
-//----------------------------------------------------------------------------
-void vtkKWFavoriteDirectoriesFrame::SetFavoriteDirectoryPath(
-  const char* oldpath, 
-  const char* newpath)
-{
-  vtkKWFavoriteDirectoriesFrameInternals::FavoriteDirectoryEntryIterator 
-    it = this->Internals->FavoriteDirectories.begin();
-  for(; it != this->Internals->FavoriteDirectories.end(); it++)
-    {
-    if (strcmp((*it)->Path.c_str(), oldpath) == 0)
-      { 
-      break;
-      }
-    }
-    
-  if (it != this->Internals->FavoriteDirectories.end())
-    {
-    int nb_children = 
-      this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfChildren();
-    for (int index = 0; index < nb_children; index++)
-      {
-      vtkKWPushButton *child = vtkKWPushButton::SafeDownCast(
-        this->FavoriteDirectoryFrame->GetFrame()->GetNthChild(index));
-      if (child && strcmp((*it)->Name.c_str(), child->GetText()) == 0)
-        {
-        (*it)->Path = newpath;
-        char cmd[256];
-        sprintf(cmd, "SelectFavoriteDirectoryCallback \"%s\" \"%s\"",
-                vtksys::SystemTools::EscapeChars(
-                  (*it)->Path.c_str(), 
-                  KWFileBrowser_ESCAPE_CHARS).c_str(), 
-                vtksys::SystemTools::EscapeChars(
-                  (*it)->Name.c_str(), 
-                  KWFileBrowser_ESCAPE_CHARS).c_str());
-        child->SetCommand(this, cmd);
-        this->WriteFavoriteDirectoriesToRegistry();
-        break;
-        }
-      }
-    }
-}
-
-//----------------------------------------------------------------------------
-void vtkKWFavoriteDirectoriesFrame::SetFavoriteDirectoryName(
-  const char* oldname, 
-  const char* newname)
-{
-  vtkKWFavoriteDirectoriesFrameInternals::FavoriteDirectoryEntryIterator 
-    it = this->Internals->FavoriteDirectories.begin();
-  for(; it != this->Internals->FavoriteDirectories.end(); it++)
-    {
-    if (strcmp((*it)->Name.c_str(), oldname) == 0)
-      { 
-      break;
-      }
-    }
-    
-  if (it != this->Internals->FavoriteDirectories.end())
-    {
-    int nb_children = 
-      this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfChildren();
-    for (int index = 0; index < nb_children; index++)
-      {
-      vtkKWPushButton *child = vtkKWPushButton::SafeDownCast(
-        this->FavoriteDirectoryFrame->GetFrame()->GetNthChild(index));
-      if (child && strcmp((*it)->Name.c_str(), child->GetText()) == 0)
-        {
-        (*it)->Name = newname;
-        char cmd[256];
-        sprintf(cmd, "SelectFavoriteDirectoryCallback \"%s\" \"%s\"",
-                vtksys::SystemTools::EscapeChars(
-                  (*it)->Path.c_str(), 
-                  KWFileBrowser_ESCAPE_CHARS).c_str(), 
-                vtksys::SystemTools::EscapeChars(
-                  (*it)->Name.c_str(), 
-                  KWFileBrowser_ESCAPE_CHARS).c_str());
-        child->SetCommand(this, cmd);
-        this->WriteFavoriteDirectoriesToRegistry();
-        break;
-        }
       }
     }
 }
@@ -1184,21 +1138,6 @@ int vtkKWFavoriteDirectoriesFrame::AddSpecialFavoriteFolder(int csidl)
 #endif  
 
   return 0;
-}
-
-//----------------------------------------------------------------------------
-void vtkKWFavoriteDirectoriesFrame::ClearFavoriteDirectorySelection()
-{
-  int nb_children = 
-    this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfChildren();
-  for(int index = 0; index < nb_children; index++)
-    {
-    vtkKWPushButton *child = vtkKWPushButton::SafeDownCast(
-      this->FavoriteDirectoryFrame->GetFrame()->GetNthChild(index));
-    child->SetReliefToFlat();
-    child->SetBackgroundColor(
-      this->FavoriteDirectoryFrame->GetFrame()->GetBackgroundColor());
-    }    
 }
 
 //----------------------------------------------------------------------------

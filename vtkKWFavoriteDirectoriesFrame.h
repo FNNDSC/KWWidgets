@@ -157,6 +157,8 @@ protected:
   // Description:
   // Get the name of a favorite directory given its path (NULL if not found)
   virtual const char* GetNameOfFavoriteDirectory(const char *path);
+  virtual vtkKWPushButton* GetButtonOfFavoriteDirectoryWithName(
+    const char *name);
 
   // Description:
   // Load/Save up to 'maximum_number' favorite dirs 
@@ -188,7 +190,9 @@ protected:
   virtual void AddFavoriteDirectoryToFrame(
     const char *path,
     const char *name); 
-   
+  virtual void UpdateFavoriteDirectoryButton(
+    vtkKWPushButton *button, const char *path, const char *name); 
+
   // Description:
   // Select a favorite directory given its name
   virtual void SelectFavoriteDirectoryWithName(const char* path);
@@ -236,6 +240,7 @@ protected:
   unsigned int MaximumNumberOfFavoriteDirectoriesInRegistry;
   
 private:
+
   vtkKWFavoriteDirectoriesFrame(const vtkKWFavoriteDirectoriesFrame&); // Not implemented
   void operator=(const vtkKWFavoriteDirectoriesFrame&); // Not implemented
 };
