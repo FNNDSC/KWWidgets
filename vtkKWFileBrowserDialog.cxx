@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.7 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -652,9 +652,19 @@ int vtkKWFileBrowserDialog::FileOK()
       return 1;
       }
     
-    this->FileBrowserWidget->GetFileListTable()->ShowFileList(
-      this->FileBrowserWidget->GetFileListTable()->GetParentDirectory(),
-      realname, NULL);
+    vtksys_stl::string fullPattern = realname;
+    if(fullPattern.find("*") == vtksys_stl::string::npos &&
+      fullPattern.find("?") == vtksys_stl::string::npos)
+      {
+      this->FileBrowserWidget->FilterFilesByExtensions(
+        this->Internals->CurrentFileExtensions.c_str());
+      }
+      else
+      {
+      this->FileBrowserWidget->GetFileListTable()->ShowFileList(
+        this->FileBrowserWidget->GetFileListTable()->GetParentDirectory(),
+        fullPattern.c_str(), NULL);
+      }
     return 0;
     }
 
