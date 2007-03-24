@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.9 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -373,21 +373,28 @@ void vtkKWFileBrowserWidget::PropagateMultipleSelection()
     {
     option = vtkKWOptions::SelectionModeMultiple;
     }
-  if (!this->FileListTableVisibility)
+
+  if (this->DirectoryExplorer && this->DirectoryExplorer->IsCreated())
     {
-    this->DirectoryExplorer->SetSelectionMode(option);
-    }
-  else
-    {
-    this->DirectoryExplorer->SetSelectionMode(
-      vtkKWOptions::SelectionModeSingle);
+    if (!this->FileListTableVisibility)
+      {
+      this->DirectoryExplorer->SetSelectionMode(option);
+      }
+    else
+      {
+      this->DirectoryExplorer->SetSelectionMode(
+        vtkKWOptions::SelectionModeSingle);
+      }
     }
 
-  if (this->MultipleSelection)
+  if (this->FileListTable && this->FileListTable->IsCreated())
     {
-    option = vtkKWOptions::SelectionModeExtended;
+    if (this->MultipleSelection)
+      {
+      option = vtkKWOptions::SelectionModeExtended;
+      }
+    this->FileListTable->SetSelectionMode(option);
     }
-  this->FileListTable->SetSelectionMode(option);
 }
 
 //----------------------------------------------------------------------------

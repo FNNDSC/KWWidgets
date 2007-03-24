@@ -47,9 +47,11 @@
 #include <shlobj.h>
 #endif
 
+// #define _MY_DEBUG
+
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.10 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -452,7 +454,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   
   vtksys_stl::string nodepath = dirtree->GetNodeUserData(node);
 
-#if defined (_DEBUG)  
+#if defined (_MY_DEBUG)  
   cout << "-----------------UpdateDirectoryNode: " 
        << nodepath << endl;
   clock_t start = clock();
@@ -467,7 +469,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   
   int num_files = dir->GetNumberOfFiles();
   
-#if defined (_DEBUG)  
+#if defined (_MY_DEBUG)  
   double durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
   cout << "Dir open time: " << durationopen << endl;
   start = clock();
@@ -480,7 +482,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   vtksys::SystemTools::Split(
     dirtree->GetNodeChildren(node), children, ' ');
 
-#if defined (_DEBUG)  
+#if defined (_MY_DEBUG)  
   durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
   cout << "Get Node children time: " << durationopen << endl;
 #endif
@@ -502,7 +504,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   ostrstream tk_cfgcmd, tk_treecmd;
   const char *treename = dirtree->GetWidgetName();
 
-#if defined (_DEBUG)  
+#if defined (_MY_DEBUG)  
   clock_t scriptstart = clock();
 #endif
   
@@ -605,7 +607,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
                    fullname.c_str(), KWFileBrowser_ESCAPE_CHARS).c_str() 
                  << "\"" << endl;
         
-#if defined (_DEBUG)  
+#if defined (_MY_DEBUG)  
       start = clock();
 #endif
       // Check if this new folder has subfolders.
@@ -663,7 +665,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
           }
         } //end for
 
-#if defined (_DEBUG)  
+#if defined (_MY_DEBUG)  
       durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
       cout << tmp_name << "---- Check sub folder time: "   
            << durationopen << endl;
@@ -673,7 +675,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
 
   tmpdir->Delete();
     
-#if defined (_DEBUG)  
+#if defined (_MY_DEBUG)  
   durationopen = (double)(clock() - scriptstart) / CLOCKS_PER_SEC;
   cout << "Creat Script time: " << durationopen << endl;
   start = clock();
@@ -698,7 +700,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
     }
   tk_cfgcmd.rdbuf()->freeze(0);
    
-#if defined (_DEBUG)  
+#if defined (_MY_DEBUG)  
   durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
   cout << "Run script time: " << durationopen << endl;
   start = clock();
@@ -723,7 +725,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
 
   dir->Delete();
 
-#if defined (_DEBUG)  
+#if defined (_MY_DEBUG)  
   durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
   cout << "Check dir exists time: " << durationopen << endl;
 #endif
@@ -1267,8 +1269,6 @@ const char *vtkKWDirectoryExplorer::GetNthSelectedDirectory(int i)
 
   if (i < 0 || i >= this->GetNumberOfSelectedDirectories())
     {
-    vtkErrorMacro(<< this->GetClassName()
-                  << " index for GetNthSelectedDirectory is out of range");
     return NULL;
     }
 
@@ -1285,8 +1285,6 @@ const char* vtkKWDirectoryExplorer::GetNthSelectedNode(int i)
 {
   if (i < 0 || i >= this->GetNumberOfSelectedDirectories())
     {
-    vtkErrorMacro(<< this->GetClassName()
-                  << " index for GetNthSelectedNode is out of range");
     return NULL;
     }
 

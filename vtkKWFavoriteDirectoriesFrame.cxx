@@ -56,7 +56,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.6 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -846,6 +846,7 @@ void vtkKWFavoriteDirectoriesFrame::WriteFavoriteDirectoriesToRegistry(
     registryhelper->DeleteValue(reg_key, label_key);
     }
   
+  registryhelper->Close();
   registryhelper->Delete();
   
 #ifdef _WIN32
@@ -919,7 +920,7 @@ void vtkKWFavoriteDirectoriesFrame::RestoreFavoriteDirectoriesFromUserRegistry(
         }
       }
     }
-
+  registryhelper->Close();
   registryhelper->Delete();  
 }
 

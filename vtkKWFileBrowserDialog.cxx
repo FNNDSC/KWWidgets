@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.11 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -772,8 +772,6 @@ const char *vtkKWFileBrowserDialog::GetNthFileName(int i)
 {
   if (!this->FileNames || i < 0 || i >= this->FileNames->GetNumberOfValues())
     {
-    vtkErrorMacro(<< this->GetClassName()
-                  << " index for GetNthFileName is out of range");
     return NULL;
     }
 
