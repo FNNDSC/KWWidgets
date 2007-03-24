@@ -49,7 +49,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.9 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -554,7 +554,12 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
     // If it's not a directory, move on
 
     if (stat(fullname.c_str(), &fs) != 0 ||
-        !(fs.st_mode & _S_IFDIR))
+#if defined( _WIN32 )
+        !(fs.st_mode & _S_IFDIR)
+#else
+        !(S_ISDIR(fs.st_mode))
+#endif
+      )
       {
       continue;
       }
@@ -643,7 +648,13 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
           }
         else
           {
-          if (tmp_fs.st_mode & _S_IFDIR)
+          if (
+#if defined( _WIN32 )
+            tmp_fs.st_mode & _S_IFDIR
+#else
+            (S_ISDIR(tmp_fs.st_mode))
+#endif
+            )
             {
             tk_cfgcmd << treename << " itemconfigure " 
                       << strDirID << " -drawcross allways" << endl;
