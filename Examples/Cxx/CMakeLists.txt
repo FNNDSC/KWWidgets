@@ -1,5 +1,6 @@
 SUBDIRS(
   Callbacks
+  FileBrowserDialog
   HelloWorld
   Theme
   WidgetsTour
