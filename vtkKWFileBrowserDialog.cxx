@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.12 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -404,6 +404,7 @@ void vtkKWFileBrowserDialog::PopulateFileTypes()
   vtksys_stl::string filetypetext;
   vtksys_stl::string filetypeext;
   vtksys_stl::string firstValue = "";
+  vtksys_stl::vector<vtksys_stl::string>::iterator it;
 
   vtksys_stl::string strfiletypes = this->GetFileTypes();
 
@@ -418,7 +419,9 @@ void vtkKWFileBrowserDialog::PopulateFileTypes()
     if (filetypes.size() > 1)
       {
       filetypetext = filetypes.front().c_str();
-      filetypeext = (*(++filetypes.begin())).c_str();
+      it = filetypes.begin();
+      ++it;
+      filetypeext = (*it).c_str();
       if(filetypeext.length()>1)
         {
         filetypeext = filetypeext.substr(1, filetypeext.length());
