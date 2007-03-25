@@ -141,7 +141,7 @@ public:
     FileDoubleClickedEvent,
     FileRenamedEvent,
     FolderCreatedEvent,
-    FileRemovedEvent,
+    FileRemovedEvent
   };
   //ETX
  

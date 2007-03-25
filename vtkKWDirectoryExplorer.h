@@ -131,7 +131,7 @@ public:
     DirectoryOpenedEvent,
     DirectoryClosedEvent,
     DirectoryAddedEvent,
-    DirectoryRemovedEvent,
+    DirectoryRemovedEvent
   };
   //ETX
 
