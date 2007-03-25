@@ -56,8 +56,23 @@ public:
   // Description:
   // Get the parent directory, of which this widget is 
   // displaying the files and directories
+  virtual void SetParentDirectory(const char *arg);
   vtkGetStringMacro(ParentDirectory);
-  vtkSetStringMacro(ParentDirectory);
+
+  // Description:
+  // Get the parent directory, of which this widget is 
+  // displaying the files and directories
+  virtual void SetFilePattern(const char *arg);
+  vtkGetStringMacro(FilePattern);
+
+  // Description:
+  // Set/Get the file extenstions that the file table will use
+  // to filter its files.
+  // The argument is NOT a Tk format, just a simple string of extensions
+  // with space between them.
+  // Example: ".txt .text .jpg .jpeg"
+  virtual void SetFileExtensions(const char *arg);
+  vtkGetStringMacro(FileExtensions);
 
   // Description:
   // Set the one of several styles for manipulating the selection. 
@@ -265,11 +280,19 @@ protected:
   virtual void InvokeFolderCreatedCommand(const char* filename);
   
   // Description:
+  // Set the parent directory, file pattern, file extensions
+  virtual void SetParentDirectoryInternal(const char *arg);
+  virtual void SetFilePatternInternal(const char *arg);
+  virtual void SetFileExtensionsInternal(const char *arg);
+  
+  // Description:
   // Member variables
   vtkKWFileListTableInternals *Internals;
   vtkKWMultiColumnListWithScrollbars *FileList;
   vtkKWMenu *ContextMenu;
   char* ParentDirectory;
+  char* FilePattern;
+  char* FileExtensions;
   
 private:
   vtkKWFileListTable(const vtkKWFileListTable&); // Not implemented

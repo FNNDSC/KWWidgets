@@ -52,6 +52,9 @@ public:
   
   // Description:
   // Filter the files of the file list table by file extensions
+  // The argument is NOT a Tk format, just a simple string of extensions
+  // with space between them.
+  // Example: ".txt .text .jpg .jpeg"
   virtual void FilterFilesByExtensions(const char* fileextensions);
 
   // Description:

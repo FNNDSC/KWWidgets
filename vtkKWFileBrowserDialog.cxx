@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.13 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -735,8 +735,16 @@ void vtkKWFileBrowserDialog::FileTypeChangedCallback(
   if (this->FileBrowserWidget->IsCreated() 
       && fileextensions && *fileextensions)
     {
-    this->FileBrowserWidget->FilterFilesByExtensions(fileextensions);
-    this->Internals->CurrentFileExtensions = fileextensions;
+    vtksys_stl::string fileexts = fileextensions;
+
+    vtksys_stl::string::size_type pos1 = fileexts.rfind("(");
+    vtksys_stl::string::size_type pos2 = fileexts.rfind(")");
+    if (pos1 != vtksys_stl::string::npos && pos2 != vtksys_stl::string::npos)
+      {
+      fileexts = fileexts.substr(pos1+1, pos2-pos1-1).c_str();
+      this->FileBrowserWidget->FilterFilesByExtensions(fileexts.c_str());
+      this->Internals->CurrentFileExtensions = fileexts;
+      }
     }  
 }
 

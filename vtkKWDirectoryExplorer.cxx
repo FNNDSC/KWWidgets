@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.11 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -502,6 +502,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   bool dotfound = false, dotdotfound = false;
   
   ostrstream tk_cfgcmd, tk_treecmd;
+  int newdirs = 0;
   const char *treename = dirtree->GetWidgetName();
 
 #if defined (_MY_DEBUG)  
@@ -606,7 +607,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
                  << vtksys::SystemTools::EscapeChars(
                    fullname.c_str(), KWFileBrowser_ESCAPE_CHARS).c_str() 
                  << "\"" << endl;
-        
+      newdirs++;  
 #if defined (_MY_DEBUG)  
       start = clock();
 #endif
@@ -683,8 +684,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
 
   // Run add the tree node command if available
 
-  if (tk_treecmd.rdbuf() && 
-      tk_treecmd.rdbuf()->pcount() > (int)treecmd.size())
+  if (tk_treecmd.rdbuf() && newdirs > 0)
     {
     tk_treecmd << ends;
     this->Script(tk_treecmd.str());
@@ -693,7 +693,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   
   // Run the script for adding/removing 'cross' image to tree node
 
-  if (tk_cfgcmd.rdbuf() && tk_cfgcmd.rdbuf()->pcount() > 0)
+  if (tk_cfgcmd.rdbuf())
     {
     tk_cfgcmd << ends;
     this->Script(tk_cfgcmd.str());

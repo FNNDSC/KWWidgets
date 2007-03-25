@@ -56,7 +56,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.7 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -238,6 +238,17 @@ void vtkKWFavoriteDirectoriesFrame::CreateWidget()
   // Retrieve the favorite directories from registry
 
   this->RestoreFavoriteDirectoriesFromRegistry();
+
+  // We will always have "HOME" as favorite, if it is set
+
+  vtksys_stl::string dir;
+  if(vtksys::SystemTools::GetEnv("HOME", dir))
+    {
+    if(vtksys::SystemTools::FileIsDirectory(dir.c_str()))
+      {
+      this->AddFavoriteDirectoryToFrame(dir.c_str(), "HOME");
+      }
+    }
   
   this->Update();
 }

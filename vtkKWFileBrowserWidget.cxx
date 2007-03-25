@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.10 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -562,44 +562,37 @@ void vtkKWFileBrowserWidget::FilterFilesByExtensions(
   if (this->FileListTable->IsCreated() && 
       fileextensions && *fileextensions)
     {
-    vtksys_stl::string fileexts = fileextensions;
-
-    vtksys_stl::string::size_type pos1 = fileexts.rfind("(");
-    vtksys_stl::string::size_type pos2 = fileexts.rfind(")");
-    if (pos1 != vtksys_stl::string::npos && pos2 != vtksys_stl::string::npos)
+    vtksys_stl::string tmpExts = fileextensions;
+    bool bUseExt = false;
+    vtksys_stl::vector<vtksys_stl::string> extlist;
+    vtksys::SystemTools::Split(tmpExts.c_str(), extlist, ' ');
+    if (extlist.size()>0)
       {
-      vtksys_stl::string tmpExts = fileexts.substr(pos1+1, pos2-pos1-1).c_str();
-      bool bUseExt = false;
-      vtksys_stl::vector<vtksys_stl::string> extlist;
-      vtksys::SystemTools::Split(tmpExts.c_str(), extlist, ' ');
-      if (extlist.size()>0)
+      // if there is a .* in the extenstions list, ignore extensions.
+      vtksys_stl::vector<vtksys_stl::string>::iterator it;
+      bUseExt = true;
+      for(it = extlist.begin(); it != extlist.end(); it++)
         {
-        // if there is a .* in the extenstions list, ignore extensions.
-        vtksys_stl::vector<vtksys_stl::string>::iterator it;
-        bUseExt = true;
-        for(it = extlist.begin(); it != extlist.end(); it++)
+        if (strcmp((*it).c_str(), ".*")==0)
           {
-          if (strcmp((*it).c_str(), ".*")==0)
-            {
-            bUseExt = false;
-            break;
-            }
+          bUseExt = false;
+          break;
           }
         }
-
-      if (bUseExt)
-        {
-        this->FileListTable->ShowFileList(
-          this->DirectoryExplorer->GetSelectedDirectory(),
-          NULL, tmpExts.c_str());
-        this->Internals->CurrentFileExts = fileexts;
-        return;
-        }
       }
-      
+
+    if (bUseExt)
+      {
       this->FileListTable->ShowFileList(
-        this->DirectoryExplorer->GetSelectedDirectory(), NULL, NULL);
-      this->Internals->CurrentFileExts = ".*";
+        this->DirectoryExplorer->GetSelectedDirectory(),
+        NULL, tmpExts.c_str());
+      this->Internals->CurrentFileExts = tmpExts;
+      return;
+      }
+    
+    this->FileListTable->ShowFileList(
+      this->DirectoryExplorer->GetSelectedDirectory(), NULL, NULL);
+    this->Internals->CurrentFileExts = ".*";
     }
 }
 
@@ -866,6 +859,9 @@ void vtkKWFileBrowserWidget::FileRenamedCallback(
         //oldname, newname);
         }
       }
+    this->FileListTable->ShowFileList(
+      this->FileListTable->GetParentDirectory(),
+      NULL, this->Internals->CurrentFileExts.c_str());
     this->SetFocusToFileListTable();
     }
 }
