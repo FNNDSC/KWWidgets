@@ -16,7 +16,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMyWizardDialog );
-vtkCxxRevisionMacro(vtkKWMyWizardDialog, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWMyWizardDialog, "$Revision: 1.4 $");
 
 //----------------------------------------------------------------------------
 vtkKWMyWizardDialog::vtkKWMyWizardDialog()
@@ -237,8 +237,8 @@ void vtkKWMyWizardDialog::CreateWidget()
   // Initial and finish step
 
   wizard_workflow->SetFinishStep(this->ResultStep);
-  wizard_workflow->SetInitialStep(this->OperatorStep);
   wizard_workflow->CreateGoToTransitionsToFinishStep();
+  wizard_workflow->SetInitialStep(this->OperatorStep);
 }
 
 //----------------------------------------------------------------------------

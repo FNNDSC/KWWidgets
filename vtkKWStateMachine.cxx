@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWStateMachine);
-vtkCxxRevisionMacro(vtkKWStateMachine, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWStateMachine, "$Revision: 1.4 $");
 
 //----------------------------------------------------------------------------
 class vtkKWStateMachineInternals
@@ -94,6 +94,8 @@ vtkKWStateMachine::vtkKWStateMachine()
 //----------------------------------------------------------------------------
 vtkKWStateMachine::~vtkKWStateMachine()
 {
+  this->InitialState = NULL;
+
   this->RemoveAllTransitions();
   this->RemoveAllStates();
   this->RemoveAllInputs();
@@ -145,7 +147,16 @@ int vtkKWStateMachine::AddState(vtkKWStateMachineState *state)
     vtkErrorMacro("The state is already in the pool!");
     return 0;
     }
-  
+
+  // State machine is running?
+
+  if (this->IsRunning())
+    {
+    vtkErrorMacro(
+      "Can not add a state while the state machine is running!");
+    return 0;
+    }
+
   if (!state->GetApplication())
     {
     state->SetApplication(this->GetApplication());
@@ -188,6 +199,15 @@ void vtkKWStateMachine::RemoveState(vtkKWStateMachineState *state)
     return;
     }
 
+  // State machine is running?
+
+  if (this->IsRunning())
+    {
+    vtkErrorMacro(
+      "Can not remove a state while the state machine is running!");
+    return;
+    }
+
   // Remove state
 
   vtkKWStateMachineInternals::StatePoolIterator it = 
@@ -208,6 +228,15 @@ void vtkKWStateMachine::RemoveState(vtkKWStateMachineState *state)
 //----------------------------------------------------------------------------
 void vtkKWStateMachine::RemoveAllStates()
 {
+  // State machine is running?
+
+  if (this->IsRunning())
+    {
+    vtkErrorMacro(
+      "Can not remove all states while the state machine is running!");
+    return;
+    }
+
   if (this->Internals)
     {
     // Inefficient but there might be too many things to do in 
@@ -258,6 +287,15 @@ int vtkKWStateMachine::AddInput(vtkKWStateMachineInput *input)
     return 0;
     }
   
+  // State machine is running?
+
+  if (this->IsRunning())
+    {
+    vtkErrorMacro(
+      "Can not add input while the state machine is running!");
+    return 0;
+    }
+
   if (!input->GetApplication())
     {
     input->SetApplication(this->GetApplication());
@@ -300,6 +338,15 @@ void vtkKWStateMachine::RemoveInput(vtkKWStateMachineInput *input)
     return;
     }
 
+  // State machine is running?
+
+  if (this->IsRunning())
+    {
+    vtkErrorMacro(
+      "Can not remove input while the state machine is running!");
+    return;
+    }
+
   // Remove input
 
   vtkKWStateMachineInternals::InputPoolIterator it = 
@@ -320,6 +367,15 @@ void vtkKWStateMachine::RemoveInput(vtkKWStateMachineInput *input)
 //----------------------------------------------------------------------------
 void vtkKWStateMachine::RemoveAllInputs()
 {
+  // State machine is running?
+
+  if (this->IsRunning())
+    {
+    vtkErrorMacro(
+      "Can not remove all inputs while the state machine is running!");
+    return;
+    }
+
   if (this->Internals)
     {
     // Inefficient but there might be too many things to do in 
@@ -398,6 +454,15 @@ int vtkKWStateMachine::AddTransition(vtkKWStateMachineTransition *transition)
     return 0;
     }
 
+  // State machine is running?
+
+  if (this->IsRunning())
+    {
+    vtkErrorMacro(
+      "Can not add transition while the state machine is running!");
+    return 0;
+    }
+
   if (!transition->GetApplication())
     {
     transition->SetApplication(this->GetApplication());
@@ -446,6 +511,15 @@ void vtkKWStateMachine::RemoveTransition(vtkKWStateMachineTransition *transition
     return;
     }
 
+  // State machine is running?
+
+  if (this->IsRunning())
+    {
+    vtkErrorMacro(
+      "Can not remove transition while the state machine is running!");
+    return;
+    }
+
   // Remove transition
 
   vtkKWStateMachineInternals::TransitionPoolIterator it = 
@@ -466,6 +540,15 @@ void vtkKWStateMachine::RemoveTransition(vtkKWStateMachineTransition *transition
 //----------------------------------------------------------------------------
 void vtkKWStateMachine::RemoveAllTransitions()
 {
+  // State machine is running?
+
+  if (this->IsRunning())
+    {
+    vtkErrorMacro(
+      "Can not remove all transitions while the state machine is running!");
+    return;
+    }
+
   if (this->Internals)
     {
     // Inefficient but there might be too many things to do in 
@@ -618,6 +701,15 @@ int vtkKWStateMachine::AddCluster(vtkKWStateMachineCluster *cluster)
     return 0;
     }
   
+  // State machine is running?
+
+  if (this->IsRunning())
+    {
+    vtkErrorMacro(
+      "Can not add cluster while the state machine is running!");
+    return 0;
+    }
+
   if (!cluster->GetApplication())
     {
     cluster->SetApplication(this->GetApplication());
@@ -660,6 +752,15 @@ void vtkKWStateMachine::RemoveCluster(vtkKWStateMachineCluster *cluster)
     return;
     }
 
+  // State machine is running?
+
+  if (this->IsRunning())
+    {
+    vtkErrorMacro(
+      "Can not remove cluster while the state machine is running!");
+    return;
+    }
+
   // Remove cluster
 
   vtkKWStateMachineInternals::ClusterPoolIterator it = 
@@ -680,6 +781,15 @@ void vtkKWStateMachine::RemoveCluster(vtkKWStateMachineCluster *cluster)
 //----------------------------------------------------------------------------
 void vtkKWStateMachine::RemoveAllClusters()
 {
+  // State machine is running?
+
+  if (this->IsRunning())
+    {
+    vtkErrorMacro(
+      "Can not remove all clusters while the state machine is running!");
+    return;
+    }
+
   if (this->Internals)
     {
     // Inefficient but there might be too many things to do in 
@@ -717,6 +827,12 @@ int vtkKWStateMachine::SetInitialState(vtkKWStateMachineState *state)
   this->CurrentState->Enter();
 
   return 1;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWStateMachine::IsRunning()
+{
+  return this->InitialState ? 1 : 0;
 }
 
 //----------------------------------------------------------------------------

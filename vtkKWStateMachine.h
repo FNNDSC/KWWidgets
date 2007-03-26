@@ -103,6 +103,11 @@ public:
   virtual int SetInitialState(vtkKWStateMachineState*);
 
   // Description:
+  // Get if the state machine is actually running.
+  // At the moment, this is done by checking if InitialState has been set.
+  virtual int IsRunning();
+
+  // Description:
   // Get the current and previous state.
   vtkGetObjectMacro(CurrentState, vtkKWStateMachineState);
   vtkKWStateMachineState* GetPreviousState();

@@ -26,7 +26,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWizardWorkflow);
-vtkCxxRevisionMacro(vtkKWWizardWorkflow, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWWizardWorkflow, "$Revision: 1.5 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWizardWorkflowInternals
@@ -69,6 +69,8 @@ vtkKWWizardWorkflow::vtkKWWizardWorkflow()
 //----------------------------------------------------------------------------
 vtkKWWizardWorkflow::~vtkKWWizardWorkflow()
 {
+  this->InitialState = NULL;
+
   this->RemoveAllSteps();
 
   delete this->Internals;
@@ -124,6 +126,15 @@ int vtkKWWizardWorkflow::AddStep(vtkKWWizardStep *step)
     return 0;
     }
   
+  // State machine is running?
+
+  if (this->IsRunning())
+    {
+    vtkErrorMacro(
+      "Can not add step while the state machine is running!");
+    return 0;
+    }
+
   if (!step->GetApplication())
     {
     step->SetApplication(this->GetApplication());
@@ -385,6 +396,15 @@ void vtkKWWizardWorkflow::RemoveStep(vtkKWWizardStep *step)
     return;
     }
 
+  // State machine is running?
+
+  if (this->IsRunning())
+    {
+    vtkErrorMacro(
+      "Can not remove step while the state machine is running!");
+    return;
+    }
+
   // Remove step
 
   vtkKWWizardWorkflowInternals::StepPoolIterator it = 
@@ -405,6 +425,15 @@ void vtkKWWizardWorkflow::RemoveStep(vtkKWWizardStep *step)
 //----------------------------------------------------------------------------
 void vtkKWWizardWorkflow::RemoveAllSteps()
 {
+  // State machine is running?
+
+  if (this->IsRunning())
+    {
+    vtkErrorMacro(
+      "Can not remove all steps while the state machine is running!");
+    return;
+    }
+
   if (this->Internals)
     {
     // Inefficient but there might be too many things to do in 
