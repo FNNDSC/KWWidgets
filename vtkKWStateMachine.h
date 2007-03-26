@@ -93,8 +93,9 @@ public:
   
   // Description:
   // Set/Get the initial state.
-  // This call bootstraps the state machine, it should therefore be the
-  // last method you call after setting up the whole state machine.
+  // IMPORTANT: This call bootstraps/starts the state machine, it should
+  // therefore be the *last* method you call after setting up the whole state
+  // machine. No input, state or transition can be added afterwards.
   // Note that the initial state can not be reset.
   // Note that setting the initial state is actually the same as entering
   // it (i.e. the state's Enter() method will be called).
