@@ -102,8 +102,8 @@ public:
     { this->SetSelectionForegroundColor(rgb[0], rgb[1], rgb[2]); };
   
   // Description:
-  // Convenience method to Set/Get the width/height of the tree widget
-  // (in chars)
+  // Convenience method to Set/Get the width (in chars) and height (in lines)
+  // of the tree widget.
   virtual void SetTreeWidth(int);
   virtual int GetTreeWidth();
   virtual void SetTreeHeight(int);

@@ -26,7 +26,7 @@ void vtkKWFileBrowserWidgetItem::Create(vtkKWWidget *parent, vtkKWWindow *)
   filebrowser_widget1->SetReliefToGroove();
   filebrowser_widget1->SetPadX(2);
   filebrowser_widget1->SetPadY(2);
-  filebrowser_widget1->SetWidth(550);
+  filebrowser_widget1->SetWidth(760);
 
   app->Script(
     "pack %s -side top -anchor nw -expand y -padx 2 -pady 2", 

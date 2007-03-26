@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.12 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -126,8 +126,11 @@ void vtkKWFileBrowserWidget::CreateWidget()
 
   this->MainFrame->SetParent(this);
   this->MainFrame->Create();
-  this->MainFrame->SetFrame1MinimumSize(100);
-  //  this->MainFrame->SetFrame2MinimumSize(200);
+  this->MainFrame->SetFrame1MinimumSize(50);
+  this->MainFrame->SetFrame2MinimumSize(300);
+  this->MainFrame->SetSeparatorPosition(0.2);
+  this->MainFrame->SetSeparatorVisibility(1);
+  this->MainFrame->SetHeight(345);
 
   this->Script("pack %s -fill both -expand true",
                this->MainFrame->GetWidgetName());
@@ -146,24 +149,8 @@ void vtkKWFileBrowserWidget::Pack()
   
   if (this->DirectoryExplorerVisibility || this->FileListTableVisibility)
     {
-    if (this->FavoriteDirectoriesFrameVisibility)
-      {
-      this->MainFrame->SetSeparatorVisibility(1);
-      this->MainFrame->SetSeparatorPosition(0.25);
-      }
-
     this->DirFileFrame->SetFrame1Visibility(this->DirectoryExplorerVisibility);
     this->DirFileFrame->SetFrame2Visibility(this->FileListTableVisibility);
-  
-    if (this->FileListTableVisibility && this->DirectoryExplorerVisibility)
-      {
-      this->DirFileFrame->SetSeparatorVisibility(1);
-      this->DirFileFrame->SetSeparatorPosition(0.5);
-      }
-    else
-      {
-      this->DirFileFrame->SetSeparatorVisibility(0);
-      }
     
     this->Script("pack %s -side top -fill both -expand true",
                  this->DirFileFrame->GetWidgetName());
@@ -171,18 +158,10 @@ void vtkKWFileBrowserWidget::Pack()
   else
     {
     this->MainFrame->SetFrame2Visibility(0);
-    this->MainFrame->SetSeparatorVisibility(0);
     }
- 
-  if (this->FavoriteDirectoriesFrameVisibility)
-    {
-    this->MainFrame->SetFrame1Visibility(1);
-    }
-  else
-    {
-    this->MainFrame->SetFrame1Visibility(0);
-    this->MainFrame->SetSeparatorVisibility(0);
-    }
+
+  this->MainFrame->SetFrame1Visibility(
+    this->FavoriteDirectoriesFrameVisibility);
 }
 
 //----------------------------------------------------------------------------
@@ -196,6 +175,8 @@ void vtkKWFileBrowserWidget::CreateDirectoryExplorerAndFileListTableFrame()
       this->DirFileFrame->Create();
       this->DirFileFrame->SetFrame1MinimumSize(250);
       this->DirFileFrame->SetFrame2MinimumSize(200);
+      this->DirFileFrame->SetSeparatorPosition(0.5);
+      this->DirFileFrame->SetSeparatorVisibility(1);
       }
     }
 }
@@ -900,6 +881,52 @@ void vtkKWFileBrowserWidget::UpdateEnableState()
   this->PropagateEnableState(this->FavoriteDirectoriesFrame);
   this->PropagateEnableState(this->DirectoryExplorer);
   this->PropagateEnableState(this->FileListTable);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFileBrowserWidget::SetWidth(int width)
+{
+  if (this->MainFrame)
+    {
+    this->MainFrame->SetWidth(width);
+    }
+  else
+    {
+    this->Superclass::SetWidth(width);
+    }
+}
+
+//----------------------------------------------------------------------------
+int vtkKWFileBrowserWidget::GetWidth()
+{
+  if (this->MainFrame)
+    {
+    return this->MainFrame->GetWidth();
+    }
+  return this->Superclass::GetWidth();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFileBrowserWidget::SetHeight(int height)
+{
+  if (this->MainFrame)
+    {
+    this->MainFrame->SetHeight(height);
+    }
+  else
+    {
+    this->Superclass::SetHeight(height);
+    }
+}
+
+//----------------------------------------------------------------------------
+int vtkKWFileBrowserWidget::GetHeight()
+{
+  if (this->MainFrame)
+    {
+    return this->MainFrame->GetHeight();
+    }
+  return this->Superclass::GetHeight();
 }
 
 //----------------------------------------------------------------------------

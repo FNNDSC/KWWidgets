@@ -169,6 +169,13 @@ public:
   // of 3D widgets, etc.
   virtual void UpdateEnableState();
 
+  // Description:
+  // Request the width/height of the widget.
+  virtual void SetWidth(int);
+  virtual int GetWidth();
+  virtual void SetHeight(int);
+  virtual int GetHeight();
+  
 protected:
   vtkKWFileBrowserWidget();
   ~vtkKWFileBrowserWidget();
