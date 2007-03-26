@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.11 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -126,6 +126,8 @@ void vtkKWFileBrowserWidget::CreateWidget()
 
   this->MainFrame->SetParent(this);
   this->MainFrame->Create();
+  this->MainFrame->SetFrame1MinimumSize(100);
+  //  this->MainFrame->SetFrame2MinimumSize(200);
 
   this->Script("pack %s -fill both -expand true",
                this->MainFrame->GetWidgetName());
@@ -149,9 +151,6 @@ void vtkKWFileBrowserWidget::Pack()
       this->MainFrame->SetSeparatorVisibility(1);
       this->MainFrame->SetSeparatorPosition(0.25);
       }
-
-    this->DirFileFrame->SetFrame1MinimumSize(250);
-    this->DirFileFrame->SetFrame2MinimumSize(200);
 
     this->DirFileFrame->SetFrame1Visibility(this->DirectoryExplorerVisibility);
     this->DirFileFrame->SetFrame2Visibility(this->FileListTableVisibility);
@@ -178,7 +177,6 @@ void vtkKWFileBrowserWidget::Pack()
   if (this->FavoriteDirectoriesFrameVisibility)
     {
     this->MainFrame->SetFrame1Visibility(1);
-    this->MainFrame->SetFrame1MinimumSize(100);
     }
   else
     {
@@ -196,6 +194,8 @@ void vtkKWFileBrowserWidget::CreateDirectoryExplorerAndFileListTableFrame()
       {
       this->DirFileFrame->SetParent(this->MainFrame->GetFrame2());
       this->DirFileFrame->Create();
+      this->DirFileFrame->SetFrame1MinimumSize(250);
+      this->DirFileFrame->SetFrame2MinimumSize(200);
       }
     }
 }

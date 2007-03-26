@@ -111,6 +111,16 @@ public:
     { this->SetSelectionForegroundColor(rgb[0], rgb[1], rgb[2]); };
 
   // Description:
+  // Set/Get the width (in chars) and height (in lines) of the table.
+  // If width is set to 0, the widget will be large enough to show
+  // all columns. In all cases, the widget will still obey to its packing
+  // layout, i.e. it will stretch all the way if: -fill x
+  virtual void SetTableWidth(int width);
+  virtual int GetTableWidth();
+  virtual void SetTableHeight(int height);
+  virtual int GetTableHeight();
+
+  // Description:
   // Specifies commands to associate with the widget.
   // 'FileSelected' is called whenever the selection is changed. 
   // 'FileDoubleClicked' is called when a file/folder is double-clicked on.

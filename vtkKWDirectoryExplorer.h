@@ -102,6 +102,14 @@ public:
     { this->SetSelectionForegroundColor(rgb[0], rgb[1], rgb[2]); };
   
   // Description:
+  // Convenience method to Set/Get the width/height of the tree widget
+  // (in chars)
+  virtual void SetTreeWidth(int);
+  virtual int GetTreeWidth();
+  virtual void SetTreeHeight(int);
+  virtual int GetTreeHeight();
+
+  // Description:
   // Specifies selection-related commands to associate with the widget.
   // DirectoryChanged is called whenever the selection is changed or cleared. 
   // The 'object' argument is the object that will have the method called on

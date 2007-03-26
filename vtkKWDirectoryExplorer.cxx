@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.12 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -252,6 +252,8 @@ void vtkKWDirectoryExplorer::CreateWidget()
   dirtree->SelectionFillOn();
   dirtree->SetLinesVisibility(0);
   dirtree->SetPadX(20);
+  dirtree->SetWidth(30);
+  dirtree->SetHeight(15);
 
   dirtree->SetOpenCommand(this,"DirectoryOpenedCallback");
   dirtree->SetCloseCommand(this, "DirectoryClosedCallback");
@@ -1405,7 +1407,7 @@ void vtkKWDirectoryExplorer::UpdateMostRecentDirectoryHistory(
       this->Internals->MostRecentDirList.begin();    
     }    
   if (this->Internals->MostRecentDirList.size() > 
-      this->MaximumNumberOfDirectoriesInHistory)
+      (size_t)this->MaximumNumberOfDirectoriesInHistory)
     {
     this->Internals->MostRecentDirList.pop_back();
     }
@@ -1848,8 +1850,8 @@ int vtkKWDirectoryExplorer::RenameCallback()
     dlg->GetOKButton()->SetBinding("<Return>", dlg, "OK");
     dlg->GetCancelButton()->SetBinding("<Return>", dlg, "Cancel");
 
-    vtksys_stl::string newname = dlg->GetEntry()->GetWidget()->GetValue();
     int ok = dlg->Invoke();
+    vtksys_stl::string newname = dlg->GetEntry()->GetWidget()->GetValue();
     dlg->Delete();
     if (ok)
       {
@@ -1884,13 +1886,12 @@ int vtkKWDirectoryExplorer::RenameCallback()
       return 0;
       }
 
-
     vtksys_stl::string filename, fullname;
 
     for (int i = 0; i < dir->GetNumberOfFiles(); i++)
       {
       filename = dir->GetFile(i);
-      if (strcmp(filename.c_str(), newname.c_str())==0)
+      if (strcmp(filename.c_str(), newname.c_str()) == 0)
         {
         vtkKWMessageDialog::PopupMessage(
           this->GetApplication(), this, 
@@ -2358,7 +2359,7 @@ void vtkKWDirectoryExplorer::PruneMostRecentDirectoriesInHistory()
   // Update the most recent directory pointer and the history list
 
   while(this->Internals->MostRecentDirList.size() > 
-        this->MaximumNumberOfDirectoriesInHistory)
+        (size_t)this->MaximumNumberOfDirectoriesInHistory)
     {
     // check if MostRecentDirCurrent is being removed, if yes
     // we need to reset it to the first item in the list after pruning.
@@ -2411,6 +2412,44 @@ void vtkKWDirectoryExplorer::AddBindingToInternalWidget(const char* kwevent,
     vtkObject *obj, const char* method)
 {
   this->DirectoryTree->GetWidget()->AddBinding(kwevent, obj, method);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWDirectoryExplorer::SetTreeWidth(int width)
+{
+  if (this->DirectoryTree)
+    {
+    this->DirectoryTree->GetWidget()->SetWidth(width);
+    }
+}
+
+//----------------------------------------------------------------------------
+int vtkKWDirectoryExplorer::GetTreeWidth()
+{
+  if (this->DirectoryTree)
+    {
+    return this->DirectoryTree->GetWidget()->GetWidth();
+    }
+  return 0;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWDirectoryExplorer::SetTreeHeight(int height)
+{
+  if (this->DirectoryTree)
+    {
+    this->DirectoryTree->GetWidget()->SetHeight(height);
+    }
+}
+
+//----------------------------------------------------------------------------
+int vtkKWDirectoryExplorer::GetTreeHeight()
+{
+  if (this->DirectoryTree)
+    {
+    return this->DirectoryTree->GetWidget()->GetHeight();
+    }
+  return 0;
 }
 
 //----------------------------------------------------------------------------
