@@ -56,7 +56,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.7 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.8 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -239,18 +239,20 @@ void vtkKWFavoriteDirectoriesFrame::CreateWidget()
 
   this->RestoreFavoriteDirectoriesFromRegistry();
 
-  // We will always have "HOME" as favorite, if it is set
+  // We will always have the directory, set by "HOME" 
+  // evironment variable, as favorite
+    
+   vtksys_stl::string dir; 
+   if(vtksys::SystemTools::GetEnv("HOME", dir)) 
+     { 
+     if(vtksys::SystemTools::FileIsDirectory(dir.c_str())) 
+       { 
+       this->AddFavoriteDirectoryToFrame(dir.c_str(), 
+         vtksys::SystemTools::GetFilenameName(dir).c_str()); 
+       } 
+     } 
 
-  vtksys_stl::string dir;
-  if(vtksys::SystemTools::GetEnv("HOME", dir))
-    {
-    if(vtksys::SystemTools::FileIsDirectory(dir.c_str()))
-      {
-      this->AddFavoriteDirectoryToFrame(dir.c_str(), "HOME");
-      }
-    }
-  
-  this->Update();
+   this->Update();
 }
 
 //----------------------------------------------------------------------------
@@ -286,14 +288,20 @@ const char* vtkKWFavoriteDirectoriesFrame::GetNameOfFavoriteDirectory(
 {
   if (path && *path)
     {
+    vtksys_stl::string dirpath = path;
+    vtksys::SystemTools::ConvertToUnixSlashes(dirpath);
+  
     vtkKWFavoriteDirectoriesFrameInternals::FavoriteDirectoryEntryIterator 
       it = this->Internals->FavoriteDirectories.begin();
     vtkKWFavoriteDirectoriesFrameInternals::FavoriteDirectoryEntryIterator 
       end = this->Internals->FavoriteDirectories.end();
+
+    vtksys_stl::string currPath;
     for(; it!=end; it++)
       {
-      if (vtksys::SystemTools::ComparePath(
-            ((*it)->Path).c_str(), path))
+      currPath = (*it)->Path;
+      vtksys::SystemTools::ConvertToUnixSlashes(currPath);
+      if (vtksys::SystemTools::ComparePath(currPath.c_str(), dirpath.c_str()))
         {
         return (*it)->Name.c_str();
         }
