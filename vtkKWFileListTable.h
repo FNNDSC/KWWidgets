@@ -54,20 +54,23 @@ public:
     const char *fileextensions);
 
   // Description:
-  // Get the parent directory, of which this widget is 
+  // Set/Get the parent directory, of which this widget is 
   // displaying the files and directories
   virtual void SetParentDirectory(const char *arg);
   vtkGetStringMacro(ParentDirectory);
 
   // Description:
-  // Get the parent directory, of which this widget is 
-  // displaying the files and directories
+  // Set/Get the file pattern that should contains "*" or "?",
+  // with which the files will be filtered. When the widget uses
+  // file pattern to filter files, the file extensions will be ignored.
+  // Example: "foo*" or "?bar"
   virtual void SetFilePattern(const char *arg);
   vtkGetStringMacro(FilePattern);
 
   // Description:
   // Set/Get the file extenstions that the file table will use
-  // to filter its files.
+  // to filter its files. When the widget uses
+  // file pattern to filter files, the file extensions will be ignored.
   // The argument is NOT a Tk format, just a simple string of extensions
   // with space between them.
   // Example: ".txt .text .jpg .jpeg"
