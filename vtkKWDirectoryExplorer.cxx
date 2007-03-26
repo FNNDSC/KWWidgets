@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.13 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -767,6 +767,11 @@ void vtkKWDirectoryExplorer::OpenDirectoryNode(const char* node,
 
   if (select)
     {
+    if(this->DirectoryTree->GetWidget()->GetSelectionMode() ==
+      vtkKWOptions::SelectionModeSingle)
+      {
+      this->DirectoryTree->GetWidget()->ClearSelection();
+      }
     this->DirectoryTree->GetWidget()->SelectNode(node_str.c_str());
     this->DirectoryTree->GetWidget()->SeeNode(node_str.c_str());
     this->InvokeDirectoryChangedCommand(this->GetNthSelectedDirectory(0));
@@ -939,6 +944,9 @@ void vtkKWDirectoryExplorer::SelectDirectory(const char* dirname)
     return;
     }
 
+  // Check to see if this directory is already selected
+  // if yes, just refresh the selected node
+
   vtksys_stl::string dirpath = dirname;
   vtksys_stl::string nodedir;
   vtksys::SystemTools::ConvertToUnixSlashes(dirpath);
@@ -947,7 +955,7 @@ void vtkKWDirectoryExplorer::SelectDirectory(const char* dirname)
   vtksys::SystemTools::Split(
     this->DirectoryTree->GetWidget()->GetSelection(), selnodes, ' ');
   vtksys_stl::vector<vtksys_stl::string>::iterator it;
-
+  bool bFound = false;
   for(it = selnodes.begin(); it != selnodes.end(); it++)
     {
     nodedir = this->DirectoryTree->GetWidget()->
@@ -957,9 +965,15 @@ void vtkKWDirectoryExplorer::SelectDirectory(const char* dirname)
     if (vtksys::SystemTools::ComparePath(nodedir.c_str(), 
       dirpath.c_str()))
       {
-      this->DirectoryTree->GetWidget()->SelectNode((*it).c_str());
+      this->OpenDirectoryNode((*it).c_str());
+      bFound = true;
       break;
       }
+    }
+
+  if(!bFound)
+    {
+    this->OpenDirectory(dirpath.c_str());
     }
 }
 
