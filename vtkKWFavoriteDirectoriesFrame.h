@@ -237,7 +237,7 @@ protected:
   // Description:
   // Member variables
   char *RegistryKey;
-  unsigned int MaximumNumberOfFavoriteDirectoriesInRegistry;
+  int MaximumNumberOfFavoriteDirectoriesInRegistry;
   
 private:
 

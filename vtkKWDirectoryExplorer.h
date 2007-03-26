@@ -384,7 +384,7 @@ protected:
 
   // Description:
   // Member variables
-  unsigned int  MaximumNumberOfDirectoriesInHistory;
+  int  MaximumNumberOfDirectoriesInHistory;
   
 private:
 
