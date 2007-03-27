@@ -101,6 +101,10 @@ public:
   vtkSetStringMacro(LastPath);
   
   // Description:
+  // Update the LastPath from a full path to a file.
+  const char* GenerateLastPath(const char* path);
+
+  // Description:
   // Accessor for the file browser widget object.
   vtkGetObjectMacro(FileBrowserWidget, vtkKWFileBrowserWidget);
   
@@ -214,10 +218,6 @@ protected:
   // Internal PIMPL class for STL purposes.
   vtkKWFileBrowserDialogInternals *Internals;
   
-  // Description:
-  // Update the LastPath from a full path to a file.
-  const char* GenerateLastPath(const char* path);
-
   // Description:
   // GUI
   vtkKWFileBrowserWidget *FileBrowserWidget;
