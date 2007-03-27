@@ -57,7 +57,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.12 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -389,6 +389,45 @@ void vtkKWFavoriteDirectoriesFrame::SelectFavoriteDirectory(
 {
   this->SelectFavoriteDirectoryWithName(
     this->GetNameOfFavoriteDirectory(path));
+  this->InvokeFavoriteDirectorySelectedCommand(path, 
+    this->GetNameOfFavoriteDirectory(path));
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWFavoriteDirectoriesFrame::GetSelectedFavoriteDirectory()
+{
+  int nb_children = 
+    this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfChildren();
+  for (int index = 0; index < nb_children; index++)
+    {
+    vtkKWPushButton *child = vtkKWPushButton::SafeDownCast(
+      this->FavoriteDirectoryFrame->GetFrame()->GetNthChild(index));
+    if (child && child->IsPacked() && 
+      child->GetRelief() == vtkKWOptions::ReliefRidge)
+      {
+      return this->GetSelectedFavoriteDirectoryWithName(child->GetText());
+      }
+    }
+  return NULL;
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWFavoriteDirectoriesFrame::
+  GetSelectedFavoriteDirectoryWithName(const char* name)
+{
+  if (name && *name)
+    {
+    vtkKWFavoriteDirectoriesFrameInternals::FavoriteDirectoryEntryIterator 
+      it = this->Internals->FavoriteDirectories.begin();
+    for(; it != this->Internals->FavoriteDirectories.end(); it++)
+      {
+      if (strcmp((*it)->Name.c_str(), name) == 0)
+        { 
+        return (*it)->Path.c_str();
+        }
+      }
+    }
+  return NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -588,7 +627,6 @@ void vtkKWFavoriteDirectoriesFrame::SelectFavoriteDirectoryCallback(
   const char* path, const char* name)
 {
   this->SelectFavoriteDirectory(path);
-  this->InvokeFavoriteDirectorySelectedCommand(path, name);
 }
 
 //----------------------------------------------------------------------------

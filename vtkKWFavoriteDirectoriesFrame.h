@@ -64,6 +64,10 @@ public:
   // otherwise, de-select all the favorite directories.
   virtual void SelectFavoriteDirectory(const char *path);
   
+  // Description:
+  // Get the selected favorite directory within the frame
+  virtual const char* GetSelectedFavoriteDirectory();
+
   // Description
   // Check if the given directory has already been added
   virtual int HasFavoriteDirectory(const char* path);
@@ -196,6 +200,10 @@ protected:
   // Description:
   // Select a favorite directory given its name
   virtual void SelectFavoriteDirectoryWithName(const char* path);
+  
+  // Description:
+  // Get the selected favorite directory given its name
+  const char* GetSelectedFavoriteDirectoryWithName(const char* name);
 
   // Description:
   // Remove a directory node from the most recent history list
