@@ -15,6 +15,7 @@
 #include "vtkKWFavoriteDirectoriesFrame.h"
 
 #include "vtkKWApplication.h"
+#include "vtkDirectory.h"
 #include "vtkKWEntry.h"
 #include "vtkKWEntryWithLabel.h"
 #include "vtkKWFileBrowserUtilities.h"
@@ -56,7 +57,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.10 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -427,14 +428,22 @@ void vtkKWFavoriteDirectoriesFrame::AddFavoriteDirectory(
   const char *path, 
   const char *name)
 {
-  if (!path || !*path || !name || !*name || 
-      !vtksys::SystemTools::FileIsDirectory(path) || 
-      !vtksys::SystemTools::FileExists(path))
+  if (!path || !*path || !name || !*name)
     {
     return;
     }
-    
-  this->AddFavoriteDirectoryToFrame(path, name);
+
+  vtksys_stl::string dirpath = path;
+  
+  vtkDirectory *dir = vtkDirectory::New();
+  if (!dir->Open(dirpath.c_str()))
+    {
+    dir->Delete();
+    return;
+    }
+  dir->Delete();
+
+  this->AddFavoriteDirectoryToFrame(dirpath.c_str(), name);
   
   if (this->Internals->FavoriteDirectories.size() >
       (size_t)this->MaximumNumberOfFavoriteDirectoriesInRegistry)
