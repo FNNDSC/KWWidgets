@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.14 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -859,7 +859,7 @@ void vtkKWFileBrowserDialog::AddCallbackCommandObservers()
 
   this->AddCallbackCommandObserver(
     this->FileBrowserWidget->GetDirectoryExplorer(),
-    vtkKWDirectoryExplorer::DirectoryChangedEvent);
+    vtkKWDirectoryExplorer::DirectorySelectedEvent);
 
   this->AddCallbackCommandObserver(
     this->FileBrowserWidget->GetFileListTable(),
@@ -877,7 +877,7 @@ void vtkKWFileBrowserDialog::RemoveCallbackCommandObservers()
 
   this->RemoveCallbackCommandObserver(
     this->FileBrowserWidget->GetDirectoryExplorer(),
-    vtkKWDirectoryExplorer::DirectoryChangedEvent);
+    vtkKWDirectoryExplorer::DirectorySelectedEvent);
 
   this->RemoveCallbackCommandObserver(
     this->FileBrowserWidget->GetFileListTable(),
@@ -906,9 +906,9 @@ void vtkKWFileBrowserDialog::ProcessCallbackCommandEvents(vtkObject *caller,
       }
     }
   else if (caller == this->FileBrowserWidget->GetDirectoryExplorer() &&
-           event == vtkKWDirectoryExplorer::DirectoryChangedEvent)
+           event == vtkKWDirectoryExplorer::DirectorySelectedEvent)
     {
-    this->ProcessDirectoryChangedEvent(fullname);
+    this->ProcessDirectorySelectedEvent(fullname);
     }
   
   this->Superclass::ProcessCallbackCommandEvents(caller, event, calldata);
