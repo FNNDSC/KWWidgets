@@ -151,7 +151,7 @@ public:
     const char* oldname, 
     const char* newname);
   virtual void FolderCreatedCallback(const char* filename);
-  virtual void FileRemovedCallback(const char* fullname, int isDir);
+  virtual void FileDeletedCallback(const char* fullname, int isDir);
 
   // Description:
   // Callback, do NOT use. 

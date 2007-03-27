@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.13 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -200,16 +200,16 @@ void vtkKWFileBrowserWidget::CreateDirectoryExplorer()
       this->DirectoryExplorer->AddBindingToInternalWidget(
         "<FocusOut>", this, "DirectoryTreeFocusOutCallback");
         
-      this->DirectoryExplorer->SetDirectoryAddedCommand(
-        this, "DirectoryAddedCallback");
-      this->DirectoryExplorer->SetDirectoryChangedCommand(
-        this, "DirectoryChangedCallback");
+      this->DirectoryExplorer->SetDirectoryCreatedCommand(
+        this, "DirectoryCreatedCallback");
+      this->DirectoryExplorer->SetDirectorySelectedCommand(
+        this, "DirectorySelectedCallback");
       this->DirectoryExplorer->SetDirectoryOpenedCommand(
         this, "DirectoryOpenedCallback");
       this->DirectoryExplorer->SetDirectoryClosedCommand(
         this, "DirectoryClosedCallback");
-      this->DirectoryExplorer->SetDirectoryRemovedCommand(
-        this, "DirectoryRemovedCallback");
+      this->DirectoryExplorer->SetDirectoryDeletedCommand(
+        this, "DirectoryDeletedCallback");
       this->DirectoryExplorer->SetDirectoryRenamedCommand(
         this, "DirectoryRenamedCallback");
       }
@@ -246,8 +246,8 @@ void vtkKWFileBrowserWidget::CreateFileListTable()
         this, "FileDoubleClickedCallback");
       this->FileListTable->SetFileSelectedCommand(
         this, "FileSelectionChangedCallback");
-      this->FileListTable->SetFileRemovedCommand(
-        this, "FileRemovedCallback");
+      this->FileListTable->SetFileDeletedCommand(
+        this, "FileDeletedCallback");
       this->FileListTable->SetFileRenamedCommand(
         this, "FileRenamedCallback");
       this->FileListTable->SetFolderCreatedCommand(
@@ -686,7 +686,7 @@ void vtkKWFileBrowserWidget::FavoriteDirectorySelectedCallback(
 }
 
 //----------------------------------------------------------------------------
-void vtkKWFileBrowserWidget::DirectoryChangedCallback(
+void vtkKWFileBrowserWidget::DirectorySelectedCallback(
   const char* fullname)
 {
   //  this->UpdateDirectorySelectionColor(1);
@@ -712,10 +712,10 @@ void vtkKWFileBrowserWidget::DirectoryClosedCallback(
 }
 
 //----------------------------------------------------------------------------
-void vtkKWFileBrowserWidget::DirectoryAddedCallback(
+void vtkKWFileBrowserWidget::DirectoryCreatedCallback(
   const char* fullname)
 {
-  this->DirectoryChangedCallback(fullname);
+  this->DirectorySelectedCallback(fullname);
   this->SetFocusToDirectoryExplorer();
 }
 
@@ -735,7 +735,7 @@ void vtkKWFileBrowserWidget::UpdateForCurrentDirectory()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWFileBrowserWidget::DirectoryRemovedCallback(
+void vtkKWFileBrowserWidget::DirectoryDeletedCallback(
   const char* fullname)
 {
   if (this->FavoriteDirectoriesFrameVisibility)
@@ -801,7 +801,7 @@ void vtkKWFileBrowserWidget::FileSelectionChangedCallback(
 }
 
 //----------------------------------------------------------------------------
-void vtkKWFileBrowserWidget::FileRemovedCallback(
+void vtkKWFileBrowserWidget::FileDeletedCallback(
   const char* fullname, int isDir)
 {
   if (fullname && *fullname && isDir)

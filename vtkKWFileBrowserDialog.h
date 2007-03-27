@@ -250,7 +250,7 @@ protected:
   // should call the superclass too.
   virtual void ProcessCallbackCommandEvents(
     vtkObject *caller, unsigned long event, void *calldata);
-  virtual void ProcessDirectoryChangedEvent(const char* fullname);
+  virtual void ProcessDirectorySelectedEvent(const char* fullname);
   virtual void ProcessFileSelectionChangedEvent(const char* fullname);
   virtual void ProcessFileDoubleClickedEvent(const char* fullname);
 

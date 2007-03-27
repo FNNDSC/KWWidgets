@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.15 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -814,7 +814,7 @@ void vtkKWFileBrowserDialog::RetrieveLastPathFromRegistry(const char* key)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWFileBrowserDialog::ProcessDirectoryChangedEvent(
+void vtkKWFileBrowserDialog::ProcessDirectorySelectedEvent(
   const char* fullname)
 {
   if (fullname && *fullname && 
