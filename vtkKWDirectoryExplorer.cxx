@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.15 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -945,24 +945,30 @@ void vtkKWDirectoryExplorer::SelectDirectory(const char* dirname)
   vtksys_stl::string dirpath = dirname;
   vtkKWTree *tree =  this->DirectoryTree->GetWidget();
 
+  vtkstd::vector<vtkstd::string> nodes;
+  vtksys_stl::vector<vtksys_stl::string>::iterator it;
+
   // Take care of Unix root directory
   if (!strcmp(dirpath.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY))
     {
 #ifndef _WIN32
-    tree->SelectNodeChildren(this->Internals->RootNode);
+    vtksys::SystemTools::Split(
+      tree->GetNodeChildren(this->Internals->RootNode), nodes, ' ');
+    if(nodes.size()>0)
+      {
+      tree->SelectNode(nodes.front().c_str());
+      }
 #endif
     return;
     }
-
-  vtkstd::vector<vtkstd::string> nodes;
-  vtksys_stl::vector<vtksys_stl::string>::iterator it;
 
   if(!vtksys::SystemTools::FileIsDirectory(dirpath.c_str()))
     {
     // Take care of Windows logic drives 
     // (vtksys::SystemTools::FileIsDirectory() does not recognize
     // drives in the format "C:" or "C:\"
-  #ifdef _WIN32
+//  #ifdef _WIN32
+    nodes.clear();
     vtksys::SystemTools::Split(
       tree->GetNodeChildren(this->Internals->RootNode), nodes, ' ');
     bool bFound = false;
@@ -977,12 +983,22 @@ void vtkKWDirectoryExplorer::SelectDirectory(const char* dirname)
         break;
         }
       }
-  #endif
+//  #endif
     }
   else
     {
     vtksys_stl::string parentdir = 
       vtksys::SystemTools::GetParentDirectory(dirpath.c_str());;
+
+#ifndef _WIN32
+  // since on unix, the GetParentDirectory return "" 
+  // for root directory "/" let's add the root directory "/"
+  if (parentdir.empty() || strcmp(parentdir.c_str(), "") == 0)
+    {
+    parentdir = KWFileBrowser_UNIX_ROOT_DIRECTORY;
+    }
+#endif  
+
     const char* parentnode = 
       this->OpenDirectoryInternal(parentdir.c_str(), 0);
     if(parentnode)
