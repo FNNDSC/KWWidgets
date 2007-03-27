@@ -11,7 +11,7 @@ def vtkKWLoadSaveButtonEntryPoint(parent, win):
     
     # -----------------------------------------------------------------------
     
-    # Create a load button
+    # Create a load button to pick a file
     
     load_button1 = vtkKWLoadSaveButton()
     load_button1.SetParent(parent)
@@ -23,6 +23,19 @@ def vtkKWLoadSaveButtonEntryPoint(parent, win):
         "pack %s -side top -anchor nw -expand n -padx 2 -pady 2",
         load_button1.GetWidgetName())
     
+    # -----------------------------------------------------------------------
+    
+    # Create a load button to pick a directory
+    
+    load_button2 = vtkKWLoadSaveButton()
+    load_button2.SetParent(parent)
+    load_button2.Create()
+    load_button2.SetText("Click to Pick a Directory")
+    load_button2.GetLoadSaveDialog().ChooseDirectoryOn()
+    
+    app.Script(
+        "pack %s -side top -anchor nw -expand n -padx 2 -pady 2",
+        load_button2.GetWidgetName())
     
     
     return "TypeComposite"

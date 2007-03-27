@@ -18,7 +18,7 @@ void vtkKWLoadSaveButtonItem::Create(vtkKWWidget *parent, vtkKWWindow *)
 
   // -----------------------------------------------------------------------
 
-  // Create a load button
+  // Create a load button to pick a file
 
   vtkKWLoadSaveButton *load_button1 = vtkKWLoadSaveButton::New();
   load_button1->SetParent(parent);
@@ -31,6 +31,22 @@ void vtkKWLoadSaveButtonItem::Create(vtkKWWidget *parent, vtkKWWindow *)
     load_button1->GetWidgetName());
 
   load_button1->Delete();
+
+  // -----------------------------------------------------------------------
+
+  // Create a load button to pick a directory
+
+  vtkKWLoadSaveButton *load_button2 = vtkKWLoadSaveButton::New();
+  load_button2->SetParent(parent);
+  load_button2->Create();
+  load_button2->SetText("Click to Pick a Directory");
+  load_button2->GetLoadSaveDialog()->ChooseDirectoryOn();
+
+  app->Script(
+    "pack %s -side top -anchor nw -expand n -padx 2 -pady 4", 
+    load_button2->GetWidgetName());
+
+  load_button2->Delete();
 }
 
 int vtkKWLoadSaveButtonItem::GetType()
