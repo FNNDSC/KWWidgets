@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.14 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -938,42 +938,75 @@ void vtkKWDirectoryExplorer::ReloadDirectoryNode(const char* node)
 //----------------------------------------------------------------------------
 void vtkKWDirectoryExplorer::SelectDirectory(const char* dirname)
 {
-  if (!dirname || !(*dirname) ||
-    !vtksys::SystemTools::FileIsDirectory(dirname))
+  if (!dirname || !(*dirname))
     {
     return;
     }
-
-  // Check to see if this directory is already selected
-  // if yes, just refresh the selected node
-
   vtksys_stl::string dirpath = dirname;
-  vtksys_stl::string nodedir;
-  vtksys::SystemTools::ConvertToUnixSlashes(dirpath);
+  vtkKWTree *tree =  this->DirectoryTree->GetWidget();
 
-  vtkstd::vector<vtkstd::string> selnodes;
-  vtksys::SystemTools::Split(
-    this->DirectoryTree->GetWidget()->GetSelection(), selnodes, ' ');
-  vtksys_stl::vector<vtksys_stl::string>::iterator it;
-  bool bFound = false;
-  for(it = selnodes.begin(); it != selnodes.end(); it++)
+  // Take care of Unix root directory
+  if (!strcmp(dirpath.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY))
     {
-    nodedir = this->DirectoryTree->GetWidget()->
-      GetNodeUserData((*it).c_str());
-    //Convert the path for comparing with other path
-    vtksys::SystemTools::ConvertToUnixSlashes(nodedir);
-    if (vtksys::SystemTools::ComparePath(nodedir.c_str(), 
-      dirpath.c_str()))
-      {
-      this->OpenDirectoryNode((*it).c_str());
-      bFound = true;
-      break;
-      }
+#ifndef _WIN32
+    tree->SelectNodeChildren(this->Internals->RootNode);
+#endif
+    return;
     }
 
-  if(!bFound)
+  vtkstd::vector<vtkstd::string> nodes;
+  vtksys_stl::vector<vtksys_stl::string>::iterator it;
+
+  if(!vtksys::SystemTools::FileIsDirectory(dirpath.c_str()))
     {
-    this->OpenDirectory(dirpath.c_str());
+    // Take care of Windows logic drives 
+    // (vtksys::SystemTools::FileIsDirectory() does not recognize
+    // drives in the format "C:" or "C:\"
+  #ifdef _WIN32
+    vtksys::SystemTools::Split(
+      tree->GetNodeChildren(this->Internals->RootNode), nodes, ' ');
+    bool bFound = false;
+    for(it = nodes.begin(); it != nodes.end(); it++)
+      {
+      if(!strcmp(tree->GetNodeUserData((*it).c_str()), dirpath.c_str()))
+        {
+        if(!this->IsNodeSelected((*it).c_str()))
+          {
+          tree->SelectNode((*it).c_str());
+          }
+        break;
+        }
+      }
+  #endif
+    }
+  else
+    {
+    vtksys_stl::string parentdir = 
+      vtksys::SystemTools::GetParentDirectory(dirpath.c_str());;
+    const char* parentnode = 
+      this->OpenDirectoryInternal(parentdir.c_str(), 0);
+    if(parentnode)
+      {
+      nodes.clear();
+      vtksys::SystemTools::Split(
+        tree->GetNodeChildren(parentnode), nodes, ' ');
+      vtksys_stl::string nodedir;
+      vtksys::SystemTools::ConvertToUnixSlashes(dirpath);
+      for(it = nodes.begin(); it != nodes.end(); it++)
+        {
+        nodedir = tree->GetNodeUserData((*it).c_str());
+        vtksys::SystemTools::ConvertToUnixSlashes(nodedir);
+        if(vtksys::SystemTools::ComparePath(
+          nodedir.c_str(), dirpath.c_str()))
+          {
+          if(!this->IsNodeSelected((*it).c_str()))
+            {
+            tree->SelectNode((*it).c_str());
+            }
+          break;
+          }
+        }
+      }
     }
 }
 
@@ -1014,6 +1047,31 @@ void vtkKWDirectoryExplorer::DeselectDirectory(const char* dirname)
 void vtkKWDirectoryExplorer::ClearSelection()
 {
   this->DirectoryTree->GetWidget()->ClearSelection();
+}
+
+//----------------------------------------------------------------------------
+int vtkKWDirectoryExplorer::IsNodeSelected(const char* node)
+{
+  if (!node || !(*node) ||
+    !this->DirectoryTree->GetWidget()->HasNode(node))
+    {
+    return 0;
+    }
+  vtksys_stl::string nodeId = node;
+
+  vtkstd::vector<vtkstd::string> selnodes;
+  vtksys::SystemTools::Split(
+    this->DirectoryTree->GetWidget()->GetSelection(), selnodes, ' ');
+  vtksys_stl::vector<vtksys_stl::string>::iterator it;
+
+  for(it = selnodes.begin(); it != selnodes.end(); it++)
+    {
+    if(!strcmp((*it).c_str(), nodeId.c_str()))
+      {
+      return 1;
+      }
+    }
+  return 0;
 }
 
 //----------------------------------------------------------------------------
@@ -1077,17 +1135,41 @@ const char* vtkKWDirectoryExplorer::ReloadDirectory(
 //----------------------------------------------------------------------------
 int vtkKWDirectoryExplorer::OpenDirectory(const char* dirname)
 {
-  int res = 1;
-  if (!vtksys::SystemTools::FileIsDirectory(dirname))
+  const char* newnode = this->OpenDirectoryInternal(dirname, 1);
+  if(newnode)
     {
-    return 0;
+    this->UpdateMostRecentDirectoryHistory(newnode);
+    // update Back/Forward button state  
+    this->Update();
+    return 1;
     }
-  
-  // Get all the directories for the node layers in the tree
+  return 0;
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWDirectoryExplorer::OpenDirectoryInternal(
+  const char* dirname, int select )
+{
+  if (!dirname || !(*dirname))
+    {
+    return NULL;
+    }
 
   vtksys_stl::string path = dirname;
+  // "!vtksys::SystemTools::FileIsDirectory(dirname)" does not
+  // recognize "C:" or "C:/", so using vtkDirectory to check
+  vtkDirectory *dir = vtkDirectory::New();
+  if (!dir->Open(path.c_str()))
+    {
+    dir->Delete();
+    return NULL;
+    }
+  dir->Delete();
+
+  // Get all the directories for the node layers in the tree
+
   vtksys_stl::string parentdir = 
-    vtksys::SystemTools::GetParentDirectory(dirname);
+    vtksys::SystemTools::GetParentDirectory(path.c_str());
   vtksys_stl::string rootdir = path;
   vtksys_stl::list<vtksys_stl::string> dirlist;
   dirlist.push_front(path);
@@ -1127,8 +1209,8 @@ int vtkKWDirectoryExplorer::OpenDirectory(const char* dirname)
                                               0);
     if (!aNode || !(*aNode))
       {
-      res = 0;
-      break;
+      dirlist.clear();
+      return NULL;
       }
     parentnode = aNode;
     dirlist.pop_front();
@@ -1138,22 +1220,20 @@ int vtkKWDirectoryExplorer::OpenDirectory(const char* dirname)
 
   subdir = dirlist.front().c_str();
   const char* childnode = this->ReloadDirectory(
-    parentnode.c_str(), subdir.c_str(),1);
+    parentnode.c_str(), subdir.c_str(),select);
   
   dirlist.clear();
   
   if (!childnode || !(*childnode))
     {
-    res = 0;
+    return NULL;
     }
   else
     {
-    this->UpdateMostRecentDirectoryHistory(childnode);
-    // update Back/Forward button state  
-    this->Update();
+    static char buffer[100];
+    strcpy(buffer, childnode);
+    return buffer;
     }
-  
-  return res;
 }
 
 //----------------------------------------------------------------------------

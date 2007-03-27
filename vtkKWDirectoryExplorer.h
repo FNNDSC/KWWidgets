@@ -356,6 +356,17 @@ protected:
   // Description:
   // Populate the context menu.
   virtual void PopulateContextMenu(vtkKWMenu *menu, const char*);
+  
+  // Description:
+  // Check if the node is one of the selected nodes.
+  int IsNodeSelected(const char* node);
+
+  // Description:
+  // Open the directory. 
+  // -dirname, the directory that is going to be opened
+  // -select, is the flag to whether select this directory
+  // return a node for this directory
+  const char* OpenDirectoryInternal(const char* dirname, int select);
 
   // Description:
   // Commands
