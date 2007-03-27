@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.15 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.16 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -100,9 +100,9 @@ vtkKWDirectoryExplorer::vtkKWDirectoryExplorer()
   this->UpButton           = vtkKWPushButton::New();
   this->ContextMenu        = NULL;
   
-  this->DirectoryChangedCommand = NULL;
-  this->DirectoryAddedCommand   = NULL;
-  this->DirectoryRemovedCommand = NULL;
+  this->DirectorySelectedCommand = NULL;
+  this->DirectoryCreatedCommand   = NULL;
+  this->DirectoryDeletedCommand = NULL;
   this->DirectoryOpenedCommand  = NULL;
   this->DirectoryClosedCommand  = NULL;
   this->DirectoryRenamedCommand = NULL;
@@ -118,15 +118,15 @@ vtkKWDirectoryExplorer::~vtkKWDirectoryExplorer()
   this->UpButton->Delete();
   this->Toolbar->Delete();
 
-  if (this->DirectoryAddedCommand)
+  if (this->DirectoryCreatedCommand)
     {
-    delete [] this->DirectoryAddedCommand;
-    this->DirectoryAddedCommand = NULL;
+    delete [] this->DirectoryCreatedCommand;
+    this->DirectoryCreatedCommand = NULL;
     }
-  if (this->DirectoryRemovedCommand)
+  if (this->DirectoryDeletedCommand)
     {
-    delete [] this->DirectoryRemovedCommand;
-    this->DirectoryRemovedCommand = NULL;
+    delete [] this->DirectoryDeletedCommand;
+    this->DirectoryDeletedCommand = NULL;
     }
   if (this->DirectoryOpenedCommand )
     {
@@ -138,10 +138,10 @@ vtkKWDirectoryExplorer::~vtkKWDirectoryExplorer()
     delete [] this->DirectoryClosedCommand;
     this->DirectoryClosedCommand = NULL;
     }
-  if (this->DirectoryChangedCommand)
+  if (this->DirectorySelectedCommand)
     {
-    delete [] this->DirectoryChangedCommand;
-    this->DirectoryChangedCommand = NULL;
+    delete [] this->DirectorySelectedCommand;
+    this->DirectorySelectedCommand = NULL;
     }
   if (this->DirectoryRenamedCommand)
     {
@@ -259,7 +259,7 @@ void vtkKWDirectoryExplorer::CreateWidget()
   dirtree->SetCloseCommand(this, "DirectoryClosedCallback");
   dirtree->SetSingleClickOnNodeCommand(this, "SingleClickOnNodeCallback");
   dirtree->SetBinding("<Delete>", this, "RemoveSelectedNodeCallback");
-  dirtree->SetSelectionChangedCommand(this, "DirectoryChangedCallback");
+  dirtree->SetSelectionChangedCommand(this, "DirectorySelectedCallback");
   dirtree->SetRightClickOnNodeCommand(this, "RightClickCallback %X %Y");
   dirtree->SetBinding("<F2>", this, "RenameCallback");
     
@@ -774,7 +774,7 @@ void vtkKWDirectoryExplorer::OpenDirectoryNode(const char* node,
       }
     this->DirectoryTree->GetWidget()->SelectNode(node_str.c_str());
     this->DirectoryTree->GetWidget()->SeeNode(node_str.c_str());
-    this->InvokeDirectoryChangedCommand(this->GetNthSelectedDirectory(0));
+    this->InvokeDirectorySelectedCommand(this->GetNthSelectedDirectory(0));
     }
     
   // Update dir history list
@@ -1680,11 +1680,12 @@ void vtkKWDirectoryExplorer::CreateNewFolderCallback()
     {
     this->DirectoryTree->GetWidget()->OpenNode(dirnode.c_str());
     }
+
+  this->InvokeDirectoryCreatedCommand(fullname.c_str());
+
   this->DirectoryTree->GetWidget()->SeeNode(strDirID);
   this->DirectoryTree->GetWidget()->ClearSelection();
   this->DirectoryTree->GetWidget()->SelectNode(strDirID);
-
-  this->InvokeDirectoryAddedCommand(fullname.c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -1869,7 +1870,7 @@ void vtkKWDirectoryExplorer::DirectoryClosedCallback(
       this->UpdateDirectoryNode(node);
       this->DirectoryTree->GetWidget()->SelectNode(node);
       this->UpdateMostRecentDirectoryHistory(node);
-      this->InvokeDirectoryChangedCommand(this->GetNthSelectedDirectory(0));
+      this->InvokeDirectorySelectedCommand(this->GetNthSelectedDirectory(0));
       
       // update Back/Forward button state  
       this->Update();
@@ -1907,7 +1908,7 @@ void vtkKWDirectoryExplorer::DirectoryOpenedCallback(
 
 
 //----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::DirectoryChangedCallback()
+void vtkKWDirectoryExplorer::DirectorySelectedCallback()
 {
   this->TreeKeyNavigationCallback();
 }
@@ -2097,7 +2098,7 @@ int vtkKWDirectoryExplorer::RemoveSelectedNodeCallback()
         this->RemoveDirectoryFromHistory(node.c_str());
         this->DirectoryTree->GetWidget()->DeleteNode(node.c_str());
         this->ReloadDirectoryNode(parentnode.c_str());
-        this->InvokeDirectoryRemovedCommand(dir.c_str());
+        this->InvokeDirectoryDeletedCommand(dir.c_str());
         return 1;
         }
       else
@@ -2229,59 +2230,59 @@ int vtkKWDirectoryExplorer::RenameDirectory(
 }
 
 //----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::SetDirectoryChangedCommand(
+void vtkKWDirectoryExplorer::SetDirectorySelectedCommand(
   vtkObject *object, const char *method)
 {
-  this->SetObjectMethodCommand(&this->DirectoryChangedCommand, object, method);
+  this->SetObjectMethodCommand(&this->DirectorySelectedCommand, object, method);
 }
 
 //----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::InvokeDirectoryChangedCommand(
+void vtkKWDirectoryExplorer::InvokeDirectorySelectedCommand(
   const char* directory)
 {
   vtksys_stl::string dirpath = directory;
-  if (this->DirectoryChangedCommand && *this->DirectoryChangedCommand)
+  if (this->DirectorySelectedCommand && *this->DirectorySelectedCommand)
     {
-    this->Script("%s \"%s\"", this->DirectoryChangedCommand, 
+    this->Script("%s \"%s\"", this->DirectorySelectedCommand, 
                  vtksys::SystemTools::EscapeChars(
                    dirpath.c_str(), 
                    KWFileBrowser_ESCAPE_CHARS).c_str());
     }
-  this->InvokeEvent(vtkKWDirectoryExplorer::DirectoryChangedEvent, 
+  this->InvokeEvent(vtkKWDirectoryExplorer::DirectorySelectedEvent, 
                     (void*)dirpath.c_str());
 }
 
 //----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::SetDirectoryAddedCommand(
+void vtkKWDirectoryExplorer::SetDirectoryCreatedCommand(
   vtkObject *object, const char *method)
 {
-  this->SetObjectMethodCommand(&this->DirectoryAddedCommand, object, method);
+  this->SetObjectMethodCommand(&this->DirectoryCreatedCommand, object, method);
 }
 
 //----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::InvokeDirectoryAddedCommand(
+void vtkKWDirectoryExplorer::InvokeDirectoryCreatedCommand(
   const char* path)
 {
-  if (this->DirectoryAddedCommand && *this->DirectoryAddedCommand && 
+  if (this->DirectoryCreatedCommand && *this->DirectoryCreatedCommand && 
       path && *path && vtksys::SystemTools::FileIsDirectory(path))
     {
-    this->Script("%s \"%s\"", this->DirectoryAddedCommand, 
+    this->Script("%s \"%s\"", this->DirectoryCreatedCommand, 
                  vtksys::SystemTools::EscapeChars(
                    path, 
                    KWFileBrowser_ESCAPE_CHARS).c_str());
     }
-  this->InvokeEvent(vtkKWDirectoryExplorer::DirectoryAddedEvent, (void*)path);
+  this->InvokeEvent(vtkKWDirectoryExplorer::DirectoryCreatedEvent, (void*)path);
 }
 
 //----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::SetDirectoryRemovedCommand(
+void vtkKWDirectoryExplorer::SetDirectoryDeletedCommand(
   vtkObject *object, const char *method)
 {
-  this->SetObjectMethodCommand(&this->DirectoryRemovedCommand, object, method);
+  this->SetObjectMethodCommand(&this->DirectoryDeletedCommand, object, method);
 }
 
 //----------------------------------------------------------------------------
-void vtkKWDirectoryExplorer::InvokeDirectoryRemovedCommand(
+void vtkKWDirectoryExplorer::InvokeDirectoryDeletedCommand(
   const char* path)
 {
   vtksys_stl::string fullpath;
@@ -2294,16 +2295,16 @@ void vtkKWDirectoryExplorer::InvokeDirectoryRemovedCommand(
     return;
     }
 
-  if (this->DirectoryRemovedCommand && *this->DirectoryRemovedCommand)
+  if (this->DirectoryDeletedCommand && *this->DirectoryDeletedCommand)
     {
-    this->Script("%s \"%s\"", this->DirectoryRemovedCommand, 
+    this->Script("%s \"%s\"", this->DirectoryDeletedCommand, 
                  vtksys::SystemTools::EscapeChars(
                    fullpath.c_str(), 
                    KWFileBrowser_ESCAPE_CHARS).c_str());
     }
   
   this->InvokeEvent(
-    vtkKWDirectoryExplorer::DirectoryRemovedEvent, (void*)fullpath.c_str());
+    vtkKWDirectoryExplorer::DirectoryDeletedEvent, (void*)fullpath.c_str());
 }
 
 //----------------------------------------------------------------------------

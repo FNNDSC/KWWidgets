@@ -111,23 +111,23 @@ public:
 
   // Description:
   // Specifies selection-related commands to associate with the widget.
-  // DirectoryChanged is called whenever the selection is changed or cleared. 
+  // DirectorySelected is called whenever the selection is changed or cleared. 
   // The 'object' argument is the object that will have the method called on
   // it. The 'method' argument is the name of the method to be called and any
   // arguments in string form. If the object is NULL, the method is still
   // evaluated as a simple command. 
-  // - DirectoryChanged is passed the first selected directory (const char *).
+  // - DirectorySelected is passed the first selected directory (const char *).
   // - DirectoryOpened and DirectoryClosed are passed the directory being 
   //   opened or closed (const char *).
-  // - DirectoryAdded and DirectoryRemoved are passed the directory that was
+  // - DirectoryAdded and DirectoryDeleted are passed the directory that was
   //   added or removed (const char *).
   // - DirectoryRenamed is passed the preview and new name (path) of the
   //   directory that was renamed (const char *, const char *).
-  virtual void SetDirectoryChangedCommand(vtkObject *obj, const char *method);
+  virtual void SetDirectorySelectedCommand(vtkObject *obj, const char *method);
   virtual void SetDirectoryOpenedCommand(vtkObject *obj, const char *method);
   virtual void SetDirectoryClosedCommand(vtkObject *obj, const char *method);
-  virtual void SetDirectoryAddedCommand(vtkObject *obj, const char *method);
-  virtual void SetDirectoryRemovedCommand(vtkObject *obj, const char *method);
+  virtual void SetDirectoryCreatedCommand(vtkObject *obj, const char *method);
+  virtual void SetDirectoryDeletedCommand(vtkObject *obj, const char *method);
   virtual void SetDirectoryRenamedCommand(vtkObject *obj, const char *method);
 
   // Description:
@@ -135,11 +135,11 @@ public:
   //BTX
   enum
   {
-    DirectoryChangedEvent = 10000,
+    DirectorySelectedEvent = 10000,
     DirectoryOpenedEvent,
     DirectoryClosedEvent,
-    DirectoryAddedEvent,
-    DirectoryRemovedEvent
+    DirectoryCreatedEvent,
+    DirectoryDeletedEvent
   };
   //ETX
 
@@ -203,7 +203,7 @@ public:
   // Description:
   // Callback, do NOT use. 
   // When a node selection is changed in the directory tree. 
-  virtual void DirectoryChangedCallback();
+  virtual void DirectorySelectedCallback();
 
   // Description:
   // Callback, do NOT use. 
@@ -370,20 +370,20 @@ protected:
 
   // Description:
   // Commands
-  char *DirectoryChangedCommand;
+  char *DirectorySelectedCommand;
   char *DirectoryOpenedCommand;
   char *DirectoryClosedCommand;
-  char *DirectoryAddedCommand;
-  char *DirectoryRemovedCommand;
+  char *DirectoryCreatedCommand;
+  char *DirectoryDeletedCommand;
   char *DirectoryRenamedCommand;
   
   // Description:
   // Invoke Commands
-  virtual void InvokeDirectoryChangedCommand(const char* path);
+  virtual void InvokeDirectorySelectedCommand(const char* path);
   virtual void InvokeDirectoryOpenedCommand(const char* path);
   virtual void InvokeDirectoryClosedCommand(const char* path);
-  virtual void InvokeDirectoryAddedCommand(const char* path);
-  virtual void InvokeDirectoryRemovedCommand(const char* path);
+  virtual void InvokeDirectoryCreatedCommand(const char* path);
+  virtual void InvokeDirectoryDeletedCommand(const char* path);
   virtual void InvokeDirectoryRenamedCommand(
     const char* oldname, const char* newname);
                                           

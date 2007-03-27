@@ -124,7 +124,7 @@ public:
   // Specifies commands to associate with the widget.
   // 'FileSelected' is called whenever the selection is changed. 
   // 'FileDoubleClicked' is called when a file/folder is double-clicked on.
-  // 'FileRemoved' is called when a file/folder is removed
+  // 'FileDeleted' is called when a file/folder is removed
   // 'FileRenamed' is called when a file/folder is renamed by right click
   // 'FileUpdated' is called when a new folder is created from right click 
   //               on empty rows.
@@ -134,7 +134,7 @@ public:
   // evaluated as a simple command. 
   virtual void SetFileSelectedCommand(vtkObject *obj, const char *method);
   virtual void SetFileDoubleClickedCommand(vtkObject *obj, const char *method);
-  virtual void SetFileRemovedCommand(vtkObject *obj, const char *method);
+  virtual void SetFileDeletedCommand(vtkObject *obj, const char *method);
   virtual void SetFileRenamedCommand(vtkObject *obj, const char *method);
   virtual void SetFolderCreatedCommand(vtkObject *obj, const char *method);
 
@@ -154,7 +154,7 @@ public:
     FileDoubleClickedEvent,
     FileRenamedEvent,
     FolderCreatedEvent,
-    FileRemovedEvent
+    FileDeletedEvent
   };
   //ETX
  
@@ -279,7 +279,7 @@ protected:
   // Commands
   char *FileSelectedCommand;
   char *FileDoubleClickedCommand;
-  char *FileRemovedCommand;
+  char *FileDeletedCommand;
   char *FileRenamedCommand;
   char *FolderCreatedCommand;
   
@@ -287,7 +287,7 @@ protected:
   // Invoke Commands
   virtual void InvokeFileSelectedCommand(const char* path);
   virtual void InvokeFileDoubleClickedCommand(const char* path);
-  virtual void InvokeFileRemovedCommand(const char* path, int isDir);
+  virtual void InvokeFileDeletedCommand(const char* path, int isDir);
   virtual void InvokeFileRenamedCommand(
     const char* oldname, const char* newname);
   virtual void InvokeFolderCreatedCommand(const char* filename);
