@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.17 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -957,6 +957,7 @@ void vtkKWDirectoryExplorer::SelectDirectory(const char* dirname)
     if(nodes.size()>0)
       {
       tree->SelectNode(nodes.front().c_str());
+      this->InvokeDirectorySelectedCommand(KWFileBrowser_UNIX_ROOT_DIRECTORY);
       }
 #endif
     return;
@@ -967,7 +968,7 @@ void vtkKWDirectoryExplorer::SelectDirectory(const char* dirname)
     // Take care of Windows logic drives 
     // (vtksys::SystemTools::FileIsDirectory() does not recognize
     // drives in the format "C:" or "C:\"
-//  #ifdef _WIN32
+
     nodes.clear();
     vtksys::SystemTools::Split(
       tree->GetNodeChildren(this->Internals->RootNode), nodes, ' ');
@@ -979,11 +980,11 @@ void vtkKWDirectoryExplorer::SelectDirectory(const char* dirname)
         if(!this->IsNodeSelected((*it).c_str()))
           {
           tree->SelectNode((*it).c_str());
+          this->InvokeDirectorySelectedCommand(dirpath.c_str());
           }
         break;
         }
       }
-//  #endif
     }
   else
     {
@@ -1018,6 +1019,7 @@ void vtkKWDirectoryExplorer::SelectDirectory(const char* dirname)
           if(!this->IsNodeSelected((*it).c_str()))
             {
             tree->SelectNode((*it).c_str());
+            this->InvokeDirectorySelectedCommand(dirpath.c_str());
             }
           break;
           }
