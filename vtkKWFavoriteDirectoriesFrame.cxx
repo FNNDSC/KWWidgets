@@ -56,7 +56,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.9 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -437,7 +437,7 @@ void vtkKWFavoriteDirectoriesFrame::AddFavoriteDirectory(
   this->AddFavoriteDirectoryToFrame(path, name);
   
   if (this->Internals->FavoriteDirectories.size() >
-      this->MaximumNumberOfFavoriteDirectoriesInRegistry)
+      (size_t)this->MaximumNumberOfFavoriteDirectoriesInRegistry)
     {
     this->PruneFavoriteDirectoriesInRegistry();
     }
@@ -1185,7 +1185,7 @@ void vtkKWFavoriteDirectoriesFrame::UpdateEnableState()
 void vtkKWFavoriteDirectoriesFrame::PruneFavoriteDirectoriesInRegistry()
 {
   while (this->Internals->FavoriteDirectories.size() > 
-         this->MaximumNumberOfFavoriteDirectoriesInRegistry)
+         (size_t)this->MaximumNumberOfFavoriteDirectoriesInRegistry)
     {
     this->RemoveFavoriteDirectory(
       this->Internals->FavoriteDirectories.back()->Path.c_str());
