@@ -57,7 +57,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.11 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -408,6 +408,11 @@ void vtkKWFavoriteDirectoriesFrame::SelectFavoriteDirectoryWithName(
 //----------------------------------------------------------------------------
 void vtkKWFavoriteDirectoriesFrame::ClearFavoriteDirectorySelection()
 {
+  if (!this->FavoriteDirectoryFrame->IsCreated())
+    {
+    return;
+    }
+
   int nb_children = 
     this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfChildren();
   for(int index = 0; index < nb_children; index++)

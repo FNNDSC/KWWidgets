@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.15 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.16 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -185,28 +185,31 @@ void vtkKWFileBrowserDialog::CreateWidget()
   this->CancelButton->SetCommand(this, "Cancel");
 
   this->AddCallbackCommandObservers();
-  
+
   this->Update();
 }
 
 //----------------------------------------------------------------------------
 void vtkKWFileBrowserDialog::Update()
 {
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
   // Show/Hide components
 
   if (this->ChooseDirectory)
     {
     this->FileBrowserWidget->DirectoryExplorerVisibilityOn();
     this->FileBrowserWidget->FileListTableVisibilityOff();
-    this->SetMinimumSize(300, 300);
-    this->SetSize(600, 400);
+    this->SetMinimumSize(500, 300);
     }
   else
     {
     this->FileBrowserWidget->DirectoryExplorerVisibilityOn();
     this->FileBrowserWidget->FileListTableVisibilityOn();
-    this->SetMinimumSize(700, 400);
-    this->SetSize(808, 455);
+    this->SetMinimumSize(780, 300);
    }
 
   // OK Button
@@ -243,8 +246,6 @@ void vtkKWFileBrowserDialog::Update()
 
     this->Script("grid columnconfigure %s 1 -weight 1", 
       this->BottomFrame->GetWidgetName());
-
-    this->CreatePreviewFrame();
     }
   else
     {
@@ -264,6 +265,7 @@ void vtkKWFileBrowserDialog::Update()
                  this->CancelButton->GetWidgetName());
     }
 
+  this->CreatePreviewFrame();
 }
 
 //----------------------------------------------------------------------------
@@ -281,7 +283,7 @@ void vtkKWFileBrowserDialog::CreatePreviewFrame()
     }
   if (this->PreviewFrameVisibility)
     {
-    this->Script("pack %s -side top -fill x -padx 2 -pady 2",
+    this->Script("pack %s -side top -fill both -expand y -padx 2 -pady 2",
                  this->PreviewFrame->GetWidgetName());
     }
   else

@@ -1,8 +1,10 @@
-#include "vtkKWFileBrowserDialog.h"
+#include "vtkKWMyFileBrowserDialog.h"
 #include "vtkKWApplication.h"
 
 #include <vtksys/SystemTools.hxx>
 #include <vtksys/CommandLineArguments.hxx>
+
+extern "C" int Kwfilebrowserdialogexamplelib_Init(Tcl_Interp *interp);
 
 int my_main(int argc, char *argv[])
 {
@@ -14,6 +16,11 @@ int my_main(int argc, char *argv[])
     cerr << "Error: InitializeTcl failed" << endl ;
     return 1;
     }
+
+  // Initialize our Tcl library (i.e. our classes wrapped in Tcl).
+  // This *is* required for the C++ methods to be used as callbacks.
+
+  Kwfilebrowserdialogexamplelib_Init(interp);
 
   // Process some command-line arguments
   // The --test option here is used to run this example as a non-interactive 
@@ -46,11 +53,11 @@ int my_main(int argc, char *argv[])
 
   // Create the file browser dialog
 
-  vtkKWFileBrowserDialog *dlg = vtkKWFileBrowserDialog::New();
+  vtkKWMyFileBrowserDialog *dlg = vtkKWMyFileBrowserDialog::New();
   dlg->SetApplication(app);
   dlg->Create();
+  //  dlg->ChooseDirectoryOn();
   dlg->SetTitle(app->GetName());
-  //dlg->ChooseDirectoryOn();
   //dlg->MultipleSelectionOn();
   dlg->SetDefaultExtension(".txt");
   dlg->SetFileTypes("{{All files} {.*}} {{Text Document} {.txt}} {{JPEG image} {.jpg .jpeg}}");
@@ -58,13 +65,13 @@ int my_main(int argc, char *argv[])
 
   // Invoke the dialog
     
-  dlg->RetrieveLastPathFromRegistry("KWFileBrowserLastPath");
+  dlg->RetrieveLastPathFromRegistry("LastPath");
 
   dlg->Invoke();
     
   if (dlg->GetStatus()==vtkKWDialog::StatusOK)
     {
-    dlg->SaveLastPathToRegistry("KWFileBrowserLastPath");
+    dlg->SaveLastPathToRegistry("LastPath");
     }
   dlg->Delete();
     
