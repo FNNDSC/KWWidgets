@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.17 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -54,7 +54,6 @@ vtkKWFileBrowserDialog::vtkKWFileBrowserDialog()
 {
   this->FileTypes         = NULL;
   this->LastPath          = NULL;
-  this->PreviewFrame      = NULL;
   this->InitialFileName   = NULL;
   this->DefaultExtension  = NULL;
 
@@ -62,12 +61,11 @@ vtkKWFileBrowserDialog::vtkKWFileBrowserDialog()
   this->ChooseDirectory  = 0;
   this->FileNames        = vtkStringArray::New();
 
-  this->SetTitle("Open File");
-
   this->FileNameChangedCommand      = NULL;
 
   this->Internals          = new vtkKWFileBrowserDialogInternals;
 
+  this->PreviewFrame       = NULL;
   this->FileBrowserWidget  = vtkKWFileBrowserWidget::New();
   this->BottomFrame        = vtkKWFrame::New();
   this->OKButton           = vtkKWPushButton::New();
@@ -83,11 +81,29 @@ vtkKWFileBrowserDialog::vtkKWFileBrowserDialog()
 //----------------------------------------------------------------------------
 vtkKWFileBrowserDialog::~vtkKWFileBrowserDialog()
 {
-  this->SetFileTypes(NULL);
-  this->SetLastPath(NULL);
-  this->SetInitialFileName(NULL);
-  this->SetDefaultExtension(NULL);
-  this->SetLastPath(NULL);
+  if (this->FileTypes)
+    {
+    delete [] this->FileTypes;
+    this->FileTypes = NULL;
+    }
+
+  if (this->LastPath)
+    {
+    delete [] this->LastPath;
+    this->LastPath = NULL;
+    }
+
+  if (this->InitialFileName)
+    {
+    delete [] this->InitialFileName;
+    this->InitialFileName = NULL;
+    }
+
+  if (this->DefaultExtension)
+    {
+    delete [] this->DefaultExtension;
+    this->DefaultExtension = NULL;
+    }
 
   if (this->FileNames)
     {
@@ -204,12 +220,20 @@ void vtkKWFileBrowserDialog::Update()
     this->FileBrowserWidget->DirectoryExplorerVisibilityOn();
     this->FileBrowserWidget->FileListTableVisibilityOff();
     this->SetMinimumSize(500, 300);
+    if (!this->GetTitle() || !strcmp(this->GetTitle(), "Select File"))
+      {
+      this->SetTitle("Select Directory");
+      }
     }
   else
     {
     this->FileBrowserWidget->DirectoryExplorerVisibilityOn();
     this->FileBrowserWidget->FileListTableVisibilityOn();
     this->SetMinimumSize(780, 300);
+    if (!this->GetTitle() || !strcmp(this->GetTitle(), "Select Directory"))
+      {
+      this->SetTitle("Select File");
+      }
    }
 
   // OK Button

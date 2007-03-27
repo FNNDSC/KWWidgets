@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.18 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.19 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -101,11 +101,11 @@ vtkKWDirectoryExplorer::vtkKWDirectoryExplorer()
   this->ContextMenu        = NULL;
   
   this->DirectorySelectedCommand = NULL;
-  this->DirectoryCreatedCommand   = NULL;
-  this->DirectoryDeletedCommand = NULL;
-  this->DirectoryOpenedCommand  = NULL;
-  this->DirectoryClosedCommand  = NULL;
-  this->DirectoryRenamedCommand = NULL;
+  this->DirectoryCreatedCommand  = NULL;
+  this->DirectoryDeletedCommand  = NULL;
+  this->DirectoryOpenedCommand   = NULL;
+  this->DirectoryClosedCommand   = NULL;
+  this->DirectoryRenamedCommand  = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -123,31 +123,37 @@ vtkKWDirectoryExplorer::~vtkKWDirectoryExplorer()
     delete [] this->DirectoryCreatedCommand;
     this->DirectoryCreatedCommand = NULL;
     }
+
   if (this->DirectoryDeletedCommand)
     {
     delete [] this->DirectoryDeletedCommand;
     this->DirectoryDeletedCommand = NULL;
     }
+
   if (this->DirectoryOpenedCommand )
     {
     delete [] this->DirectoryOpenedCommand;
     this->DirectoryOpenedCommand = NULL;
     }
+
   if (this->DirectoryClosedCommand)
     {
     delete [] this->DirectoryClosedCommand;
     this->DirectoryClosedCommand = NULL;
     }
+
   if (this->DirectorySelectedCommand)
     {
     delete [] this->DirectorySelectedCommand;
     this->DirectorySelectedCommand = NULL;
     }
+
   if (this->DirectoryRenamedCommand)
     {
     delete [] this->DirectoryRenamedCommand;
     this->DirectoryRenamedCommand = NULL;
     }
+
   if (this->ContextMenu)
     {
     this->ContextMenu->Delete();

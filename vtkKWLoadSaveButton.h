@@ -42,7 +42,7 @@ public:
   // Description:
   // Retrieve the filename. This method only query the GetFileName method
   // on the LoadSaveDialog member.
-  virtual char* GetFileName();
+  virtual const char* GetFileName();
 
   // Description:
   // Set/Get the length of the filename when displayed in the button.
