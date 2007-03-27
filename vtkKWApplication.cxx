@@ -24,7 +24,6 @@
 #include "vtkKWLanguage.h"
 #include "vtkKWLogDialog.h"
 #include "vtkKWLogWidget.h"
-#include "vtkKWLoadSaveDialog.h"
 #include "vtkKWMessageDialog.h"
 #include "vtkKWObject.h"
 #include "vtkKWOptionDataBase.h"
@@ -80,7 +79,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.318 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.319 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 

@@ -121,6 +121,14 @@ public:
   virtual int GetTableHeight();
 
   // Description:
+  // Convenience method to Set/Get the table background color.
+  virtual void GetTableBackgroundColor(double *r, double *g, double *b);
+  virtual double* GetTableBackgroundColor();
+  virtual void SetTableBackgroundColor(double r, double g, double b);
+  virtual void SetTableBackgroundColor(double rgb[3])
+    { this->SetTableBackgroundColor(rgb[0], rgb[1], rgb[2]); };
+
+  // Description:
   // Specifies commands to associate with the widget.
   // 'FileSelected' is called whenever the selection is changed. 
   // 'FileDoubleClicked' is called when a file/folder is double-clicked on.

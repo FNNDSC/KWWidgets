@@ -110,6 +110,14 @@ public:
   virtual int GetTreeHeight();
 
   // Description:
+  // Convenience method to Set/Get the tree background color.
+  virtual void GetTreeBackgroundColor(double *r, double *g, double *b);
+  virtual double* GetTreeBackgroundColor();
+  virtual void SetTreeBackgroundColor(double r, double g, double b);
+  virtual void SetTreeBackgroundColor(double rgb[3])
+    { this->SetTreeBackgroundColor(rgb[0], rgb[1], rgb[2]); };
+
+  // Description:
   // Specifies selection-related commands to associate with the widget.
   // DirectorySelected is called whenever the selection is changed or cleared. 
   // The 'object' argument is the object that will have the method called on

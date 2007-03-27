@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.18 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -254,6 +254,7 @@ void vtkKWDirectoryExplorer::CreateWidget()
   dirtree->SetPadX(20);
   dirtree->SetWidth(30);
   dirtree->SetHeight(15);
+  dirtree->SetBackgroundColor(1.0, 1.0, 1.0);
 
   dirtree->SetOpenCommand(this,"DirectoryOpenedCallback");
   dirtree->SetCloseCommand(this, "DirectoryClosedCallback");
@@ -1351,6 +1352,26 @@ double* vtkKWDirectoryExplorer::GetSelectionForegroundColor()
 void vtkKWDirectoryExplorer::SetSelectionForegroundColor(double r, double g, double b)
 {
   this->DirectoryTree->GetWidget()->SetSelectionForegroundColor(r, g, b);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWDirectoryExplorer::GetTreeBackgroundColor(
+  double *r, double *g, double *b)
+{
+  this->DirectoryTree->GetWidget()->GetBackgroundColor(r, g, b);
+}
+
+//----------------------------------------------------------------------------
+double* vtkKWDirectoryExplorer::GetTreeBackgroundColor()
+{
+  return this->DirectoryTree->GetWidget()->GetBackgroundColor();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWDirectoryExplorer::SetTreeBackgroundColor(
+  double r, double g, double b)
+{
+  this->DirectoryTree->GetWidget()->SetBackgroundColor(r, g, b);
 }
 
 //----------------------------------------------------------------------------
