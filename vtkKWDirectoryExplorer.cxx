@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.21 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.22 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -587,14 +587,6 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
     // if the node already has children, we need to find any 
     // new directories and add them
 
-    // TODO: THIS SHOULD BE OPTIMIZE. ONCE WE HAVE FOUND THAT A FILE IS
-    // ALREADY PRESENT IN THE CHILDREN, THERE IS NO POINT IN KEEPING THAT
-    // NODE IN THE CHILDREN, SINCE YOU DON'T NEED TO COMPARE IT ANY
-    // LONGER TO ANY OTHER FILE. THIS WILL ALSO SPEED UP THE STEP AT THE
-    // END THAT CHECKS IF THE REMAINING CHILDREN STILL EXIST
-    // SINCE WE ARE USING A VECTOR HERE, REMOVING COSTS, JUST DEALLOCATE
-    // THE STRING.
-
     bool isadded = false;
     if (num_children && num_dirfound < num_children)
       {
@@ -624,7 +616,11 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
                  << vtksys::SystemTools::EscapeChars(
                    fullname.c_str(), KWFileBrowser_ESCAPE_CHARS).c_str() 
                  << "\"" << endl;
+
       newdirs++;  
+
+#ifdef _WIN32 // disable that on Unix, too slow for NFS
+
 #if defined (_MY_DEBUG)  
       start = clock();
 #endif
@@ -688,6 +684,9 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
       cout << tmp_name << "---- Check sub folder time: "   
            << durationsub << endl;
 #endif
+
+#endif // Win32, do not check for subdirs, too slow for NFS
+
       }//end if (!added)
     }//end for
 
