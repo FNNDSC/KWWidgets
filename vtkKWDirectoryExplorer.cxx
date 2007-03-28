@@ -47,11 +47,11 @@
 #include <shlobj.h>
 #endif
 
-// #define _MY_DEBUG
+//#define _MY_DEBUG
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.19 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.20 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -490,18 +490,26 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   vtksys_stl::vector<vtksys_stl::string> children;
   vtksys::SystemTools::Split(
     dirtree->GetNodeChildren(node), children, ' ');
+  vtksys_stl::vector<vtksys_stl::string>::iterator node_it, node_end;
+  int num_children = children.size();
 
+  vtksys_stl::list<vtksys_stl::string> children_text;
+  vtksys_stl::list<vtksys_stl::string>::iterator node_text_it, node_text_end;
+  
+  node_it = children.begin();
+  node_end =  children.end();
+  for (; node_it != node_end; node_it++)
+    {
+    children_text.push_back(dirtree->GetNodeText((*node_it).c_str()));
+    }
+
+  node_text_end =  children_text.end();
+  
 #if defined (_MY_DEBUG)  
-  durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
-  cout << "Get Node children time: " << durationopen << endl;
+  double durationchildren = (double)(clock() - start) / CLOCKS_PER_SEC;
+  cout << "Get Node children time: " << durationchildren << endl;
 #endif
 
-  bool haschildren = false, isadded = false;
-
-  vtksys_stl::vector<vtksys_stl::string>::iterator it = children.begin();
-  vtksys_stl::vector<vtksys_stl::string>::iterator end = children.end();
-  int num_children = children.size();
-  
   vtkIdType dirID;
   char strDirID[20];
 
@@ -587,17 +595,17 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
     // SINCE WE ARE USING A VECTOR HERE, REMOVING COSTS, JUST DEALLOCATE
     // THE STRING.
 
-    isadded = false;
+    bool isadded = false;
     if (num_children && num_dirfound < num_children)
       {
-      it = children.begin();
-      for (; it != end; it++)
+      node_text_it = children_text.begin();
+      for (; node_text_it != node_text_end; node_text_it++)
         {
-        if (strcmp(dirtree->GetNodeText((*it).c_str()), 
-                   filename.c_str()) == 0)
+        if (strcmp(node_text_it->c_str(), filename.c_str()) == 0)
           {
           isadded = true;
           num_dirfound++;
+          children_text.erase(node_text_it);
           break;
           }
         }
@@ -676,9 +684,9 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
         } //end for
 
 #if defined (_MY_DEBUG)  
-      durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
+      double durationsub = (double)(clock() - start) / CLOCKS_PER_SEC;
       cout << tmp_name << "---- Check sub folder time: "   
-           << durationopen << endl;
+           << durationsub << endl;
 #endif
       }//end if (!added)
     }//end for
@@ -686,8 +694,8 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   tmpdir->Delete();
     
 #if defined (_MY_DEBUG)  
-  durationopen = (double)(clock() - scriptstart) / CLOCKS_PER_SEC;
-  cout << "Creat Script time: " << durationopen << endl;
+  double durationscript = (double)(clock() - scriptstart) / CLOCKS_PER_SEC;
+  cout << "Creat Script time: " << durationscript << endl;
   start = clock();
 #endif
 
@@ -710,8 +718,8 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   tk_cfgcmd.rdbuf()->freeze(0);
    
 #if defined (_MY_DEBUG)  
-  durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
-  cout << "Run script time: " << durationopen << endl;
+  double durationrun = (double)(clock() - start) / CLOCKS_PER_SEC;
+  cout << "Run script time: " << durationrun << endl;
   start = clock();
 #endif
 
@@ -721,13 +729,13 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
 
   if (num_children && num_dirfound < num_children)
     {
-    it = children.begin();
-    for (; it != end; it++)
+    node_it = children.begin();
+    for (; node_it != node_end; node_it++)
       {
       if (!vtksys::SystemTools::FileExists(
-            dirtree->GetNodeUserData((*it).c_str())))
+            dirtree->GetNodeUserData((*node_it).c_str())))
         {
-        dirtree->DeleteNode((*it).c_str());
+        dirtree->DeleteNode((*node_it).c_str());
         }
       }
     }
@@ -735,8 +743,8 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   dir->Delete();
 
 #if defined (_MY_DEBUG)  
-  durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
-  cout << "Check dir exists time: " << durationopen << endl;
+  double durationclean = (double)(clock() - start) / CLOCKS_PER_SEC;
+  cout << "Check dir exists time: " << durationclean << endl;
 #endif
 }
 
