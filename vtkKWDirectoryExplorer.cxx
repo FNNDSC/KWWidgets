@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.20 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.21 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -318,7 +318,7 @@ void vtkKWDirectoryExplorer::LoadRootDirectory()
   this->AddDirectoryNode(
     this->Internals->RootNode, 
     strDirID, 
-    "ROOT", 
+    "/", 
     KWFileBrowser_UNIX_ROOT_DIRECTORY, 
     tmpIcon);
 
