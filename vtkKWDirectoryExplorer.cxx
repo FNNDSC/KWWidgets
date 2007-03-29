@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.22 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.23 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -541,7 +541,6 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   vtksys_stl::string filename = "",fullname = "";
   const char* image_name = this->Internals->FolderImage.c_str();
    
-  struct stat tmp_fs;
   struct stat fs;
   if (strcmp(nodepath.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY) != 0)
     {
@@ -619,6 +618,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
 
       newdirs++;  
 
+#if 1
 #ifdef _WIN32 // disable that on Unix, too slow for NFS
 
 #if defined (_MY_DEBUG)  
@@ -658,6 +658,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
             }
           }
         tmp_name += tmp_file;
+        struct stat tmp_fs;
         if (stat(tmp_name.c_str(), &tmp_fs) != 0)
           {
           continue;
@@ -686,7 +687,25 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
 #endif
 
 #endif // Win32, do not check for subdirs, too slow for NFS
-
+#else
+      vtksys_stl::string tmpNewdir =  vtksys::SystemTools::EscapeChars(
+        fullname.c_str(), KWFileBrowser_ESCAPE_CHARS);
+      
+      tk_cfgcmd << "set dir \"" << tmpNewdir.c_str() << "\"" <<endl;
+      tk_cfgcmd << "set contents [glob -nocomplain -directory $dir -type d *]" << endl;
+      tk_cfgcmd << "if { [llength $contents] } {" << endl;
+      tk_cfgcmd << treename << " itemconfigure " << strDirID << " -drawcross allways" << endl;
+      tk_cfgcmd << "} else { " << endl;
+      tk_cfgcmd << "set newcontents [glob -nocomplain -directory $dir -type d .*]" << endl;
+      tk_cfgcmd << "set pos [lsearch -exact $newcontents \"" <<tmpNewdir.c_str()<<"/.\"]" <<endl;
+      tk_cfgcmd << "if { $pos >= 0 } {set newcontents [lreplace $newcontents $pos $pos]}" <<endl;
+      tk_cfgcmd << "set pos [lsearch -exact $newcontents \"" << tmpNewdir.c_str() << "/..\"]" <<endl;
+      tk_cfgcmd << "if { $pos >= 0 } {set newcontents [lreplace $newcontents $pos $pos]}" <<endl;
+       tk_cfgcmd << "if { [llength $newcontents] } {" << endl;
+       tk_cfgcmd << treename << " itemconfigure " << strDirID << " -drawcross allways }" << endl;
+       tk_cfgcmd<< " }" <<endl;
+#endif
+       
       }//end if (!added)
     }//end for
 
