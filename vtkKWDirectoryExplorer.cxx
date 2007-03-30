@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.24 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.25 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -618,14 +618,15 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
 
       newdirs++;  
 
-#if 1
 #ifdef _WIN32 // disable that on Unix, too slow for NFS
 
 #if defined (_MY_DEBUG)  
       start = clock();
 #endif
-      // Check if this new folder has subfolders.
 
+#if 1
+      // Check if this new folder has subfolders.
+      
       if (!tmpdir->Open(fullname.c_str()))
         {
         continue;
@@ -680,14 +681,8 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
           }
         } //end for
 
-#if defined (_MY_DEBUG)  
-      double durationsub = (double)(clock() - start) / CLOCKS_PER_SEC;
-      cout << tmp_name << "---- Check sub folder time: "   
-           << durationsub << endl;
-#endif
+#else // Try differently? Crashs on some Unixes...
 
-#endif // Win32, do not check for subdirs, too slow for NFS
-#else
       vtksys_stl::string tmpNewdir =  vtksys::SystemTools::EscapeChars(
         fullname.c_str(), KWFileBrowser_ESCAPE_CHARS);
       
@@ -705,6 +700,14 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
        tk_cfgcmd << treename << " itemconfigure " << strDirID << " -drawcross allways }" << endl;
        tk_cfgcmd<< " }" <<endl;
 #endif
+
+#if defined (_MY_DEBUG)  
+      double durationsub = (double)(clock() - start) / CLOCKS_PER_SEC;
+      cout << tmp_name << "---- Check sub folder time: "   
+           << durationsub << endl;
+#endif
+
+#endif // Win32, do not check for subdirs, too slow for NFS
        
       }//end if (!added)
     }//end for
