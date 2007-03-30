@@ -57,7 +57,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.14 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -387,13 +387,18 @@ void vtkKWFavoriteDirectoriesFrame::SetFavoriteDirectoryName(
 void vtkKWFavoriteDirectoriesFrame::SelectFavoriteDirectory(
   const char* path)
 {
-  const char *name_of_fav = this->GetNameOfFavoriteDirectory(path);
-  if (name_of_fav)
+  if (path && *path)
     {
-    vtksys_stl::string name_of_var_str(name_of_fav);
     vtksys_stl::string path_str(path);
-    this->SelectFavoriteDirectoryWithName(name_of_var_str.c_str());
-    this->InvokeFavoriteDirectorySelectedCommand(path_str.c_str(), name_of_var_str.c_str());
+    const char *name_of_fav = 
+      this->GetNameOfFavoriteDirectory(path_str.c_str());
+    if (name_of_fav)
+      {
+      vtksys_stl::string name_of_fav_str(name_of_fav);
+      this->SelectFavoriteDirectoryWithName(name_of_fav_str.c_str());
+      this->InvokeFavoriteDirectorySelectedCommand(
+        path_str.c_str(), name_of_fav_str.c_str());
+      }
     }
 }
 
