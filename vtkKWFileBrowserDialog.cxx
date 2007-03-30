@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.18 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -637,12 +637,18 @@ int vtkKWFileBrowserDialog::FileOK()
       }
     fullname.append(realname);
 
-    // If the file does not exist, append DefaultExtension if it is set
+    // Append DefaultExtension if it is set
 
-    if(!vtksys::SystemTools::FileExists(fullname.c_str()) &&
-      this->DefaultExtension && *this->DefaultExtension)
+    if (this->DefaultExtension && *this->DefaultExtension &&
+       (this->SaveDialog ||
+        !vtksys::SystemTools::FileExists(fullname.c_str())))
       {
-      fullname.append(this->DefaultExtension);
+      vtksys_stl::string ext = 
+        vtksys::SystemTools::GetFilenameExtension(fullname.c_str());
+      if (!ext.size())
+        {
+        fullname.append(this->DefaultExtension);
+        }
       }
 
     if (vtksys::SystemTools::FileExists(fullname.c_str()))
@@ -674,10 +680,7 @@ int vtkKWFileBrowserDialog::FileOK()
 
     if (this->SaveDialog)
       {
-      if (!this->ConfirmOverwrite(fullname.c_str()))
-        {
-        return 0;
-        }
+      this->FileNames->InsertNextValue(fullname.c_str());
       return 1;
       }
     
