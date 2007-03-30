@@ -57,7 +57,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.15 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -387,7 +387,7 @@ void vtkKWFavoriteDirectoriesFrame::SetFavoriteDirectoryName(
 void vtkKWFavoriteDirectoriesFrame::SelectFavoriteDirectory(
   const char* path)
 {
-  if (path && *path)
+  if (path && *path && !this->IsFavoriteDirectorySelected(path))
     {
     vtksys_stl::string path_str(path);
     const char *name_of_fav = 
@@ -400,6 +400,38 @@ void vtkKWFavoriteDirectoriesFrame::SelectFavoriteDirectory(
         path_str.c_str(), name_of_fav_str.c_str());
       }
     }
+}
+
+//----------------------------------------------------------------------------
+int vtkKWFavoriteDirectoriesFrame::IsFavoriteDirectorySelected(
+  const char* path)
+{
+  if (path && *path)
+    {
+    vtksys_stl::string path_str(path);
+    const char *name_of_fav = 
+      this->GetNameOfFavoriteDirectory(path_str.c_str());
+    if (name_of_fav)
+      {
+      vtksys_stl::string name_of_fav_str(name_of_fav);
+      const char *sel_path = this->GetSelectedFavoriteDirectory();
+      if (sel_path && *sel_path)
+        {
+        vtksys_stl::string sel_path_str(sel_path);
+        const char *sel_name_of_fav = 
+          this->GetNameOfFavoriteDirectory(sel_path_str.c_str());
+        if (sel_name_of_fav)
+          {
+          vtksys_stl::string sel_name_of_fav_str(sel_name_of_fav);
+          if (!strcmp(sel_name_of_fav_str.c_str(), name_of_fav_str.c_str()))
+            {
+            return 1;
+            }
+          }
+        }
+      }
+    }
+  return 0;
 }
 
 //----------------------------------------------------------------------------

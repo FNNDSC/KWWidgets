@@ -63,6 +63,7 @@ public:
   // Select a favorite directory, if it is in the favorite directories list;
   // otherwise, de-select all the favorite directories.
   virtual void SelectFavoriteDirectory(const char *path);
+  virtual int IsFavoriteDirectorySelected(const char *path);
   
   // Description:
   // Get the selected favorite directory within the frame
