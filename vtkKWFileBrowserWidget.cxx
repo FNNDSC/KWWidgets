@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.14 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -724,8 +724,12 @@ void vtkKWFileBrowserWidget::UpdateForCurrentDirectory()
 {
   if (this->FavoriteDirectoriesFrameVisibility)
     {
-    this->FavoriteDirectoriesFrame->SelectFavoriteDirectory(
-      this->DirectoryExplorer->GetSelectedDirectory());
+    const char *sel_dir = this->DirectoryExplorer->GetSelectedDirectory();
+    if (sel_dir)
+      {
+      vtksys_stl::string sel_dir_str(sel_dir);
+      this->FavoriteDirectoriesFrame->SelectFavoriteDirectory(sel_dir_str.c_str());
+      }
     }
     
   if (this->FileListTableVisibility)

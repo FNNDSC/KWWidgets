@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.25 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.26 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -1192,9 +1192,10 @@ const char* vtkKWDirectoryExplorer::ReloadDirectory(
 int vtkKWDirectoryExplorer::OpenDirectory(const char* dirname)
 {
   const char* newnode = this->OpenDirectoryInternal(dirname, 1);
-  if(newnode)
+  if (newnode)
     {
-    this->UpdateMostRecentDirectoryHistory(newnode);
+    vtksys_stl::string newnode_str(newnode);
+    this->UpdateMostRecentDirectoryHistory(newnode_str.c_str());
     // update Back/Forward button state  
     this->Update();
     return 1;
@@ -1244,7 +1245,7 @@ const char* vtkKWDirectoryExplorer::OpenDirectoryInternal(
 #ifndef _WIN32
   // since on unix, the GetParentDirectory return "" 
   // for root directory "/" let's add the root directory "/"
-  if (strcmp(dirname, KWFileBrowser_UNIX_ROOT_DIRECTORY) != 0)
+  if (strcmp(path.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY) != 0)
     {
     dirlist.push_front(KWFileBrowser_UNIX_ROOT_DIRECTORY);
     }
@@ -1475,6 +1476,9 @@ const char* vtkKWDirectoryExplorer::ReloadDirectory(
   const char* dirname,
   int select)
 {
+  vtksys_stl::string nodedir, nodepath;
+  vtksys_stl::string dirpath = dirname;
+
   vtksys_stl::vector<vtksys_stl::string> children;
   vtksys::SystemTools::Split(
     this->DirectoryTree->GetWidget()->GetNodeChildren(parentnode), 
@@ -1482,9 +1486,6 @@ const char* vtkKWDirectoryExplorer::ReloadDirectory(
 
   vtksys_stl::vector<vtksys_stl::string>::iterator it = children.begin();
   vtksys_stl::vector<vtksys_stl::string>::iterator end = children.end();
-
-  vtksys_stl::string nodedir, nodepath;
-  vtksys_stl::string dirpath = dirname;
 
   // Convert the path for comparing with other path
 
