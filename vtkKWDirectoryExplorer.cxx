@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.23 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.24 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -722,7 +722,8 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   if (tk_treecmd.rdbuf() && newdirs > 0)
     {
     tk_treecmd << ends;
-    this->Script(tk_treecmd.str());
+    vtkKWTkUtilities::EvaluateSimpleString(
+      this->GetApplication(), tk_treecmd.str());
     }
   tk_treecmd.rdbuf()->freeze(0);
   
@@ -731,7 +732,8 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   if (tk_cfgcmd.rdbuf())
     {
     tk_cfgcmd << ends;
-    this->Script(tk_cfgcmd.str());
+    vtkKWTkUtilities::EvaluateSimpleString(
+      this->GetApplication(), tk_cfgcmd.str());
     }
   tk_cfgcmd.rdbuf()->freeze(0);
    
