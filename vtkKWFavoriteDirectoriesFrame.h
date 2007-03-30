@@ -84,6 +84,17 @@ public:
   vtkGetMacro(MaximumNumberOfFavoriteDirectoriesInRegistry, int);
   
   // Description:
+  // Convenience method to Set/Get the background color of the container
+  // frame, i.e. the frame that old all the favorite directories button.
+  virtual void GetContainerFrameBackgroundColor(
+    double *r, double *g, double *b);
+  virtual double* GetContainerFrameBackgroundColor();
+  virtual void SetContainerFrameBackgroundColor(
+    double r, double g, double b);
+  virtual void SetContainerFrameBackgroundColor(double rgb[3])
+    { this->SetContainerFrameBackgroundColor(rgb[0], rgb[1], rgb[2]); };
+
+  // Description:
   // Specifies commands to associate with the widget.
   // This command will be called from when the "AddFavorites" button is 
   // clicked. Since this widget does not know by itself what directory to add,
@@ -108,6 +119,16 @@ public:
   // - the name of the favorite: const char*
   virtual void SetFavoriteDirectorySelectedCommand(
     vtkObject *obj, const char *method);
+
+  // Description:
+  // Get the toolbar object.
+  vtkGetObjectMacro(Toolbar, vtkKWToolbar);
+
+  // Description:
+  // Get the add favorite directory button objects. 
+  // DO NOT modify the callbacks, this accessor is provided to change
+  // the button icon, for example.
+  vtkGetObjectMacro(AddFavoriteDirectoryButton, vtkKWPushButton);
 
   // Description:
   // Update the "enable" state of the object and its internal parts.
@@ -239,7 +260,7 @@ protected:
   // Description:
   // GUI
   vtkKWToolbar            *Toolbar;
-  vtkKWFrameWithScrollbar *FavoriteDirectoryFrame;
+  vtkKWFrameWithScrollbar *ContainerFrame;
   vtkKWPushButton         *AddFavoriteDirectoryButton;
   vtkKWMenu               *ContextMenu;
 

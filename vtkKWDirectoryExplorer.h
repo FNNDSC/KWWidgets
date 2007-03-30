@@ -157,6 +157,19 @@ public:
   virtual int HasFocus();
 
   // Description:
+  // Get the toolbar object.
+  vtkGetObjectMacro(Toolbar, vtkKWToolbar);
+
+  // Description:
+  // Get the button objects.
+  // DO NOT modify the callbacks, these accessors are provided to change
+  // the button icons, for example.
+  vtkGetObjectMacro(CreateFolderButton, vtkKWPushButton);
+  vtkGetObjectMacro(BackButton, vtkKWPushButtonWithMenu);
+  vtkGetObjectMacro(ForwardButton, vtkKWPushButtonWithMenu);
+  vtkGetObjectMacro(UpButton, vtkKWPushButton);
+
+  // Description:
   // Add event binding to the internal component widget 
   // for the directory hierarchy, so that these events will be 
   // invoked directly from the directory component of this widget.

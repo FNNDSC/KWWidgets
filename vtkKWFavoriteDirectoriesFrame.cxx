@@ -57,7 +57,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.15 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.16 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -102,7 +102,7 @@ vtkKWFavoriteDirectoriesFrame::vtkKWFavoriteDirectoriesFrame()
   this->MaximumNumberOfFavoriteDirectoriesInRegistry = 15;
   
   this->Toolbar                    = vtkKWToolbar::New();
-  this->FavoriteDirectoryFrame     = vtkKWFrameWithScrollbar::New();
+  this->ContainerFrame   = vtkKWFrameWithScrollbar::New();
   this->AddFavoriteDirectoryButton = vtkKWPushButton::New();
   this->ContextMenu                = NULL;
   
@@ -144,8 +144,8 @@ vtkKWFavoriteDirectoriesFrame::~vtkKWFavoriteDirectoriesFrame()
   this->AddFavoriteDirectoryButton->Delete();
   this->Toolbar->Delete();
    
-  this->FavoriteDirectoryFrame->GetFrame()->RemoveAllChildren();
-  this->FavoriteDirectoryFrame->Delete();
+  this->ContainerFrame->GetFrame()->RemoveAllChildren();
+  this->ContainerFrame->Delete();
   
   // Clear internals list
 
@@ -219,15 +219,15 @@ void vtkKWFavoriteDirectoriesFrame::CreateWidget()
   
   // Favorite button frame to hold favorite directory buttons.
 
-  this->FavoriteDirectoryFrame->SetParent(this);
-  this->FavoriteDirectoryFrame->SetHorizontalScrollbarVisibility(0);
-  this->FavoriteDirectoryFrame->Create();
-  this->FavoriteDirectoryFrame->SetBackgroundColor(0.5, 0.5, 0.5);
-  this->FavoriteDirectoryFrame->SetBorderWidth(1);
-  this->FavoriteDirectoryFrame->SetReliefToSunken();
+  this->ContainerFrame->SetParent(this);
+  this->ContainerFrame->SetHorizontalScrollbarVisibility(0);
+  this->ContainerFrame->Create();
+  this->ContainerFrame->SetBackgroundColor(0.5, 0.5, 0.5);
+  this->ContainerFrame->SetBorderWidth(1);
+  this->ContainerFrame->SetReliefToSunken();
 
   this->Script("pack %s -side top -fill both -expand true",
-               this->FavoriteDirectoryFrame->GetWidgetName());
+               this->ContainerFrame->GetWidgetName());
 
   // Initialize
 
@@ -319,11 +319,11 @@ vtkKWFavoriteDirectoriesFrame::GetButtonOfFavoriteDirectoryWithName(
   if (name && *name)
     {
     int nb_children = 
-      this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfChildren();
+      this->ContainerFrame->GetFrame()->GetNumberOfChildren();
     for (int index = 0; index < nb_children; index++)
       {
       vtkKWPushButton *child = vtkKWPushButton::SafeDownCast(
-        this->FavoriteDirectoryFrame->GetFrame()->GetNthChild(index));
+        this->ContainerFrame->GetFrame()->GetNthChild(index));
       if (child && child->IsPacked() && strcmp(child->GetText(), name) == 0)
         {
         return child;
@@ -438,11 +438,11 @@ int vtkKWFavoriteDirectoriesFrame::IsFavoriteDirectorySelected(
 const char* vtkKWFavoriteDirectoriesFrame::GetSelectedFavoriteDirectory()
 {
   int nb_children = 
-    this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfChildren();
+    this->ContainerFrame->GetFrame()->GetNumberOfChildren();
   for (int index = 0; index < nb_children; index++)
     {
     vtkKWPushButton *child = vtkKWPushButton::SafeDownCast(
-      this->FavoriteDirectoryFrame->GetFrame()->GetNthChild(index));
+      this->ContainerFrame->GetFrame()->GetNthChild(index));
     if (child && child->IsPacked() && 
       child->GetRelief() == vtkKWOptions::ReliefRidge)
       {
@@ -488,22 +488,22 @@ void vtkKWFavoriteDirectoriesFrame::SelectFavoriteDirectoryWithName(
 //----------------------------------------------------------------------------
 void vtkKWFavoriteDirectoriesFrame::ClearFavoriteDirectorySelection()
 {
-  if (!this->FavoriteDirectoryFrame->IsCreated())
+  if (!this->ContainerFrame->IsCreated())
     {
     return;
     }
 
   int nb_children = 
-    this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfChildren();
+    this->ContainerFrame->GetFrame()->GetNumberOfChildren();
   for(int index = 0; index < nb_children; index++)
     {
     vtkKWPushButton *child = vtkKWPushButton::SafeDownCast(
-      this->FavoriteDirectoryFrame->GetFrame()->GetNthChild(index));
+      this->ContainerFrame->GetFrame()->GetNthChild(index));
     if (child)
       {
       child->SetReliefToFlat();
       child->SetBackgroundColor(
-        this->FavoriteDirectoryFrame->GetFrame()->GetBackgroundColor());
+        this->ContainerFrame->GetFrame()->GetBackgroundColor());
       }
     }    
 }
@@ -560,28 +560,28 @@ void vtkKWFavoriteDirectoriesFrame::AddFavoriteDirectoryToFrame(
   this->Internals->FavoriteDirectories.push_front(direntry);
 
   vtkKWPushButton *dirbutton = vtkKWPushButton::New(); 
-  dirbutton->SetParent(this->FavoriteDirectoryFrame->GetFrame());
+  dirbutton->SetParent(this->ContainerFrame->GetFrame());
   dirbutton->Create();
   dirbutton->SetReliefToFlat();
   dirbutton->SetOverReliefToRaised();
   dirbutton->SetCompoundModeToTop();
   dirbutton->SetImageToPredefinedIcon(vtkKWIcon::IconFolder32);
   dirbutton->SetBackgroundColor(
-    this->FavoriteDirectoryFrame->GetBackgroundColor());
+    this->ContainerFrame->GetBackgroundColor());
   dirbutton->SetActiveBackgroundColor(
-    this->FavoriteDirectoryFrame->GetBackgroundColor());
+    this->ContainerFrame->GetBackgroundColor());
   dirbutton->SetConfigurationOptionAsInt("-takefocus", 0);
 
   this->UpdateFavoriteDirectoryButton(dirbutton, path, name);
 
   int nb_children = 
-    this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfPackedChildren();
+    this->ContainerFrame->GetFrame()->GetNumberOfPackedChildren();
                     
   if (nb_children > 0)
     {
     this->Script("pack %s -side top -fill x -pady 2 -before %s", 
                  dirbutton->GetWidgetName(), 
-                 this->FavoriteDirectoryFrame->GetFrame()->GetNthChild(nb_children-1)->GetWidgetName());
+                 this->ContainerFrame->GetFrame()->GetNthChild(nb_children-1)->GetWidgetName());
     }
   else
     {
@@ -1258,17 +1258,17 @@ void vtkKWFavoriteDirectoriesFrame::UpdateEnableState()
 {
   this->Superclass::UpdateEnableState();
 
-  this->PropagateEnableState(this->FavoriteDirectoryFrame);
+  this->PropagateEnableState(this->ContainerFrame);
   this->PropagateEnableState(this->Toolbar);
   this->PropagateEnableState(this->AddFavoriteDirectoryButton);
 
-  if (this->FavoriteDirectoryFrame->GetFrame())
+  if (this->ContainerFrame->GetFrame())
     {
     int nb_children = 
-      this->FavoriteDirectoryFrame->GetFrame()->GetNumberOfChildren();
+      this->ContainerFrame->GetFrame()->GetNumberOfChildren();
     for(int index = 0; index < nb_children; index++)
       {
-      this->FavoriteDirectoryFrame->GetFrame()->GetNthChild(index)->SetEnabled(
+      this->ContainerFrame->GetFrame()->GetNthChild(index)->SetEnabled(
         this->GetEnabled());
       }
     }    
@@ -1310,6 +1310,26 @@ void vtkKWFavoriteDirectoriesFrame::SetMaximumNumberOfFavoriteDirectoriesInRegis
   this->Update();
   
   this->Modified();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFavoriteDirectoriesFrame::GetContainerFrameBackgroundColor(
+  double *r, double *g, double *b)
+{
+  this->ContainerFrame->GetBackgroundColor(r, g, b);
+}
+
+//----------------------------------------------------------------------------
+double* vtkKWFavoriteDirectoriesFrame::GetContainerFrameBackgroundColor()
+{
+  return this->ContainerFrame->GetBackgroundColor();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFavoriteDirectoriesFrame::SetContainerFrameBackgroundColor(
+  double r, double g, double b)
+{
+  this->ContainerFrame->SetBackgroundColor(r, g, b);
 }
 
 //----------------------------------------------------------------------------

@@ -61,6 +61,7 @@ public:
   // Accessor for DirectoryExplorer and FileListTable
   vtkGetObjectMacro(DirectoryExplorer, vtkKWDirectoryExplorer);
   vtkGetObjectMacro(FileListTable, vtkKWFileListTable);
+  vtkGetObjectMacro(FavoriteDirectoriesFrame, vtkKWFavoriteDirectoriesFrame);
 
   // Description:
   // Set/Get the visibility of the directory explorer
