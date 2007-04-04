@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.18 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.19 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -639,13 +639,32 @@ int vtkKWFileBrowserDialog::FileOK()
 
     // Append DefaultExtension if it is set
 
-    if (this->DefaultExtension && *this->DefaultExtension &&
-       (this->SaveDialog ||
-        !vtksys::SystemTools::FileExists(fullname.c_str())))
+    if (this->DefaultExtension &&
+        (this->SaveDialog ||
+         !vtksys::SystemTools::FileExists(fullname.c_str())))
       {
       vtksys_stl::string ext = 
         vtksys::SystemTools::GetFilenameExtension(fullname.c_str());
-      if (!ext.size())
+      if (ext.size() == 0)
+        {
+        const char *extensions = 
+         this->GetFileBrowserWidget()->GetFileListTable()->GetFileExtensions();
+        if (extensions && *extensions)
+          {
+          vtksys_stl::vector<vtksys_stl::string> extensions_v;
+          vtksys::SystemTools::Split(extensions, extensions_v, ' ');
+          vtksys_stl::string firstext = *extensions_v.begin();
+          if (firstext.size() >= 2 && firstext[0] == '.')
+            {
+            fullname.append(firstext);
+            }
+          else
+            {
+            fullname.append(this->DefaultExtension);
+            }
+          }
+        }
+      else
         {
         fullname.append(this->DefaultExtension);
         }
