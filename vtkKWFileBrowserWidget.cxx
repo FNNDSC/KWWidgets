@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.15 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -549,12 +549,17 @@ void vtkKWFileBrowserWidget::FilterFilesByExtensions(
     vtksys::SystemTools::Split(tmpExts.c_str(), extlist, ' ');
     if (extlist.size()>0)
       {
-      // if there is a .* in the extenstions list, ignore extensions.
+      // if there is a .* in the extenstions list, or none of them
+      // are extensions, ignore extensions.
       vtksys_stl::vector<vtksys_stl::string>::iterator it;
-      bUseExt = true;
       for(it = extlist.begin(); it != extlist.end(); it++)
         {
-        if (strcmp((*it).c_str(), ".*")==0)
+        vtksys_stl::string ext = *it;
+        if (ext.size() >= 2 && ext[0] == '.')
+          {
+          bUseExt = true;
+          }
+        if (strcmp(ext.c_str(), ".*") == 0)
           {
           bUseExt = false;
           break;
