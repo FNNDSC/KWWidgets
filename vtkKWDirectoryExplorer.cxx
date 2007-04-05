@@ -54,7 +54,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.27 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.28 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -462,7 +462,7 @@ void vtkKWDirectoryExplorer::AddDirectoryNode(
 //----------------------------------------------------------------------------
 bool vtkKWDirectoryExplorerSortDirPredicate(const char *d1, const char *d2)
 {
-  return vtksys::SystemTools::Strucmp(d1, d2) ? false : true;
+  return vtksys::SystemTools::Strucmp(d1, d2) < 0 ? true : false;
 }
 
 //----------------------------------------------------------------------------
