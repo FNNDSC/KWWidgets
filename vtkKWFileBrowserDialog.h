@@ -204,7 +204,7 @@ protected:
   // Display the dialog.
   virtual void Display();
   
-  // Description"
+  // Description:
   // Prompt user for confirmation of overwriting file
   // Return 1, confirmed; 0 otherwise
   virtual int ConfirmOverwrite(const char* filename);
