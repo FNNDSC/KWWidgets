@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.81 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.82 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -981,6 +981,8 @@ void vtkKWMultiColumnList::SortByColumn(int col_index, int order)
 
   this->Script(
     "%s sortbycolumn %d %s", this->GetWidgetName(), col_index,  sort_opt);
+
+  this->ColumnSortedCallback();
 }
 
 //----------------------------------------------------------------------------
