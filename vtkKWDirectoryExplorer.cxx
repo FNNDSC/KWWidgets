@@ -34,9 +34,12 @@
 
 #include "vtkDirectory.h"
 #include "vtkObjectFactory.h"
+
 #include <vtksys/SystemTools.hxx>
 #include <vtksys/stl/string>
 #include <vtksys/stl/list>
+#include <vtksys/stl/algorithm>
+
 #include <sys/stat.h>
 #include <time.h>
 
@@ -51,7 +54,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.26 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.27 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -457,32 +460,21 @@ void vtkKWDirectoryExplorer::AddDirectoryNode(
 }
 
 //----------------------------------------------------------------------------
+bool vtkKWDirectoryExplorerSortDirPredicate(const char *d1, const char *d2)
+{
+  return vtksys::SystemTools::Strucmp(d1, d2) ? false : true;
+}
+
+//----------------------------------------------------------------------------
 void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
 {
-  vtkKWTree *dirtree = this->DirectoryTree->GetWidget();
-  
-  vtksys_stl::string nodepath = dirtree->GetNodeUserData(node);
-
 #if defined (_MY_DEBUG)  
-  cout << "-----------------UpdateDirectoryNode: " 
-       << nodepath << endl;
+  cout << "-----------------UpdateDirectoryNode: " << nodepath << endl;
   clock_t start = clock();
 #endif
 
-  vtkDirectory *dir = vtkDirectory::New();
-  if (!dir->Open(nodepath.c_str()))
-    {
-    dir->Delete();
-    return;
-    }
-  
-  int num_files = dir->GetNumberOfFiles();
-  
-#if defined (_MY_DEBUG)  
-  double durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
-  cout << "Dir open time: " << durationopen << endl;
-  start = clock();
-#endif
+  vtkKWTree *dirtree = this->DirectoryTree->GetWidget();
+  const char *dirtreename = dirtree->GetWidgetName();
   
   // Check if this node has children, if yes,
   // check if those directory still there.
@@ -508,6 +500,63 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
 #if defined (_MY_DEBUG)  
   double durationchildren = (double)(clock() - start) / CLOCKS_PER_SEC;
   cout << "Get Node children time: " << durationchildren << endl;
+  clock_t start = clock();
+#endif
+
+  vtksys_stl::string nodepath = dirtree->GetNodeUserData(node);
+
+  vtkDirectory *dir = vtkDirectory::New();
+  if (!dir->Open(nodepath.c_str()))
+    {
+    dir->Delete();
+    return;
+    }
+  
+  int num_files = dir->GetNumberOfFiles();
+  
+#if defined (_MY_DEBUG)  
+  double durationopen = (double)(clock() - start) / CLOCKS_PER_SEC;
+  cout << "Dir open time: " << durationopen << endl;
+  start = clock();
+#endif
+  
+  // First collect all the dirs
+
+  vtksys_stl::list<const char*> dir_list;
+  bool dotfound = false, dotdotfound = false;
+
+  for (int i = 0; i < num_files; i++)
+    {
+    const char *filename = dir->GetFile(i);
+
+    // skip . and ..
+
+    if (!dotfound || !dotdotfound)
+      { 
+      if (strcmp(filename, ".") == 0)
+        {
+        dotfound=true;
+        continue;
+        }
+      else if (strcmp(filename, "..") == 0)
+        {
+        dotdotfound = true;
+        continue;
+        }
+      }
+      
+    if (dir->FileIsDirectory(filename))
+      {
+      dir_list.push_back(filename);
+      }
+    }
+
+  // Sort them, and process one by one
+
+#ifdef _WIN32
+  // Already sorted on Win32
+#else
+  dir_list.sort(vtkKWDirectoryExplorerSortDirPredicate);
 #endif
 
   vtkIdType dirID;
@@ -516,16 +565,8 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   // Have these two flags so that we do not need to do strcmp
   // for every file in the directory
 
-  bool dotfound = false, dotdotfound = false;
-  
   ostrstream tk_cfgcmd, tk_treecmd;
-  int newdirs = 0;
-  const char *treename = dirtree->GetWidgetName();
 
-#if defined (_MY_DEBUG)  
-  clock_t scriptstart = clock();
-#endif
-  
   // The following variables is for checking whether a
   // directory has sub directories; if yes, then add the 
   // '+' before the tree node
@@ -533,69 +574,44 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   vtkDirectory *tmpdir = vtkDirectory::New();
   vtksys_stl::string tmp_str, tmp_file, tmp_name;
   
-  vtksys_stl::string treecmd = treename;
+  vtksys_stl::string treecmd = dirtreename;
   treecmd.append(" insert end ").append(node).append(" ");
   
-  int num_dirfound = 0;
-  int folder_index = 0; 
-  vtksys_stl::string filename = "",fullname = "";
+  vtksys_stl::string fullname = "";
   const char* image_name = this->Internals->FolderImage.c_str();
    
-  struct stat fs;
   if (strcmp(nodepath.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY) != 0)
     {
     nodepath += KWFileBrowser_PATH_SEPARATOR;
     }
 
-  for (int i = 0; i < num_files; i++)
-    {
-    filename = dir->GetFile(i);
-
-    // skip . and ..
-
-    if (!dotfound || !dotdotfound)
-      { 
-      if (strcmp(filename.c_str(), ".") == 0)
-        {
-        dotfound=true;
-        continue;
-        }
-      else if (strcmp(filename.c_str(), "..") == 0)
-        {
-        dotdotfound = true;
-        continue;
-        }
-      }
-      
-    fullname = nodepath;
-    fullname += filename;
-
-    // If it's not a directory, move on
-
-    if (stat(fullname.c_str(), &fs) != 0 ||
-#if defined( _WIN32 )
-        !(fs.st_mode & _S_IFDIR)
-#else
-        !(S_ISDIR(fs.st_mode))
+#if defined (_MY_DEBUG)  
+  clock_t scriptstart = clock();
 #endif
-      )
-      {
-      continue;
-      }
+
+  vtksys_stl::list<const char*>::iterator dir_list_it = dir_list.begin();
+  vtksys_stl::list<const char*>::iterator dir_list_end = dir_list.end();
+
+  int nb_new_dirs = 0;
+  int nb_dirs_found = 0;
+  
+  for (; dir_list_it != dir_list_end; dir_list_it++)
+    {
+    const char *filename = *dir_list_it;
 
     // if the node already has children, we need to find any 
     // new directories and add them
 
     bool isadded = false;
-    if (num_children && num_dirfound < num_children)
+    if (num_children && nb_dirs_found < num_children)
       {
       node_text_it = children_text.begin();
       for (; node_text_it != node_text_end; node_text_it++)
         {
-        if (strcmp(node_text_it->c_str(), filename.c_str()) == 0)
+        if (strcmp(node_text_it->c_str(), filename) == 0)
           {
           isadded = true;
-          num_dirfound++;
+          nb_dirs_found++;
           children_text.erase(node_text_it);
           break;
           }
@@ -606,6 +622,9 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
 
     if (!isadded)
       {
+      fullname = nodepath;
+      fullname += filename;
+
       dirID = vtkKWDirectoryExplorer::IdCounter++;
       sprintf(strDirID, "%lu", dirID);
       tk_treecmd << treecmd;   
@@ -616,7 +635,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
                    fullname.c_str(), KWFileBrowser_ESCAPE_CHARS).c_str() 
                  << "\"" << endl;
 
-      newdirs++;  
+      nb_new_dirs++;  
 
 #ifdef _WIN32 // disable that on Unix, too slow for NFS
 
@@ -674,7 +693,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
 #endif
             )
             {
-            tk_cfgcmd << treename << " itemconfigure " 
+            tk_cfgcmd << dirtreename << " itemconfigure " 
                       << strDirID << " -drawcross allways" << endl;
             break;
             }
@@ -689,7 +708,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
       tk_cfgcmd << "set dir \"" << tmpNewdir.c_str() << "\"" <<endl;
       tk_cfgcmd << "set contents [glob -nocomplain -directory $dir -type d *]" << endl;
       tk_cfgcmd << "if { [llength $contents] } {" << endl;
-      tk_cfgcmd << treename << " itemconfigure " << strDirID << " -drawcross allways" << endl;
+      tk_cfgcmd << dirtreename << " itemconfigure " << strDirID << " -drawcross allways" << endl;
       tk_cfgcmd << "} else { " << endl;
       tk_cfgcmd << "set newcontents [glob -nocomplain -directory $dir -type d .*]" << endl;
       tk_cfgcmd << "set pos [lsearch -exact $newcontents \"" <<tmpNewdir.c_str()<<"/.\"]" <<endl;
@@ -697,7 +716,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
       tk_cfgcmd << "set pos [lsearch -exact $newcontents \"" << tmpNewdir.c_str() << "/..\"]" <<endl;
       tk_cfgcmd << "if { $pos >= 0 } {set newcontents [lreplace $newcontents $pos $pos]}" <<endl;
        tk_cfgcmd << "if { [llength $newcontents] } {" << endl;
-       tk_cfgcmd << treename << " itemconfigure " << strDirID << " -drawcross allways }" << endl;
+       tk_cfgcmd << dirtreename << " itemconfigure " << strDirID << " -drawcross allways }" << endl;
        tk_cfgcmd<< " }" <<endl;
 #endif
 
@@ -722,7 +741,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
 
   // Run add the tree node command if available
 
-  if (tk_treecmd.rdbuf() && newdirs > 0)
+  if (tk_treecmd.rdbuf() && nb_new_dirs > 0)
     {
     tk_treecmd << ends;
     vtkKWTkUtilities::EvaluateSimpleString(
@@ -750,7 +769,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   // the child node directories are still there, 
   // otherwise, remove them
 
-  if (num_children && num_dirfound < num_children)
+  if (num_children && nb_dirs_found < num_children)
     {
     node_it = children.begin();
     for (; node_it != node_end; node_it++)
