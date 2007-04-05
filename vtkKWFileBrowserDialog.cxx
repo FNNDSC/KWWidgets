@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.19 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.20 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -663,10 +663,10 @@ int vtkKWFileBrowserDialog::FileOK()
             fullname.append(this->DefaultExtension);
             }
           }
-        }
-      else
-        {
-        fullname.append(this->DefaultExtension);
+        else
+          {
+          fullname.append(this->DefaultExtension);
+          }
         }
       }
 
