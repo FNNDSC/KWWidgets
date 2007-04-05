@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry);
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.89 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.90 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
@@ -74,7 +74,13 @@ void vtkKWEntry::CreateWidget()
 //----------------------------------------------------------------------------
 void vtkKWEntry::Configure()
 {
-  if (this->CommandTrigger & vtkKWEntry::TriggerOnFocusOut)
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
+  if (!this->ReadOnly &&
+      this->CommandTrigger & vtkKWEntry::TriggerOnFocusOut)
     {
     this->SetBinding("<FocusOut>", this, "ValueCallback");
     }
@@ -326,6 +332,7 @@ void vtkKWEntry::SetReadOnly(int arg)
 
   this->ReadOnly = arg;
   this->Modified();
+  this->Configure();
   this->UpdateEnableState();
 }
 
