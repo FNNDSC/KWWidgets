@@ -54,7 +54,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.28 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.29 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -522,7 +522,8 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   
   // First collect all the dirs
 
-  vtksys_stl::list<const char*> dir_list;
+  vtksys_stl::vector<const char*> dir_list;
+  dir_list.reserve(num_files);
   bool dotfound = false, dotdotfound = false;
 
   for (int i = 0; i < num_files; i++)
@@ -556,7 +557,8 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
 #ifdef _WIN32
   // Already sorted on Win32
 #else
-  dir_list.sort(vtkKWDirectoryExplorerSortDirPredicate);
+  vtksys_stl::sort(dir_list.begin(), dir_list.end(), 
+                   vtkKWDirectoryExplorerSortDirPredicate);
 #endif
 
   vtkIdType dirID;
@@ -589,8 +591,8 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   clock_t scriptstart = clock();
 #endif
 
-  vtksys_stl::list<const char*>::iterator dir_list_it = dir_list.begin();
-  vtksys_stl::list<const char*>::iterator dir_list_end = dir_list.end();
+  vtksys_stl::vector<const char*>::iterator dir_list_it = dir_list.begin();
+  vtksys_stl::vector<const char*>::iterator dir_list_end = dir_list.end();
 
   int nb_new_dirs = 0;
   int nb_dirs_found = 0;
