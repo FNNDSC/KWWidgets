@@ -84,6 +84,10 @@ public:
   vtkGetMacro(MaximumNumberOfFavoriteDirectoriesInRegistry, int);
   
   // Description:
+  // Restore the favorite directories from the registry
+  virtual void RestoreFavoriteDirectoriesFromRegistry();
+
+  // Description:
   // Convenience method to Set/Get the background color of the container
   // frame, i.e. the frame that old all the favorite directories button.
   virtual void GetContainerFrameBackgroundColor(
@@ -192,7 +196,6 @@ protected:
   // Subkeys are "Place[n][type]"
   // The parameter-less methods use RegistryKey as 'reg_key' and
   // MaximumNumberOfFavoriteDirectoriesInRegistry as 'maximum_number'.
-  virtual void RestoreFavoriteDirectoriesFromRegistry();
   virtual void RestoreFavoriteDirectoriesFromSystemRegistry();
   virtual void RestoreFavoriteDirectoriesFromUserRegistry(
     const char *reg_key, int max_nb);

@@ -57,7 +57,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.17 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -115,8 +115,6 @@ vtkKWFavoriteDirectoriesFrame::vtkKWFavoriteDirectoriesFrame()
 //----------------------------------------------------------------------------
 vtkKWFavoriteDirectoriesFrame::~vtkKWFavoriteDirectoriesFrame()
 {
-  this->WriteFavoriteDirectoriesToRegistry();
-
   if (this->RegistryKey)
     {
     delete [] this->RegistryKey;
@@ -173,6 +171,7 @@ void vtkKWFavoriteDirectoriesFrame::ClearInternalList()
         delete *it;
         }
       }
+    this->Internals->FavoriteDirectories.clear();
     }
 }
 
@@ -239,19 +238,6 @@ void vtkKWFavoriteDirectoriesFrame::CreateWidget()
   // Retrieve the favorite directories from registry
 
   this->RestoreFavoriteDirectoriesFromRegistry();
-
-  // We will always have the directory, set by "HOME" 
-  // evironment variable, as favorite
-    
-   vtksys_stl::string dir; 
-   if(vtksys::SystemTools::GetEnv("HOME", dir)) 
-     { 
-     if(vtksys::SystemTools::FileIsDirectory(dir.c_str())) 
-       { 
-       this->AddFavoriteDirectoryToFrame(dir.c_str(), 
-         vtksys::SystemTools::GetFilenameName(dir).c_str()); 
-       } 
-     } 
 
    this->Update();
 }
@@ -880,6 +866,7 @@ void vtkKWFavoriteDirectoriesFrame::RemoveFavoriteDirectory(
         child->Unpack();
         child->SetParent(NULL);
         }
+      delete *it;
       this->Internals->FavoriteDirectories.erase(it);
       this->WriteFavoriteDirectoriesToRegistry();
       break;
@@ -969,6 +956,28 @@ void vtkKWFavoriteDirectoriesFrame::WriteFavoriteDirectoriesToRegistry(
 //----------------------------------------------------------------------------
 void vtkKWFavoriteDirectoriesFrame::RestoreFavoriteDirectoriesFromRegistry()
 {
+  // Remove all
+
+  if (this->ContainerFrame && this->ContainerFrame->GetFrame())
+    {
+    this->ContainerFrame->GetFrame()->UnpackChildren();
+    this->ContainerFrame->GetFrame()->RemoveAllChildren();
+    }
+  this->ClearInternalList();
+
+  // We will always have the directory, set by "HOME" 
+  // evironment variable, as favorite
+    
+   vtksys_stl::string dir; 
+   if(vtksys::SystemTools::GetEnv("HOME", dir)) 
+     { 
+     if(vtksys::SystemTools::FileIsDirectory(dir.c_str())) 
+       { 
+       this->AddFavoriteDirectoryToFrame(dir.c_str(), 
+         vtksys::SystemTools::GetFilenameName(dir).c_str()); 
+       } 
+     } 
+
   // Restore the set of registry keys created by users
 
   this->RestoreFavoriteDirectoriesFromUserRegistry(
@@ -979,7 +988,6 @@ void vtkKWFavoriteDirectoriesFrame::RestoreFavoriteDirectoriesFromRegistry()
     // Load system favorites
 
     this->RestoreFavoriteDirectoriesFromSystemRegistry();
-    this->WriteFavoriteDirectoriesToRegistry();
 #endif
 }
 
@@ -1051,8 +1059,7 @@ void vtkKWFavoriteDirectoriesFrame::RestoreFavoriteDirectoriesFromSystemRegistry
   // add them to the favorite dir entries.
 
   vtkKWWin32RegistryHelper* registryhelper = 
-    vtkKWWin32RegistryHelper::SafeDownCast(
-      this->GetApplication()->GetRegistryHelper());
+    vtkKWWin32RegistryHelper::New();
 
   if (registryhelper && 
       registryhelper->OpenInternal(placekey.c_str(), 0)) 
@@ -1090,6 +1097,7 @@ void vtkKWFavoriteDirectoriesFrame::RestoreFavoriteDirectoriesFromSystemRegistry
       }//end for
     registryhelper->Close();
     }//end if open   
+  registryhelper->Delete();
   
 #endif
 }
@@ -1114,8 +1122,7 @@ void vtkKWFavoriteDirectoriesFrame::WriteFavoriteDirectoriesToSystemRegistry()
   // add them to the favorite dir entries.
 
   vtkKWWin32RegistryHelper* registryhelper = 
-    vtkKWWin32RegistryHelper::SafeDownCast(
-      this->GetApplication()->GetRegistryHelper());
+    vtkKWWin32RegistryHelper::New();
 
   if (registryhelper && 
       registryhelper->OpenInternal(placekey.c_str(), 1)) 
@@ -1206,6 +1213,8 @@ void vtkKWFavoriteDirectoriesFrame::WriteFavoriteDirectoriesToSystemRegistry()
       }//end for it, i
     registryhelper->Close();
     }//end if open   
+
+  registryhelper->Delete();
   
 #endif
 }

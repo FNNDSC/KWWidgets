@@ -19,6 +19,7 @@
 #include "vtkKWDirectoryExplorer.h"
 #include "vtkKWFileBrowserWidget.h"
 #include "vtkKWFileBrowserUtilities.h"
+#include "vtkKWFavoriteDirectoriesFrame.h"
 #include "vtkKWFileListTable.h"
 #include "vtkKWInternationalization.h"
 #include "vtkKWLabel.h"
@@ -34,7 +35,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.21 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.22 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -341,6 +342,8 @@ void vtkKWFileBrowserDialog::Display()
     {
     this->FileNameText->SetValue(this->InitialFileName);
     }
+
+  this->FileBrowserWidget->GetFavoriteDirectoriesFrame()->RestoreFavoriteDirectoriesFromRegistry();
 
   this->FileBrowserWidget->SetFocusToDirectoryExplorer();
 }
