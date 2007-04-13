@@ -34,7 +34,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.20 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.21 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -425,7 +425,7 @@ void vtkKWFileBrowserDialog::PopulateFileTypes()
     return;
     }
     
-  vtksys::RegularExpression filetyperegexp("({{[^}]+} {[^}]+}})");
+  vtksys::RegularExpression filetyperegexp("{ *{([^}]+)} +{([^}]+)} *}");
   vtksys_stl::vector<vtksys_stl::string> filetypes;
   vtksys_stl::string filetypetext;
   vtksys_stl::string filetypeext;
@@ -436,34 +436,20 @@ void vtkKWFileBrowserDialog::PopulateFileTypes()
 
   while (filetyperegexp.find(strfiletypes))
     {
-    filetypetext = filetyperegexp.match(0);
-    filetypetext = vtksys::SystemTools::RemoveChars(
-      filetypetext.c_str(), "{{");
-    
-    filetypes.clear();  
-    vtksys::SystemTools::Split(filetypetext.c_str(), filetypes, '}');
-    if (filetypes.size() > 1)
+    filetypetext = filetyperegexp.match(1);
+    filetypetext.append(" (");
+    filetypetext.append(filetyperegexp.match(2));
+    filetypetext.append(")");
+
+    if (!this->FileTypesBox->HasValue(filetypetext.c_str()))
       {
-      filetypetext = filetypes.front().c_str();
-      it = filetypes.begin();
-      ++it;
-      filetypeext = (*it).c_str();
-      if(filetypeext.length()>1)
+      this->FileTypesBox->AddValue(filetypetext.c_str());
+      if (!firstValue.size())
         {
-        filetypeext = filetypeext.substr(1, filetypeext.length());
-        }
-
-      filetypetext.append(" (").append(filetypeext.c_str()).append(")");
-
-      if (!this->FileTypesBox->HasValue(filetypetext.c_str()))
-        {
-        this->FileTypesBox->AddValue(filetypetext.c_str());
-        if (!firstValue.size())
-          {
-          firstValue = filetypetext;
-          }
+        firstValue = filetypetext;
         }
       }
+
     strfiletypes = 
       strfiletypes.substr(filetyperegexp.end(), strfiletypes.length());
     }
