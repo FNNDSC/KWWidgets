@@ -35,7 +35,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.22 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.23 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -428,7 +428,8 @@ void vtkKWFileBrowserDialog::PopulateFileTypes()
     return;
     }
     
-  vtksys::RegularExpression filetyperegexp("{ *{([^}]+)} +{([^}]+)} *}");
+  vtksys::RegularExpression filetyperegexp(
+    "{ *{([^}]+)} +{[^\\.]*([^}]+)} *}");
   vtksys_stl::vector<vtksys_stl::string> filetypes;
   vtksys_stl::string filetypetext;
   vtksys_stl::string filetypeext;
