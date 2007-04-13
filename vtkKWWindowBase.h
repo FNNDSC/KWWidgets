@@ -222,7 +222,14 @@ public:
   // the InsertRecentFilesMenu method), it will be updated as well.
   virtual void AddRecentFile(
     const char *filename, vtkObject *target, const char *command);
-  
+
+  // Description:
+  // Insert a "Recent Files" sub-menu to the File menu at position 'pos'
+  // and fill it with the most recent files stored in the registry.
+  // The 'target' parameter is the object against which the command
+  // associated to a most recent file will be executed (usually the instance).
+  virtual void InsertRecentFilesMenu(int pos, vtkObject *target);
+ 
   // Description:
   // Set/Get a hint about print support. Disabled by default.
   // If set to true (programmatically or by a superclass), it will hint the
@@ -317,13 +324,6 @@ protected:
   // Description:
   // Create the widget.
   virtual void CreateWidget();
-
-  // Description:
-  // Insert a "Recent Files" sub-menu to the File menu at position 'pos'
-  // and fill it with the most recent files stored in the registry.
-  // The 'target' parameter is the object against which the command
-  // associated to a most recent file will be executed (usually the instance).
-  virtual void InsertRecentFilesMenu(int pos, vtkObject *target);
 
   // Description:
   // Display the close dialog.

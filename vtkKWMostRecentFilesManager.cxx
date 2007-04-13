@@ -22,7 +22,7 @@
 #include <vtksys/stl/list>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWMostRecentFilesManager, "$Revision: 1.15 $");
+vtkCxxRevisionMacro(vtkKWMostRecentFilesManager, "$Revision: 1.16 $");
 vtkStandardNewMacro(vtkKWMostRecentFilesManager );
 
 #define VTK_KW_MRF_REGISTRY_FILENAME_KEYNAME_PATTERN "File%02d"
@@ -137,8 +137,11 @@ void vtkKWMostRecentFilesManager::AddFileInternal(
   vtkKWMostRecentFilesManagerInternals::FileEntry
     *entry = new vtkKWMostRecentFilesManagerInternals::FileEntry;
   entry->FileName = filename;
-  entry->TargetObject = target_object;
-  entry->TargetCommand = target_command;
+  entry->TargetObject =  target_object;
+  if (target_command && *target_command)
+    {
+    entry->TargetCommand = target_command;
+    }
   if (label && *label)
     {
     entry->Label = label;
@@ -160,8 +163,11 @@ void vtkKWMostRecentFilesManager::AddFile(
     return;
     }
 
+  vtksys_stl::string filename_unix(filename);
+  vtksys::SystemTools::ConvertToUnixSlashes(filename_unix);
+
   vtksys_stl::string evalstr = "eval file join {\"";
-  evalstr += filename;
+  evalstr += filename_unix;
   evalstr += "\"}";
 
   vtksys_stl::string filename_expanded = 
@@ -284,10 +290,8 @@ void vtkKWMostRecentFilesManager::SaveFilesToRegistry(
       {
       sprintf(filename_key,
               VTK_KW_MRF_REGISTRY_FILENAME_KEYNAME_PATTERN, count);
-      sprintf(command_key,
-              VTK_KW_MRF_REGISTRY_COMMAND_KEYNAME_PATTERN, count);
-      sprintf(label_key,
-              VTK_KW_MRF_REGISTRY_LABEL_KEYNAME_PATTERN, count);
+      this->GetApplication()->SetRegistryValue(
+        1, reg_key, filename_key, (*it)->FileName.c_str());
 
       const char* target_command = (*it)->TargetCommand.c_str();
       if (!target_command || !*target_command)
@@ -296,17 +300,20 @@ void vtkKWMostRecentFilesManager::SaveFilesToRegistry(
         }
       if (target_command && *target_command)
         {
-        this->GetApplication()->SetRegistryValue(
-          1, reg_key, filename_key, (*it)->FileName.c_str());
+        sprintf(command_key,
+                VTK_KW_MRF_REGISTRY_COMMAND_KEYNAME_PATTERN, count);
         this->GetApplication()->SetRegistryValue(
           1, reg_key, command_key, target_command);
-        if ((*it)->Label.size())
-          {
-          this->GetApplication()->SetRegistryValue(
-            1, reg_key, label_key, (*it)->Label.c_str());
-          }
-        ++count;
         }
+
+      if ((*it)->Label.size())
+        {
+        sprintf(label_key,
+                VTK_KW_MRF_REGISTRY_LABEL_KEYNAME_PATTERN, count);
+        this->GetApplication()->SetRegistryValue(
+          1, reg_key, label_key, (*it)->Label.c_str());
+        }
+      ++count;
       }
     }
   
@@ -366,10 +373,13 @@ void vtkKWMostRecentFilesManager::RestoreFilesListFromRegistry(
     sprintf(label_key, VTK_KW_MRF_REGISTRY_LABEL_KEYNAME_PATTERN, i);
     if (this->GetApplication()->GetRegistryValue(
           1, reg_key, filename_key, filename) &&
-        this->GetApplication()->GetRegistryValue(
-          1, reg_key, command_key, command) &&
         strlen(filename) >= 1)
       {
+      if (!this->GetApplication()->GetRegistryValue(
+            1, reg_key, command_key, command))
+        {
+        *command = '\0';
+        }
       if (!this->GetApplication()->GetRegistryValue(
             1, reg_key, label_key, label))
         {
@@ -455,18 +465,8 @@ void vtkKWMostRecentFilesManager::PopulateMenu(
         target_command= this->DefaultTargetCommand;
         }
 
-      if (filename && *filename && target_command && *target_command)
+      if (filename && *filename)
         {
-        if (!target_object)
-          {
-          vtkErrorMacro("Error! Can not add entry with empty target object!");
-          continue;
-          }
-        vtksys_stl::string cmd(target_command);
-        cmd += " {";
-        cmd += filename;
-        cmd += "}";
-
         char buffer[10];
         sprintf(buffer, "%d", count);
         vtksys_stl::string label(buffer);
@@ -510,8 +510,20 @@ void vtkKWMostRecentFilesManager::PopulateMenu(
             }
           }
 
-        int index = menu->AddCommand(
-          label.c_str(), target_object, cmd.c_str());
+        int index;
+        if (target_command)
+          {
+          vtksys_stl::string cmd(target_command);
+          cmd += " {";
+          cmd += filename;
+          cmd += "}";
+          index = menu->AddCommand(label.c_str(), target_object, cmd.c_str());
+          }
+        else
+          {
+          index = menu->AddCommand(label.c_str());
+          }
+
         if (index >= 0)
           {
           menu->SetItemHelpString(index, filename);

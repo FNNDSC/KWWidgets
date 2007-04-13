@@ -12,9 +12,10 @@ public:
   virtual void Create(vtkKWWidget *parent, vtkKWWindow *);
 };
 
-void vtkKWLoadSaveButtonItem::Create(vtkKWWidget *parent, vtkKWWindow *)
+void vtkKWLoadSaveButtonItem::Create(vtkKWWidget *parent, vtkKWWindow *win)
 {
   vtkKWApplication *app = parent->GetApplication();
+  win->InsertRecentFilesMenu(0, NULL);
 
   // -----------------------------------------------------------------------
 
@@ -25,6 +26,11 @@ void vtkKWLoadSaveButtonItem::Create(vtkKWWidget *parent, vtkKWWindow *)
   load_button1->Create();
   load_button1->SetText("Click to Pick a File");
   load_button1->GetLoadSaveDialog()->SaveDialogOff(); // load mode
+
+  char command[1024];
+  sprintf(command, "AddRecentFile [%s GetFileName] {} {}",
+          load_button1->GetLoadSaveDialog()->GetTclName());
+  load_button1->SetCommand(win, command);
 
   app->Script(
     "pack %s -side top -anchor nw -expand n -padx 2 -pady 2", 
