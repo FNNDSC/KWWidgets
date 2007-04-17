@@ -83,6 +83,14 @@ public:
   // of 3D widgets, etc.
   virtual void UpdateEnableState();
 
+  // Description:
+  // Display the toplevel. Hide it with the Withdraw() method.
+  virtual void Display();
+
+  // Description:
+  // Callbacks.
+  virtual void ButtonPressCallback();
+
 protected:
   vtkKWSplashScreen();
   ~vtkKWSplashScreen();
@@ -94,6 +102,7 @@ protected:
   vtkKWCanvas *Canvas;
   char *ImageName;
   int ProgressMessageVerticalOffset;
+  int Discard;
 
   virtual void UpdateImageInCanvas();
   virtual void UpdateCanvasSize();

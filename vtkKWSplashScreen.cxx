@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWSplashScreen );
-vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.40 $");
+vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.41 $");
 
 //----------------------------------------------------------------------------
 vtkKWSplashScreen::vtkKWSplashScreen()
@@ -35,6 +35,7 @@ vtkKWSplashScreen::vtkKWSplashScreen()
   this->ProgressMessageVerticalOffset = -10;
   this->DisplayPosition = vtkKWTopLevel::DisplayPositionScreenCenter;
   this->HideDecoration  = 1;
+  this->Discard = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -74,7 +75,7 @@ void vtkKWSplashScreen::CreateWidget()
   this->Script("pack %s -side top -fill both -expand y",
                this->Canvas->GetWidgetName());
 
-  this->Canvas->AddBinding("<ButtonPress>", this, "Withdraw");
+  this->Canvas->AddBinding("<ButtonPress>", this, "ButtonPressCallback");
 
   // Insert the image
 
@@ -88,6 +89,20 @@ void vtkKWSplashScreen::CreateWidget()
 
   this->UpdateImageInCanvas();
   this->UpdateProgressMessagePosition();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSplashScreen::Display()
+{
+  this->Discard = 0;
+  this->Superclass::Display();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSplashScreen::ButtonPressCallback()
+{
+  this->Withdraw();
+  this->Discard = 1;
 }
 
 //----------------------------------------------------------------------------
@@ -278,7 +293,7 @@ void vtkKWSplashScreen::SetProgressMessage(const char *txt)
   this->Script("%s itemconfigure msg -text \"%s\"",
                this->Canvas->GetWidgetName(), (val ? val : ""));
 
-  if (!this->IsMapped())
+  if (!this->IsMapped() && !this->Discard)
     {
     this->Display();
     }
