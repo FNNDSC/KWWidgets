@@ -35,7 +35,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.23 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.24 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -612,7 +612,7 @@ int vtkKWFileBrowserDialog::FileOK()
   if (this->FileNameText->GetValue() && *(this->FileNameText->GetValue()))
     {
     char * realname = vtksys::SystemTools::RemoveChars(
-      this->FileNameText->GetValue(), " \r\n\t");
+      this->FileNameText->GetValue(), "\r\n\t");
     if (!realname || !*(realname))
       {
       this->FileNameText->SetValue(NULL);
