@@ -37,6 +37,12 @@ public:
 
   // Description:
   // Access to sub-widgets.
+  // Important: the LoadSaveDialog is created automatically the first time
+  // the button is pressed, for efficiency reasons.
+  // While you can still use the dialog object and invoke methods on it before
+  // the button is invoked, some methods may require the LoadSaveDialog
+  // to be created already; if that is the case, just call Create() on
+  // the dialog object manually. 
   vtkGetObjectMacro(LoadSaveDialog, vtkKWLoadSaveDialog);
 
   // Description:

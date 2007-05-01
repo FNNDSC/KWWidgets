@@ -21,7 +21,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLoadSaveButton);
-vtkCxxRevisionMacro(vtkKWLoadSaveButton, "$Revision: 1.28 $");
+vtkCxxRevisionMacro(vtkKWLoadSaveButton, "$Revision: 1.29 $");
 
 //----------------------------------------------------------------------------
 vtkKWLoadSaveButton::vtkKWLoadSaveButton()
@@ -67,22 +67,24 @@ void vtkKWLoadSaveButton::CreateWidget()
   this->SetPadX(3);
   this->SetPadY(2);
 
+  this->LoadSaveDialog->SetParent(this);
+
   // No filename yet, set it to empty
 
   if (!this->GetText())
     {
     this->SetText("");
     }
-
-  // Create the load/save dialog
-
-  this->LoadSaveDialog->SetParent(this);
-  this->LoadSaveDialog->Create();
 }
 
 //----------------------------------------------------------------------------
 void vtkKWLoadSaveButton::InvokeCommand()
 {
+  if (!this->LoadSaveDialog->IsCreated())
+    {
+    this->LoadSaveDialog->Create();
+    }
+
   this->LoadSaveDialog->Invoke();
 
   this->Superclass::InvokeCommand();
