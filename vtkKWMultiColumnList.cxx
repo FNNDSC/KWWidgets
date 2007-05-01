@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.82 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.83 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -2605,6 +2605,11 @@ void vtkKWMultiColumnList::RefreshEnabledStateOfAllCellsWithWindowCommand()
 //----------------------------------------------------------------------------
 void vtkKWMultiColumnList::ScheduleRefreshEnabledStateOfAllCellsWithWindowCommand()
 {
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
   // Already scheduled
 
   if (this->Internals->ScheduleRefreshEnabledStateOfAllCellsWithWindowCommandTimerId.size())
