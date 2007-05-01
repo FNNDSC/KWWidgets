@@ -266,6 +266,10 @@ public:
   virtual int RemoveSelectedNodeCallback();
 
   // Description:
+  // Callback, do NOT use. 
+  virtual void LoadRootDirectoryCallback();
+
+  // Description:
   // Update the "enable" state of the object and its internal parts.
   // Depending on different Ivars (this->Enabled, the application's 
   // Limited Edition Mode, etc.), the "enable" state of the object 

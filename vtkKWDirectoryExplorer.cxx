@@ -54,7 +54,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.29 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.30 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -296,13 +296,23 @@ void vtkKWDirectoryExplorer::CreateWidget()
     }
   tmpIcon->Delete();
 
-  //Load root direcotry
+  // Load root directory the first time we are mapped
 
   this->LoadRootDirectory();
-    
+  //  dirtree->SetBinding("<Map>", this, "LoadRootDirectoryCallback");
+
   //Update the Back/Forward button. Should be disabled
 
   this->Update();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWDirectoryExplorer::LoadRootDirectoryCallback()
+{
+  this->DirectoryTree->GetWidget()->RemoveBinding(
+    "<Map>", this, "LoadRootDirectoryCallback");
+  
+  this->LoadRootDirectory();
 }
 
 //----------------------------------------------------------------------------
