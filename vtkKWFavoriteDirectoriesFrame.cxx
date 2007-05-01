@@ -57,7 +57,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.18 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -142,8 +142,15 @@ vtkKWFavoriteDirectoriesFrame::~vtkKWFavoriteDirectoriesFrame()
   this->AddFavoriteDirectoryButton->Delete();
   this->Toolbar->Delete();
    
-  this->ContainerFrame->GetFrame()->RemoveAllChildren();
-  this->ContainerFrame->Delete();
+  if (this->ContainerFrame)
+    {
+    if (this->ContainerFrame->GetFrame())
+      {
+      this->ContainerFrame->GetFrame()->RemoveAllChildren();
+      }
+    this->ContainerFrame->Delete();
+    this->ContainerFrame = NULL;
+    }
   
   // Clear internals list
 
