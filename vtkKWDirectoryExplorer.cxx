@@ -54,7 +54,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.30 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.31 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -1480,8 +1480,8 @@ const char *vtkKWDirectoryExplorer::GetNthSelectedDirectory(int i)
   vtksys::SystemTools::Split(this->DirectoryTree->GetWidget()->GetSelection(), 
     selnodes, ' ');
 
-  return 
-    this->DirectoryTree->GetWidget()->GetNodeUserData(selnodes[i].c_str());
+  return KWFileBrowser_GetUnixPath(
+    this->DirectoryTree->GetWidget()->GetNodeUserData(selnodes[i].c_str()));
 }
 
 //----------------------------------------------------------------------------
@@ -2337,7 +2337,7 @@ void vtkKWDirectoryExplorer::InvokeDirectorySelectedCommand(
     {
     this->Script("%s \"%s\"", this->DirectorySelectedCommand, 
                  vtksys::SystemTools::EscapeChars(
-                   dirpath.c_str(), 
+                   KWFileBrowser_GetUnixPath(dirpath.c_str()), 
                    KWFileBrowser_ESCAPE_CHARS).c_str());
     }
   this->InvokeEvent(vtkKWDirectoryExplorer::DirectorySelectedEvent, 
@@ -2360,7 +2360,7 @@ void vtkKWDirectoryExplorer::InvokeDirectoryCreatedCommand(
     {
     this->Script("%s \"%s\"", this->DirectoryCreatedCommand, 
                  vtksys::SystemTools::EscapeChars(
-                   path, 
+                   KWFileBrowser_GetUnixPath(path), 
                    KWFileBrowser_ESCAPE_CHARS).c_str());
     }
   this->InvokeEvent(vtkKWDirectoryExplorer::DirectoryCreatedEvent, (void*)path);
@@ -2391,7 +2391,7 @@ void vtkKWDirectoryExplorer::InvokeDirectoryDeletedCommand(
     {
     this->Script("%s \"%s\"", this->DirectoryDeletedCommand, 
                  vtksys::SystemTools::EscapeChars(
-                   fullpath.c_str(), 
+                   KWFileBrowser_GetUnixPath(fullpath.c_str()), 
                    KWFileBrowser_ESCAPE_CHARS).c_str());
     }
   
@@ -2415,7 +2415,7 @@ void vtkKWDirectoryExplorer::InvokeDirectoryClosedCommand(
     {
     this->Script("%s \"%s\"", this->DirectoryClosedCommand, 
                  vtksys::SystemTools::EscapeChars(
-                   path, 
+                   KWFileBrowser_GetUnixPath(path), 
                    KWFileBrowser_ESCAPE_CHARS).c_str());
     }
   this->InvokeEvent(vtkKWDirectoryExplorer::DirectoryClosedEvent, (void*)path);
@@ -2437,7 +2437,7 @@ void vtkKWDirectoryExplorer::InvokeDirectoryOpenedCommand(
     {
     this->Script("%s \"%s\"", this->DirectoryOpenedCommand, 
                  vtksys::SystemTools::EscapeChars(
-                   path, 
+                   KWFileBrowser_GetUnixPath(path), 
                    KWFileBrowser_ESCAPE_CHARS).c_str());
     }
   this->InvokeEvent(vtkKWDirectoryExplorer::DirectoryOpenedEvent, (void*)path);
@@ -2460,10 +2460,10 @@ void vtkKWDirectoryExplorer::InvokeDirectoryRenamedCommand(
     this->Script("%s \"%s\" \"%s\"", 
                  this->DirectoryRenamedCommand, 
                  vtksys::SystemTools::EscapeChars(
-                   oldname, 
+                   KWFileBrowser_GetUnixPath(oldname), 
                    KWFileBrowser_ESCAPE_CHARS).c_str(), 
                  vtksys::SystemTools::EscapeChars(
-                   newname, 
+                   KWFileBrowser_GetUnixPath(newname), 
                    KWFileBrowser_ESCAPE_CHARS).c_str());
     }
 }

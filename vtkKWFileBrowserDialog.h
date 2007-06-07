@@ -97,7 +97,7 @@ public:
 
   // Description:
   // Set/Get the last path.
-  vtkGetStringMacro(LastPath);
+  virtual char* GetLastPath();
   vtkSetStringMacro(LastPath);
   
   // Description:

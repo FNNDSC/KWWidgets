@@ -57,7 +57,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.18 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.19 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -457,7 +457,7 @@ const char* vtkKWFavoriteDirectoriesFrame::
       {
       if (strcmp((*it)->Name.c_str(), name) == 0)
         { 
-        return (*it)->Path.c_str();
+        return KWFileBrowser_GetUnixPath((*it)->Path.c_str());
         }
       }
     }
@@ -697,7 +697,7 @@ void vtkKWFavoriteDirectoriesFrame::InvokeFavoriteDirectorySelectedCommand(
     {
     this->Script("%s \"%s\" \"%s\"", 
       this->FavoriteDirectorySelectedCommand, 
-      vtksys::SystemTools::EscapeChars(path, 
+      vtksys::SystemTools::EscapeChars(KWFileBrowser_GetUnixPath(path), 
        KWFileBrowser_ESCAPE_CHARS).c_str(), 
        vtksys::SystemTools::EscapeChars(name, 
        KWFileBrowser_ESCAPE_CHARS).c_str());
