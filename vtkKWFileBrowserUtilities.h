@@ -21,6 +21,9 @@
 #ifndef __vtkKWFileBrowserUtilities_h
 #define __vtkKWFileBrowserUtilities_h
 
+#include <vtksys/SystemTools.hxx>
+#include <vtksys/stl/string>
+
 #ifdef _WIN32
 #define KWFileBrowser_PATH_SEPARATOR "\\"
 #else
@@ -29,5 +32,18 @@
     
 #define KWFileBrowser_UNIX_ROOT_DIRECTORY "/"
 #define KWFileBrowser_ESCAPE_CHARS "{}[]$\"\\"
+
+static char* KWFileBrowser_GetUnixPath(const char* path)                                    
+{
+  if(path && *path)
+    {
+    vtksys_stl::string sBuffer = path;
+    vtksys::SystemTools::ConvertToUnixSlashes(sBuffer);
+    static char buffer[512];
+    strcpy(buffer, sBuffer.c_str());
+    return buffer;
+    }
+  return NULL;
+};
 
 #endif
