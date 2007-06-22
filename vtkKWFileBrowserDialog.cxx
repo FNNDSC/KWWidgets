@@ -35,7 +35,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.26 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.27 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -220,7 +220,7 @@ void vtkKWFileBrowserDialog::Update()
     {
     this->FileBrowserWidget->DirectoryExplorerVisibilityOn();
     this->FileBrowserWidget->FileListTableVisibilityOff();
-    this->SetMinimumSize(500, 300);
+    this->SetMinimumSize(565, 400);
     if (!this->GetTitle() || !strcmp(this->GetTitle(), "Select File"))
       {
       this->SetTitle("Select Directory");
