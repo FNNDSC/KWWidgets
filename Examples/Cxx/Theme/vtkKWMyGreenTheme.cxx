@@ -17,10 +17,11 @@
 #include "vtkKWApplication.h"
 #include "vtkObjectFactory.h"
 #include "vtkKWOptionDataBase.h"
+#include "vtkKWIcon.h"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMyGreenTheme);
-vtkCxxRevisionMacro(vtkKWMyGreenTheme, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWMyGreenTheme, "$Revision: 1.5 $");
 
 //----------------------------------------------------------------------------
 void vtkKWMyGreenTheme::Install()
@@ -54,8 +55,18 @@ void vtkKWMyGreenTheme::Install()
   odb->AddEntryAsDouble3(
     "vtkKWWidget", "SetDisabledForegroundColor", ltbgcolor);
 
+  odb->AddEntryAsInt("vtkKWCheckButton", "SetIndicatorVisibility", 0);
   odb->AddEntryAsDouble3("vtkKWCheckButton", "SetSelectColor", ltbgcolor);
+  odb->AddEntryAsInt(
+    "vtkKWCheckButton", "SetImageToPredefinedIcon", vtkKWIcon::IconMinus);
+  odb->AddEntryAsInt(
+    "vtkKWCheckButton", "SetSelectImageToPredefinedIcon", vtkKWIcon::IconPlus);
+  odb->AddEntryAsInt("vtkKWCheckButton", "SetHighlightThickness", 0);
+  odb->AddEntryAsInt("vtkKWCheckButton", "SetBorderWidth", 0);
+  odb->AddEntry("vtkKWCheckButton", "SetCompoundModeToLeft", NULL);
+
   odb->AddEntryAsDouble3("vtkKWMenu", "SetSelectColor", ltbgcolor);
+
 
   // Let's demonstrate the use of contexts. Here, I want any vtkKWPushButton
   // found inside a vtkKWMessageDialog to use a specific solid relief.
