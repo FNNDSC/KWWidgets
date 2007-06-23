@@ -21,7 +21,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMyGreenTheme);
-vtkCxxRevisionMacro(vtkKWMyGreenTheme, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWMyGreenTheme, "$Revision: 1.6 $");
 
 //----------------------------------------------------------------------------
 void vtkKWMyGreenTheme::Install()
@@ -61,7 +61,6 @@ void vtkKWMyGreenTheme::Install()
     "vtkKWCheckButton", "SetImageToPredefinedIcon", vtkKWIcon::IconMinus);
   odb->AddEntryAsInt(
     "vtkKWCheckButton", "SetSelectImageToPredefinedIcon", vtkKWIcon::IconPlus);
-  odb->AddEntryAsInt("vtkKWCheckButton", "SetHighlightThickness", 0);
   odb->AddEntryAsInt("vtkKWCheckButton", "SetBorderWidth", 0);
   odb->AddEntry("vtkKWCheckButton", "SetCompoundModeToLeft", NULL);
 
