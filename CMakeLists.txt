@@ -90,6 +90,9 @@ MARK_AS_ADVANCED(CMAKE_BACKWARDS_COMPATIBILITY)
 INCLUDE("${KWWidgets_SOURCE_DIR}/Utilities/tkdnd/TkDnD.cmake")
 TkDnD_GET_LIBRARY(KWWidgets_USE_TKDND TKDND_SRCS TKDND_INCLUDE_PATH TKDND_LIBS)
 
+INCLUDE("${KWWidgets_SOURCE_DIR}/Utilities/TkTreeCtrl/TkTreeCtrl.cmake")
+TkTreeCtrl_GET_LIBRARY(KWWidgets_USE_TKTREECTRL TKTREECTRL_SRCS TKTREECTRL_INCLUDE_PATH TKTREECTRL_LIBS)
+
 # --------------------------------------------------------------------------
 # Install directories
 
@@ -289,11 +292,13 @@ SET(KWWidgets_UTILS_SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/BWidgets/vtkKWBWidgetsInit.cxx
   ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/Tablelist/vtkKWTablelistInit.cxx
   ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/tkcon/vtkKWTkconInit.cxx
-  ${CMAKE_CURRENT_SOURCE_DIR}/Utilities/TkTreeCtrl/vtkKWTkTreeCtrlInit.cxx
   )
 IF(TKDND_SRCS)
   SET(KWWidgets_UTILS_SRCS ${KWWidgets_UTILS_SRCS} ${TKDND_SRCS})
 ENDIF(TKDND_SRCS)
+IF(TKTREECTRL_SRCS)
+  SET(KWWidgets_UTILS_SRCS ${KWWidgets_UTILS_SRCS} ${TKTREECTRL_SRCS})
+ENDIF(TKTREECTRL_SRCS)
 
 # Abstract/pure virtual classes
 
@@ -559,6 +564,7 @@ INCLUDE_DIRECTORIES(
   ${KWWidgets_INCLUDE_PATH}
   ${VTK_INCLUDE_DIR}
   ${TKDND_INCLUDE_PATH}
+  ${TKTREECTRL_INCLUDE_PATH}
   )
 
 # --------------------------------------------------------------------------
@@ -717,7 +723,6 @@ ENDIF(KWWidgets_BUILD_VTK_WIDGETS)
 TARGET_LINK_LIBRARIES(KWWidgets
   ${VTK_PNG_LIBRARIES}
   ${KWSYS_NAMESPACE}
-  kwtreectrl
   )
 
 IF(WIN32)
@@ -738,6 +743,10 @@ ENDIF(KWWidgets_USE_INCR_TCL AND INCR_TCL_FOUND)
 IF(TKDND_LIBS)
   TARGET_LINK_LIBRARIES(KWWidgets ${TKDND_LIBS})
 ENDIF(TKDND_LIBS)
+
+IF(TKTREECTRL_LIBS)
+  TARGET_LINK_LIBRARIES(KWWidgets ${TKTREECTRL_LIBS})
+ENDIF(TKTREECTRL_LIBS)
 
 IF(NOT KWWidgets_INSTALL_NO_LIBRARIES)
   INSTALL_TARGETS(
