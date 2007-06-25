@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeElem.c,v 1.1 2007-02-06 13:18:14 barre Exp $
+ * RCS: @(#) $Id: tkTreeElem.c,v 1.2 2007-06-25 15:49:45 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -2667,33 +2667,9 @@ if (tree->debug.enable && tree->debug.textLayout) dbwin("    textWidth %d\n", te
 }
 
 #ifdef TEXTVAR
-static Tcl_VarTraceProc VarTraceProc_Text;
-
-static void TextTraceSet(Tcl_Interp *interp, ElementText *elemX)
-{
-    ElementTextVar *etv = (ElementTextVar *) DynamicOption_FindData(elemX->header.options, 1001);
-    Tcl_Obj *varNameObj = etv ? etv->varNameObj : NULL;
-
-    if (varNameObj != NULL) {
-  Tcl_TraceVar2(interp, Tcl_GetString(varNameObj),
-      NULL,
-      TCL_GLOBAL_ONLY | TCL_TRACE_WRITES | TCL_TRACE_UNSETS,
-      VarTraceProc_Text, (ClientData) elemX);
-    }
-}
-
-static void TextTraceUnset(Tcl_Interp *interp, ElementText *elemX)
-{
-    ElementTextVar *etv = (ElementTextVar *) DynamicOption_FindData(elemX->header.options, 1001);
-    Tcl_Obj *varNameObj = etv ? etv->varNameObj : NULL;
-
-    if (varNameObj != NULL) {
-  Tcl_UntraceVar2(interp, Tcl_GetString(varNameObj),
-      NULL,
-      TCL_GLOBAL_ONLY | TCL_TRACE_WRITES | TCL_TRACE_UNSETS,
-      VarTraceProc_Text, (ClientData) elemX);
-    }
-}
+/* static Tcl_VarTraceProc VarTraceProc_Text; */
+static void TextTraceUnset(Tcl_Interp *interp, ElementText *elemX);
+static void TextTraceSet(Tcl_Interp *interp, ElementText *elemX);
 
 static char *VarTraceProc_Text(ClientData clientData, Tcl_Interp *interp,
     CONST char *name1, CONST char *name2, int flags)
@@ -2736,6 +2712,33 @@ static char *VarTraceProc_Text(ClientData clientData, Tcl_Interp *interp,
   (Element *) elemX, TEXT_CONF_TEXTVAR, CS_LAYOUT | CS_DISPLAY);
     return (char *) NULL;
 }
+
+static void TextTraceSet(Tcl_Interp *interp, ElementText *elemX)
+{
+    ElementTextVar *etv = (ElementTextVar *) DynamicOption_FindData(elemX->header.options, 1001);
+    Tcl_Obj *varNameObj = etv ? etv->varNameObj : NULL;
+
+    if (varNameObj != NULL) {
+  Tcl_TraceVar2(interp, Tcl_GetString(varNameObj),
+      NULL,
+      TCL_GLOBAL_ONLY | TCL_TRACE_WRITES | TCL_TRACE_UNSETS,
+      VarTraceProc_Text, (ClientData) elemX);
+    }
+}
+
+static void TextTraceUnset(Tcl_Interp *interp, ElementText *elemX)
+{
+    ElementTextVar *etv = (ElementTextVar *) DynamicOption_FindData(elemX->header.options, 1001);
+    Tcl_Obj *varNameObj = etv ? etv->varNameObj : NULL;
+
+    if (varNameObj != NULL) {
+  Tcl_UntraceVar2(interp, Tcl_GetString(varNameObj),
+      NULL,
+      TCL_GLOBAL_ONLY | TCL_TRACE_WRITES | TCL_TRACE_UNSETS,
+      VarTraceProc_Text, (ClientData) elemX);
+    }
+}
+
 #endif /* TEXTVAR */
 
 static void DeleteProcText(ElementArgs *args)

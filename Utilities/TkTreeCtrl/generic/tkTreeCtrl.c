@@ -7,7 +7,7 @@
  * Copyright (c) 2002-2003 Christian Krone
  * Copyright (c) 2003-2005 ActiveState, a division of Sophos
  *
- * RCS: @(#) $Id: tkTreeCtrl.c,v 1.1 2007-02-06 13:18:14 barre Exp $
+ * RCS: @(#) $Id: tkTreeCtrl.c,v 1.2 2007-06-25 15:49:44 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -3889,6 +3889,12 @@ LoupeCmd(
     /*
      * Windows multiple monitors can have negative coords
      */
+#ifndef SM_XVIRTUALSCREEN
+#define SM_XVIRTUALSCREEN 76
+#define SM_YVIRTUALSCREEN 77
+#define SM_CXVIRTUALSCREEN 78
+#define SM_CYVIRTUALSCREEN 79
+#endif
     minx = GetSystemMetrics(SM_XVIRTUALSCREEN);
     miny = GetSystemMetrics(SM_YVIRTUALSCREEN);
     displayW = GetSystemMetrics(SM_CXVIRTUALSCREEN);
