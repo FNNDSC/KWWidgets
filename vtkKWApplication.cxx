@@ -60,6 +60,10 @@ static Tcl_Interp *Et_Interp = 0;
 #include "Utilities/tkdnd/vtkKWTkDnDInit.h"
 #endif
 
+#ifdef KWWidgets_USE_TKTREECTRL
+#include "Utilities/TkTreeCtrl/vtkKWTkTreeCtrlInit.h"
+#endif
+
 #ifdef _WIN32
 #include "vtkWindows.h"
 #include <shellapi.h>
@@ -71,7 +75,6 @@ static Tcl_Interp *Et_Interp = 0;
 #include "Utilities/ApplicationIcon/vtkKWSetApplicationIconTclCommand.h"
 #endif
 
-#include "Utilities/TkTreeCtrl/vtkKWTkTreeCtrlInit.h"
 
 const char *vtkKWApplication::ExitDialogName = "ExitApplication";
 const char *vtkKWApplication::BalloonHelpVisibilityRegKey = "ShowBalloonHelp";
@@ -81,7 +84,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.320 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.321 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -930,7 +933,9 @@ Tcl_Interp *vtkKWApplication::InitializeTcl(Tcl_Interp *interp, ostream *err)
 
   // Initialize TkTreeCtrl
 
+#ifdef KWWidgets_USE_TKTREECTRL
   vtkKWTkTreeCtrlInit::Initialize(interp);
+#endif
 
   // Initialize tkdnd
 

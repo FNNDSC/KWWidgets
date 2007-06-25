@@ -19,6 +19,7 @@
 #cmakedefine KWWidgets_USE_INTERNATIONALIZATION
 #cmakedefine KWWidgets_USE_INCR_TCL
 #cmakedefine KWWidgets_USE_TKDND
+#cmakedefine KWWidgets_USE_TKTREECTRL
 #cmakedefine KWWidgets_BUILD_VTK_WIDGETS
 
 #define KWWidgets_MAJOR_VERSION @KWWidgets_MAJOR_VERSION@

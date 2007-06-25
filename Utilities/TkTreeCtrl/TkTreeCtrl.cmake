@@ -1,10 +1,10 @@
 MACRO(TkTreeCtrl_GET_LIBRARY supported sources include_path libs)
 
+  SET(${supported} 0)
+  
   SET(${sources})
   SET(${include_path})
   SET(${libs})
-  
-  SET(${supported} 1)
   
   IF(${supported})
     SET(_tktreectrl_path "${KWWidgets_SOURCE_DIR}/Utilities/TkTreeCtrl")
