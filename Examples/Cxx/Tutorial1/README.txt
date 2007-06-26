@@ -1,9 +1,9 @@
 Tutorial 1
 ----------
 
-This tutorial demonstrates how to create a very simple composite widget.
-This new widget contains both a label and a checkbutton next to each other.
-Selecting the checkbutton will change the background color of the label.
+This tutorial demonstrates how to create a very simple composite widget step 
+by step. This new widget contains both a label and a checkbutton next to each
+other. Selecting the checkbutton will change the background color of the label.
 
 Build
 -----
