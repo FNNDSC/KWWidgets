@@ -51,6 +51,11 @@ public:
   virtual const char* GetFileName();
 
   // Description:
+  // Set up the initial file name for the button, and the last path and 
+  // initial file name (for the file name entry) of the internal File Brower dialog
+  virtual void SetInitialFileName(const char* path);
+
+  // Description:
   // Set/Get the length of the filename when displayed in the button.
   // If set to 0, do not shorten the filename.
   virtual void SetMaximumFileNameLength(int);

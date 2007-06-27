@@ -21,7 +21,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLoadSaveButton);
-vtkCxxRevisionMacro(vtkKWLoadSaveButton, "$Revision: 1.29 $");
+vtkCxxRevisionMacro(vtkKWLoadSaveButton, "$Revision: 1.30 $");
 
 //----------------------------------------------------------------------------
 vtkKWLoadSaveButton::vtkKWLoadSaveButton()
@@ -99,6 +99,31 @@ const char* vtkKWLoadSaveButton::GetFileName()
     }
   return NULL;
 } 
+
+//----------------------------------------------------------------------------
+void vtkKWLoadSaveButton::SetInitialFileName(const char* path)
+{
+  if (path && *path && vtksys::SystemTools::FileExists(path))
+    {
+    vtksys_stl::string s(path);
+    if(this->LoadSaveDialog)
+      {
+        vtksys_stl::string p = s;
+        if(!vtksys::SystemTools::FileIsDirectory(s.c_str()))
+        {
+        p = vtksys::SystemTools::GetFilenamePath(s);
+        vtksys_stl::string f = vtksys::SystemTools::GetFilenameName(s);
+        this->LoadSaveDialog->SetInitialFileName(f.c_str());
+        }
+        this->LoadSaveDialog->SetLastPath(p.c_str());
+      }
+    this->SetText(s.c_str());
+    }
+  else
+    {
+    this->SetText(NULL);
+    }
+}
 
 //----------------------------------------------------------------------------
 void vtkKWLoadSaveButton::SetMaximumFileNameLength(int arg)
