@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.15 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.16 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -95,6 +95,10 @@ vtkKWFileBrowserWidget::vtkKWFileBrowserWidget()
 //----------------------------------------------------------------------------
 vtkKWFileBrowserWidget::~vtkKWFileBrowserWidget()
 {
+  this->FileListTable->RemoveBindingFromInternalWidget(
+    "<FocusIn>", this, "FileTableFocusInCallback");
+  this->FileListTable->RemoveBindingFromInternalWidget(
+    "<FocusOut>", this, "FileTableFocusOutCallback");
   this->FavoriteDirectoriesFrame->Delete();
   this->DirectoryExplorer->Delete();
   this->FileListTable->Delete();
@@ -859,25 +863,37 @@ void vtkKWFileBrowserWidget::FileRenamedCallback(
 //----------------------------------------------------------------------------
 void vtkKWFileBrowserWidget::DirectoryTreeFocusInCallback()
 {
-  this->UpdateDirectorySelectionColor(1);
+  if (this->IsAlive())
+    {
+    this->UpdateDirectorySelectionColor(1);
+    }
 }
 
 //----------------------------------------------------------------------------
 void vtkKWFileBrowserWidget::FileTableFocusInCallback()
 {
-  this->UpdateFileSelectionColor(1);
+  if (this->IsAlive())
+    {
+    this->UpdateFileSelectionColor(1);
+    }
 }
 
 //----------------------------------------------------------------------------
 void vtkKWFileBrowserWidget::DirectoryTreeFocusOutCallback()
 {
-  this->UpdateDirectorySelectionColor(0);
+  if (this->IsAlive())
+    {
+    this->UpdateDirectorySelectionColor(0);
+    }
 }
 
 //----------------------------------------------------------------------------
 void vtkKWFileBrowserWidget::FileTableFocusOutCallback()
 {
-  this->UpdateFileSelectionColor(0);
+  if (this->IsAlive())
+    {
+    this->UpdateFileSelectionColor(0);
+    }
 }
 
 //----------------------------------------------------------------------------

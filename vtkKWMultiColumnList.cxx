@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.83 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.84 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -106,6 +106,8 @@ vtkKWMultiColumnList::vtkKWMultiColumnList()
 vtkKWMultiColumnList::~vtkKWMultiColumnList()
 {
   this->RemoveAllWindowDestroyCommandFromCells();
+
+  this->RemoveBinding("<FocusOut>", this, "FinishEditing");
   
   if (this->EditStartCommand)
     {

@@ -173,10 +173,12 @@ public:
   virtual int HasFocus();
 
   // Description:
-  // Add event binding to the internal file list 
+  // Add/Remove event binding to the internal file list 
   // component of this widget, so that these events will be 
   // invoked directly from the file list component of this widget.
   virtual void AddBindingToInternalWidget(const char* event,
+    vtkObject *obj, const char* method);
+  virtual void RemoveBindingFromInternalWidget(const char* event,
     vtkObject *obj, const char* method);
   
   // Description:
