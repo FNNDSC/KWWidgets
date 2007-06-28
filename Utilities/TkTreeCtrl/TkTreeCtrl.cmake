@@ -1,6 +1,6 @@
 MACRO(TkTreeCtrl_GET_LIBRARY supported sources include_path libs)
 
-  SET(${supported} 0)
+  SET(${supported} 1)
   
   SET(${sources})
   SET(${include_path})

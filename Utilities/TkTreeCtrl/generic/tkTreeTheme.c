@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeTheme.c,v 1.1 2007-02-06 13:18:14 barre Exp $
+ * RCS: @(#) $Id: tkTreeTheme.c,v 1.2 2007-06-28 19:42:16 barre Exp $
  */
 
 #ifdef WIN32
@@ -24,6 +24,33 @@
 
 #include <uxtheme.h>
 #include <tmschema.h>
+
+#ifndef DTBG_OMITBORDER
+#  ifndef DTBG_CLIPRECT
+#   define DTBG_CLIPRECT        0x00000001
+#  endif
+#  ifndef DTBG_DRAWSOLID
+#   define DTBG_DRAWSOLID       0x00000002
+#  endif
+#  ifndef DTBG_OMITBORDER
+#   define DTBG_OMITBORDER      0x00000004
+#  endif
+#  ifndef DTBG_OMITCONTENT
+#   define DTBG_OMITCONTENT     0x00000008
+#  endif
+#  ifndef DTBG_COMPUTINGREGION
+#   define DTBG_COMPUTINGREGION 0x00000010
+#  endif
+#  ifndef DTBG_MIRRORDC
+#   define DTBG_MIRRORDC        0x00000020
+#  endif
+    typedef struct _DTBGOPTS
+    {
+  DWORD dwSize;
+  DWORD dwFlags;
+  RECT rcClip;
+    } DTBGOPTS, *PDTBGOPTS;
+#endif // _DTBGOPTS
 
 #include <basetyps.h> /* Cygwin */
 #ifndef TMT_CONTENTMARGINS
