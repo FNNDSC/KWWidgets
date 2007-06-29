@@ -5,10 +5,10 @@
  *
  * Copyright (c) 2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeTheme.c,v 1.2 2007-06-28 19:42:16 barre Exp $
+ * RCS: @(#) $Id: tkTreeTheme.c,v 1.3 2007-06-29 15:24:06 barre Exp $
  */
 
-#ifdef WIN32
+#if defined(WIN32) && !defined(WINVER)
 #define WINVER 0x0501 /* Cygwin */
 #endif
 
