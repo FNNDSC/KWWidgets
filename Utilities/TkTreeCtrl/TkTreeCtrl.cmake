@@ -1,7 +1,13 @@
 MACRO(TkTreeCtrl_GET_LIBRARY supported sources include_path libs)
 
   SET(${supported} 1)
-  
+
+  # Visual Studio 6 does not support/provide uxtheme.h
+
+  IF(CMAKE_GENERATOR MATCHES "Visual Studio 6")
+    SET(${supported} 0)
+  ENDIF(CMAKE_GENERATOR MATCHES "Visual Studio 6")
+
   SET(${sources})
   SET(${include_path})
   SET(${libs})
