@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry);
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.90 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.91 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
@@ -67,6 +67,11 @@ void vtkKWEntry::CreateWidget()
 
   this->Script("%s configure -textvariable %s_Value",
                this->GetWidgetName(), this->GetTclName());
+
+  // Design choice: we assume a keypress is meant for this widget only
+
+  this->Script(
+    "bind Entry <KeyPress> {::tk::CancelRepeat ; ::tk::EntryInsert %%W %%A; break}");
 
   this->Configure();
 }

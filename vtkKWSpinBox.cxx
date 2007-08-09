@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSpinBox);
-vtkCxxRevisionMacro(vtkKWSpinBox, "$Revision: 1.25 $");
+vtkCxxRevisionMacro(vtkKWSpinBox, "$Revision: 1.26 $");
 
 //----------------------------------------------------------------------------
 vtkKWSpinBox::vtkKWSpinBox() 
@@ -67,6 +67,11 @@ void vtkKWSpinBox::CreateWidget()
   this->SetObjectMethodCommand(&command, this, "ValueCallback");
   this->SetConfigurationOption("-command", command);
   delete [] command;
+
+  // Design choice: we assume a keypress is meant for this widget only
+
+  this->Script(
+    "bind Spinbox <KeyPress> {::tk::EntryInsert %%W %%A; break}");
 
   this->Configure();
 }
