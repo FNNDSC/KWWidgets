@@ -17,6 +17,7 @@
 
 #include <vtksys/stl/string>
 #include <vtksys/stl/map>
+#include <vtksys/ios/sstream> 
 
 #ifdef VTK_USE_ANSI_STDLIB
 #define VTK_IOS_NOCREATE 
@@ -27,7 +28,7 @@
 #define BUFFER_SIZE 8192
 
 vtkStandardNewMacro( vtkKWUNIXRegistryHelper );
-vtkCxxRevisionMacro(vtkKWUNIXRegistryHelper, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWUNIXRegistryHelper, "$Revision: 1.6 $");
 
 //----------------------------------------------------------------------------
 //****************************************************************************
@@ -61,16 +62,15 @@ int vtkKWUNIXRegistryHelper::OpenInternal(const char *toplevel,
 {  
   int res = 0;
   int cc;
-  ostrstream str;
+  vtksys_ios::stringstream str;
   if ( !getenv("HOME") )
     {
     return 0;
     }
-  str << getenv("HOME") << "/." << toplevel << "rc" << ends;
+  str << getenv("HOME") << "/." << toplevel << "rc";
   if ( readonly == vtkKWRegistryHelper::ReadWrite )
     {
-    ofstream ofs( str.str(), ios::out|ios::app );
-    str.rdbuf()->freeze(0);
+    ofstream ofs( str.str().c_str(), ios::out|ios::app );
     if ( ofs.fail() )
       {
       return 0;
@@ -78,8 +78,7 @@ int vtkKWUNIXRegistryHelper::OpenInternal(const char *toplevel,
     ofs.close();
     }
 
-  ifstream *ifs = new ifstream(str.str(), ios::in VTK_IOS_NOCREATE);
-  str.rdbuf()->freeze(0);
+  ifstream *ifs = new ifstream(str.str().c_str(), ios::in VTK_IOS_NOCREATE);
   if ( !ifs )
     {
     return 0;
@@ -145,14 +144,13 @@ int vtkKWUNIXRegistryHelper::CloseInternal()
     return 1;
     }
 
-  ostrstream str;
+  vtksys_ios::stringstream str;
   if ( !getenv("HOME") )
     {
     return 0;
     }
-  str << getenv("HOME") << "/." << this->GetTopLevel() << "rc" << ends;
-  ofstream *ofs = new ofstream(str.str(), ios::out);
-  str.rdbuf()->freeze(0);
+  str << getenv("HOME") << "/." << this->GetTopLevel() << "rc";
+  ofstream *ofs = new ofstream(str.str().c_str(), ios::out);
   if ( !ofs )
     {
     return 0;

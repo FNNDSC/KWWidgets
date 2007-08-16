@@ -20,10 +20,11 @@
 #include "vtkKWTkUtilities.h"
 
 #include "vtkObjectFactory.h"
+#include <vtksys/ios/sstream> 
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWizardStep);
-vtkCxxRevisionMacro(vtkKWWizardStep, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWWizardStep, "$Revision: 1.3 $");
 
 vtkIdType vtkKWWizardStep::IdCounter = 1;
 vtkKWWizardStepCleanup vtkKWWizardStep::Cleanup;
@@ -127,7 +128,7 @@ vtkKWStateMachineState* vtkKWWizardStep::GetInteractionState()
   if (!this->InteractionState)
     {
     this->InteractionState = vtkKWStateMachineState::New();
-    ostrstream name;
+    vtksys_ios::stringstream name;
     if (this->Name)
       {
       name << this->Name;
@@ -136,8 +137,8 @@ vtkKWStateMachineState* vtkKWWizardStep::GetInteractionState()
       {
       name << this->Id;
       }
-    name << "|" << "I" << ends;
-    this->InteractionState->SetName(name.str());
+    name << "|" << "I";
+    this->InteractionState->SetName(name.str().c_str());
     this->AddCallbackCommandObserver(
       this->InteractionState, vtkKWStateMachineState::EnterEvent);
     }
@@ -150,7 +151,7 @@ vtkKWStateMachineState* vtkKWWizardStep::GetValidationState()
   if (!this->ValidationState)
     {
     this->ValidationState = vtkKWStateMachineState::New();
-    ostrstream name;
+    vtksys_ios::stringstream name;
     if (this->Name)
       {
       name << this->Name;
@@ -159,8 +160,8 @@ vtkKWStateMachineState* vtkKWWizardStep::GetValidationState()
       {
       name << this->Id;
       }
-    name << "|" << "V" << ends;
-    this->ValidationState->SetName(name.str());
+    name << "|" << "V";
+    this->ValidationState->SetName(name.str().c_str());
     }
   return this->ValidationState;
 }
@@ -205,7 +206,7 @@ vtkKWStateMachineInput* vtkKWWizardStep::GetGoToSelfInput()
   if (!this->GoToSelfInput)
     {
     this->GoToSelfInput = vtkKWStateMachineInput::New();
-    ostrstream name;
+    vtksys_ios::stringstream name;
     name << "go to: ";
     if (this->Name)
       {
@@ -215,8 +216,7 @@ vtkKWStateMachineInput* vtkKWWizardStep::GetGoToSelfInput()
       {
       name << this->Id;
       }
-    name << ends;
-    this->GoToSelfInput->SetName(name.str());
+    this->GoToSelfInput->SetName(name.str().c_str());
     }
   return this->GoToSelfInput;
 }
@@ -227,7 +227,7 @@ vtkKWStateMachineInput* vtkKWWizardStep::GetGoBackToSelfInput()
   if (!this->GoBackToSelfInput)
     {
     this->GoBackToSelfInput = vtkKWStateMachineInput::New();
-    ostrstream name;
+    vtksys_ios::stringstream name;
     name << "back to: ";
     if (this->Name)
       {
@@ -237,8 +237,7 @@ vtkKWStateMachineInput* vtkKWWizardStep::GetGoBackToSelfInput()
       {
       name << this->Id;
       }
-    name << ends;
-    this->GoBackToSelfInput->SetName(name.str());
+    this->GoBackToSelfInput->SetName(name.str().c_str());
     }
   return this->GoBackToSelfInput;
 }

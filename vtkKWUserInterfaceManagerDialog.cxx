@@ -33,10 +33,11 @@
 #include <vtksys/stl/string>
 #include <vtksys/stl/list>
 #include <vtksys/stl/algorithm>
+#include <vtksys/ios/sstream> 
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceManagerDialog);
-vtkCxxRevisionMacro(vtkKWUserInterfaceManagerDialog, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManagerDialog, "$Revision: 1.17 $");
 
 //----------------------------------------------------------------------------
 class vtkKWUserInterfaceManagerDialogInternals
@@ -509,15 +510,13 @@ int vtkKWUserInterfaceManagerDialog::GetWidgetLocation(
     }
   else
     {
-    ostrstream in_str;
+    vtksys_ios::stringstream in_str;
     if (!vtkKWTkUtilities::GetMasterInPack(
           this->GetApplication()->GetMainInterp(), widget, in_str))
       {
       return 0;
       }
-    in_str << ends;
-    *page_id = this->Notebook->GetPageIdFromFrameWidgetName(in_str.str());
-    in_str.rdbuf()->freeze(0);
+    *page_id = this->Notebook->GetPageIdFromFrameWidgetName(in_str.str().c_str());
     }
 
   if (*page_id < 0)
@@ -866,21 +865,19 @@ int vtkKWUserInterfaceManagerDialog::ShowSelectedNodeSection()
     selected_section = tree->GetNodeUserData(selected_node.c_str());
     if (selected_section.size())
       {
-      ostrstream in_str;
+      vtksys_ios::stringstream in_str;
       if (vtkKWTkUtilities::GetMasterInPack(
             this->GetApplication()->GetMainInterp(), 
             selected_section.c_str(), 
             in_str))
         {
-        in_str << ends;
-        selected_section_old_pos = in_str.str();
+        selected_section_old_pos = in_str.str().c_str();
         tree->SeeNode(selected_node.c_str());
         this->Script("pack %s -in %s", 
                      selected_section.c_str(), 
                      this->SplitFrame->GetFrame2()->GetWidgetName());
         res = 1;
         }
-      in_str.rdbuf()->freeze(0);
       }
     }
 

@@ -24,6 +24,7 @@
 
 #include <vtksys/stl/list>
 #include <vtksys/stl/algorithm>
+#include <vtksys/ios/sstream> 
 
 #ifdef _WIN32
 static int vtkKWToolbarGlobalToolbarAspect = vtkKWToolbar::ToolbarAspectFlat;
@@ -38,7 +39,7 @@ const char *vtkKWToolbar::WidgetsAspectRegKey = "ToolbarFlatButtons";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
-vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.69 $");
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.70 $");
 
 //----------------------------------------------------------------------------
 class vtkKWToolbarInternals
@@ -607,7 +608,7 @@ void vtkKWToolbar::ConstrainWidgetsLayout()
   if ( numPerRow > 0 )
     {
     int row = 0, num = 0;
-    ostrstream s;
+    vtksys_ios::stringstream s;
 
     it = this->Internals->Widgets.begin();
     for (; it != end; ++it)
@@ -642,9 +643,7 @@ void vtkKWToolbar::ConstrainWidgetsLayout()
       --row;
       }
 
-    s << ends;
-    this->Script(s.str());
-    s.rdbuf()->freeze(0);
+    this->Script(s.str().c_str());
     }
 }
 
@@ -667,7 +666,7 @@ void vtkKWToolbar::UpdateWidgetsLayout()
     return;
     }
 
-  ostrstream s;
+  vtksys_ios::stringstream s;
   s << "grid "; 
 
   vtkKWToolbarInternals::WidgetsContainerIterator it = 
@@ -697,9 +696,7 @@ void vtkKWToolbar::UpdateWidgetsLayout()
   s << "grid rowconfigure " << this->GetFrame()->GetWidgetName() 
     << " 0 -weight 1 " << endl;
 
-  s << ends;
-  this->Script(s.str());
-  s.rdbuf()->freeze(0);
+  this->Script(s.str().c_str());
 }
 
 //----------------------------------------------------------------------------

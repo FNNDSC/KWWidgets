@@ -17,9 +17,10 @@
 #include "vtkKWCoreWidget.h"
 
 #include <vtksys/stl/string>
+#include <vtksys/ios/sstream> 
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWWidgetWithScrollbars, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWWidgetWithScrollbars, "$Revision: 1.9 $");
 
 //----------------------------------------------------------------------------
 vtkKWWidgetWithScrollbars::vtkKWWidgetWithScrollbars()
@@ -161,7 +162,7 @@ void vtkKWWidgetWithScrollbars::PackScrollbarsWithWidget(vtkKWWidget *widget)
 
   this->UnpackChildren();
 
-  ostrstream tk_cmd;
+  vtksys_ios::stringstream tk_cmd;
 
   if (widget && widget->IsCreated())
     {
@@ -188,9 +189,7 @@ void vtkKWWidgetWithScrollbars::PackScrollbarsWithWidget(vtkKWWidget *widget)
   tk_cmd << "grid columnconfigure " << this->GetWidgetName() << " 0 -weight 1" 
          << endl;
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------

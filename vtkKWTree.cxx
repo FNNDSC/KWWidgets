@@ -44,12 +44,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <vtksys/stl/string>
 #include <vtksys/stl/vector>
 #include <vtksys/SystemTools.hxx>
+#include <vtksys/ios/sstream> 
 
 #include "Utilities/BWidgets/vtkKWBWidgetsInit.h"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTree );
-vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.36 $");
+vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.37 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTreeInternals
@@ -302,7 +303,7 @@ void vtkKWTree::KeyNavigationCallback(const char* key)
 {
   if (this->IsCreated() && this->HasSelection() && key && *key)
     {
-    ostrstream tk_cmd;
+    vtksys_ios::stringstream tk_cmd;
     //Get all visible and seletable nodes
     tk_cmd << "set nodes {}" << endl;
     tk_cmd << "foreach nodeItem [" 
@@ -359,7 +360,6 @@ void vtkKWTree::KeyNavigationCallback(const char* key)
       }
     else
       {
-      tk_cmd.rdbuf()->freeze(0);
       return;
       }
     // Select and see the new node
@@ -369,9 +369,7 @@ void vtkKWTree::KeyNavigationCallback(const char* key)
       << this->GetWidgetName() << " [lindex $nodes $index]" << endl;
     tk_cmd << this->GetWidgetName() << " see [lindex $nodes $index]" << endl;
 
-    tk_cmd << ends;
-    this->Script(tk_cmd.str());
-    tk_cmd.rdbuf()->freeze(0);
+    this->Script(tk_cmd.str().c_str());
     }
 }
 

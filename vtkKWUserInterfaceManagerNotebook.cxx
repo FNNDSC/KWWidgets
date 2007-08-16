@@ -24,10 +24,11 @@
 
 #include <vtksys/stl/list>
 #include <vtksys/stl/algorithm>
+#include <vtksys/ios/sstream> 
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceManagerNotebook);
-vtkCxxRevisionMacro(vtkKWUserInterfaceManagerNotebook, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManagerNotebook, "$Revision: 1.6 $");
 
 //----------------------------------------------------------------------------
 class vtkKWUserInterfaceManagerNotebookInternals
@@ -803,15 +804,13 @@ int vtkKWUserInterfaceManagerNotebook::GetDragAndDropWidgetLocation(
   // is the page ID (and which tag is the panel ID by the way)
   // Extract the -in parameter from the pack info
 
-  ostrstream in_str;
+  vtksys_ios::stringstream in_str;
   if (!vtkKWTkUtilities::GetMasterInPack(widget, in_str))
     {
     return 0;
     }
 
-  in_str << ends;
-  int page_id = this->Notebook->GetPageIdFromFrameWidgetName(in_str.str());
-  in_str.rdbuf()->freeze(0);
+  int page_id = this->Notebook->GetPageIdFromFrameWidgetName(in_str.str().c_str());
   if (page_id < 0)
     {
     return 0;
@@ -825,8 +824,8 @@ int vtkKWUserInterfaceManagerNotebook::GetDragAndDropWidgetLocation(
   // our widget (if any) so that we can locate the widget among
   // its sibblings.
 
-  ostrstream prev_slave_str;
-  ostrstream next_slave_str;
+  vtksys_ios::stringstream prev_slave_str;
+  vtksys_ios::stringstream next_slave_str;
 
   if (vtkKWTkUtilities::GetPreviousAndNextSlaveInPack(
         this->Notebook->GetFrame(page_id),
@@ -837,23 +836,17 @@ int vtkKWUserInterfaceManagerNotebook::GetDragAndDropWidgetLocation(
     // Get the page's panel, then the panel's page's parent, and check if we
     // can find the previous widget (since they share the same parent)
 
-    prev_slave_str << ends;
-    next_slave_str << ends;
-
     vtkKWUserInterfacePanel *panel = this->GetPanelFromPageId(page_id);
     vtkKWWidget *parent = this->GetPagesParentWidget(panel);
     if (parent)
       {
-      if (*prev_slave_str.str())
+      if (*prev_slave_str.str().c_str())
         {
         loc->AfterWidget = 
-          parent->GetChildWidgetWithName(prev_slave_str.str());
+          parent->GetChildWidgetWithName(prev_slave_str.str().c_str());
         }
       }
     }
-
-  prev_slave_str.rdbuf()->freeze(0);
-  next_slave_str.rdbuf()->freeze(0);
 
   return 1;
 }
@@ -894,12 +887,10 @@ vtkKWUserInterfaceManagerNotebook::GetDragAndDropWidgetFromLabelAndLocation(
       const char *label = this->GetDragAndDropWidgetLabel(child);
       if (label && !strcmp(label, widget_label))
         {
-        ostrstream in_str;
+        vtksys_ios::stringstream in_str;
         if (vtkKWTkUtilities::GetMasterInPack(child, in_str))
           {
-          in_str << ends;
-          int cmp = strcmp(in_str.str(), page->GetWidgetName());
-          in_str.rdbuf()->freeze(0);
+          int cmp = strcmp(in_str.str().c_str(), page->GetWidgetName());
           if (!cmp)
             {
             found = child;
@@ -1184,29 +1175,24 @@ int vtkKWUserInterfaceManagerNotebook::DragAndDropWidget(
 
   // If a page id was specified, then pack in that specific page
 
-  ostrstream in;
+  vtksys_ios::stringstream in;
   vtkKWWidget *page = this->Notebook->GetFrame(to_loc->PageId);
   if (page)
     {
     in << " -in " << page->GetWidgetName();
     }
-  in << ends;
 
   // If an "after widget" was specified, then pack after that widget
 
-  ostrstream after;
+  vtksys_ios::stringstream after;
   if (to_loc->AfterWidget && to_loc->AfterWidget->IsCreated())
     {
     after << " -after " << to_loc->AfterWidget->GetWidgetName();
     }
-  after << ends;
 
   this->Notebook->Script(
     "pack %s -side top %s %s",
-    widget->GetWidgetName(), in.str(), after.str()); 
-
-  in.rdbuf()->freeze(0);
-  after.rdbuf()->freeze(0);
+    widget->GetWidgetName(), in.str().c_str(), after.str().c_str()); 
 
   // Store the fact that this widget was moved
 

@@ -20,9 +20,10 @@
 
 #include <vtksys/stl/list>
 #include <vtksys/stl/vector>
+#include <vtksys/ios/sstream> 
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWWidgetSet, "$Revision: 1.21 $");
+vtkCxxRevisionMacro(vtkKWWidgetSet, "$Revision: 1.22 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetSetInternals
@@ -246,7 +247,7 @@ void vtkKWWidgetSet::Pack()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::stringstream tk_cmd;
 
   tk_cmd << "catch {eval grid forget [grid slaves " << this->GetWidgetName() 
          << "]}" << endl;
@@ -350,9 +351,7 @@ void vtkKWWidgetSet::Pack()
            << " -weight 0 -uniform {}" << endl;
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 // ----------------------------------------------------------------------------

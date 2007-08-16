@@ -46,6 +46,7 @@
 #include "vtkKWInternationalization.h"
 
 #include <vtksys/stl/string>
+#include <vtksys/ios/sstream> 
 
 #define VTK_KW_VPW_INTERPOLATION_LINEAR     "Linear"
 #define VTK_KW_VPW_INTERPOLATION_NEAREST    "Nearest"
@@ -53,7 +54,7 @@
 #define VTK_KW_VPW_TESTING 0
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.42 $");
+vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.43 $");
 vtkStandardNewMacro(vtkKWVolumePropertyWidget);
 
 //----------------------------------------------------------------------------
@@ -269,7 +270,7 @@ void vtkKWVolumePropertyWidget::CreateWidget()
 
   this->Superclass::CreateWidget();
 
-  ostrstream tk_cmd;
+  vtksys_ios::stringstream tk_cmd;
   int label_width = 12;
   int menu_width = 6;
   char command[256];
@@ -624,9 +625,7 @@ void vtkKWVolumePropertyWidget::CreateWidget()
 
   // Pack
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 
   this->Pack();
 
@@ -644,7 +643,7 @@ void vtkKWVolumePropertyWidget::Pack()
     }
 
 
-  ostrstream tk_cmd;
+  vtksys_ios::stringstream tk_cmd;
 
   // Pack the frame
 
@@ -847,9 +846,7 @@ void vtkKWVolumePropertyWidget::Pack()
   tk_cmd << "grid columnconfigure " 
          << frame->GetWidgetName() << " 0 -weight 1" << endl;
   
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -867,7 +864,7 @@ void vtkKWVolumePropertyWidget::Update()
 
   char hist_name[1024];
       
-  ostrstream tk_cmd;
+  vtksys_ios::stringstream tk_cmd;
 
   // In the dependent case, everything is in the component 0
 
@@ -1379,12 +1376,10 @@ void vtkKWVolumePropertyWidget::Update()
 
   // Execute (if any)
 
-  tk_cmd << ends;
-  if (*tk_cmd.str())
+  if (*tk_cmd.str().c_str())
     {
-    this->Script(tk_cmd.str());
+    this->Script(tk_cmd.str().c_str());
     }
-  tk_cmd.rdbuf()->freeze(0);
 }
 
 //----------------------------------------------------------------------------

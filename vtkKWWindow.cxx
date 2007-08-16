@@ -33,8 +33,9 @@
 #include "vtkObjectFactory.h"
 
 #include <vtksys/SystemTools.hxx>
+#include <vtksys/ios/sstream> 
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.285 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.286 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindow );
@@ -661,7 +662,7 @@ void vtkKWWindow::ShowMainUserInterface(vtkKWUserInterfacePanel *panel)
 
   if (!panel->Raise())
     {
-    ostrstream msg;
+    vtksys_ios::stringstream msg;
     msg << "The panel you are trying to access could not be displayed "
         << "properly. Please make sure there is enough room in the notebook "
         << "to bring up this part of the interface.";
@@ -675,11 +676,9 @@ void vtkKWWindow::ShowMainUserInterface(vtkKWUserInterfacePanel *panel)
           << "at the same time and pinned/locked all of them. In that case, "
           << "try to hide or unlock a notebook page first.";
       }
-    msg << ends;
     vtkKWMessageDialog::PopupMessage( 
-      this->GetApplication(), this, "User Interface Warning", msg.str(),
+      this->GetApplication(), this, "User Interface Warning", msg.str().c_str(),
       vtkKWMessageDialog::WarningIcon);
-    msg.rdbuf()->freeze(0);
     }
 }
 
