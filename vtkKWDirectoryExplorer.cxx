@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.32 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.33 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -414,8 +414,14 @@ void vtkKWDirectoryExplorer::LoadRootDirectory()
 
     // if there is an end backslash, remove it.
 
-    realname = name = vtksys::SystemTools::RemoveChars(
+    realname = name;
+    char* cleaned_name = vtksys::SystemTools::RemoveChars(
       name.c_str(), "\\");
+    if (cleaned_name)
+      {
+      name = cleaned_name;
+      delete [] cleaned_name;
+      }
 
     if (GetVolumeInformation(name.append("\\").c_str(),
                              strVolName, MAX_PATH, &serialnum, NULL,
