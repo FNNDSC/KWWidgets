@@ -56,6 +56,7 @@
 #endif
 
 #include <vtksys/SystemTools.hxx>
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 
 //----------------------------------------------------------------------------
@@ -76,7 +77,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSimpleAnimationWidget);
-vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.31 $");
+vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.32 $");
 
 //----------------------------------------------------------------------------
 vtkKWSimpleAnimationWidget::vtkKWSimpleAnimationWidget()
@@ -156,7 +157,7 @@ void vtkKWSimpleAnimationWidget::CreateWidget()
 
   this->Superclass::CreateWidget();
   
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   vtkKWPushButton *pb;
   vtkKWScaleWithEntry *scale;
@@ -319,9 +320,7 @@ void vtkKWSimpleAnimationWidget::CreateWidget()
   // --------------------------------------------------------------
   // Pack 
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 
   // Update according to the current render widget
 

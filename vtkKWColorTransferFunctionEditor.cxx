@@ -29,10 +29,11 @@
 #include "vtkMath.h"
 #include "vtkObjectFactory.h"
 
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 
 vtkStandardNewMacro(vtkKWColorTransferFunctionEditor);
-vtkCxxRevisionMacro(vtkKWColorTransferFunctionEditor, "$Revision: 1.56 $");
+vtkCxxRevisionMacro(vtkKWColorTransferFunctionEditor, "$Revision: 1.57 $");
 
 #define VTK_KW_CTFE_COLOR_RAMP_TAG "color_ramp_tag"
 
@@ -805,7 +806,7 @@ void vtkKWColorTransferFunctionEditor::Pack()
 
   this->Superclass::Pack();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Add the color space menu (in top left frame)
 
@@ -859,10 +860,8 @@ void vtkKWColorTransferFunctionEditor::Pack()
            << " -pady " << (this->CanvasVisibility ? 2 : 0)
            << " -column " << col << " -row " << row << endl;
     }
-  
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -877,7 +876,7 @@ void vtkKWColorTransferFunctionEditor::PackPointEntries()
 
   this->Superclass::PackPointEntries();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Value entries (in top right frame)
 
@@ -895,9 +894,7 @@ void vtkKWColorTransferFunctionEditor::PackPointEntries()
       }
     }
   
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -1592,7 +1589,7 @@ void vtkKWColorTransferFunctionEditor::RedrawColorRamp()
       this->Canvas && this->Canvas->IsAlive())
     {
     const char *canv = this->Canvas->GetWidgetName();
-    ostrstream tk_cmd;
+    vtksys_ios::ostringstream tk_cmd;
 
     // Create/remove the image item in the canvas only when needed
 
@@ -1640,9 +1637,7 @@ void vtkKWColorTransferFunctionEditor::RedrawColorRamp()
              << " " << p_v_range_ext[0] * factors[0] << " " << c_y << endl;
       }
 
-    tk_cmd << ends;
-    this->Script(tk_cmd.str());
-    tk_cmd.rdbuf()->freeze(0);
+    this->Script(tk_cmd.str().c_str());
     }
 }
 
@@ -1675,7 +1670,7 @@ void vtkKWColorTransferFunctionEditor::RedrawHistogram()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // If the primary histogram has just been created, raise or lower it
 
@@ -1697,9 +1692,7 @@ void vtkKWColorTransferFunctionEditor::RedrawHistogram()
            << " " << VTK_KW_CTFE_COLOR_RAMP_TAG << endl;
     }
   
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------

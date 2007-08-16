@@ -18,9 +18,11 @@
 #include "vtkObjectFactory.h"
 #include "@WidgetType@.h"
 
+#include <vtksys/ios/sstream>
+
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(@WidgetType@WithSpinButtons);
-vtkCxxRevisionMacro(@WidgetType@WithSpinButtons, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(@WidgetType@WithSpinButtons, "$Revision: 1.6 $");
 
 //----------------------------------------------------------------------------
 @WidgetType@WithSpinButtons::@WidgetType@WithSpinButtons()
@@ -98,7 +100,7 @@ void @WidgetType@WithSpinButtons::Pack()
 
   // Repack everything
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   if (this->Widget && this->Widget->IsCreated())
     {
@@ -111,10 +113,8 @@ void @WidgetType@WithSpinButtons::Pack()
     tk_cmd << "pack " << this->SpinButtons->GetWidgetName() 
            << " -anchor ne -side right -fill y -expand n" << endl;
     }
-  
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------

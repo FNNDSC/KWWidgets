@@ -45,6 +45,7 @@
 #include <stdarg.h>
 
 #include <vtksys/SystemTools.hxx>
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/vector>
 #include <vtksys/stl/algorithm>
 
@@ -84,7 +85,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.321 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.322 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1471,13 +1472,11 @@ void vtkKWApplication::ConfigureAboutDialog()
   sprintf(buffer, ks_("About Dialog|Title|About %s"), this->GetPrettyName());
   this->AboutDialog->SetTitle(buffer);
 
-  ostrstream str;
+  vtksys_ios::ostringstream str;
   this->AddAboutText(str);
   str << endl;
   this->AddAboutCopyrights(str);
-  str << ends;
-  this->AboutRuntimeInfo->GetWidget()->SetText( str.str() );
-  str.rdbuf()->freeze(0);
+  this->AboutRuntimeInfo->GetWidget()->SetText( str.str().c_str() );
 }
 
 //----------------------------------------------------------------------------
@@ -1880,7 +1879,7 @@ const char* vtkKWApplication::GetLimitedEditionModeName()
 //----------------------------------------------------------------------------
 const char* vtkKWApplication::GetPrettyName()
 {
-  ostrstream pretty_str;
+  vtksys_ios::ostringstream pretty_str;
   if (this->LimitedEditionMode)
     {
     const char *lem_name = this->GetLimitedEditionModeName();
@@ -1906,10 +1905,8 @@ const char* vtkKWApplication::GetPrettyName()
     {
     pretty_str << " " << this->ReleaseName;
     }
-  pretty_str << ends;
 
-  this->SetPrettyName(pretty_str.str());
-  pretty_str.rdbuf()->freeze(0);
+  this->SetPrettyName(pretty_str.str().c_str());
 
   return this->PrettyName;
 }
@@ -2032,13 +2029,12 @@ int vtkKWApplication::GetCheckForUpdatesPath(ostream &
   this->FindInstallationDirectory();
   if (this->InstallationDirectory)
     {
-    ostrstream upd;
-    upd << this->InstallationDirectory << "/WiseUpdt.exe" << ends;
-    int res = vtksys::SystemTools::FileExists(upd.str());
-    upd.rdbuf()->freeze(0);
+    vtksys_ios::ostringstream upd;
+    upd << this->InstallationDirectory << "/WiseUpdt.exe";
+    int res = vtksys::SystemTools::FileExists(upd.str().c_str());
     if (res)
       {
-      path << upd.str();
+      path << upd.str().c_str();
       }
     return res;
     }
@@ -2051,9 +2047,8 @@ int vtkKWApplication::GetCheckForUpdatesPath(ostream &
 int vtkKWApplication::HasCheckForUpdates()
 {
 #if defined(_WIN32) && !defined(__CYGWIN__)
-  ostrstream upd;
+  vtksys_ios::ostringstream upd;
   int res = this->GetCheckForUpdatesPath(upd);
-  upd.rdbuf()->freeze(0);
   return res;
 #else
   return 0;
@@ -2069,17 +2064,15 @@ void vtkKWApplication::CheckForUpdates()
     }
 
 #if defined(_WIN32) && !defined(__CYGWIN__)
-  ostrstream upd;
+  vtksys_ios::ostringstream upd;
   if (this->GetCheckForUpdatesPath(upd))
     {
-    upd << ends;
 #if defined (__BORLANDC__)
-    spawnl(P_NOWAIT, upd.str(), upd.str(), NULL);
+    spawnl(P_NOWAIT, upd.str().c_str(), upd.str().c_str(), NULL);
 #else
-   _spawnl(_P_NOWAIT, upd.str(), upd.str(), NULL);
+   _spawnl(_P_NOWAIT, upd.str().c_str(), upd.str().c_str(), NULL);
 #endif
     }
-  upd.rdbuf()->freeze(0);
 #endif
 }
 
@@ -2349,13 +2342,13 @@ void vtkKWApplication::EmailFeedback()
     return;
     }
 
-  ostrstream email_subject;
+  vtksys_ios::ostringstream email_subject;
   this->AddEmailFeedbackSubject(email_subject);
-  email_subject << ends;
+  email_subject;
 
-  ostrstream message;
+  vtksys_ios::ostringstream message;
   this->AddEmailFeedbackBody(message);
-  message << endl << ends;
+  message << endl;
 
   char buffer[500];
   sprintf(
@@ -2365,8 +2358,8 @@ void vtkKWApplication::EmailFeedback()
 
   this->SendEmail(
     this->EmailFeedbackAddress,
-    email_subject.str(),
-    message.str(),
+    email_subject.str().c_str(),
+    message.str().c_str(),
     NULL,
     buffer);
 }

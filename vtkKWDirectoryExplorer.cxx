@@ -36,6 +36,7 @@
 #include "vtkObjectFactory.h"
 
 #include <vtksys/SystemTools.hxx>
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 #include <vtksys/stl/list>
 #include <vtksys/stl/algorithm>
@@ -54,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.31 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.32 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -577,7 +578,8 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   // Have these two flags so that we do not need to do strcmp
   // for every file in the directory
 
-  ostrstream tk_cfgcmd, tk_treecmd;
+  vtksys_ios::ostringstream tk_cfgcmd;
+  vtksys_ios::ostringstream tk_treecmd;
 
   // The following variables is for checking whether a
   // directory has sub directories; if yes, then add the 
@@ -727,9 +729,9 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
       tk_cfgcmd << "if { $pos >= 0 } {set newcontents [lreplace $newcontents $pos $pos]}" <<endl;
       tk_cfgcmd << "set pos [lsearch -exact $newcontents \"" << tmpNewdir.c_str() << "/..\"]" <<endl;
       tk_cfgcmd << "if { $pos >= 0 } {set newcontents [lreplace $newcontents $pos $pos]}" <<endl;
-       tk_cfgcmd << "if { [llength $newcontents] } {" << endl;
-       tk_cfgcmd << dirtreename << " itemconfigure " << strDirID << " -drawcross allways }" << endl;
-       tk_cfgcmd<< " }" <<endl;
+      tk_cfgcmd << "if { [llength $newcontents] } {" << endl;
+      tk_cfgcmd << dirtreename << " itemconfigure " << strDirID << " -drawcross allways }" << endl;
+      tk_cfgcmd << " }" <<endl;
 #endif
 
 #if defined (_MY_DEBUG)  
@@ -753,24 +755,20 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
 
   // Run add the tree node command if available
 
-  if (tk_treecmd.rdbuf() && nb_new_dirs > 0)
+  if (tk_treecmd.str() != "" && nb_new_dirs > 0)
     {
-    tk_treecmd << ends;
     vtkKWTkUtilities::EvaluateSimpleString(
-      this->GetApplication(), tk_treecmd.str());
+      this->GetApplication(), tk_treecmd.str().c_str());
     }
-  tk_treecmd.rdbuf()->freeze(0);
-  
+
   // Run the script for adding/removing 'cross' image to tree node
 
-  if (tk_cfgcmd.rdbuf())
+  if (tk_cfgcmd.str() != "")
     {
-    tk_cfgcmd << ends;
     vtkKWTkUtilities::EvaluateSimpleString(
-      this->GetApplication(), tk_cfgcmd.str());
+      this->GetApplication(), tk_cfgcmd.str().c_str());
     }
-  tk_cfgcmd.rdbuf()->freeze(0);
-   
+
 #if defined (_MY_DEBUG)  
   double durationrun = (double)(clock() - start) / CLOCKS_PER_SEC;
   cout << "Run script time: " << durationrun << endl;

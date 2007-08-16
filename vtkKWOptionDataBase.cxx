@@ -20,6 +20,7 @@
 #include "vtkKWTkUtilities.h"
 
 #include <vtksys/SystemTools.hxx>
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/vector>
 #include <vtksys/stl/list>
 #include <vtksys/stl/string>
@@ -28,7 +29,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWOptionDataBase);
-vtkCxxRevisionMacro(vtkKWOptionDataBase, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWOptionDataBase, "$Revision: 1.6 $");
 
 //----------------------------------------------------------------------------
 class vtkKWOptionDataBaseInternals
@@ -332,12 +333,12 @@ void vtkKWOptionDataBase::ConfigureWidget(vtkKWWidget *obj)
 
   if (p_it == this->Internals->ClassHierarchyCache.end())
     {
-    ostrstream revisions;
+    vtksys_ios::ostringstream revisions;
     obj->PrintRevisions(revisions);
-    revisions << ends;
 
     char buffer[512];
-    const char *c = revisions.str();
+    vtkstd::string s = revisions.str();
+    const char *c = s.c_str();
     while (*c)
       {
       const char *begin_class = c;
@@ -348,7 +349,6 @@ void vtkKWOptionDataBase::ConfigureWidget(vtkKWWidget *obj)
       while (*c != '\n') ++c;
       ++c;
       }
-    revisions.rdbuf()->freeze(0);
     }
 
   // Configure the object using the options defined for each class in

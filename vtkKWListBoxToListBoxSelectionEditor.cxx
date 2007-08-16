@@ -26,12 +26,13 @@
 #include "vtkKWFrame.h"
 #include "vtkKWEvent.h"
 
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 #include <vtksys/stl/vector>
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWListBoxToListBoxSelectionEditor );
-vtkCxxRevisionMacro(vtkKWListBoxToListBoxSelectionEditor, "$Revision: 1.26 $");
+vtkCxxRevisionMacro(vtkKWListBoxToListBoxSelectionEditor, "$Revision: 1.27 $");
 
 //----------------------------------------------------------------------------
 vtkKWListBoxToListBoxSelectionEditor::vtkKWListBoxToListBoxSelectionEditor()
@@ -345,7 +346,7 @@ void vtkKWListBoxToListBoxSelectionEditor::ShiftItems(vtkKWListBox* l1, int down
   strcpy(selection, list);
   int idx = -1;
   int size = l1->GetNumberOfItems();
-  istrstream sel(selection);
+  vtksys_ios::istringstream sel(selection);
   vtksys_stl::string item;
   while(sel >> idx)
     {
@@ -412,7 +413,7 @@ void vtkKWListBoxToListBoxSelectionEditor::MoveList(vtkKWListBox* l1, vtkKWListB
   int idx = -1;
   vtksys_stl::string str;
   vtksys_stl::vector<int> vec;
-  istrstream sel(selection);
+  vtksys_ios::istringstream sel(selection);
   while(sel >> idx)
     {
     if ( idx < 0 )

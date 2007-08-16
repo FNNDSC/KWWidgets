@@ -18,11 +18,12 @@
 #include "vtkKWCheckButton.h"
 #include "vtkObjectFactory.h"
 
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWCheckButtonWithChangeColorButton);
-vtkCxxRevisionMacro(vtkKWCheckButtonWithChangeColorButton, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWCheckButtonWithChangeColorButton, "$Revision: 1.5 $");
 
 //----------------------------------------------------------------------------
 vtkKWCheckButtonWithChangeColorButton::vtkKWCheckButtonWithChangeColorButton()
@@ -99,16 +100,14 @@ void vtkKWCheckButtonWithChangeColorButton::Pack()
 
   // Repack everything
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   tk_cmd << "pack " << this->CheckButton->GetWidgetName() 
          << " -side left -anchor w" << endl
          << "pack " << this->ChangeColorButton->GetWidgetName() 
          << " -side left -anchor w -fill x -expand t -padx 2 -pady 2" << endl;
   
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------

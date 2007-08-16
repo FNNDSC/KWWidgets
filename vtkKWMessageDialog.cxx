@@ -25,9 +25,11 @@
 #include "vtkKWRegistryHelper.h"
 #include "vtkObjectFactory.h"
 
+#include <vtksys/ios/sstream>
+
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMessageDialog );
-vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.93 $");
+vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.94 $");
 
 //----------------------------------------------------------------------------
 vtkKWMessageDialog::vtkKWMessageDialog()
@@ -169,14 +171,14 @@ void vtkKWMessageDialog::CreateWidget()
 
   // Pack buttons
 
-  ostrstream pack_opt;
+  vtksys_ios::ostringstream pack_opt;
   if (this->Options & vtkKWMessageDialog::PackVertically)
     {
-    pack_opt << "-side top -expand yes -fill x -padx 4" << ends;
+    pack_opt << "-side top -expand yes -fill x -padx 4";
     }
   else
     {
-    pack_opt << "-side left -expand yes -padx 2" << ends;
+    pack_opt << "-side left -expand yes -padx 2";
     }
 
   if (has_ok)
@@ -192,7 +194,7 @@ void vtkKWMessageDialog::CreateWidget()
     this->OKButton->SetCommand(this, "OK");
     this->Script("pack %s %s %s",
                  this->OKButton->GetWidgetName(),
-                 this->OKFrame->GetWidgetName(), pack_opt.str());
+                 this->OKFrame->GetWidgetName(), pack_opt.str().c_str());
     }
 
   if (has_other)
@@ -208,7 +210,7 @@ void vtkKWMessageDialog::CreateWidget()
     this->OtherButton->SetCommand(this, "Other");
     this->Script("pack %s %s %s",
                  this->OtherButton->GetWidgetName(),
-                 this->OtherFrame->GetWidgetName(), pack_opt.str());
+                 this->OtherFrame->GetWidgetName(), pack_opt.str().c_str());
     }
 
   if (has_cancel)
@@ -224,10 +226,8 @@ void vtkKWMessageDialog::CreateWidget()
     this->CancelButton->SetCommand(this, "Cancel");
     this->Script("pack %s %s %s",
                  this->CancelButton->GetWidgetName(),
-                 this->CancelFrame->GetWidgetName(), pack_opt.str());
+                 this->CancelFrame->GetWidgetName(), pack_opt.str().c_str());
     }
-
-  pack_opt.rdbuf()->freeze(0);
 
   // Configure button aspect
 

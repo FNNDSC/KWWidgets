@@ -18,9 +18,11 @@
 #include "vtkObjectFactory.h"
 #include "@WidgetType@.h"
 
+#include <vtksys/ios/sstream>
+
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(@WidgetType@WithLabel);
-vtkCxxRevisionMacro(@WidgetType@WithLabel, "$Revision: 1.7 $");
+vtkCxxRevisionMacro(@WidgetType@WithLabel, "$Revision: 1.8 $");
 
 //----------------------------------------------------------------------------
 @WidgetType@WithLabel::@WidgetType@WithLabel()
@@ -99,7 +101,7 @@ void @WidgetType@WithLabel::Pack()
 
   // Repack everything
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   const char *side;
   switch (this->LabelPosition)
@@ -135,10 +137,8 @@ void @WidgetType@WithLabel::Pack()
            << " -expand " << (this->ExpandWidget ? "y" : "n") 
            << endl;
     }
-  
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+
+  this->Script(tk_cmd.str().c_str());
 }
 
 // ----------------------------------------------------------------------------

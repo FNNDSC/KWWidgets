@@ -30,11 +30,12 @@
 #include "vtkObjectFactory.h"
 
 #include <vtksys/SystemTools.hxx>
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/list>
 
 //----------------------------------------------------------------------------
 
-vtkCxxRevisionMacro(vtkKWMaterialPropertyWidget, "$Revision: 1.27 $");
+vtkCxxRevisionMacro(vtkKWMaterialPropertyWidget, "$Revision: 1.28 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMaterialPropertyWidgetInternals
@@ -770,16 +771,14 @@ void vtkKWMaterialPropertyWidget::CreatePresets()
 
       pb->SetImageToPixels(
         buffer, this->PresetSize, this->PresetSize, pixel_size);
-      
-      ostrstream preset_callback;
-      preset_callback << "PresetMaterialCallback " << rank << ends;
-      pb->SetCommand(this, preset_callback.str());
-      preset_callback.rdbuf()->freeze(0);
+
+      vtksys_ios::ostringstream preset_callback;
+      preset_callback << "PresetMaterialCallback " << rank;
+      pb->SetCommand(this, preset_callback.str().c_str());
       }
     }
 
   delete [] buffer;
-
 }
 
 //----------------------------------------------------------------------------

@@ -18,9 +18,11 @@
 #include "vtkObjectFactory.h"
 #include "vtkKWInternationalization.h"
 
+#include <vtksys/ios/sstream>
+
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWExtent );
-vtkCxxRevisionMacro(vtkKWExtent, "$Revision: 1.53 $");
+vtkCxxRevisionMacro(vtkKWExtent, "$Revision: 1.54 $");
 
 //----------------------------------------------------------------------------
 vtkKWExtent::vtkKWExtent()
@@ -119,7 +121,7 @@ void vtkKWExtent::Pack()
 
   // Repack everything
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   for (int i = 0; i < 3; i++)
     {
@@ -132,9 +134,7 @@ void vtkKWExtent::Pack()
       }
     }
   
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------

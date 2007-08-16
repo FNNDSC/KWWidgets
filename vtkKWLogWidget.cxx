@@ -32,6 +32,7 @@
 #include "vtkKWText.h"
 
 #include <vtksys/SystemTools.hxx>
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 #include <vtksys/stl/list>
 #include <time.h>
@@ -41,7 +42,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLogWidget );
-vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.9 $");
 
 vtkIdType vtkKWLogWidget::IdCounter = 1;
 
@@ -777,7 +778,7 @@ void vtkKWLogWidget::SelectionChangedCallback()
     
     if (this->Internals->RecordContainer.size() > 0)
       {
-      ostrstream text;
+      vtksys_ios::ostringstream text;
       if (nb_selected_rows > 1)
         {
         for (int i=0; i<nb_selected_rows; i++)
@@ -794,13 +795,11 @@ void vtkKWLogWidget::SelectionChangedCallback()
         text << this->GetRecordDescription(
           record_list->GetCellTextAsInt(indices[0], 0)) << endl << endl;
         } 
-      text << ends;
-      this->DescriptionText->GetWidget()->SetText(text.str());
-      text.rdbuf()->freeze(0);
+      this->DescriptionText->GetWidget()->SetText(text.str().c_str());
       }
     delete [] indices;
     }
-    
+
   this->Update();
 }
 

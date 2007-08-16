@@ -61,6 +61,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include "vtkStringArray.h"
 
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/vector>
 #include <vtksys/stl/list>
 #include <vtksys/stl/string>
@@ -74,7 +75,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.71 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.72 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -218,7 +219,7 @@ void vtkKWSelectionFrameLayoutManager::Pack()
 
   this->UnpackChildren();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Pack layout
 
@@ -281,10 +282,8 @@ void vtkKWSelectionFrameLayoutManager::Pack()
            << this->LayoutFrame->GetWidgetName() << " " << i
            << " -weight 0 -uniform {}" << endl;
     }
-  
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------

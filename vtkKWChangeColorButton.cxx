@@ -19,9 +19,11 @@
 #include "vtkKWTkUtilities.h"
 #include "vtkKWInternationalization.h"
 
+#include <vtksys/ios/sstream>
+
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWChangeColorButton);
-vtkCxxRevisionMacro(vtkKWChangeColorButton, "$Revision: 1.73 $");
+vtkCxxRevisionMacro(vtkKWChangeColorButton, "$Revision: 1.74 $");
 
 //----------------------------------------------------------------------------
 vtkKWChangeColorButton::vtkKWChangeColorButton()
@@ -170,7 +172,7 @@ void vtkKWChangeColorButton::Pack()
   this->ColorButton->UnpackSiblings();
   this->ButtonFrame->UnpackSiblings();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Repack everything
 
@@ -227,9 +229,7 @@ void vtkKWChangeColorButton::Pack()
       }
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------

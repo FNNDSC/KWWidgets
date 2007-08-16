@@ -28,10 +28,11 @@
 #include "vtkPiecewiseFunction.h"
 #include "vtkColorTransferFunction.h"
 
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 
 vtkStandardNewMacro(vtkKWPiecewiseFunctionEditor);
-vtkCxxRevisionMacro(vtkKWPiecewiseFunctionEditor, "$Revision: 1.55 $");
+vtkCxxRevisionMacro(vtkKWPiecewiseFunctionEditor, "$Revision: 1.56 $");
 
 #define EPSILON 0.0001
 #define EPSILON_MIN_WINDOW (EPSILON * 2.5)
@@ -613,7 +614,7 @@ int vtkKWPiecewiseFunctionEditor::FunctionLineIsSampledBetweenPoints(
 
 //----------------------------------------------------------------------------
 void vtkKWPiecewiseFunctionEditor::GetLineCoordinates(
-  int id1, int id2, ostrstream *tk_cmd)
+  int id1, int id2, vtksys_ios::ostream *tk_cmd)
 {
   // We want to intercept specific case like
   // sharpness = 1.0: step (3 segments), could not be done using sampling
@@ -802,7 +803,7 @@ void vtkKWPiecewiseFunctionEditor::Pack()
 
   this->Superclass::Pack();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Window/Level mode (in top left frame)
 
@@ -813,10 +814,8 @@ void vtkKWPiecewiseFunctionEditor::Pack()
     tk_cmd << "pack " << this->WindowLevelModeCheckButton->GetWidgetName() 
            << " -side left -fill both -padx 0" << endl;
     }
-  
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -831,7 +830,7 @@ void vtkKWPiecewiseFunctionEditor::PackPointEntries()
 
   this->Superclass::PackPointEntries();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Value entry (in top right frame)
 
@@ -843,10 +842,8 @@ void vtkKWPiecewiseFunctionEditor::PackPointEntries()
     tk_cmd << "pack " << this->ValueEntry->GetWidgetName() 
            << " -side left" << endl;
     }
-  
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------

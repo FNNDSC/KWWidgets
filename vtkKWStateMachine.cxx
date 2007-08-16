@@ -21,6 +21,7 @@
 
 #include "vtkObjectFactory.h"
 
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 #include <vtksys/stl/map>
 #include <vtksys/stl/vector>
@@ -28,7 +29,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWStateMachine);
-vtkCxxRevisionMacro(vtkKWStateMachine, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWStateMachine, "$Revision: 1.5 $");
 
 //----------------------------------------------------------------------------
 class vtkKWStateMachineInternals
@@ -888,7 +889,7 @@ void vtkKWStateMachine::ProcessInput(vtkKWStateMachineInput *input)
     this->FindTransition(this->CurrentState, input);
   if (!transition)
     {
-    ostrstream err;
+    vtksys_ios::ostringstream err;
     err << "No transition has been defined for the current state (";
     if (this->CurrentState->GetName())
       {
@@ -907,8 +908,8 @@ void vtkKWStateMachine::ProcessInput(vtkKWStateMachineInput *input)
       {
       err << input->GetId();
       }
-    err << ")!" << ends;
-    vtkWarningMacro(<< err.str());
+    err << ")!";
+    vtkWarningMacro(<< err.str().c_str());
     return;
     }
 

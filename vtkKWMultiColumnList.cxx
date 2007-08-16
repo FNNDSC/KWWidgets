@@ -23,6 +23,7 @@
 #include "vtkKWOptions.h"
 #include "vtkStringArray.h"
 
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 #include <vtksys/stl/vector>
 #include <vtksys/stl/algorithm>
@@ -32,7 +33,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.84 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.85 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -1381,16 +1382,14 @@ void vtkKWMultiColumnList::InsertRows(int row_index, int num_rows)
         }
       const char* name = this->GetWidgetName();
       const char* pItem = item.c_str();
-      ostrstream tk_cmd;
+      vtksys_ios::ostringstream tk_cmd;
       for(int row=0; row<num_rows; row++)
         {
         tk_cmd << name << " insert " << (row+row_index) 
           << " {" << pItem << "}" << endl;
         }
-      tk_cmd << ends;
-      this->Script(tk_cmd.str());
-      tk_cmd.rdbuf()->freeze(0);
-      
+      this->Script(tk_cmd.str().c_str());
+
       this->SetState(old_state);
       if (this->GetNumberOfRows() != nb_rows)
         {

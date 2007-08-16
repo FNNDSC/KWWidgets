@@ -22,12 +22,13 @@
 #include "vtkKWStateMachineTransition.h"
 #include "vtkKWStateMachineCluster.h"
 
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 #include <vtksys/SystemTools.hxx>
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWStateMachineDOTWriter);
-vtkCxxRevisionMacro(vtkKWStateMachineDOTWriter, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWStateMachineDOTWriter, "$Revision: 1.4 $");
 
 //----------------------------------------------------------------------------
 vtkKWStateMachineDOTWriter::vtkKWStateMachineDOTWriter()
@@ -152,7 +153,7 @@ int vtkKWStateMachineDOTWriter::WriteToStream(ostream& os)
 
   os << endl;
 
-  ostrstream all_states;
+  vtksys_ios::ostringstream all_states;
 
   int nb_states = this->Input->GetNumberOfStates();
   for (i = 0; i < nb_states; i++)
@@ -306,12 +307,11 @@ int vtkKWStateMachineDOTWriter::WriteToStream(ostream& os)
 
   if (this->PutStatesAtSameRank)
     {
-    all_states << ends;
     os << endl;
     os << indent << "{" << endl;
     vtkIndent next_indent = indent.GetNextIndent();
     os << next_indent << "rank=same;" << endl;
-    os << next_indent << all_states.str() << endl;
+    os << next_indent << all_states.str().c_str() << endl;
     os << indent << "}" << endl;
     }
 

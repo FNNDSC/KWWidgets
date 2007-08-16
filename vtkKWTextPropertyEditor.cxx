@@ -32,6 +32,8 @@
 #include "vtkProperty2D.h"
 #include "vtkTextProperty.h"
 
+#include <vtksys/ios/sstream>
+
 #define VTK_KW_TEXT_PROP_BOLD_ID   0
 #define VTK_KW_TEXT_PROP_ITALIC_ID 1
 #define VTK_KW_TEXT_PROP_SHADOW_ID 2
@@ -97,7 +99,7 @@ static unsigned char image_copy[] =
 
 // ----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTextPropertyEditor);
-vtkCxxRevisionMacro(vtkKWTextPropertyEditor, "$Revision: 1.22 $");
+vtkCxxRevisionMacro(vtkKWTextPropertyEditor, "$Revision: 1.23 $");
 
 // ----------------------------------------------------------------------------
 vtkKWTextPropertyEditor::vtkKWTextPropertyEditor()
@@ -339,7 +341,7 @@ void vtkKWTextPropertyEditor::Pack()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   this->ChangeColorButton->UnpackSiblings();
 
@@ -416,9 +418,7 @@ void vtkKWTextPropertyEditor::Pack()
            << " -row 0 -sticky news -padx 1" << endl;
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 
   // Synchronize the label width to align everything
 

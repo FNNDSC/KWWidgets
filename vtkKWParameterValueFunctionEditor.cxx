@@ -34,12 +34,13 @@
 
 #include <ctype.h>
 
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 #include <vtksys/stl/vector>
 #include <vtksys/stl/algorithm>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.103 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.104 $");
 
 //----------------------------------------------------------------------------
 #define VTK_KW_PVFE_POINT_RADIUS_MIN         2
@@ -1709,7 +1710,7 @@ void vtkKWParameterValueFunctionEditor::Pack()
 
   // Repack everything
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   /*
     TLC: TopLeftContainer, contains the TopLeftFrame (TLF) and UserFrame (UF)
@@ -1995,10 +1996,8 @@ void vtkKWParameterValueFunctionEditor::Pack()
   
   tk_cmd << "grid columnconfigure " 
          << this->GetWidgetName() << " " << col_c << " -weight 1" << endl;
-  
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -2018,7 +2017,7 @@ void vtkKWParameterValueFunctionEditor::PackPointEntries()
 
   // Repack everything
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // ParameterEntry (PE)
   
@@ -2031,9 +2030,7 @@ void vtkKWParameterValueFunctionEditor::PackPointEntries()
            << " -side left -padx 2 " << endl;
     }
   
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -2048,7 +2045,7 @@ void vtkKWParameterValueFunctionEditor::Bind()
 
   this->UnBind();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Canvas
 
@@ -2214,9 +2211,7 @@ void vtkKWParameterValueFunctionEditor::Bind()
 
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -2227,7 +2222,7 @@ void vtkKWParameterValueFunctionEditor::UnBind()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Canvas
 
@@ -2329,10 +2324,8 @@ void vtkKWParameterValueFunctionEditor::UnBind()
     tk_cmd << "bind " <<  canv
            << " <KeyPress-Delete> {}" << endl;
     }
-  
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -4589,10 +4582,9 @@ void vtkKWParameterValueFunctionEditor::SetPointRemovedCommand(
 void vtkKWParameterValueFunctionEditor::InvokePointRemovedCommand(
   int id, double parameter)
 {
-  ostrstream param_str;
-  param_str << parameter << ends;
-  this->InvokePointCommand(this->PointRemovedCommand, id, param_str.str());
-  param_str.rdbuf()->freeze(0);
+  vtksys_ios::ostringstream param_str;
+  param_str << parameter;
+  this->InvokePointCommand(this->PointRemovedCommand, id, param_str.str().c_str());
 
   double dargs[2];
   dargs[0] = id;
@@ -5280,7 +5272,7 @@ void vtkKWParameterValueFunctionEditor::RedrawRangeFrame()
 
   const char *canv = this->Canvas->GetWidgetName();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Create the frames if not created already
   // We use two frames, one frame is a black outline, the other is the
@@ -5496,9 +5488,7 @@ void vtkKWParameterValueFunctionEditor::RedrawRangeFrame()
            << " -outline " << color << " -fill " << color << endl;
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -5526,7 +5516,7 @@ void vtkKWParameterValueFunctionEditor::RedrawRangeTicks()
     p_t_canv = this->ParameterTicksCanvas->GetWidgetName();
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Create the ticks if not created already
 
@@ -5704,9 +5694,7 @@ void vtkKWParameterValueFunctionEditor::RedrawRangeTicks()
       }
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -5722,7 +5710,7 @@ void vtkKWParameterValueFunctionEditor::RedrawParameterCursor()
 
   const char *canv = this->Canvas->GetWidgetName();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Create the cursor if not created already
 
@@ -5780,14 +5768,12 @@ void vtkKWParameterValueFunctionEditor::RedrawParameterCursor()
            << " -fill " << color << endl;
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
 void vtkKWParameterValueFunctionEditor::RedrawPoint(int id, 
-                                                    ostrstream *tk_cmd)
+                                                    vtksys_ios::ostream *tk_cmd)
 {
   if (!this->IsCreated() || !this->HasFunction() || this->DisableRedraw)
     {
@@ -5800,7 +5786,7 @@ void vtkKWParameterValueFunctionEditor::RedrawPoint(int id,
   int stream_was_created = 0;
   if (!tk_cmd)
     {
-    tk_cmd = new ostrstream;
+    tk_cmd = new vtksys_ios::ostringstream;
     stream_was_created = 1;
     }
 
@@ -6172,9 +6158,9 @@ void vtkKWParameterValueFunctionEditor::RedrawPoint(int id,
 
   if (stream_was_created)
     {
-    *tk_cmd << ends;
-    this->Script(tk_cmd->str());
-    tk_cmd->rdbuf()->freeze(0);
+    this->Script(
+      static_cast<vtksys_ios::ostringstream*>(tk_cmd)->str().c_str());
+
     delete tk_cmd;
     }
 }
@@ -6227,7 +6213,7 @@ int vtkKWParameterValueFunctionEditor::FunctionLineIsInVisibleRangeBetweenPoints
 
 //----------------------------------------------------------------------------
 void vtkKWParameterValueFunctionEditor::RedrawLine(
-  int id1, int id2, ostrstream *tk_cmd)
+  int id1, int id2, vtksys_ios::ostream *tk_cmd)
 {
   if (!this->IsCreated() || !this->HasFunction() || this->DisableRedraw)
     {
@@ -6240,7 +6226,7 @@ void vtkKWParameterValueFunctionEditor::RedrawLine(
   int stream_was_created = 0;
   if (!tk_cmd)
     {
-    tk_cmd = new ostrstream;
+    tk_cmd = new vtksys_ios::ostringstream;
     stream_was_created = 1;
     }
 
@@ -6330,16 +6316,16 @@ void vtkKWParameterValueFunctionEditor::RedrawLine(
 
   if (stream_was_created)
     {
-    *tk_cmd << ends;
-    this->Script(tk_cmd->str());
-    tk_cmd->rdbuf()->freeze(0);
+    this->Script(
+      static_cast<vtksys_ios::ostringstream*>(tk_cmd)->str().c_str());
+
     delete tk_cmd;
     }
 }
 
 //----------------------------------------------------------------------------
 void vtkKWParameterValueFunctionEditor::GetLineCoordinates(
-  int id1, int id2, ostrstream *tk_cmd)
+  int id1, int id2, vtksys_ios::ostream *tk_cmd)
 {
   // We assume all parameters are OK, they were checked by RedrawLine
 
@@ -6426,7 +6412,7 @@ void vtkKWParameterValueFunctionEditor::RedrawFunction()
 
   // Create the points 
   
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   int i, nb_potential_points = this->GetFunctionSize();
   if (nb_potential_points < this->LastRedrawFunctionSize)
@@ -6449,9 +6435,7 @@ void vtkKWParameterValueFunctionEditor::RedrawFunction()
 
   // Execute all of this
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 
   this->LastRedrawFunctionSize = this->GetFunctionSize();
   this->LastRedrawFunctionTime = this->GetFunctionMTime();
@@ -6716,7 +6700,7 @@ void vtkKWParameterValueFunctionEditor::RedrawHistogram()
       }
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   char color[10];
   double *v_w_range = this->GetWholeValueRange();
@@ -6886,9 +6870,7 @@ void vtkKWParameterValueFunctionEditor::RedrawHistogram()
            << " " << vtkKWParameterValueFunctionEditor::HistogramTag << endl;
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -6920,7 +6902,7 @@ void vtkKWParameterValueFunctionEditor::SelectPoint(int id)
     {
     const char *canv = this->Canvas->GetWidgetName();
 
-    ostrstream tk_cmd;
+    vtksys_ios::ostringstream tk_cmd;
 
     tk_cmd << canv << " addtag " 
            << vtkKWParameterValueFunctionEditor::SelectedTag 
@@ -6932,9 +6914,7 @@ void vtkKWParameterValueFunctionEditor::SelectPoint(int id)
            << vtkKWParameterValueFunctionEditor::SelectedTag << " all}" 
            << endl;
 
-    tk_cmd << ends;
-    this->Script(tk_cmd.str());
-    tk_cmd.rdbuf()->freeze(0);
+    this->Script(tk_cmd.str().c_str());
     }
 
   // Draw the selected point accordingly and update its aspect
@@ -6959,16 +6939,14 @@ void vtkKWParameterValueFunctionEditor::ClearSelection()
     {
     const char *canv = this->Canvas->GetWidgetName();
 
-    ostrstream tk_cmd;
+    vtksys_ios::ostringstream tk_cmd;
 
     tk_cmd << canv << " dtag p" <<  this->GetSelectedPoint()
            << " " << vtkKWParameterValueFunctionEditor::SelectedTag << endl;
     tk_cmd << canv << " dtag t" <<  this->GetSelectedPoint()
            << " " << vtkKWParameterValueFunctionEditor::SelectedTag << endl;
 
-    tk_cmd << ends;
-    this->Script(tk_cmd.str());
-    tk_cmd.rdbuf()->freeze(0);
+    this->Script(tk_cmd.str().c_str());
     }
 
   // Deselect
@@ -7393,7 +7371,7 @@ void vtkKWParameterValueFunctionEditor::UpdateRangeLabel()
     return;
     }
 
-  ostrstream ranges;
+  vtksys_ios::ostringstream ranges;
   int nb_ranges = 0;
 
   if (this->ParameterRangeLabelVisibility)
@@ -7419,9 +7397,7 @@ void vtkKWParameterValueFunctionEditor::UpdateRangeLabel()
     nb_ranges++;
     }
 
-  ranges << ends;
-  this->RangeLabel->SetText(ranges.str());
-  ranges.rdbuf()->freeze(0);
+  this->RangeLabel->SetText(ranges.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -7503,11 +7479,10 @@ void vtkKWParameterValueFunctionEditor::UpdateHistogramLogModeOptionMenu()
       menu->GetIndexOfItem("Log."), "-image");
     if (img_opt && *img_opt)
       {
-      ostrstream img_name;
+      vtksys_ios::ostringstream img_name;
       img_name << this->HistogramLogModeOptionMenu->GetWidgetName() 
-               << ".img" << log_mode << ends;
-      this->HistogramLogModeOptionMenu->SetValue(img_name.str());
-      img_name.rdbuf()->freeze(0);
+               << ".img" << log_mode;
+      this->HistogramLogModeOptionMenu->SetValue(img_name.str().c_str());
       }
     else
       {

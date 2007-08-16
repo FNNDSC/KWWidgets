@@ -23,8 +23,10 @@
 #include "vtkObjectFactory.h"
 #include "vtkKWTkUtilities.h"
 
+#include <vtksys/ios/sstream>
+
 vtkStandardNewMacro( vtkKWRange );
-vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.69 $");
+vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.70 $");
 
 #define VTK_KW_RANGE_MIN_SLIDER_SIZE        2
 #define VTK_KW_RANGE_MIN_THICKNESS          (2*VTK_KW_RANGE_MIN_SLIDER_SIZE+1)
@@ -262,7 +264,7 @@ void vtkKWRange::Pack()
 
   // Repack everything
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
   int is_horiz = (this->Orientation == vtkKWRange::OrientationHorizontal);
 
   int row, col, row_span, col_span, c_padx = 0, c_pady = 0;
@@ -469,9 +471,7 @@ void vtkKWRange::Pack()
       }
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -482,7 +482,7 @@ void vtkKWRange::Bind()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Canvas
 
@@ -529,9 +529,7 @@ void vtkKWRange::Bind()
            << vtkKWRange::SliderIndex1 << " %%x %%y}" << endl;
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -542,7 +540,7 @@ void vtkKWRange::UnBind()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Canvas
 
@@ -563,9 +561,7 @@ void vtkKWRange::UnBind()
            << " <B1-Motion> {}" << endl;
     }
   
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -1455,7 +1451,7 @@ void vtkKWRange::RedrawWholeRange()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
   const char *canv = this->Canvas->GetWidgetName();
   const char *tag = VTK_KW_RANGE_WHOLE_RANGE_TAG;
   int was_created = this->HasTag(tag);
@@ -1549,9 +1545,7 @@ void vtkKWRange::RedrawWholeRange()
          << x_min + 1 << " " << y_min + 1 << " " 
          << x_max - 2 + LSTRANGE << " " << y_min + 1 << endl;
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -1643,7 +1637,7 @@ void vtkKWRange::RedrawRange()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
   const char *canv = this->Canvas->GetWidgetName();
   const char *tag = VTK_KW_RANGE_RANGE_TAG;
   int was_created = this->HasTag(tag);
@@ -1760,9 +1754,7 @@ void vtkKWRange::RedrawRange()
            << max - 1 << " " << pos[1] + LSTRANGE << endl;
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -1797,7 +1789,7 @@ void vtkKWRange::RedrawSlider(int pos, int slider_idx)
     tag = VTK_KW_RANGE_SLIDER2_TAG;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
   const char *canv = this->Canvas->GetWidgetName();
   int sw = this->SliderSize;
   const char *stag = VTK_KW_RANGE_SLIDERS_TAG;
@@ -1932,9 +1924,7 @@ void vtkKWRange::RedrawSlider(int pos, int slider_idx)
          << x_max - sw + 1 << " " << y_max - sw + 1 << " " 
          << x_min + sw - 1 - LSTRANGE << " " << y_max - sw + 1 << endl;
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -1945,7 +1935,7 @@ void vtkKWRange::UpdateRangeColors()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
   const char *canv = this->Canvas->GetWidgetName();
 
   char bgcolor[10], dscolor[10], lscolor[10], hlcolor[10];
@@ -1982,9 +1972,7 @@ void vtkKWRange::UpdateRangeColors()
   tk_cmd << canv << " itemconfigure rhlc -fill " << hlcolor << endl;
   tk_cmd << canv << " itemconfigure rlsc -fill " << lscolor << endl;
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -1995,7 +1983,7 @@ void vtkKWRange::UpdateColors()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
   const char *canv = this->Canvas->GetWidgetName();
 
   char bgcolor[10], dscolor[10], lscolor[10], hlcolor[10];
@@ -2064,9 +2052,7 @@ void vtkKWRange::UpdateColors()
 
   tk_cmd << canv << " itemconfigure ltag -capstyle round " << endl;
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 // ---------------------------------------------------------------------------

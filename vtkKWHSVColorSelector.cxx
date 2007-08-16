@@ -22,7 +22,9 @@
 #include "vtkMath.h"
 #include "vtkObjectFactory.h"
 
-vtkCxxRevisionMacro(vtkKWHSVColorSelector, "$Revision: 1.21 $");
+#include <vtksys/ios/sstream>
+
+vtkCxxRevisionMacro(vtkKWHSVColorSelector, "$Revision: 1.22 $");
 vtkStandardNewMacro(vtkKWHSVColorSelector);
 
 #define VTK_KW_HSV_SEL_POINT_RADIUS_MIN     2
@@ -207,7 +209,7 @@ void vtkKWHSVColorSelector::Pack()
   const char *col0 = " -column 1 ";
   const char *col1 = " -column 0 ";
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Hue/Sat label
 
@@ -237,9 +239,7 @@ void vtkKWHSVColorSelector::Pack()
            << " -sticky ew -row " << row << col1 << endl;
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -547,33 +547,31 @@ void vtkKWHSVColorSelector::RedrawHueSatWheelCanvas()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   const char *canv = this->HueSatWheelCanvas->GetWidgetName();
 
   // If the image is not in the canvas, create it and add it to the canvas
   
-  ostrstream img_name;
+  vtksys_ios::ostringstream img_name;
   img_name << this->HueSatWheelCanvas->GetWidgetName() 
-           << "." << VTK_KW_HSV_SEL_IMAGE_TAG << ends;
+           << "." << VTK_KW_HSV_SEL_IMAGE_TAG;
 
   if (!this->CanvasHasTag(canv, VTK_KW_HSV_SEL_IMAGE_TAG))
     {
-    ostrstream img_name_d;
-    img_name_d << this->HueSatWheelCanvas->GetWidgetName() 
-               << "." << VTK_KW_HSV_SEL_IMAGE_TAG << "_disabled" << ends;
+    vtksys_ios::ostringstream img_name_d;
+    img_name_d << this->HueSatWheelCanvas->GetWidgetName()
+               << "." << VTK_KW_HSV_SEL_IMAGE_TAG << "_disabled";
 
-    tk_cmd << "image create photo " << img_name.str() << " -width 0 -height 0"
+    tk_cmd << "image create photo " << img_name.str().c_str() << " -width 0 -height 0"
            << endl;
-    tk_cmd << "image create photo " << img_name_d.str()<< " -width 0 -height 0"
+    tk_cmd << "image create photo " << img_name_d.str().c_str() << " -width 0 -height 0"
            << endl;
     tk_cmd << canv << " create image 0 0 -anchor nw "
-           << " -image " << img_name.str()
-           << " -disabledimage " << img_name_d.str()
+           << " -image " << img_name.str().c_str()
+           << " -disabledimage " << img_name_d.str().c_str()
            << " -tags {" << VTK_KW_HSV_SEL_IMAGE_TAG << "}"
            << endl;
-
-    img_name_d.rdbuf()->freeze(0);
     }
 
   // Update the image coordinates
@@ -597,9 +595,7 @@ void vtkKWHSVColorSelector::RedrawHueSatWheelCanvas()
   sprintf(buffer, "0 0 %d %d", c_width, c_height);
   this->HueSatWheelCanvas->SetConfigurationOption("-scrollregion", buffer);
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 
   // Check if the image needs to be redrawn
 
@@ -608,13 +604,11 @@ void vtkKWHSVColorSelector::RedrawHueSatWheelCanvas()
   
   vtkKWApplication *app = this->GetApplication();
 
-  if (vtkKWTkUtilities::GetPhotoWidth(app, img_name.str()) != i_width ||
-      vtkKWTkUtilities::GetPhotoHeight(app, img_name.str()) !=  i_height)
+  if (vtkKWTkUtilities::GetPhotoWidth(app, img_name.str().c_str()) != i_width ||
+      vtkKWTkUtilities::GetPhotoHeight(app, img_name.str().c_str()) !=  i_height)
     {
     this->UpdateHueSatWheelImage();
     }
-
-  img_name.rdbuf()->freeze(0);
 
   // Update the selection
 
@@ -713,33 +707,31 @@ void vtkKWHSVColorSelector::UpdateHueSatWheelImage()
 
   // Update the image
 
-  ostrstream img_name;
+  vtksys_ios::ostringstream img_name;
   img_name << this->HueSatWheelCanvas->GetWidgetName() 
-           << "." << VTK_KW_HSV_SEL_IMAGE_TAG << ends;
+           << "." << VTK_KW_HSV_SEL_IMAGE_TAG;
 
   vtkKWTkUtilities::UpdatePhoto(this->GetApplication(),
-                                img_name.str(),
+                                img_name.str().c_str(),
                                 buffer,
                                 diameter, diameter, 4,
                                 diameter * diameter * 4);
 
   delete [] buffer;
-  img_name.rdbuf()->freeze(0);
 
   // Update the image (disabled state)
 
-  ostrstream img_name_d;
+  vtksys_ios::ostringstream img_name_d;
   img_name_d << this->HueSatWheelCanvas->GetWidgetName() 
-             << "." << VTK_KW_HSV_SEL_IMAGE_TAG << "_disabled" << ends;
+             << "." << VTK_KW_HSV_SEL_IMAGE_TAG << "_disabled";
 
   vtkKWTkUtilities::UpdatePhoto(this->GetApplication(),
-                                img_name_d.str(),
+                                img_name_d.str().c_str(),
                                 buffer_d,
                                 diameter, diameter, 4,
                                 diameter * diameter * 4);
 
   delete [] buffer_d;
-  img_name_d.rdbuf()->freeze(0);
 }
 
 //----------------------------------------------------------------------------
@@ -750,7 +742,7 @@ void vtkKWHSVColorSelector::UpdateHueSatWheelSelection()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   const char *canv = this->HueSatWheelCanvas->GetWidgetName();
 
@@ -787,9 +779,7 @@ void vtkKWHSVColorSelector::UpdateHueSatWheelSelection()
            << endl;
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -800,33 +790,31 @@ void vtkKWHSVColorSelector::RedrawValueBoxCanvas()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   const char *canv = this->ValueBoxCanvas->GetWidgetName();
 
   // If the image is not in the canvas, create it and add it to the canvas
   
-  ostrstream img_name;
+  vtksys_ios::ostringstream img_name;
   img_name << this->ValueBoxCanvas->GetWidgetName() 
-           << "." << VTK_KW_HSV_SEL_IMAGE_TAG << ends;
+           << "." << VTK_KW_HSV_SEL_IMAGE_TAG;
 
   if (!this->CanvasHasTag(canv, VTK_KW_HSV_SEL_IMAGE_TAG))
     {
-    ostrstream img_name_d;
+    vtksys_ios::ostringstream img_name_d;
     img_name_d << this->ValueBoxCanvas->GetWidgetName() 
-               << "." << VTK_KW_HSV_SEL_IMAGE_TAG << "_disabled" << ends;
+               << "." << VTK_KW_HSV_SEL_IMAGE_TAG << "_disabled";
 
-    tk_cmd << "image create photo " << img_name.str() << " -width 0 -height 0"
+    tk_cmd << "image create photo " << img_name.str().c_str() << " -width 0 -height 0"
            << endl;
-    tk_cmd << "image create photo " << img_name_d.str() <<" -width 0 -height 0"
+    tk_cmd << "image create photo " << img_name_d.str().c_str() <<" -width 0 -height 0"
            << endl;
     tk_cmd << canv << " create image 0 0 -anchor nw "
-           << " -image " << img_name.str()
-           << " -disabledimage " << img_name_d.str()
+           << " -image " << img_name.str().c_str()
+           << " -disabledimage " << img_name_d.str().c_str()
            << " -tags {" << VTK_KW_HSV_SEL_IMAGE_TAG << "}"
            << endl;
-
-    img_name_d.rdbuf()->freeze(0);
     }
 
   // Update the image coordinates
@@ -850,9 +838,7 @@ void vtkKWHSVColorSelector::RedrawValueBoxCanvas()
   sprintf(buffer, "0 0 %d %d", c_width - 1, c_height - 1);
   this->ValueBoxCanvas->SetConfigurationOption("-scrollregion", buffer);
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 
   // Check if the image needs to be redrawn
 
@@ -861,13 +847,11 @@ void vtkKWHSVColorSelector::RedrawValueBoxCanvas()
   
   vtkKWApplication *app = this->GetApplication();
 
-  if (vtkKWTkUtilities::GetPhotoWidth(app, img_name.str()) != i_width ||
-      vtkKWTkUtilities::GetPhotoHeight(app, img_name.str()) !=  i_height)
+  if (vtkKWTkUtilities::GetPhotoWidth(app, img_name.str().c_str()) != i_width ||
+      vtkKWTkUtilities::GetPhotoHeight(app, img_name.str().c_str()) !=  i_height)
     {
     this->UpdateValueBoxImage();
     }
-
-  img_name.rdbuf()->freeze(0);
 
   // Update the selection
 
@@ -938,33 +922,31 @@ void vtkKWHSVColorSelector::UpdateValueBoxImage()
 
   // Update image
 
-  ostrstream img_name;
+  vtksys_ios::ostringstream img_name;
   img_name << this->ValueBoxCanvas->GetWidgetName() 
-           << "." << VTK_KW_HSV_SEL_IMAGE_TAG << ends;
+           << "." << VTK_KW_HSV_SEL_IMAGE_TAG;
 
   vtkKWTkUtilities::UpdatePhoto(this->GetApplication(),
-                                img_name.str(),
+                                img_name.str().c_str(),
                                 buffer,
                                 width, height, 3,
                                 width * height * 3);
 
   delete [] buffer;
-  img_name.rdbuf()->freeze(0);
 
   // Update disabled image
 
-  ostrstream img_name_d;
+  vtksys_ios::ostringstream img_name_d;
   img_name_d << this->ValueBoxCanvas->GetWidgetName() 
-             << "." << VTK_KW_HSV_SEL_IMAGE_TAG << "_disabled" << ends;
+             << "." << VTK_KW_HSV_SEL_IMAGE_TAG << "_disabled";
 
   vtkKWTkUtilities::UpdatePhoto(this->GetApplication(),
-                                img_name_d.str(),
+                                img_name_d.str().c_str(),
                                 buffer_d,
                                 width, height, 4,
                                 width * height * 4);
 
   delete [] buffer_d;
-  img_name_d.rdbuf()->freeze(0);
 }
 
 //----------------------------------------------------------------------------
@@ -975,7 +957,7 @@ void vtkKWHSVColorSelector::UpdateValueBoxSelection()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   const char *canv = this->ValueBoxCanvas->GetWidgetName();
 
@@ -1010,9 +992,7 @@ void vtkKWHSVColorSelector::UpdateValueBoxSelection()
            << endl;
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -1195,4 +1175,3 @@ void vtkKWHSVColorSelector::PrintSelf(
     os << "None" << endl;
     }
 }
-

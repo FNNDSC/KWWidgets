@@ -23,6 +23,7 @@
 #include "vtkObjectFactory.h"
 #include "vtkKWApplication.h"
 
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 
 #define VTK_KW_TW_BORDER_SIZE      2
@@ -36,7 +37,7 @@
 
 // ---------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWThumbWheel );
-vtkCxxRevisionMacro(vtkKWThumbWheel, "$Revision: 1.55 $");
+vtkCxxRevisionMacro(vtkKWThumbWheel, "$Revision: 1.56 $");
 
 // ---------------------------------------------------------------------------
 /* 
@@ -1110,7 +1111,7 @@ void vtkKWThumbWheel::SetBalloonHelpString(const char *string)
 
   if (string)
     {
-    ostrstream modes;
+    vtksys_ios::ostringstream modes;
     modes << string << " (";
 
     int i;
@@ -1158,9 +1159,8 @@ void vtkKWThumbWheel::SetBalloonHelpString(const char *string)
         }
       }
 
-    modes << ")" << ends;
-    this->ThumbWheel->SetBalloonHelpString(modes.str());
-    modes.rdbuf()->freeze(0);
+    modes << ")";
+    this->ThumbWheel->SetBalloonHelpString(modes.str().c_str());
     }
   else
     {
@@ -1181,13 +1181,11 @@ void vtkKWThumbWheel::SetBalloonHelpString(const char *string)
     {
     if (string)
       {
-      ostrstream temp;
+      vtksys_ios::ostringstream temp;
       temp 
         << string << " " 
-        << ks_("Popup ThumbWheel|(press this button to display a thumbwheel)") 
-        << ends;
-      this->PopupPushButton->SetBalloonHelpString(temp.str());
-      temp.rdbuf()->freeze(0);
+        << ks_("Popup ThumbWheel|(press this button to display a thumbwheel)");
+      this->PopupPushButton->SetBalloonHelpString(temp.str().c_str());
       }
     else
       {

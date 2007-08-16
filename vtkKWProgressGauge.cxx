@@ -19,11 +19,12 @@
 #include "vtkKWApplication.h"
 
 #include <vtksys/SystemTools.hxx>
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/map>
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWProgressGauge );
-vtkCxxRevisionMacro(vtkKWProgressGauge, "$Revision: 1.41 $");
+vtkCxxRevisionMacro(vtkKWProgressGauge, "$Revision: 1.42 $");
 
 //----------------------------------------------------------------------------
 class vtkKWProgressGaugeInternals
@@ -255,7 +256,7 @@ void vtkKWProgressGauge::Redraw()
 
   const char* wname = this->Canvas->GetWidgetName();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Resize the canvas
 
@@ -378,9 +379,7 @@ void vtkKWProgressGauge::Redraw()
       }
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 
   this->GetApplication()->ProcessIdleTasks();
 

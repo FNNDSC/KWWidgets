@@ -14,9 +14,11 @@
 #include "vtkKWSpinBox.h"
 #include "vtkKWStateMachineInput.h"
 
+#include <vtksys/ios/sstream>
+
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMyWizardDialog );
-vtkCxxRevisionMacro(vtkKWMyWizardDialog, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWMyWizardDialog, "$Revision: 1.5 $");
 
 //----------------------------------------------------------------------------
 vtkKWMyWizardDialog::vtkKWMyWizardDialog()
@@ -498,7 +500,7 @@ void vtkKWMyWizardDialog::ShowResultUserInterfaceCallback()
   double operand2;
   double result = 0.0;
 
-  ostrstream str;
+  vtksys_ios::ostringstream str;
 
   switch (this->GetSelectedOperator())
     {
@@ -520,9 +522,9 @@ void vtkKWMyWizardDialog::ShowResultUserInterfaceCallback()
       break;
     }
 
-  str << " = " << result << ends;
+  str << " = " << result;
 
-  this->ResultLabel->SetText(str.str());
+  this->ResultLabel->SetText(str.str().c_str());
 }
 
 //----------------------------------------------------------------------------

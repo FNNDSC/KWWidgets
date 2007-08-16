@@ -24,6 +24,7 @@
 #include "vtkWindows.h"
 #include "X11/Xutil.h"
 
+#include <vtksys/ios/sstream>
 #include <vtksys/SystemTools.hxx>
 
 // This has to be here because on HP varargs are included in 
@@ -37,7 +38,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.83 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.84 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -342,16 +343,14 @@ void vtkKWTkUtilities::GetRGBColor(Tcl_Interp *interp,
     return;
     }
 
-  ostrstream command;
-  command << "winfo rgb " << widget << " " << color << ends;
-  if (Tcl_GlobalEval(interp, command.str()) != TCL_OK)
+  vtksys_ios::ostringstream command;
+  command << "winfo rgb " << widget << " " << color;
+  if (Tcl_GlobalEval(interp, command.str().c_str()) != TCL_OK)
     {
     vtkGenericWarningMacro(
       << "Unable to get RGB color: " << Tcl_GetStringResult(interp));
-    command.rdbuf()->freeze(0);     
     return;
     }
-  command.rdbuf()->freeze(0);     
 
   int rr, gg, bb;
   if (sscanf(Tcl_GetStringResult(interp), "%d %d %d", &rr, &gg, &bb) == 3)
@@ -389,17 +388,15 @@ void vtkKWTkUtilities::GetOptionColor(Tcl_Interp *interp,
     return;
     }
 
-  ostrstream command;
-  command << widget << " cget " << option << ends;
-  if (Tcl_GlobalEval(interp, command.str()) != TCL_OK)
+  vtksys_ios::ostringstream command;
+  command << widget << " cget " << option;
+  if (Tcl_GlobalEval(interp, command.str().c_str()) != TCL_OK)
     {
     vtkGenericWarningMacro(
       << "Unable to get " << option << " option: " 
       << Tcl_GetStringResult(interp));
-    command.rdbuf()->freeze(0);     
     return;
     }
-  command.rdbuf()->freeze(0);     
 
   vtkKWTkUtilities::GetRGBColor(
     interp, widget, Tcl_GetStringResult(interp), r, g, b);
@@ -446,15 +443,14 @@ void vtkKWTkUtilities::SetOptionColor(Tcl_Interp *interp,
   sprintf(color, "#%02x%02x%02x", 
           (int)(r * 255.0), (int)(g * 255.0), (int)(b * 255.0));
 
-  ostrstream command;
-  command << widget << " configure " << option << " " << color << ends;
-  if (Tcl_GlobalEval(interp, command.str()) != TCL_OK)
+  vtksys_ios::ostringstream command;
+  command << widget << " configure " << option << " " << color;
+  if (Tcl_GlobalEval(interp, command.str().c_str()) != TCL_OK)
     {
     vtkGenericWarningMacro(
       << "Unable to set " << option << " option: " 
       << Tcl_GetStringResult(interp));
     }
-  command.rdbuf()->freeze(0);     
 }
 
 //----------------------------------------------------------------------------
@@ -772,10 +768,9 @@ int vtkKWTkUtilities::UpdatePhoto(Tcl_Interp *interp,
 
   if (!photo)
     {
-    ostrstream create_photo;
-    create_photo << "image create photo " << photo_name << ends;
-    int res = Tcl_GlobalEval(interp, create_photo.str());
-    create_photo.rdbuf()->freeze(0);
+    vtksys_ios::ostringstream create_photo;
+    create_photo << "image create photo " << photo_name;
+    int res = Tcl_GlobalEval(interp, create_photo.str().c_str());
     if (res != TCL_OK)
       {
       vtkGenericWarningMacro(
@@ -1229,13 +1224,12 @@ int vtkKWTkUtilities::ChangeFontWeight(Tcl_Interp *interp,
   // First try to modify the old -foundry-family-weigth-*-*-... form
   // Catch the weight field, replace it with bold or medium.
 
-  ostrstream regsub;
+  vtksys_ios::ostringstream regsub;
   regsub << "regsub -- {(-[^-]*\\S-[^-]*\\S-)([^-]*)(-.*)} \""
          << font << "\" {\\1" << (weight ? "bold" : "medium") 
-         << "\\3} __temp__" << ends;
+         << "\\3} __temp__";
 
-  res = Tcl_GlobalEval(interp, regsub.str());
-  regsub.rdbuf()->freeze(0);
+  res = Tcl_GlobalEval(interp, regsub.str().c_str());
   if (res != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to regsub!");
@@ -1256,12 +1250,11 @@ int vtkKWTkUtilities::ChangeFontWeight(Tcl_Interp *interp,
 
   // Otherwise replace the -weight parameter with either bold or normal
 
-  ostrstream regsub2;
+  vtksys_ios::ostringstream regsub2;
   regsub2 << "regsub -- {(.* -weight )(\\w*\\M)(.*)} [font actual \""
           << font << "\"] {\\1" << (weight ? "bold" : "normal") 
-          << "\\3} __temp__" << ends;
-  res = Tcl_GlobalEval(interp, regsub2.str());
-  regsub2.rdbuf()->freeze(0);
+          << "\\3} __temp__";
+  res = Tcl_GlobalEval(interp, regsub2.str().c_str());
   if (res != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to regsub (2)!");
@@ -1310,10 +1303,9 @@ int vtkKWTkUtilities::ChangeFontWeight(Tcl_Interp *interp,
 
   // Get the font
 
-  ostrstream getfont;
-  getfont << widget << " cget -font" << ends;
-  res = Tcl_GlobalEval(interp, getfont.str());
-  getfont.rdbuf()->freeze(0);
+  vtksys_ios::ostringstream getfont;
+  getfont << widget << " cget -font";
+  res = Tcl_GlobalEval(interp, getfont.str().c_str());
   if (res != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to getfont!");
@@ -1330,10 +1322,9 @@ int vtkKWTkUtilities::ChangeFontWeight(Tcl_Interp *interp,
 
   // Set the font
 
-  ostrstream setfont;
-  setfont << widget << " configure -font \"" << new_font << "\"" << ends;
-  res = Tcl_GlobalEval(interp, setfont.str());
-  setfont.rdbuf()->freeze(0);
+  vtksys_ios::ostringstream setfont;
+  setfont << widget << " configure -font \"" << new_font << "\"";
+  res = Tcl_GlobalEval(interp, setfont.str().c_str());
   if (res != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to replace font ! ("
@@ -1395,13 +1386,11 @@ int vtkKWTkUtilities::ChangeFontSlant(Tcl_Interp *interp,
   // First try to modify the old -foundry-family-weigth-slant-*-*-... form
   // Catch the slant field, replace it with i (italic) or r (roman).
 
-  ostrstream regsub;
+  vtksys_ios::ostringstream regsub;
   regsub << "regsub -- {(-[^-]*\\S-[^-]*\\S-[^-]*\\S-)([^-]*)(-.*)} \""
-         << font << "\" {\\1" << (slant ? "i" : "r") << "\\3} __temp__" 
-         << ends;
+         << font << "\" {\\1" << (slant ? "i" : "r") << "\\3} __temp__";
 
-  res = Tcl_GlobalEval(interp, regsub.str());
-  regsub.rdbuf()->freeze(0);
+  res = Tcl_GlobalEval(interp, regsub.str().c_str());
   if (res != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to regsub!");
@@ -1422,12 +1411,11 @@ int vtkKWTkUtilities::ChangeFontSlant(Tcl_Interp *interp,
 
   // Otherwise replace the -slant parameter with either bold or normal
 
-  ostrstream regsub2;
+  vtksys_ios::ostringstream regsub2;
   regsub2 << "regsub -- {(.* -slant )(\\w*\\M)(.*)} [font actual \"" 
           << font << "\"] {\\1" << (slant ? "italic" : "roman") 
-          << "\\3} __temp__" << ends;
-  res = Tcl_GlobalEval(interp, regsub2.str());
-  regsub2.rdbuf()->freeze(0);
+          << "\\3} __temp__";
+  res = Tcl_GlobalEval(interp, regsub2.str().c_str());
   if (res != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to regsub (2)!");
@@ -1476,10 +1464,9 @@ int vtkKWTkUtilities::ChangeFontSlant(Tcl_Interp *interp,
 
   // Get the font
 
-  ostrstream getfont;
-  getfont << widget << " cget -font" << ends;
-  res = Tcl_GlobalEval(interp, getfont.str());
-  getfont.rdbuf()->freeze(0);
+  vtksys_ios::ostringstream getfont;
+  getfont << widget << " cget -font";
+  res = Tcl_GlobalEval(interp, getfont.str().c_str());
   if (res != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to getfont!");
@@ -1496,10 +1483,9 @@ int vtkKWTkUtilities::ChangeFontSlant(Tcl_Interp *interp,
 
   // Set the font
 
-  ostrstream setfont;
-  setfont << widget << " configure -font \"" << new_font << "\"" << ends;
-  res = Tcl_GlobalEval(interp, setfont.str());
-  setfont.rdbuf()->freeze(0);
+  vtksys_ios::ostringstream setfont;
+  setfont << widget << " configure -font \"" << new_font << "\"";
+  res = Tcl_GlobalEval(interp, setfont.str().c_str());
   if (res != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to replace font ! ("
@@ -1556,10 +1542,9 @@ int vtkKWTkUtilities::GetGridSize(Tcl_Interp *interp,
                                   int *nb_of_cols,
                                   int *nb_of_rows)
 {
-  ostrstream size;
-  size << "grid size " << widget << ends;
-  int res = Tcl_GlobalEval(interp, size.str());
-  size.rdbuf()->freeze(0);
+  vtksys_ios::ostringstream size;
+  size << "grid size " << widget;
+  int res = Tcl_GlobalEval(interp, size.str().c_str());
   if (res != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to query grid size!");
@@ -1596,10 +1581,9 @@ int vtkKWTkUtilities::GetWidgetPositionInGrid(Tcl_Interp *interp,
                                       int *col,
                                       int *row)
 {
-  ostrstream info;
-  info << "grid info " << widget << ends;
-  int res = Tcl_GlobalEval(interp, info.str());
-  info.rdbuf()->freeze(0);
+  vtksys_ios::ostringstream info;
+  info << "grid info " << widget ;
+  int res = Tcl_GlobalEval(interp, info.str().c_str());
   if (res != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to query grid info!");
@@ -1656,17 +1640,16 @@ int vtkKWTkUtilities::GetWidgetPaddingInPack(Tcl_Interp *interp,
                                           int *padx,
                                           int *pady)
 {
-  ostrstream packinfo;
-  packinfo << "pack info " << widget << ends;
-  int res = Tcl_GlobalEval(interp, packinfo.str());
-  packinfo.rdbuf()->freeze(0);
+  vtksys_ios::ostringstream packinfo;
+  packinfo << "pack info " << widget;
+  int res = Tcl_GlobalEval(interp, packinfo.str().c_str());
   const char *result = Tcl_GetStringResult(interp);
   if (res != TCL_OK || !result || !result[0])
     {
     vtkGenericWarningMacro(<< "Unable to get pack info!");
     return 0;
     }
-  
+
   // Parse (ex: -ipadx 0 -ipady 0 -padx 0 -pady 0)
 
   int ok = 1;
@@ -1728,10 +1711,9 @@ int vtkKWTkUtilities::GetMasterInPack(Tcl_Interp *interp,
                                      const char *widget,
                                      ostream &in)
 {
-  ostrstream packinfo;
-  packinfo << "pack info " << widget << ends;
-  int res = Tcl_GlobalEval(interp, packinfo.str());
-  packinfo.rdbuf()->freeze(0);
+  vtksys_ios::ostringstream packinfo;
+  packinfo << "pack info " << widget;
+  int res = Tcl_GlobalEval(interp, packinfo.str().c_str());
   const char *result = Tcl_GetStringResult(interp);
   if (res != TCL_OK || !result || !result[0])
     {
@@ -1787,10 +1769,9 @@ int vtkKWTkUtilities::GetSlavesBoundingBoxInPack(Tcl_Interp *interp,
                                         int *width,
                                         int *height)
 {
-  ostrstream slaves;
-  slaves << "pack slaves " << widget << ends;
-  int res = Tcl_GlobalEval(interp, slaves.str());
-  slaves.rdbuf()->freeze(0);
+  vtksys_ios::ostringstream slaves;
+  slaves << "pack slaves " << widget;
+  int res = Tcl_GlobalEval(interp, slaves.str().c_str());
   if (res != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to get pack slaves!");
@@ -1894,10 +1875,9 @@ int vtkKWTkUtilities::GetSlaveHorizontalPositionInPack(Tcl_Interp *interp,
                                                      const char *slave,
                                                      int *x)
 {
-  ostrstream slaves;
-  slaves << "pack slaves " << widget << ends;
-  int res = Tcl_GlobalEval(interp, slaves.str());
-  slaves.rdbuf()->freeze(0);
+  vtksys_ios::ostringstream slaves;
+  slaves << "pack slaves " << widget;
+  int res = Tcl_GlobalEval(interp, slaves.str().c_str());
   if (res != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to get pack slaves!");
@@ -2033,11 +2013,10 @@ int vtkKWTkUtilities::GetGridColumnWidths(Tcl_Interp *interp,
       {
       // Get the slave
 
-      ostrstream slave;
-      slave << "grid slaves " << widget << " -column " << col 
-            << " -row " << row << ends;
-      int res = Tcl_GlobalEval(interp, slave.str());
-      slave.rdbuf()->freeze(0);
+      vtksys_ios::ostringstream slave;
+      slave << "grid slaves " << widget << " -column " << col
+            << " -row " << row;
+      int res = Tcl_GlobalEval(interp, slave.str().c_str());
       if (res != TCL_OK)
         {
         vtkGenericWarningMacro(<< "Unable to get grid slave!");
@@ -2105,7 +2084,7 @@ int vtkKWTkUtilities::SynchroniseGridsColumnMinimumSize(
   // Synchronize columns (for each column, configure -minsize to the largest
   // column width for all grids)
 
-  ostrstream minsize;
+  vtksys_ios::ostringstream minsize;
   for (int col = 0; col < min_nb_of_cols; col++)
     {
     int col_width_max = 0;
@@ -2131,15 +2110,13 @@ int vtkKWTkUtilities::SynchroniseGridsColumnMinimumSize(
       minsize << endl;
       }
     }
-  minsize << ends;
 
   int ok = 1;
-  if (Tcl_GlobalEval(interp, minsize.str()) != TCL_OK)
+  if (Tcl_GlobalEval(interp, minsize.str().c_str()) != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to synchronize grid columns!");
     ok = 0;
     }
-  minsize.rdbuf()->freeze(0);
 
   // Free mem
 
@@ -2170,10 +2147,9 @@ int vtkKWTkUtilities::SynchroniseLabelsMaximumWidth(
     {
     // Get the -width
 
-    ostrstream getwidth;
-    getwidth << widgets[widget] << " cget -width" << ends;
-    int res = Tcl_GlobalEval(interp, getwidth.str());
-    getwidth.rdbuf()->freeze(0);
+    vtksys_ios::ostringstream getwidth;
+    getwidth << widgets[widget] << " cget -width";
+    int res = Tcl_GlobalEval(interp, getwidth.str().c_str());
     const char *result = Tcl_GetStringResult(interp);
     if (res != TCL_OK || !result || !result[0])
       {
@@ -2185,10 +2161,9 @@ int vtkKWTkUtilities::SynchroniseLabelsMaximumWidth(
 
     // Get the -text length
 
-    ostrstream getlength;
-    getlength << widgets[widget] << " cget -text" << ends;
-    res = Tcl_GlobalEval(interp, getlength.str());
-    getlength.rdbuf()->freeze(0);
+    vtksys_ios::ostringstream getlength;
+    getlength << widgets[widget] << " cget -text";
+    res = Tcl_GlobalEval(interp, getlength.str().c_str());
     if (res != TCL_OK)
       {
       vtkGenericWarningMacro(<< "Unable to get label -text! " 
@@ -2212,7 +2187,7 @@ int vtkKWTkUtilities::SynchroniseLabelsMaximumWidth(
 
   // Synchronize labels
 
-  ostrstream setwidth;
+  vtksys_ios::ostringstream setwidth;
   for (widget = 0; widget < nb_of_widgets; widget++)
     {
     setwidth << widgets[widget] << " configure -width " << maxwidth;
@@ -2222,9 +2197,7 @@ int vtkKWTkUtilities::SynchroniseLabelsMaximumWidth(
       }
     setwidth << endl;
     }
-  setwidth << ends;
-  int res = Tcl_GlobalEval(interp, setwidth.str());
-  setwidth.rdbuf()->freeze(0);
+  int res = Tcl_GlobalEval(interp, setwidth.str().c_str());
   if (res != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to synchronize labels width! " 
@@ -2258,10 +2231,9 @@ int vtkKWTkUtilities::GetSlavesInPack(
 
   // Get number of slaves
 
-  ostrstream nb_slaves_str;
-  nb_slaves_str << "llength [pack slaves " << widget << "]" << ends;
-  res = Tcl_GlobalEval(interp, nb_slaves_str.str());
-  nb_slaves_str.rdbuf()->freeze(0);
+  vtksys_ios::ostringstream nb_slaves_str;
+  nb_slaves_str << "llength [pack slaves " << widget << "]";
+  res = Tcl_GlobalEval(interp, nb_slaves_str.str().c_str());
   const char *result = Tcl_GetStringResult(interp);
   if (res != TCL_OK || !result || !result[0])
     {
@@ -2277,10 +2249,9 @@ int vtkKWTkUtilities::GetSlavesInPack(
 
   // Get the slaves as a space-separated list
 
-  ostrstream slaves_str;
-  slaves_str << "pack slaves " << widget << ends;
-  res = Tcl_GlobalEval(interp, slaves_str.str());
-  slaves_str.rdbuf()->freeze(0);
+  vtksys_ios::ostringstream slaves_str;
+  slaves_str << "pack slaves " << widget;
+  res = Tcl_GlobalEval(interp, slaves_str.str().c_str());
   result = Tcl_GetStringResult(interp);
   if (res != TCL_OK || !result || !result[0])
     {

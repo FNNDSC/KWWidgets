@@ -20,11 +20,12 @@
 
 #include "Utilities/tkcon/vtkKWTkconInit.h"
 
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 
 //-------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTkcon );
-vtkCxxRevisionMacro(vtkKWTkcon, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(vtkKWTkcon, "$Revision: 1.9 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTkconInternals
@@ -98,7 +99,7 @@ void vtkKWTkcon::CreateWidget()
 
   this->vtkKWCoreWidget::CreateWidget();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // http://wiki.tcl.tk/1878
 
@@ -112,9 +113,7 @@ void vtkKWTkcon::CreateWidget()
          << "tkcon::Init" << endl
          << endl;
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 
   // Now let's map some elements of this console to widgets
 

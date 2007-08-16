@@ -21,8 +21,10 @@
 #include "vtkKWMenu.h"
 #include "vtkKWInternationalization.h"
 
+#include <vtksys/ios/sstream>
+
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWScalarComponentSelectionWidget, "$Revision: 1.21 $");
+vtkCxxRevisionMacro(vtkKWScalarComponentSelectionWidget, "$Revision: 1.22 $");
 vtkStandardNewMacro(vtkKWScalarComponentSelectionWidget);
 
 //----------------------------------------------------------------------------
@@ -147,24 +149,20 @@ void vtkKWScalarComponentSelectionWidget::Update()
       menu->DeleteAllItems();
       for (i = 0; i < this->NumberOfComponents; ++i)
         {
-        ostrstream cmd_name, cmd_method;
-        
-        cmd_name << i + 1 << ends;
-        cmd_method << "SelectedComponentCallback " << i << ends;
+        vtksys_ios::ostringstream cmd_name, cmd_method;
 
-        menu->AddRadioButton(cmd_name.str(), this, cmd_method.str());
+        cmd_name << (i + 1);
+        cmd_method << "SelectedComponentCallback " << i;
 
-        cmd_name.rdbuf()->freeze(0);
-        cmd_method.rdbuf()->freeze(0);
+        menu->AddRadioButton(cmd_name.str().c_str(), this, cmd_method.str().c_str());
         }
       }
     
     if (menu->GetNumberOfItems() && this->IndependentComponents)
       {
-      ostrstream v;
-      v << this->SelectedComponent + 1 << ends;
-      menubutton->SetValue(v.str());
-      v.rdbuf()->freeze(0);
+      vtksys_ios::ostringstream v;
+      v << (this->SelectedComponent + 1);
+      menubutton->SetValue(v.str().c_str());
       }
     else
       {

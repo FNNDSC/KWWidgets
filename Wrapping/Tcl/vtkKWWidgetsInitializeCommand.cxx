@@ -15,21 +15,21 @@
 
 #include "vtkTclUtil.h"
 
+#include <vtksys/ios/sstream>
+
 extern "C" {int VTK_TK_EXPORT Vtkkwwidgetsinitializecommand_Init(Tcl_Interp *interp);}
 
 int VTK_TK_EXPORT Vtkkwwidgetsinitializecommand_Init(Tcl_Interp *interp)
 {
   if(Tcl_PkgPresent(interp, (char *)"Tcl", (char *)TCL_VERSION, 0))
     {
-    ostrstream err;
+    vtksys_ios::ostringstream err;
     Tcl_Interp *res = vtkKWApplication::InitializeTcl(interp, &err);
-    err << ends;
-    if (!res && *(err.str()))
+    if (!res && *(err.str().c_str()))
       {
-      vtkGenericWarningMacro(<< " Vtkkwwidgetsinitializecommand_Init: failed to InitializeTcl: " << err.str());
+      vtkGenericWarningMacro(<< " Vtkkwwidgetsinitializecommand_Init: failed to InitializeTcl: " << err.str().c_str());
       }
-    err.rdbuf()->freeze(0);
     }
-  
+
   return TCL_OK;
 }

@@ -20,9 +20,11 @@
 #include "vtkMath.h"
 #include "vtkCallbackCommand.h"
 
+#include <vtksys/ios/sstream>
+
 #include <ctype.h>
 
-vtkCxxRevisionMacro(vtkKWParameterValueHermiteFunctionEditor, "$Revision: 1.25 $");
+vtkCxxRevisionMacro(vtkKWParameterValueHermiteFunctionEditor, "$Revision: 1.26 $");
 
 const char *vtkKWParameterValueHermiteFunctionEditor::MidPointTag = "midpoint_tag";
 const char *vtkKWParameterValueHermiteFunctionEditor::MidPointGuidelineTag = "midpoint_guideline_tag";
@@ -269,10 +271,10 @@ void vtkKWParameterValueHermiteFunctionEditor::PackPointEntries()
 
   this->Superclass::PackPointEntries();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Midpoint entry
-  
+
   if (this->HasMidPointSelection() &&
       this->MidPointEntryVisibility && 
       this->PointEntriesVisibility &&
@@ -293,9 +295,7 @@ void vtkKWParameterValueHermiteFunctionEditor::PackPointEntries()
            << " -side left -padx 2 " << endl;
     }
   
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -891,7 +891,7 @@ void vtkKWParameterValueHermiteFunctionEditor::RedrawFunction()
 
 //----------------------------------------------------------------------------
 void vtkKWParameterValueHermiteFunctionEditor::RedrawLine(
-  int id1, int id2, ostrstream *tk_cmd)
+  int id1, int id2, vtksys_ios::ostream *tk_cmd)
 {
   // Redraw the line
 
@@ -910,7 +910,7 @@ void vtkKWParameterValueHermiteFunctionEditor::RedrawLine(
   int stream_was_created = 0;
   if (!tk_cmd)
     {
-    tk_cmd = new ostrstream;
+    tk_cmd = new vtksys_ios::ostringstream;
     stream_was_created = 1;
     }
 
@@ -1141,9 +1141,9 @@ void vtkKWParameterValueHermiteFunctionEditor::RedrawLine(
 
   if (stream_was_created)
     {
-    *tk_cmd << ends;
-    this->Script(tk_cmd->str());
-    tk_cmd->rdbuf()->freeze(0);
+    this->Script(
+      static_cast<vtksys_ios::ostringstream*>(tk_cmd)->str().c_str());
+
     delete tk_cmd;
     }
 }
@@ -1525,7 +1525,7 @@ void vtkKWParameterValueHermiteFunctionEditor::Bind()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Canvas
 
@@ -1549,9 +1549,7 @@ void vtkKWParameterValueHermiteFunctionEditor::Bind()
            << " EndMidPointInteractionCallback %%x %%y}" << endl;
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -1564,7 +1562,7 @@ void vtkKWParameterValueHermiteFunctionEditor::UnBind()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Canvas
 
@@ -1581,9 +1579,7 @@ void vtkKWParameterValueHermiteFunctionEditor::UnBind()
            << " <ButtonRelease-1> {}" << endl;
     }
   
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------

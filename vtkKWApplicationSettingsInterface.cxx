@@ -32,13 +32,15 @@
 #include "vtkKWWindow.h"
 #include "vtkObjectFactory.h"
 
+#include <vtksys/ios/sstream>
+
 //----------------------------------------------------------------------------
 
 #define VTK_KW_APPLICATION_SETTINGS_DPI_FORMAT "%.1lf"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWApplicationSettingsInterface);
-vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.59 $");
+vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.60 $");
 
 //----------------------------------------------------------------------------
 vtkKWApplicationSettingsInterface::vtkKWApplicationSettingsInterface()
@@ -192,7 +194,7 @@ void vtkKWApplicationSettingsInterface::Create()
 
   this->Superclass::Create();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
   vtkKWWidget *page;
   vtkKWFrame *frame;
   vtkKWMenu *menu;
@@ -481,9 +483,7 @@ void vtkKWApplicationSettingsInterface::Create()
   // --------------------------------------------------------------
   // Pack 
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 
   // Update
 

@@ -23,6 +23,7 @@
 #include <ctype.h>
 
 #include <vtksys/SystemTools.hxx>
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 #include <vtksys/stl/map>
 
@@ -32,7 +33,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.118 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.119 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMenuInternals
@@ -164,7 +165,7 @@ int vtkKWMenu::InsertGeneric(int index,
       }
     }
 
-  ostrstream str;
+  vtksys_ios::ostringstream str;
   str << this->GetWidgetName() << " insert " << index << " " << type;
 
   char *clean_label = NULL;
@@ -181,10 +182,7 @@ int vtkKWMenu::InsertGeneric(int index,
     str << " " << extra;
     }
 
-  str << ends;
-  
-  this->Script(str.str());
-  str.rdbuf()->freeze(0);
+  this->Script(str.str().c_str());
 
   if (label)
     {
@@ -890,7 +888,7 @@ void vtkKWMenu::SetItemCascade(int index, const char *menu_name)
   vtksys_stl::string menu_name_safe(menu_name);
   const char *wname = this->GetWidgetName();
 
-  ostrstream str;
+  vtksys_ios::ostringstream str;
   str << wname << " entryconfigure " << index;
 
   // The cascade menu has to be a child 
@@ -904,7 +902,7 @@ void vtkKWMenu::SetItemCascade(int index, const char *menu_name)
       strncmp(wname, menu_name_safe.c_str(), parent_length) ||
       menu_name_safe[parent_length] != '.')
     {
-    ostrstream clone_menu;
+    vtksys_ios::ostringstream clone_menu;
     clone_menu << wname << ".clone_";
     vtksys_stl::string res(
       this->Script("string trim [%s entrycget %d -label]",  wname, index));
@@ -916,20 +914,16 @@ void vtkKWMenu::SetItemCascade(int index, const char *menu_name)
       {
       clone_menu << index;
       }
-    clone_menu << ends;
     this->Script("catch { destroy %s } \n %s clone %s", 
-                 clone_menu.str(), menu_name_safe.c_str(), clone_menu.str());
-    str << " -menu {" << clone_menu.str() << "}" << ends;
-    clone_menu.rdbuf()->freeze(0); 
+                 clone_menu.str().c_str(), menu_name_safe.c_str(), clone_menu.str().c_str());
+    str << " -menu {" << clone_menu.str().c_str() << "}";
     }
   else
     {
-    str << " -menu {" << menu_name_safe.c_str() << "}" << ends;
+    str << " -menu {" << menu_name_safe.c_str() << "}";
     }
 
-
-  this->Script(str.str());
-  str.rdbuf()->freeze(0); 
+  this->Script(str.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -1135,7 +1129,7 @@ void vtkKWMenu::DeleteAllItems()
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
   const char *wname = this->GetWidgetName();
 
   for (int i = nb_of_items - 1; i >= 0; --i)
@@ -1145,9 +1139,7 @@ void vtkKWMenu::DeleteAllItems()
            << wname << " entrycget " << i << " -label])} {}" << endl;
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -1226,7 +1218,7 @@ void vtkKWMenu::SetState(int state)
     return;
     }
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
   const char *wname = this->GetWidgetName();
 
   const char *statestr = vtkKWOptions::GetStateAsTkOptionValue(state);
@@ -1237,9 +1229,7 @@ void vtkKWMenu::SetState(int state)
            << " -state " << statestr << "}" << endl;
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -1727,30 +1717,30 @@ void vtkKWMenu::SetRelief(int relief)
     "-relief", vtkKWOptions::GetReliefAsTkOptionValue(relief));
 }
 
-void vtkKWMenu::SetReliefToRaised()     
-{ 
-  this->SetRelief(vtkKWOptions::ReliefRaised); 
-};
+void vtkKWMenu::SetReliefToRaised()
+{
+  this->SetRelief(vtkKWOptions::ReliefRaised);
+}
 void vtkKWMenu::SetReliefToSunken() 
 { 
   this->SetRelief(vtkKWOptions::ReliefSunken); 
-};
+}
 void vtkKWMenu::SetReliefToFlat() 
 { 
   this->SetRelief(vtkKWOptions::ReliefFlat); 
-};
+}
 void vtkKWMenu::SetReliefToRidge() 
 { 
   this->SetRelief(vtkKWOptions::ReliefRidge); 
-};
+}
 void vtkKWMenu::SetReliefToSolid() 
 { 
   this->SetRelief(vtkKWOptions::ReliefSolid); 
-};
-void vtkKWMenu::SetReliefToGroove() 
+}
+void vtkKWMenu::SetReliefToGroove()
 { 
   this->SetRelief(vtkKWOptions::ReliefGroove); 
-};
+}
 
 //----------------------------------------------------------------------------
 int vtkKWMenu::GetRelief()
@@ -1813,4 +1803,3 @@ void vtkKWMenu::PrintSelf(ostream& os, vtkIndent indent)
   this->Superclass::PrintSelf(os,indent);
   os << indent << "TearOff: " << this->GetTearOff() << endl;
 }
-

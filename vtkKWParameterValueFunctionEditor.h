@@ -31,6 +31,7 @@
 
 //BTX
 #include "vtkKWHistogram.h" // I need this one
+#include <vtksys/ios/iosfwd> // forward declare vtksys_ios::ostream
 //ETX
 
 class vtkCallbackCommand;
@@ -41,10 +42,6 @@ class vtkKWLabel;
 class vtkKWEntryWithLabel;
 class vtkKWRange;
 class vtkKWMenuButton;
-
-//BTX
-class ostrstream;
-//ETX
 
 class KWWidgets_EXPORT vtkKWParameterValueFunctionEditor : public vtkKWParameterValueFunctionInterface
 {
@@ -1389,9 +1386,9 @@ protected:
   // the line between two points
   //BTX
   virtual void RedrawFunction();
-  virtual void RedrawPoint(int id, ostrstream *tk_cmd = 0);
-  virtual void RedrawLine(int id1, int id2, ostrstream *tk_cmd = 0);
-  virtual void GetLineCoordinates(int id1, int id2, ostrstream *tk_cmd);
+  virtual void RedrawPoint(int id, vtksys_ios::ostream *tk_cmd = 0);
+  virtual void RedrawLine(int id1, int id2, vtksys_ios::ostream *tk_cmd = 0);
+  virtual void GetLineCoordinates(int id1, int id2, vtksys_ios::ostream *tk_cmd);
   //ETX
 
   // Description:

@@ -25,6 +25,7 @@
 #include "vtkObjectFactory.h"
 #include "vtkKWFrameWithScrollbar.h"
 
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/list>
 #include <vtksys/stl/algorithm>
 
@@ -49,7 +50,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.106 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.107 $");
 
 //----------------------------------------------------------------------------
 class vtkKWNotebookInternals
@@ -308,7 +309,7 @@ void vtkKWNotebook::CreateWidget()
 
   this->Superclass::CreateWidget();
 
-  ostrstream cmd;
+  vtksys_ios::ostringstream cmd;
 
   this->SetWidth(this->MinimumWidth);
   this->SetHeight(this->MinimumHeight);
@@ -339,9 +340,7 @@ void vtkKWNotebook::CreateWidget()
 
   this->Bind();
 
-  cmd << ends;
-  this->Script(cmd.str());
-  cmd.rdbuf()->freeze(0);
+  this->Script(cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -792,7 +791,7 @@ int vtkKWNotebook::AddPage(const char *title,
     return -1;
     }
 
-  ostrstream cmd;
+  vtksys_ios::ostringstream cmd;
 
   // Create a new page, insert it in the container
   
@@ -884,9 +883,7 @@ int vtkKWNotebook::AddPage(const char *title,
       }
     }
 
-  cmd << ends;
-  this->Script(cmd.str());
-  cmd.rdbuf()->freeze(0);
+  this->Script(cmd.str().c_str());
 
   page->Enabled = 1;
   page->UpdateEnableState();
@@ -1076,7 +1073,7 @@ void vtkKWNotebook::RaisePage(vtkKWNotebook::Page *page)
 
   // Show the tab body
 
-  ostrstream cmd;
+  vtksys_ios::ostringstream cmd;
   cmd << "pack " << page->Frame->GetWidgetName() 
       << " -fill both -anchor n -expand 1" 
       << endl;
@@ -1094,14 +1091,12 @@ void vtkKWNotebook::RaisePage(vtkKWNotebook::Page *page)
   // => Let's NOT use it :) Focus is evil.
   // cmd << "focus " << page->Frame->GetWidgetName() << endl;
 
-  cmd << ends;
-  this->Script(cmd.str());
-  cmd.rdbuf()->freeze(0);
-  
+  this->Script(cmd.str().c_str());
+
   // Update the page aspect
 
   this->UpdatePageTabAspect(page);
- 
+
   // Bring or remove more pages depending on options
   
   this->ConstrainVisiblePages();
@@ -1137,8 +1132,8 @@ void vtkKWNotebook::ShowPageTab(vtkKWNotebook::Page *page)
     {
     return;
     }
-  
-  ostrstream cmd;
+
+  vtksys_ios::ostringstream cmd;
   cmd << "pack " << page->TabFrame->GetWidgetName() << " -side left -anchor s";
 
   // If the tab was not packed, we are about to bring up a new page tab
@@ -1182,9 +1177,7 @@ void vtkKWNotebook::ShowPageTab(vtkKWNotebook::Page *page)
       }
     }
 
-  cmd << ends;
-  this->Script(cmd.str());
-  cmd.rdbuf()->freeze(0);
+  this->Script(cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -1216,15 +1209,13 @@ void vtkKWNotebook::LowerPage(vtkKWNotebook::Page *page)
     return;
     }
   
-  ostrstream cmd;
+  vtksys_ios::ostringstream cmd;
 
   // Unpack the page
 
   cmd << "pack forget " << page->Frame->GetWidgetName() << endl;
 
-  cmd << ends;
-  this->Script(cmd.str());
-  cmd.rdbuf()->freeze(0);
+  this->Script(cmd.str().c_str());
 
   this->CurrentId = -1;
 
@@ -2055,14 +2046,13 @@ void vtkKWNotebook::PageTabContextMenuCallback(int id, int x, int y)
   
   // Visibility
 
-  ostrstream visibility;
-  visibility << "TogglePageVisibilityCallback " << id << ends;
+  vtksys_ios::ostringstream visibility;
+  visibility << "TogglePageVisibilityCallback " << id;
 
   int index;
 
   index = this->TabPopupMenu->AddCheckButton(
-    ks_("Notebook|Page|Show"), this, visibility.str());
-  visibility.rdbuf()->freeze(0);
+    ks_("Notebook|Page|Show"), this, visibility.str().c_str());
   this->TabPopupMenu->SetItemHelpString(
     index, k_("Show/Hide this notebook page"));
   this->TabPopupMenu->SetItemSelectedState(
@@ -2072,12 +2062,11 @@ void vtkKWNotebook::PageTabContextMenuCallback(int id, int x, int y)
 
   if (this->PagesCanBePinned)
     {
-    ostrstream pin;
-    pin << "TogglePagePinnedCallback " << id << ends;
+    vtksys_ios::ostringstream pin;
+    pin << "TogglePagePinnedCallback " << id;
 
     index = this->TabPopupMenu->InsertCheckButton(
-      0, ks_("Notebook|Page|Pin"), this, pin.str());
-    pin.rdbuf()->freeze(0);
+      0, ks_("Notebook|Page|Pin"), this, pin.str().c_str());
     this->TabPopupMenu->SetItemHelpString(
       index, k_("Pin/Unpin this notebook page"));
 
@@ -2437,7 +2426,7 @@ void vtkKWNotebook::SetShowIcons(int arg)
 
   // Pack or unpack the icons if needed
 
-  ostrstream cmd;
+  vtksys_ios::ostringstream cmd;
 
   if (this->Internals)
     {
@@ -2463,9 +2452,7 @@ void vtkKWNotebook::SetShowIcons(int arg)
       }
     }
 
-  cmd << ends;
-  this->Script(cmd.str());
-  cmd.rdbuf()->freeze(0);
+  this->Script(cmd.str().c_str());
 
   this->ScheduleResize();
 }

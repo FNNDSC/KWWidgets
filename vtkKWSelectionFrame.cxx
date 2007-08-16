@@ -24,11 +24,12 @@
 #include "vtkKWToolbarSet.h"
 #include "vtkStringArray.h"
 
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/list>
 #include <vtksys/stl/string>
 
 vtkStandardNewMacro(vtkKWSelectionFrame);
-vtkCxxRevisionMacro(vtkKWSelectionFrame, "$Revision: 1.60 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrame, "$Revision: 1.61 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameInternals
@@ -362,7 +363,7 @@ void vtkKWSelectionFrame::Pack()
 
   this->UnpackChildren();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   int has_list     = this->SelectionListVisibility;
   int has_close    = this->AllowClose;
@@ -492,9 +493,7 @@ void vtkKWSelectionFrame::Pack()
            << " -rowspan 3 -sticky news -padx 0 -pady 0" << endl;
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------

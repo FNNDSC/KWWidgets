@@ -21,11 +21,12 @@
 #include "vtkKWTopLevel.h"
 #include "vtkKWTkUtilities.h"
 
+#include <vtksys/ios/sstream>
 #include <vtksys/SystemTools.hxx>
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPopupButton);
-vtkCxxRevisionMacro(vtkKWPopupButton, "$Revision: 1.30 $");
+vtkCxxRevisionMacro(vtkKWPopupButton, "$Revision: 1.31 $");
 
 //----------------------------------------------------------------------------
 vtkKWPopupButton::vtkKWPopupButton()
@@ -83,7 +84,7 @@ void vtkKWPopupButton::CreateWidget()
 
   this->Superclass::CreateWidget();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Create  top level window
 
@@ -122,10 +123,8 @@ void vtkKWPopupButton::CreateWidget()
 
   // Pack, bind
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
-  
+  this->Script(tk_cmd.str().c_str());
+
   this->Bind();
 }
 
