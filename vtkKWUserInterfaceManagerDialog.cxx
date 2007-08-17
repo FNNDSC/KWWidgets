@@ -37,7 +37,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceManagerDialog);
-vtkCxxRevisionMacro(vtkKWUserInterfaceManagerDialog, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManagerDialog, "$Revision: 1.18 $");
 
 //----------------------------------------------------------------------------
 class vtkKWUserInterfaceManagerDialogInternals
@@ -510,7 +510,7 @@ int vtkKWUserInterfaceManagerDialog::GetWidgetLocation(
     }
   else
     {
-    vtksys_ios::stringstream in_str;
+    vtksys_ios::ostringstream in_str;
     if (!vtkKWTkUtilities::GetMasterInPack(
           this->GetApplication()->GetMainInterp(), widget, in_str))
       {
@@ -865,7 +865,7 @@ int vtkKWUserInterfaceManagerDialog::ShowSelectedNodeSection()
     selected_section = tree->GetNodeUserData(selected_node.c_str());
     if (selected_section.size())
       {
-      vtksys_ios::stringstream in_str;
+      vtksys_ios::ostringstream in_str;
       if (vtkKWTkUtilities::GetMasterInPack(
             this->GetApplication()->GetMainInterp(), 
             selected_section.c_str(), 

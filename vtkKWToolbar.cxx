@@ -39,7 +39,7 @@ const char *vtkKWToolbar::WidgetsAspectRegKey = "ToolbarFlatButtons";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
-vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.70 $");
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.71 $");
 
 //----------------------------------------------------------------------------
 class vtkKWToolbarInternals
@@ -608,7 +608,7 @@ void vtkKWToolbar::ConstrainWidgetsLayout()
   if ( numPerRow > 0 )
     {
     int row = 0, num = 0;
-    vtksys_ios::stringstream s;
+    vtksys_ios::ostringstream s;
 
     it = this->Internals->Widgets.begin();
     for (; it != end; ++it)
@@ -666,7 +666,7 @@ void vtkKWToolbar::UpdateWidgetsLayout()
     return;
     }
 
-  vtksys_ios::stringstream s;
+  vtksys_ios::ostringstream s;
   s << "grid "; 
 
   vtkKWToolbarInternals::WidgetsContainerIterator it = 

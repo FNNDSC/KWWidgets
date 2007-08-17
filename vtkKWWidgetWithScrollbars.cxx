@@ -20,7 +20,7 @@
 #include <vtksys/ios/sstream> 
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWWidgetWithScrollbars, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWWidgetWithScrollbars, "$Revision: 1.10 $");
 
 //----------------------------------------------------------------------------
 vtkKWWidgetWithScrollbars::vtkKWWidgetWithScrollbars()
@@ -162,7 +162,7 @@ void vtkKWWidgetWithScrollbars::PackScrollbarsWithWidget(vtkKWWidget *widget)
 
   this->UnpackChildren();
 
-  vtksys_ios::stringstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   if (widget && widget->IsCreated())
     {

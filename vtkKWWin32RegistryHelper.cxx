@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <vtksys/ios/sstream> 
 
-vtkCxxRevisionMacro(vtkKWWin32RegistryHelper, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWWin32RegistryHelper, "$Revision: 1.7 $");
 vtkStandardNewMacro( vtkKWWin32RegistryHelper );
 
 #define BUFFER_SIZE 8192
@@ -43,7 +43,7 @@ int vtkKWWin32RegistryHelper::OpenInternal(const char *toplevel,
                                            int readonly)
 {
   int res = 0;
-  vtksys_ios::stringstream str;
+  vtksys_ios::ostringstream str;
   if ( this->GetGlobalScope() )
     {
     str << "HKEY_LOCAL_MACHINE\\";

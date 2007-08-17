@@ -35,7 +35,7 @@
 #include <vtksys/SystemTools.hxx>
 #include <vtksys/ios/sstream> 
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.286 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.287 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindow );
@@ -662,7 +662,7 @@ void vtkKWWindow::ShowMainUserInterface(vtkKWUserInterfacePanel *panel)
 
   if (!panel->Raise())
     {
-    vtksys_ios::stringstream msg;
+    vtksys_ios::ostringstream msg;
     msg << "The panel you are trying to access could not be displayed "
         << "properly. Please make sure there is enough room in the notebook "
         << "to bring up this part of the interface.";

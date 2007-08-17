@@ -31,7 +31,7 @@
 //----------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWToolbarSet);
-vtkCxxRevisionMacro(vtkKWToolbarSet, "$Revision: 1.43 $");
+vtkCxxRevisionMacro(vtkKWToolbarSet, "$Revision: 1.44 $");
 
 //----------------------------------------------------------------------------
 class vtkKWToolbarSetInternals
@@ -231,7 +231,7 @@ void vtkKWToolbarSet::Pack()
 
         if (!this->Internals->PreviousPackInfo.empty())
           {
-          vtksys_ios::stringstream master, previous_slave, next_slave;
+          vtksys_ios::ostringstream master, previous_slave, next_slave;
           
           vtkKWTkUtilities::GetMasterInPack(this, master);
 
@@ -356,7 +356,7 @@ void vtkKWToolbarSet::PackToolbars()
     return;
     }
 
-  vtksys_ios::stringstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   tk_cmd << "pack " << this->ToolbarsFrame->GetWidgetName() 
          << " -side top -fill both -expand y -padx 0 -pady 0" << endl;

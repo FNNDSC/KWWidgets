@@ -23,7 +23,7 @@
 #include <vtksys/ios/sstream> 
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWWidgetSet, "$Revision: 1.22 $");
+vtkCxxRevisionMacro(vtkKWWidgetSet, "$Revision: 1.23 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetSetInternals
@@ -247,7 +247,7 @@ void vtkKWWidgetSet::Pack()
     return;
     }
 
-  vtksys_ios::stringstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   tk_cmd << "catch {eval grid forget [grid slaves " << this->GetWidgetName() 
          << "]}" << endl;

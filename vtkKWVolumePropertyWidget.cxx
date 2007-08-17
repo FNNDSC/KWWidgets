@@ -54,7 +54,7 @@
 #define VTK_KW_VPW_TESTING 0
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.44 $");
+vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.45 $");
 vtkStandardNewMacro(vtkKWVolumePropertyWidget);
 
 //----------------------------------------------------------------------------
@@ -270,7 +270,7 @@ void vtkKWVolumePropertyWidget::CreateWidget()
 
   this->Superclass::CreateWidget();
 
-  vtksys_ios::stringstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
   int label_width = 12;
   int menu_width = 6;
   char command[256];
@@ -643,7 +643,7 @@ void vtkKWVolumePropertyWidget::Pack()
     }
 
 
-  vtksys_ios::stringstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // Pack the frame
 
@@ -864,7 +864,7 @@ void vtkKWVolumePropertyWidget::Update()
 
   char hist_name[1024];
       
-  vtksys_ios::stringstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   // In the dependent case, everything is in the component 0
 

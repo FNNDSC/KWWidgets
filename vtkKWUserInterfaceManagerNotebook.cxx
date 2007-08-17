@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceManagerNotebook);
-vtkCxxRevisionMacro(vtkKWUserInterfaceManagerNotebook, "$Revision: 1.7 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManagerNotebook, "$Revision: 1.8 $");
 
 //----------------------------------------------------------------------------
 class vtkKWUserInterfaceManagerNotebookInternals
@@ -804,7 +804,7 @@ int vtkKWUserInterfaceManagerNotebook::GetDragAndDropWidgetLocation(
   // is the page ID (and which tag is the panel ID by the way)
   // Extract the -in parameter from the pack info
 
-  vtksys_ios::stringstream in_str;
+  vtksys_ios::ostringstream in_str;
   if (!vtkKWTkUtilities::GetMasterInPack(widget, in_str))
     {
     return 0;
@@ -824,8 +824,8 @@ int vtkKWUserInterfaceManagerNotebook::GetDragAndDropWidgetLocation(
   // our widget (if any) so that we can locate the widget among
   // its sibblings.
 
-  vtksys_ios::stringstream prev_slave_str;
-  vtksys_ios::stringstream next_slave_str;
+  vtksys_ios::ostringstream prev_slave_str;
+  vtksys_ios::ostringstream next_slave_str;
 
   if (vtkKWTkUtilities::GetPreviousAndNextSlaveInPack(
         this->Notebook->GetFrame(page_id),
@@ -888,7 +888,7 @@ vtkKWUserInterfaceManagerNotebook::GetDragAndDropWidgetFromLabelAndLocation(
       const char *label = this->GetDragAndDropWidgetLabel(child);
       if (label && !strcmp(label, widget_label))
         {
-        vtksys_ios::stringstream in_str;
+        vtksys_ios::ostringstream in_str;
         if (vtkKWTkUtilities::GetMasterInPack(child, in_str))
           {
           int cmp = strcmp(in_str.str().c_str(), page->GetWidgetName());
@@ -1176,7 +1176,7 @@ int vtkKWUserInterfaceManagerNotebook::DragAndDropWidget(
 
   // If a page id was specified, then pack in that specific page
 
-  vtksys_ios::stringstream in;
+  vtksys_ios::ostringstream in;
   vtkKWWidget *page = this->Notebook->GetFrame(to_loc->PageId);
   if (page)
     {
@@ -1185,7 +1185,7 @@ int vtkKWUserInterfaceManagerNotebook::DragAndDropWidget(
 
   // If an "after widget" was specified, then pack after that widget
 
-  vtksys_ios::stringstream after;
+  vtksys_ios::ostringstream after;
   if (to_loc->AfterWidget && to_loc->AfterWidget->IsCreated())
     {
     after << " -after " << to_loc->AfterWidget->GetWidgetName();

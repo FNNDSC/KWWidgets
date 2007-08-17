@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWizardStep);
-vtkCxxRevisionMacro(vtkKWWizardStep, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWWizardStep, "$Revision: 1.4 $");
 
 vtkIdType vtkKWWizardStep::IdCounter = 1;
 vtkKWWizardStepCleanup vtkKWWizardStep::Cleanup;
@@ -128,7 +128,7 @@ vtkKWStateMachineState* vtkKWWizardStep::GetInteractionState()
   if (!this->InteractionState)
     {
     this->InteractionState = vtkKWStateMachineState::New();
-    vtksys_ios::stringstream name;
+    vtksys_ios::ostringstream name;
     if (this->Name)
       {
       name << this->Name;
@@ -151,7 +151,7 @@ vtkKWStateMachineState* vtkKWWizardStep::GetValidationState()
   if (!this->ValidationState)
     {
     this->ValidationState = vtkKWStateMachineState::New();
-    vtksys_ios::stringstream name;
+    vtksys_ios::ostringstream name;
     if (this->Name)
       {
       name << this->Name;
@@ -206,7 +206,7 @@ vtkKWStateMachineInput* vtkKWWizardStep::GetGoToSelfInput()
   if (!this->GoToSelfInput)
     {
     this->GoToSelfInput = vtkKWStateMachineInput::New();
-    vtksys_ios::stringstream name;
+    vtksys_ios::ostringstream name;
     name << "go to: ";
     if (this->Name)
       {
@@ -227,7 +227,7 @@ vtkKWStateMachineInput* vtkKWWizardStep::GetGoBackToSelfInput()
   if (!this->GoBackToSelfInput)
     {
     this->GoBackToSelfInput = vtkKWStateMachineInput::New();
-    vtksys_ios::stringstream name;
+    vtksys_ios::ostringstream name;
     name << "back to: ";
     if (this->Name)
       {

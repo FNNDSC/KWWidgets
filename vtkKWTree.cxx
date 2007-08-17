@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTree );
-vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.37 $");
+vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.38 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTreeInternals
@@ -303,7 +303,7 @@ void vtkKWTree::KeyNavigationCallback(const char* key)
 {
   if (this->IsCreated() && this->HasSelection() && key && *key)
     {
-    vtksys_ios::stringstream tk_cmd;
+    vtksys_ios::ostringstream tk_cmd;
     //Get all visible and seletable nodes
     tk_cmd << "set nodes {}" << endl;
     tk_cmd << "foreach nodeItem [" 
