@@ -35,7 +35,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.28 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.29 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -512,7 +512,6 @@ void vtkKWFileBrowserDialog::PopulateFileTypes()
   vtksys_stl::vector<vtksys_stl::string> filetypes;
   vtksys_stl::string filetypetext;
   vtksys_stl::string filetypeext;
-  vtksys_stl::string firstValue = "";
 
   vtksys_stl::string strfiletypes = this->GetFileTypes();
 
@@ -526,10 +525,6 @@ void vtkKWFileBrowserDialog::PopulateFileTypes()
     if (!this->FileTypesBox->HasValue(filetypetext.c_str()))
       {
       this->FileTypesBox->AddValue(filetypetext.c_str());
-      if (!firstValue.size())
-        {
-        firstValue = filetypetext;
-        }
       }
 
     strfiletypes = 
