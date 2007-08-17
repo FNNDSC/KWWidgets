@@ -60,6 +60,20 @@ public:
   vtkGetObjectMacro(FileNames, vtkStringArray);  
 
   // Description:
+  // This function will take an array of file names (full names with path),
+  // and has to be called before calling Invoke(). Also, MultipleSelection 
+  // has to be set to ON to select multiples before calling this function.
+  // In case of file browser, open the directory of the first file, then
+  // if the SelectionMode is MultipleSelection, select the files
+  // in the array if they are in the opened directory, otherwise ignored;
+  // if it is in the SingleSelectionMode, only the first file will be selected.
+  // In case of ChooseDirectoryOn, select all directories in the array for 
+  // Multiple selection mode; select the first in Single selection mode.
+  // Note: in file browser case, this function will ignore 
+  // FileTypes and LastPath.
+  void SetInitialSelectedFileNames(vtkStringArray* filenames);
+
+  // Description:
   // Set/Get a filename to be displayed in the dialog when it pops up.
   vtkSetStringMacro(InitialFileName);
   vtkGetStringMacro(InitialFileName);
@@ -240,13 +254,19 @@ protected:
   int  SaveDialog;
   int  ChooseDirectory;
   vtkStringArray *FileNames;
+  vtkStringArray *InitialSelecttedFileNames;
 
   char *FileNameChangedCommand;
   virtual void InvokeFileNameChangedCommand(const char*);
+  
+  // Description:
+  // Set up initial selected files if they are set.
+  // Return 1 on success, 0 on failure.
+  virtual int SetupInitialSelectedFiles();
 
   // Description:
   // Processes the events that are passed through CallbackCommand (or others).
-  // Subclasses can oberride this method to process their own events, but
+  // Subclasses can override this method to process their own events, but
   // should call the superclass too.
   virtual void ProcessCallbackCommandEvents(
     vtkObject *caller, unsigned long event, void *calldata);

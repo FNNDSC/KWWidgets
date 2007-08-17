@@ -35,7 +35,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.27 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.28 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -61,7 +61,7 @@ vtkKWFileBrowserDialog::vtkKWFileBrowserDialog()
   this->SaveDialog       = 0;
   this->ChooseDirectory  = 0;
   this->FileNames        = vtkStringArray::New();
-
+  this->InitialSelecttedFileNames   = vtkStringArray::New();
   this->FileNameChangedCommand      = NULL;
 
   this->Internals          = new vtkKWFileBrowserDialogInternals;
@@ -111,6 +111,12 @@ vtkKWFileBrowserDialog::~vtkKWFileBrowserDialog()
     this->FileNames->Delete();
     this->FileNames = NULL;
     }
+
+  if (this->InitialSelecttedFileNames)
+  {
+    this->InitialSelecttedFileNames->Delete();
+    this->InitialSelecttedFileNames = NULL;
+  }
 
   if (this->FileNameChangedCommand)
     {
@@ -235,7 +241,7 @@ void vtkKWFileBrowserDialog::Update()
       {
       this->SetTitle("Select File");
       }
-   }
+    }
 
   // OK Button
 
@@ -323,29 +329,92 @@ void vtkKWFileBrowserDialog::Display()
 {
   this->Superclass::Display();
   
-  // Load the last path
-
-  if (this->LastPath && *(this->LastPath) &&
-      vtksys::SystemTools::FileIsDirectory(this->LastPath))
-    {
-    this->FileBrowserWidget->OpenDirectory(this->LastPath);
-    }
-  else
-    {
-    this->FileBrowserWidget->OpenDirectory(
-      vtksys::SystemTools::GetCurrentWorkingDirectory().c_str());
-    }
-  
   this->PopulateFileTypes(); 
 
-  if (this->InitialFileName && *this->InitialFileName)
+  // If we can not set up initial selected files, go as usual
+  if(!this->SetupInitialSelectedFiles())
     {
-    this->FileNameText->SetValue(this->InitialFileName);
-    }
+    // Load the last path
+
+    if (this->LastPath && *(this->LastPath) &&
+        vtksys::SystemTools::FileIsDirectory(this->LastPath))
+      {
+      this->FileBrowserWidget->OpenDirectory(this->LastPath);
+      }
+    else
+      {
+      this->FileBrowserWidget->OpenDirectory(
+        vtksys::SystemTools::GetCurrentWorkingDirectory().c_str());
+      }
+
+    if (this->FileTypesBox->GetNumberOfValues() > 0)
+      {
+      this->FileTypesBox->SetValue(
+        this->FileTypesBox->GetValueFromIndex(0));
+      this->FileTypeChangedCallback(
+        this->FileTypesBox->GetValueFromIndex(0));
+      }
+
+    if (this->InitialFileName && *this->InitialFileName)
+      {
+      this->FileNameText->SetValue(this->InitialFileName);
+      }
+  }
 
   this->FileBrowserWidget->GetFavoriteDirectoriesFrame()->RestoreFavoriteDirectoriesFromRegistry();
 
   this->FileBrowserWidget->SetFocusToDirectoryExplorer();
+}
+
+//----------------------------------------------------------------------------
+int vtkKWFileBrowserDialog::SetupInitialSelectedFiles()
+{
+  if (!this->InitialSelecttedFileNames || 
+    !this->InitialSelecttedFileNames->GetNumberOfValues())
+    {
+    return 0;
+    }
+
+  if (this->ChooseDirectory)
+    {
+    if(this->GetMultipleSelection())
+      {
+      for(int i=0; i<this->InitialSelecttedFileNames->GetNumberOfValues(); i++)
+        {
+        this->FileBrowserWidget->GetDirectoryExplorer()->SelectDirectory(
+          this->InitialSelecttedFileNames->GetValue(i));
+        }
+      }
+    else
+      {
+      this->FileBrowserWidget->GetDirectoryExplorer()->SelectDirectory(
+      this->InitialSelecttedFileNames->GetValue(0));
+      }
+    }
+  else
+    {
+    vtksys_stl::string selDir = vtksys::SystemTools::GetFilenamePath(
+      this->InitialSelecttedFileNames->GetValue(0));
+    if(!this->FileBrowserWidget->OpenDirectory(selDir.c_str()))
+      {
+      return 0;
+      }
+
+    if(this->GetMultipleSelection())
+      {
+      for(int i=0; i<this->InitialSelecttedFileNames->GetNumberOfValues(); i++)
+        {
+        this->FileBrowserWidget->GetFileListTable()->SelectFileName(
+          this->InitialSelecttedFileNames->GetValue(i));
+        }
+      }
+    else
+      {
+      this->FileBrowserWidget->GetFileListTable()->SelectFileName(
+        this->InitialSelecttedFileNames->GetValue(0));
+      }
+    } 
+  return 1;
 }
 
 //----------------------------------------------------------------------------
@@ -378,7 +447,17 @@ void vtkKWFileBrowserDialog::SetFileTypes(const char* _arg)
 
   this->Modified();
 
-  this->PopulateFileTypes();
+  if(this->IsCreated())
+    {
+    this->PopulateFileTypes();
+    if (this->FileTypesBox->GetNumberOfValues() > 0)
+      {
+      this->FileTypesBox->SetValue(
+        this->FileTypesBox->GetValueFromIndex(0));
+      this->FileTypeChangedCallback(
+        this->FileTypesBox->GetValueFromIndex(0));
+      }
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -456,12 +535,6 @@ void vtkKWFileBrowserDialog::PopulateFileTypes()
     strfiletypes = 
       strfiletypes.substr(filetyperegexp.end(), strfiletypes.length());
     }
-
-  if (this->FileTypesBox->GetNumberOfValues() > 0)
-    {
-    this->FileTypesBox->SetValue(firstValue.c_str());
-    this->FileTypeChangedCallback(firstValue.c_str());
-    }
 }
 
 //----------------------------------------------------------------------------
@@ -518,6 +591,19 @@ int vtkKWFileBrowserDialog::GetMultipleSelection()
 void vtkKWFileBrowserDialog::SetMultipleSelection(int arg)
 {
   this->FileBrowserWidget->SetMultipleSelection(arg);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFileBrowserDialog::SetInitialSelectedFileNames(
+  vtkStringArray* filenames)
+{
+  if (!filenames || !filenames->GetNumberOfValues())
+    {
+    return;
+    }
+
+  this->InitialSelecttedFileNames->Reset();
+  this->InitialSelecttedFileNames->DeepCopy(filenames);
 }
 
 //----------------------------------------------------------------------------
@@ -1003,4 +1089,11 @@ void vtkKWFileBrowserDialog::PrintSelf(ostream& os, vtkIndent indent)
     {
     os << indent << this->FileNames->GetValue(i) << "\n";
     }
+  os << indent << "InitialSelecttedFileNames:  (" 
+    << this->InitialSelecttedFileNames << ")\n";
+  indent = indent.GetNextIndent();
+  for(int i = 0; i < this->InitialSelecttedFileNames->GetNumberOfValues(); i++)
+  {
+    os << indent << this->InitialSelecttedFileNames->GetValue(i) << "\n";
+  }
 }
