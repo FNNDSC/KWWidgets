@@ -31,7 +31,7 @@
 //----------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWToolbarSet);
-vtkCxxRevisionMacro(vtkKWToolbarSet, "$Revision: 1.42 $");
+vtkCxxRevisionMacro(vtkKWToolbarSet, "$Revision: 1.43 $");
 
 //----------------------------------------------------------------------------
 class vtkKWToolbarSetInternals
@@ -238,12 +238,14 @@ void vtkKWToolbarSet::Pack()
           vtkKWTkUtilities::GetPreviousAndNextSlaveInPack(
             this->GetApplication()->GetMainInterp(),
             master.str().c_str(), this->GetWidgetName(), previous_slave, next_slave);
-          if (*previous_slave.str().c_str())
+          const char* tmp_prev = previous_slave.str().c_str();
+          const char* tmp_next = next_slave.str().c_str();
+          if (*tmp_prev)
             {
             this->Internals->PreviousPackInfo += " -after ";
             this->Internals->PreviousPackInfo += previous_slave.str();
             }
-          else if (*next_slave.str().c_str())
+          else if (*tmp_next)
             {
             this->Internals->PreviousPackInfo += " -before ";
             this->Internals->PreviousPackInfo += next_slave.str().c_str();

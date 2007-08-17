@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceManagerNotebook);
-vtkCxxRevisionMacro(vtkKWUserInterfaceManagerNotebook, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManagerNotebook, "$Revision: 1.7 $");
 
 //----------------------------------------------------------------------------
 class vtkKWUserInterfaceManagerNotebookInternals
@@ -840,7 +840,8 @@ int vtkKWUserInterfaceManagerNotebook::GetDragAndDropWidgetLocation(
     vtkKWWidget *parent = this->GetPagesParentWidget(panel);
     if (parent)
       {
-      if (*prev_slave_str.str().c_str())
+      const char* tmp = prev_slave_str.str().c_str();
+      if (*tmp)
         {
         loc->AfterWidget = 
           parent->GetChildWidgetWithName(prev_slave_str.str().c_str());
