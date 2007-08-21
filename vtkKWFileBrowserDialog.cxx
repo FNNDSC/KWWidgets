@@ -35,7 +35,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.29 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.30 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -1087,8 +1087,8 @@ void vtkKWFileBrowserDialog::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "InitialSelecttedFileNames:  (" 
     << this->InitialSelecttedFileNames << ")\n";
   indent = indent.GetNextIndent();
-  for(int i = 0; i < this->InitialSelecttedFileNames->GetNumberOfValues(); i++)
+  for(int j = 0; j < this->InitialSelecttedFileNames->GetNumberOfValues(); j++)
   {
-    os << indent << this->InitialSelecttedFileNames->GetValue(i) << "\n";
+    os << indent << this->InitialSelecttedFileNames->GetValue(j) << "\n";
   }
 }
