@@ -26,6 +26,8 @@ void vtkKWMatrixWidgetItem::Create(vtkKWWidget *parent, vtkKWWindow *)
   matrix_widget1->SetReliefToGroove();
   matrix_widget1->SetPadX(2);
   matrix_widget1->SetPadY(2);
+  matrix_widget1->SetNumberOfColumns(4);
+  matrix_widget1->SetNumberOfRows(3);
 
   app->Script(
     "pack %s -side top -anchor nw -expand n -padx 2 -pady 2", 
