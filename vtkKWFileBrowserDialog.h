@@ -177,6 +177,10 @@ public:
   virtual void FileTypeChangedCallback(const char* filetype);
 
   // Description:
+  // Callback when user starts editing this entry box.
+  virtual void FileNameEditingCallback(const char* filename);
+
+  // Description:
   // Add all the default observers needed by that object, or remove
   // all the observers that were added through AddCallbackCommandObserver.
   // Subclasses can override these methods to add/remove their own default
@@ -273,6 +277,11 @@ protected:
   virtual void ProcessDirectorySelectedEvent(const char* fullname);
   virtual void ProcessFileSelectionChangedEvent(const char* fullname);
   virtual void ProcessFileDoubleClickedEvent(const char* fullname);
+
+  // Description:
+  // Check to see if the filename box input has multiple filenames.
+  // Return 1 on success, 0 on failure.
+  virtual int OpenMultipleFileNames(const char* inputnames);
 
 private:
   vtkKWFileBrowserDialog(const vtkKWFileBrowserDialog&); // Not implemented
