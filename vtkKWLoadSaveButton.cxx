@@ -21,7 +21,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWLoadSaveButton);
-vtkCxxRevisionMacro(vtkKWLoadSaveButton, "$Revision: 1.30 $");
+vtkCxxRevisionMacro(vtkKWLoadSaveButton, "$Revision: 1.31 $");
 
 //----------------------------------------------------------------------------
 vtkKWLoadSaveButton::vtkKWLoadSaveButton()
@@ -162,13 +162,25 @@ void vtkKWLoadSaveButton::UpdateTextFromFileName()
     return;
     }
 
+  int numFiles = 1;
+
+  // If multiple files are selected, we show the first file name
+  // followed with "(1/<num of selected>)"
+
+  if(this->LoadSaveDialog && 
+    this->LoadSaveDialog->GetMultipleSelection() &&
+    this->LoadSaveDialog->GetNumberOfFileNames()>1)
+    {
+    numFiles = this->LoadSaveDialog->GetNumberOfFileNames();
+    }
+
+  vtksys_stl::string new_fname; 
   if (this->MaximumFileNameLength <= 0 && !this->TrimPathFromFileName)
     {
-    this->SetText(fname);
+    new_fname = fname; 
     }
   else
     {
-    vtksys_stl::string new_fname; 
     if (this->TrimPathFromFileName)
       {
       new_fname = vtksys::SystemTools::GetFilenameName(fname);
@@ -177,10 +189,19 @@ void vtkKWLoadSaveButton::UpdateTextFromFileName()
       {
       new_fname = fname;
       }
+
+    if(numFiles > 1)
+      {
+      char temp[1024];
+      sprintf(temp, " (1/%d)", numFiles);
+      new_fname.append(temp);
+      }
+   
     new_fname = 
       vtksys::SystemTools::CropString(new_fname, this->MaximumFileNameLength);
-    this->SetText(new_fname.c_str());
     }
+
+  this->SetText(new_fname.c_str());
 } 
 
 //----------------------------------------------------------------------------
