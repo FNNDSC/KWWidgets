@@ -35,7 +35,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.31 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.32 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -947,7 +947,7 @@ void vtkKWFileBrowserDialog::FileNameEditingCallback(const char* filename)
 
  this->Internals->IsEditingFileName = 1;
  this->FileBrowserWidget->GetFileListTable()->ClearSelection();
- this->Internals->CurrentSelectedFileNames.clear();
+ this->Internals->CurrentSelectedFileNames = "";
  this->Internals->IsEditingFileName = 0;
 }
 
@@ -1066,7 +1066,7 @@ void vtkKWFileBrowserDialog::ProcessFileSelectionChangedEvent(
     return;
     }
 
-  this->Internals->CurrentSelectedFileNames.clear();
+  this->Internals->CurrentSelectedFileNames = "";
   if(this->GetMultipleSelection() && 
     this->FileBrowserWidget->GetFileListTable()->
     GetNumberOfSelectedFileNames()>1)
