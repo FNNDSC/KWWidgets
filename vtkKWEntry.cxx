@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry);
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.91 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.92 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
@@ -269,7 +269,7 @@ void vtkKWEntry::SetValueAsInt(int i)
   // the buffer to a string each time, for safety reasons)
 
   const char *val = this->Script("%s get", this->GetWidgetName());
-  if (val && *val && i == atoi(val))
+  if (val && *val && !isalpha(*val) && i == atoi(val))
     {
     return;
     }
@@ -291,7 +291,7 @@ void vtkKWEntry::SetValueAsDouble(double f)
   // the buffer to a string each time, for safety reasons)
 
   const char *val = this->Script("%s get", this->GetWidgetName());
-  if (val && *val && f == atof(val))
+  if (val && *val && !isalpha(*val) && f == atof(val))
     {
     return;
     }
@@ -313,7 +313,7 @@ void vtkKWEntry::SetValueAsFormattedDouble(double f, int size)
   // the buffer to a string each time, for safety reasons)
 
   const char *val = this->Script("%s get", this->GetWidgetName());
-  if (val && *val && f == atof(val))
+  if (val && *val && !isalpha(*val) && f == atof(val))
     {
     return;
     }
