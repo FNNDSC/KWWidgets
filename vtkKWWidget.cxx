@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.150 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.151 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetInternals
@@ -791,7 +791,7 @@ void vtkKWWidget::AddBinding(const char *event, const char *command)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWWidget::RemoveBinding(const char *event, 
+void vtkKWWidget::RemoveBinding(const char *event,
                                 vtkObject *object, const char *method)
 {
   if (this->IsCreated())
@@ -802,12 +802,12 @@ void vtkKWWidget::RemoveBinding(const char *event,
     // Retrieve the bindings, remove the command, re-assign
 
     vtksys_stl::string bindings(
-      this->Script("bind %s %s", this->GetWidgetName(), event));
+      this->Script("if { [info command %s] != {} } {bind %s %s}", this->GetWidgetName(), this->GetWidgetName(), event));
 
     vtksys::SystemTools::ReplaceString(bindings, command, "");
-  
+
     this->Script(
-      "bind %s %s {%s}", this->GetWidgetName(), event, bindings.c_str());
+      "if { [info command %s] != {} } {bind %s %s {%s}}", this->GetWidgetName(), this->GetWidgetName(), event, bindings.c_str());
     delete [] command;
     }
 }
@@ -817,7 +817,7 @@ void vtkKWWidget::RemoveBinding(const char *event)
 {
   if (this->IsCreated())
     {
-    this->Script("bind %s %s {}", this->GetWidgetName(), event);
+    this->Script("if { [info command %s] != {} } {bind %s %s {}}", this->GetWidgetName(), this->GetWidgetName(), event);
     }
 }
 
