@@ -75,7 +75,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.72 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.73 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -2383,19 +2383,20 @@ int vtkKWSelectionFrameLayoutManager::CopyScreenshotAllWidgetsToClipboard()
 
 #ifdef _WIN32
 
-  vtkKWSelectionFrame *widget = this->GetSelectedWidget();
-  if (!widget)
+  vtkKWSelectionFrame *first_widget = this->GetNthWidget(0);
+  if (!first_widget)
     {
     return 0;
     }
 
-  vtkKWRenderWidget *rwwidget = this->GetRenderWidget(widget);
-  if (!rwwidget)
+  vtkKWRenderWidget *first_rwwidget = this->GetRenderWidget(first_widget);
+  if (!first_rwwidget)
     {
     return 0;
     }
 
-  if (::OpenClipboard((HWND)rwwidget->GetRenderWindow()->GetGenericWindowId()))
+  if (::OpenClipboard(
+        (HWND)first_rwwidget->GetRenderWindow()->GetGenericWindowId()))
     {
     extent = iData->GetWholeExtent();
     
