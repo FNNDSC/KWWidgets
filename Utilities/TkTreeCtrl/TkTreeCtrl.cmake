@@ -1,12 +1,21 @@
 MACRO(TkTreeCtrl_GET_LIBRARY supported sources include_path libs)
 
-  SET(${supported} 1)
+  IF(DEFINED ${supported})
+    SET(default_val ${supported})
+  ELSE(DEFINED ${supported})
+    SET(default_val 1)
+  ENDIF(DEFINED ${supported})
 
   # Visual Studio 6 does not support/provide uxtheme.h
+  # Borland fails on tkTreeDrag.c 
+  # (http://public.kitware.com/pipermail/kwwidgets/2007-August/000491.html)
 
-  IF(CMAKE_GENERATOR MATCHES "Visual Studio 6")
-    SET(${supported} 0)
-  ENDIF(CMAKE_GENERATOR MATCHES "Visual Studio 6")
+  IF(CMAKE_GENERATOR MATCHES "Visual Studio 6" OR BORLAND)
+    SET(default_var 0)
+  ENDIF(CMAKE_GENERATOR MATCHES "Visual Studio 6" OR BORLAND)
+
+  OPTION(${supported}
+    "Enable TkTreeCtrl support in KWWidgets." ${default_val})
 
   SET(${sources})
   SET(${include_path})
