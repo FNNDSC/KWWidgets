@@ -18,9 +18,13 @@
 
 #include <vtksys/stl/string>
 
+#if defined (__BORLANDC__)  && (__BORLANDC__ >= 0x0580)
+#include <ctype.h> // for isalpha
+#endif
+
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry);
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.92 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.93 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
