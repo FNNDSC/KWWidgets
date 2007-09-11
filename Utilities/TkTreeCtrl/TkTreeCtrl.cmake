@@ -16,6 +16,7 @@ MACRO(TkTreeCtrl_GET_LIBRARY supported sources include_path libs)
 
   OPTION(${supported}
     "Enable TkTreeCtrl support in KWWidgets." ${default_val})
+  MARK_AS_ADVANCED(${supported})
 
   SET(${sources})
   SET(${include_path})
