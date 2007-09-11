@@ -777,7 +777,26 @@ MACRO(KWWidgets_GENERATE_SETUP_PATHS_FOR_ONE_CONFIGURATION_TYPE
 
   IF(${generate_launcher})
     ADD_EXECUTABLE(${basename} ${output_path}/${basename}.c)
+
+    IF(MSVC AND NOT MSVC60 AND NOT MSVC70 AND NOT MSVC71)
+      IF("${basename}" MATCHES ".*Setup.*")
+        SET(exe "${CMAKE_CFG_INTDIR}/${basename}.exe")
+        IF(EXECUTABLE_OUTPUT_PATH)
+          SET(exe "${EXECUTABLE_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/${basename}.exe")
+        ENDIF(EXECUTABLE_OUTPUT_PATH)
+
+        # Solve the "things named like *Setup prompt for admin privileges
+        # on Vista" problem by merging a manifest fragment that contains a
+        # requestedExecutionLevel element:
+        #
+        ADD_CUSTOM_COMMAND(TARGET ${basename}
+          POST_BUILD COMMAND mt
+          "-inputresource:${exe};#1"
+          -manifest "${KWWidgets_RESOURCES_DIR}/KWWidgetsSetupManifest.xml"
+          "-outputresource:${exe};#1"
+        )
+      ENDIF("${basename}" MATCHES ".*Setup.*")
+    ENDIF(MSVC AND NOT MSVC60 AND NOT MSVC70 AND NOT MSVC71)
   ENDIF(${generate_launcher})
 
 ENDMACRO(KWWidgets_GENERATE_SETUP_PATHS_FOR_ONE_CONFIGURATION_TYPE)
-
