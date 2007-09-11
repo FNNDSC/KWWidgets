@@ -311,6 +311,7 @@ SET_SOURCE_FILES_PROPERTIES(
   vtkKWUserInterfaceManager.cxx
   vtkKWWidgetSet.cxx
   vtkKWWidgetWithScrollbars.cxx
+  vtkKWRegistryHelper.cxx
   ${KWWidgets_UTILS_SRCS}
   ABSTRACT
   )
@@ -676,11 +677,23 @@ IF(VTK_WRAP_PYTHON)
 ENDIF(VTK_WRAP_PYTHON)
 
 # --------------------------------------------------------------------------
+# Create the instantiators
+
+SET(VTK_USE_INSTANTIATOR_NEW 1)
+VTK_MAKE_INSTANTIATOR3(KWWidgetsInstantiator 
+                       KWWidgets_Instantiator_SRCS
+                       "${KWWidgets_SRCS}"
+                       KWWidgets_EXPORT
+                       ${KWWidgets_BINARY_DIR} 
+                       "vtkKWWidgets.h")
+
+# --------------------------------------------------------------------------
 # Build the library
 
 ADD_LIBRARY(KWWidgets
   ${KWWidgetsTCL_SRCS}
   ${KWWidgets_SRCS}
+  ${KWWidgets_Instantiator_SRCS}
   ${KWWidgets_UTILS_SRCS})
 
 TARGET_LINK_LIBRARIES(KWWidgets vtkCommonTCL)
