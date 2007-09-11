@@ -151,10 +151,13 @@ int main(int argc, char** argv)
 
   strcpy(exe_path, 
          "@EXECUTABLE@");
-  if(strlen(exe_path) == 0)
+  if(strlen(exe_path) == 0 && argv)
     {
     argv++;
-    strcpy(exe_path, argv[0]);
+    if (argv[0])
+      {
+      strcpy(exe_path, argv[0]);
+      }
     }
 
   /* Append .exe extension if it was not found */
