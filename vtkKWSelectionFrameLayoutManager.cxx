@@ -75,7 +75,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.73 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.74 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -1350,6 +1350,10 @@ void vtkKWSelectionFrameLayoutManager::NumberOfWidgetsHasChangedCallback()
     }
 
   this->NumberOfWidgetsHasChanged();
+
+  this->Script(
+    "catch {after cancel %s}", 
+    this->Internals->ScheduleNumberOfWidgetsHasChangedTimerId.c_str());
 
   this->Internals->ScheduleNumberOfWidgetsHasChangedTimerId = "";
 }
