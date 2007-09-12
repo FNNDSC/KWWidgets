@@ -37,7 +37,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceManagerDialog);
-vtkCxxRevisionMacro(vtkKWUserInterfaceManagerDialog, "$Revision: 1.18 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManagerDialog, "$Revision: 1.19 $");
 
 //----------------------------------------------------------------------------
 class vtkKWUserInterfaceManagerDialogInternals
@@ -871,7 +871,7 @@ int vtkKWUserInterfaceManagerDialog::ShowSelectedNodeSection()
             selected_section.c_str(), 
             in_str))
         {
-        selected_section_old_pos = in_str.str().c_str();
+        selected_section_old_pos = in_str.str();
         tree->SeeNode(selected_node.c_str());
         this->Script("pack %s -in %s", 
                      selected_section.c_str(), 

@@ -54,7 +54,7 @@
 #define VTK_KW_VPW_TESTING 0
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.45 $");
+vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.46 $");
 vtkStandardNewMacro(vtkKWVolumePropertyWidget);
 
 //----------------------------------------------------------------------------
@@ -1376,8 +1376,7 @@ void vtkKWVolumePropertyWidget::Update()
 
   // Execute (if any)
 
-  const char* tmp = tk_cmd.str().c_str();
-  if (*tmp)
+  if (tk_cmd.str() != "")
     {
     this->Script(tk_cmd.str().c_str());
     }

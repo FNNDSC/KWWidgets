@@ -25,8 +25,7 @@ int VTK_TK_EXPORT Vtkkwwidgetsinitializecommand_Init(Tcl_Interp *interp)
     {
     vtksys_ios::ostringstream err;
     Tcl_Interp *res = vtkKWApplication::InitializeTcl(interp, &err);
-    const char* tmp = err.str().c_str();
-    if (!res && *tmp)
+    if (!res && (err.str() != ""))
       {
       vtkGenericWarningMacro(<< " Vtkkwwidgetsinitializecommand_Init: failed to InitializeTcl: " << err.str().c_str());
       }

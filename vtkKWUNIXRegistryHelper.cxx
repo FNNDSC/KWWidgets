@@ -28,7 +28,7 @@
 #define BUFFER_SIZE 8192
 
 vtkStandardNewMacro( vtkKWUNIXRegistryHelper );
-vtkCxxRevisionMacro(vtkKWUNIXRegistryHelper, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWUNIXRegistryHelper, "$Revision: 1.7 $");
 
 //----------------------------------------------------------------------------
 //****************************************************************************
@@ -62,7 +62,7 @@ int vtkKWUNIXRegistryHelper::OpenInternal(const char *toplevel,
 {  
   int res = 0;
   int cc;
-  vtksys_ios::stringstream str;
+  vtksys_ios::ostringstream str;
   if ( !getenv("HOME") )
     {
     return 0;
@@ -144,7 +144,7 @@ int vtkKWUNIXRegistryHelper::CloseInternal()
     return 1;
     }
 
-  vtksys_ios::stringstream str;
+  vtksys_ios::ostringstream str;
   if ( !getenv("HOME") )
     {
     return 0;
