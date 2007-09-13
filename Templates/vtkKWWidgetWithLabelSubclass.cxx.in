@@ -22,7 +22,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(@WidgetType@WithLabel);
-vtkCxxRevisionMacro(@WidgetType@WithLabel, "$Revision: 1.8 $");
+vtkCxxRevisionMacro(@WidgetType@WithLabel, "$Revision: 1.9 $");
 
 //----------------------------------------------------------------------------
 @WidgetType@WithLabel::@WidgetType@WithLabel()
@@ -132,7 +132,7 @@ void @WidgetType@WithLabel::Pack()
     {
     tk_cmd << "pack " << this->Widget->GetWidgetName() 
            << " -anchor nw "
-           << " -fill " << (this->ExpandWidget ? "x" : "none")
+           << " -fill " << (this->ExpandWidget ? "both" : "none")
            << " -side " << side 
            << " -expand " << (this->ExpandWidget ? "y" : "n") 
            << endl;
