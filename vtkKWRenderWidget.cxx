@@ -43,7 +43,7 @@
 #include <vtksys/stl/vector>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.151 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.152 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -895,21 +895,16 @@ void vtkKWRenderWidget::AddInteractionBindings()
               translators[i].Ctrl, translators[i].Shift, translators[i].Alt);
       this->VTKWidget->SetBinding(event, this, callback);
 
-#if !defined(_WIN32) || defined(__CYGWIN__)
-      // For X11, Mousewheel events are usually bound to Button 4 and 5
-      vtksys_stl::string windowingsystem = this->Script("tk windowingsystem");
-      if (!strcmp(windowingsystem.c_str(), "x11"))
-        {
-        sprintf(event, "<%sButton-4>", translators[i].Modifier);
-        sprintf(callback, "MouseWheelCallback 120 %d %d %d", 
-                translators[i].Ctrl, translators[i].Shift, translators[i].Alt);
-        this->VTKWidget->SetBinding(event, this, callback);
-
-        sprintf(event, "<%sButton-5>", translators[i].Modifier);
-        sprintf(callback, "MouseWheelCallback -120 %d %d %d", 
-                translators[i].Ctrl, translators[i].Shift, translators[i].Alt);
-        this->VTKWidget->SetBinding(event, this, callback);
-        }
+#if !defined(_WIN32) && !defined(MAC_TCL) && !defined(MAC_OSX_TK)
+      sprintf(event, "<%sButton-4>", translators[i].Modifier);
+      sprintf(callback, "MouseWheelCallback 120 %d %d %d", 
+              translators[i].Ctrl, translators[i].Shift, translators[i].Alt);
+      this->VTKWidget->SetBinding(event, this, callback);
+      
+      sprintf(event, "<%sButton-5>", translators[i].Modifier);
+      sprintf(callback, "MouseWheelCallback -120 %d %d %d", 
+              translators[i].Ctrl, translators[i].Shift, translators[i].Alt);
+      this->VTKWidget->SetBinding(event, this, callback);
 #endif
         
       sprintf(event, "<%sKeyPress>", translators[i].Modifier);
