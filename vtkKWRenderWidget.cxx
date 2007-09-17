@@ -43,7 +43,7 @@
 #include <vtksys/stl/vector>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.152 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.153 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -971,6 +971,14 @@ void vtkKWRenderWidget::RemoveInteractionBindings()
       sprintf(event, "<%sMouseWheel>", translators[i].Modifier);
       this->VTKWidget->RemoveBinding(event);
         
+#if !defined(_WIN32) && !defined(MAC_TCL) && !defined(MAC_OSX_TK)
+      sprintf(event, "<%sButton-4>", translators[i].Modifier);
+      this->VTKWidget->RemoveBinding(event);
+      
+      sprintf(event, "<%sButton-5>", translators[i].Modifier);
+      this->VTKWidget->RemoveBinding(event);
+#endif
+
       sprintf(event, "<%sKeyPress>", translators[i].Modifier);
       this->VTKWidget->RemoveBinding(event);
 
@@ -988,6 +996,7 @@ void vtkKWRenderWidget::MouseMoveCallback(
   if (!interactor)
     {
     return;
+
     }
 
   interactor->SetEventInformationFlipY(x, y, ctrl, shift);
