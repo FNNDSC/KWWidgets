@@ -11,7 +11,7 @@ MACRO(TkTreeCtrl_GET_LIBRARY supported sources include_path libs)
   # (http://public.kitware.com/pipermail/kwwidgets/2007-August/000491.html)
 
   IF(CMAKE_GENERATOR MATCHES "Visual Studio 6" OR BORLAND)
-    SET(default_var 0)
+    SET(default_val 0)
   ENDIF(CMAKE_GENERATOR MATCHES "Visual Studio 6" OR BORLAND)
 
   OPTION(${supported}
