@@ -129,6 +129,19 @@ public:
   vtkGetObjectMacro(Toolbar, vtkKWToolbar);
 
   // Description:
+  // Set/Get if the system default favorites should be ignored. 
+  // On Windows OS, there are system defined Places bar on common 
+  // dialogs to show favorite places. If this ivar is ON, those
+  // system defined Places will NOT be read or modified by this class; 
+  // otherwise, those system defined Places will be replaced by
+  // favorites defined by this class. Default is OFF. 
+  //BTX 
+  vtkSetMacro(IgnoreSystemDefaultPlaces, int);
+  vtkGetMacro(IgnoreSystemDefaultPlaces, int);
+  vtkBooleanMacro(IgnoreSystemDefaultPlaces, int);
+  //ETX
+
+  // Description:
   // Get the add favorite directory button objects. 
   // DO NOT modify the callbacks, this accessor is provided to change
   // the button icon, for example.
@@ -271,6 +284,7 @@ protected:
   // Member variables
   char *RegistryKey;
   int MaximumNumberOfFavoriteDirectoriesInRegistry;
+  int IgnoreSystemDefaultPlaces;
   
 private:
 

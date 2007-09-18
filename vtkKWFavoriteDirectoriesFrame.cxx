@@ -57,7 +57,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.19 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.20 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -105,7 +105,8 @@ vtkKWFavoriteDirectoriesFrame::vtkKWFavoriteDirectoriesFrame()
   this->ContainerFrame   = vtkKWFrameWithScrollbar::New();
   this->AddFavoriteDirectoryButton = vtkKWPushButton::New();
   this->ContextMenu                = NULL;
-  
+  this->IgnoreSystemDefaultPlaces  = 0;
+
   this->AddFavoriteDirectoryCommand      = NULL;
   this->FavoriteDirectorySelectedCommand = NULL;
 
@@ -884,6 +885,12 @@ void vtkKWFavoriteDirectoriesFrame::RemoveFavoriteDirectory(
 //----------------------------------------------------------------------------
 void vtkKWFavoriteDirectoriesFrame::WriteFavoriteDirectoriesToRegistry()
 {
+  if(this->GetApplication() && 
+    this->GetApplication()->GetRegistryLevel() <=0)
+    {
+    return;
+    }
+
   this->WriteFavoriteDirectoriesToRegistry(
     this->RegistryKey, 
     this->MaximumNumberOfFavoriteDirectoriesInRegistry);
@@ -963,6 +970,12 @@ void vtkKWFavoriteDirectoriesFrame::WriteFavoriteDirectoriesToRegistry(
 //----------------------------------------------------------------------------
 void vtkKWFavoriteDirectoriesFrame::RestoreFavoriteDirectoriesFromRegistry()
 {
+  if(this->GetApplication() && 
+    this->GetApplication()->GetRegistryLevel() <=0)
+    {
+    return;
+    }
+
   // Remove all
 
   if (this->ContainerFrame && this->ContainerFrame->GetFrame())
@@ -1056,6 +1069,11 @@ void vtkKWFavoriteDirectoriesFrame::RestoreFavoriteDirectoriesFromSystemRegistry
 {
 #ifdef _WIN32  
 
+  if(this->IgnoreSystemDefaultPlaces)
+    {
+    return;
+    }
+
   char buff[vtkKWRegistryHelper::RegistryKeyValueSizeMax];
   vtksys_stl::string placekey = VTK_KW_WIN32_REGIRSTRY_PLACES_BAR_KEY;
   bool userdefined = false;
@@ -1113,6 +1131,12 @@ void vtkKWFavoriteDirectoriesFrame::RestoreFavoriteDirectoriesFromSystemRegistry
 void vtkKWFavoriteDirectoriesFrame::WriteFavoriteDirectoriesToSystemRegistry()
 {
 #ifdef _WIN32
+
+  if(this->IgnoreSystemDefaultPlaces)
+    {
+    return;
+    }
+
   int num_dir = this->Internals->FavoriteDirectories.size();
   if (num_dir <= 0)
     {
@@ -1199,8 +1223,12 @@ void vtkKWFavoriteDirectoriesFrame::WriteFavoriteDirectoriesToSystemRegistry()
       if (found)
         {
         if (vtksys::SystemTools::FileIsDirectory(value.c_str()))
-          {          
-          registryhelper->SetValueInternal(placename.c_str(), value.c_str());
+          { 
+          // Only Windows path should be used here; otherwise, 
+          // other applications, such as Notepad, won't recognize the path
+          registryhelper->SetValueInternal(placename.c_str(), 
+            vtksys::SystemTools::ConvertToOutputPath(
+            value.c_str()).c_str());
           }
         else
           {
@@ -1214,8 +1242,11 @@ void vtkKWFavoriteDirectoriesFrame::WriteFavoriteDirectoriesToSystemRegistry()
         }
       else
         {
-        registryhelper->SetValueInternal(
-          placename.c_str(), (*it)->Path.c_str());
+        // Only Windows path should be used here; otherwise, 
+        // other applications, such as Notepad, won't recognize the path
+        registryhelper->SetValueInternal(placename.c_str(), 
+          vtksys::SystemTools::ConvertToOutputPath(
+          (*it)->Path.c_str()).c_str());
         }
       }//end for it, i
     registryhelper->Close();
