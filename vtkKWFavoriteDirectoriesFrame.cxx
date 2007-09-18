@@ -57,7 +57,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.21 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.22 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -105,7 +105,7 @@ vtkKWFavoriteDirectoriesFrame::vtkKWFavoriteDirectoriesFrame()
   this->ContainerFrame   = vtkKWFrameWithScrollbar::New();
   this->AddFavoriteDirectoryButton = vtkKWPushButton::New();
   this->ContextMenu                = NULL;
-  this->UseSystemDefaultPlaces     = 1;
+  this->UseSystemDefaultPlaces     = 0;
 
   this->AddFavoriteDirectoryCommand      = NULL;
   this->FavoriteDirectorySelectedCommand = NULL;
