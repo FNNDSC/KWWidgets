@@ -57,7 +57,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.20 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.21 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -105,7 +105,7 @@ vtkKWFavoriteDirectoriesFrame::vtkKWFavoriteDirectoriesFrame()
   this->ContainerFrame   = vtkKWFrameWithScrollbar::New();
   this->AddFavoriteDirectoryButton = vtkKWPushButton::New();
   this->ContextMenu                = NULL;
-  this->IgnoreSystemDefaultPlaces  = 0;
+  this->UseSystemDefaultPlaces     = 1;
 
   this->AddFavoriteDirectoryCommand      = NULL;
   this->FavoriteDirectorySelectedCommand = NULL;
@@ -1069,7 +1069,7 @@ void vtkKWFavoriteDirectoriesFrame::RestoreFavoriteDirectoriesFromSystemRegistry
 {
 #ifdef _WIN32  
 
-  if(this->IgnoreSystemDefaultPlaces)
+  if(!this->UseSystemDefaultPlaces)
     {
     return;
     }
@@ -1132,7 +1132,7 @@ void vtkKWFavoriteDirectoriesFrame::WriteFavoriteDirectoriesToSystemRegistry()
 {
 #ifdef _WIN32
 
-  if(this->IgnoreSystemDefaultPlaces)
+  if(!this->UseSystemDefaultPlaces)
     {
     return;
     }
