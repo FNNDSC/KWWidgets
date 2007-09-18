@@ -561,6 +561,13 @@ protected:
   vtkKWTheme *Theme;
 
   // Description:
+  // Give a change to the application to parse the command-line arguments
+  // and set some variables accordingly. Subclasses that do not intend
+  // to call their super's Start(argc, argv) should make sure they
+  // call their super's ParseCommandLineArguments.
+  virtual void ParseCommandLineArguments(int argc, char *argv[]);
+
+  // Description:
   // Check for an argument (example: --foo, /C, -bar, etc).
   // Return VTK_OK if found and set 'index' to the position of the 
   // argument in argv[].

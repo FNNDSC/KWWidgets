@@ -85,7 +85,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.322 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.323 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -988,7 +988,7 @@ void vtkKWApplication::Start()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWApplication::Start(int argc, char **argv)
+void vtkKWApplication::ParseCommandLineArguments(int argc, char **argv)
 { 
   // Command line args: language
   
@@ -999,6 +999,14 @@ void vtkKWApplication::Start(int argc, char **argv)
     vtkKWLanguage::SetCurrentLanguage(
       vtkKWLanguage::GetLanguageFromXPG(argv[index] + pos));
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWApplication::Start(int argc, char **argv)
+{ 
+  // Command line args
+
+  this->ParseCommandLineArguments(argc, argv);
 
   // As a convenience, hide any splash screen
 
