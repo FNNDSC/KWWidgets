@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.35 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.36 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -428,15 +428,26 @@ void vtkKWDirectoryExplorer::LoadRootDirectory()
 
     realname = disklabel;
 
-    if(drivetype != DRIVE_REMOTE && 
-      drivetype != DRIVE_UNKNOWN &&
-      drivetype != DRIVE_NO_ROOT_DIR)
+    if(drivetype != DRIVE_REMOTE)
       {
       vtksys_stl::string volPath = name;
       if (GetVolumeInformation(volPath.append("\\").c_str(),
         strVolName, MAX_PATH, &serialnum, NULL,
         NULL, strFS, 
         MAX_PATH))
+        {
+        if (strcmp(strVolName, ""))
+          {
+          realname = strVolName;
+          }
+        }
+      }
+    else
+      {
+      DWORD dwUniSz = 1024;
+      if(!WNetGetConnection(name.c_str(),
+        strVolName,
+        &dwUniSz))
         {
         if (strcmp(strVolName, ""))
           {
