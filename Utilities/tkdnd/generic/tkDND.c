@@ -42,7 +42,7 @@
  * NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
  * MODIFICATIONS.
  *
- * RCS: @(#) $Id: tkDND.cpp,v 1.5 2007-02-09 18:50:00 barre Exp $
+ * RCS: @(#) $Id: tkDND.c,v 1.5 2007-09-19 19:18:44 barre Exp $
  */
 
 #include "tkDND.h"

@@ -18,10 +18,13 @@ MACRO(TkDnD_GET_LIBRARY supported sources include_path libs)
       ${_tkdnd_path}/generic
       )
     SET(_tkdnd_srcs 
-      ${_tkdnd_path}/generic/tkDND.cpp
-      ${_tkdnd_path}/generic/tkDNDBind.cpp
+      ${_tkdnd_path}/generic/tkDND.c
+      ${_tkdnd_path}/generic/tkDNDBind.c
       ${_tkdnd_path}/vtkKWTkDnDInit.cxx
       )
+    # tkDNDBind.c actually include all the OLE classes
+    SET_SOURCE_FILES_PROPERTIES(${_tkdnd_path}/generic/tkDNDBind.c
+      PROPERTIES LANGUAGE CXX)
 
     IF(WIN32)
       SET(_tkdnd_include_path ${_tkdnd_include_path} 
@@ -34,6 +37,8 @@ MACRO(TkDnD_GET_LIBRARY supported sources include_path libs)
         ${_tkdnd_path}/win/tkShape.cpp
         )
       SET(_tkdnd_srcs ${_tkdnd_srcs} ${_tkdnd_win32_srcs})
+      SET_SOURCE_FILES_PROPERTIES(${_tkdnd_win32_srcs}
+        PROPERTIES LANGUAGE CXX)
       IF(NOT BORLAND)
         # Can't use ATL because it is not support by Visual Studio Express 2005
         # We should either detect if we are using Express or Full 2005. This
@@ -63,6 +68,7 @@ MACRO(TkDnD_GET_LIBRARY supported sources include_path libs)
       SET(_tkdnd_srcs ${_tkdnd_srcs} ${_tkdnd_unix_srcs})
     ENDIF(WIN32)
 
+    # It does not seem possible to easily mix-match C/C++ within that library
     SET_SOURCE_FILES_PROPERTIES(${_tkdnd_srcs}
       PROPERTIES LANGUAGE CXX)
 

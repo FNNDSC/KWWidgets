@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeStyle.c,v 1.1 2007-02-06 13:18:14 barre Exp $
+ * RCS: @(#) $Id: tkTreeStyle.c,v 1.2 2007-09-19 19:18:44 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -127,7 +127,7 @@ struct IElementLink
 #endif
 };
 
-static CONST char *MStyleUid = "MStyle", *IStyleUid = "IStyle",
+static CONST84 char *MStyleUid = "MStyle", *IStyleUid = "IStyle",
     *MElementLinkUid = "MElementLink", *IElementLinkUid = "IElementLink";
 
 static char *orientStringTable[] = { "horizontal", "vertical", (char *) NULL };
@@ -4874,7 +4874,7 @@ TreeElementCmd(
     )
 {
     TreeCtrl *tree = (TreeCtrl *) clientData;
-    static CONST char *commandNames[] = {
+    static CONST84 char *commandNames[] = {
   "cget", "configure", "create", "delete", "names", "perstate", "type",
   (char *) NULL
     };
@@ -5380,7 +5380,7 @@ StyleLayoutCmd(
     Element *elem;
     MElementLink saved, *eLink;
     int i, index;
-    static CONST char *optionNames[] = {
+    static CONST84 char *optionNames[] = {
   "-detach", "-expand", "-height", "-iexpand",
   "-indent", "-ipadx", "-ipady", "-maxheight", "-maxwidth", "-minheight",
   "-minwidth", "-padx", "-pady", "-squeeze", "-sticky", "-union",
@@ -5845,7 +5845,7 @@ TreeStyleCmd(
     )
 {
     TreeCtrl *tree = (TreeCtrl *) clientData;
-    static CONST char *commandNames[] = {
+    static CONST84 char *commandNames[] = {
   "cget", "configure", "create", "delete", "elements", "layout",
   "names", (char *) NULL };
     enum {

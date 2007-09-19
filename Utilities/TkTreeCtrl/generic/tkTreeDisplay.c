@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeDisplay.c,v 1.1 2007-02-06 13:18:14 barre Exp $
+ * RCS: @(#) $Id: tkTreeDisplay.c,v 1.2 2007-09-19 19:18:43 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -2178,7 +2178,7 @@ Tree_ItemFL(
       range = first ? range->next : range->prev;
   }
     }
-    return NULL;
+    /*    return NULL; */ /* not reached */
 }
 
 TreeItem
@@ -4544,7 +4544,7 @@ Tree_IntersectRect(
 
     *resultPtr = result;
     return 1;
-};
+}
 
 /*
  *--------------------------------------------------------------

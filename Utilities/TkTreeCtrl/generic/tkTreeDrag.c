@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeDrag.c,v 1.1 2007-02-06 13:18:14 barre Exp $
+ * RCS: @(#) $Id: tkTreeDrag.c,v 1.2 2007-09-19 19:18:43 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -384,7 +384,7 @@ DragImageCmd(
 {
     TreeCtrl *tree = (TreeCtrl *) clientData;
     TreeDragImage dragImage = tree->dragImage;
-    static CONST char *commandNames[] = { "add", "cget", "clear", "configure",
+    static CONST84 char *commandNames[] = { "add", "cget", "clear", "configure",
   "offset", (char *) NULL };
     enum { COMMAND_ADD, COMMAND_CGET, COMMAND_CLEAR, COMMAND_CONFIGURE,
   COMMAND_OFFSET };

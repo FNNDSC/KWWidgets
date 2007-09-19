@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeTheme.c,v 1.3 2007-06-29 15:24:06 barre Exp $
+ * RCS: @(#) $Id: tkTreeTheme.c,v 1.4 2007-09-19 19:18:44 barre Exp $
  */
 
 #if defined(WIN32) && !defined(WINVER)
@@ -811,7 +811,7 @@ int TreeTheme_DrawHeaderItem(TreeCtrl *tree, Drawable drawable, int state,
   NULL,  /*prevInfo*/
   NULL,  /*eraseProc*/
   NULL,  /*labelProc*/
-  NULL);  /*userData*/
+  (UInt32)NULL);  /*userData*/
 
     SetClip(oldClip);
     SetGWorld(saveWorld,saveDevice);
@@ -917,7 +917,7 @@ int TreeTheme_DrawButton(TreeCtrl *tree, Drawable drawable, int open, int x, int
   NULL,  /*prevInfo*/
   NULL,  /*eraseProc*/
   NULL,  /*labelProc*/
-  NULL);  /*userData*/
+  (UInt32)NULL);  /*userData*/
 
     /* Restore the original clipping region. */
     SetClip(oldClip);

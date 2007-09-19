@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeItem.c,v 1.1 2007-02-06 13:18:14 barre Exp $
+ * RCS: @(#) $Id: tkTreeItem.c,v 1.2 2007-09-19 19:18:43 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -63,7 +63,7 @@ struct TreeItem_ {
     TagInfo *tagInfo;  /* Tags. May be NULL. */
 };
 
-static CONST char *ItemUid = "Item", *ItemColumnUid = "ItemColumn";
+static CONST84 char *ItemUid = "Item", *ItemColumnUid = "ItemColumn";
 
 /*
  * Macro to test whether an item is the unique root item
@@ -1528,7 +1528,7 @@ Qualifiers_Scan(
     Tcl_Interp *interp = tree->interp;
     int qual, j = startIndex;
 
-    static CONST char *qualifiers[] = {
+    static CONST84 char *qualifiers[] = {
   "depth", "state", "tag", "visible", "!visible", NULL
     };
     enum qualEnum {
@@ -1752,7 +1752,7 @@ TreeItemList_FromObj(
     Qualifiers q;
     int qualArgsTotal;
 
-    static CONST char *indexName[] = {
+    static CONST84 char *indexName[] = {
   "active", "all", "anchor", "end", "first", "last", "list",
   "nearest", "range", "rnc", "root", (char *) NULL
     };
@@ -1770,7 +1770,7 @@ TreeItemList_FromObj(
   0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1
     };
 
-    static CONST char *modifiers[] = {
+    static CONST84 char *modifiers[] = {
   "above", "ancestors", "below", "bottom", "child", "children",
   "descendants", "firstchild", "lastchild", "left", "leftmost", "next",
   "nextsibling", "parent", "prev", "prevsibling", "right", "rightmost",
@@ -4741,7 +4741,7 @@ ItemCreateCmd(
     )
 {
     TreeCtrl *tree = (TreeCtrl *) clientData;
-    static CONST char *optionNames[] = { "-button", "-count", "-height",
+    static CONST84 char *optionNames[] = { "-button", "-count", "-height",
   "-nextsibling", "-open", "-parent", "-prevsibling", "-returnid",
   "-tags", "-visible",
   (char *) NULL };
@@ -5015,7 +5015,7 @@ ItemElementCmd(
     )
 {
     TreeCtrl *tree = (TreeCtrl *) clientData;
-    static CONST char *commandNames[] = {
+    static CONST84 char *commandNames[] = {
 #ifdef DEPRECATED
   "actual",
 #endif
@@ -5341,7 +5341,7 @@ ItemStyleCmd(
     )
 {
     TreeCtrl *tree = (TreeCtrl *) clientData;
-    static CONST char *commandNames[] = { "elements", "map", "set", (char *) NULL };
+    static CONST84 char *commandNames[] = { "elements", "map", "set", (char *) NULL };
     enum { COMMAND_ELEMENTS, COMMAND_MAP, COMMAND_SET };
     int index;
     TreeItemList itemList;
@@ -6100,7 +6100,7 @@ ItemSortCmd(
     last = item->lastChild;
 
     for (i = 4; i < objc; ) {
-  static CONST char *optionName[] = { "-ascii", "-column", "-command",
+  static CONST84 char *optionName[] = { "-ascii", "-column", "-command",
               "-decreasing", "-dictionary", "-element", "-first", "-increasing",
               "-integer", "-last", "-notreally", "-real", NULL };
   int numArgs[] = { 1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 1, 1 };
@@ -6572,7 +6572,7 @@ ItemStateCmd(
     )
 {
     TreeCtrl *tree = (TreeCtrl *) clientData;
-    static CONST char *commandNames[] = {
+    static CONST84 char *commandNames[] = {
   "forcolumn", "get", "set", (char *) NULL
     };
     enum {
@@ -6777,7 +6777,7 @@ ItemTagCmd(
     )
 {
     TreeCtrl *tree = (TreeCtrl *) clientData;
-    static CONST char *commandNames[] = {
+    static CONST84 char *commandNames[] = {
   "add", "expr", "names", "remove", (char *) NULL
     };
     enum {
@@ -7327,7 +7327,7 @@ TreeItemCmd(
   /* T item compare I op I */
   case COMMAND_COMPARE:
   {
-      static CONST char *opName[] = { "<", "<=", "==", ">=", ">", "!=", NULL };
+      static CONST84 char *opName[] = { "<", "<=", "==", ">=", ">", "!=", NULL };
       int op, compare = 0, index1, index2;
 
       if (Tcl_GetIndexFromObj(interp, objv[4], opName, "comparison operator", 0,

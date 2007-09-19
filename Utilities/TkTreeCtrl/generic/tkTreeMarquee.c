@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeMarquee.c,v 1.1 2007-02-06 13:18:14 barre Exp $
+ * RCS: @(#) $Id: tkTreeMarquee.c,v 1.2 2007-09-19 19:18:44 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -303,7 +303,7 @@ TreeMarqueeCmd(
 {
     TreeCtrl *tree = (TreeCtrl *) clientData;
     TreeMarquee marquee = tree->marquee;
-    static CONST char *commandNames[] = { "anchor", "cget", "configure",
+    static CONST84 char *commandNames[] = { "anchor", "cget", "configure",
   "coords", "corner", "identify", (char *) NULL };
     enum { COMMAND_ANCHOR, COMMAND_CGET, COMMAND_CONFIGURE, COMMAND_COORDS,
   COMMAND_CORNER, COMMAND_IDENTIFY };

@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeNotify.c,v 1.1 2007-02-06 13:18:14 barre Exp $
+ * RCS: @(#) $Id: tkTreeNotify.c,v 1.2 2007-09-19 19:18:44 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -446,7 +446,7 @@ TreeNotifyCmd(
     )
 {
     TreeCtrl *tree = (TreeCtrl *) clientData;
-    static CONST char *commandName[] = { "bind", "configure", "detailnames",
+    static CONST84 char *commandName[] = { "bind", "configure", "detailnames",
   "eventnames", "generate", "install", "linkage", "unbind", "uninstall",
   (char *) NULL };
     enum {

@@ -7,7 +7,7 @@
  * Copyright (c) 2002-2003 Christian Krone
  * Copyright (c) 2003-2005 ActiveState, a division of Sophos
  *
- * RCS: @(#) $Id: tkTreeCtrl.c,v 1.2 2007-06-25 15:49:44 barre Exp $
+ * RCS: @(#) $Id: tkTreeCtrl.c,v 1.3 2007-09-19 19:18:43 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -41,23 +41,23 @@ typedef struct TreeImageRef {
     Tcl_HashEntry *hPtr;  /* Entry in tree->imageNameHash. */
 } TreeImageRef;
 
-static CONST char *bgModeST[] = {
+static CONST84 char *bgModeST[] = {
     "column", "order", "ordervisible", "row",
 #ifdef DEPRECATED
     "index", "visindex",
 #endif
     (char *) NULL
 };
-static CONST char *columnResizeModeST[] = {
+static CONST84 char *columnResizeModeST[] = {
     "proxy", "realtime", (char *) NULL
 };
-static CONST char *doubleBufferST[] = {
+static CONST84 char *doubleBufferST[] = {
     "none", "item", "window", (char *) NULL
 };
-static CONST char *lineStyleST[] = {
+static CONST84 char *lineStyleST[] = {
     "dot", "solid", (char *) NULL
 };
-static CONST char *orientStringTable[] = {
+static CONST84 char *orientStringTable[] = {
     "horizontal", "vertical", (char *) NULL
 };
 extern Tk_ObjCustomOption columnCO_NOT_TAIL;
@@ -471,7 +471,7 @@ static int TreeWidgetCmd(
 {
     TreeCtrl *tree = (TreeCtrl *) clientData;
     int result = TCL_OK;
-    static CONST char *commandName[] = {
+    static CONST84 char *commandName[] = {
   "activate", "bbox", "canvasx", "canvasy", "cget",
 #ifdef DEPRECATED
   "collapse",
@@ -579,7 +579,7 @@ static int TreeWidgetCmd(
   /* .t bbox ?area? */
   case COMMAND_BBOX:
   {
-      static CONST char *areaName[] = { "content", "header", "left",
+      static CONST84 char *areaName[] = { "content", "header", "left",
         "right", (char *) NULL };
       int x1, y1, x2, y2;
 
@@ -758,7 +758,7 @@ static int TreeWidgetCmd(
   case COMMAND_COMPARE:
   {
       TreeItem item1, item2;
-      static CONST char *opName[] = { "<", "<=", "==", ">=", ">", "!=", NULL };
+      static CONST84 char *opName[] = { "<", "<=", "==", ">=", ">", "!=", NULL };
       int op, compare = 0, index1, index2;
 
       if (objc != 5) {
@@ -1054,7 +1054,7 @@ static int TreeWidgetCmd(
 
   case COMMAND_SCAN:
   {
-      static CONST char *optionName[] = { "dragto", "mark",
+      static CONST84 char *optionName[] = { "dragto", "mark",
             (char *) NULL };
       int x, y, gain = 10, xOrigin, yOrigin;
 
@@ -2307,7 +2307,7 @@ TreeStateCmd(
     )
 {
     Tcl_Interp *interp = tree->interp;
-    static CONST char *commandName[] = {
+    static CONST84 char *commandName[] = {
   "define", "linkage", "names",  "undefine", (char *) NULL
     };
     enum {
@@ -2526,7 +2526,7 @@ TreeSelectionCmd(
     Tcl_Obj *CONST objv[]  /* Argument values. */
     )
 {
-    static CONST char *commandName[] = {
+    static CONST84 char *commandName[] = {
   "add", "anchor", "clear", "count", "get", "includes", "modify", NULL
     };
     enum {
@@ -3343,7 +3343,7 @@ TreeDebugCmd(
     )
 {
     TreeCtrl *tree = (TreeCtrl *) clientData;
-    static CONST char *commandNames[] = {
+    static CONST84 char *commandNames[] = {
   "alloc", "cget", "configure", "dinfo", "expose", "scroll", (char *) NULL
     };
     enum { COMMAND_ALLOC, COMMAND_CGET, COMMAND_CONFIGURE, COMMAND_DINFO,
@@ -3436,7 +3436,7 @@ TreeDebugCmd(
   case COMMAND_DINFO:
   {
       extern void DumpDInfo(TreeCtrl *tree, int index);
-      static CONST char *optionNames[] = {
+      static CONST84 char *optionNames[] = {
     "ditem", "onscreen", "range", (char *) NULL
       };
 
@@ -3615,7 +3615,7 @@ TextLayoutCmd(
     text = Tcl_GetString(objv[2]);
 
     for (i = 3; i < objc; i += 2) {
-  static CONST char *optionNames[] = {
+  static CONST84 char *optionNames[] = {
       "-ignoretabs", "-ignorenewlines",
       "-justify", "-width", (char *) NULL
   };

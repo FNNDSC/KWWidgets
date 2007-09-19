@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeElem.c,v 1.3 2007-09-19 18:49:06 barre Exp $
+ * RCS: @(#) $Id: tkTreeElem.c,v 1.4 2007-09-19 19:18:43 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -812,7 +812,7 @@ static int ActualProcBitmap(ElementArgs *args)
     TreeCtrl *tree = args->tree;
     ElementBitmap *elemX = (ElementBitmap *) args->elem;
     ElementBitmap *masterX = (ElementBitmap *) args->elem->master;
-    static CONST char *optionName[] = {
+    static CONST84 char *optionName[] = {
   "-background", "-bitmap", "-draw", "-foreground",
   (char *) NULL };
     int index, match, matchM;
@@ -1122,7 +1122,7 @@ static int ActualProcBorder(ElementArgs *args)
     TreeCtrl *tree = args->tree;
     ElementBorder *elemX = (ElementBorder *) args->elem;
     ElementBorder *masterX = (ElementBorder *) args->elem->master;
-    static CONST char *optionName[] = {
+    static CONST84 char *optionName[] = {
   "-background", "-draw", "-relief",
   (char *) NULL };
     int index, match, matchM;
@@ -1175,7 +1175,7 @@ ElementType elemTypeBorder = {
 /*****/
 #if 0
 
-static CONST char *chkbutStateST[] = {
+static CONST84 char *chkbutStateST[] = {
     "checked", "mixed", "normal", "active", "pressed", "disabled", (char *) NULL
 };
 
@@ -1456,7 +1456,7 @@ static int ActualProcCheckButton(ElementArgs *args)
     TreeCtrl *tree = args->tree;
     ElementCheckButton *elemX = (ElementCheckButton *) args->elem;
     ElementCheckButton *masterX = (ElementCheckButton *) args->elem->master;
-    static CONST char *optionName[] = {
+    static CONST84 char *optionName[] = {
   "-image",
   (char *) NULL };
     int index, match, matchM;
@@ -1743,7 +1743,7 @@ static int ActualProcImage(ElementArgs *args)
     TreeCtrl *tree = args->tree;
     ElementImage *elemX = (ElementImage *) args->elem;
     ElementImage *masterX = (ElementImage *) args->elem->master;
-    static CONST char *optionName[] = {
+    static CONST84 char *optionName[] = {
   "-draw", "-image",
   (char *) NULL };
     int index, match, matchM;
@@ -2126,7 +2126,7 @@ static int ActualProcRect(ElementArgs *args)
     TreeCtrl *tree = args->tree;
     ElementRect *elemX = (ElementRect *) args->elem;
     ElementRect *masterX = (ElementRect *) args->elem->master;
-    static CONST char *optionName[] = {
+    static CONST84 char *optionName[] = {
   "-draw", "-fill", "-outline",
   (char *) NULL };
     int index, match, matchM;
@@ -2285,10 +2285,10 @@ ElementTextLayoutInit(
     etl->wrap = TEXT_WRAP_NULL;
 }
 
-static CONST char *textDataTypeST[] = { "double", "integer", "long", "string",
+static CONST84 char *textDataTypeST[] = { "double", "integer", "long", "string",
           "time", (char *) NULL };
-static CONST char *textJustifyST[] = { "left", "right", "center", (char *) NULL };
-static CONST char *textWrapST[] = { "char", "none", "word", (char *) NULL };
+static CONST84 char *textJustifyST[] = { "left", "right", "center", (char *) NULL };
+static CONST84 char *textWrapST[] = { "char", "none", "word", (char *) NULL };
 
 static Tk_OptionSpec textOptionSpecs[] = {
     {TK_OPTION_CUSTOM, "-data", (char *) NULL, (char *) NULL,
@@ -3335,7 +3335,7 @@ static int ActualProcText(ElementArgs *args)
     TreeCtrl *tree = args->tree;
 /*    ElementText *elemX = (ElementText *) args->elem;
     ElementText *masterX = (ElementText *) args->elem->master;*/
-    static CONST char *optionName[] = {
+    static CONST84 char *optionName[] = {
   "-draw", "-fill", "-font",
   (char *) NULL };
     int index;
@@ -3931,7 +3931,7 @@ static int ActualProcWindow(ElementArgs *args)
     TreeCtrl *tree = args->tree;
     ElementWindow *elemX = (ElementWindow *) args->elem;
     ElementWindow *masterX = (ElementWindow *) args->elem->master;
-    static CONST char *optionName[] = {
+    static CONST84 char *optionName[] = {
   "-draw",
   (char *) NULL };
     int index, match, matchM;

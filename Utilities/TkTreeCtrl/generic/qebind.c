@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: qebind.c,v 1.1 2007-02-06 13:18:14 barre Exp $
+ * RCS: @(#) $Id: qebind.c,v 1.2 2007-09-19 19:18:43 barre Exp $
  */
 
 /*
@@ -1784,7 +1784,7 @@ QE_ConfigureCmd(QE_BindingTable bindingTable, int objOffset, int objc,
   BindingTable *bindPtr = (BindingTable *) bindingTable;
   Tcl_Interp *interp = bindPtr->interp;
   Tk_Window tkwin = Tk_MainWindow(interp);
-  static CONST char *configSwitch[] = {"-active", NULL};
+  static CONST84 char *configSwitch[] = {"-active", NULL};
   Tcl_Obj *CONST *objPtr;
   BindValue *valuePtr;
   char *t, *eventString;
@@ -2087,7 +2087,7 @@ int QE_InstallCmd_Old(QE_BindingTable bindingTable, int objOffset, int objc,
   int objC = objc - objOffset;
   Tcl_Obj *CONST *objV = objv + objOffset;
   BindingTable *bindPtr = (BindingTable *) bindingTable;
-  static CONST char *commandOption[] = {"detail", "event", NULL};
+  static CONST84 char *commandOption[] = {"detail", "event", NULL};
   int index;
 
   if (objC < 2)
@@ -2272,7 +2272,7 @@ int QE_UninstallCmd_Old(QE_BindingTable bindingTable, int objOffset, int objc,
   int objC = objc - objOffset;
   Tcl_Obj *CONST *objV = objv + objOffset;
   BindingTable *bindPtr = (BindingTable *) bindingTable;
-  static CONST char *commandOption[] = {"detail", "event", NULL};
+  static CONST84 char *commandOption[] = {"detail", "event", NULL};
   int index;
 
   if (objC < 2)

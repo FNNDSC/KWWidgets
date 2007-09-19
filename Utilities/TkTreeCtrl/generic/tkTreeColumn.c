@@ -7,7 +7,7 @@
  * Copyright (c) 2002-2003 Christian Krone
  * Copyright (c) 2003 ActiveState Corporation
  *
- * RCS: @(#) $Id: tkTreeColumn.c,v 1.1 2007-02-06 13:18:14 barre Exp $
+ * RCS: @(#) $Id: tkTreeColumn.c,v 1.2 2007-09-19 19:18:43 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -261,7 +261,7 @@ Tk_ObjCustomOption uniformGroupCO =
 static char *arrowST[] = { "none", "up", "down", (char *) NULL };
 static char *arrowSideST[] = { "left", "right", (char *) NULL };
 static char *stateST[] = { "normal", "active", "pressed", (char *) NULL };
-static CONST char *lockST[] = { "left", "none", "right", (char *) NULL };
+static CONST84 char *lockST[] = { "left", "none", "right", (char *) NULL };
 
 #define COLU_CONF_IMAGE    0x0001
 #define COLU_CONF_NWIDTH  0x0002  /* neededWidth */
@@ -880,7 +880,7 @@ Qualifiers_Scan(
     Tcl_Interp *interp = tree->interp;
     int qual, j = startIndex;
 
-    static CONST char *qualifiers[] = {
+    static CONST84 char *qualifiers[] = {
   "lock", "state", "tag", "visible", "!tail", "!visible", NULL
     };
     enum qualEnum {
@@ -1091,7 +1091,7 @@ TreeColumnList_FromObj(
     Qualifiers q;
     int qualArgsTotal;
 
-    static CONST char *indexName[] = {
+    static CONST84 char *indexName[] = {
   "all", "end", "first", "last", "list", "order", "range", "tail",
   "tree", (char *) NULL
     };
@@ -1108,7 +1108,7 @@ TreeColumnList_FromObj(
   1, 0, 1, 1, 0, 1, 1, 0, 0
     };
 
-    static CONST char *modifiers[] = {
+    static CONST84 char *modifiers[] = {
   "next", "prev", (char *) NULL
     };
     enum modEnum {
@@ -3518,7 +3518,7 @@ ColumnTagCmd(
     )
 {
     TreeCtrl *tree = (TreeCtrl *) clientData;
-    static CONST char *commandNames[] = {
+    static CONST84 char *commandNames[] = {
   "add", "expr", "names", "remove", (char *) NULL
     };
     enum {
@@ -3695,7 +3695,7 @@ TreeColumnCmd(
     )
 {
     TreeCtrl *tree = (TreeCtrl *) clientData;
-    static CONST char *commandNames[] = {
+    static CONST84 char *commandNames[] = {
   "bbox", "cget", "compare", "configure", "count", "create", "delete",
   "dragcget", "dragconfigure", "id",
 #ifdef DEPRECATED
@@ -3771,7 +3771,7 @@ TreeColumnCmd(
   case COMMAND_COMPARE:
   {
       TreeColumn column1, column2;
-      static CONST char *opName[] = { "<", "<=", "==", ">=", ">", "!=", NULL };
+      static CONST84 char *opName[] = { "<", "<=", "==", ">=", ">", "!=", NULL };
       int op, compare = 0, index1, index2;
 
       if (objc != 6) {
