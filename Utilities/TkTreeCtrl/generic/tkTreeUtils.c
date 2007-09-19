@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeUtils.c,v 1.1 2007-02-06 13:18:14 barre Exp $
+ * RCS: @(#) $Id: tkTreeUtils.c,v 1.2 2007-09-19 18:49:06 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -3903,7 +3903,7 @@ TagInfo_Copy(
 #else
   copy = (TagInfo *) ckalloc(TAG_INFO_SIZE(tagSpace));
 #endif
-  memcpy(copy->tagPtr, tagInfo->tagPtr, tagInfo->numTags * sizeof(Tk_Uid));
+  memcpy((void*)copy->tagPtr, (const void*)tagInfo->tagPtr, tagInfo->numTags * sizeof(Tk_Uid));
   copy->numTags = tagInfo->numTags;
   copy->tagSpace = tagSpace;
     }
@@ -4290,7 +4290,7 @@ TagExpr_Scan(
       } else {
     expr->uids =
     (Tk_Uid *) ckalloc((expr->allocated)*sizeof(Tk_Uid));
-    memcpy(expr->uids, expr->staticUids, sizeof(expr->staticUids));
+    memcpy((void*)expr->uids, (const void*)expr->staticUids, sizeof(expr->staticUids));
       }
   }
 

@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeElem.c,v 1.2 2007-06-25 15:49:45 barre Exp $
+ * RCS: @(#) $Id: tkTreeElem.c,v 1.3 2007-09-19 18:49:06 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -3480,7 +3480,7 @@ WinItemLostSlaveProc(clientData, tkwin)
      * about both windows. */
     if (elemX->child != NULL) {
   Tk_DeleteEventHandler(elemX->child, StructureNotifyMask,
-    WinItemStructureProc, (ClientData) elemX);
+    (Tk_EventProc*)WinItemStructureProc, (ClientData) elemX);
   if (tkwin != elemX->child) {
       Tk_ManageGeometry(elemX->child, (Tk_GeomMgr *) NULL,
         (ClientData) NULL);
@@ -3490,7 +3490,7 @@ WinItemLostSlaveProc(clientData, tkwin)
     }
     if (elemX->tkwin != NULL) {
   Tk_DeleteEventHandler(elemX->tkwin, StructureNotifyMask,
-    WinItemStructureProc, (ClientData) elemX);
+    (Tk_EventProc*)WinItemStructureProc, (ClientData) elemX);
   if (tkwin != elemX->tkwin) {
       Tk_ManageGeometry(elemX->tkwin, (Tk_GeomMgr *) NULL,
         (ClientData) NULL);
@@ -3516,8 +3516,8 @@ WinItemLostSlaveProc(clientData, tkwin)
 
 static Tk_GeomMgr winElemGeomType = {
     "treectrl",        /* name */
-    WinItemRequestProc,      /* requestProc */
-    WinItemLostSlaveProc,    /* lostSlaveProc */
+    (Tk_GeomRequestProc*)WinItemRequestProc,      /* requestProc */
+    (Tk_GeomLostSlaveProc*)WinItemLostSlaveProc,    /* lostSlaveProc */
 };
 
 static void DeleteProcWindow(ElementArgs *args)
@@ -3531,7 +3531,7 @@ static void DeleteProcWindow(ElementArgs *args)
 #ifdef CLIP_WINDOW
   if (elemX->child != NULL) {
       Tk_DeleteEventHandler(elemX->child, StructureNotifyMask,
-        WinItemStructureProc, (ClientData) elemX);
+        (Tk_EventProc*)WinItemStructureProc, (ClientData) elemX);
       Tk_ManageGeometry(elemX->child, (Tk_GeomMgr *) NULL,
         (ClientData) NULL);
       Tk_UnmapWindow(elemX->child);
@@ -3539,7 +3539,7 @@ static void DeleteProcWindow(ElementArgs *args)
   }
 #endif
   Tk_DeleteEventHandler(elemX->tkwin, StructureNotifyMask,
-    WinItemStructureProc, (ClientData) elemX);
+    (Tk_EventProc*)WinItemStructureProc, (ClientData) elemX);
   Tk_ManageGeometry(elemX->tkwin, (Tk_GeomMgr *) NULL,
     (ClientData) NULL);
   if (tree->tkwin != Tk_Parent(elemX->tkwin)) {
@@ -3619,7 +3619,7 @@ static int ConfigProcWindow(ElementArgs *args)
 #ifdef CLIP_WINDOW
       if (elemX->child != NULL) {
     Tk_DeleteEventHandler(elemX->child, StructureNotifyMask,
-      WinItemStructureProc, (ClientData) elemX);
+      (Tk_EventProc*)WinItemStructureProc, (ClientData) elemX);
     Tk_ManageGeometry(elemX->child, (Tk_GeomMgr *) NULL,
       (ClientData) NULL);
     Tk_UnmapWindow(elemX->child);
@@ -3627,7 +3627,7 @@ static int ConfigProcWindow(ElementArgs *args)
       }
 #endif
       Tk_DeleteEventHandler(savedX.tkwin, StructureNotifyMask,
-        WinItemStructureProc, (ClientData) elemX);
+        (Tk_EventProc*)WinItemStructureProc, (ClientData) elemX);
       Tk_ManageGeometry(savedX.tkwin, (Tk_GeomMgr *) NULL,
         (ClientData) NULL);
       Tk_UnmaintainGeometry(savedX.tkwin, tree->tkwin);
@@ -3670,14 +3670,14 @@ static int ConfigProcWindow(ElementArgs *args)
     elemX->child = (Tk_Window) ((TkWindow *) elemX->tkwin)->childList;
     if (elemX->child != NULL) {
         Tk_CreateEventHandler(elemX->child, StructureNotifyMask,
-          WinItemStructureProc, (ClientData) elemX);
+          (Tk_EventProc*)WinItemStructureProc, (ClientData) elemX);
         Tk_ManageGeometry(elemX->child, &winElemGeomType,
           (ClientData) elemX);
     }
       }
 #endif
       Tk_CreateEventHandler(elemX->tkwin, StructureNotifyMask,
-        WinItemStructureProc, (ClientData) elemX);
+        (Tk_EventProc*)WinItemStructureProc, (ClientData) elemX);
       Tk_ManageGeometry(elemX->tkwin, &winElemGeomType,
         (ClientData) elemX);
   }
