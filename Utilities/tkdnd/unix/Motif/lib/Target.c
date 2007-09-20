@@ -18,6 +18,17 @@ provided "as is" without express or implied warranty.
 #include <string.h>
 #include <DndP.h>
 
+/*
+ * For C++ compilers, use extern "C"
+ */
+#ifdef __cplusplus
+extern "C" {
+#endif
+  static int AtomCompare(const void *atom1, const void *atom2 );
+#ifdef __cplusplus
+}
+#endif
+
 static Atom atom_motif_window, atom_target_list ;
 
 static void

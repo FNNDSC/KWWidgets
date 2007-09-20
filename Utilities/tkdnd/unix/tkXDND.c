@@ -57,6 +57,37 @@
 #include "XDND.h"
 #include "Cursors.h"
 
+/*
+ * For C++ compilers, use extern "C"
+ */
+#ifdef __cplusplus
+extern "C" {
+#endif
+void  TkDND_DestroyEventProc(ClientData clientData, XEvent *eventPtr);
+static int   TkDND_WidgetExists (DndClass *dnd, Window window);
+static int   TkDND_WidgetApplyEnter(DndClass *dnd, Window widgets_window,
+               Window from, Atom action, int x, int y, Time t, Atom * typelist);
+static int   TkDND_WidgetApplyPosition(DndClass *dnd, Window widgets_window,
+               Window from, Atom action, Atom *actionList,
+               int x, int y, Time t, Atom * typelist, int *want_position,
+               Atom *supported_action, Atom *desired_type,
+               XRectangle * rectangle);
+static int   TkDND_WidgetApplyLeave(DndClass *dnd, Window widgets_window);
+static int   TkDND_WidgetInsertDrop(DndClass *dnd, unsigned char *data,
+               int length, int remaining, Window into, Window from, Atom type);
+static int   TkDND_WidgetAsk(DndClass *dnd, Window source, Window target,
+               Atom *action);
+static int   TkDND_WidgetGetData(DndClass *dnd, Window source, 
+               unsigned char **data, int *length, Atom type);
+static void  TkDND_HandleEvents (DndClass *dnd, XEvent *xevent);
+static Atom *TkDND_GetCurrentAtoms(XDND *dnd, Window window);
+static int   TkDND_SetCursor(DndClass *dnd, int cursor);
+static int   TkDND_XDNDHandler(Tk_Window winPtr, XEvent *eventPtr);
+static int   TkDND_LocalErrorHandler(Display *display, XErrorEvent *error);
+#ifdef __cplusplus
+}
+#endif
+
 extern Tcl_HashTable   TkDND_TargetTable;
 extern Tcl_HashTable   TkDND_SourceTable;
 DndClass              *dnd;
@@ -69,7 +100,6 @@ extern int   TkDND_DelHandler(DndInfo *infoPtr, char *typeStr,
 extern int   TkDND_DelHandlerByName(Tcl_Interp *interp, Tk_Window topwin,
                     Tcl_HashTable *table, char *windowPath, char *typeStr,
                     unsigned long eventType, unsigned long eventMask);
-extern void  TkDND_DestroyEventProc(ClientData clientData, XEvent *eventPtr);
 extern int   TkDND_FindMatchingScript(Tcl_HashTable *table,
                     char *windowPath, char *typeStr, Atom typelist[],
                     unsigned long eventType, unsigned long eventMask,
@@ -96,28 +126,10 @@ extern int   Tk_CreateClientMessageHandler(int (*proc) (Tk_Window tkwin,
 /*
  * Forward declarations for procedures defined later in this file:
  */
-static int   TkDND_WidgetExists (DndClass *dnd, Window window);
-static int   TkDND_WidgetApplyEnter(DndClass *dnd, Window widgets_window,
-               Window from, Atom action, int x, int y, Time t, Atom * typelist);
-static int   TkDND_WidgetApplyPosition(DndClass *dnd, Window widgets_window,
-               Window from, Atom action, Atom *actionList,
-               int x, int y, Time t, Atom * typelist, int *want_position,
-               Atom *supported_action, Atom *desired_type,
-               XRectangle * rectangle);
-static int   TkDND_WidgetApplyLeave(DndClass *dnd, Window widgets_window);
+
 static int   TkDND_ParseAction(DndClass *dnd, DndInfo *infoPtr, DndType *typePtr,
                Atom default_action, Atom *supported_action,
                Atom *desired_type); /* Laurent Riesterer 06/07/2000 */
-static int   TkDND_WidgetInsertDrop(DndClass *dnd, unsigned char *data,
-               int length, int remaining, Window into, Window from, Atom type);
-static int   TkDND_WidgetAsk(DndClass *dnd, Window source, Window target,
-               Atom *action);
-static int   TkDND_WidgetGetData(DndClass *dnd, Window source, 
-               unsigned char **data, int *length, Atom type);
-static void  TkDND_HandleEvents (DndClass *dnd, XEvent *xevent);
-static Atom *TkDND_GetCurrentAtoms(XDND *dnd, Window window);
-static int   TkDND_SetCursor(DndClass *dnd, int cursor);
-static int   TkDND_XDNDHandler(Tk_Window winPtr, XEvent *eventPtr);
        int   TkDND_AddHandler(Tcl_Interp *interp, Tk_Window topwin,
                Tcl_HashTable *table, char *windowPath, char *typeStr,
                unsigned long eventType, unsigned long eventMask,

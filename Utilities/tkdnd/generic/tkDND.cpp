@@ -42,7 +42,7 @@
  * NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
  * MODIFICATIONS.
  *
- * RCS: @(#) $Id: tkDND.cpp,v 1.7 2007-09-20 14:52:44 barre Exp $
+ * RCS: @(#) $Id: tkDND.cpp,v 1.8 2007-09-20 15:29:37 barre Exp $
  */
 
 #include "tkDND.h"
@@ -69,6 +69,7 @@ extern "C" {
 #endif
 DLLEXPORT int Tkdnd_Init(Tcl_Interp *interp);
 DLLEXPORT int Tkdnd_SafeInit(Tcl_Interp *interp);
+void       TkDND_DestroyEventProc(ClientData clientData, XEvent *eventPtr);
 #ifdef __cplusplus
 }
 #endif
@@ -89,7 +90,6 @@ int        TkDND_DelHandler(DndInfo *infoPtr, char *typeStr,
 int        TkDND_DelHandlerByName(Tcl_Interp *interp, Tk_Window topwin,
                 Tcl_HashTable *table, char *windowPath, char *typeStr,
                 unsigned long eventType, unsigned long eventMask);
-void       TkDND_DestroyEventProc(ClientData clientData, XEvent *eventPtr);
 int        TkDND_GetCurrentTypes(Tcl_Interp *interp, Tk_Window topwin,
                 Tcl_HashTable *table, char *windowPath);
 char      *TkDND_GetCurrentTypeName(void);
