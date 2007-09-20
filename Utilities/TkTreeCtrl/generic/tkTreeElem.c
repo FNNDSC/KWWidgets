@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeElem.c,v 1.4 2007-09-19 19:18:43 barre Exp $
+ * RCS: @(#) $Id: tkTreeElem.c,v 1.5 2007-09-20 15:00:42 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -361,7 +361,7 @@ static int StringTableSet(
     if ((flags & TK_OPTION_NULL_OK) && objEmpty)
   (*value) = NULL;
     else {
-  if (Tcl_GetIndexFromObj(interp, (*value), info->tablePtr,
+   if (Tcl_GetIndexFromObj(interp, (*value), (CONST84 char **)info->tablePtr,
         info->msg, 0, &new) != TCL_OK)
       return TCL_ERROR;
     }
@@ -2722,7 +2722,7 @@ static void TextTraceSet(Tcl_Interp *interp, ElementText *elemX)
   Tcl_TraceVar2(interp, Tcl_GetString(varNameObj),
       NULL,
       TCL_GLOBAL_ONLY | TCL_TRACE_WRITES | TCL_TRACE_UNSETS,
-      VarTraceProc_Text, (ClientData) elemX);
+      (Tcl_VarTraceProc*)VarTraceProc_Text, (ClientData) elemX);
     }
 }
 
@@ -2735,7 +2735,7 @@ static void TextTraceUnset(Tcl_Interp *interp, ElementText *elemX)
   Tcl_UntraceVar2(interp, Tcl_GetString(varNameObj),
       NULL,
       TCL_GLOBAL_ONLY | TCL_TRACE_WRITES | TCL_TRACE_UNSETS,
-      VarTraceProc_Text, (ClientData) elemX);
+      (Tcl_VarTraceProc*)VarTraceProc_Text, (ClientData) elemX);
     }
 }
 
@@ -4157,7 +4157,7 @@ int TreeElement_Init(Tcl_Interp *interp)
   1006, sizeof(ElementTextData),
   -1,
   Tk_Offset(ElementTextData, dataType),
-  StringTableCO_Alloc("-datatype", textDataTypeST),
+  StringTableCO_Alloc("-datatype", (CONST char **)textDataTypeST),
   ElementTextDataInit);
     DynamicCO_Init(elemTypeText.optionSpecs, "-format",
   1006, sizeof(ElementTextData),
@@ -4170,7 +4170,7 @@ int TreeElement_Init(Tcl_Interp *interp)
   1005, sizeof(ElementTextLayout),
   -1,
   Tk_Offset(ElementTextLayout, justify),
-  StringTableCO_Alloc("-justify", textJustifyST),
+  StringTableCO_Alloc("-justify", (CONST char **)textJustifyST),
   ElementTextLayoutInit);
     DynamicCO_Init(elemTypeText.optionSpecs, "-lines",
   1005, sizeof(ElementTextLayout),
@@ -4191,7 +4191,7 @@ int TreeElement_Init(Tcl_Interp *interp)
   1005, sizeof(ElementTextLayout),
   -1,
   Tk_Offset(ElementTextLayout, wrap),
-  StringTableCO_Alloc("-wrap", textWrapST),
+  StringTableCO_Alloc("-wrap", (CONST char **)textWrapST),
   ElementTextLayoutInit);
 
     DynamicCO_Init(elemTypeText.optionSpecs, "-draw",
