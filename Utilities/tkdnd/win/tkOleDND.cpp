@@ -60,12 +60,22 @@ FILE                  *TkDND_Log;
 #endif
 DndClass              *dnd;
 
+/*
+ * For C++ compilers, use extern "C"
+ */
+#ifdef __cplusplus
+extern "C" {
+#endif
+void  TkDND_DestroyEventProc(ClientData clientData, XEvent *eventPtr);
+#ifdef __cplusplus
+}
+#endif
+
 extern int   TkDND_DelHandler(DndInfo *infoPtr, char *typeStr, char *eventStr,
                     unsigned long eventType, unsigned long eventMask);
 extern int   TkDND_DelHandlerByName(Tcl_Interp *interp, Tk_Window topwin,
                     Tcl_HashTable *table, char *windowPath, char *typeStr,
                     unsigned long eventType, unsigned long eventMask);
-extern void  TkDND_DestroyEventProc(ClientData clientData, XEvent *eventPtr);
 extern int   TkDND_FindMatchingScript(Tk_Window tkwin, Tcl_HashTable *table,
                     char *windowPath, char *typeStr, CLIPFORMAT type,
                     unsigned long eventType, unsigned long eventMask,

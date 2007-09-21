@@ -53,12 +53,22 @@ extern Tcl_HashTable   TkDND_TargetTable;
 extern Tcl_HashTable   TkDND_SourceTable;
 extern DndClass       *dnd;
 
+/*
+ * For C++ compilers, use extern "C"
+ */
+#ifdef __cplusplus
+extern "C" {
+#endif
+void  TkDND_DestroyEventProc(ClientData clientData, XEvent *eventPtr);
+#ifdef __cplusplus
+}
+#endif
+
 extern int   TkDND_DelHandler(DndInfo *infoPtr, char *typeStr, char *eventStr,
                     unsigned long eventType, unsigned long eventMask);
 extern int   TkDND_DelHandlerByName(Tcl_Interp *interp, Tk_Window topwin,
                     Tcl_HashTable *table, char *windowPath, char *typeStr,
                     unsigned long eventType, unsigned long eventMask);
-extern void  TkDND_DestroyEventProc(ClientData clientData, XEvent *eventPtr);
 extern int   TkDND_FindMatchingScript(Tcl_HashTable *table,
                     char *windowPath, char *typeStr, CLIPFORMAT typelist[],
                     unsigned long eventType, unsigned long eventMask,
