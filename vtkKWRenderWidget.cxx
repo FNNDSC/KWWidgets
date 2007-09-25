@@ -43,7 +43,7 @@
 #include <vtksys/stl/vector>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.153 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.154 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -2030,6 +2030,22 @@ void vtkKWRenderWidget::UpdateEnableState()
 void vtkKWRenderWidget::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os, indent);
+
+  int i;
+
+  os << indent << "Renderers: " << endl;
+  for (i = 0; i < this->GetNumberOfRenderers(); i++)
+    {
+    os << indent << "   #" << i << ": " 
+       << this->GetNthRenderer(i) << endl;
+    }
+
+  os << indent << "Overlay Renderers: " << endl;
+  for (i = 0; i < this->GetNumberOfOverlayRenderers(); i++)
+    {
+    os << indent << "   #" << i << ": " 
+       << this->GetNthOverlayRenderer(i) << endl;
+    }
 
   os << indent << "SupportCornerAnnotation: " 
     << (this->SupportCornerAnnotation ? "On" : "Off") << endl;
