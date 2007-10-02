@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTree );
-vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.38 $");
+vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.39 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTreeInternals
@@ -921,6 +921,16 @@ void vtkKWTree::SetNodeSelectableFlag(const char *node, int flag)
     {
     this->Script("%s itemconfigure %s -selectable %d", 
                  this->GetWidgetName(), node, flag);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWTree::SetNodeWindow(const char *node, vtkKWWidget *w)
+{
+  if (this->IsCreated() && node && *node && w && w->IsCreated())
+    {
+    this->Script("%s itemconfigure %s -window %s", 
+                 this->GetWidgetName(), node, w->GetWidgetName());
     }
 }
 

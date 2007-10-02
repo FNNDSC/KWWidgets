@@ -252,6 +252,12 @@ public:
     unsigned long buffer_length = 0);
   
   // Description:
+  // Specifies a window/widget to display at the left of the label of a node.
+  // This option overrides any image option.
+  // Note that this window/widget *has* to be a child of this tree instance.
+  virtual void SetNodeWindow(const char *node, vtkKWWidget *w);
+
+  // Description:
   // Set/Get the distance between image or window and text of a node.
   virtual void SetNodePadX(const char *node, int);
   virtual int GetNodePadX(const char *node);
