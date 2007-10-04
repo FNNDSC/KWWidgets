@@ -365,7 +365,8 @@ public:
   vtkBooleanMacro(SelectSpinButtonsVisibility,int);
 
   // Description:
-  // Set/Get the visibility of the locate preset button (hidden by default).
+  // Set/Get the visibility of the locate preset button and the "Locate" menu
+  // entry in the context menu (hidden by default).
   // If visible, triggering this button will locate all selected presets
   // by calling the GetPresetFileName method and trying to open
   // the directory they are in and select the proper file.
@@ -373,23 +374,34 @@ public:
   virtual void SetLocateButtonVisibility(int);
   vtkGetMacro(LocateButtonVisibility,int);
   vtkBooleanMacro(LocateButtonVisibility,int);
+  vtkSetMacro(LocateMenuEntryVisibility,int);
+  vtkGetMacro(LocateMenuEntryVisibility,int);
+  vtkBooleanMacro(LocateMenuEntryVisibility,int);
 
   // Description:
-  // Set/Get the visibility of the email preset button (hidden by default).
+  // Set/Get the visibility of the email preset button and the "Email" menu 
+  // entry in the context menu (hidden by default).
   // If visible, triggering this button will email all selected presets
   // as attachments. The attachment location is retrieved by calling
   // the GetPresetFileName method. Win32/MAPI only at the moment.
   virtual void SetEmailButtonVisibility(int);
   vtkGetMacro(EmailButtonVisibility,int);
   vtkBooleanMacro(EmailButtonVisibility,int);
+  vtkSetMacro(EmailMenuEntryVisibility,int);
+  vtkGetMacro(EmailMenuEntryVisibility,int);
+  vtkBooleanMacro(EmailMenuEntryVisibility,int);
 
   // Description:
-  // Set/Get the visibility of the remove preset button (visible by default).
+  // Set/Get the visibility of the remove preset button or the "Remove" entry
+  // in the context menu (visible by default).
   // If visible, triggering this button will remove all selected presets and
   // eventually call the callbacks that was set using SetPresetRemoveCommand.
   virtual void SetRemoveButtonVisibility(int);
   vtkGetMacro(RemoveButtonVisibility,int);
   vtkBooleanMacro(RemoveButtonVisibility,int);
+  vtkGetMacro(RemoveMenuEntryVisibility,int);
+  vtkSetMacro(RemoveMenuEntryVisibility,int);
+  vtkBooleanMacro(RemoveMenuEntryVisibility,int);
 
   // Description:
   // Specifies a command to associate with the widget. This command is 
@@ -413,7 +425,10 @@ public:
   // collect the relevant information to update in the preset. The application
   // is then free to update the preset's fields independently (using the
   // SetPresetGroup(), SetPresetComment(), SetPreset...() methods).
-  // Note that if not set, the "update selected preset" button is not visible.
+  // Note that if this command is not set, the corresponding 
+  // "update selected preset" button is not visible.
+  // Note that if this command is not set, the corresponding "Update" entry 
+  // is not shown in the context menu.
   // The 'object' argument is the object that will have the method called on
   // it. The 'method' argument is the name of the method to be called and any
   // arguments in string form. If the object is NULL, the method is still
@@ -430,8 +445,10 @@ public:
   // for the application to query the preset's fields independently (using the
   // GetPresetGroup(), GetPresetComment(), GetPreset...() methods) and
   // apply those values to the relevant objects.
-  // Note that if not set or ApplyPresetOnSelection is On, the 
-  // "apply selected preset" button is not visible.
+  // Note that if this command is not set or if ApplyPresetOnSelection is On, 
+  // the corresponding "apply selected preset" button is not visible.
+  // Note that if this command is not set, the corresponding "Apply" entry 
+  // is not shown in the context menu.
   // The 'object' argument is the object that will have the method called on
   // it. The 'method' argument is the name of the method to be called and any
   // arguments in string form. If the object is NULL, the method is still
@@ -613,8 +630,11 @@ protected:
   int ApplyPresetOnSelection;
   int SelectSpinButtonsVisibility;
   int EmailButtonVisibility;
+  int EmailMenuEntryVisibility;
   int LocateButtonVisibility;
+  int LocateMenuEntryVisibility;
   int RemoveButtonVisibility;
+  int RemoveMenuEntryVisibility;
 
   int ThumbnailSize;
   int ScreenshotSize;

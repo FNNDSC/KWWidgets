@@ -58,7 +58,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.55 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.56 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -220,8 +220,11 @@ vtkKWPresetSelector::vtkKWPresetSelector()
   this->ApplyPresetOnSelection = 1;
   this->SelectSpinButtonsVisibility = 1;
   this->LocateButtonVisibility = 0;
+  this->LocateMenuEntryVisibility = 0;
   this->RemoveButtonVisibility = 1;
+  this->RemoveMenuEntryVisibility = 1;
   this->EmailButtonVisibility = 0;
+  this->EmailMenuEntryVisibility = 0;
 
   this->ThumbnailSize = 32;
   this->ScreenshotSize = 144;
@@ -594,7 +597,7 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
     return;
     }
 
-  char command[256];
+  char command[256], label[256];
 
   const char *filename = this->GetPresetFileName(id);
   int has_file = 
@@ -618,12 +621,15 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
 
   // remove preset
 
-  sprintf(command, "PresetRemoveCallback %d", id);
-  menu->AddCommand("Remove", this, command);
+  if (this->RemoveMenuEntryVisibility)
+    {
+    sprintf(command, "PresetRemoveCallback %d", id);
+    menu->AddCommand("Remove", this, command);
+    }
 
   // locate preset
 
-  if (has_file)
+  if (has_file && this->LocateMenuEntryVisibility)
     {
     sprintf(command, "PresetLocateCallback %d", id);
     menu->AddCommand("Locate", this, command);
@@ -631,10 +637,46 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
 
   // email preset
 
-  if (has_file)
+  if (has_file && this->EmailMenuEntryVisibility)
     {
     sprintf(command, "PresetEmailCallback %d", id);
     menu->AddCommand("Email", this, command);
+    }
+
+  // now the editable fields
+
+  vtkKWMultiColumnList *list = this->PresetList->GetWidget();
+  int added_editable = 0, col_vis = 0, nb_columns = list->GetNumberOfColumns();
+  for (int col = 0; col < nb_columns; col++)
+    {
+    if (list->GetColumnVisibility(col))
+      {
+      col_vis++;
+      if (list->GetColumnEditable(col))
+        {
+        int row = this->GetPresetRow(id);
+        if (row >= 0 && list->GetCellEditable(row, col))
+          
+          {
+          sprintf(command, "EditCell %d %d", row, col);
+          const char *col_name = list->GetColumnName(col);
+          if (col_name)
+            {
+            sprintf(label, "Edit %s", col_name);
+            }
+          else
+            {
+            sprintf(label, "Edit column %d", col_vis);
+            }
+          if (!added_editable)
+            {
+            menu->AddSeparator();
+            added_editable = 1;
+            }
+          menu->AddCommand(label, list, command);
+          }
+        }
+      }
     }
 }
 
