@@ -22,7 +22,7 @@
 #include <vtksys/stl/list>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWMostRecentFilesManager, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWMostRecentFilesManager, "$Revision: 1.17 $");
 vtkStandardNewMacro(vtkKWMostRecentFilesManager );
 
 #define VTK_KW_MRF_REGISTRY_FILENAME_KEYNAME_PATTERN "File%02d"
@@ -298,20 +298,30 @@ void vtkKWMostRecentFilesManager::SaveFilesToRegistry(
         {
         target_command = this->DefaultTargetCommand;
         }
+      sprintf(command_key,
+              VTK_KW_MRF_REGISTRY_COMMAND_KEYNAME_PATTERN, count);
       if (target_command && *target_command)
         {
-        sprintf(command_key,
-                VTK_KW_MRF_REGISTRY_COMMAND_KEYNAME_PATTERN, count);
         this->GetApplication()->SetRegistryValue(
           1, reg_key, command_key, target_command);
         }
+      else
+        {
+        this->GetApplication()->DeleteRegistryValue(
+          1, reg_key, command_key);
+        }
 
+      sprintf(label_key,
+              VTK_KW_MRF_REGISTRY_LABEL_KEYNAME_PATTERN, count);
       if ((*it)->Label.size())
         {
-        sprintf(label_key,
-                VTK_KW_MRF_REGISTRY_LABEL_KEYNAME_PATTERN, count);
         this->GetApplication()->SetRegistryValue(
           1, reg_key, label_key, (*it)->Label.c_str());
+        }
+      else
+        {
+        this->GetApplication()->DeleteRegistryValue(
+          1, reg_key, label_key);
         }
       ++count;
       }
