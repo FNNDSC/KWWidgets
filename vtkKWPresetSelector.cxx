@@ -28,6 +28,7 @@
 #include "vtkKWMultiColumnListWithScrollbars.h"
 #include "vtkKWPushButton.h"
 #include "vtkKWPushButtonSet.h"
+#include "vtkKWToolbar.h"
 #include "vtkObjectFactory.h"
 #include "vtkRenderWindow.h"
 #include "vtkWindowToImageFilter.h"
@@ -58,7 +59,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.56 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.57 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -231,6 +232,8 @@ vtkKWPresetSelector::vtkKWPresetSelector()
   this->PromptBeforeRemovePreset = 1;
 
   this->ContextMenu = NULL;
+
+  this->Toolbar = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -297,6 +300,12 @@ vtkKWPresetSelector::~vtkKWPresetSelector()
     {
     this->ContextMenu->Delete();
     this->ContextMenu = NULL;
+    }
+
+  if (this->Toolbar)
+    {
+    this->Toolbar->Delete();
+    this->Toolbar = NULL;
     }
 }
 
@@ -3052,6 +3061,33 @@ void vtkKWPresetSelector::InvokePresetHasChangedCommand(int id)
     }
 }
 
+//----------------------------------------------------------------------------
+vtkKWToolbar* vtkKWPresetSelector::GetToolbar()
+{
+  if (!this->Toolbar)
+    {
+    this->Toolbar = vtkKWToolbar::New();
+    }
+
+  return this->Toolbar;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWPresetSelector::CreateToolbar()
+{
+  if (!this->Toolbar)
+    {
+    return;
+    }
+
+  if (!this->Toolbar->GetParent())
+    {
+    this->Toolbar->SetParent(this);
+    }
+
+  this->Toolbar->Create();
+}
+
 //---------------------------------------------------------------------------
 void vtkKWPresetSelector::Update()
 {
@@ -3079,6 +3115,8 @@ void vtkKWPresetSelector::UpdateEnableState()
     {
     this->PresetButtons->SetEnabled(this->GetEnabled());
     }
+
+  this->PropagateEnableState(this->Toolbar);
 }
 
 //----------------------------------------------------------------------------

@@ -47,6 +47,7 @@ class vtkKWPresetSelectorInternals;
 class vtkKWPushButtonSet;
 class vtkRenderWindow;
 class vtkKWMenu;
+class vtkKWToolbar;
 
 class KWWidgets_EXPORT vtkKWPresetSelector : public vtkKWCompositeWidget
 {
@@ -557,6 +558,18 @@ public:
   virtual void PresetCellUpdatedCallback(int row, int col, const char *text);
 
   // Description:
+  // Retrieve the toolbar. Use that method to set the parent of this object to
+  // a specific widget or toolbar set (vtkKWToolbarSet), before calling 
+  // CreateToolbar.
+ virtual vtkKWToolbar* GetToolbar();
+
+  // Description:
+  // Create the toolbar. If the toolbar has to be placed in a specific location
+ // in the application, call the GetToolbar method and set the toolbar parent
+ // beforehand.
+  virtual void CreateToolbar();
+
+  // Description:
   // Some constants
   //BTX
   static const char *IdColumnName;
@@ -725,6 +738,8 @@ protected:
   // Return the number of selected presets with filename
   virtual int GetNumberOfSelectedPresetsWithFileName();
 
+  vtkKWToolbar *Toolbar;
+  
 private:
 
   // Description:
