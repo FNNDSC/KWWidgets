@@ -136,7 +136,7 @@ public:
   // Description:
   // Save/retrieve the last geometry to/from the registry.
   virtual void SaveGeometryToRegistry();
-  virtual void ReloadGeometryFromRegistry();
+  virtual void RestoreGeometryFromRegistry();
 
   // Description:
   // Save/retrieve the last path to/from the registry.

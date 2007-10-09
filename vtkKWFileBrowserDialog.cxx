@@ -25,6 +25,7 @@
 #include "vtkKWLabel.h"
 #include "vtkKWMessageDialog.h"
 #include "vtkKWPushButton.h"
+#include "vtkKWRegistryHelper.h"
 #include "vtkKWSplitFrame.h"
 #include "vtkKWTkUtilities.h"
 
@@ -37,7 +38,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.33 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.34 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -49,7 +50,7 @@ public:
     this->CurrentFileExtensions = ".*";
     this->CurrentSelectedFileNames = "";
     this->IsEditingFileName = 0;
-    this->GeometryRegKey = "Geometry";
+    this->GeometryRegKey = "KWFileBrowserGeometry";
   }
   
   vtksys_stl::string CurrentFileExtensions;
@@ -220,11 +221,6 @@ void vtkKWFileBrowserDialog::CreateWidget()
   this->AddCallbackCommandObservers();
 
   this->Update();
-
-  if(this->GetApplication()->GetSaveUserInterfaceGeometry())
-    {
-    this->ReloadGeometryFromRegistry();
-    }
 }
 
 //----------------------------------------------------------------------------
@@ -344,90 +340,149 @@ void vtkKWFileBrowserDialog::SaveGeometryToRegistry()
 {
   if (this->IsCreated())
     {
-    vtkKWApplication* app = this->GetApplication();
-    vtkKWFileBrowserWidget* widget = this->GetFileBrowserWidget();
+    vtkKWRegistryHelper* registryhelper = vtkKWRegistryHelper::New();
     const char* subkey =  this->Internals->GeometryRegKey.c_str();
+    if (!registryhelper->Open(VTK_KW_FAVORITE_TOPLEVEL, subkey, 1)) 
+      {
+      vtkErrorMacro(
+        "Error! Failed to open the registry key for writing!");
+      registryhelper->Delete();
+      return;
+      }
+
+    char value[vtkKWRegistryHelper::RegistryKeyValueSizeMax];
+
+    vtkKWFileBrowserWidget* widget = this->GetFileBrowserWidget();
     
     int width, height;
     vtkKWTkUtilities::GetWidgetSize(this, &width, &height);
-    app->SetRegistryValue(2, subkey, "FileBrowserDialogWidth", "%d", width);
-    app->SetRegistryValue(2, subkey, "FileBrowserDialogHeight", "%d", height);
+    sprintf(value, "%d", width);
+    if(this->ChooseDirectory)
+      {
+      registryhelper->SetValue(subkey, "DirExplorerDialogWidth", value);
+      }
+    else
+      {
+      registryhelper->SetValue(subkey, "FileBrowserDialogWidth", value);
+      }
 
-    vtkKWTkUtilities::GetWidgetSize(widget, &width, &height);
-    app->SetRegistryValue(2, subkey, "FileBrowserWidgetWidth", "%d", width);
+    sprintf(value, "%d", height);
+    if(this->ChooseDirectory)
+      {
+      registryhelper->SetValue(subkey, "DirExplorerDialogHeight", value);
+      }
+    else
+      {
+      registryhelper->SetValue(subkey, "FileBrowserDialogHeight", value);
 
-    vtkKWTkUtilities::GetWidgetSize(widget->GetDirFileFrame(), &width, &height);
-    app->SetRegistryValue(2, subkey, "FileBrowserDirFileFrameWidth", "%d", width);
-    vtkKWTkUtilities::GetWidgetSize(widget->GetMainFrame(), &width, &height);
-    app->SetRegistryValue(2, subkey, "FileBrowserMainFrameWidth", "%d", width);
+      vtkKWTkUtilities::GetWidgetSize(widget, &width, &height);
+      sprintf(value, "%d", width);
+      registryhelper->SetValue(subkey, "FileBrowserWidgetWidth",value);
 
-    app->SetRegistryValue(2, subkey, "FileBrowserWidgetMainFrame1Size", "%d", 
-      widget->GetMainFrame()->GetFrame1Size());
-    app->SetRegistryValue(2, subkey, "FileBrowserWidgetSubFrame1Size", "%d", 
-      widget->GetDirFileFrame()->GetFrame1Size());
+      vtkKWTkUtilities::GetWidgetSize(widget->GetDirFileFrame(), &width, &height);
+      sprintf(value, "%d", width);
+      registryhelper->SetValue(subkey, "FileBrowserDirFileFrameWidth", value);
+      vtkKWTkUtilities::GetWidgetSize(widget->GetMainFrame(), &width, &height);
+      sprintf(value, "%d", width);
+      registryhelper->SetValue(subkey, "FileBrowserMainFrameWidth", value);
+      sprintf(value, "%d", widget->GetDirFileFrame()->GetFrame1Size());
+      registryhelper->SetValue(subkey, "FileBrowserWidgetSubFrame1Size", value);
+      }
+
+    sprintf(value, "%d", widget->GetMainFrame()->GetFrame1Size());
+    registryhelper->SetValue(subkey, "FileBrowserWidgetMainFrame1Size", value);
 
     int x, y;
     this->GetPosition(&x, &y);
-    app->SetRegistryValue(2, subkey, "FileBrowserDialogPosX", "%d", x);
-    app->SetRegistryValue(2, subkey, "FileBrowserDialogPosY", "%d", y);
+    sprintf(value, "%d", x);
+    registryhelper->SetValue(subkey, "FileBrowserDialogPosX", value);
+    sprintf(value, "%d", y);
+    registryhelper->SetValue(subkey, "FileBrowserDialogPosY", value);
+    registryhelper->Delete();
     }
 }
 
 //----------------------------------------------------------------------------
-void vtkKWFileBrowserDialog::ReloadGeometryFromRegistry()
+void vtkKWFileBrowserDialog::RestoreGeometryFromRegistry()
 {
   if (this->IsCreated())
     {
-    int width = 0, height = 0;
-    vtkKWApplication* app = this->GetApplication();
-    vtkKWFileBrowserWidget* widget = this->GetFileBrowserWidget();
+    vtkKWRegistryHelper* registryhelper = vtkKWRegistryHelper::New();
     const char* subkey =  this->Internals->GeometryRegKey.c_str();
-    
-    if (app->HasRegistryValue(2, subkey, "FileBrowserDialogWidth"))
+    if (!registryhelper->Open(VTK_KW_FAVORITE_TOPLEVEL, subkey, 0)) 
       {
-      width = app->GetIntRegistryValue(2, subkey, "FileBrowserDialogWidth");
+      registryhelper->Delete();
+      return;
       }  
-    if (app->HasRegistryValue(2, subkey, "FileBrowserDialogHeight"))
+
+    vtkKWFileBrowserWidget* widget = this->GetFileBrowserWidget();
+    char value[vtkKWRegistryHelper::RegistryKeyValueSizeMax];
+    int width = 0, height = 0;
+    
+    vtksys_stl::string widthKey, heightKey;
+    if(this->ChooseDirectory)
       {
-      height = app->GetIntRegistryValue(2, subkey, "FileBrowserDialogHeight");
+      widthKey = "DirExplorerDialogWidth";
+      heightKey = "DirExplorerDialogHeight";
+      }
+    else
+      {
+      widthKey = "FileBrowserDialogWidth";
+      heightKey = "FileBrowserDialogHeight";
+      }
+
+    value[0]=0;
+    if (registryhelper->ReadValue(subkey, widthKey.c_str(), value))
+      {
+      width = *value ? atoi(value) : 0;
+      }
+    value[0]=0;
+    if (registryhelper->ReadValue(subkey, heightKey.c_str(), value))
+      {
+      height = *value ? atoi(value) : 0;
       }  
     if(width > 0 && height > 0)
       {
       this->SetSize(width, height);
       }
 
-    width = 0;
-    if (app->HasRegistryValue(2, subkey, "FileBrowserWidgetWidth"))
+    if(!this->ChooseDirectory)
       {
-      width = app->GetIntRegistryValue(2, subkey, "FileBrowserWidgetWidth");
-      }  
-    if(width > 0)
-      {
-      widget->SetWidth(width);
+      value[0]=0;
+      if (registryhelper->ReadValue(subkey, "FileBrowserWidgetWidth", value))
+        {
+        width = *value ? atoi(value) : 0;
+        if(width > 0)
+          {
+          widget->SetWidth(width);
+          }
+        }  
+
+      value[0]=0;
+      if (registryhelper->ReadValue(subkey, "FileBrowserMainFrameWidth", value))
+        {
+        width = *value ? atoi(value) : 0;
+        if(width > 0)
+          {
+          widget->GetMainFrame()->SetWidth(width);
+          }
+        }  
+      
+      value[0]=0;
+      if (registryhelper->ReadValue(subkey, "FileBrowserDirFileFrameWidth", value))
+        {
+        width = *value ? atoi(value) : 0;
+        if(width > 0)
+          {
+          widget->GetDirFileFrame()->SetWidth(width);
+          }   
+        }
       }
 
-    width = 0;
-    if (app->HasRegistryValue(2, subkey, "FileBrowserMainFrameWidth"))
+    value[0]=0;
+    if (registryhelper->ReadValue(subkey, "FileBrowserWidgetMainFrame1Size", value))
       {
-      width = app->GetIntRegistryValue(2, subkey, "FileBrowserMainFrameWidth");
-      }  
-    if(width > 0)
-      {
-      widget->GetMainFrame()->SetWidth(width);
-      }
-    if (app->HasRegistryValue(2, subkey, "FileBrowserDirFileFrameWidth"))
-      {
-      width = app->GetIntRegistryValue(2, subkey, "FileBrowserDirFileFrameWidth");
-      }
-    if(width > 0)
-      {
-      widget->GetDirFileFrame()->SetWidth(width);
-      }   
-
-    if (app->HasRegistryValue(2, subkey, "FileBrowserWidgetMainFrame1Size"))
-      {
-      width = app->GetIntRegistryValue(
-        2, subkey, "FileBrowserWidgetMainFrame1Size");
+      width = *value ? atoi(value) : 0;
       if( width > 0)
         {
         widget->GetMainFrame()->SetFrame1Size(width);
@@ -435,37 +490,47 @@ void vtkKWFileBrowserDialog::ReloadGeometryFromRegistry()
       }  
 
     // This is necessary to get the size right
-    this->GetApplication()->ProcessPendingEvents();
-
-    if (app->HasRegistryValue(2, subkey, "FileBrowserWidgetSubFrame1Size"))
+    //this->GetApplication()->ProcessPendingEvents();
+    if(!this->ChooseDirectory)
       {
-      width = app->GetIntRegistryValue(
-        2, subkey, "FileBrowserWidgetSubFrame1Size");
-      if( width > 0)
+      value[0]=0;
+      if (registryhelper->ReadValue(subkey, "FileBrowserWidgetSubFrame1Size", value))
         {
-        widget->GetDirFileFrame()->SetFrame1Size(width);
+        width = *value ? atoi(value) : 0;
+        if( width > 0)
+          {
+          widget->GetDirFileFrame()->SetFrame1Size(width);
+          }
         }
       }
 
     int x=-1, y=-1;
-    if (app->HasRegistryValue(2, subkey, "FileBrowserDialogPosX"))
+    value[0]=0;
+    if (registryhelper->ReadValue(subkey, "FileBrowserDialogPosX", value))
       {
-      x = app->GetIntRegistryValue(2, subkey, "FileBrowserDialogPosX");
+      x = *value ? atoi(value) : 0;
       }
-    if (app->HasRegistryValue(2, subkey, "FileBrowserDialogPosY"))
+    value[0]=0;
+    if (registryhelper->ReadValue(subkey, "FileBrowserDialogPosY", value))
       {
-      y = app->GetIntRegistryValue(2, subkey, "FileBrowserDialogPosY");
+      y = *value ? atoi(value) : 0;
       }
     if(x>=0 && y>=0)
       {
       this->SetPosition(x, y);
       }
+    registryhelper->Delete();
     }
 }
 
 //----------------------------------------------------------------------------
 void vtkKWFileBrowserDialog::Display()
 {
+  if(this->GetApplication()->GetSaveUserInterfaceGeometry())
+    {
+    this->RestoreGeometryFromRegistry();
+    }
+
   this->Superclass::Display();
   
   this->PopulateFileTypes(); 

@@ -40,7 +40,6 @@
 #define VTK_KW_DIR_REGISTRY_PATHNAME_KEYNAME_PATTERN "Path%02d"
 #define VTK_KW_DIR_REGISTRY_LABEL_KEYNAME_PATTERN "Path%02dLabel"
 
-#define VTK_KW_FAVORITE_TOPLEVEL "KWFileBrowserFavorites"
 #define VTK_KW_FAVORITE_DIR_KEY "KWFavoriteDirs"
 
 #define VTK_KW_DIR_REGISTRY_MAX_ENTRIES 30
@@ -57,7 +56,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.22 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.23 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals

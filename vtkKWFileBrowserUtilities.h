@@ -32,6 +32,7 @@
     
 #define KWFileBrowser_UNIX_ROOT_DIRECTORY "/"
 #define KWFileBrowser_ESCAPE_CHARS "{}[]$\"\\"
+#define VTK_KW_FAVORITE_TOPLEVEL "KWFileBrowserFavorites"
 
 static char* KWFileBrowser_GetUnixPath(const char* path)                                    
 {
