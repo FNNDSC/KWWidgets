@@ -38,7 +38,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.34 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.35 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -398,6 +398,7 @@ void vtkKWFileBrowserDialog::SaveGeometryToRegistry()
     registryhelper->SetValue(subkey, "FileBrowserDialogPosX", value);
     sprintf(value, "%d", y);
     registryhelper->SetValue(subkey, "FileBrowserDialogPosY", value);
+    registryhelper->Close();
     registryhelper->Delete();
     }
 }
@@ -490,7 +491,7 @@ void vtkKWFileBrowserDialog::RestoreGeometryFromRegistry()
       }  
 
     // This is necessary to get the size right
-    //this->GetApplication()->ProcessPendingEvents();
+    this->GetApplication()->ProcessPendingEvents();
     if(!this->ChooseDirectory)
       {
       value[0]=0;
@@ -519,6 +520,7 @@ void vtkKWFileBrowserDialog::RestoreGeometryFromRegistry()
       {
       this->SetPosition(x, y);
       }
+    registryhelper->Close();
     registryhelper->Delete();
     }
 }
