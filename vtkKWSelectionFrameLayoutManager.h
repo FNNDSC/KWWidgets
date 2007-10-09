@@ -133,7 +133,8 @@ public:
   // resolution to (1, 1) to display only the first column and first row: the
   // next time the resolution is set to, say, (4, 4), the widget at (2, 3)
   // will be shown).
-  // Return 1 (or widget) on success, 0 (or NULL) on error
+  // Return 1 (or widget) on success (and if the position was really changed),
+  // 0 (or NULL) on error.
   virtual int GetWidgetPosition(vtkKWSelectionFrame *w, int *col, int *row);
   virtual int GetWidgetPosition(vtkKWSelectionFrame *w, int pos[2])
     { return this->GetWidgetPosition(w, pos, pos + 1); }
@@ -383,8 +384,10 @@ protected:
 
   // Description:
   // Reorganize positions of widgets so that the grid defined
-  // by the current resolution is filled
-  virtual void ReorganizeWidgetPositions();
+  // by the current resolution is filled.
+  // Return the number of reorganized widgets (number of widgets which 
+  // position was changed).
+  virtual int ReorganizeWidgetPositions();
 
   // Description:
   // Can a given widget's title be changed to a new one
@@ -408,7 +411,8 @@ protected:
   virtual void DeleteWidget(vtkKWSelectionFrame *widget);
 
   // Description:
-  // Set the widget position without repacking
+  // Set the widget position without repacking.
+  // Return 1 if the position was changed, 0 otherwise.
   virtual int SetWidgetPositionInternal(
     vtkKWSelectionFrame *w, int col, int row);
 

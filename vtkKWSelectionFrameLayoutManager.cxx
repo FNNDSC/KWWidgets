@@ -75,7 +75,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.74 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.75 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -298,7 +298,9 @@ int vtkKWSelectionFrameLayoutManager::SetWidgetPositionInternal(
       this->Internals->Pool.end();
     for (; it != end; ++it)
       {
-      if (it->Widget && it->Widget == widget)
+      if (it->Widget && 
+          it->Widget == widget && 
+          (it->Position[0] != col || it->Position[1] != row))
         {
         it->Position[0] = col;
         it->Position[1] = row;
@@ -314,13 +316,13 @@ int vtkKWSelectionFrameLayoutManager::SetWidgetPositionInternal(
 int vtkKWSelectionFrameLayoutManager::SetWidgetPosition(
   vtkKWSelectionFrame *widget, int col, int row)
 {
-  if (this->SetWidgetPositionInternal(widget, col, row))
+  int res = this->SetWidgetPositionInternal(widget, col, row);
+  if (res)
     {
     this->Pack();
-    return 1;
     }
 
-  return 0;
+  return res;
 }
 
 //----------------------------------------------------------------------------
@@ -380,15 +382,15 @@ vtkKWSelectionFrameLayoutManager::SetReorganizeWidgetPositionsAutomatically(
   this->ReorganizeWidgetPositionsAutomatically = arg;
   this->Modified();
 
-  if (this->ReorganizeWidgetPositionsAutomatically)
+  if (this->ReorganizeWidgetPositionsAutomatically &&
+      this->ReorganizeWidgetPositions())
     {
-    this->ReorganizeWidgetPositions();
     this->Pack();
     }
 }
 
 //----------------------------------------------------------------------------
-void vtkKWSelectionFrameLayoutManager::ReorganizeWidgetPositions()
+int vtkKWSelectionFrameLayoutManager::ReorganizeWidgetPositions()
 {
   // Save selection, that could be affected by reorg
 
@@ -418,6 +420,7 @@ void vtkKWSelectionFrameLayoutManager::ReorganizeWidgetPositions()
   // Fill the holes in the grid with whatever widgets
   // which positions were out of the grid
 
+  int nb_reorganized = 0;
   it = this->Internals->Pool.begin();
   int i, j;
   for (j = 0; j < this->Resolution[1] && it != end; j++)
@@ -428,10 +431,11 @@ void vtkKWSelectionFrameLayoutManager::ReorganizeWidgetPositions()
         {
         while (it != end)
           {
-          if (it->Widget &&  !this->IsPositionInLayout(it->Position))
+          if (it->Widget && !this->IsPositionInLayout(it->Position))
             {
             it->Position[0] = this->Origin[0] + i;
             it->Position[1] = this->Origin[1] + j;
+            ++nb_reorganized;
             ++it;
             break;
             }
@@ -447,6 +451,8 @@ void vtkKWSelectionFrameLayoutManager::ReorganizeWidgetPositions()
     {
     this->MoveSelectionInsideVisibleLayout(sel_pos);
     }
+
+  return nb_reorganized;
 }
 
 //----------------------------------------------------------------------------
@@ -555,9 +561,9 @@ void vtkKWSelectionFrameLayoutManager::SetResolutionAndOrigin(
 
   // Reorganize and pack
 
-  if (this->ReorganizeWidgetPositionsAutomatically)
+  if (this->ReorganizeWidgetPositionsAutomatically &&
+      this->ReorganizeWidgetPositions())
     {
-    this->ReorganizeWidgetPositions();
     this->Pack();
     }
 
@@ -1316,9 +1322,9 @@ void vtkKWSelectionFrameLayoutManager::NumberOfWidgetsHasChanged()
 
   // Pack
 
-  if (this->ReorganizeWidgetPositionsAutomatically)
+  if (this->ReorganizeWidgetPositionsAutomatically &&
+      this->ReorganizeWidgetPositions())
     {
-    this->ReorganizeWidgetPositions();
     this->Pack();
     }
 }
