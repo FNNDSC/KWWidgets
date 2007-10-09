@@ -62,6 +62,8 @@ public:
   vtkGetObjectMacro(DirectoryExplorer, vtkKWDirectoryExplorer);
   vtkGetObjectMacro(FileListTable, vtkKWFileListTable);
   vtkGetObjectMacro(FavoriteDirectoriesFrame, vtkKWFavoriteDirectoriesFrame);
+  vtkGetObjectMacro(MainFrame, vtkKWSplitFrame);
+  vtkGetObjectMacro(DirFileFrame, vtkKWSplitFrame);
 
   // Description:
   // Set/Get the visibility of the directory explorer
@@ -113,7 +115,7 @@ public:
   // Set focus to directory explorer or file list table.
   virtual void SetFocusToDirectoryExplorer();
   virtual void SetFocusToFileListTable();
-  
+
   // Description:
   // Callback, do NOT use
   // When the "Add Favorites" button is clicked in the favorite directories

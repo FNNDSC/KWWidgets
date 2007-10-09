@@ -134,6 +134,11 @@ public:
   vtkGetMacro(PreviewFrameVisibility, int); 
 
   // Description:
+  // Save/retrieve the last geometry to/from the registry.
+  virtual void SaveGeometryToRegistry();
+  virtual void ReloadGeometryFromRegistry();
+
+  // Description:
   // Save/retrieve the last path to/from the registry.
   // Note that the subkey used here is "RunTime".
   virtual void SaveLastPathToRegistry(const char *key);
