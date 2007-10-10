@@ -76,6 +76,11 @@ public:
   virtual vtkKWWidget* GetNthWidget(int rank);
 
   // Description:
+  // Set/Get widget visibility
+  virtual void SetWidgetVisibility(vtkKWWidget *widget, int val);
+  virtual int GetWidgetVisibility(vtkKWWidget *widget);
+
+  // Description:
   // Create and add a specific type of widget.
   // Note: for radiobutton, the variable_name should be the same for
   //       each radiobutton in the set of radiobuttons.

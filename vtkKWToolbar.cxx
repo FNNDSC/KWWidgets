@@ -39,15 +39,22 @@ const char *vtkKWToolbar::WidgetsAspectRegKey = "ToolbarFlatButtons";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
-vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.71 $");
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.72 $");
 
 //----------------------------------------------------------------------------
 class vtkKWToolbarInternals
 {
 public:
+  
+  class WidgetNode
+  {
+  public:
+    vtkKWWidget *Widget;
+    int Visibility;
+  };
 
-  typedef vtksys_stl::list<vtkKWWidget*> WidgetsContainer;
-  typedef vtksys_stl::list<vtkKWWidget*>::iterator WidgetsContainerIterator;
+  typedef vtksys_stl::list<WidgetNode> WidgetsContainer;
+  typedef vtksys_stl::list<WidgetNode>::iterator WidgetsContainerIterator;
 
   WidgetsContainer Widgets;
 };
@@ -173,8 +180,12 @@ void vtkKWToolbar::AddWidget(vtkKWWidget *widget)
     {
     return;
     }
-    
-  this->Internals->Widgets.push_back(widget);
+
+  vtkKWToolbarInternals::WidgetNode node;
+  node.Widget = widget;
+  node.Visibility = 1;
+
+  this->Internals->Widgets.push_back(node);
 
   widget->Register(this);
   this->PropagateEnableState(widget);
@@ -190,23 +201,35 @@ void vtkKWToolbar::InsertWidget(vtkKWWidget *location, vtkKWWidget *widget)
     return;
     }
 
+  vtkKWToolbarInternals::WidgetNode node;
+  node.Widget = widget;
+  node.Visibility = 1;
+
   if (!location)
     {
-    this->Internals->Widgets.push_front(widget);
+    this->Internals->Widgets.push_front(node);
     }
   else
     {
-    vtkKWToolbarInternals::WidgetsContainerIterator location_pos = 
-      vtksys_stl::find(this->Internals->Widgets.begin(),
-                   this->Internals->Widgets.end(),
-                   location);
-    if (location_pos == this->Internals->Widgets.end())
+    vtkKWToolbarInternals::WidgetsContainerIterator it = 
+      this->Internals->Widgets.begin();
+    vtkKWToolbarInternals::WidgetsContainerIterator end = 
+      this->Internals->Widgets.end();
+    for (; it != end; ++it)
       {
-      this->Internals->Widgets.push_front(widget);
+      if ((*it).Widget == location)
+        {
+        break;
+        }
+      }
+
+    if (it == this->Internals->Widgets.end())
+      {
+      this->Internals->Widgets.push_front(node);
       }
     else
       {
-      this->Internals->Widgets.insert(location_pos, widget);
+      this->Internals->Widgets.insert(it, node);
       }
     }
 
@@ -224,11 +247,65 @@ int vtkKWToolbar::HasWidget(vtkKWWidget *widget)
     return 0;
     }
 
-  vtkKWToolbarInternals::WidgetsContainerIterator location_pos = 
-    vtksys_stl::find(this->Internals->Widgets.begin(),
-                     this->Internals->Widgets.end(),
-                     widget);
-  return (location_pos == this->Internals->Widgets.end() ? 0 : 1);
+  vtkKWToolbarInternals::WidgetsContainerIterator it = 
+    this->Internals->Widgets.begin();
+  vtkKWToolbarInternals::WidgetsContainerIterator end = 
+    this->Internals->Widgets.end();
+  for (; it != end; ++it)
+    {
+    if ((*it).Widget == widget)
+      {
+      return 1;
+      }
+    }
+
+  return 0;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWToolbar::GetWidgetVisibility(vtkKWWidget *widget)
+{
+  if (!widget || !this->Internals)
+    {
+    return 0;
+    }
+
+  vtkKWToolbarInternals::WidgetsContainerIterator it = 
+    this->Internals->Widgets.begin();
+  vtkKWToolbarInternals::WidgetsContainerIterator end = 
+    this->Internals->Widgets.end();
+  for (; it != end; ++it)
+    {
+    if ((*it).Widget == widget)
+      {
+      return (*it).Visibility;
+      }
+    }
+
+  return 0;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWToolbar::SetWidgetVisibility(vtkKWWidget *widget, int val)
+{
+  if (!widget || !this->Internals)
+    {
+    return;
+    }
+
+  vtkKWToolbarInternals::WidgetsContainerIterator it = 
+    this->Internals->Widgets.begin();
+  vtkKWToolbarInternals::WidgetsContainerIterator end = 
+    this->Internals->Widgets.end();
+  for (; it != end; ++it)
+    {
+    if ((*it).Widget == widget)
+      {
+      (*it).Visibility = val;
+      this->UpdateWidgets();
+      break;
+      }
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -249,18 +326,25 @@ void vtkKWToolbar::RemoveWidget(vtkKWWidget *widget)
     return;
     }
 
-  vtkKWToolbarInternals::WidgetsContainerIterator location_pos = 
-    vtksys_stl::find(this->Internals->Widgets.begin(),
-                 this->Internals->Widgets.end(),
-                 widget);
-  if (location_pos == this->Internals->Widgets.end())
+  vtkKWToolbarInternals::WidgetsContainerIterator it = 
+    this->Internals->Widgets.begin();
+  vtkKWToolbarInternals::WidgetsContainerIterator end = 
+    this->Internals->Widgets.end();
+  for (; it != end; ++it)
+    {
+    if ((*it).Widget == widget)
+      {
+      break;
+      }
+    }
+  if (it == this->Internals->Widgets.end())
     {
     vtkErrorMacro("Unable to remove widget from toolbar");
     return;
     }
 
-  (*location_pos)->UnRegister(this);
-  this->Internals->Widgets.erase(location_pos);
+  (*it).Widget->UnRegister(this);
+  this->Internals->Widgets.erase(it);
 
   this->UpdateWidgets();
 }
@@ -279,10 +363,7 @@ void vtkKWToolbar::RemoveAllWidgets()
     this->Internals->Widgets.end();
   for (; it != end; ++it)
     {
-    if (*it)
-      {
-      (*it)->UnRegister(this);
-      }
+    (*it).Widget->UnRegister(this);
     }
   this->Internals->Widgets.clear();
 
@@ -302,18 +383,15 @@ vtkKWWidget* vtkKWToolbar::GetWidget(const char *name)
       this->Internals->Widgets.end();
     for (; it != end; ++it)
       {
-      if (*it)
+      for (int i = 0; i < 4; i++)
         {
-        for (int i = 0; i < 4; i++)
+        vtkKWCoreWidget *core = vtkKWCoreWidget::SafeDownCast((*it).Widget);
+        if (core->HasConfigurationOption(options[i]) && core->IsCreated())
           {
-          vtkKWCoreWidget *core = vtkKWCoreWidget::SafeDownCast(*it);
-          if (core->HasConfigurationOption(options[i]) && core->IsCreated())
+          const char *option = core->GetConfigurationOption(options[i]);
+          if (!strcmp(name, option))
             {
-            const char *option = core->GetConfigurationOption(options[i]);
-            if (!strcmp(name, option))
-              {
-              return core;
-              }
+            return core;
             }
           }
         }
@@ -336,7 +414,7 @@ vtkKWWidget* vtkKWToolbar::GetNthWidget(int rank)
       {
       if (rank == 0)
         {
-        return *it;
+        return (*it).Widget;
         }
       }
     }
@@ -477,11 +555,12 @@ void vtkKWToolbar::UpdateWidgetsAspect()
     this->Internals->Widgets.end();
   for (; it != end; ++it)
     {
-    vtkKWPushButton *pb = vtkKWPushButton::SafeDownCast(*it);
-    vtkKWCheckButton *cb = vtkKWCheckButton::SafeDownCast(*it);
-    vtkKWRadioButton *rb = vtkKWRadioButton::SafeDownCast(*it);
-    vtkKWPushButtonWithMenu *pbwm = vtkKWPushButtonWithMenu::SafeDownCast(*it);
-    vtkKWMenuButton *mb = vtkKWMenuButton::SafeDownCast(*it);
+    vtkKWPushButton *pb = vtkKWPushButton::SafeDownCast((*it).Widget);
+    vtkKWCheckButton *cb = vtkKWCheckButton::SafeDownCast((*it).Widget);
+    vtkKWRadioButton *rb = vtkKWRadioButton::SafeDownCast((*it).Widget);
+    vtkKWPushButtonWithMenu *pbwm = 
+      vtkKWPushButtonWithMenu::SafeDownCast((*it).Widget);
+    vtkKWMenuButton *mb = vtkKWMenuButton::SafeDownCast((*it).Widget);
     if (pb)
       {
       if (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat)
@@ -587,15 +666,12 @@ void vtkKWToolbar::ConstrainWidgetsLayout()
     this->Internals->Widgets.end();
   for (; it != end; ++it)
     {
-    if (*it)
+    int reqw = 0;
+    vtkKWTkUtilities::GetWidgetRequestedSize((*it).Widget, &reqw, NULL);
+    totReqWidth += this->WidgetsPadX + reqw;
+    if (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat)
       {
-      int reqw = 0;
-      vtkKWTkUtilities::GetWidgetRequestedSize((*it), &reqw, NULL);
-      totReqWidth += this->WidgetsPadX + reqw;
-      if (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat)
-        {
-        totReqWidth += this->WidgetsFlatAdditionalPadX;
-        }
+      totReqWidth += this->WidgetsFlatAdditionalPadX;
       }
     }
 
@@ -608,25 +684,25 @@ void vtkKWToolbar::ConstrainWidgetsLayout()
   if ( numPerRow > 0 )
     {
     int row = 0, num = 0;
-    vtksys_ios::ostringstream s;
+    vtksys_ios::ostringstream grid_tk;
 
     it = this->Internals->Widgets.begin();
     for (; it != end; ++it)
       {
-      if ((*it))
+      if ((*it).Visibility)
         {
-        s << "grid " << (*it)->GetWidgetName() << " -row " 
-          << row << " -column " << num << " -sticky news "
-          << " -in " << this->GetFrame()->GetWidgetName()
-          << " -padx " 
-          << (this->WidgetsPadX + 
-              (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
-               this->WidgetsFlatAdditionalPadX : 0))
-          << " -pady "
-          << (this->WidgetsPadY + 
-              (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
-               this->WidgetsFlatAdditionalPadY : 0))
-          << endl;
+        grid_tk << "grid " << (*it).Widget->GetWidgetName() << " -row " 
+                << row << " -column " << num << " -sticky news "
+                << " -in " << this->GetFrame()->GetWidgetName()
+                << " -padx " 
+                << (this->WidgetsPadX + 
+                    (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
+                     this->WidgetsFlatAdditionalPadX : 0))
+                << " -pady "
+                << (this->WidgetsPadY + 
+                    (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
+                     this->WidgetsFlatAdditionalPadY : 0))
+                << endl;
         num++;
         if (num == numPerRow) 
           { 
@@ -634,16 +710,20 @@ void vtkKWToolbar::ConstrainWidgetsLayout()
           num = 0;
           }
         }
+      else
+        {
+        grid_tk << "grid forget " << (*it).Widget->GetWidgetName() << endl;
+        }
       }
-
+    
     while (row >= 0)
       {
-      s << "grid rowconfigure " << this->GetFrame()->GetWidgetName() 
-        << " "<< row << " -weight 1 " << endl;
+      grid_tk << "grid rowconfigure " << this->GetFrame()->GetWidgetName() 
+              << " "<< row << " -weight 1 " << endl;
       --row;
       }
 
-    this->Script(s.str().c_str());
+    this->Script(grid_tk.str().c_str());
     }
 }
 
@@ -666,37 +746,51 @@ void vtkKWToolbar::UpdateWidgetsLayout()
     return;
     }
 
-  vtksys_ios::ostringstream s;
-  s << "grid "; 
+  vtksys_ios::ostringstream grid_tk, grid_forget_tk;
+  grid_tk << "grid "; 
+  grid_forget_tk << "grid forget "; 
 
   vtkKWToolbarInternals::WidgetsContainerIterator it = 
     this->Internals->Widgets.begin();
   vtkKWToolbarInternals::WidgetsContainerIterator end = 
     this->Internals->Widgets.end();
+  int nb_in_grid = 0;
   for (; it != end; ++it)
     {
-    if ((*it))
+    if ((*it).Visibility)
       {
-      s << " " << (*it)->GetWidgetName();
+      ++nb_in_grid;
+      grid_tk << " " << (*it).Widget->GetWidgetName();
+      }
+    else
+      {
+      grid_forget_tk << " " << (*it).Widget->GetWidgetName();
       }
     }
 
-  s << " -sticky news -row 0 "
-    << " -in " << this->GetFrame()->GetWidgetName()
-    << " -padx " 
-    << (this->WidgetsPadX + 
-        (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
-         this->WidgetsFlatAdditionalPadX : 0))
-    << " -pady "
-    << (this->WidgetsPadY + 
-        (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
-         this->WidgetsFlatAdditionalPadY : 0))
-    << endl;
+  if (nb_in_grid)
+    {
+    grid_tk << " -sticky news -row 0 "
+            << " -in " << this->GetFrame()->GetWidgetName()
+            << " -padx " 
+            << (this->WidgetsPadX + 
+                (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
+                 this->WidgetsFlatAdditionalPadX : 0))
+            << " -pady "
+            << (this->WidgetsPadY + 
+                (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
+                 this->WidgetsFlatAdditionalPadY : 0))
+            << endl;
+    this->Script(grid_tk.str().c_str());
+    }
 
-  s << "grid rowconfigure " << this->GetFrame()->GetWidgetName() 
-    << " 0 -weight 1 " << endl;
+  if (nb_in_grid != this->Internals->Widgets.size())
+    {
+    this->Script(grid_forget_tk.str().c_str());
+    }
 
-  this->Script(s.str().c_str());
+  this->Script("grid rowconfigure %s 0 -weight 1",
+               this->GetFrame()->GetWidgetName());
 }
 
 //----------------------------------------------------------------------------
@@ -953,7 +1047,7 @@ void vtkKWToolbar::UpdateEnableState()
     this->Internals->Widgets.end();
   for (; it != end; ++it)
     {
-    this->PropagateEnableState(*it);
+    this->PropagateEnableState((*it).Widget);
     }
 }
 
