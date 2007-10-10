@@ -619,6 +619,32 @@ protected:
   virtual void CreatePresetButtons();
 
   // Description:
+  // Update the preset buttons state/visibility.
+  virtual void UpdatePresetButtons();
+
+  // Description:
+  // Set the preset buttons balloon help strings
+  // Subclass can override this method to change the help strings
+  // associated to the buttons.
+  virtual void SetPresetButtonsHelpStrings();
+
+  // Description:
+  // Create the preset buttons in the toolbar.
+  // Subclasses should override this method to add their own toolbar buttons
+  // (do not forget to call the superclass first).
+  virtual void CreateToolbarPresetButtons();
+
+  // Description:
+  // Update the toolbar preset buttons state/visibility.
+  virtual void UpdateToolbarPresetButtons();
+
+  // Description:
+  // Set the toolbar preset buttons balloon help strings
+  // Subclass can override this method to change the help strings
+  // associated to the buttons.
+  virtual void SetToolbarPresetButtonsHelpStrings();
+
+  // Description:
   // Deallocate a preset.
   // Subclasses should override this method to release the memory allocated
   // by their own preset fields  (do not forget to call the superclass
@@ -695,12 +721,6 @@ protected:
   virtual void Pack();
 
   // Description:
-  // Set the default balloon help strings
-  // Subclass can override this method to change the help strings
-  // associated to the buttons.
-  virtual void SetDefaultHelpStrings();
-
-  // Description:
   // Populate the pop-up context menu that is displayed when right-clicking
   // on a give preset. It should replicate the commands available through the
   // preset buttons.
@@ -724,15 +744,22 @@ protected:
   //ETX
 
   // Description:
+  // Access to the button label in the toolbar (for retrieval purposes)
+  virtual const char* GetSelectPreviousButtonLabel();
+  virtual const char* GetSelectNextButtonLabel();
+  virtual const char* GetAddButtonLabel();
+  virtual const char* GetApplyButtonLabel();
+  virtual const char* GetUpdateButtonLabel();
+  virtual const char* GetRemoveButtonLabel();
+  virtual const char* GetLocateButtonLabel();
+  virtual const char* GetEmailButtonLabel();
+  
+  // Description:
   // Delete all presets, i.e. deallocate all presets and remove them
   // from the pool. Does not delete/remove any rows, see RemoveAllPresets()
   // to both delete all presets and update the table accordingly.
   // Return the number of presets deleted
   virtual int DeleteAllPresets();
-
-  // Description:
-  // Update the preset buttons state/visibility
-  virtual void UpdatePresetButtons();
 
   // Description:
   // Return the number of selected presets with filename
