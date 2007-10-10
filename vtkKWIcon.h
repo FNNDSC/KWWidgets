@@ -189,6 +189,12 @@ public:
   virtual void Flatten(double rgb[3])
     { this->Flatten(rgb[0], rgb[1], rgb[2]); };
 
+  // Description:
+  // Compose an icon on top of this instance.
+  // Supports only same size RGBA against same size RGBA at the moment.
+  // Return 1 on success, 0 otherwise
+  virtual int Compose(vtkKWIcon *icon);
+
 protected:
   vtkKWIcon();
   ~vtkKWIcon();

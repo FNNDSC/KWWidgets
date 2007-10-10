@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.40 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.41 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -942,6 +942,56 @@ void vtkKWIcon::Flatten(double r, double g, double b)
   this->SetImage(new_data, this->Width, this->Height, 3, new_data_length);
 
   delete [] new_data;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWIcon::Compose(vtkKWIcon *icon)
+{
+  if (!icon || 
+      icon->GetWidth() != this->GetWidth() ||
+      icon->GetHeight() != this->GetHeight() ||
+      icon->GetPixelSize() != this->GetPixelSize() ||
+      this->GetPixelSize() != 4)
+    {
+    vtkErrorMacro("Can not compose against a dissimilar icon!");
+    return 0;
+    }
+
+  int width = this->GetWidth();
+  int height = this->GetHeight();
+  int pixel_size = this->GetPixelSize();
+  size_t buffer_size = (size_t)width * (size_t)height * (size_t)pixel_size;
+
+  const unsigned char* img_ptr = this->GetData();
+  const unsigned char* img_ptr_end = img_ptr + buffer_size;
+  const unsigned char* icon_img_ptr = icon->GetData();
+
+  unsigned char* blended_img_ptr = new unsigned char [buffer_size];
+  unsigned char* ptr = blended_img_ptr;
+
+  while (img_ptr < img_ptr_end)
+    {
+    int icon_img_alpha_char = static_cast<int>(*(icon_img_ptr + 3));
+    double icon_img_alpha = static_cast<double>(icon_img_alpha_char) / 255.0;
+
+    *ptr++ = static_cast<unsigned char>
+      (*img_ptr++ * (1 - icon_img_alpha) + *icon_img_ptr++ * icon_img_alpha);
+    *ptr++ = static_cast<unsigned char>
+      (*img_ptr++ * (1 - icon_img_alpha) + *icon_img_ptr++ * icon_img_alpha);
+    *ptr++ = static_cast<unsigned char>
+      (*img_ptr++ * (1 - icon_img_alpha) + *icon_img_ptr++ * icon_img_alpha);
+
+    icon_img_alpha_char += *img_ptr++;
+    icon_img_ptr++;
+
+    *ptr++ = static_cast<unsigned char>
+      (icon_img_alpha_char > 255 ? 255 : icon_img_alpha_char); 
+    }
+
+  delete [] this->Data;
+  this->Data = blended_img_ptr;
+
+  return 1;
 }
 
 //----------------------------------------------------------------------------
