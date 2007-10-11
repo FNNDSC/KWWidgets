@@ -75,7 +75,7 @@ public:
     vtkVolumeProperty *target, vtkVolumeProperty *source);
 
 protected:
-  vtkKWVolumePropertyPresetSelector() {};
+  vtkKWVolumePropertyPresetSelector();
   ~vtkKWVolumePropertyPresetSelector() {};
 
   // Description:

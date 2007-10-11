@@ -355,6 +355,15 @@ public:
   virtual int GetListHeight();
 
   // Description:
+  // Set/Get the base icons to use for the preset buttons (and the toolbar).
+  // The base icon has to be in RGBA format, and will be composited against
+  // a few different smaller icons to represent each action; for example,
+  // a '+' sign will be composited on top of the base icon for the 
+  // "Add Preset" button.
+  vtkGetObjectMacro(PresetButtonsBaseIcon, vtkKWIcon);
+  virtual void SetPresetButtonsBaseIcon(vtkKWIcon *icon);
+
+  // Description:
   // Set/Get the visibility of the select spin buttons.
   // The select spin button are two buttons that can be used
   // to select the next or previous preset in the list.
@@ -613,7 +622,7 @@ protected:
   virtual void CreateColumns();
 
   // Description:
-  // Create the buttons.
+  // Create the preset buttons.
   // Subclasses should override this method to add their own preset buttons
   // (do not forget to call the superclass first).
   virtual void CreatePresetButtons();
@@ -621,6 +630,12 @@ protected:
   // Description:
   // Update the preset buttons state/visibility.
   virtual void UpdatePresetButtons();
+
+  // Description:
+  // Set the preset buttons icons.
+  // Subclasses should override this method to set their own icons
+  // (do not forget to call the superclass first).
+  virtual void SetPresetButtonsIcons();
 
   // Description:
   // Set the preset buttons balloon help strings
@@ -637,6 +652,12 @@ protected:
   // Description:
   // Update the toolbar preset buttons state/visibility.
   virtual void UpdateToolbarPresetButtons();
+
+  // Description:
+  // Set the toolbar preset buttons icons.
+  // Subclasses should override this method to set their own icons
+  // (do not forget to call the superclass first).
+  virtual void SetToolbarPresetButtonsIcons();
 
   // Description:
   // Set the toolbar preset buttons balloon help strings
@@ -766,6 +787,7 @@ protected:
   virtual int GetNumberOfSelectedPresetsWithFileName();
 
   vtkKWToolbar *Toolbar;
+  vtkKWIcon *PresetButtonsBaseIcon;
   
 private:
 

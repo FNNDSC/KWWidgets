@@ -26,6 +26,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "vtkKWMultiColumnList.h"
 #include "vtkKWMultiColumnListWithScrollbars.h"
 #include "vtkKWInternationalization.h"
+#include "vtkKWIcon.h"
 
 const char *vtkKWWindowLevelPresetSelector::WindowColumnName = "Window";
 const char *vtkKWWindowLevelPresetSelector::LevelColumnName  = "Level";
@@ -33,7 +34,18 @@ const char *vtkKWWindowLevelPresetSelector::ModalityColumnName  = "Modality";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindowLevelPresetSelector);
-vtkCxxRevisionMacro(vtkKWWindowLevelPresetSelector, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWWindowLevelPresetSelector, "$Revision: 1.18 $");
+
+//----------------------------------------------------------------------------
+vtkKWWindowLevelPresetSelector::vtkKWWindowLevelPresetSelector()
+{
+  vtkKWIcon *icon = vtkKWIcon::New();
+  icon->SetImage(vtkKWIcon::IconDocumentWindowLevel);
+  icon->TrimTop();
+  icon->TrimRight();
+  this->SetPresetButtonsBaseIcon(icon);
+  icon->Delete();
+}
 
 //----------------------------------------------------------------------------
 int vtkKWWindowLevelPresetSelector::SetPresetWindow(

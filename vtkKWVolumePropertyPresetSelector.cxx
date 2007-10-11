@@ -21,6 +21,7 @@
 #include "vtkColorTransferFunction.h"
 #include "vtkKWMultiColumnList.h"
 #include "vtkKWMultiColumnListWithScrollbars.h"
+#include "vtkKWIcon.h"
 
 #define VTK_KW_WLPS_TOLERANCE 0.005
 
@@ -28,7 +29,18 @@ const char *vtkKWVolumePropertyPresetSelector::ModalityColumnName  = "Modality";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWVolumePropertyPresetSelector);
-vtkCxxRevisionMacro(vtkKWVolumePropertyPresetSelector, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWVolumePropertyPresetSelector, "$Revision: 1.10 $");
+
+//----------------------------------------------------------------------------
+vtkKWVolumePropertyPresetSelector::vtkKWVolumePropertyPresetSelector()
+{
+  vtkKWIcon *icon = vtkKWIcon::New();
+  icon->SetImage(vtkKWIcon::IconDocumentVolumeProperty);
+  icon->TrimTop();
+  icon->TrimRight();
+  this->SetPresetButtonsBaseIcon(icon);
+  icon->Delete();
+}
 
 //----------------------------------------------------------------------------
 int vtkKWVolumePropertyPresetSelector::SetPresetVolumeProperty(

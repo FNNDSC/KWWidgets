@@ -99,7 +99,7 @@ public:
   virtual void PresetCellUpdatedCallback(int row, int col, const char *text);
 
 protected:
-  vtkKWWindowLevelPresetSelector() {};
+  vtkKWWindowLevelPresetSelector();
   ~vtkKWWindowLevelPresetSelector() {};
 
   // Description:
