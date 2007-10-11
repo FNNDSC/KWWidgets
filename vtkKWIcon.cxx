@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.41 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.42 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -190,6 +190,14 @@ void vtkKWIcon::SetImage(int image)
         image_camera_length);
       break;
 
+    case vtkKWIcon::IconCameraMini:
+      this->SetImage(
+        image_camera_mini, 
+        image_camera_mini_width, image_camera_mini_height,
+        image_camera_mini_pixel_size, 
+        image_camera_mini_length);
+      break;
+
     case vtkKWIcon::IconColorBarAnnotation:
       this->SetImage(
         image_color_bar_annotation, 
@@ -260,6 +268,23 @@ void vtkKWIcon::SetImage(int image)
         image_document_width, image_document_height,
         image_document_pixel_size, 
         image_document_length);
+      break;
+
+    case vtkKWIcon::IconDocumentWindowLevel:
+      this->SetImage(
+        image_document_window_level, 
+        image_document_window_level_width, image_document_window_level_height,
+        image_document_window_level_pixel_size, 
+        image_document_window_level_length);
+      break;
+
+    case vtkKWIcon::IconDocumentVolumeProperty:
+      this->SetImage(
+        image_document_volume_property, 
+        image_document_volume_property_width, 
+        image_document_volume_property_height,
+        image_document_volume_property_pixel_size, 
+        image_document_volume_property_length);
       break;
 
     case vtkKWIcon::IconEmpty16x16:
@@ -501,6 +526,22 @@ void vtkKWIcon::SetImage(int image)
         image_preset_locate_width, image_preset_locate_height,
         image_preset_locate_pixel_size, 
         image_preset_locate_length);
+      break;      
+
+    case vtkKWIcon::IconPresetNext:
+      this->SetImage(
+        image_preset_next, 
+        image_preset_next_width, image_preset_next_height,
+        image_preset_next_pixel_size, 
+        image_preset_next_length);
+      break;      
+
+    case vtkKWIcon::IconPresetPrevious:
+      this->SetImage(
+        image_preset_previous, 
+        image_preset_previous_width, image_preset_previous_height,
+        image_preset_previous_pixel_size, 
+        image_preset_previous_length);
       break;      
 
     case vtkKWIcon::IconPresetUpdate:
@@ -990,6 +1031,109 @@ int vtkKWIcon::Compose(vtkKWIcon *icon)
 
   delete [] this->Data;
   this->Data = blended_img_ptr;
+
+  return 1;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWIcon::Compose(int icon_index)
+{
+  vtkKWIcon *icon = vtkKWIcon::New();
+  icon->SetImage(icon_index);
+  int res = this->Compose(icon);
+  icon->Delete();
+  return res;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWIcon::TrimTop()
+{
+  if (this->GetPixelSize() != 4)
+    {
+    vtkErrorMacro("Can not trim if not RGBA!");
+    return 0;
+    }
+
+  int width = this->GetWidth();
+  int height = this->GetHeight();
+  int pixel_size = this->GetPixelSize();
+  size_t row_size = (size_t)width * pixel_size;
+  size_t buffer_size = (size_t)width * (size_t)height * (size_t)pixel_size;
+
+  const unsigned char *ptr_start = this->GetData();
+  const unsigned char *ptr_end = ptr_start + buffer_size;
+  const unsigned char *ptr = ptr_start;
+
+  while (ptr < ptr_end)
+    {
+    // Find if there is a non-transparent pixel in that row
+    const unsigned char *row_ptr = ptr;
+    const unsigned char *row_ptr_end = row_ptr + row_size;
+    row_ptr += 3;
+    while (row_ptr < row_ptr_end)
+      {
+      if (*row_ptr) // Found one
+        {
+        // Shift everything up, set the bottom part to 0
+        size_t preserve_size = ptr_end - ptr;
+        memmove((void*)ptr_start, (void*)ptr, preserve_size);
+        memset((void*)(ptr_start+preserve_size), 0, buffer_size-preserve_size);
+        return 1;
+        }
+      row_ptr += pixel_size;
+      }
+    // Next row...
+    ptr = row_ptr_end;
+    }
+
+  return 1;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWIcon::TrimRight()
+{
+  if (this->GetPixelSize() != 4)
+    {
+    vtkErrorMacro("Can not trim if not RGBA!");
+    return 0;
+    }
+
+  int width = this->GetWidth();
+  int height = this->GetHeight();
+  int pixel_size = this->GetPixelSize();
+  size_t row_size = (size_t)width * pixel_size;
+  size_t buffer_size = (size_t)width * (size_t)height * (size_t)pixel_size;
+
+  const unsigned char *ptr_start = this->GetData();
+  const unsigned char *ptr_end = ptr_start + buffer_size;
+  const unsigned char *last_col_ptr = ptr_start + row_size - pixel_size;
+  const unsigned char *ptr = last_col_ptr;
+
+  while (ptr >= ptr_start)
+    {
+    // Find if there is a non-transparent pixel in that column
+    const unsigned char *col_ptr = ptr;
+    col_ptr += 3;
+    while (col_ptr < ptr_end)
+      {
+      if (*col_ptr)
+        {
+        // Shift everything to the right, set the left part to 0
+        size_t empty_size = last_col_ptr - ptr;
+        size_t preserve_size = row_size - empty_size;
+        ptr = ptr_start;
+        while (ptr < ptr_end)
+          {
+          memmove((void*)(ptr + empty_size),(void*)ptr, preserve_size);
+          memset((void*)ptr, 0, empty_size);
+          ptr += row_size;
+          }
+        return 1;
+        }
+      col_ptr += row_size;
+      }
+    ptr -= pixel_size;
+    }
 
   return 1;
 }

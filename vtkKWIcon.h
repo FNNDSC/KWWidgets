@@ -50,6 +50,7 @@ public:
     IconBugMini                   = 200,
     IconCalculator                = 79,
     IconCamera                    = 19,
+    IconCameraMini                = 175,
     IconCdRom                     = 75,
     IconColorBarAnnotation        = 12,
     IconColorSquares              = 18,
@@ -60,6 +61,8 @@ public:
     IconCropTool                  = 22,
     IconDistanceTool              = 15,
     IconDocument                  = 9,
+    IconDocumentWindowLevel       = 176,
+    IconDocumentVolumeProperty    = 177,
     IconEmpty16x16                = 6,
     IconEmpty1x1                  = 10,
     IconError                     = 2, 
@@ -100,6 +103,8 @@ public:
     IconPresetDelete              = 96,
     IconPresetEmail               = 97,
     IconPresetLocate              = 98,
+    IconPresetNext                = 173,
+    IconPresetPrevious            = 174,
     IconPresetUpdate              = 99,
     IconQuestion                  = 101,
     IconReload                    = 102,
@@ -194,6 +199,15 @@ public:
   // Supports only same size RGBA against same size RGBA at the moment.
   // Return 1 on success, 0 otherwise
   virtual int Compose(vtkKWIcon *icon);
+  virtual int Compose(int icon_index);
+
+  // Description:
+  // Trip the top or right portion of an icon (i.e. look for any fully 
+  // transparent area and shift the icon to the top or right).
+  // Supports only RGBA at the moment.
+  // Return 1 on success, 0 otherwise
+  virtual int TrimTop();
+  virtual int TrimRight();
 
 protected:
   vtkKWIcon();
