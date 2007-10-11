@@ -12,17 +12,25 @@ KWConvertImageToHeader --zlib --base64 \
     angle_tool.png \
     bidimensional_tool.png \
     bounding_box.png \
+    browserback.png \
+    browserforward.png \
+    browserup.png \
     bug_mini.png \
-    camera.png \
     calculator.png \
+    camera.png \
+    camera_mini.png \
+    cdrom.png \
     color_bar_annotation.png \
     color_squares.png \
     connection.png \
+    contour_segment.png \
     contour_tool.png \
     corner_annotation.png \
     crop_tool.png \
     distance_tool.png \
     document.png \
+    document_volume_property.png \
+    document_window_level.png \
     empty_16x16.png \
     empty_1x1.png \
     error.png \
@@ -31,12 +39,19 @@ KWConvertImageToHeader --zlib --base64 \
     expand.png \
     expand_mini.png \
     eye.png \
+    favorites.png \
     file_open.png \
+    filedelete.png \
     floppy.png \
+    floppydrive.png \
     folder.png \
+    folder32.png \
     folder_open.png \
+    foldernew.png \
+    folderxp.png \
     grid_linear.png \
     grid_log.png \
+    harddisk.png \
     header_annotation.png \
     helpbubble.png \
     info_mini.png \
@@ -46,6 +61,7 @@ KWConvertImageToHeader --zlib --base64 \
     move.png \
     move_h.png \
     move_v.png \
+    netdrive.png \
     orientation_cube_annotation.png \
     pan_hand.png \
     plus.png \
@@ -55,6 +71,8 @@ KWConvertImageToHeader --zlib --base64 \
     preset_delete.png \
     preset_email.png \
     preset_locate.png \
+    preset_next.png \
+    preset_previous.png \
     preset_update.png \
     question.png \
     reload.png \
@@ -84,17 +102,4 @@ KWConvertImageToHeader --zlib --base64 \
     tree_open.png \
     warning.png \
     warning_mini.png \
-    window_level.png \
-    contour_segment.png \
-    browserup.png \
-    browserback.png \
-    browserforward.png \
-    filedelete.png \
-    foldernew.png \
-    cdrom.png \
-    harddisk.png \
-    floppydrive.png \
-    netdrive.png \
-    favorites.png \
-    folder32.png \
-    folderxp.png
+    window_level.png
