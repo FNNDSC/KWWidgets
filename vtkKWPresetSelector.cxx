@@ -59,7 +59,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.59 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.60 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -438,7 +438,8 @@ void vtkKWPresetSelector::CreateWidget()
   this->PresetButtons->PackHorizontallyOn();
   this->PresetButtons->SetWidgetsPadX(2);
   this->PresetButtons->SetWidgetsPadY(2);
-  this->PresetButtons->SetWidgetsInternalPadY(1);
+  this->PresetButtons->SetWidgetsInternalPadX(2);
+  this->PresetButtons->SetWidgetsInternalPadY(2);
   this->PresetButtons->ExpandWidgetsOn();
   this->PresetButtons->Create();
 
@@ -471,7 +472,7 @@ void vtkKWPresetSelector::CreateToolbar()
 
   this->Toolbar->Create();
   this->Toolbar->SetWidgetsFlatAdditionalPadX(
-    this->Toolbar->GetWidgetsFlatAdditionalPadX() + 2);
+    this->Toolbar->GetWidgetsFlatAdditionalPadX() + 3);
 
   this->CreateToolbarPresetButtons();
 
@@ -1418,7 +1419,7 @@ void vtkKWPresetSelector::Pack()
 
   if (this->PresetButtons && this->PresetButtons->IsCreated())
     {
-    this->Script("pack %s -side top -anchor nw -fill x -expand t",
+    this->Script("pack %s -side top -anchor nw -fill none -expand t",
                  this->PresetButtons->GetWidgetName());
     }
 }
