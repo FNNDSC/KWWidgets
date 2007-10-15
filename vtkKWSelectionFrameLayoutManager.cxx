@@ -75,7 +75,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.76 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.77 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -193,6 +193,9 @@ void vtkKWSelectionFrameLayoutManager::CreateWidget()
   this->LayoutFrame->Create();
   this->LayoutFrame->SetBackgroundColor(0.2, 0.2, 0.2);
 
+  this->Script("pack %s -side top -expand y -fill both -padx 0 -pady 0",
+               this->LayoutFrame->GetWidgetName());
+
   // Pack
 
   this->Pack();
@@ -215,20 +218,17 @@ void vtkKWSelectionFrameLayoutManager::Pack()
     return;
     }
 
-  // Unpack everything
+  // columns and rows can resize
+  // Make sure we reset the columns/rows that are not used (even if we
+  // unpacked the children, those settings are kept since they are set
+  // on the master)
 
-  this->UnpackChildren();
+  int nb_of_cols = 10, nb_of_rows = 10;
+  vtkKWTkUtilities::GetGridSize(this->LayoutFrame, &nb_of_cols, &nb_of_rows);
 
   vtksys_ios::ostringstream tk_cmd;
 
-  // Pack layout
-
-  tk_cmd << "pack " << this->LayoutFrame->GetWidgetName() 
-         << " -side top -expand y -fill both -padx 0 -pady 0" << endl;
-
-  this->LayoutFrame->UnpackChildren();
-  
-  // Pack each widgets, column first
+  // Pack each widgets
 
   vtkKWSelectionFrameLayoutManagerInternals::PoolIterator it = 
     this->Internals->Pool.begin();
@@ -239,23 +239,22 @@ void vtkKWSelectionFrameLayoutManager::Pack()
     if (it->Widget)
       {
       this->CreateWidget(it->Widget);
-      if (it->Widget->IsCreated() && this->IsPositionInLayout(it->Position))
+      if (it->Widget->IsCreated())
         {
-        tk_cmd << "grid " << it->Widget->GetWidgetName() 
-               << " -sticky news "
-               << " -column " << it->Position[0] - this->Origin[0]
-               << " -row " << it->Position[1] - this->Origin[1] << endl;
+        if (this->IsPositionInLayout(it->Position))
+          {
+          tk_cmd << "grid " << it->Widget->GetWidgetName() 
+                 << " -sticky news "
+                 << " -column " << it->Position[0] - this->Origin[0]
+                 << " -row " << it->Position[1] - this->Origin[1] << endl;
+          }
+        else
+          {
+          tk_cmd << "grid forget " << it->Widget->GetWidgetName() << endl;
+          }
         }
       }
     }
-
-  // columns and rows can resize
-  // Make sure we reset the columns/rows that are not used (even if we
-  // unpacked the children, those settings are kept since they are set
-  // on the master)
-
-  int nb_of_cols = 10, nb_of_rows = 10;
-  vtkKWTkUtilities::GetGridSize(this->LayoutFrame, &nb_of_cols, &nb_of_rows);
 
   int i, j;
   for (j = 0; j < this->Resolution[1]; j++)
