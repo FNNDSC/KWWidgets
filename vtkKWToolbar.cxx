@@ -39,7 +39,7 @@ const char *vtkKWToolbar::WidgetsAspectRegKey = "ToolbarFlatButtons";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
-vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.72 $");
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.73 $");
 
 //----------------------------------------------------------------------------
 class vtkKWToolbarInternals
@@ -754,7 +754,7 @@ void vtkKWToolbar::UpdateWidgetsLayout()
     this->Internals->Widgets.begin();
   vtkKWToolbarInternals::WidgetsContainerIterator end = 
     this->Internals->Widgets.end();
-  int nb_in_grid = 0;
+  size_t nb_in_grid = 0;
   for (; it != end; ++it)
     {
     if ((*it).Visibility)
