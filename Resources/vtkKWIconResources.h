@@ -511,6 +511,19 @@ static const unsigned char image_expand[] =
 
 /* 
  * Resource generated for file:
+ *    expand_left_mini.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_expand_left_mini_width          = 3;
+static const unsigned int  image_expand_left_mini_height         = 5;
+static const unsigned int  image_expand_left_mini_pixel_size     = 4;
+static const unsigned long image_expand_left_mini_length         = 36;
+static const unsigned long image_expand_left_mini_decoded_length = 60;
+
+static const unsigned char image_expand_left_mini[] = 
+  "eNr7//8/w38gBoL/MBodI4v/R1IPAFAWGuY=";
+
+/* 
+ * Resource generated for file:
  *    expand_mini.png (zlib, base64) (image file)
  */
 static const unsigned int  image_expand_mini_width          = 5;
@@ -521,6 +534,32 @@ static const unsigned long image_expand_mini_decoded_length = 60;
 
 static const unsigned char image_expand_mini[] = 
   "eNpjYGD4z4CGgYABnQ/DyHwAkMca5g==";
+
+/* 
+ * Resource generated for file:
+ *    expand_right_mini.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_expand_right_mini_width          = 3;
+static const unsigned int  image_expand_right_mini_height         = 5;
+static const unsigned int  image_expand_right_mini_pixel_size     = 4;
+static const unsigned long image_expand_right_mini_length         = 40;
+static const unsigned long image_expand_right_mini_decoded_length = 60;
+
+static const unsigned char image_expand_right_mini[] = 
+  "eNpjYGD4DwQgggEIQMR/ZDYyhonD1AMAEFYa5g==";
+
+/* 
+ * Resource generated for file:
+ *    expand_up_mini.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_expand_up_mini_width          = 5;
+static const unsigned int  image_expand_up_mini_height         = 3;
+static const unsigned int  image_expand_up_mini_pixel_size     = 4;
+static const unsigned long image_expand_up_mini_length         = 36;
+static const unsigned long image_expand_up_mini_decoded_length = 60;
+
+static const unsigned char image_expand_up_mini[] = 
+  "eNr7//8/w38gBoL//6FsGB+G0fkwDADPlhrm";
 
 /* 
  * Resource generated for file:

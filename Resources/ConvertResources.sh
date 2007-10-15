@@ -37,7 +37,10 @@ KWConvertImageToHeader --zlib --base64 \
     error_mini.png \
     error_red_mini.png \
     expand.png \
+    expand_left_mini.png \
     expand_mini.png \
+    expand_right_mini.png \
+    expand_up_mini.png \
     eye.png \
     favorites.png \
     file_open.png \
