@@ -20,7 +20,7 @@
 #include "vtkKWInternationalization.h"
 
 vtkStandardNewMacro( vtkKWSplitFrame );
-vtkCxxRevisionMacro(vtkKWSplitFrame, "$Revision: 1.44 $");
+vtkCxxRevisionMacro(vtkKWSplitFrame, "$Revision: 1.45 $");
 
 //----------------------------------------------------------------------------
 vtkKWSplitFrame::vtkKWSplitFrame()
@@ -147,7 +147,7 @@ void vtkKWSplitFrame::CreateWidget()
   this->AddBindings();
 
   this->ConfigureSeparator();
-  this->ConfigureSeparatorButtons();
+  this->ConfigureExpandButtons();
 }
 
 //----------------------------------------------------------------------------
@@ -215,7 +215,7 @@ void vtkKWSplitFrame::SetOrientation(int val)
   this->Modified();
 
   this->ConfigureSeparator();
-  this->ConfigureSeparatorButtons();
+  this->ConfigureExpandButtons();
 
   // If we are created already, make sure we forget all layout settings.
   // This can't be done each time we Pack(), otherwise nasty flickers occur.
@@ -300,7 +300,7 @@ void vtkKWSplitFrame::ConfigureSeparator()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWSplitFrame::ConfigureSeparatorButtons()
+void vtkKWSplitFrame::ConfigureExpandButtons()
 {
   if (!this->Expand1Button || !this->Expand1Button->IsCreated() ||
       !this->Expand2Button || !this->Expand2Button->IsCreated())
@@ -347,20 +347,7 @@ void vtkKWSplitFrame::ConfigureSeparatorButtons()
       ks_("Split Frame|Expand down"));
     }
 
-  if (this->FrameLayout == vtkKWSplitFrame::FrameLayoutDefault)
-    {
-    this->Expand1Button->SetEnabled(
-      this->Frame2Visibility ? this->GetEnabled() : 0);
-    this->Expand2Button->SetEnabled(
-      this->Frame1Visibility ? this->GetEnabled() : 0);
-    }
-  else
-    {
-    this->Expand1Button->SetEnabled(
-      this->Frame1Visibility ? this->GetEnabled() : 0);
-    this->Expand2Button->SetEnabled(
-      this->Frame2Visibility ? this->GetEnabled() : 0);
-    }
+  this->UpdateExpandButtonsEnableState();
 }
 
 //----------------------------------------------------------------------------
@@ -800,7 +787,7 @@ void vtkKWSplitFrame::SetFrame1Visibility(int flag)
   this->Modified();
 
   this->ConfigureSeparator();
-  this->ConfigureSeparatorButtons();
+  this->ConfigureExpandButtons();
 
   this->Pack();
 
@@ -820,7 +807,7 @@ void vtkKWSplitFrame::SetFrame2Visibility(int flag)
   this->Modified();
 
   this->ConfigureSeparator();
-  this->ConfigureSeparatorButtons();
+  this->ConfigureExpandButtons();
 
   this->Pack();
 
@@ -994,8 +981,27 @@ void vtkKWSplitFrame::UpdateEnableState()
   this->PropagateEnableState(this->Frame2);
 
   this->PropagateEnableState(this->Separator);
-  this->PropagateEnableState(this->Expand1Button);
-  this->PropagateEnableState(this->Expand2Button);
+
+  this->UpdateExpandButtonsEnableState();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSplitFrame::UpdateExpandButtonsEnableState()
+{
+  if (this->FrameLayout == vtkKWSplitFrame::FrameLayoutDefault)
+    {
+    this->Expand1Button->SetEnabled(
+      this->Frame2Visibility ? this->GetEnabled() : 0);
+    this->Expand2Button->SetEnabled(
+      this->Frame1Visibility ? this->GetEnabled() : 0);
+    }
+  else
+    {
+    this->Expand1Button->SetEnabled(
+      this->Frame1Visibility ? this->GetEnabled() : 0);
+    this->Expand2Button->SetEnabled(
+      this->Frame2Visibility ? this->GetEnabled() : 0);
+    }
 }
 
 //----------------------------------------------------------------------------

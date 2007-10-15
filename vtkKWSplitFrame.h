@@ -190,6 +190,7 @@ protected:
   virtual void CreateWidget();
   
   virtual int GetTotalSeparatorSize();
+  virtual void UpdateExpandButtonsEnableState();
 
   vtkKWFrame *Frame1;
   vtkKWFrame *Frame2;
@@ -228,7 +229,7 @@ protected:
   virtual int GetInternalMarginHorizontal();
   virtual int GetInternalMarginVertical();
   virtual void ConfigureSeparator();
-  virtual void ConfigureSeparatorButtons();
+  virtual void ConfigureExpandButtons();
 
 private:
   vtkKWSplitFrame(const vtkKWSplitFrame&); // Not implemented
