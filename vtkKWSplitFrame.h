@@ -21,7 +21,9 @@
 #define __vtkKWSplitFrame_h
 
 #include "vtkKWCompositeWidget.h"
+
 class vtkKWFrame;
+class vtkKWPushButton;
 
 class KWWidgets_EXPORT vtkKWSplitFrame : public vtkKWCompositeWidget
 {
@@ -162,6 +164,22 @@ public:
   // Callbacks. Internal, do not use.
   virtual void DragCallback();
   virtual void ConfigureCallback();
+  virtual void Expand1ButtonCallback();
+  virtual void Expand2ButtonCallback();
+
+  // Description:
+  // Events. Frame1VisibilityChangedEvent (respectively 
+  // Frame2VisibilityChangedEvent) is invoked when the visibility
+  // status of frame 1 (respectively frame 2) is changed.
+  // FrameVisibilityChangedEvent in both cases.
+  //BTX
+  enum
+  {
+    FrameVisibilityChangedEvent = 10000,
+    Frame1VisibilityChangedEvent,
+    Frame2VisibilityChangedEvent
+  };
+  //ETX
 
 protected:
   vtkKWSplitFrame();
@@ -174,8 +192,12 @@ protected:
   virtual int GetTotalSeparatorSize();
 
   vtkKWFrame *Frame1;
-  vtkKWFrame *Separator;
   vtkKWFrame *Frame2;
+
+  vtkKWFrame *SeparatorFrame;
+  vtkKWFrame *Separator;
+  vtkKWPushButton *Expand1Button;
+  vtkKWPushButton *Expand2Button;
 
   int Size;
   int Frame1Size;
@@ -205,7 +227,8 @@ protected:
   virtual void ReConfigure();
   virtual int GetInternalMarginHorizontal();
   virtual int GetInternalMarginVertical();
-  virtual void ConfigureSeparatorCursor();
+  virtual void ConfigureSeparator();
+  virtual void ConfigureSeparatorButtons();
 
 private:
   vtkKWSplitFrame(const vtkKWSplitFrame&); // Not implemented

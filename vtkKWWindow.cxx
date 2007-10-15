@@ -35,7 +35,7 @@
 #include <vtksys/SystemTools.hxx>
 #include <vtksys/ios/sstream> 
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.287 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.288 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindow );
@@ -347,6 +347,8 @@ void vtkKWWindow::CreateWidget()
     menu->SetItemAccelerator(idx, "Ctrl+T");
     menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
     }
+
+  this->AddCallbackCommandObservers();
 }
 
 //----------------------------------------------------------------------------
@@ -1355,6 +1357,49 @@ void vtkKWWindow::UpdateMenuState()
          vtkKWOptions::StateDisabled : this->WindowMenu->GetEnabled()));
       }
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWindow::AddCallbackCommandObservers()
+{
+  this->Superclass::AddCallbackCommandObservers();
+
+  this->AddCallbackCommandObserver(
+    this->MainSplitFrame, vtkKWSplitFrame::FrameVisibilityChangedEvent);
+
+  this->AddCallbackCommandObserver(
+    this->SecondarySplitFrame, vtkKWSplitFrame::FrameVisibilityChangedEvent);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWindow::RemoveCallbackCommandObservers()
+{
+  this->Superclass::RemoveCallbackCommandObservers();
+
+  this->RemoveCallbackCommandObserver(
+    this->MainSplitFrame, vtkKWSplitFrame::FrameVisibilityChangedEvent);
+
+  this->RemoveCallbackCommandObserver(
+    this->SecondarySplitFrame, vtkKWSplitFrame::FrameVisibilityChangedEvent);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWindow::ProcessCallbackCommandEvents(vtkObject *caller,
+                                               unsigned long event,
+                                               void *calldata)
+{
+  if (caller == this->MainSplitFrame ||
+      caller == this->SecondarySplitFrame)
+    {
+    switch (event)
+      {
+      case vtkKWSplitFrame::FrameVisibilityChangedEvent:
+        this->UpdateMenuState(); // to reflect show/hide in the window menu
+        break;
+      }
+    }
+
+  this->Superclass::ProcessCallbackCommandEvents(caller, event, calldata);
 }
 
 //----------------------------------------------------------------------------

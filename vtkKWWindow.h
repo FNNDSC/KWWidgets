@@ -372,6 +372,14 @@ public:
   vtkGetStringMacro(ViewPanelPositionRegKey);
   vtkGetStringMacro(LogDialogMenuLabel);
 
+  // Description:
+  // Add all the default observers needed by that object, or remove
+  // all the observers that were added through AddCallbackCommandObserver.
+  // Subclasses can override these methods to add/remove their own default
+  // observers, but should call the superclass too.
+  virtual void AddCallbackCommandObservers();
+  virtual void RemoveCallbackCommandObservers();
+
 protected:
   vtkKWWindow();
   ~vtkKWWindow();
@@ -430,6 +438,13 @@ protected:
   vtkSetStringMacro(ViewPanelPositionRegKey);
   vtkSetStringMacro(LogDialogMenuLabel);
 
+  // Description:
+  // Processes the events that are passed through CallbackCommand (or others).
+  // Subclasses can oberride this method to process their own events, but
+  // should call the superclass too.
+  virtual void ProcessCallbackCommandEvents(
+    vtkObject *caller, unsigned long event, void *calldata);
+  
 private:
 
   vtkKWNotebook   *MainNotebook;

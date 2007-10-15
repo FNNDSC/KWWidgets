@@ -15,16 +15,23 @@
 #include "vtkKWFrame.h"
 #include "vtkObjectFactory.h"
 #include "vtkKWTkUtilities.h"
+#include "vtkKWPushButton.h"
+#include "vtkKWIcon.h"
+#include "vtkKWInternationalization.h"
 
 vtkStandardNewMacro( vtkKWSplitFrame );
-vtkCxxRevisionMacro(vtkKWSplitFrame, "$Revision: 1.43 $");
+vtkCxxRevisionMacro(vtkKWSplitFrame, "$Revision: 1.44 $");
 
 //----------------------------------------------------------------------------
 vtkKWSplitFrame::vtkKWSplitFrame()
 {
   this->Frame1 = vtkKWFrame::New();
-  this->Separator = vtkKWFrame::New();
+  this->SeparatorFrame = vtkKWFrame::New();
   this->Frame2 = vtkKWFrame::New();
+
+  this->Separator = vtkKWFrame::New();
+  this->Expand1Button = vtkKWPushButton::New();
+  this->Expand2Button = vtkKWPushButton::New();
 
   this->Frame1Size = 250;
   this->Frame2Size = 250;
@@ -58,16 +65,34 @@ vtkKWSplitFrame::~vtkKWSplitFrame()
     this->Frame1 = NULL;
     }
 
-  if (this->Separator)
+  if (this->SeparatorFrame)
     {
-    this->Separator->Delete();
-    this->Separator = NULL;
+    this->SeparatorFrame->Delete();
+    this->SeparatorFrame = NULL;
     }
 
   if (this->Frame2)
     {
     this->Frame2->Delete();
     this->Frame2 = NULL;
+    }
+
+  if (this->Separator)
+    {
+    this->Separator->Delete();
+    this->Separator = NULL;
+    }
+
+  if (this->Expand1Button)
+    {
+    this->Expand1Button->Delete();
+    this->Expand1Button = NULL;
+    }
+
+  if (this->Expand2Button)
+    {
+    this->Expand2Button->Delete();
+    this->Expand2Button = NULL;
     }
 }
 
@@ -92,19 +117,37 @@ void vtkKWSplitFrame::CreateWidget()
   this->Frame1->SetParent(this);
   this->Frame1->Create();
 
-  this->Separator->SetParent(this);
-  this->Separator->Create();
-  this->Separator->SetBorderWidth(2);
-  this->Separator->SetReliefToRaised();
+  this->SeparatorFrame->SetParent(this);
+  this->SeparatorFrame->Create();
 
   this->Frame2->SetParent(this);
   this->Frame2->Create();
   
+  this->Separator->SetParent(this->SeparatorFrame);
+  this->Separator->Create();
+  this->Separator->SetBorderWidth(2);
+  this->Separator->SetReliefToRaised();
+
+  this->Expand1Button->SetParent(this->SeparatorFrame);
+  this->Expand1Button->Create();
+  this->Expand1Button->SetBorderWidth(1);
+  this->Expand1Button->SetReliefToFlat();
+  this->Expand1Button->SetOverReliefToRaised();
+  this->Expand1Button->SetCommand(this, "Expand1ButtonCallback");
+
+  this->Expand2Button->SetParent(this->SeparatorFrame);
+  this->Expand2Button->Create();
+  this->Expand2Button->SetBorderWidth(1);
+  this->Expand2Button->SetReliefToFlat();
+  this->Expand2Button->SetOverReliefToRaised();
+  this->Expand2Button->SetCommand(this, "Expand2ButtonCallback");
+
   this->Pack();
 
   this->AddBindings();
 
-  this->ConfigureSeparatorCursor();
+  this->ConfigureSeparator();
+  this->ConfigureSeparatorButtons();
 }
 
 //----------------------------------------------------------------------------
@@ -171,7 +214,8 @@ void vtkKWSplitFrame::SetOrientation(int val)
   this->Orientation = val;
   this->Modified();
 
-  this->ConfigureSeparatorCursor();
+  this->ConfigureSeparator();
+  this->ConfigureSeparatorButtons();
 
   // If we are created already, make sure we forget all layout settings.
   // This can't be done each time we Pack(), otherwise nasty flickers occur.
@@ -179,7 +223,7 @@ void vtkKWSplitFrame::SetOrientation(int val)
   if (this->IsCreated())
     {
     this->Script("place forget %s", this->Frame1->GetWidgetName());
-    this->Script("place forget %s", this->Separator->GetWidgetName());
+    this->Script("place forget %s", this->SeparatorFrame->GetWidgetName());
     this->Script("place forget %s", this->Frame2->GetWidgetName());
     }
 
@@ -210,32 +254,113 @@ void vtkKWSplitFrame::SetFrameLayout(int val)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWSplitFrame::ConfigureSeparatorCursor()
+void vtkKWSplitFrame::ConfigureSeparator()
 {
   if (!this->Separator || !this->Separator->IsCreated())
     {
     return;
     }
 
+  if (this->Frame1Visibility && this->Frame2Visibility)
+    {
 #ifdef _WIN32
-  if (this->Orientation == vtkKWSplitFrame::OrientationHorizontal)
-    {
-    this->Separator->SetConfigurationOption("-cursor", "size_we");
-    }
-  else
-    {
-    this->Separator->SetConfigurationOption("-cursor", "size_ns");
-    }
+    if (this->Orientation == vtkKWSplitFrame::OrientationHorizontal)
+      {
+      this->Separator->SetConfigurationOption("-cursor", "size_we");
+      }
+    else
+      {
+      this->Separator->SetConfigurationOption("-cursor", "size_ns");
+      }
 #else
-  if (this->Orientation == vtkKWSplitFrame::OrientationHorizontal)
-    {  
-    this->Separator->SetConfigurationOption("-cursor", "sb_h_double_arrow");
+    if (this->Orientation == vtkKWSplitFrame::OrientationHorizontal)
+      {  
+      this->Separator->SetConfigurationOption("-cursor", "sb_h_double_arrow");
+      }
+    else
+      {
+      this->Separator->SetConfigurationOption("-cursor", "sb_v_double_arrow");
+      }
+#endif
     }
   else
     {
-    this->Separator->SetConfigurationOption("-cursor", "sb_v_double_arrow");
+    this->Separator->SetConfigurationOption("-cursor", "dot");
     }
-#endif
+
+  if (this->Frame1Visibility && this->Frame2Visibility &&
+      this->SeparatorVisibility)
+    {
+    this->AddSeparatorBindings();
+    }
+  else
+    {
+    this->RemoveSeparatorBindings();
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSplitFrame::ConfigureSeparatorButtons()
+{
+  if (!this->Expand1Button || !this->Expand1Button->IsCreated() ||
+      !this->Expand2Button || !this->Expand2Button->IsCreated())
+    {
+    return;
+    }
+
+  this->SeparatorFrame->UnpackChildren();
+
+  if (this->Orientation == vtkKWSplitFrame::OrientationHorizontal)
+    {
+    this->Expand1Button->SetImageToPredefinedIcon(
+      vtkKWIcon::IconExpandRightMini);
+    this->Expand2Button->SetImageToPredefinedIcon(
+      vtkKWIcon::IconExpandLeftMini);
+
+    this->Script("pack %s %s -side top -expand n -fill both -pady 1",
+                 this->Expand2Button->GetWidgetName(),
+                 this->Expand1Button->GetWidgetName());
+    this->Script("pack %s -side top -expand y -fill both",
+                 this->Separator->GetWidgetName());
+
+    this->Expand1Button->SetBalloonHelpString(
+      ks_("Split Frame|Expand right"));
+    this->Expand2Button->SetBalloonHelpString(
+      ks_("Split Frame|Expand left"));
+    }
+  else
+    {
+    this->Expand1Button->SetImageToPredefinedIcon(
+      vtkKWIcon::IconExpandUpMini);
+    this->Expand2Button->SetImageToPredefinedIcon(
+      vtkKWIcon::IconExpandMini);
+
+    this->Script("pack %s %s -side left -expand n -fill both -padx 1",
+                 this->Expand2Button->GetWidgetName(),
+                 this->Expand1Button->GetWidgetName());
+    this->Script("pack %s -side left -expand y -fill both",
+                 this->Separator->GetWidgetName());
+
+    this->Expand1Button->SetBalloonHelpString(
+      ks_("Split Frame|Expand up"));
+    this->Expand2Button->SetBalloonHelpString(
+      ks_("Split Frame|Expand down"));
+    }
+
+  if (this->FrameLayout == vtkKWSplitFrame::FrameLayoutDefault)
+    {
+    this->Expand1Button->SetEnabled(
+      this->Frame2Visibility ? this->GetEnabled() : 0);
+    this->Expand2Button->SetEnabled(
+      this->Frame1Visibility ? this->GetEnabled() : 0);
+    }
+  else
+    {
+    this->Expand1Button->SetEnabled(
+      this->Frame1Visibility ? this->GetEnabled() : 0);
+    this->Expand2Button->SetEnabled(
+      this->Frame2Visibility ? this->GetEnabled() : 0);
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -469,6 +594,47 @@ void vtkKWSplitFrame::DragCallback()
   this->Pack();
 }
 
+//----------------------------------------------------------------------------
+void vtkKWSplitFrame::Expand1ButtonCallback()
+{
+  if (this->FrameLayout == vtkKWSplitFrame::FrameLayoutDefault)
+    {
+    if (this->GetFrame1Visibility())
+      {
+      this->Frame2VisibilityOff();
+      }
+    this->Frame1VisibilityOn();
+    }
+  else
+    {
+    if (this->GetFrame2Visibility())
+      {
+      this->Frame1VisibilityOff();
+      }
+    this->Frame2VisibilityOn();
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSplitFrame::Expand2ButtonCallback()
+{
+  if (this->FrameLayout == vtkKWSplitFrame::FrameLayoutDefault)
+    {
+    if (this->GetFrame2Visibility())
+      {
+      this->Frame1VisibilityOff();
+      }
+    this->Frame2VisibilityOn();
+    }
+  else
+    {
+    if (this->GetFrame1Visibility())
+      {
+      this->Frame2VisibilityOff();
+      }
+    this->Frame1VisibilityOn();
+    }
+}
 
 //----------------------------------------------------------------------------
 void vtkKWSplitFrame::SetFrame1MinimumSize(int minSize)
@@ -613,14 +779,7 @@ void vtkKWSplitFrame::SetSeparatorVisibility(int flag)
   this->Modified();
   this->Pack();
 
-  if (this->SeparatorVisibility)
-    {
-    this->AddSeparatorBindings();
-    }
-  else
-    {
-    this->RemoveSeparatorBindings();
-    }
+  this->ConfigureSeparator();
 }
 
 //----------------------------------------------------------------------------
@@ -639,7 +798,14 @@ void vtkKWSplitFrame::SetFrame1Visibility(int flag)
 
   this->Frame1Visibility = flag;
   this->Modified();
+
+  this->ConfigureSeparator();
+  this->ConfigureSeparatorButtons();
+
   this->Pack();
+
+  this->InvokeEvent(vtkKWSplitFrame::FrameVisibilityChangedEvent);
+  this->InvokeEvent(vtkKWSplitFrame::Frame1VisibilityChangedEvent);
 }
 
 //----------------------------------------------------------------------------
@@ -652,7 +818,14 @@ void vtkKWSplitFrame::SetFrame2Visibility(int flag)
 
   this->Frame2Visibility = flag;
   this->Modified();
+
+  this->ConfigureSeparator();
+  this->ConfigureSeparatorButtons();
+
   this->Pack();
+
+  this->InvokeEvent(vtkKWSplitFrame::FrameVisibilityChangedEvent);
+  this->InvokeEvent(vtkKWSplitFrame::Frame2VisibilityChangedEvent);
 }
 
 //----------------------------------------------------------------------------
@@ -675,43 +848,38 @@ void vtkKWSplitFrame::Pack()
 
   // Compute the real size of each element, given the visibility parameters
 
-  if (frame1_visibility && frame2_visibility)
+  int remaining = 0;
+  if (this->SeparatorVisibility)
     {
-    if (this->SeparatorVisibility)
-      {
-      separator_size = this->SeparatorSize;
-      separator_margin = this->SeparatorMargin;
-      total_separator_size = this->GetTotalSeparatorSize();
-      frame1_size = this->Frame1Size;
-      frame2_size = this->Frame2Size;
-      }
-    else
-      {
-      separator_size = 0;
-      separator_margin = 0;
-      total_separator_size = this->SeparatorMargin;
-      int remaining = this->GetTotalSeparatorSize() - total_separator_size;
-      frame1_size = this->Frame1Size + (remaining / 2);
-      frame2_size = this->Frame2Size + (remaining - remaining / 2);
-      }
+    separator_size = this->SeparatorSize;
+    separator_margin = this->SeparatorMargin;
+    total_separator_size = this->GetTotalSeparatorSize();
     }
   else
     {
-    total_separator_size = separator_size = separator_margin = 0;
+    separator_size = 0;
+    separator_margin = 0;
+    total_separator_size = this->SeparatorMargin;
+    remaining = this->GetTotalSeparatorSize() - total_separator_size;
+    }
+  frame1_size = this->Frame1Size + (remaining / 2);
+  frame2_size = this->Frame2Size + (remaining - remaining / 2);
+
+  if (!frame1_visibility)
+    {
+    if (frame2_visibility)
+      {
+      frame2_size += frame1_size;
+      }
+    frame1_size = 0;
+    }
+  if (!frame2_visibility)
+    {
     if (frame1_visibility)
       {
-      frame1_size = this->Size;
-      frame2_size = 0;
+      frame1_size += frame2_size;
       }
-    else if (frame2_visibility)
-      {
-      frame1_size = 0;
-      frame2_size = this->Size;
-      }
-    else
-      {
-      frame1_size = frame2_size = 0;
-      }
+    frame2_size = 0;
     }
 
   int margin_h = 0; // this->GetInternalMarginHorizontal();
@@ -763,30 +931,30 @@ void vtkKWSplitFrame::Pack()
 
   // Separator
 
-  if (frame1_visibility && 
-      frame2_visibility && 
-      this->SeparatorVisibility)
+  if (this->SeparatorVisibility)
     {
     if (this->Orientation == vtkKWSplitFrame::OrientationHorizontal)  
       {
       this->Script("place %s -x %d -y %d -width %d -relheight 1.0 -height -%d",
-                   this->Separator->GetWidgetName(), 
+                   this->SeparatorFrame->GetWidgetName(), 
                    margin_h + frame1_size + separator_margin,
                    margin_v,
-                   separator_size, margin_v * 2);
+                   separator_size, 
+                   margin_v * 2);
       }
     else
       {
       this->Script("place %s -x %d -y %d -height %d -relwidth 1.0 -width -%d",
-                   this->Separator->GetWidgetName(), 
+                   this->SeparatorFrame->GetWidgetName(), 
                    margin_h,
                    margin_v + frame2_size + separator_margin,
-                   separator_size, margin_h * 2);
+                   separator_size, 
+                   margin_h * 2);
       }
     }
   else
     {
-    this->Script("place forget %s", this->Separator->GetWidgetName());
+    this->Script("place forget %s", this->SeparatorFrame->GetWidgetName());
     }
 
   // Frame 2
@@ -822,8 +990,12 @@ void vtkKWSplitFrame::UpdateEnableState()
   this->Superclass::UpdateEnableState();
 
   this->PropagateEnableState(this->Frame1);
-  this->PropagateEnableState(this->Separator);
+  this->PropagateEnableState(this->SeparatorFrame);
   this->PropagateEnableState(this->Frame2);
+
+  this->PropagateEnableState(this->Separator);
+  this->PropagateEnableState(this->Expand1Button);
+  this->PropagateEnableState(this->Expand2Button);
 }
 
 //----------------------------------------------------------------------------
