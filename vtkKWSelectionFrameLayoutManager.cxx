@@ -75,7 +75,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.77 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.78 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -560,10 +560,9 @@ void vtkKWSelectionFrameLayoutManager::SetResolutionAndOrigin(
 
   // Reorganize and pack
 
-  if (this->ReorganizeWidgetPositionsAutomatically &&
-      (this->ReorganizeWidgetPositions() || 
-       res_has_changed || 
-       origin_has_changed))
+  if ((this->ReorganizeWidgetPositionsAutomatically && 
+       this->ReorganizeWidgetPositions()) || 
+      res_has_changed || origin_has_changed)
     {
     this->Pack();
     }
