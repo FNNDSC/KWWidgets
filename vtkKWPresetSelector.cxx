@@ -59,7 +59,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.60 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.61 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -396,7 +396,7 @@ void vtkKWPresetSelector::CreateWidget()
     }
   else
     {
-    list->SetSelectionModeToExtended();
+    list->SetSelectionModeToBrowse();
     }
   list->SetSelectionCommand(
     this, "PresetSelectionCallback");
@@ -1518,7 +1518,7 @@ void vtkKWPresetSelector::SetApplyPresetOnSelection(int arg)
       }
     else
       {
-      this->PresetList->GetWidget()->SetSelectionModeToExtended();
+      this->PresetList->GetWidget()->SetSelectionModeToBrowse();
       }
     }
 }
