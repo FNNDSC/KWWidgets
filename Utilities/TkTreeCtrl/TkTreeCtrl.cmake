@@ -3,7 +3,7 @@ MACRO(TkTreeCtrl_GET_LIBRARY supported sources include_path libs)
   IF(DEFINED ${supported})
     SET(default_val ${supported})
   ELSE(DEFINED ${supported})
-    SET(default_val 1)
+    SET(default_val 0)
   ENDIF(DEFINED ${supported})
 
   # Visual Studio 6 does not support/provide uxtheme.h
