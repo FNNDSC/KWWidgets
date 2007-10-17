@@ -159,6 +159,14 @@ public:
   vtkGetMacro(ReorganizeWidgetPositionsAutomatically, int);
 
   // Description:
+  // Set/Get the maximum resolution of the layout 
+  // (number of columns, number of rows).
+  virtual void SetMaximumResolution(int nb_cols, int nb_rows);
+  virtual void SetMaximumResolution(int res[2])
+    { this->SetMaximumResolution(res[0], res[1]); };
+  vtkGetVector2Macro(MaximumResolution, int);
+
+  // Description:
   // Return if a specific widget is visible at this point, i.e. mapped
   // on screen at a specific position given the current resolution.
   virtual int GetWidgetVisibility(vtkKWSelectionFrame *w);
@@ -318,6 +326,7 @@ protected:
   virtual void CreateWidget();
   
   int Resolution[2];
+  int MaximumResolution[2];
   int Origin[2];
   int ReorganizeWidgetPositionsAutomatically;
 

@@ -76,3 +76,16 @@ static const unsigned long image_KWWindowLayout3x2_decoded_length = 1083;
 static const unsigned char image_KWWindowLayout3x2[] = 
   "eNpjYCAfPH1wAxkRKTKqcbBpHE0AowmADAAAPdtzTw==";
 
+/* 
+ * Resource generated for file:
+ *    KWWindowLayout3x3.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_KWWindowLayout3x3_width          = 19;
+static const unsigned int  image_KWWindowLayout3x3_height         = 19;
+static const unsigned int  image_KWWindowLayout3x3_pixel_size     = 3;
+static const unsigned long image_KWWindowLayout3x3_length         = 40;
+static const unsigned long image_KWWindowLayout3x3_decoded_length = 1083;
+
+static const unsigned char image_KWWindowLayout3x3[] = 
+  "eNpjYCAfPH1wAxkRKTJCNI6G6mioDu9QBQA6QUwc";
+

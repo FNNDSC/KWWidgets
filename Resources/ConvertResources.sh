@@ -5,7 +5,8 @@ KWConvertImageToHeader --zlib --base64 \
     KWWindowLayout2x1.png \
     KWWindowLayout2x2.png \
     KWWindowLayout2x3.png \
-    KWWindowLayout3x2.png 
+    KWWindowLayout3x2.png \
+    KWWindowLayout3x3.png 
 
 KWConvertImageToHeader --zlib --base64 \
     vtkKWIconResources.h \

@@ -70,12 +70,13 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #define VTK_KW_SFLMGR_LABEL_PATTERN "%d x %d"
 #define VTK_KW_SFLMGR_ICON_PATTERN "KWWindowLayout%dx%d"
-#define VTK_KW_SFLMGR_RESOLUTIONS {{ 1, 1}, { 1, 2}, { 2, 1}, { 2, 2}, { 2, 3}, { 3, 2}}
+// colxrow
+#define VTK_KW_SFLMGR_RESOLUTIONS {{ 1, 1}, { 1, 2}, { 2, 1}, { 2, 2}, { 2, 3}, { 3, 2}, { 3, 3}}
 #define VTK_KW_SFLMGR_MAX_SIZE 100
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.78 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.79 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -114,6 +115,9 @@ vtkKWSelectionFrameLayoutManager::vtkKWSelectionFrameLayoutManager()
 
   this->Resolution[0] = 1;
   this->Resolution[1] = 1;
+
+  this->MaximumResolution[0] = 3;
+  this->MaximumResolution[1] = 3;
 
   this->Origin[0] = 0;
   this->Origin[1] = 0;
@@ -491,6 +495,27 @@ void vtkKWSelectionFrameLayoutManager::SetResolution(int nb_cols, int nb_rows)
 }
 
 //----------------------------------------------------------------------------
+void vtkKWSelectionFrameLayoutManager::SetMaximumResolution(
+  int nb_cols, int nb_rows)
+{
+  if (nb_cols <= 0 || nb_rows <= 0 || 
+      (nb_cols == this->MaximumResolution[0] && 
+       nb_rows == this->MaximumResolution[1]))
+    {
+    return;
+    }
+
+  this->MaximumResolution[0] = nb_cols;
+  this->MaximumResolution[1] = nb_rows;
+
+  this->SetResolution(
+    (this->Resolution[0] > this->MaximumResolution[0] ? 
+     this->MaximumResolution[0] : this->Resolution[0]),
+    (this->Resolution[1] > this->MaximumResolution[1] ? 
+     this->MaximumResolution[1] : this->Resolution[1]));
+}
+
+//----------------------------------------------------------------------------
 int vtkKWSelectionFrameLayoutManager::PushPosition(int col, int row)
 {
   if (this->Internals)
@@ -533,6 +558,15 @@ void vtkKWSelectionFrameLayoutManager::SetResolutionAndOrigin(
   if (nb_cols < 0 || nb_rows < 0 || col < 0 || row < 0)
     {
     return;
+    }
+
+  if (nb_cols > this->MaximumResolution[0])
+    {
+    nb_cols = this->MaximumResolution[0];
+    }
+  if (nb_rows > this->MaximumResolution[1])
+    {
+    nb_rows = this->MaximumResolution[1];
     }
 
   int res_has_changed = 
@@ -720,10 +754,11 @@ void vtkKWSelectionFrameLayoutManager::UpdateResolutionEntriesMenu()
   for (size_t idx = 0; idx < sizeof(res) / sizeof(res[0]); idx++)
     {
     sprintf(label, VTK_KW_SFLMGR_LABEL_PATTERN, res[idx][0], res[idx][1]);
+    size_t capacity_without_one_row = res[idx][0] * (res[idx][1] - 1);
+    size_t capacity_without_one_col = (res[idx][0] - 1) * res[idx][1];
     this->ResolutionEntriesMenu->SetItemState(
       label, 
-      (size_t)(res[idx][0] * res[idx][1]) <= 
-      (size + (res[idx][0] != 1 && res[idx][1] != 1 ? 1 : 0))
+      (size > capacity_without_one_row || size > capacity_without_one_col)
       ? normal_state : vtkKWOptions::StateDisabled);
     }
 
@@ -830,6 +865,17 @@ void vtkKWSelectionFrameLayoutManager::CreateResolutionEntriesToolbar(
     image_KWWindowLayout3x2_pixel_size,
     image_KWWindowLayout3x2_length);
 
+  vtkKWTkUtilities::UpdateOrLoadPhoto(
+    parent->GetApplication(),
+    "KWWindowLayout3x3",
+    NULL,
+    NULL,
+    image_KWWindowLayout3x3, 
+    image_KWWindowLayout3x3_width, 
+    image_KWWindowLayout3x3_height,
+    image_KWWindowLayout3x3_pixel_size,
+    image_KWWindowLayout3x3_length);
+
   // Allowed resolutions
 
   vtksys_stl::string rbv(this->GetTclName());
@@ -878,9 +924,10 @@ void vtkKWSelectionFrameLayoutManager::UpdateResolutionEntriesToolbar()
     vtkKWWidget *w = this->ResolutionEntriesToolbar->GetWidget(icon);
     if (w)
       {
+      size_t capacity_without_one_row = res[idx][0] * (res[idx][1] - 1);
+      size_t capacity_without_one_col = (res[idx][0] - 1) * res[idx][1];
       w->SetEnabled(
-        (size_t)(res[idx][0] * res[idx][1]) <= 
-        (size + (res[idx][0] != 1 && res[idx][1] != 1 ? 1 : 0)) 
+        (size > capacity_without_one_row || size > capacity_without_one_col)
         ? this->GetEnabled() : 0);
       }
     }
@@ -2709,6 +2756,9 @@ void vtkKWSelectionFrameLayoutManager::PrintSelf(ostream& os, vtkIndent indent)
 
   os << indent << "Resolution: " << this->Resolution[0] << " x " 
      << this->Resolution[1] << endl;
+
+  os << indent << "MaximumResolution: " << this->MaximumResolution[0] << " x " 
+     << this->MaximumResolution[1] << endl;
 
   os << indent << "ResolutionEntriesMenu: " << this->ResolutionEntriesMenu << endl;
   os << indent << "ResolutionEntriesToolbar: " << this->ResolutionEntriesToolbar << endl;
