@@ -35,6 +35,7 @@ class vtkKWWidget;
 class vtkKWCoreWidget;
 class vtkKWApplication;
 class vtkKWIcon;
+class vtkRenderWindow;
 struct Tcl_Interp;
 
 class KWWidgets_EXPORT vtkKWTkUtilities : public vtkObject
@@ -589,6 +590,13 @@ public:
   // performed immediately. 
   static void ProcessIdleTasks(Tcl_Interp *interp);
   static void ProcessIdleTasks(vtkKWApplication *app);
+
+  // Description:
+  // Check for pending interaction events, i.e. mouse button up/down, window
+  // being dragged/resized/moved, paint, window activation, etc.
+  // On Unix, one needs to pass a vtkRenderWindow (on Win32, NULL is fine)
+  // Return 1 if events are pending, 0 otherwise
+  static int CheckForPendingInteractionEvents(vtkRenderWindow *win);
 
   // Description:
   // Get the coordinates of the mouse pointer in the screen widget is in.

@@ -36,9 +36,14 @@
 
 #include "vtkTk.h"
 
+#if defined(__APPLE_CC__)
+#elif !defined(_WIN32)
+#include "vtkXOpenGLRenderWindow.h"
+#endif
+
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.84 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.85 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -2953,6 +2958,138 @@ void vtkKWTkUtilities::ProcessIdleTasks(vtkKWApplication *app)
     {
     vtkKWTkUtilities::ProcessIdleTasks(app->GetMainInterp());
     }
+}
+
+//---------------------------------------------------------------------------
+#if defined(__APPLE_CC__)
+#elif !defined(_WIN32)
+int vtkKWTkUtilities_InteractionEventFound;
+extern "C"
+Bool vtkKWTkUtilities_CheckForPendingInteractionEvents(
+  Display *vtkNotUsed(disp), 
+  XEvent *event,
+  XPointer vtkNotUsed(arg))
+{
+  if (event->type == Expose)
+    {
+    vtkKWTkUtilities_InteractionEventFound = 1;
+    }
+  if (event->type == ConfigureNotify)
+    {
+    vtkKWTkUtilities_InteractionEventFound = 2;
+    }
+  else if (event->type == ButtonPress)
+    {
+    vtkKWTkUtilities_InteractionEventFound = 2;
+    }
+  else if (event->type == KeyPress)
+    {
+    vtkKWTkUtilities_InteractionEventFound = 2;
+    }
+
+  return 0;
+}
+#endif
+
+//----------------------------------------------------------------------------
+int vtkKWTkUtilities::CheckForPendingInteractionEvents(vtkRenderWindow *win)
+{
+  int flag = 0;
+  
+#ifdef _WIN32
+  (void)win;
+
+  MSG msg;
+
+  // Check all four - can't get the range right in one call without
+  // including events we don't want
+
+  if (PeekMessage(&msg,NULL,WM_LBUTTONDOWN,WM_LBUTTONDOWN,PM_NOREMOVE))
+    {
+    flag = 2;
+    }
+  else if (PeekMessage(
+             &msg,NULL,WM_NCLBUTTONDOWN,WM_NCLBUTTONDOWN,PM_NOREMOVE))
+    {
+    flag = 2;
+    }
+  else if (PeekMessage(&msg,NULL,WM_MBUTTONDOWN,WM_MBUTTONDOWN,PM_NOREMOVE))
+    {
+    flag = 2;
+    }
+  else if (PeekMessage(&msg,NULL,WM_RBUTTONDOWN,WM_RBUTTONDOWN,PM_NOREMOVE))
+    {
+    flag = 2;
+    }
+  else if (PeekMessage(
+             &msg,NULL,WM_WINDOWPOSCHANGING,WM_WINDOWPOSCHANGING,PM_NOREMOVE))
+    {
+    flag = 2;
+    }
+  else if (PeekMessage(
+             &msg,NULL,WM_WINDOWPOSCHANGED,WM_WINDOWPOSCHANGED,PM_NOREMOVE))
+    {
+    flag = 2;
+    }
+  else if (PeekMessage(&msg,NULL,WM_SIZE,WM_SIZE,PM_NOREMOVE))
+    {
+    flag = 2;
+    }
+  else if (PeekMessage(&msg,NULL,WM_CHAR,WM_CHAR,PM_NOREMOVE) ||
+           PeekMessage(&msg,NULL,WM_KEYDOWN,WM_KEYDOWN,PM_NOREMOVE))
+    {
+    // Do not abort if we are only pressing a modifier
+    // Sorry, had to use hard-coded value, I do not know if there is a
+    // constant in Win32 API to check the vcode 
+    // (see vtkWin32RenderWindowInteractor)
+    if (msg.wParam != 16 && msg.wParam != 17)
+      {
+      flag = 2;
+      }
+    }
+
+  if ( !flag )
+    {
+    // Check some other events to make sure UI isn't being updated
+    if (PeekMessage(&msg,NULL,WM_SYNCPAINT,WM_SYNCPAINT,PM_NOREMOVE))
+      {
+      flag = 1;
+      }
+    else if (PeekMessage(&msg,NULL,WM_NCPAINT,WM_NCPAINT,PM_NOREMOVE))
+      {
+      flag = 1;
+      }
+    else if (PeekMessage(&msg,NULL,WM_PAINT,WM_PAINT,PM_NOREMOVE))
+      {
+      flag = 1;
+      }
+    else if (PeekMessage(&msg,NULL,WM_ERASEBKGND,WM_ERASEBKGND,PM_NOREMOVE))
+      {
+      flag = 1;
+      }
+    else if (PeekMessage(&msg,NULL,WM_ACTIVATE,WM_ACTIVATE,PM_NOREMOVE))
+      {
+      flag = 1;
+      }
+    else if (PeekMessage(&msg,NULL,WM_NCACTIVATE,WM_NCACTIVATE,PM_NOREMOVE))
+      {
+      flag = 1;
+      }
+    }
+#elif defined(__APPLE_CC__)
+  // Add code
+#else
+  XEvent report;
+  vtkKWTkUtilities_InteractionEventFound = 0;
+  Display *dpy = vtkXOpenGLRenderWindow::SafeDownCast(win)->GetDisplayId();
+  //  XSync(dpy,False);
+  XCheckIfEvent(dpy, &report, 
+                vtkKWTkUtilities_CheckForPendingInteractionEvents, NULL);
+  //  XSync(dpy,False);
+  flag = vtkKWTkUtilities_InteractionEventFound;
+#endif
+
+  return flag;
 }
 
 //----------------------------------------------------------------------------
