@@ -32,7 +32,7 @@
 #include <vtksys/stl/string>
 
 vtkStandardNewMacro(vtkKWPiecewiseFunctionEditor);
-vtkCxxRevisionMacro(vtkKWPiecewiseFunctionEditor, "$Revision: 1.56 $");
+vtkCxxRevisionMacro(vtkKWPiecewiseFunctionEditor, "$Revision: 1.57 $");
 
 #define EPSILON 0.0001
 #define EPSILON_MIN_WINDOW (EPSILON * 2.5)
@@ -874,10 +874,10 @@ void vtkKWPiecewiseFunctionEditor::InvokeFunctionChangedCommand()
   if (this->WindowLevelMode)
     {
     this->UpdateWindowLevelFromPoints();
-    float fargs[2];
-    fargs[0] = this->GetWindow();
-    fargs[1] = this->GetLevel();
-    this->InvokeEvent(vtkKWEvent::WindowLevelChangedEvent, fargs);
+    double args[2];
+    args[0] = this->GetWindow();
+    args[1] = this->GetLevel();
+    this->InvokeEvent(vtkKWEvent::WindowLevelChangedEvent, args);
     }
 
   this->Superclass::InvokeFunctionChangedCommand();
@@ -889,10 +889,10 @@ void vtkKWPiecewiseFunctionEditor::InvokeFunctionChangingCommand()
   if (this->WindowLevelMode)
     {
     this->UpdateWindowLevelFromPoints();
-    float fargs[2];
-    fargs[0] = this->GetWindow();
-    fargs[1] = this->GetLevel();
-    this->InvokeEvent(vtkKWEvent::WindowLevelChangingEvent, fargs);
+    double args[2];
+    args[0] = this->GetWindow();
+    args[1] = this->GetLevel();
+    this->InvokeEvent(vtkKWEvent::WindowLevelChangingEvent, args);
     }
 
   this->Superclass::InvokeFunctionChangingCommand();

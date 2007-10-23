@@ -54,7 +54,7 @@
 #define VTK_KW_VPW_TESTING 0
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.46 $");
+vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.47 $");
 vtkStandardNewMacro(vtkKWVolumePropertyWidget);
 
 //----------------------------------------------------------------------------
@@ -1819,7 +1819,7 @@ void vtkKWVolumePropertyWidget::SetSelectedComponent(int arg)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWVolumePropertyWidget::SetWindowLevel(float window, float level)
+void vtkKWVolumePropertyWidget::SetWindowLevel(double window, double level)
 {
   if (this->ScalarOpacityFunctionEditor)
     {
@@ -1829,7 +1829,7 @@ void vtkKWVolumePropertyWidget::SetWindowLevel(float window, float level)
 
 //----------------------------------------------------------------------------
 void vtkKWVolumePropertyWidget::SetInteractiveWindowLevel(
-  float window, float level)
+  double window, double level)
 {
   if (this->ScalarOpacityFunctionEditor)
     {
@@ -2044,10 +2044,10 @@ void vtkKWVolumePropertyWidget::ScalarOpacityFunctionChangedCallback()
   if (this->ScalarOpacityFunctionEditor &&
       this->ScalarOpacityFunctionEditor->GetWindowLevelMode())
     {
-    float fargs[2];
-    fargs[0] = this->ScalarOpacityFunctionEditor->GetWindow();
-    fargs[1] = this->ScalarOpacityFunctionEditor->GetLevel();
-    this->InvokeEvent(vtkKWEvent::WindowLevelChangedEvent, fargs);
+    double args[2];
+    args[0] = this->ScalarOpacityFunctionEditor->GetWindow();
+    args[1] = this->ScalarOpacityFunctionEditor->GetLevel();
+    this->InvokeEvent(vtkKWEvent::WindowLevelChangedEvent, args);
     }
 
   this->InvokeVolumePropertyChangedCommand();
@@ -2059,10 +2059,10 @@ void vtkKWVolumePropertyWidget::ScalarOpacityFunctionChangingCallback()
   if (this->ScalarOpacityFunctionEditor &&
       this->ScalarOpacityFunctionEditor->GetWindowLevelMode())
     {
-    float fargs[2];
-    fargs[0] = this->ScalarOpacityFunctionEditor->GetWindow();
-    fargs[1] = this->ScalarOpacityFunctionEditor->GetLevel();
-    this->InvokeEvent(vtkKWEvent::WindowLevelChangingEvent, fargs);
+    double args[2];
+    args[0] = this->ScalarOpacityFunctionEditor->GetWindow();
+    args[1] = this->ScalarOpacityFunctionEditor->GetLevel();
+    this->InvokeEvent(vtkKWEvent::WindowLevelChangingEvent, args);
     }
 
   if (this->InteractiveApplyMode)
@@ -2355,10 +2355,10 @@ void vtkKWVolumePropertyWidget::ComponentWeightChangedCallback(
 
   this->VolumeProperty->SetComponentWeight(index, value);
   
-  float fargs[2];
-  fargs[0] = index;
-  fargs[1] = value;
-  this->InvokeEvent(vtkKWEvent::ScalarComponentWeightChangedEvent, fargs);
+  double args[2];
+  args[0] = index;
+  args[1] = value;
+  this->InvokeEvent(vtkKWEvent::ScalarComponentWeightChangedEvent, args);
 
   this->InvokeVolumePropertyChangedCommand();
 }
@@ -2369,10 +2369,10 @@ void vtkKWVolumePropertyWidget::ComponentWeightChangingCallback(
 {
   this->VolumeProperty->SetComponentWeight(index, value);
   
-  float fargs[2];
-  fargs[0] = index;
-  fargs[1] = value;
-  this->InvokeEvent(vtkKWEvent::ScalarComponentWeightChangingEvent, fargs);
+  double args[2];
+  args[0] = index;
+  args[1] = value;
+  this->InvokeEvent(vtkKWEvent::ScalarComponentWeightChangingEvent, args);
 
   if (this->InteractiveApplyMode)
     {

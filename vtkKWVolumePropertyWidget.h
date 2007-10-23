@@ -75,8 +75,8 @@ public:
   // this mode (SetInteractiveWindowLevel will trigger interactive events)
   // IsInWindowLevelMode return true if part of this widget is in
   // window/level mode.
-  virtual void SetWindowLevel(float window, float level);
-  virtual void SetInteractiveWindowLevel(float window, float level);
+  virtual void SetWindowLevel(double window, double level);
+  virtual void SetInteractiveWindowLevel(double window, double level);
   virtual int IsInWindowLevelMode();
 
   // Description:
