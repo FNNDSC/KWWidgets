@@ -76,7 +76,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.80 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.81 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -755,11 +755,18 @@ void vtkKWSelectionFrameLayoutManager::UpdateResolutionEntriesMenu()
     {
     sprintf(label, VTK_KW_SFLMGR_LABEL_PATTERN, res[idx][0], res[idx][1]);
     size_t capacity_without_one_row = res[idx][0] * (res[idx][1] - 1);
+    if (capacity_without_one_row == 0)
+      {
+      capacity_without_one_row = 1;
+      }
     size_t capacity_without_one_col = (res[idx][0] - 1) * res[idx][1];
+    if (capacity_without_one_col == 0)
+      {
+      capacity_without_one_col = 1;
+      }
     this->ResolutionEntriesMenu->SetItemState(
       label, 
-      ((capacity_without_one_row && size > capacity_without_one_row) ||
-       (capacity_without_one_col && size > capacity_without_one_col))
+      (size > capacity_without_one_row || size > capacity_without_one_col)
       ? normal_state : vtkKWOptions::StateDisabled);
     }
 
@@ -926,10 +933,17 @@ void vtkKWSelectionFrameLayoutManager::UpdateResolutionEntriesToolbar()
     if (w)
       {
       size_t capacity_without_one_row = res[idx][0] * (res[idx][1] - 1);
+      if (capacity_without_one_row == 0)
+        {
+        capacity_without_one_row = 1;
+        }
       size_t capacity_without_one_col = (res[idx][0] - 1) * res[idx][1];
+      if (capacity_without_one_col == 0)
+        {
+        capacity_without_one_col = 1;
+        }
       w->SetEnabled(
-        ((capacity_without_one_row && size > capacity_without_one_row) ||
-         (capacity_without_one_col && size > capacity_without_one_col))
+        (size > capacity_without_one_row || size > capacity_without_one_col)
         ? this->GetEnabled() : 0);
       }
     }
