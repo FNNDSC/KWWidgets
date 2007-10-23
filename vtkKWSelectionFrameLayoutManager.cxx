@@ -76,7 +76,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.79 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.80 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -758,7 +758,8 @@ void vtkKWSelectionFrameLayoutManager::UpdateResolutionEntriesMenu()
     size_t capacity_without_one_col = (res[idx][0] - 1) * res[idx][1];
     this->ResolutionEntriesMenu->SetItemState(
       label, 
-      (size > capacity_without_one_row || size > capacity_without_one_col)
+      ((capacity_without_one_row && size > capacity_without_one_row) ||
+       (capacity_without_one_col && size > capacity_without_one_col))
       ? normal_state : vtkKWOptions::StateDisabled);
     }
 
@@ -927,7 +928,8 @@ void vtkKWSelectionFrameLayoutManager::UpdateResolutionEntriesToolbar()
       size_t capacity_without_one_row = res[idx][0] * (res[idx][1] - 1);
       size_t capacity_without_one_col = (res[idx][0] - 1) * res[idx][1];
       w->SetEnabled(
-        (size > capacity_without_one_row || size > capacity_without_one_col)
+        ((capacity_without_one_row && size > capacity_without_one_row) ||
+         (capacity_without_one_col && size > capacity_without_one_col))
         ? this->GetEnabled() : 0);
       }
     }
