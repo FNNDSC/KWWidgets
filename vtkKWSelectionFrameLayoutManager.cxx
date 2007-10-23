@@ -76,7 +76,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.81 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.82 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -233,6 +233,11 @@ void vtkKWSelectionFrameLayoutManager::Pack()
   vtksys_ios::ostringstream tk_cmd;
 
   // Pack each widgets
+  // First unpack all widgets (this is necessary if some of the widgets that
+  // were packed have been deleted)
+
+  tk_cmd << "catch {eval grid forget [grid slaves " 
+         << this->LayoutFrame->GetWidgetName() << "]}" << endl;
 
   vtkKWSelectionFrameLayoutManagerInternals::PoolIterator it = 
     this->Internals->Pool.begin();
@@ -251,10 +256,6 @@ void vtkKWSelectionFrameLayoutManager::Pack()
                  << " -sticky news "
                  << " -column " << it->Position[0] - this->Origin[0]
                  << " -row " << it->Position[1] - this->Origin[1] << endl;
-          }
-        else
-          {
-          tk_cmd << "grid forget " << it->Widget->GetWidgetName() << endl;
           }
         }
       }
@@ -1384,9 +1385,11 @@ void vtkKWSelectionFrameLayoutManager::NumberOfWidgetsHasChanged()
   this->UpdateEnableState();
 
   // Pack
+  // Only if some widgets have been reorganized, or we closed the last
+  // widget
 
   if (this->ReorganizeWidgetPositionsAutomatically &&
-      this->ReorganizeWidgetPositions())
+      (this->ReorganizeWidgetPositions() || !this->GetNumberOfWidgets()))
     {
     this->Pack();
     }
