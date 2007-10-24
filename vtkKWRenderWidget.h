@@ -389,6 +389,10 @@ protected:
   virtual void PopulateContextMenu(vtkKWMenu*);
   virtual void PopulateAnnotationMenu(vtkKWMenu*);
 
+  // Description:
+  // Update the render window interactor size
+  virtual void UpdateRenderWindowInteractorSize(int width, int height);
+
   // PIMPL Encapsulation for STL containers
 
   vtkKWRenderWidgetInternals *Internals;

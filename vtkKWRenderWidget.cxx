@@ -43,7 +43,7 @@
 #include <vtksys/stl/vector>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.154 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.155 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -996,7 +996,6 @@ void vtkKWRenderWidget::MouseMoveCallback(
   if (!interactor)
     {
     return;
-
     }
 
   interactor->SetEventInformationFlipY(x, y, ctrl, shift);
@@ -1242,7 +1241,7 @@ void vtkKWRenderWidget::LeaveCallback(int x, int y)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWRenderWidget::ConfigureCallback(int width, int height)
+void vtkKWRenderWidget::UpdateRenderWindowInteractorSize(int width, int height)
 {
   vtkRenderWindowInteractor *interactor = this->GetRenderWindowInteractor();
   if (!interactor)
@@ -1262,10 +1261,18 @@ void vtkKWRenderWidget::ConfigureCallback(int width, int height)
     {
     height = interactor->GetSize()[1];
     }
-  //Interactor->GetSize() can return 0. in that case set
-  //the size to 1.
-  if(width==0) width=1;
-  if(height==0) height=1;
+
+  // Interactor->GetSize() can return 0. in that case set the size to 1.
+
+  if (width == 0) 
+    {
+    width=1;
+    }
+  if (height == 0)
+    {
+    height=1;
+    }
+
   // We *need* to propagate the size to the vtkTkRenderWidget
   // if we specified the widget's width/height explicitly
 
@@ -1279,6 +1286,7 @@ void vtkKWRenderWidget::ConfigureCallback(int width, int height)
     {
     height = frame_height;
     }
+
   if (frame_width || frame_height)
     {    
     this->VTKWidget->SetConfigurationOptionAsInt("-width", width);
@@ -1288,9 +1296,16 @@ void vtkKWRenderWidget::ConfigureCallback(int width, int height)
   // Propagate to the interactor too, for safety
 
   interactor->UpdateSize(width, height);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRenderWidget::ConfigureCallback(int width, int height)
+{
+  this->UpdateRenderWindowInteractorSize(width, height);
 
   vtkGenericRenderWindowInteractor *gen_interactor = 
-    vtkGenericRenderWindowInteractor::SafeDownCast(interactor);
+    vtkGenericRenderWindowInteractor::SafeDownCast(
+      this->GetRenderWindowInteractor());
   if (gen_interactor)
     {
     gen_interactor->ConfigureEvent();
@@ -1310,11 +1325,24 @@ void vtkKWRenderWidget::ExposeCallback()
   this->Render();
 
   vtkRenderWindowInteractor *interactor = this->GetRenderWindowInteractor();
+
   vtkGenericRenderWindowInteractor *gen_interactor = 
     vtkGenericRenderWindowInteractor::SafeDownCast(interactor);
   if (gen_interactor)
     {
     gen_interactor->ExposeEvent();
+    }
+
+  // If the renderwindow interactor has never been resized, do it now
+
+  if (interactor->GetSize()[0] == 0 && interactor->GetSize()[1] == 0)
+    {
+    int width = 0, height = 0;
+    if (vtkKWTkUtilities::GetWidgetSize(this->VTKWidget, &width, &height) &&
+        width && height)
+      {
+      this->UpdateRenderWindowInteractorSize(width, height);
+      }
     }
 
   this->InExpose = 0;
