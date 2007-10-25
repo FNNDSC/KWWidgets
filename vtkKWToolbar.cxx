@@ -26,20 +26,15 @@
 #include <vtksys/stl/algorithm>
 #include <vtksys/ios/sstream> 
 
-#ifdef _WIN32
 static int vtkKWToolbarGlobalToolbarAspect = vtkKWToolbar::ToolbarAspectFlat;
 static int vtkKWToolbarGlobalWidgetsAspect = vtkKWToolbar::WidgetsAspectFlat;
-#else
-static int vtkKWToolbarGlobalToolbarAspect = vtkKWToolbar::ToolbarAspectRelief;
-static int vtkKWToolbarGlobalWidgetsAspect = vtkKWToolbar::WidgetsAspectRelief;
-#endif
 
 const char *vtkKWToolbar::ToolbarAspectRegKey = "ToolbarFlatFrame";
 const char *vtkKWToolbar::WidgetsAspectRegKey = "ToolbarFlatButtons";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
-vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.73 $");
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.74 $");
 
 //----------------------------------------------------------------------------
 class vtkKWToolbarInternals
