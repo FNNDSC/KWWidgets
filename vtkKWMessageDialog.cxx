@@ -25,11 +25,11 @@
 #include "vtkKWRegistryHelper.h"
 #include "vtkObjectFactory.h"
 
-#include <vtksys/ios/sstream>
+#include <vtksys/stl/string>
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMessageDialog );
-vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.94 $");
+vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.95 $");
 
 //----------------------------------------------------------------------------
 vtkKWMessageDialog::vtkKWMessageDialog()
@@ -145,121 +145,55 @@ void vtkKWMessageDialog::CreateWidget()
   this->Script("pack %s -side top -fill x -pady 2 -expand y",
                this->ButtonFrame->GetWidgetName());
 
-  int has_ok = (this->Style == vtkKWMessageDialog::StyleMessage ||
-                this->Style == vtkKWMessageDialog::StyleYesNo ||
-                this->Style == vtkKWMessageDialog::StyleOkCancel ||
-                this->Style == vtkKWMessageDialog::StyleOkOtherCancel);
-  int has_cancel = (this->Style == vtkKWMessageDialog::StyleCancel ||
-                    this->Style == vtkKWMessageDialog::StyleYesNo ||
-                    this->Style == vtkKWMessageDialog::StyleOkCancel ||
-                    this->Style == vtkKWMessageDialog::StyleOkOtherCancel);
-  int has_other = (this->Style == vtkKWMessageDialog::StyleOkOtherCancel);
+  this->OKFrame->SetParent(this->ButtonFrame);
+  this->OKFrame->Create();
+  this->OKFrame->SetBorderWidth(3);
+  this->OKFrame->SetReliefToFlat();
+  this->OKButton->SetParent(this->OKFrame);
+  this->OKButton->Create();
+  this->OKButton->SetWidth(16);
+  this->OKButton->SetText(this->OKButtonText);
+  this->OKButton->SetCommand(this, "OK");
+  this->OKButton->AddBinding(
+    "<FocusIn>", this->OKFrame, "SetReliefToGroove");
+  this->OKButton->AddBinding(
+    "<FocusOut>", this->OKFrame, "SetReliefToFlat");
+  this->OKButton->AddBinding(
+    "<Return>", this, "OK");
 
-  if (this->Style == vtkKWMessageDialog::StyleYesNo)
-    {
-    this->SetOKButtonText(ks_("Message Dialog|Button|Yes"));
-    this->SetCancelButtonText(ks_("Message Dialog|Button|No"));
-    }
-  else if (this->Style == vtkKWMessageDialog::StyleMessage)
-    {
-    this->SetOKButtonText(ks_("Message Dialog|Button|OK"));
-    }
-  else if (this->Style == vtkKWMessageDialog::StyleCancel)
-    {
-    this->SetCancelButtonText(ks_("Message Dialog|Button|Cancel"));
-    }
+  this->OtherFrame->SetParent(this->ButtonFrame);  
+  this->OtherFrame->Create();
+  this->OtherFrame->SetBorderWidth(3);
+  this->OtherFrame->SetReliefToFlat();
+  this->OtherButton->SetParent(this->OtherFrame);
+  this->OtherButton->Create();
+  this->OtherButton->SetWidth(16);
+  this->OtherButton->SetText(this->OtherButtonText);
+  this->OtherButton->SetCommand(this, "Other");
+  this->OtherButton->AddBinding(
+    "<FocusIn>", this->OtherFrame, "SetReliefToGroove");
+  this->OtherButton->AddBinding(
+    "<FocusOut>", this->OtherFrame, "SetReliefToFlat");
+  this->OtherButton->AddBinding(
+    "<Return>", this, "Other");
 
-  // Pack buttons
+  this->CancelFrame->SetParent(this->ButtonFrame);  
+  this->CancelFrame->Create();
+  this->CancelFrame->SetBorderWidth(3);
+  this->CancelFrame->SetReliefToFlat();
+  this->CancelButton->SetParent(this->CancelFrame);
+  this->CancelButton->Create();
+  this->CancelButton->SetWidth(16);
+  this->CancelButton->SetText(this->CancelButtonText);
+  this->CancelButton->SetCommand(this, "Cancel");
+  this->CancelButton->AddBinding(
+    "<FocusIn>", this->CancelFrame, "SetReliefToGroove");
+  this->CancelButton->AddBinding(
+    "<FocusOut>", this->CancelFrame, "SetReliefToFlat");
+  this->CancelButton->AddBinding(
+    "<Return>", this, "Cancel");
 
-  vtksys_ios::ostringstream pack_opt;
-  if (this->Options & vtkKWMessageDialog::PackVertically)
-    {
-    pack_opt << "-side top -expand yes -fill x -padx 4";
-    }
-  else
-    {
-    pack_opt << "-side left -expand yes -padx 2";
-    }
-
-  if (has_ok)
-    {
-    this->OKFrame->SetParent(this->ButtonFrame);
-    this->OKFrame->Create();
-    this->OKFrame->SetBorderWidth(3);
-    this->OKFrame->SetReliefToFlat();
-    this->OKButton->SetParent(this->OKFrame);
-    this->OKButton->Create();
-    this->OKButton->SetWidth(16);
-    this->OKButton->SetText(this->OKButtonText);
-    this->OKButton->SetCommand(this, "OK");
-    this->Script("pack %s %s %s",
-                 this->OKButton->GetWidgetName(),
-                 this->OKFrame->GetWidgetName(), pack_opt.str().c_str());
-    }
-
-  if (has_other)
-    {
-    this->OtherFrame->SetParent(this->ButtonFrame);  
-    this->OtherFrame->Create();
-    this->OtherFrame->SetBorderWidth(3);
-    this->OtherFrame->SetReliefToFlat();
-    this->OtherButton->SetParent(this->OtherFrame);
-    this->OtherButton->Create();
-    this->OtherButton->SetWidth(16);
-    this->OtherButton->SetText(this->OtherButtonText);
-    this->OtherButton->SetCommand(this, "Other");
-    this->Script("pack %s %s %s",
-                 this->OtherButton->GetWidgetName(),
-                 this->OtherFrame->GetWidgetName(), pack_opt.str().c_str());
-    }
-
-  if (has_cancel)
-    {
-    this->CancelFrame->SetParent(this->ButtonFrame);  
-    this->CancelFrame->Create();
-    this->CancelFrame->SetBorderWidth(3);
-    this->CancelFrame->SetReliefToFlat();
-    this->CancelButton->SetParent(this->CancelFrame);
-    this->CancelButton->Create();
-    this->CancelButton->SetWidth(16);
-    this->CancelButton->SetText(this->CancelButtonText);
-    this->CancelButton->SetCommand(this, "Cancel");
-    this->Script("pack %s %s %s",
-                 this->CancelButton->GetWidgetName(),
-                 this->CancelFrame->GetWidgetName(), pack_opt.str().c_str());
-    }
-
-  // Configure button aspect
-
-  if (this->OKButton->IsCreated())
-    {
-    this->OKButton->AddBinding(
-      "<FocusIn>", this->OKFrame, "SetReliefToGroove");
-    this->OKButton->AddBinding(
-      "<FocusOut>", this->OKFrame, "SetReliefToFlat");
-    this->OKButton->AddBinding(
-      "<Return>", this, "OK");
-    }
-
-  if (this->CancelButton->IsCreated())
-    {
-    this->CancelButton->AddBinding(
-      "<FocusIn>", this->CancelFrame, "SetReliefToGroove");
-    this->CancelButton->AddBinding(
-      "<FocusOut>", this->CancelFrame, "SetReliefToFlat");
-    this->CancelButton->AddBinding(
-      "<Return>", this, "Cancel");
-    }
-
-  if (this->OtherButton->IsCreated())
-    {
-    this->OtherButton->AddBinding(
-      "<FocusIn>", this->OtherFrame, "SetReliefToGroove");
-    this->OtherButton->AddBinding(
-      "<FocusOut>", this->OtherFrame, "SetReliefToFlat");
-    this->OtherButton->AddBinding(
-      "<Return>", this, "Other");
-    }
+  this->UpdateButtons();
 
   // Icon
   
@@ -273,6 +207,102 @@ void vtkKWMessageDialog::CreateWidget()
   this->Script("pack %s -side left -fill y",
                this->Icon->GetWidgetName());
   this->Script("pack forget %s", this->Icon->GetWidgetName());
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMessageDialog::UpdateButtons()
+{
+  int has_ok = (this->Style == vtkKWMessageDialog::StyleMessage ||
+                this->Style == vtkKWMessageDialog::StyleYesNo ||
+                this->Style == vtkKWMessageDialog::StyleOkCancel ||
+                this->Style == vtkKWMessageDialog::StyleOkOtherCancel);
+  int has_cancel = (this->Style == vtkKWMessageDialog::StyleCancel ||
+                    this->Style == vtkKWMessageDialog::StyleYesNo ||
+                    this->Style == vtkKWMessageDialog::StyleOkCancel ||
+                    this->Style == vtkKWMessageDialog::StyleOkOtherCancel);
+  int has_other = (this->Style == vtkKWMessageDialog::StyleOkOtherCancel);
+
+  if (this->Style == vtkKWMessageDialog::StyleYesNo)
+    {
+    this->SetOKButtonText(ks_("Message Dialog|Button|Yes"));
+    if (this->OKButton)
+      {
+      this->OKButton->SetText(this->OKButtonText);
+      }
+    this->SetCancelButtonText(ks_("Message Dialog|Button|No"));
+    if (this->CancelButton)
+      {
+      this->CancelButton->SetText(this->CancelButtonText);
+      }
+    }
+  else if (this->Style == vtkKWMessageDialog::StyleMessage)
+    {
+    this->SetOKButtonText(ks_("Message Dialog|Button|OK"));
+    if (this->OKButton)
+      {
+      this->OKButton->SetText(this->OKButtonText);
+      }
+    }
+  else if (this->Style == vtkKWMessageDialog::StyleCancel)
+    {
+    this->SetCancelButtonText(ks_("Message Dialog|Button|Cancel"));
+    if (this->CancelButton)
+      {
+      this->CancelButton->SetText(this->CancelButtonText);
+      }
+    }
+
+  // Pack buttons
+
+  if (this->ButtonFrame && this->ButtonFrame->IsCreated())
+    {
+    this->ButtonFrame->UnpackChildren();
+    }
+
+  vtksys_stl::string pack_opt;
+  if (this->Options & vtkKWMessageDialog::PackVertically)
+    {
+    pack_opt = "-side top -expand yes -fill x -padx 4";
+    }
+  else
+    {
+    pack_opt = "-side left -expand yes -padx 2";
+    }
+
+  if (has_ok && this->OKButton && this->OKButton->IsCreated())
+    {
+    this->Script("pack %s %s %s",
+                 this->OKButton->GetWidgetName(),
+                 this->OKFrame->GetWidgetName(), pack_opt.c_str());
+    }
+
+  if (has_other && this->OtherButton && this->OtherButton->IsCreated())
+    {
+    this->Script("pack %s %s %s",
+                 this->OtherButton->GetWidgetName(),
+                 this->OtherFrame->GetWidgetName(), pack_opt.c_str());
+    }
+
+  if (has_cancel && this->CancelButton && this->CancelButton->IsCreated())
+    {
+    this->Script("pack %s %s %s",
+                 this->CancelButton->GetWidgetName(),
+                 this->CancelFrame->GetWidgetName(), pack_opt.c_str());
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMessageDialog::SetStyle(int arg)
+{
+  if (this->Style == arg)
+    {
+    return;
+    }
+
+  this->Style = arg;
+  this->Modified();
+
+  this->UpdateButtons();
 }
 
 //----------------------------------------------------------------------------

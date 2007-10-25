@@ -64,7 +64,7 @@ public:
     StyleCancel
   };
   //ETX
-  vtkSetMacro(Style,int);
+  virtual void SetStyle(int);
   vtkGetMacro(Style,int);
   void SetStyleToMessage() 
     { this->SetStyle(vtkKWMessageDialog::StyleMessage); };
@@ -234,6 +234,11 @@ protected:
   char* OKButtonText;
   char* CancelButtonText;
   char* OtherButtonText;
+
+  // Description:
+  // Update the buttons
+  virtual void UpdateButtons();
+
 
 private:
   vtkKWMessageDialog(const vtkKWMessageDialog&); // Not implemented
