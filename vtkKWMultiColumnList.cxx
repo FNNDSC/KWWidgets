@@ -33,7 +33,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.85 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.86 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -173,7 +173,8 @@ void vtkKWMultiColumnList::CreateWidget()
 #ifdef _WIN32
   options += " -selectbackground #092369";
 #else
-  options += " -selectbackground #fbffb8";
+  options += " -selectbackground #092369";
+  //options += " -selectbackground #fbffb8";
 #endif
 
   if (!vtkKWWidget::CreateSpecificTkWidget(this, 
