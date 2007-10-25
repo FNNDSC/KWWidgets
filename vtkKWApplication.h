@@ -407,13 +407,13 @@ public:
   // Description:
   // Open a link (media).
   // On Win32, use ShellExecute to trigger the default viewers.
-  static int OpenLink(const char *link);
+  int OpenLink(const char *link);
 
   // Description:
   // Explore link.
   // On Win32, this will launch the Explorer, open it in the directory
   // of the link, and eventually select that link itself in the directory.
-  static int ExploreLink(const char *link);
+  int ExploreLink(const char *link);
 
   // Description:
   // Process/update pending events. This method brings the 
@@ -499,6 +499,15 @@ protected:
   virtual void AddEmailFeedbackBody(ostream &);
   virtual void AddEmailFeedbackSubject(ostream &);
   char *EmailFeedbackAddress;
+
+  // Description:
+  // Create email message dialog (in case of error).
+  virtual void CreateEmailMessageDialog(
+    vtkKWMessageDialog *dlg,
+    const char *to,
+    const char *subject,
+    const char *message,
+    const char *attachment_filename);
 
   // Description:
   // On-line help starting page

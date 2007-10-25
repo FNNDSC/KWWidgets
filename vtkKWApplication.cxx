@@ -14,32 +14,35 @@
 #include "vtkKWApplication.h"
 
 #include "vtkKWBalloonHelpManager.h"
-#include "vtkOutputWindow.h"
 #include "vtkKWEntry.h"
-#include "vtkKWEvent.h"
 #include "vtkKWEntryWithLabel.h"
+#include "vtkKWEvent.h"
 #include "vtkKWFrame.h"
+#include "vtkKWIcon.h"
 #include "vtkKWInternationalization.h"
 #include "vtkKWLabel.h"
 #include "vtkKWLanguage.h"
+#include "vtkKWLoadSaveDialog.h"
 #include "vtkKWLogDialog.h"
 #include "vtkKWLogWidget.h"
 #include "vtkKWMessageDialog.h"
 #include "vtkKWObject.h"
 #include "vtkKWOptionDataBase.h"
+#include "vtkKWPushButton.h"
 #include "vtkKWRegistryHelper.h"
 #include "vtkKWSeparator.h"
 #include "vtkKWSplashScreen.h"
+#include "vtkKWTclInteractor.h"
 #include "vtkKWText.h"
 #include "vtkKWTextWithScrollbars.h"
 #include "vtkKWTheme.h"
 #include "vtkKWTkUtilities.h"
+#include "vtkKWTkcon.h"
 #include "vtkKWToolbar.h"
 #include "vtkKWWindowBase.h"
 #include "vtkKWWindowBase.h"
-#include "vtkKWTclInteractor.h"
-#include "vtkKWTkcon.h"
 #include "vtkObjectFactory.h"
+#include "vtkOutputWindow.h"
 #include "vtkTclUtil.h"
 
 #include <stdarg.h>
@@ -85,7 +88,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.323 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.324 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1221,16 +1224,13 @@ int vtkKWApplication::OpenLink(const char *
 }
 
 //----------------------------------------------------------------------------
-int vtkKWApplication::ExploreLink(const char *
-#ifdef _WIN32
-                                  link
-#endif
-)
+int vtkKWApplication::ExploreLink(const char *link)
 {
-#ifdef _WIN32
-
   vtksys_stl::string filename = 
     vtksys::SystemTools::CollapseFullPath(link);
+
+#ifdef _WIN32
+
   vtksys::SystemTools::ReplaceString(filename, "/", "\\");
 
   vtksys_stl::string command("explorer.exe /n,/e,");
@@ -1243,7 +1243,38 @@ int vtkKWApplication::ExploreLink(const char *
     {
     return 0;
     }
+
+#else
+
+  vtkKWLoadSaveDialog *dlg = vtkKWLoadSaveDialog::New();
+  dlg->SetApplication(this);
+  dlg->SetFileName(filename.c_str());
+  dlg->SetInitialFileName(filename.c_str());
+  dlg->SaveDialogOff();
+  if (vtksys::SystemTools::FileIsDirectory(filename.c_str()))
+    {
+    dlg->ChooseDirectoryOn();
+    }
+  else
+    {
+    vtksys_stl::string ext =
+      vtksys::SystemTools::GetFilenameExtension(filename);
+    dlg->SetDefaultExtension(ext.c_str());
+    vtksys_stl::string file_types("{{");
+    file_types += ext;
+    file_types += " files} {";
+    file_types += ext;
+    file_types += "}}";
+    dlg->SetFileTypes(file_types.c_str());
+    }
+  dlg->MultipleSelectionOff();
+  dlg->GenerateLastPath(filename.c_str());
+  dlg->Create();
+  dlg->Invoke();
+  dlg->Delete();
+
 #endif
+
   return 1;
 }
 
@@ -2219,109 +2250,17 @@ int vtkKWApplication::SendEmail(
         }
 
       vtkKWMessageDialog *dlg = vtkKWMessageDialog::New();
-      dlg->SetApplication(this);
-      dlg->SetStyleToOkCancel();
-      dlg->SetOptions(vtkKWMessageDialog::ErrorIcon);
-      dlg->SetTitle(ks_("Email Feedback Dialog|Title|Send Email Error!"));
+      this->CreateEmailMessageDialog(
+        dlg, to, subject, message, attachment_filename);
       dlg->SetText(msg.c_str());
+      dlg->SetStyleToOkCancel();
       dlg->SetOKButtonText(ks_("Email Feedback Dialog|Button|Retry"));
-      if (attachment_filename)
-        {
-        dlg->SetStyleToOkOtherCancel();
-        dlg->SetOtherButtonText(
-          ks_("Email Feedback Dialog|Button|Locate attachment"));
-        }
-      dlg->Create();
-      dlg->SetIcon();
-
-      vtkKWSeparator *sep = vtkKWSeparator::New();
-      sep->SetParent(dlg->GetBottomFrame());
-      sep->Create();
-
-      this->Script("pack %s -side top -padx 2 -pady 2 -expand 1 -fill x",
-                   sep->GetWidgetName());
-
-      int label_width = 14;
-
-      vtkKWEntryWithLabel *to_entry = vtkKWEntryWithLabel::New();
-      to_entry->SetParent(dlg->GetBottomFrame());
-      to_entry->Create();
-      to_entry->SetLabelText(ks_("Email Feedback Dialog|Field|To:"));
-      to_entry->SetLabelWidth(label_width);
-      to_entry->GetWidget()->SetValue(to ? to : "");
-      to_entry->GetWidget()->ReadOnlyOn();
-
-      if (to)
-        {
-        this->Script("pack %s -side top -padx 2 -pady 2 -expand 1 -fill x",
-                     to_entry->GetWidgetName());
-        }
-
-      vtkKWEntryWithLabel *subject_entry = vtkKWEntryWithLabel::New();
-      subject_entry->SetParent(dlg->GetBottomFrame());
-      subject_entry->Create();
-      subject_entry->SetLabelText(ks_("Email Feedback Dialog|Field|Subject:"));
-      subject_entry->SetLabelWidth(label_width);
-      subject_entry->GetWidget()->SetValue(subject ? subject : "");
-      subject_entry->GetWidget()->ReadOnlyOn();
-
-      if (subject)
-        {
-        this->Script("pack %s -side top -padx 2 -pady 2 -expand 1 -fill x",
-                     subject_entry->GetWidgetName());
-        }
-
-      vtkKWEntryWithLabel *attachment_entry = vtkKWEntryWithLabel::New();
-      attachment_entry->SetParent(dlg->GetBottomFrame());
-      attachment_entry->Create();
-      attachment_entry->SetLabelText(
-        ks_("Email Feedback Dialog|Field|Attachment:"));
-      attachment_entry->SetLabelWidth(label_width);
-      attachment_entry->GetWidget()->SetValue(
-        attachment_filename ? attachment_filename : "");
-      attachment_entry->GetWidget()->ReadOnlyOn();
-
-      if (attachment_filename)
-        {
-        this->Script("pack %s -side top -padx 2 -pady 2 -expand 1 -fill x",
-                     attachment_entry->GetWidgetName());
-        }
-
-      vtkKWTextWithScrollbars *message_text = vtkKWTextWithScrollbars::New();
-      message_text->SetParent(dlg->GetBottomFrame());
-      message_text->Create();
-      message_text->VerticalScrollbarVisibilityOn();
-      message_text->HorizontalScrollbarVisibilityOff();
-      vtkKWText *text_widget = message_text->GetWidget();
-      text_widget->SetWidth(60);
-      text_widget->SetHeight(8);
-      text_widget->SetWrapToWord();
-      text_widget->ReadOnlyOn();
-      text_widget->SetText(message ? message : "");
-
-      if (message)
-        {
-        this->Script("pack %s -side top -padx 2 -pady 2 -expand 1 -fill both",
-                     message_text->GetWidgetName());
-        }
-
       dlg->Invoke();
       int status = dlg->GetStatus();
-      if (status == vtkKWMessageDialog::StatusOK || 
-          status == vtkKWMessageDialog::StatusOther)
+      if (status == vtkKWMessageDialog::StatusOK)
         {
         retry = 1;
-        if (status == vtkKWMessageDialog::StatusOther)
-          {
-          this->ExploreLink(attachment_filename);
-          }
         }
-
-      sep->Delete();
-      to_entry->Delete();
-      subject_entry->Delete();
-      attachment_entry->Delete();
-      message_text->Delete();
       dlg->Delete();
       }
 
@@ -2332,14 +2271,149 @@ int vtkKWApplication::SendEmail(
 
 #else
 
-  (void)to;
-  (void)subject;
-  (void)message;
-  (void)attachment_filename;
-  (void)extra_error_msg;
+  vtksys_stl::string msg =
+    k_("Sorry, sending an email from this operating system is not "
+       "supported at the moment.\n\n"
+       "In the meantime, we suggest you open your favorite email client "
+       "and copy/paste the fields below to a new email message.");
+  if (extra_error_msg)
+    {
+    msg += "\n\n";
+    msg += extra_error_msg;
+    }
+
+  vtkKWMessageDialog *dlg = vtkKWMessageDialog::New();
+  this->CreateEmailMessageDialog(
+    dlg, to, subject, message, attachment_filename);
+  dlg->SetText(msg.c_str());
+  dlg->Invoke();
 
   return 0;
 #endif
+}
+
+//----------------------------------------------------------------------------
+void vtkKWApplication::CreateEmailMessageDialog(
+  vtkKWMessageDialog *dlg,
+  const char *to,
+  const char *subject,
+  const char *message,
+  const char *attachment_filename)
+{
+  if (!dlg)
+    {
+    return;
+    }
+
+  if (!dlg->GetApplication())
+    {
+    dlg->SetApplication(this);
+    }
+  dlg->SetStyleToCancel();
+  dlg->SetOptions(vtkKWMessageDialog::ErrorIcon);
+  dlg->SetTitle(ks_("Email Feedback Dialog|Title|Send Email Error!"));
+  dlg->Create();
+  dlg->SetIcon();
+
+  vtkKWSeparator *sep = vtkKWSeparator::New();
+  sep->SetParent(dlg->GetBottomFrame());
+  sep->Create();
+  sep->Delete();
+
+  this->Script("pack %s -side top -padx 2 -pady 2 -expand 1 -fill x",
+               sep->GetWidgetName());
+
+  int label_width = 14;
+
+  if (to)
+    {
+    vtkKWEntryWithLabel *to_entry = vtkKWEntryWithLabel::New();
+    to_entry->SetParent(dlg->GetBottomFrame());
+    to_entry->Create();
+    to_entry->SetLabelText(ks_("Email Feedback Dialog|Field|To:"));
+    to_entry->SetLabelWidth(label_width);
+    to_entry->GetWidget()->SetValue(to ? to : "");
+    to_entry->GetWidget()->ReadOnlyOn();
+    to_entry->Delete();
+
+    this->Script("pack %s -side top -padx 2 -pady 2 -expand 1 -fill x",
+                 to_entry->GetWidgetName());
+    }
+
+  if (subject)
+    {
+    vtkKWEntryWithLabel *subject_entry = vtkKWEntryWithLabel::New();
+    subject_entry->SetParent(dlg->GetBottomFrame());
+    subject_entry->Create();
+    subject_entry->SetLabelText(ks_("Email Feedback Dialog|Field|Subject:"));
+    subject_entry->SetLabelWidth(label_width);
+    subject_entry->GetWidget()->SetValue(subject ? subject : "");
+    subject_entry->GetWidget()->ReadOnlyOn();
+    subject_entry->Delete();
+
+    this->Script("pack %s -side top -padx 2 -pady 2 -expand 1 -fill x",
+                 subject_entry->GetWidgetName());
+    }
+
+  if (attachment_filename)
+    {
+    vtkKWFrame *attachment_frame = vtkKWFrame::New();
+    attachment_frame->SetParent(dlg->GetBottomFrame());
+    attachment_frame->Create();
+    attachment_frame->Delete();
+
+    this->Script("pack %s -side top -padx 0 -pady 0 -expand 1 -fill x",
+                 attachment_frame->GetWidgetName());
+
+    vtkKWEntryWithLabel *attachment_entry = vtkKWEntryWithLabel::New();
+    attachment_entry->SetParent(attachment_frame);
+    attachment_entry->Create();
+    attachment_entry->SetLabelText(
+      ks_("Email Feedback Dialog|Field|Attachment:"));
+    attachment_entry->SetLabelWidth(label_width);
+    attachment_entry->GetWidget()->SetValue(
+      attachment_filename ? attachment_filename : "");
+    attachment_entry->GetWidget()->ReadOnlyOn();
+    attachment_entry->Delete();
+  
+    this->Script("pack %s -side left -padx 2 -pady 2 -expand 1 -fill x",
+                 attachment_entry->GetWidgetName());
+
+    vtkKWPushButton *attachment_locate_button = vtkKWPushButton::New();
+    attachment_locate_button->SetParent(attachment_frame);
+    attachment_locate_button->Create();
+    attachment_locate_button->SetImageToPredefinedIcon(vtkKWIcon::IconFolder);
+    attachment_locate_button->SetBalloonHelpString(
+      ks_("Email Feedback Dialog|Field|Attachment|Locate attachment on disk"));
+    vtksys_stl::string command("ExploreLink {");
+    command += attachment_filename;
+    command += "}";
+    attachment_locate_button->SetCommand(this, command.c_str());
+    attachment_locate_button->Delete();
+  
+    this->Script("pack %s -side left -padx 2 -pady 2 -expand 0 -fill none",
+                 attachment_locate_button->GetWidgetName());
+    }
+
+  if (message)
+    {
+    vtkKWTextWithScrollbars *message_text = vtkKWTextWithScrollbars::New();
+    message_text->SetParent(dlg->GetBottomFrame());
+    message_text->Create();
+    message_text->VerticalScrollbarVisibilityOn();
+    message_text->HorizontalScrollbarVisibilityOff();
+    vtkKWText *text_widget = message_text->GetWidget();
+    text_widget->SetWidth(60);
+    text_widget->SetHeight(8);
+    text_widget->SetWrapToWord();
+    text_widget->ReadOnlyOn();
+    text_widget->SetText(message ? message : "");
+    message_text->Delete();
+
+    this->Script("pack %s -side top -padx 2 -pady 2 -expand 1 -fill both",
+                 message_text->GetWidgetName());
+    }
+
 }
 
 //----------------------------------------------------------------------------
