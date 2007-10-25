@@ -59,7 +59,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.61 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.62 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -841,7 +841,8 @@ void vtkKWPresetSelector::SetPresetButtonsHelpStrings()
   // Locate
 
   this->PresetButtons->GetWidget(vtkKWPresetSelector::LocateButtonId)->
-    SetBalloonHelpString(ks_("Preset Selector|Locate the selected preset(s)"));
+    SetBalloonHelpString(
+      ks_("Preset Selector|Locate the selected preset(s) on disk"));
 
   // Email
 
