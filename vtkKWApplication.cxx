@@ -88,7 +88,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.324 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.325 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1248,7 +1248,6 @@ int vtkKWApplication::ExploreLink(const char *link)
 
   vtkKWLoadSaveDialog *dlg = vtkKWLoadSaveDialog::New();
   dlg->SetApplication(this);
-  dlg->SetFileName(filename.c_str());
   dlg->SetInitialFileName(filename.c_str());
   dlg->SaveDialogOff();
   if (vtksys::SystemTools::FileIsDirectory(filename.c_str()))
