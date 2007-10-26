@@ -54,10 +54,18 @@ public:
   // did not select anything (i.e., the previous selection is *not* kept).
   // If MultipleSelection is On, the above methods can also be used retrieve
   // all the file (or directory) names that were selected.
-  virtual const char* GetFileName();
+  vtkGetStringMacro(FileName);
   int GetNumberOfFileNames();
   const char *GetNthFileName(int i);
-  vtkGetObjectMacro(FileNames, vtkStringArray);  
+  vtkGetObjectMacro(FileNames, vtkStringArray); 
+
+  // Description:
+  // Set the file path that will be returned when calling GetFileName().
+  // This method will reset FileNames array if FileNames[0] is different
+  // from the FileName. It will also reset the InitialFileName and LastPath
+  // if they are not set already. The idea is that user can just use this 
+  // ONE method to initialize the dialog before invoke.
+  virtual void SetFileName(const char*);
 
   // Description:
   // This function will take an array of file names (full names with path),
@@ -258,6 +266,7 @@ protected:
   char *FileTypes;
   char *LastPath;
   char *InitialFileName;
+  char *FileName;
   char *DefaultExtension;
   int  PreviewFrameVisibility;
   int  SaveDialog;

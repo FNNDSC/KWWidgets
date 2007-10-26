@@ -38,7 +38,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.35 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.36 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -67,6 +67,7 @@ vtkKWFileBrowserDialog::vtkKWFileBrowserDialog()
   this->LastPath          = NULL;
   this->InitialFileName   = NULL;
   this->DefaultExtension  = NULL;
+  this->FileName          = NULL;
 
   this->SaveDialog       = 0;
   this->ChooseDirectory  = 0;
@@ -108,6 +109,12 @@ vtkKWFileBrowserDialog::~vtkKWFileBrowserDialog()
     {
     delete [] this->InitialFileName;
     this->InitialFileName = NULL;
+    }
+
+  if (this->FileName)
+    {
+    delete [] this->FileName;
+    this->FileName = NULL;
     }
 
   if (this->DefaultExtension)
@@ -563,7 +570,8 @@ void vtkKWFileBrowserDialog::Display()
 
     if (this->InitialFileName && *this->InitialFileName)
       {
-      this->FileNameText->SetValue(this->InitialFileName);
+      this->FileNameText->SetValue(
+        vtksys::SystemTools::GetFilenameName(this->InitialFileName).c_str());
       }
   }
 
@@ -811,6 +819,7 @@ void vtkKWFileBrowserDialog::SetInitialSelectedFileNames(
 void vtkKWFileBrowserDialog::Cancel()
 {
   this->FileNames->Reset();
+  this->SetFileName(NULL);
 
   if(this->GetApplication()->GetSaveUserInterfaceGeometry())
     {
@@ -829,11 +838,12 @@ void vtkKWFileBrowserDialog::OK()
   if (!res || !this->GetNumberOfFileNames())
     {
     this->FileNames->Reset();
+    this->SetFileName(NULL);
     return;
     }
 
+  this->SetFileName(this->GetNthFileName(0));
   this->GenerateLastPath(this->GetFileName());
-  this->InvokeFileNameChangedCommand(this->GetFileName());
 
   if(this->GetApplication()->GetSaveUserInterfaceGeometry())
     {
@@ -1127,6 +1137,68 @@ int vtkKWFileBrowserDialog::OpenMultipleFileNames(const char* inputnames)
 }
 
 //----------------------------------------------------------------------------
+void vtkKWFileBrowserDialog::SetFileName(const char *arg)
+{
+  if (this->FileName == NULL && arg == NULL) 
+    { 
+    return;
+    }
+
+  vtksys_stl::string currPath;
+  if(arg)
+    {
+    currPath = arg;
+    vtksys::SystemTools::ConvertToUnixSlashes(currPath);
+    }
+
+  if (this->FileName && arg &&
+    vtksys::SystemTools::ComparePath(currPath.c_str(), this->FileName))
+    {  
+    return;
+    }
+
+  if (this->FileName) 
+    {  
+    delete [] this->FileName; 
+    }
+
+  if (arg && vtksys::SystemTools::FileExists(currPath.c_str()))
+    {
+    this->FileName = new char[strlen(arg)+1];
+    strcpy(this->FileName,currPath.c_str());
+    if(this->FileNames->GetNumberOfValues()==0 ||
+      (this->GetNumberOfFileNames()>0 &&
+      !vtksys::SystemTools::ComparePath(
+      this->FileName, this->GetNthFileName(0))))
+      {
+      this->FileNames->Reset();
+      this->FileNames->InsertNextValue(this->FileName);
+      }
+
+    if(!this->LastPath)
+      {
+      this->SetLastPath(vtksys::SystemTools::GetFilenamePath(
+        this->FileName).c_str());
+      }
+
+    if(!this->InitialFileName)
+      {
+      this->SetInitialFileName(vtksys::SystemTools::GetFilenameName(
+        this->FileName).c_str());
+      }
+    }
+  else
+    {
+    this->FileName = NULL;
+    this->FileNames->Reset();
+    }
+
+  this->Modified();
+
+  this->InvokeFileNameChangedCommand(this->FileName);
+} 
+
+//----------------------------------------------------------------------------
 void vtkKWFileBrowserDialog::SetFileNameChangedCommand(
   vtkObject *object, const char *method)
 {
@@ -1210,12 +1282,6 @@ const char* vtkKWFileBrowserDialog::GenerateLastPath(
     
   return KWFileBrowser_GetUnixPath(this->LastPath);
 }
-
-//----------------------------------------------------------------------------
-const char* vtkKWFileBrowserDialog::GetFileName()
-{
-  return this->GetNthFileName(0);
-} 
 
 //----------------------------------------------------------------------------
 int vtkKWFileBrowserDialog::GetNumberOfFileNames()
@@ -1418,6 +1484,9 @@ void vtkKWFileBrowserDialog::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "InitialFileName: " 
      << (this->InitialFileName?this->InitialFileName:"none") 
      << endl;
+  os << indent << "FileName: " 
+    << (this->FileName?this->FileName:"none") 
+    << endl;
   os << indent << "LastPath: " << (this->LastPath?this->LastPath:"none")
      << endl;
   os << indent << "SaveDialog: " << this->GetSaveDialog() << endl;
