@@ -38,7 +38,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.37 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.38 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -1162,7 +1162,7 @@ void vtkKWFileBrowserDialog::SetFileName(const char *arg)
     delete [] this->FileName; 
     }
 
-  if (arg && vtksys::SystemTools::FileExists(currPath.c_str()))
+  if (arg)
     {
     this->FileName = new char[currPath.size()+1];
     strcpy(this->FileName,currPath.c_str());
