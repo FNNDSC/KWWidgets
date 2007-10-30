@@ -310,6 +310,10 @@ public:
   virtual void ResolutionCallback(int i, int j);
   virtual void NumberOfWidgetsHasChangedCallback();
 
+  // Description:
+  // Adjust the resolution so that all widgets are shown
+  virtual void AdjustResolution();
+
 protected:
   vtkKWSelectionFrameLayoutManager();
   ~vtkKWSelectionFrameLayoutManager();
@@ -361,10 +365,6 @@ protected:
   // Description:
   // Pack all widgets
   virtual void Pack();
-
-  // Description:
-  // Adjust the resolution so that all widgets are shown
-  virtual void AdjustResolution();
 
   // Description:
   // Print widgets (if selection_only is true, only the selected
