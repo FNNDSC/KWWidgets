@@ -264,13 +264,12 @@ protected:
   // Description:
   // Member variables.
   char *FileTypes;
-  char *LastPath;
-  char *InitialFileName;
-  char *FileName;
   char *DefaultExtension;
+
   int  PreviewFrameVisibility;
   int  SaveDialog;
   int  ChooseDirectory;
+
   vtkStringArray *FileNames;
   vtkStringArray *InitialSelecttedFileNames;
 
@@ -298,6 +297,11 @@ protected:
   virtual int OpenMultipleFileNames(const char* inputnames);
 
 private:
+
+  char *InitialFileName;
+  char *LastPath;
+  char *FileName;
+
   vtkKWFileBrowserDialog(const vtkKWFileBrowserDialog&); // Not implemented
   void operator=(const vtkKWFileBrowserDialog&); // Not implemented
 };
