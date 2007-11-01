@@ -131,6 +131,13 @@ public:
     const char *event, vtkObject *object, const char *method);
 
   // Description:
+  // Set a drop-file binding to a widget, i.e. the command that is invoked
+  // whenever a file is dropped on the widget.
+  // The following parameters are also passed to the command:
+  // - filename(s): list of filenames
+  virtual void SetDropFileBinding(vtkObject *object, const char *method);
+
+  // Description:
   // Get the parent vtkKWTopLevel for this widget if there is one (by
   // recursively tracking the parents).
   // This can be safe-downcasted to a vtkKWWindowBase or vtkKWWindow.

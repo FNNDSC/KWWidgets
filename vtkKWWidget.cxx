@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.151 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.152 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetInternals
@@ -819,6 +819,21 @@ void vtkKWWidget::RemoveBinding(const char *event)
     {
     this->Script("if { [info command %s] != {} } {bind %s %s {}}", this->GetWidgetName(), this->GetWidgetName(), event);
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWidget::SetDropFileBinding(vtkObject *object, const char *method)
+{
+#ifdef KWWidgets_USE_TKDND
+  if (this->IsCreated())
+    {
+    char *command = NULL;
+    this->SetObjectMethodCommand(&command, object, method);
+    this->Script("dnd bindtarget %s Files <Drop> {%s %%D}",
+                 this->GetWidgetName(), command);
+    delete [] command;
+    }
+#endif
 }
 
 //----------------------------------------------------------------------------
