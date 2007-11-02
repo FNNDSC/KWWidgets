@@ -76,7 +76,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.82 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.83 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -291,7 +291,7 @@ void vtkKWSelectionFrameLayoutManager::Pack()
 }
 
 //----------------------------------------------------------------------------
-int vtkKWSelectionFrameLayoutManager::SetWidgetPositionInternal(
+int vtkKWSelectionFrameLayoutManager::SetImmediateWidgetPosition(
   vtkKWSelectionFrame *widget, int col, int row)
 {
   if (widget)
@@ -320,7 +320,7 @@ int vtkKWSelectionFrameLayoutManager::SetWidgetPositionInternal(
 int vtkKWSelectionFrameLayoutManager::SetWidgetPosition(
   vtkKWSelectionFrame *widget, int col, int row)
 {
-  int res = this->SetWidgetPositionInternal(widget, col, row);
+  int res = this->SetImmediateWidgetPosition(widget, col, row);
   if (res)
     {
     this->Pack();
@@ -1906,8 +1906,8 @@ int vtkKWSelectionFrameLayoutManager::SwitchWidgetsPosition(
     return 0;
     }
   
-  this->SetWidgetPositionInternal(w1, -1, -1);
-  this->SetWidgetPositionInternal(w2, -1, -1);
+  this->SetImmediateWidgetPosition(w1, -1, -1);
+  this->SetImmediateWidgetPosition(w2, -1, -1);
 
   this->SetWidgetPosition(w1, pos2);
   this->SetWidgetPosition(w2, pos1);

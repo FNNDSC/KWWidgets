@@ -133,6 +133,9 @@ public:
   // resolution to (1, 1) to display only the first column and first row: the
   // next time the resolution is set to, say, (4, 4), the widget at (2, 3)
   // will be shown).
+  // Changing the position of a widget will repack the layout (call to Pack()).
+  // If you need to change the position of a lot of widgets without repacking
+  // each time, try SetImmediateWidgetPosition(), and Pack().
   // Return 1 (or widget) on success (and if the position was really changed),
   // 0 (or NULL) on error.
   virtual int GetWidgetPosition(vtkKWSelectionFrame *w, int *col, int *row);
@@ -311,8 +314,32 @@ public:
   virtual void NumberOfWidgetsHasChangedCallback();
 
   // Description:
+  // Pack all widgets. You shouldn't have to call this method, as it is called
+  // automatically each time the position of a widget is changed through
+  // SetWidgetPosition, or the resolution/origin is changed, or a widget
+  // is added. But sometimes you may want to trigger packing yourself if
+  // you need to set the positions of a lot of widgets simultaneously through
+  // SetImmediateWidgetPosition.
+  virtual void Pack();
+
+  // Description:
+  // Set the widget position without repacking.
+  // Return 1 if the position was changed, 0 otherwise.
+  virtual int SetImmediateWidgetPosition(vtkKWSelectionFrame *w, int pos[2])
+    { return this->SetImmediateWidgetPosition(w, pos[0], pos[1]); }
+  virtual int SetImmediateWidgetPosition(
+    vtkKWSelectionFrame *w, int col, int row);
+
+  // Description:
   // Adjust the resolution so that all widgets are shown
   virtual void AdjustResolution();
+
+  // Description:
+  // Set resolution and origin at the same time, to minimize redraw
+  virtual void SetResolutionAndOrigin(int res[2], int origin[2])
+    { this->SetResolutionAndOrigin(res[0], res[1], origin[0], origin[1]); };
+  virtual void SetResolutionAndOrigin(
+    int nb_cols, int nb_rows, int col, int row);
 
 protected:
   vtkKWSelectionFrameLayoutManager();
@@ -361,10 +388,6 @@ protected:
   // This implementation searches for a vtkKWRenderWidget in the children
   // of the frame.
   virtual vtkKWRenderWidget* GetRenderWidget(vtkKWSelectionFrame*);
-
-  // Description:
-  // Pack all widgets
-  virtual void Pack();
 
   // Description:
   // Print widgets (if selection_only is true, only the selected
@@ -420,24 +443,11 @@ protected:
   virtual void DeleteWidget(vtkKWSelectionFrame *widget);
 
   // Description:
-  // Set the widget position without repacking.
-  // Return 1 if the position was changed, 0 otherwise.
-  virtual int SetWidgetPositionInternal(
-    vtkKWSelectionFrame *w, int col, int row);
-
-  // Description:
   // Automatically move the selection inside the visible layout, i.e. if
   // the selected widget is not visible, select a visible one.
   // If pos_hint is non-null, use it as a hint regarding where the most
   // likely selection could be (array of 2 ints).
   virtual void MoveSelectionInsideVisibleLayout(int *pos_hint);
-
-  // Description:
-  // Set resolution and origin at the same time, to minimize redraw
-  virtual void SetResolutionAndOrigin(int res[2], int origin[2])
-    { this->SetResolutionAndOrigin(res[0], res[1], origin[0], origin[1]); };
-  virtual void SetResolutionAndOrigin(
-    int nb_cols, int nb_rows, int col, int row);
 
   // Description:
   // Push/Pop resolutions or origins on a stack
