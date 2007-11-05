@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWPushButton );
-vtkCxxRevisionMacro(vtkKWPushButton, "$Revision: 1.36 $");
+vtkCxxRevisionMacro(vtkKWPushButton, "$Revision: 1.37 $");
 
 //----------------------------------------------------------------------------
 vtkKWPushButton::vtkKWPushButton()
@@ -458,8 +458,8 @@ int vtkKWPushButton::GetCompoundMode()
 //----------------------------------------------------------------------------
 void vtkKWPushButton::CommandCallback()
 {
-  this->InvokeCommand();
   this->InvokeEvent(vtkKWPushButton::InvokedEvent);
+  this->InvokeCommand();
 }
 
 //----------------------------------------------------------------------------
