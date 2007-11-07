@@ -444,6 +444,11 @@ protected:
   // should call the superclass too.
   virtual void ProcessCallbackCommandEvents(
     vtkObject *caller, unsigned long event, void *calldata);
+
+  // Description:
+  // Populate the menus.
+  virtual void PopulateWindowMenu();
+  virtual void PopulateViewMenu();
   
 private:
 

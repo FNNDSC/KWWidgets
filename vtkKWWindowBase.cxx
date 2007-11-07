@@ -34,7 +34,7 @@
 
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.58 $");
+vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.59 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindowBase );
@@ -56,9 +56,9 @@ vtkKWWindowBase::vtkKWWindowBase()
 
   // Toolbars
 
-  this->MainToolbarSet        = vtkKWToolbarSet::New();
+  this->MainToolbarSet         = vtkKWToolbarSet::New();
   this->ToolbarsVisibilityMenu = NULL; 
-  this->StatusToolbar         = NULL;
+  this->StatusToolbar          = NULL;
 
   // Main Frame
 
@@ -315,62 +315,23 @@ void vtkKWWindowBase::CreateWidget()
     this->SetGeometry(this->GetDefaultGeometry());
     }
 
-  vtksys_stl::string cmd;
-  vtksys_stl::string label;
-  vtkKWMenu *menu = NULL;
-  int index;
-  char buffer[512];
-
   this->SetIconName(app->GetPrettyName());
 
-  // Menu : File
-
-  menu = this->GetFileMenu();
-
-  if (this->SupportPrint)
-    {
-    menu->AddCommand(
-      this->GetPrintOptionsMenuLabel(), this, "PrintSettingsCallback");
-    menu->AddSeparator();
-    }
-
-  menu->AddCommand(
-    this->GetFileCloseMenuLabel(), this, "Close");
-  menu->AddCommand(
-    this->GetFileExitMenuLabel(), app, "Exit");
-
   this->MostRecentFilesManager->SetApplication(app);
-
-  // Menu : Help
-
-  menu = this->GetHelpMenu();
-
-  if (this->SupportHelp)
-    {
-    cmd = "DisplayHelpDialog ";
-    cmd += this->GetTclName();
-    index = menu->AddCommand(this->GetHelpTopicsMenuLabel(), app, cmd.c_str());
-    menu->SetItemAccelerator(index, "F1");
-    menu->SetBindingForItemAccelerator(index, menu->GetParentTopLevel());
-    }
-
-  if (app->HasCheckForUpdates())
-    {
-    menu->AddCommand(
-      this->GetHelpCheckForUpdatesMenuLabel(), app, "CheckForUpdates");
-    }
-  
-  menu->AddSeparator();
-  sprintf(buffer, this->GetHelpAboutMenuLabel(), app->GetPrettyName());
-  cmd = "DisplayAboutDialog ";
-  cmd += this->GetTclName();
-  menu->AddCommand(buffer, this->GetApplication(), cmd.c_str());
 
   // Menubar separator
 
   this->MenuBarSeparator->SetParent(this);  
   this->MenuBarSeparator->Create();
   this->MenuBarSeparator->SetOrientationToHorizontal();
+
+  // Menus
+
+  this->PopulateFileMenu();
+  this->PopulateEditMenu();
+  this->PopulateViewMenu();
+  this->PopulateWindowMenu();
+  this->PopulateHelpMenu();
 
   // Toolbars
 
@@ -446,6 +407,69 @@ void vtkKWWindowBase::CreateWidget()
   this->Pack();
 
   this->AddCallbackCommandObservers();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWindowBase::PopulateFileMenu()
+{
+  vtkKWApplication *app = this->GetApplication();
+  vtkKWMenu *menu = this->GetFileMenu();
+
+  if (this->SupportPrint)
+    {
+    menu->AddCommand(
+      this->GetPrintOptionsMenuLabel(), this, "PrintSettingsCallback");
+    menu->AddSeparator();
+    }
+
+  menu->AddCommand(this->GetFileCloseMenuLabel(), this, "Close");
+  menu->AddCommand(this->GetFileExitMenuLabel(), app, "Exit");
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWindowBase::PopulateEditMenu()
+{
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWindowBase::PopulateViewMenu()
+{
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWindowBase::PopulateWindowMenu()
+{
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWindowBase::PopulateHelpMenu()
+{
+  vtkKWApplication *app = this->GetApplication();
+  vtkKWMenu *menu = this->GetHelpMenu();
+  int idx;
+  vtksys_stl::string cmd;
+
+  if (this->SupportHelp)
+    {
+    cmd = "DisplayHelpDialog ";
+    cmd += this->GetTclName();
+    idx = menu->AddCommand(this->GetHelpTopicsMenuLabel(), app, cmd.c_str());
+    menu->SetItemAccelerator(idx, "F1");
+    }
+
+  if (app->HasCheckForUpdates())
+    {
+    menu->AddCommand(
+      this->GetHelpCheckForUpdatesMenuLabel(), app, "CheckForUpdates");
+    }
+  
+  char buffer[512];
+
+  menu->AddSeparator();
+  sprintf(buffer, this->GetHelpAboutMenuLabel(), app->GetPrettyName());
+  cmd = "DisplayAboutDialog ";
+  cmd += this->GetTclName();
+  menu->AddCommand(buffer, this->GetApplication(), cmd.c_str());
 }
 
 //----------------------------------------------------------------------------

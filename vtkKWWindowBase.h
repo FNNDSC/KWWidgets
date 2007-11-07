@@ -384,6 +384,16 @@ protected:
   vtkKWMenu *ToolbarsVisibilityMenu;
 
   // Description:
+  // Populate the menus.
+  virtual void PopulateFileMenu();
+  virtual void PopulateEditMenu();
+  virtual void PopulateViewMenu();
+  virtual void PopulateWindowMenu();
+  virtual void PopulateHelpMenu();
+
+  vtkKWTclInteractor *TclInteractor;
+
+  // Description:
   // Some constants
   vtkSetStringMacro(PrintOptionsMenuLabel);
   vtkSetStringMacro(FileMenuLabel);
