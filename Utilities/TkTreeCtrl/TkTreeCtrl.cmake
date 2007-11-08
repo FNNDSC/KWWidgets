@@ -61,7 +61,7 @@ MACRO(TkTreeCtrl_GET_LIBRARY supported sources include_path libs)
 
     SET(${sources} ${_tktreectrl_srcs})
     SET(${include_path} ${_tktreectrl_include_path})
-    SET(${libs} ${TCL_LIBRARY} ${TK_LIBRARY})
+    SET(${libs})
     
   ENDIF(${supported})
 

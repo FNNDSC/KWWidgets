@@ -71,7 +71,7 @@ MACRO(TkDnD_GET_LIBRARY supported sources include_path libs)
 
     SET(${sources} ${_tkdnd_srcs})
     SET(${include_path} ${_tkdnd_include_path})
-    SET(${libs} ${TCL_LIBRARY} ${TK_LIBRARY})
+    SET(${libs})
 
   ENDIF(${supported})
 
