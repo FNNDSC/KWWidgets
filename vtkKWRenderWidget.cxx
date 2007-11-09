@@ -41,9 +41,10 @@
 
 #include <vtksys/stl/string>
 #include <vtksys/stl/vector>
+#include <vtksys/stl/map>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.155 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.156 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -55,6 +56,19 @@ public:
 
   RendererPoolType RendererPool;
   RendererPoolType OverlayRendererPool;
+
+  class TimerAdapter
+  {
+  public:
+    vtkRenderWindowInteractor *Interactor;
+    int TimerId;
+    Tcl_TimerToken TclTimerToken;
+  };
+  
+  typedef vtksys_stl::map<int, TimerAdapter> TimerAdapterPoolType;
+  typedef vtksys_stl::map<int, TimerAdapter>::iterator TimerAdapterPoolTypeIterator;
+
+  TimerAdapterPoolType TimerAdapterPool;
 };
 
 //----------------------------------------------------------------------------
@@ -92,8 +106,6 @@ vtkKWRenderWidget::vtkKWRenderWidget()
   interactor->SetRenderWindow(this->RenderWindow);
   this->RenderWindow->SetInteractor(interactor);
   interactor->Delete();
-
-  this->InteractorTimerToken = NULL;
 
   // Switch to trackball style, it's nicer
 
@@ -187,12 +199,6 @@ vtkKWRenderWidget::~vtkKWRenderWidget()
     this->Interactor = NULL;
     }
   */
-
-  if (this->InteractorTimerToken)
-    {
-    Tcl_DeleteTimerHandler(this->InteractorTimerToken);
-    this->InteractorTimerToken = NULL;
-    }
 
   if (this->VTKWidget)
     {
@@ -1857,13 +1863,6 @@ void vtkKWRenderWidget::SetCollapsingRenders(int r)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWRenderWidget_InteractorTimer(ClientData arg)
-{
-  vtkGenericRenderWindowInteractor *me = (vtkGenericRenderWindowInteractor*)arg;
-  me->TimerEvent();
-}
-
-//----------------------------------------------------------------------------
 void vtkKWRenderWidget::AddCallbackCommandObservers()
 {
   this->Superclass::AddCallbackCommandObservers();
@@ -1900,6 +1899,37 @@ void vtkKWRenderWidget::RemoveCallbackCommandObservers()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWRenderWidget_InteractorTimer(
+  vtkKWRenderWidgetInternals::TimerAdapter *adapter)
+{
+  if (adapter)
+    {
+    vtkGenericRenderWindowInteractor *gen_interactor = 
+      vtkGenericRenderWindowInteractor::SafeDownCast(adapter->Interactor);
+#if VTK_MAJOR_VERSION > 5 || (VTK_MAJOR_VERSION == 5 && VTK_MINOR_VERSION > 0)
+    if (!adapter->Interactor->GetEnabled()) 
+      {
+      return;
+      }
+    
+    adapter->Interactor->InvokeEvent(
+      vtkCommand::TimerEvent, (void*)&adapter->TimerId);
+    
+    if (!adapter->Interactor->IsOneShotTimer(adapter->TimerId) &&
+        (!gen_interactor || gen_interactor->GetTimerEventResetsTimer()))
+      {
+      adapter->Interactor->ResetTimer(adapter->TimerId);
+      }
+#else
+    if (gen_interactor)
+      {
+      gen_interactor->TimerEvent();
+      }
+#endif
+    }
+}
+
+//----------------------------------------------------------------------------
 void vtkKWRenderWidget::ProcessCallbackCommandEvents(vtkObject *caller,
                                                      unsigned long event,
                                                      void *calldata)
@@ -1909,24 +1939,44 @@ void vtkKWRenderWidget::ProcessCallbackCommandEvents(vtkObject *caller,
   vtkRenderWindowInteractor *interactor = this->GetRenderWindowInteractor();
   if (caller == interactor)
     {
+    int timer_platform_id, timer_duration;
+    vtkKWRenderWidgetInternals::TimerAdapter *adapter = NULL;
     switch (event)
       {
+
       case vtkCommand::CreateTimerEvent:
+#if VTK_MAJOR_VERSION > 5 || (VTK_MAJOR_VERSION == 5 && VTK_MINOR_VERSION > 0)
+        timer_platform_id = interactor->GetTimerEventId();
+        timer_duration = interactor->GetTimerEventDuration();
+        interactor->SetTimerEventPlatformId(timer_platform_id);
+#else
+        timer_platform_id = 0;
+        timer_duration = 10;
+#endif
+        adapter = &this->Internals->TimerAdapterPool[timer_platform_id];
+        adapter->TimerId = timer_platform_id;
+        adapter->Interactor = interactor;
+        adapter->TclTimerToken = Tcl_CreateTimerHandler(
+          timer_duration,
+          (Tcl_TimerProc*)vtkKWRenderWidget_InteractorTimer,
+          (ClientData)adapter);
+        break;
+
       case vtkCommand::DestroyTimerEvent:
-        if (this->InteractorTimerToken)
+#if VTK_MAJOR_VERSION > 5 || (VTK_MAJOR_VERSION == 5 && VTK_MINOR_VERSION > 0)
+        timer_platform_id = interactor->GetTimerEventPlatformId();
+#else
+        timer_platform_id = 0;
+#endif
+        vtkKWRenderWidgetInternals::TimerAdapterPoolType::iterator it = 
+          this->Internals->TimerAdapterPool.find(timer_platform_id);
+        if (it != this->Internals->TimerAdapterPool.end())
           {
-          Tcl_DeleteTimerHandler(this->InteractorTimerToken);
-          this->InteractorTimerToken = NULL;
-          }
-        if (event == vtkCommand::CreateTimerEvent)
-          {
-          this->InteractorTimerToken = 
-            Tcl_CreateTimerHandler(
-              10, 
-              (Tcl_TimerProc*)vtkKWRenderWidget_InteractorTimer, 
-              (ClientData)caller);
+          Tcl_DeleteTimerHandler(it->second.TclTimerToken);
+          this->Internals->TimerAdapterPool.erase(it);
           }
         break;
+
       }
     return;
     }

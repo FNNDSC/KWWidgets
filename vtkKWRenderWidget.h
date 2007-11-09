@@ -339,8 +339,6 @@ protected:
   int RenderState;
   int Printing;
 
-  Tcl_TimerToken InteractorTimerToken;
-  
   char *DistanceUnits;
 
   int CollapsingRenders;
