@@ -36,14 +36,13 @@
 
 #include "vtkTk.h"
 
-#if defined(__APPLE_CC__)
-#elif !defined(_WIN32)
+#if !defined(_WIN32)
 #include "vtkXOpenGLRenderWindow.h"
 #endif
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.85 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.86 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -2961,8 +2960,7 @@ void vtkKWTkUtilities::ProcessIdleTasks(vtkKWApplication *app)
 }
 
 //---------------------------------------------------------------------------
-#if defined(__APPLE_CC__)
-#elif !defined(_WIN32)
+#if !defined(_WIN32)
 int vtkKWTkUtilities_InteractionEventFound;
 extern "C"
 Bool vtkKWTkUtilities_CheckForPendingInteractionEvents(
@@ -3076,8 +3074,6 @@ int vtkKWTkUtilities::CheckForPendingInteractionEvents(vtkRenderWindow *win)
       flag = 1;
       }
     }
-#elif defined(__APPLE_CC__)
-  // Add code
 #else
   XEvent report;
   vtkKWTkUtilities_InteractionEventFound = 0;
