@@ -23,6 +23,7 @@
 
 #include "vtkWindows.h"
 #include "X11/Xutil.h"
+#include "vtkConfigure.h"
 
 #include <vtksys/ios/sstream>
 #include <vtksys/SystemTools.hxx>
@@ -36,13 +37,14 @@
 
 #include "vtkTk.h"
 
-#if !defined(_WIN32)
+#if defined(VTK_USE_CARBON) || defined(VTK_USE_COCOA)
+#elif !defined(_WIN32)
 #include "vtkXOpenGLRenderWindow.h"
 #endif
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.86 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.87 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -2960,7 +2962,8 @@ void vtkKWTkUtilities::ProcessIdleTasks(vtkKWApplication *app)
 }
 
 //---------------------------------------------------------------------------
-#if !defined(_WIN32)
+#if defined(VTK_USE_CARBON) || defined(VTK_USE_COCOA)
+#elif !defined(_WIN32)
 int vtkKWTkUtilities_InteractionEventFound;
 extern "C"
 Bool vtkKWTkUtilities_CheckForPendingInteractionEvents(
@@ -3074,7 +3077,8 @@ int vtkKWTkUtilities::CheckForPendingInteractionEvents(vtkRenderWindow *win)
       flag = 1;
       }
     }
-#else
+#elif !defined(VTK_USE_CARBON) && !defined(VTK_USE_COCOA)
+
   XEvent report;
   vtkKWTkUtilities_InteractionEventFound = 0;
   Display *dpy = vtkXOpenGLRenderWindow::SafeDownCast(win)->GetDisplayId();
