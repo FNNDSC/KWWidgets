@@ -1,6 +1,6 @@
 /*=========================================================================
 
-  Module:    $RCSfile: vtkKWMultiColumnList.cxx,v $
+p  Module:    $RCSfile: vtkKWMultiColumnList.cxx,v $
 
   Copyright (c) Kitware, Inc.
   All rights reserved.
@@ -33,7 +33,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.86 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.87 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -85,6 +85,7 @@ public:
 vtkKWMultiColumnList::vtkKWMultiColumnList()
 {
   this->EditStartCommand = NULL;
+  this->KeyPressDeleteCommand = NULL;
   this->EditEndCommand = NULL;
   this->CellUpdatedCommand = NULL;
   this->SelectionCommand = NULL;
@@ -114,6 +115,11 @@ vtkKWMultiColumnList::~vtkKWMultiColumnList()
     {
     delete [] this->EditStartCommand;
     this->EditStartCommand = NULL;
+    }
+  if (this->KeyPressDeleteCommand)
+    {
+    delete [] this->KeyPressDeleteCommand;
+    this->KeyPressDeleteCommand = NULL;
     }
   if (this->EditEndCommand)
     {
@@ -196,29 +202,43 @@ void vtkKWMultiColumnList::CreateWidget()
   this->SetConfigurationOption("-editendcommand", command);
   delete [] command;
 
-  this->AddBinding("<<TablelistSelect>>", this, "SelectionCallback");
-  this->AddBinding("<<TablelistSelectionLost>>", this, "SelectionCallback");
-  this->AddBinding("<<TablelistCellUpdated>>", this, "CellUpdatedCallback");
-  this->AddBinding("<<TablelistUneditableCellSelected>>", this, "UneditableCellDoubleClickCallback");
-  this->AddBinding("<<TablelistColumnSorted>>", this, "ColumnSortedCallback");
+  this->AddBinding(
+    "<<TablelistSelect>>", this, "SelectionCallback");
+
+  this->AddBinding(
+    "<<TablelistSelectionLost>>", this, "SelectionCallback");
+
+  this->AddBinding(
+    "<<TablelistCellUpdated>>", this, "CellUpdatedCallback");
+
+  this->AddBinding(
+    "<<TablelistUneditableCellSelected>>", 
+    this, "UneditableCellDoubleClickCallback");
+
+  this->AddBinding(
+    "<<TablelistColumnSorted>>", this, "ColumnSortedCallback");
+
+  this->AddBinding(
+    "<FocusOut>", this, "FinishEditing");
 
   this->Script("bind [%s bodytag] <<Button3>> [list %s RightClickCallback %%W %%x %%y %%X %%Y]",
                this->GetWidgetName(), this->GetTclName());
-
-  this->AddBinding("<FocusOut>", this, "FinishEditing");
+ 
+  this->Script("bind [%s bodytag] <Delete> [list %s KeyPressDeleteCallback]",
+               this->GetWidgetName(), this->GetTclName());
 }
 
 //----------------------------------------------------------------------------
 void vtkKWMultiColumnList::SetBinding(const char *event, 
-                             vtkObject *object, const char *method)
+                                      vtkObject *object, const char *method)
 {
   this->Superclass::SetBinding(event, object, method);
   if (this->IsCreated())
     {
     char *command = NULL;
     this->SetObjectMethodCommand(&command, object, method);
-    this->Script("bind TablelistBody %s {%s}", event, command);
-    
+    this->Script("bind [%s bodytag] %s {%s}", 
+                 this->GetWidgetName(), event, command);
     delete [] command;
     }
 }
@@ -238,7 +258,8 @@ void vtkKWMultiColumnList::AddBinding(const char *event,
     {
     char *command = NULL;
     this->SetObjectMethodCommand(&command, object, method);
-    this->Script("bind TablelistBody %s {+%s}", event, command);
+    this->Script("bind [%s bodytag] %s {+%s}", 
+                 this->GetWidgetName(), event, command);
     delete [] command;
     }
 }
@@ -254,7 +275,7 @@ void vtkKWMultiColumnList::RemoveBinding(const char *event,
                                 vtkObject *object, const char *method)
 {
   this->Superclass::RemoveBinding(event, object, method);
-  if (this->IsCreated())
+  if (this->IsAlive())
     {
     char *command = NULL;
     this->SetObjectMethodCommand(&command, object, method);
@@ -262,12 +283,14 @@ void vtkKWMultiColumnList::RemoveBinding(const char *event,
     // Retrieve the bindings, remove the command, re-assign
 
     vtksys_stl::string bindings(
-      this->Script("bind TablelistBody %s", event));
+      this->Script("bind [%s bodytag] %s", 
+                   this->GetWidgetName(), event));
 
     vtksys::SystemTools::ReplaceString(bindings, command, "");
   
     this->Script(
-      "bind TablelistBody %s {%s}", event, bindings.c_str());
+      "bind [%s bodytag] %s {%s}", 
+      this->GetWidgetName(), event, bindings.c_str());
     delete [] command;
     }
 }
@@ -1318,6 +1341,16 @@ void vtkKWMultiColumnList::SetColumnSortCommand(int col_index,
 void vtkKWMultiColumnList::SetColumnFormatCommandToEmptyOutput(int col_index)
 {
   this->SetColumnFormatCommand(col_index, NULL, "tablelist::emptyStr");
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::KeyPressDeleteCallback()
+{
+  if (this->IsCreated() && (this->GetNumberOfSelectedCells() > 0 ||
+                            this->GetNumberOfSelectedRows() > 0))
+    {
+    this->InvokeKeyPressDeleteCommand();
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -3250,8 +3283,9 @@ void vtkKWMultiColumnList::AddBindingsToWidgetName(const char *widget_name)
     return;
     }
 
-  this->Script("bindtags %s [lreplace [bindtags %s] 1 1 TablelistBody]",
-               widget_name, widget_name);
+  this->Script(
+    "bindtags %s [lreplace [bindtags %s] 1 0 [%s bodytag] TablelistBody]",
+    widget_name, widget_name, this->GetWidgetName());
 }
 
 //----------------------------------------------------------------------------
@@ -4299,6 +4333,19 @@ void vtkKWMultiColumnList::SetEditStartCommand(
   vtkObject *object, const char *method)
 {
   this->SetObjectMethodCommand(&this->EditStartCommand, object, method);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::InvokeKeyPressDeleteCommand()
+{
+  this->InvokeObjectMethodCommand(this->KeyPressDeleteCommand);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::SetKeyPressDeleteCommand(
+     vtkObject *object, const char *method)
+{
+  this->SetObjectMethodCommand(&this->KeyPressDeleteCommand, object, method);
 }
 
 //----------------------------------------------------------------------------

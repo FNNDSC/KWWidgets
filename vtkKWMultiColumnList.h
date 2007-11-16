@@ -519,6 +519,20 @@ public:
   virtual void SetColumnFormatCommandToEmptyOutput(int col_index);
 
   // Description:
+  // Specifies a command to associate with the widget. This command is 
+  // typically invoked when the "Delete" Key is pressed, but this will only
+  // invoke the 'method' passed in. This 'method' of the 'object' needs to 
+  // decide what to do with this <KeyPress-Delete> event. For examples, if
+  // user wants to go ahead and delete, the 'object' needs to find out the 
+  // selected rows/cells and delete them using API of this class.
+  // The 'object' argument is the object that will have the method called on
+  // it. The 'method' argument is the name of the method to be called and any
+  // arguments in string form. If the object is NULL, the method is still
+  // evaluated as a simple command. 
+  virtual void SetKeyPressDeleteCommand(vtkObject *object, 
+                                     const char *method);
+
+  // Description:
   // Specifies a boolean value that determines whether the rows can be 
   // moved interactively.
   vtkBooleanMacro(MovableRows, int);
@@ -1336,6 +1350,7 @@ public:
   virtual void RefreshAllCellsWithWindowCommandCallback();
   virtual void RefreshEnabledStateOfAllCellsWithWindowCommandCallback();
   virtual void RefreshAllRowsWithWindowCommandCallback(int col);
+  virtual void KeyPressDeleteCallback();
   
 protected:
   vtkKWMultiColumnList();
@@ -1344,6 +1359,9 @@ protected:
   // Description:
   // Create the widget.
   virtual void CreateWidget();
+
+  char *KeyPressDeleteCommand;
+  void InvokeKeyPressDeleteCommand();
   
   char *EditStartCommand;
   const char* InvokeEditStartCommand(int row, int col, const char *text);
