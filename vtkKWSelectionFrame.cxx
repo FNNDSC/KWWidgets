@@ -12,7 +12,10 @@
 
 =========================================================================*/
 #include "vtkKWSelectionFrame.h"
+
 #include "vtkObjectFactory.h"
+#include "vtkStringArray.h"
+#include "vtkMath.h"
 
 #include "vtkKWFrame.h"
 #include "vtkKWLabel.h"
@@ -22,14 +25,14 @@
 #include "vtkKWPushButton.h"
 #include "vtkKWIcon.h"
 #include "vtkKWToolbarSet.h"
-#include "vtkStringArray.h"
+#include "vtkKWTkUtilities.h"
 
 #include <vtksys/ios/sstream>
 #include <vtksys/stl/list>
 #include <vtksys/stl/string>
 
 vtkStandardNewMacro(vtkKWSelectionFrame);
-vtkCxxRevisionMacro(vtkKWSelectionFrame, "$Revision: 1.61 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrame, "$Revision: 1.62 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameInternals
@@ -39,12 +42,16 @@ public:
   typedef vtksys_stl::list<vtksys_stl::string>::iterator StringPoolIterator;
 
   StringPoolType StringPool;
+
+  int OuterSelectionFrameBlinkingCounter;
+  vtksys_stl::string OuterSelectionFrameBlinkingTimerId;
 };
 
 //----------------------------------------------------------------------------
 vtkKWSelectionFrame::vtkKWSelectionFrame()
 {
   this->Internals             = new vtkKWSelectionFrameInternals;
+  this->Internals->OuterSelectionFrameBlinkingCounter = 0;
 
   this->OuterSelectionFrame   = vtkKWFrame::New();
   this->TitleBarFrame         = vtkKWFrame::New();
@@ -89,15 +96,16 @@ vtkKWSelectionFrame::vtkKWSelectionFrame()
   this->OuterSelectionFrameSelectedColor[1] = 0.93;
   this->OuterSelectionFrameSelectedColor[2] = 0.79;
 
-  this->Selected                 = 0;
-  this->TitleBarVisibility       = 1;
-  this->SelectionListVisibility  = 1;
-  this->AllowClose               = 1;
-  this->AllowChangeTitle         = 1;
-  this->ToolbarSetVisibility     = 0;
-  this->LeftUserFrameVisibility  = 0;
-  this->RightUserFrameVisibility = 0;
-  this->OuterSelectionFrameWidth = 0;
+  this->Selected                    = 0;
+  this->TitleBarVisibility          = 1;
+  this->SelectionListVisibility     = 1;
+  this->AllowClose                  = 1;
+  this->AllowChangeTitle            = 1;
+  this->ToolbarSetVisibility        = 0;
+  this->LeftUserFrameVisibility     = 0;
+  this->RightUserFrameVisibility    = 0;
+  this->OuterSelectionFrameWidth    = 0;
+  this->OuterSelectionFrameBlinking = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -712,6 +720,57 @@ void vtkKWSelectionFrame::SetOuterSelectionFrameWidth(int arg)
 }
 
 //----------------------------------------------------------------------------
+void vtkKWSelectionFrame::SetOuterSelectionFrameBlinking(int arg)
+{
+  if (this->OuterSelectionFrameBlinking == arg)
+    {
+    return;
+    }
+
+  this->OuterSelectionFrameBlinking = arg;
+
+  if (this->OuterSelectionFrameBlinking)
+    {
+    this->CreateOuterSelectionFrameBlinkingTimer();
+    }
+  else
+    {
+    this->CancelOuterSelectionFrameBlinkingTimer();
+    }
+
+  this->Modified();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSelectionFrame::CreateOuterSelectionFrameBlinkingTimer()
+{
+  this->Internals->OuterSelectionFrameBlinkingTimerId = 
+    vtkKWTkUtilities::CreateTimerHandler(
+      this->GetApplication(), 80, 
+      this, "OuterSelectionFrameBlinkingCallback");
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSelectionFrame::CancelOuterSelectionFrameBlinkingTimer()
+{
+  if (this->Internals->OuterSelectionFrameBlinkingTimerId.size())
+    {
+    vtkKWTkUtilities::CancelTimerHandler(
+      this->GetApplication(), 
+      this->Internals->OuterSelectionFrameBlinkingTimerId.c_str());
+    this->UpdateOuterSelectionFrameColor();
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSelectionFrame::OuterSelectionFrameBlinkingCallback()
+{
+  this->Internals->OuterSelectionFrameBlinkingCounter++;
+  this->UpdateOuterSelectionFrameColor();
+  this->CreateOuterSelectionFrameBlinkingTimer();
+}
+
+//----------------------------------------------------------------------------
 void vtkKWSelectionFrame::SetSelected(int arg)
 {
   if (this->Selected == arg)
@@ -832,19 +891,17 @@ void vtkKWSelectionFrame::UpdateSelectedAspect()
     return;
     }
 
-  double *title_fgcolor, *title_bgcolor, *selection_frame_bgcolor;
+  double *title_fgcolor, *title_bgcolor;
 
   if (this->Selected)
     {
     title_fgcolor = this->TitleSelectedColor;
     title_bgcolor = this->TitleSelectedBackgroundColor;
-    selection_frame_bgcolor = this->OuterSelectionFrameSelectedColor;
     }
   else
     {
     title_fgcolor = this->TitleColor;
     title_bgcolor = this->TitleBackgroundColor;
-    selection_frame_bgcolor = this->OuterSelectionFrameColor;
     }
 
   this->TitleBarFrame->SetBackgroundColor(
@@ -864,9 +921,45 @@ void vtkKWSelectionFrame::UpdateSelectedAspect()
 
   if (this->OuterSelectionFrame)
     {
-    this->OuterSelectionFrame->SetBackgroundColor(selection_frame_bgcolor);
     this->OuterSelectionFrame->SetBorderWidth(this->OuterSelectionFrameWidth);
     }
+  
+  this->UpdateOuterSelectionFrameColor();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSelectionFrame::UpdateOuterSelectionFrameColor()
+{
+  if (!this->OuterSelectionFrame)
+    {
+    return;
+    }
+
+  double *selection_frame_bgcolor, blinking_rgb[3], blinking_hsv[3];
+
+  if (this->Selected)
+    {
+    selection_frame_bgcolor = this->OuterSelectionFrameSelectedColor;
+    }
+  else
+    {
+    selection_frame_bgcolor = this->OuterSelectionFrameColor;
+    }
+
+  if (this->OuterSelectionFrameBlinking)
+    {
+    int counter = this->Internals->OuterSelectionFrameBlinkingCounter % 10 - 5;
+    if (counter < 0)
+      {
+      counter = -counter;
+      }
+    vtkMath::RGBToHSV(selection_frame_bgcolor, blinking_hsv);
+    blinking_hsv[2] = 0.2 * counter;
+    vtkMath::HSVToRGB(blinking_hsv, blinking_rgb);
+    selection_frame_bgcolor = blinking_rgb;
+    }
+
+  this->OuterSelectionFrame->SetBackgroundColor(selection_frame_bgcolor);
 }
 
 //----------------------------------------------------------------------------
@@ -1206,5 +1299,6 @@ void vtkKWSelectionFrame::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "RightUserFrameVisibility: " << (this->RightUserFrameVisibility ? "On" : "Off") << endl;
   os << indent << "TitleBarVisibility: " << (this->TitleBarVisibility ? "On" : "Off") << endl;
   os << indent << "OuterSelectionFrameWidth: " << this->OuterSelectionFrameWidth << endl;
+  os << indent << "OuterSelectionFrameBlinking: " << (this->OuterSelectionFrameBlinking ? "On" : "Off") << endl;
 }
 

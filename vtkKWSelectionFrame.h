@@ -259,6 +259,12 @@ public:
     double r, double g, double b);
   virtual void SetOuterSelectionFrameSelectedColor(double rgb[3])
     { this->SetOuterSelectionFrameSelectedColor(rgb[0], rgb[1], rgb[2]); };
+
+  // Description:
+  // Set/Get if the outer selection frame is blinking.
+  virtual void SetOuterSelectionFrameBlinking(int);
+  vtkGetMacro(OuterSelectionFrameBlinking, int);
+  vtkBooleanMacro(OuterSelectionFrameBlinking, int);
   
   // Description:
   // Update the "enable" state of the object and its internal parts.
@@ -276,6 +282,7 @@ public:
   virtual void SelectCallback();
   virtual void DoubleClickCallback();
   virtual void ChangeTitleCallback();
+  virtual void OuterSelectionFrameBlinkingCallback();
   
 protected:
   vtkKWSelectionFrame();
@@ -298,6 +305,7 @@ protected:
 
   virtual int SetColor(double *color, double r, double g, double b);
   virtual void UpdateSelectedAspect();
+  virtual void UpdateOuterSelectionFrameColor();
   virtual void UpdateSelectionListMenuButton();
 
   double TitleColor[3];
@@ -330,6 +338,10 @@ protected:
   int RightUserFrameVisibility;
   int TitleBarVisibility;
   int OuterSelectionFrameWidth;
+  int OuterSelectionFrameBlinking;
+
+  virtual void CreateOuterSelectionFrameBlinkingTimer();
+  virtual void CancelOuterSelectionFrameBlinkingTimer();
 
   // PIMPL Encapsulation for STL containers
 
