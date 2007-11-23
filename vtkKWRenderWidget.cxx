@@ -44,7 +44,7 @@
 #include <vtksys/stl/map>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.156 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.157 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -130,17 +130,25 @@ vtkKWRenderWidget::vtkKWRenderWidget()
 
   this->HeaderAnnotation = vtkTextActor::New();
   this->HeaderAnnotation->SetNonLinearFontScale(0.7,10);
-  this->HeaderAnnotation->GetTextProperty()->SetJustificationToCentered();
-  this->HeaderAnnotation->GetTextProperty()->SetVerticalJustificationToTop();
-  this->HeaderAnnotation->GetTextProperty()->ShadowOff();
+  this->HeaderAnnotation->SetMaximumLineHeight(0.07);
   this->HeaderAnnotation->ScaledTextOn();
-  this->HeaderAnnotation->GetPositionCoordinate()
-    ->SetCoordinateSystemToNormalizedViewport();
-  this->HeaderAnnotation->GetPositionCoordinate()->SetValue(0.2, 0.84);
-  this->HeaderAnnotation->GetPosition2Coordinate()
-    ->SetCoordinateSystemToNormalizedViewport();
-  this->HeaderAnnotation->GetPosition2Coordinate()->SetValue(0.6, 0.1);
   this->HeaderAnnotation->VisibilityOff();
+
+  vtkTextProperty *tprop = this->HeaderAnnotation->GetTextProperty();
+  tprop->SetJustificationToCentered();
+  tprop->SetVerticalJustificationToTop();
+  tprop->ShadowOn();
+  tprop->ItalicOn();
+
+  vtkCoordinate *coord = 
+    this->HeaderAnnotation->GetPositionCoordinate();
+  coord->SetCoordinateSystemToNormalizedViewport();
+  coord->SetValue(0.15, 0.0);
+
+  vtkCoordinate *coord2= 
+    this->HeaderAnnotation->GetPosition2Coordinate();
+  coord2->SetCoordinateSystemToNormalizedViewport();
+  coord2->SetValue(0.85, 0.92);
 
   // Distance units
 
