@@ -561,6 +561,12 @@ public:
   virtual void DeleteAllRows();
 
   // Description:
+  // Find a specific text in a specific column and delete the corresponding
+  // row if found.
+  virtual void FindAndDeleteRow(
+    int look_for_col_index, const char *look_for_text);
+
+  // Description:
   // Set/Get a row background and foreground colors
   virtual void GetRowBackgroundColor(
     int row_index, double *r, double *g, double *b);

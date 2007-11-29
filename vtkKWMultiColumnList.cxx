@@ -33,7 +33,7 @@ p  Module:    $RCSfile: vtkKWMultiColumnList.cxx,v $
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.87 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.88 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -1509,21 +1509,37 @@ void vtkKWMultiColumnList::DeleteRow(int row_index)
 //----------------------------------------------------------------------------
 void vtkKWMultiColumnList::DeleteAllRows()
 {
-  if (this->IsCreated())
+  int nb_rows = this->GetNumberOfRows();
+  if (nb_rows)
     {
-    this->FinishEditing(); // as a convenience
-    int nb_rows = this->GetNumberOfRows();
-    int old_state = this->GetState();
-    if (this->GetState() != vtkKWOptions::StateNormal)
+    if (this->IsCreated())
       {
-      this->SetStateToNormal();
+      this->FinishEditing(); // as a convenience
+      int old_state = this->GetState();
+      if (this->GetState() != vtkKWOptions::StateNormal)
+        {
+        this->SetStateToNormal();
+        }
+      this->Script("%s delete 0 end", this->GetWidgetName());
+      this->SetState(old_state);
+      if (this->GetNumberOfRows() != nb_rows)
+        {
+        this->NumberOfRowsChanged();
+        }
       }
-    this->Script("%s delete 0 end", this->GetWidgetName());
-    this->SetState(old_state);
-    if (this->GetNumberOfRows() != nb_rows)
-      {
-      this->NumberOfRowsChanged();
-      }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::FindAndDeleteRow(
+  int look_for_col_index, const char *look_for_text)
+{
+  int row_index = 
+    this->FindCellTextInColumn(look_for_col_index, look_for_text);
+  
+  if (row_index >= 0)
+    {
+    this->DeleteRow(row_index);
     }
 }
 
@@ -1783,7 +1799,7 @@ int vtkKWMultiColumnList::GetRowConfigurationOptionAsInt(
 void vtkKWMultiColumnList::InsertCellText(
   int row_index, int col_index, const char *text)
 {
-  if (this->IsCreated() && text)
+  if (this->IsCreated())
     {
     while (row_index > this->GetNumberOfRows() - 1)
       {
