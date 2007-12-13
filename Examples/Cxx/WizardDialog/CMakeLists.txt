@@ -33,6 +33,10 @@ SET(TARGET_BASE_NAME "KW${PROJECT_NAME}Example")
 SET(LIB_NAME "KWWizardDialogExampleLib")
 SET(LIB_SRCS 
   vtkKWMyWizardDialog.cxx
+  vtkKWMyOperatorStep.cxx
+  vtkKWMyOperand1Step.cxx
+  vtkKWMyOperand2Step.cxx
+  vtkKWMyResultStep.cxx
   )
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
