@@ -19,6 +19,7 @@ public:
   vtkGetObjectMacro(OperatorStep, vtkKWMyOperatorStep);
   vtkGetObjectMacro(Operand1Step, vtkKWMyOperand1Step);
   vtkGetObjectMacro(Operand2Step, vtkKWMyOperand2Step);
+  vtkGetObjectMacro(ResultStep,   vtkKWMyResultStep);
 
 protected:
   vtkKWMyWizardDialog();

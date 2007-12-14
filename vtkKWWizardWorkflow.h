@@ -113,7 +113,7 @@ public:
   // "Finish" button in a wizard widget.
   // More specifically, this method creates 4 transitions:
   // 1) A transition from the origin's InteractionState to an internal 
-  //    GoToState state acting as a hub, triggered the destination step's 
+  //    GoToState state acting as a hub, triggered by the destination step's 
   //    GoToSelfInput input. The transition's EndCommand callback is 
   //    automatically set to invoke the TryToGoToStepCallback callback, 
   //    which is in turn responsible for checking if the destination step can

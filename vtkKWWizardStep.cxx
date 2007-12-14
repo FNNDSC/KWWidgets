@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWizardStep);
-vtkCxxRevisionMacro(vtkKWWizardStep, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWWizardStep, "$Revision: 1.5 $");
 
 vtkIdType vtkKWWizardStep::IdCounter = 1;
 vtkKWWizardStepCleanup vtkKWWizardStep::Cleanup;
@@ -137,7 +137,7 @@ vtkKWStateMachineState* vtkKWWizardStep::GetInteractionState()
       {
       name << this->Id;
       }
-    name << "|" << "I";
+    name << " (I)";
     this->InteractionState->SetName(name.str().c_str());
     this->AddCallbackCommandObserver(
       this->InteractionState, vtkKWStateMachineState::EnterEvent);
@@ -160,7 +160,7 @@ vtkKWStateMachineState* vtkKWWizardStep::GetValidationState()
       {
       name << this->Id;
       }
-    name << "|" << "V";
+    name << " (V)";
     this->ValidationState->SetName(name.str().c_str());
     }
   return this->ValidationState;
