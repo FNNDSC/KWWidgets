@@ -59,7 +59,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.62 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.63 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -2833,7 +2833,7 @@ int vtkKWPresetSelector::RemoveAllPresets()
 {
   int nb_deleted = this->DeleteAllPresets();
 
-  if (this->PresetList)
+  if (this->PresetList && this->PresetList->GetWidget()->GetNumberOfRows())
     {
     this->PresetList->GetWidget()->DeleteAllRows();
     }

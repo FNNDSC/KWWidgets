@@ -42,7 +42,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLogWidget );
-vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.10 $");
 
 vtkIdType vtkKWLogWidget::IdCounter = 1;
 
@@ -407,7 +407,9 @@ void vtkKWLogWidget::RemoveAllRecords()
     this->Internals->RecordContainer.clear();
     }
     
-  if (this->RecordList && this->RecordList->IsCreated())
+  if (this->RecordList && 
+      this->RecordList->IsCreated() &&
+      this->RecordList->GetWidget()->GetNumberOfRows())
     {
     this->RecordList->GetWidget()->DeleteAllRows();
     }
