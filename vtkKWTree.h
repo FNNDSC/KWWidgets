@@ -509,6 +509,7 @@ protected:
     const char *node, const char *new_parent, const char *previous_parent);
 
   virtual void UpdateDragAndDrop();
+  virtual void DisplayChildNodes(const char* node);
 
   // PIMPL Encapsulation for STL containers
   //BTX

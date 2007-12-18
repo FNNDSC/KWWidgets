@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTree );
-vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.39 $");
+vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.40 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTreeInternals
@@ -576,6 +576,7 @@ void vtkKWTree::OpenNode(const char *node)
   if (this->IsCreated() && node && *node)
     {
     this->Script("%s opentree %s 0", this->GetWidgetName(), node);
+    this->DisplayChildNodes(node);
     }
 }
 
@@ -625,6 +626,50 @@ void vtkKWTree::OpenTree(const char *node)
   if (this->IsCreated() && node && *node)
     {
     this->Script("%s opentree %s 1", this->GetWidgetName(), node);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWTree::DisplayChildNodes(const char* node)
+{
+  if (this->IsCreated() && node && *node)
+    {
+    const char* nodeChildren = this->GetNodeChildren(node);
+    if(!nodeChildren || !(*nodeChildren))
+      {
+      return;
+      }
+
+    vtksys_ios::ostringstream tk_cmd;
+
+    //Figure out how many units in each page
+    tk_cmd << "set scrl [" << this->GetWidgetName() 
+      <<".c cget -scrollregion]" << endl;
+
+    tk_cmd << "set ymax [lindex $scrl 3]" << endl;
+    tk_cmd << "set dy   [" << this->GetWidgetName()
+      << ".c cget -yscrollincrement]" << endl;
+    tk_cmd << "set yv   [" << this->GetWidgetName()
+      << " yview]" << endl;
+
+    tk_cmd << "set yv0  [expr {round([lindex $yv 0]*$ymax/$dy)}]" << endl;
+    tk_cmd << "set yv1  [expr {round([lindex $yv 1]*$ymax/$dy)}]" << endl;
+    tk_cmd << "set pageunits [expr {$yv1-$yv0}]" << endl;
+
+    // Find out whether we want to scroll to view all child nodes
+    tk_cmd << "set nodes [" 
+           << this->GetWidgetName() 
+           << " nodes " << node << "]" << endl;
+
+    tk_cmd << "set len [llength $nodes]" << endl;
+    tk_cmd << "set index [expr {$len-1}]" << endl;
+    tk_cmd << "if { $len > $pageunits } {set index $pageunits}" << endl;
+      
+    tk_cmd << "Tree::_set_current_node "
+      << this->GetWidgetName() << " [lindex $nodes $index]" << endl;
+    tk_cmd << this->GetWidgetName() << " see [lindex $nodes $index]" << endl;
+
+    this->Script(tk_cmd.str().c_str());
     }
 }
 
