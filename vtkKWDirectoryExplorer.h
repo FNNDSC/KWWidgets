@@ -279,6 +279,12 @@ public:
   virtual void UpdateEnableState();
   virtual void Update();
 
+  // Description:
+  // Given the prefix of a sub-folder name of the current selected directory,
+  // this function will make the corresponding child node for this 
+  // sub-folder visible in the window.
+  virtual void ScrollToDirectory(const char* prefix);
+
 protected:
   vtkKWDirectoryExplorer();
   ~vtkKWDirectoryExplorer();

@@ -38,7 +38,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.38 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.39 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -918,6 +918,26 @@ int vtkKWFileBrowserDialog::FileOK()
 
   if (this->FileNameText->GetValue() && *(this->FileNameText->GetValue()))
     {
+    
+    // Allow user to input a full path directly in the filename box
+
+    vtksys_stl::string UserInputName = this->FileNameText->GetValue(); 
+    if (vtksys::SystemTools::FileIsDirectory(UserInputName.c_str()))
+      {
+      this->FileBrowserWidget->OpenDirectory(UserInputName.c_str());
+      return 0;
+      }
+    else if (vtksys::SystemTools::FileExists(UserInputName.c_str()))
+      {
+      if (this->SaveDialog && !this->ConfirmOverwrite(UserInputName.c_str()))
+        {
+        return 0;
+        }
+      this->FileNames->InsertNextValue(
+        KWFileBrowser_GetUnixPath(UserInputName.c_str()));
+      return 1;
+      }
+
     char * realname = vtksys::SystemTools::RemoveChars(
       this->FileNameText->GetValue(), "\r\n\t");
     if (!realname || !*(realname))
@@ -1231,6 +1251,8 @@ void vtkKWFileBrowserDialog::FileNameEditingCallback(const char* filename)
 
  this->Internals->IsEditingFileName = 1;
  this->FileBrowserWidget->GetFileListTable()->ClearSelection();
+ this->FileBrowserWidget->GetFileListTable()->ScrollToFile(filename);
+ this->FileBrowserWidget->GetDirectoryExplorer()->ScrollToDirectory(filename);
  this->Internals->CurrentSelectedFileNames = "";
  this->Internals->IsEditingFileName = 0;
 }

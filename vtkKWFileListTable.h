@@ -273,6 +273,11 @@ public:
   // enable/disable the visibility of 3D widgets, etc.
   virtual void UpdateEnableState();
 
+  // Description:
+  // Given the prefix of a file or folder name, this function will make
+  // the corresponding row with this name visible in the window
+  virtual void ScrollToFile(const char* prefix);
+
 protected:
   vtkKWFileListTable();
   ~vtkKWFileListTable();
