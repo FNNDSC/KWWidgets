@@ -29,6 +29,7 @@
 #include "vtkKWSplitFrame.h"
 #include "vtkKWTkUtilities.h"
 
+#include "vtkDirectory.h"
 #include "vtkObjectFactory.h"
 #include "vtkStringArray.h"
 #include "vtkCallbackCommand.h"
@@ -38,7 +39,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.39 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.40 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -614,6 +615,8 @@ int vtkKWFileBrowserDialog::SetupInitialSelectedFiles()
       return 0;
       }
 
+    this->FileBrowserWidget->GetFileListTable()->SetParentDirectory(selDir.c_str());
+
     if(this->GetMultipleSelection())
       {
       for(int i=0; i<this->InitialSelecttedFileNames->GetNumberOfValues(); i++)
@@ -922,17 +925,23 @@ int vtkKWFileBrowserDialog::FileOK()
     // Allow user to input a full path directly in the filename box
 
     vtksys_stl::string UserInputName = this->FileNameText->GetValue(); 
-    if (vtksys::SystemTools::FileIsDirectory(UserInputName.c_str()))
+    if (vtksys::SystemTools::FileExists(UserInputName.c_str()))
       {
-      this->FileBrowserWidget->OpenDirectory(UserInputName.c_str());
-      return 0;
-      }
-    else if (vtksys::SystemTools::FileExists(UserInputName.c_str()))
-      {
-      if (this->SaveDialog && !this->ConfirmOverwrite(UserInputName.c_str()))
+      // "!vtksys::SystemTools::FileIsDirectory(dirname)" does not
+      // recognize "C:" or "C:/", so using vtkDirectory to check
+      vtkDirectory *dir = vtkDirectory::New();
+      int result = dir->Open(UserInputName.c_str());
+      dir->Delete();
+      if (result)
+        {
+        this->FileBrowserWidget->OpenDirectory(UserInputName.c_str());
+        return 0;
+        }
+      else if (this->SaveDialog && !this->ConfirmOverwrite(UserInputName.c_str()))
         {
         return 0;
         }
+
       this->FileNames->InsertNextValue(
         KWFileBrowser_GetUnixPath(UserInputName.c_str()));
       return 1;
