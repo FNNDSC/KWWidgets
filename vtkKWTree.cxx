@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTree );
-vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.41 $");
+vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.42 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTreeInternals
@@ -631,7 +631,7 @@ void vtkKWTree::OpenTree(const char *node)
 //----------------------------------------------------------------------------
 void vtkKWTree::DisplayChildNodes(const char* node)
 {
-  if (this->IsCreated() && node && *node)
+  if (this->IsCreated() && this->HasSelection() && node && *node)
     {
     const char* nodeChildren = this->GetNodeChildren(node);
     if(!nodeChildren || !(*nodeChildren))
