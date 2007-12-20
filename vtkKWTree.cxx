@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTree );
-vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.40 $");
+vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.41 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTreeInternals
@@ -576,7 +576,6 @@ void vtkKWTree::OpenNode(const char *node)
   if (this->IsCreated() && node && *node)
     {
     this->Script("%s opentree %s 0", this->GetWidgetName(), node);
-    this->DisplayChildNodes(node);
     }
 }
 
@@ -643,6 +642,7 @@ void vtkKWTree::DisplayChildNodes(const char* node)
     vtksys_ios::ostringstream tk_cmd;
 
     //Figure out how many units in each page
+
     tk_cmd << "set scrl [" << this->GetWidgetName() 
       <<".c cget -scrollregion]" << endl;
 
@@ -656,7 +656,8 @@ void vtkKWTree::DisplayChildNodes(const char* node)
     tk_cmd << "set yv1  [expr {round([lindex $yv 1]*$ymax/$dy)}]" << endl;
     tk_cmd << "set pageunits [expr {$yv1-$yv0}]" << endl;
 
-    // Find out whether we want to scroll to view all child nodes
+    // Find out whether we want to scroll to display all child nodes
+    
     tk_cmd << "set nodes [" 
            << this->GetWidgetName() 
            << " nodes " << node << "]" << endl;

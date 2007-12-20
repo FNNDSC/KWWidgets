@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.38 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.39 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -844,9 +844,11 @@ void vtkKWDirectoryExplorer::OpenDirectoryNode(const char* node,
 
   // Open the node
 
-  if (opennode)
+  if (opennode && 
+    !this->DirectoryTree->GetWidget()->IsNodeOpen(node_str.c_str()))
     {
     this->DirectoryTree->GetWidget()->OpenNode(node_str.c_str());
+    this->DirectoryTree->GetWidget()->DisplayChildNodes(node_str.c_str());
     }
 
   // Select the node
