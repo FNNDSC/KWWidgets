@@ -56,7 +56,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.23 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.24 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -382,6 +382,7 @@ void vtkKWFavoriteDirectoriesFrame::SelectFavoriteDirectory(
 {
   if (path && *path && !this->IsFavoriteDirectorySelected(path))
     {
+    this->ClearFavoriteDirectorySelection();
     vtksys_stl::string path_str(path);
     const char *name_of_fav = 
       this->GetNameOfFavoriteDirectory(path_str.c_str());
