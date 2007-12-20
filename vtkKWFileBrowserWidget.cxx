@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.17 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -784,6 +784,10 @@ void vtkKWFileBrowserWidget::FileDoubleClickedCallback(
         vtksys::SystemTools::FileIsDirectory(fullname) && 
         this->DirectoryExplorer->HasSelection())
       {
+      if(this->FavoriteDirectoriesFrameVisibility)
+        {
+        this->FavoriteDirectoriesFrame->SelectFavoriteDirectory(fullname);
+        }
       this->DirectoryExplorer->OpenDirectory(fullname);
       this->SetFocusToFileListTable();
       }
