@@ -33,7 +33,7 @@
 #include <vtksys/stl/string>
 
 vtkStandardNewMacro(vtkKWColorTransferFunctionEditor);
-vtkCxxRevisionMacro(vtkKWColorTransferFunctionEditor, "$Revision: 1.57 $");
+vtkCxxRevisionMacro(vtkKWColorTransferFunctionEditor, "$Revision: 1.58 $");
 
 #define VTK_KW_CTFE_COLOR_RAMP_TAG "color_ramp_tag"
 
@@ -94,8 +94,17 @@ vtkKWColorTransferFunctionEditor::~vtkKWColorTransferFunctionEditor()
       }
     }
 
-  this->SetColorTransferFunction(NULL);
-  this->SetColorRampTransferFunction(NULL);
+  if (this->ColorTransferFunction)
+    {
+    this->ColorTransferFunction->Delete();
+    this->ColorTransferFunction = NULL;
+    }
+
+  if (this->ColorRampTransferFunction)
+    {
+    this->ColorRampTransferFunction->Delete();
+    this->ColorRampTransferFunction = NULL;
+    }
 }
 
 //----------------------------------------------------------------------------
