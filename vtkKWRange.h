@@ -161,6 +161,24 @@ public:
     { this->SetRangeInteractionColor(rgb[0], rgb[1], rgb[2]); };
   
   // Description:
+  // Set/Get the color of the first slider. 
+  // Defaults to -1, -1, -1: a shade of the widget background color will
+  // be used at runtime.
+  vtkGetVector3Macro(Slider1Color, double);
+  virtual void SetSlider1Color(double r, double g, double b);
+  virtual void SetSlider1Color(double rgb[3])
+    { this->SetSlider1Color(rgb[0], rgb[1], rgb[2]); };
+  
+  // Description:
+  // Set/Get the color of the second slider. 
+  // Defaults to -1, -1, -1: a shade of the widget background color will
+  // be used at runtime.
+  vtkGetVector3Macro(Slider2Color, double);
+  virtual void SetSlider2Color(double r, double g, double b);
+  virtual void SetSlider2Color(double rgb[3])
+    { this->SetSlider2Color(rgb[0], rgb[1], rgb[2]); };
+  
+  // Description:
   // Set/Get the entries visibility.
   virtual void SetEntriesVisibility(int);
   vtkBooleanMacro(EntriesVisibility, int);
@@ -361,6 +379,8 @@ protected:
   int   SliderSize;
   double RangeColor[3];
   double RangeInteractionColor[3];
+  double Slider1Color[3];
+  double Slider2Color[3];
   int   EntriesVisibility;
   int   Entry1Position;
   int   Entry2Position;
@@ -417,9 +437,11 @@ protected:
     HighlightColor
   };
   //ETX
+  virtual void GetColorShade(
+    int type, double rgb[3], double &r, double &g, double &b);
   virtual void GetWholeRangeColor(int type, double &r, double &g, double &b);
   virtual void GetRangeColor(int type, double &r, double &g, double &b);
-  virtual void GetSliderColor(int type, double &r, double &g, double &b);
+  virtual void GetSliderColor(int slider_idx, int type, double &r, double &g, double &b);
 
   // Description:
   // Redraw elements
@@ -429,6 +451,7 @@ protected:
   virtual void RedrawSliders();
   virtual void RedrawSlider(int x, int slider_idx);
   virtual void UpdateRangeColors();
+  virtual void UpdateSliderColors(int slider_idx);
   virtual void UpdateColors();
 
   // Description:

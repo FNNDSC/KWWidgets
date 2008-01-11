@@ -26,7 +26,7 @@
 #include <vtksys/ios/sstream>
 
 vtkStandardNewMacro( vtkKWRange );
-vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.70 $");
+vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.71 $");
 
 #define VTK_KW_RANGE_MIN_SLIDER_SIZE        2
 #define VTK_KW_RANGE_MIN_THICKNESS          (2*VTK_KW_RANGE_MIN_SLIDER_SIZE+1)
@@ -94,6 +94,14 @@ vtkKWRange::vtkKWRange()
   this->RangeInteractionColor[0] = 0.59;
   this->RangeInteractionColor[1] = 0.63;
   this->RangeInteractionColor[2] = 0.82;
+
+  this->Slider1Color[0]      = -1; // will used a shade of -bg at runtime
+  this->Slider1Color[1]      = -1;
+  this->Slider1Color[2]      = -1;
+
+  this->Slider2Color[0]      = -1; // will used a shade of -bg at runtime
+  this->Slider2Color[1]      = -1;
+  this->Slider2Color[2]      = -1;
 
   this->Command             = NULL;
   this->StartCommand        = NULL;
@@ -1079,9 +1087,9 @@ void vtkKWRange::SetRangeColor(double r, double g, double b)
   if ((r == this->RangeColor[0] &&
        g == this->RangeColor[1] &&
        b == this->RangeColor[2]) ||
-      r < 0.0 || r > 1.0 ||
-      g < 0.0 || g > 1.0 ||
-      b < 0.0 || b > 1.0)
+      r > 1.0 ||
+      g > 1.0 ||
+      b > 1.0)
     {
     return;
     }
@@ -1101,9 +1109,9 @@ void vtkKWRange::SetRangeInteractionColor(double r, double g, double b)
   if ((r == this->RangeInteractionColor[0] &&
        g == this->RangeInteractionColor[1] &&
        b == this->RangeInteractionColor[2]) ||
-      r < 0.0 || r > 1.0 ||
-      g < 0.0 || g > 1.0 ||
-      b < 0.0 || b > 1.0)
+      r > 1.0 ||
+      g > 1.0 ||
+      b > 1.0)
     {
     return;
     }
@@ -1118,77 +1126,65 @@ void vtkKWRange::SetRangeInteractionColor(double r, double g, double b)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWRange::GetWholeRangeColor(int type, double &r, double &g, double &b)
+void vtkKWRange::SetSlider1Color(double r, double g, double b)
 {
-  if (!this->IsCreated())
+  if ((r == this->Slider1Color[0] &&
+       g == this->Slider1Color[1] &&
+       b == this->Slider1Color[2]) ||
+      r > 1.0 ||
+      g > 1.0 ||
+      b > 1.0)
     {
     return;
     }
 
-  double fh, fs, fv;
+  this->Slider1Color[0] = r;
+  this->Slider1Color[1] = g;
+  this->Slider1Color[2] = b;
 
-  switch (type)
-    {
-    case vtkKWRange::DarkShadowColor:
-    case vtkKWRange::LightShadowColor:
-    case vtkKWRange::HighlightColor:
+  this->Modified();
 
-      this->GetWholeRangeColor(vtkKWRange::BackgroundColor, r, g, b);
-
-      if (r == g && g == b)
-        {
-        fh = fs = 0.0;
-        fv = r;
-        }
-      else
-        {
-        vtkMath::RGBToHSV(r, g, b, &fh, &fs, &fv);
-        }
-
-      if (type == vtkKWRange::DarkShadowColor)
-        {
-        fv *= 0.3;
-        }
-      else if (type == vtkKWRange::LightShadowColor)
-        {
-        fv *= 0.6;
-        }
-      else
-        {
-        fv = 1.0;
-        }
-
-      vtkMath::HSVToRGB(fh, fs, fv, &r, &g, &b);
-
-      break;
-
-    case vtkKWRange::BackgroundColor:
-    default:
-
-      this->Canvas->GetBackgroundColor(&r, &g, &b);
-      
-      break;
-    }
+  this->UpdateColors();
 }
 
 //----------------------------------------------------------------------------
-void vtkKWRange::GetRangeColor(int type, double &r, double &g, double &b)
+void vtkKWRange::SetSlider2Color(double r, double g, double b)
 {
-  if (!this->IsCreated())
+  if ((r == this->Slider2Color[0] &&
+       g == this->Slider2Color[1] &&
+       b == this->Slider2Color[2]) ||
+      r > 1.0 ||
+      g > 1.0 ||
+      b > 1.0)
     {
     return;
     }
 
+  this->Slider2Color[0] = r;
+  this->Slider2Color[1] = g;
+  this->Slider2Color[2] = b;
+
+  this->Modified();
+
+  this->UpdateColors();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRange::GetColorShade(int type, 
+                               double rgb[3], 
+                               double &r, double &g, double &b)
+{
   double fh, fs, fv;
-  double *rgb;
 
   switch (type)
     {
     case vtkKWRange::DarkShadowColor:
     case vtkKWRange::LightShadowColor:
     case vtkKWRange::HighlightColor:
-
-      this->GetRangeColor(vtkKWRange::BackgroundColor, r, g, b);
+      
+      r = rgb[0];
+      g = rgb[1];
+      b = rgb[2];
 
       if (r == g && g == b)
         {
@@ -1219,9 +1215,6 @@ void vtkKWRange::GetRangeColor(int type, double &r, double &g, double &b)
 
     case vtkKWRange::BackgroundColor:
     default:
-
-      rgb = (this->InInteraction ? 
-             this->RangeInteractionColor : this->RangeColor);
 
       if (rgb[0] < 0 || rgb[1] < 0 || rgb[2] < 0)
         {
@@ -1239,9 +1232,62 @@ void vtkKWRange::GetRangeColor(int type, double &r, double &g, double &b)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWRange::GetSliderColor(int type, double &r, double &g, double &b)
+void vtkKWRange::GetWholeRangeColor(int type, double &r, double &g, double &b)
 {
-  this->GetWholeRangeColor(type, r, g, b);
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
+  double rgb[3];
+
+  if (type == vtkKWRange::BackgroundColor)
+    {
+    this->Canvas->GetBackgroundColor(&rgb[0], &rgb[1], &rgb[2]);
+    }
+  else
+    {
+    this->GetWholeRangeColor(
+      vtkKWRange::BackgroundColor, rgb[0], rgb[1], rgb[2]);
+    }
+  this->GetColorShade(type, rgb, r, g, b);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRange::GetRangeColor(int type, double &r, double &g, double &b)
+{
+  double *rgb, range_rgb[3];
+  if (type == vtkKWRange::BackgroundColor)
+    {
+    rgb = (this->InInteraction ? this->RangeInteractionColor:this->RangeColor);
+    }
+  else
+    {
+    this->GetRangeColor(
+      vtkKWRange::BackgroundColor, range_rgb[0], range_rgb[1], range_rgb[2]);
+    rgb = range_rgb;
+    }
+  this->GetColorShade(type, rgb, r, g, b);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRange::GetSliderColor(
+  int slider_idx, int type, double &r, double &g, double &b)
+{
+  double *rgb, slider_rgb[3];
+  if (type == vtkKWRange::BackgroundColor)
+    {
+    rgb = (slider_idx == vtkKWRange::SliderIndex0 ? 
+           this->Slider1Color : this->Slider2Color);
+    }
+  else
+    {
+    this->GetSliderColor(
+      slider_idx,
+      vtkKWRange::BackgroundColor, slider_rgb[0], slider_rgb[1], slider_rgb[2]);
+    rgb = slider_rgb;
+    }
+  this->GetColorShade(type, rgb, r, g, b);
 }
 
 //----------------------------------------------------------------------------
@@ -1851,16 +1897,20 @@ void vtkKWRange::RedrawSlider(int pos, int slider_idx)
     if (!this->HasTag(tag, "b1"))
       {
       tk_cmd << canv << " create rectangle 0 0 0 0 "
-          << "-tag {rtag sbgc " << tag << " " << stag << " " << tag << "b1}\n";
+             << "-tag {rtag " << tag << "sbgc " << tag << " " << stag << " " 
+             << tag << "b1}\n";
 
       tk_cmd << canv << " create rectangle 0 0 0 0 "
-          << "-tag {rtag sbgc " << tag << " " << stag << " " << tag << "b2}\n";
+             << "-tag {rtag " << tag << "sbgc " << tag << " " << stag << " " 
+             << tag << "b2}\n";
 
       tk_cmd << canv << " create rectangle 0 0 0 0 "
-          << "-tag {rtag sbgc " << tag << " " << stag << " " << tag << "b3}\n";
+             << "-tag {rtag " << tag << "sbgc " << tag << " " << stag << " " 
+             << tag << "b3}\n";
 
       tk_cmd << canv << " create rectangle 0 0 0 0 "
-          << "-tag {rtag sbgc " << tag << " " << stag << " " << tag << "b4}\n";
+             << "-tag {rtag " << tag << "sbgc " << tag << " " << stag << " " 
+             << tag << "b4}\n";
       }
 
     tk_cmd << canv << " coords " << tag << "b1 "
@@ -1887,10 +1937,12 @@ void vtkKWRange::RedrawSlider(int pos, int slider_idx)
   if (!was_created)
     {
     tk_cmd << canv << " create line 0 0 0 0 "
-         << " -tag {ltag sdsc " << tag << " " << stag << " " << tag << "l1}\n";
+         << " -tag {ltag " << tag << "sdgc " << tag << " " << stag << " " 
+           << tag << "l1}\n";
         
     tk_cmd << canv << " create line 0 0 0 0 "
-        << " -tag {ltag sdsc " << tag << " " << stag << " " << tag << "l2}\n";
+        << " -tag {ltag " << tag << "sdgc " << tag << " " << stag << " " 
+           << tag << "l2}\n";
     }
 
   tk_cmd << canv << " coords " << tag << "l1 "
@@ -1908,10 +1960,12 @@ void vtkKWRange::RedrawSlider(int pos, int slider_idx)
   if (!was_created)
     {
     tk_cmd << canv << " create line 0 0 0 0 "
-        << " -tag {ltag shlc " << tag << " " << stag << " " << tag << "l3}\n";
+        << " -tag {ltag " << tag << "shlc " << tag << " " << stag << " " 
+           << tag << "l3}\n";
 
     tk_cmd << canv << " create line 0 0 0 0 "
-        << " -tag {ltag shlc " << tag << " " << stag << " " << tag << "l4}\n";
+        << " -tag {ltag " << tag << "shlc " << tag << " " << stag << " " 
+           << tag << "l4}\n";
     }
 
   tk_cmd << canv << " coords " << tag << "l3 "
@@ -1976,6 +2030,53 @@ void vtkKWRange::UpdateRangeColors()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWRange::UpdateSliderColors(int slider_idx)
+{
+  vtksys_ios::ostringstream tk_cmd;
+  const char *canv = this->Canvas->GetWidgetName();
+
+  char bgcolor[10], dscolor[10], hlcolor[10];
+  double r, g, b;
+
+  const char *tag = "";
+  if (slider_idx == SliderIndex0)
+    {
+    tag = VTK_KW_RANGE_SLIDER1_TAG;
+    }
+  else
+    {
+    tag = VTK_KW_RANGE_SLIDER2_TAG;
+    }
+  
+  this->GetSliderColor(slider_idx, vtkKWRange::BackgroundColor, r, g, b);
+  sprintf(bgcolor, "#%02x%02x%02x", 
+          (int)(r * 255.0), 
+          (int)(g * 255.0),
+          (int)(b * 255.0));
+
+  this->GetSliderColor(slider_idx, vtkKWRange::DarkShadowColor, r, g, b);
+  sprintf(dscolor, "#%02x%02x%02x", 
+          (int)(r * 255.0), 
+          (int)(g * 255.0),
+          (int)(b * 255.0));
+
+  this->GetSliderColor(slider_idx, vtkKWRange::HighlightColor, r, g, b);
+  sprintf(hlcolor, "#%02x%02x%02x", 
+          (int)(r * 255.0), 
+          (int)(g * 255.0),
+          (int)(b * 255.0));
+
+  tk_cmd << canv << " itemconfigure " << tag << "sbgc -outline {} -fill " 
+         << bgcolor << endl;
+  tk_cmd << canv << " itemconfigure " << tag << "sdsc -fill " << dscolor 
+         << endl;
+  tk_cmd << canv << " itemconfigure " << tag << "shlc -fill " << hlcolor 
+         << endl;
+
+  this->Script(tk_cmd.str().c_str());
+}
+
+//----------------------------------------------------------------------------
 void vtkKWRange::UpdateColors()
 {
   if (!this->IsCreated())
@@ -2024,29 +2125,10 @@ void vtkKWRange::UpdateColors()
 
   this->UpdateRangeColors();
 
-  // Set the color of all Sliders
+  // Set the color of the sliders
 
-  this->GetSliderColor(vtkKWRange::BackgroundColor, r, g, b);
-  sprintf(bgcolor, "#%02x%02x%02x", 
-          (int)(r * 255.0), 
-          (int)(g * 255.0),
-          (int)(b * 255.0));
-
-  this->GetSliderColor(vtkKWRange::DarkShadowColor, r, g, b);
-  sprintf(dscolor, "#%02x%02x%02x", 
-          (int)(r * 255.0), 
-          (int)(g * 255.0),
-          (int)(b * 255.0));
-
-  this->GetSliderColor(vtkKWRange::HighlightColor, r, g, b);
-  sprintf(hlcolor, "#%02x%02x%02x", 
-          (int)(r * 255.0), 
-          (int)(g * 255.0),
-          (int)(b * 255.0));
-
-  tk_cmd << canv << " itemconfigure sbgc -outline {} -fill "<< bgcolor << endl;
-  tk_cmd << canv << " itemconfigure sdsc -fill " << dscolor << endl;
-  tk_cmd << canv << " itemconfigure shlc -fill " << hlcolor << endl;
+  this->UpdateSliderColors(vtkKWRange::SliderIndex0);
+  this->UpdateSliderColors(vtkKWRange::SliderIndex1);
 
   // Set line style
 
@@ -2396,6 +2478,14 @@ void vtkKWRange::PrintSelf(ostream& os, vtkIndent indent)
      << this->RangeInteractionColor[0] << ", " 
      << this->RangeInteractionColor[1] << ", " 
      << this->RangeInteractionColor[2] << ")" << endl;
+  os << indent << "Slider1Color: ("
+     << this->Slider1Color[0] << ", " 
+     << this->Slider1Color[1] << ", " 
+     << this->Slider1Color[2] << ")" << endl;
+  os << indent << "Slider2Color: ("
+     << this->Slider2Color[0] << ", " 
+     << this->Slider2Color[1] << ", " 
+     << this->Slider2Color[2] << ")" << endl;
   os << indent << "EntriesVisibility: " 
      << (this->EntriesVisibility ? "On" : "Off") << endl;
   os << indent << "Entry1Position: " << this->Entry1Position << endl;

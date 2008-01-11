@@ -73,7 +73,7 @@ void vtkKWRangeItem::Create(vtkKWWidget *parent, vtkKWWindow *)
   // Create another range
 
   vtkKWRange *range3 = vtkKWRange::New();
-  range3->SetLabelText("Another range again");
+  range3->SetLabelText("Another range, custom colors");
   range3->SetParent(parent);
   range3->Create();
   range3->SetLabelPositionToRight();
@@ -81,7 +81,10 @@ void vtkKWRangeItem::Create(vtkKWWidget *parent, vtkKWWindow *)
   range3->SetEntry2PositionToLeft();
   range3->SetRequestedLength(150);
   range3->SliderCanPushOn();
+  range3->SetRangeColor(0.0, 0.0, 1.0);
   range3->SetRangeInteractionColor(0.6, 0.7, 0.4);
+  range3->SetSlider1Color(1.0, 0.0, 0.0);
+  range3->SetSlider2Color(0.0, 1.0, 0.0);
   range3->SetBalloonHelpString(
     "Another range widget. We changed the positions again. The sliders can "
     "push each others. The interaction color has been changed.");
