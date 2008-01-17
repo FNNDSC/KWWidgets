@@ -92,8 +92,7 @@ public:
   virtual void SetRestrictValueToNone();
 
   // Description:
-  // Specifies a command to associate with this step. This command can
-  // be used to validate the contents of the widget.
+  // Specifies a command to validate the value.
   // Note: checks against RestrictValue are performed before ValidationCommand.
   // The 'object' argument is the object that will have the method called on
   // it. The 'method' argument is the name of the method to be called and any
