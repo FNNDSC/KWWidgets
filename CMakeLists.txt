@@ -568,8 +568,16 @@ INCLUDE_DIRECTORIES(
   ${KWWidgets_INCLUDE_PATH}
   ${VTK_INCLUDE_DIR}
   ${TKDND_INCLUDE_PATH}
-  ${TKTREECTRL_INCLUDE_PATH}
   )
+
+# A tricky one. Tcl/Tk 8.5.0 provides (for the first time) some of the
+# "internal headers" we usually provide in VTK (tclPort.h, tclWinPort.h, etc).
+# Alas, tclPort.h is buggy by default, as it tries to explicitly include
+# "../win/tclWinPort.h" instead of "tclWinPort.h". Our VTK internal headers
+# were fixed. The trick is therefore to include ours before ActiveState's,
+# by using the BEFORE keyword below.
+
+INCLUDE_DIRECTORIES(BEFORE ${TKTREECTRL_INCLUDE_PATH})
 
 # --------------------------------------------------------------------------
 # Wrapping
