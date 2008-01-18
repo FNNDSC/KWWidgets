@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.87 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.88 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -793,7 +793,12 @@ int vtkKWTkUtilities::UpdatePhoto(Tcl_Interp *interp,
       }
     }
 
-  Tk_PhotoSetSize(photo, width, height);
+  Tk_PhotoSetSize(
+#if (TCL_MAJOR_VERSION == 8) && (TCL_MINOR_VERSION <= 4)
+#else
+    interp,
+#endif
+    photo, width, height);
 
   unsigned long nb_of_raw_bytes = width * height * pixel_size;
 
@@ -837,7 +842,10 @@ int vtkKWTkUtilities::UpdatePhoto(Tcl_Interp *interp,
   int tcl_major, tcl_minor, tcl_patch_level;
   Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
   if (pixel_size == 4 &&
-      (tcl_major <= 8 && tcl_minor <= 4 && tcl_patch_level <= 8))
+      (tcl_major < 8 ||
+       (tcl_major == 8 && 
+        (tcl_minor < 4 || 
+         (tcl_minor == 4 && tcl_patch_level <= 8)))))
     {
     int need_blend = 0;
     unsigned char *pixels_ptr = const_cast<unsigned char *>(pixels);
@@ -892,6 +900,10 @@ int vtkKWTkUtilities::UpdatePhoto(Tcl_Interp *interp,
     }
 
   Tk_PhotoPutBlock(
+#if (TCL_MAJOR_VERSION == 8) && (TCL_MINOR_VERSION <= 4)
+#else
+    interp,
+#endif
     photo, &sblock, 0, 0, width, height
 #if !defined(USE_COMPOSITELESS_PHOTO_PUT_BLOCK)
     , TK_PHOTO_COMPOSITE_SET
