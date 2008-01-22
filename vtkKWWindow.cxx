@@ -35,7 +35,7 @@
 #include <vtksys/SystemTools.hxx>
 #include <vtksys/ios/sstream> 
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.289 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.290 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindow );
@@ -301,11 +301,13 @@ void vtkKWWindow::PopulateWindowMenu()
                          this, "MainPanelVisibilityCallback");
   menu->SetItemAccelerator(
     idx, this->GetMainPanelVisibilityKeyAccelerator());
+  menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
 
   idx = menu->AddCommand(this->GetHideSecondaryPanelMenuLabel(), 
                          this, "SecondaryPanelVisibilityCallback");
   menu->SetItemAccelerator(
     idx, this->GetSecondaryPanelVisibilityKeyAccelerator());
+  menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
 
   if (!this->GetApplication()->GetReleaseMode())
     {
@@ -329,6 +331,7 @@ void vtkKWWindow::PopulateWindowMenu()
     menu->SetItemHelpString(
       idx, k_("Display a prompt to interact with the Tcl engine"));
     menu->SetItemAccelerator(idx, "Ctrl+T");
+    menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
     }
 }
 
