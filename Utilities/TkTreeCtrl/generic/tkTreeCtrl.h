@@ -7,11 +7,12 @@
  * Copyright (c) 2002-2003 Christian Krone
  * Copyright (c) 2003 ActiveState Corporation
  *
- * RCS: @(#) $Id: tkTreeCtrl.h,v 1.2 2007-06-25 15:49:44 barre Exp $
+ * RCS: @(#) $Id: tkTreeCtrl.h,v 1.3 2008-01-24 20:35:28 barre Exp $
  */
 
 #include "vtkTcl.h"
 #include "vtkTk.h"
+#include "vtkTkInternals.h"
 
 #ifdef MAC_OSX_TK
 #ifndef HAVE_LIMITS_H
