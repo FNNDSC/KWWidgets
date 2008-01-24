@@ -33,11 +33,12 @@ GET_FILENAME_COMPONENT(
 SET(INCR_TCLTK_POSSIBLE_LIB_PATHS
   "${TCL_LIBRARY_PATH}"
   "${TK_LIBRARY_PATH}"
-  "${TCL_TCLSH_PATH_PARENT}/lib"
-  "${TK_WISH_PATH_PARENT}/lib"
   "${TCL_INCLUDE_PATH_PARENT}/lib"
   "${TK_INCLUDE_PATH_PARENT}/lib"
+  "${TCL_TCLSH_PATH_PARENT}/lib"
+  "${TK_WISH_PATH_PARENT}/lib"
   "[HKEY_LOCAL_MACHINE\\SOFTWARE\\ActiveState\\ActiveTcl\\${ActiveTcl_CurrentVersion}]/lib"
+  "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Scriptics\\Tcl\\8.6;Root]/lib"
   "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Scriptics\\Tcl\\8.5;Root]/lib"
   "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Scriptics\\Tcl\\8.4;Root]/lib"
   "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Scriptics\\Tcl\\8.3;Root]/lib"
@@ -50,7 +51,7 @@ SET(INCR_TCLTK_POSSIBLE_LIB_PATHS
   /usr/local/lib
 )
 
-FOREACH(version "3.3" "3.2")
+FOREACH(version "3.4" "3.3" "3.2")
   SET(INCR_TCL_POSSIBLE_LIB_PATHS)
   SET(INCR_TK_POSSIBLE_LIB_PATHS)
   FOREACH(path ${INCR_TCLTK_POSSIBLE_LIB_PATHS})
@@ -110,11 +111,12 @@ SET(INCR_TCLTK_POSSIBLE_INCLUDE_PATHS
   "${INCR_TK_LIBRARY_PATH_PARENT}/include"
   "${TCL_INCLUDE_PATH}"
   "${TK_INCLUDE_PATH}"
-  "${TCL_TCLSH_PATH_PARENT}/include"
-  "${TK_WISH_PATH_PARENT}/include"
   "${TCL_LIBRARY_PATH_PARENT}/include"
   "${TK_LIBRARY_PATH_PARENT}/include"
+  "${TCL_TCLSH_PATH_PARENT}/include"
+  "${TK_WISH_PATH_PARENT}/include"
   "[HKEY_LOCAL_MACHINE\\SOFTWARE\\ActiveState\\ActiveTcl\\${ActiveTcl_CurrentVersion}]/include"
+  "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Scriptics\\Tcl\\8.6;Root]/include"
   "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Scriptics\\Tcl\\8.5;Root]/include"
   "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Scriptics\\Tcl\\8.4;Root]/include"
   "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Scriptics\\Tcl\\8.3;Root]/include"
