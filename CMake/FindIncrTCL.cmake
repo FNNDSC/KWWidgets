@@ -56,19 +56,21 @@ FOREACH(version "3.4" "3.3" "3.2")
   SET(INCR_TK_POSSIBLE_LIB_PATHS)
   FOREACH(path ${INCR_TCLTK_POSSIBLE_LIB_PATHS})
     SET(INCR_TCL_POSSIBLE_LIB_PATHS ${INCR_TCL_POSSIBLE_LIB_PATHS} 
+      "${path}"
       "${path}/itcl${version}"
       )
     SET(INCR_TK_POSSIBLE_LIB_PATHS ${INCR_TK_POSSIBLE_LIB_PATHS} 
+      "${path}"
       "${path}/itk${version}"
       )
   ENDFOREACH(path)
   STRING(REGEX REPLACE "\\." "" version_collapsed ${version})
   FIND_LIBRARY(INCR_TCL_LIBRARY
-    NAMES "itcl${version_collapsed}"
+    NAMES "itcl${version_collapsed}" "itcl${version}"
     PATHS ${INCR_TCL_POSSIBLE_LIB_PATHS}
     )
   FIND_LIBRARY(INCR_TK_LIBRARY
-    NAMES "itk${version_collapsed}"
+    NAMES "itk${version_collapsed}" "itk${version}"
     PATHS ${INCR_TK_POSSIBLE_LIB_PATHS}
     )
 ENDFOREACH(version)
