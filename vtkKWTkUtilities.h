@@ -344,6 +344,14 @@ public:
   static int ChangeFontSlantToRoman(vtkKWWidget *widget);
 
   // Description:
+  // Get the real actual font (i.e. its list of attributes) given a font, 
+  // font name, or incomplete font specification.
+  // It is up to the caller to allocate enough space in 'real_font'.
+  // Return 1 on success, 0 otherwise.
+  static int GetRealActualFont(
+    Tcl_Interp *interp, const char *font, char *real_font);
+
+  // Description:
   // Get the number of colums and rows defined in the grid layout of
   // the widget given by 'widget' (say, .foo.bar).
   // A convenience method is provided to query a vtkKWWidget directly.

@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.88 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.89 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -1232,6 +1232,55 @@ int vtkKWTkUtilities::GetPhotoWidth(vtkKWApplication *app,
 }
 
 //----------------------------------------------------------------------------
+int vtkKWTkUtilities::GetRealActualFont(Tcl_Interp *interp,
+                                        const char *font, 
+                                        char *real_font)
+{
+  vtksys_stl::string script;
+  int res, tcl_major, tcl_minor, tcl_patch_level;
+  Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
+  if (tcl_major < 8 || (tcl_major == 8 && tcl_minor < 5))
+    {
+    script = "font actual \"";
+    script += font;
+    script += "\"";
+    res = Tcl_GlobalEval(interp, script.c_str());
+    if (res != TCL_OK)
+      {
+      vtkGenericWarningMacro(<< "Unable to get actual font! ("
+                             << Tcl_GetStringResult(interp) << ")");
+      return 0;
+      }
+    }
+  else
+    {
+    // This is a fix for Tcl/Tk 8.5
+    // "font actual" does not retrieve *exactly* the right font size, 
+    // whereas "font configure" does but fails at retrieving the proper font
+    // family! Let's mix both.
+    script = "if {[lsearch -exact [font names] \"";
+    script += font;
+    script += "\"] >= 0} { eval array set __raftemp__ [list [font actual \"";
+    script += font;
+    script += "\"]]; set __raftemp__(-size) [font configure \"";
+    script += font;
+    script += "\" -size]; array get __raftemp__ } else { font actual \"";
+    script += font;
+    script += "\"}";
+    res = Tcl_GlobalEval(interp, script.c_str());
+    if (res != TCL_OK)
+      {
+      vtkGenericWarningMacro(<< "Unable to fix -size attribute! ("
+                             << Tcl_GetStringResult(interp) << ")");
+      return 0;
+      }
+    }
+  strcpy(real_font, Tcl_GetStringResult(interp));
+
+  return 1;
+}
+
+//----------------------------------------------------------------------------
 int vtkKWTkUtilities::ChangeFontWeight(Tcl_Interp *interp,
                                       const char *font, 
                                       char *new_font, 
@@ -1268,28 +1317,27 @@ int vtkKWTkUtilities::ChangeFontWeight(Tcl_Interp *interp,
 
   // Otherwise replace the -weight parameter with either bold or normal
 
-  vtksys_ios::ostringstream regsub2;
-  regsub2 << "regsub -- {(.* -weight )(\\w*\\M)(.*)} [font actual \""
-          << font << "\"] {\\1" << (weight ? "bold" : "normal") 
-          << "\\3} __temp__";
-  res = Tcl_GlobalEval(interp, regsub2.str().c_str());
-  if (res != TCL_OK)
+  char real_font[1024];
+  if (!vtkKWTkUtilities::GetRealActualFont(interp, font, real_font))
     {
-    vtkGenericWarningMacro(<< "Unable to regsub (2)!");
+    vtkGenericWarningMacro(<< "Unable to get real actual font from font! ("
+                           << font << ")");
     return 0;
     }
-  if (atoi(Tcl_GetStringResult(interp)) == 1)
+
+  vtksys_stl::string script("array set __temp2__ \"");
+  script += real_font;
+  script += "\" ; set __temp2__(-weight) ";
+  script += (weight ? "bold" : "normal");
+  script += "; array get __temp2__";
+  res = Tcl_GlobalEval(interp, script.c_str());
+  if (res != TCL_OK)
     {
-    res = Tcl_GlobalEval(interp, "set __temp__");
-    if (res != TCL_OK)
-      {
-      vtkGenericWarningMacro(<< "Unable to replace result of regsub! (2) ("
-                             << Tcl_GetStringResult(interp) << ")");
-      return 0;
-      }
-    strcpy(new_font, Tcl_GetStringResult(interp));
-    return 1;
+    vtkGenericWarningMacro(<< "Unable to replace -weight attribute! ("
+                           << Tcl_GetStringResult(interp) << ")");
+    return 0;
     }
+  strcpy(new_font, Tcl_GetStringResult(interp));
 
   return 1;
 }
@@ -1429,28 +1477,27 @@ int vtkKWTkUtilities::ChangeFontSlant(Tcl_Interp *interp,
 
   // Otherwise replace the -slant parameter with either bold or normal
 
-  vtksys_ios::ostringstream regsub2;
-  regsub2 << "regsub -- {(.* -slant )(\\w*\\M)(.*)} [font actual \"" 
-          << font << "\"] {\\1" << (slant ? "italic" : "roman") 
-          << "\\3} __temp__";
-  res = Tcl_GlobalEval(interp, regsub2.str().c_str());
-  if (res != TCL_OK)
+  char real_font[1024];
+  if (!vtkKWTkUtilities::GetRealActualFont(interp, font, real_font))
     {
-    vtkGenericWarningMacro(<< "Unable to regsub (2)!");
+    vtkGenericWarningMacro(<< "Unable to get real actual font from font! ("
+                           << font << ")");
     return 0;
     }
-  if (atoi(Tcl_GetStringResult(interp)) == 1)
+
+  vtksys_stl::string script("array set __temp2__ \"");
+  script += real_font;
+  script += "\" ; set __temp2__(-slant) ";
+  script += (slant ? "italic" : "roman");
+  script += "; array get __temp2__";
+  res = Tcl_GlobalEval(interp, script.c_str());
+  if (res != TCL_OK)
     {
-    res = Tcl_GlobalEval(interp, "set __temp__");
-    if (res != TCL_OK)
-      {
-      vtkGenericWarningMacro(<< "Unable to replace result of regsub! (2) ("
-                             << Tcl_GetStringResult(interp) << ")");
-      return 0;
-      }
-    strcpy(new_font, Tcl_GetStringResult(interp));
-    return 1;
+    vtkGenericWarningMacro(<< "Unable to replace -slant attribute! ("
+                           << Tcl_GetStringResult(interp) << ")");
+    return 0;
     }
+  strcpy(new_font, Tcl_GetStringResult(interp));
 
   return 1;
 }
