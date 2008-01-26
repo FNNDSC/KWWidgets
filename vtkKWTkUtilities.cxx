@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.89 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.90 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -1260,13 +1260,18 @@ int vtkKWTkUtilities::GetRealActualFont(Tcl_Interp *interp,
     // family! Let's mix both.
     script = "if {[lsearch -exact [font names] \"";
     script += font;
-    script += "\"] >= 0} { eval array set __raftemp__ [list [font actual \"";
+    script += "\"] >= 0} { unset -nocomplain __tmp__; eval array set __tmp__ [list [font actual \"";
     script += font;
-    script += "\"]]; set __raftemp__(-size) [font configure \"";
+    script += "\"]]; set __tmp__(-size) [font configure \"";
     script += font;
-    script += "\" -size]; array get __raftemp__ } else { font actual \"";
+    script += "\" -size]; array get __tmp__ } else { if {[llength \"";
     script += font;
-    script += "\"}";
+    script += "\"] != 12} { font actual \"";
+    script += font;
+    script += "\" } else { unset -nocomplain __tmp__; set __tmp__ \"";
+    script += font;
+    script += "\" }}";
+    //    cout << script.c_str() << endl;
     res = Tcl_GlobalEval(interp, script.c_str());
     if (res != TCL_OK)
       {
@@ -1292,9 +1297,9 @@ int vtkKWTkUtilities::ChangeFontWeight(Tcl_Interp *interp,
   // Catch the weight field, replace it with bold or medium.
 
   vtksys_ios::ostringstream regsub;
-  regsub << "regsub -- {(-[^-]*\\S-[^-]*\\S-)([^-]*)(-.*)} \""
+  regsub << "unset -nocomplain __tmp__; regsub -- {(-[^-]*\\S-[^-]*\\S-)([^-]*)(-.*)} \""
          << font << "\" {\\1" << (weight ? "bold" : "medium") 
-         << "\\3} __temp__";
+         << "\\3} __tmp__";
 
   res = Tcl_GlobalEval(interp, regsub.str().c_str());
   if (res != TCL_OK)
@@ -1304,7 +1309,7 @@ int vtkKWTkUtilities::ChangeFontWeight(Tcl_Interp *interp,
     }
   if (atoi(Tcl_GetStringResult(interp)) == 1)
     {
-    res = Tcl_GlobalEval(interp, "set __temp__");
+    res = Tcl_GlobalEval(interp, "set __tmp__");
     if (res != TCL_OK)
       {
       vtkGenericWarningMacro(<< "Unable to replace result of regsub! ("
@@ -1325,11 +1330,11 @@ int vtkKWTkUtilities::ChangeFontWeight(Tcl_Interp *interp,
     return 0;
     }
 
-  vtksys_stl::string script("array set __temp2__ \"");
+  vtksys_stl::string script("unset -nocomplain __tmp__; array set __tmp__ \"");
   script += real_font;
-  script += "\" ; set __temp2__(-weight) ";
+  script += "\" ; set __tmp__(-weight) ";
   script += (weight ? "bold" : "normal");
-  script += "; array get __temp2__";
+  script += "; array get __tmp__";
   res = Tcl_GlobalEval(interp, script.c_str());
   if (res != TCL_OK)
     {
@@ -1453,8 +1458,8 @@ int vtkKWTkUtilities::ChangeFontSlant(Tcl_Interp *interp,
   // Catch the slant field, replace it with i (italic) or r (roman).
 
   vtksys_ios::ostringstream regsub;
-  regsub << "regsub -- {(-[^-]*\\S-[^-]*\\S-[^-]*\\S-)([^-]*)(-.*)} \""
-         << font << "\" {\\1" << (slant ? "i" : "r") << "\\3} __temp__";
+  regsub << "unset -nocomplain __tmp__; regsub -- {(-[^-]*\\S-[^-]*\\S-[^-]*\\S-)([^-]*)(-.*)} \""
+         << font << "\" {\\1" << (slant ? "i" : "r") << "\\3} __tmp__";
 
   res = Tcl_GlobalEval(interp, regsub.str().c_str());
   if (res != TCL_OK)
@@ -1464,7 +1469,7 @@ int vtkKWTkUtilities::ChangeFontSlant(Tcl_Interp *interp,
     }
   if (atoi(Tcl_GetStringResult(interp)) == 1)
     {
-    res = Tcl_GlobalEval(interp, "set __temp__");
+    res = Tcl_GlobalEval(interp, "set __tmp__");
     if (res != TCL_OK)
       {
       vtkGenericWarningMacro(<< "Unable to replace result of regsub! ("
@@ -1485,11 +1490,11 @@ int vtkKWTkUtilities::ChangeFontSlant(Tcl_Interp *interp,
     return 0;
     }
 
-  vtksys_stl::string script("array set __temp2__ \"");
+  vtksys_stl::string script("unset -nocomplain __tmp__; array set __tmp__ \"");
   script += real_font;
-  script += "\" ; set __temp2__(-slant) ";
+  script += "\" ; set __tmp__(-slant) ";
   script += (slant ? "italic" : "roman");
-  script += "; array get __temp2__";
+  script += "; array get __tmp__";
   res = Tcl_GlobalEval(interp, script.c_str());
   if (res != TCL_OK)
     {
@@ -1498,6 +1503,8 @@ int vtkKWTkUtilities::ChangeFontSlant(Tcl_Interp *interp,
     return 0;
     }
   strcpy(new_font, Tcl_GetStringResult(interp));
+
+  //  cout << "--" << endl << font << endl << new_font << endl;
 
   return 1;
 }
