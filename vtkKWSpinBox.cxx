@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSpinBox);
-vtkCxxRevisionMacro(vtkKWSpinBox, "$Revision: 1.26 $");
+vtkCxxRevisionMacro(vtkKWSpinBox, "$Revision: 1.27 $");
 
 //----------------------------------------------------------------------------
 vtkKWSpinBox::vtkKWSpinBox() 
@@ -52,7 +52,7 @@ vtkKWSpinBox::~vtkKWSpinBox()
 void vtkKWSpinBox::CreateWidget()
 {
   if (!vtkKWWidget::CreateSpecificTkWidget(this, 
-        "spinbox", "-highlightthickness 0 -from 0 -to 10 -increment 1"))
+        "spinbox", "-highlightthickness 0 -bd 2 -from 0 -to 10 -increment 1"))
     {
     vtkErrorMacro("Failed creating widget " << this->GetClassName());
     return;

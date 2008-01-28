@@ -36,7 +36,7 @@ const char *vtkKWText::TagFgDarkGreen = "_fg_dark_green_tag_";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWText);
-vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.55 $");
+vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.56 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTextInternals
@@ -285,7 +285,7 @@ void vtkKWText::CreateWidget()
 #if (TCL_MAJOR_VERSION == 8) && (TCL_MINOR_VERSION <= 4)
     "-width 20 -wrap word -height 5 -highlightthickness 0";
 #else
-  "-width 20 -wrap word -height 5 -highlightthickness 0 -font TkDefaultFont";
+  "-width 20 -wrap word -height 5 -bd 2 -highlightthickness 0 -font TkDefaultFont";
 #endif
 
   if (!vtkKWWidget::CreateSpecificTkWidget(this, "text", options))

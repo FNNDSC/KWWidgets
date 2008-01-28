@@ -18,7 +18,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWListBox);
-vtkCxxRevisionMacro(vtkKWListBox, "$Revision: 1.55 $");
+vtkCxxRevisionMacro(vtkKWListBox, "$Revision: 1.56 $");
 
 //----------------------------------------------------------------------------
 vtkKWListBox::vtkKWListBox()
@@ -46,7 +46,7 @@ void vtkKWListBox::CreateWidget()
   // Call the superclass to set the appropriate flags then create manually
 
   if (!vtkKWWidget::CreateSpecificTkWidget(this, 
-        "listbox", "-highlightthickness 0"))
+        "listbox", "-highlightthickness 0 -bd 2"))
     {
     vtkErrorMacro("Failed creating widget " << this->GetClassName());
     return;

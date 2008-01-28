@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.90 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.91 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -1271,7 +1271,6 @@ int vtkKWTkUtilities::GetRealActualFont(Tcl_Interp *interp,
     script += "\" } else { unset -nocomplain __tmp__; set __tmp__ \"";
     script += font;
     script += "\" }}";
-    //    cout << script.c_str() << endl;
     res = Tcl_GlobalEval(interp, script.c_str());
     if (res != TCL_OK)
       {
@@ -1503,8 +1502,6 @@ int vtkKWTkUtilities::ChangeFontSlant(Tcl_Interp *interp,
     return 0;
     }
   strcpy(new_font, Tcl_GetStringResult(interp));
-
-  //  cout << "--" << endl << font << endl << new_font << endl;
 
   return 1;
 }
