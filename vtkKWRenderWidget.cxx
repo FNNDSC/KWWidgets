@@ -44,7 +44,7 @@
 #include <vtksys/stl/map>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.157 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.158 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -1280,30 +1280,36 @@ void vtkKWRenderWidget::UpdateRenderWindowInteractorSize(int width, int height)
 
   if (width == 0) 
     {
-    width=1;
+    width = 1;
     }
   if (height == 0)
     {
-    height=1;
+    height = 1;
     }
 
   // We *need* to propagate the size to the vtkTkRenderWidget
   // if we specified the widget's width/height explicitly
 
-  int frame_width = this->GetWidth();
-  if (frame_width)
+  int frame_width, frame_height;
+  if (vtkKWTkUtilities::GetWidgetSize(
+        this->VTKWidget, &frame_width, &frame_height))
     {
-    width = frame_width;
-    }
-  int frame_height = this->GetHeight();
-  if (frame_height)
-    {
-    height = frame_height;
+    if (frame_width)
+      {
+      width = frame_width;
+      }
+    if (frame_height)
+      {
+      height = frame_height;
+      }
     }
 
-  if (frame_width || frame_height)
+  if (width)
     {    
     this->VTKWidget->SetConfigurationOptionAsInt("-width", width);
+    }
+  if (height)
+    {    
     this->VTKWidget->SetConfigurationOptionAsInt("-height", height);
     }
 
