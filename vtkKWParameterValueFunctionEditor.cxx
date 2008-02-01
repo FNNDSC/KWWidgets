@@ -40,7 +40,7 @@
 #include <vtksys/stl/algorithm>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.105 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.106 $");
 
 //----------------------------------------------------------------------------
 #define VTK_KW_PVFE_POINT_RADIUS_MIN         2
@@ -5650,8 +5650,13 @@ void vtkKWParameterValueFunctionEditor::RedrawRangeTicks()
                << endl;
         if (this->ParameterTicksFormat)
           {
+#if defined(__APPLE__)
+          int y_offset = 2;
+#else
+          int y_offset = -1;
+#endif
           tk_cmd << p_t_canv << " coords p_tick_b_t" <<  i << " " 
-                 << x << " " << -1 << endl;
+                 << x << " " << y_offset << endl;
           this->MapParameterToDisplayedParameter(p_v_pos, &displayed_p);
           sprintf(buffer, this->ParameterTicksFormat, displayed_p);
           tk_cmd << p_t_canv << " itemconfigure p_tick_b_t" <<  i << " " 
