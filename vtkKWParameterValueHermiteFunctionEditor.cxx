@@ -24,7 +24,7 @@
 
 #include <ctype.h>
 
-vtkCxxRevisionMacro(vtkKWParameterValueHermiteFunctionEditor, "$Revision: 1.26 $");
+vtkCxxRevisionMacro(vtkKWParameterValueHermiteFunctionEditor, "$Revision: 1.27 $");
 
 const char *vtkKWParameterValueHermiteFunctionEditor::MidPointTag = "midpoint_tag";
 const char *vtkKWParameterValueHermiteFunctionEditor::MidPointGuidelineTag = "midpoint_guideline_tag";
@@ -42,6 +42,8 @@ const char *vtkKWParameterValueHermiteFunctionEditor::MidPointSelectedTag = "mps
 
 #define VTK_KW_PVHFE_GUIDELINE_VALUE_TEXT_SIZE          7
 #define VTK_KW_PVHFE_POINT_RADIUS_FACTOR          0.76
+#define VTK_KW_PVHFE_FIXED_FONT "fixed"
+#define VTK_KW_PVHFE_FIXED_FONT_85 "TkDefaultFont"
 
 //----------------------------------------------------------------------------
 vtkKWParameterValueHermiteFunctionEditor::vtkKWParameterValueHermiteFunctionEditor()
@@ -1112,9 +1114,15 @@ void vtkKWParameterValueHermiteFunctionEditor::RedrawLine(
         {
         if (!midpoint_guidevalue_exists)
           {
+          int tcl_major = 0, tcl_minor = 0, tcl_patch_level = 0;
+          Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
+          const char *font = 
+            (tcl_major < 8 || (tcl_major == 8 && tcl_minor < 5)) 
+            ? VTK_KW_PVHFE_FIXED_FONT : VTK_KW_PVHFE_FIXED_FONT_85;
           *tk_cmd 
             << gv_canv << " create text 0 0 -text {} -anchor s " 
-            << "-font {{fixed} " << VTK_KW_PVHFE_GUIDELINE_VALUE_TEXT_SIZE 
+            << "-font {{" << font << "} " 
+            << VTK_KW_PVHFE_GUIDELINE_VALUE_TEXT_SIZE 
             << "} -tags {m_g" << id1 << " " 
             << vtkKWParameterValueHermiteFunctionEditor::MidPointGuidelineTag 
             << " " << vtkKWParameterValueFunctionEditor::FunctionTag

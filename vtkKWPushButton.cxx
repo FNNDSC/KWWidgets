@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWPushButton );
-vtkCxxRevisionMacro(vtkKWPushButton, "$Revision: 1.37 $");
+vtkCxxRevisionMacro(vtkKWPushButton, "$Revision: 1.38 $");
 
 //----------------------------------------------------------------------------
 vtkKWPushButton::vtkKWPushButton()
@@ -47,7 +47,7 @@ void vtkKWPushButton::CreateWidget()
   // Call the superclass to create the widget and set the appropriate flags
 
   if (!vtkKWWidget::CreateSpecificTkWidget(this, 
-        "button", "-highlightthickness 0 -padx 2 -pady 2"))
+        "button", "-highlightthickness 0 -padx 2 -pady 2 -bd 2"))
     {
     vtkErrorMacro("Failed creating widget " << this->GetClassName());
     return;

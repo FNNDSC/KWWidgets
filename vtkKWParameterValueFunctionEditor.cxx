@@ -40,7 +40,7 @@
 #include <vtksys/stl/algorithm>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.104 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.105 $");
 
 //----------------------------------------------------------------------------
 #define VTK_KW_PVFE_POINT_RADIUS_MIN         2
@@ -49,6 +49,9 @@ vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.104 $");
 #define VTK_KW_PVFE_CANVAS_WIDTH_MIN         (5 + 10)
 #define VTK_KW_PVFE_CANVAS_HEIGHT_MIN        10
 #define VTK_KW_PVFE_CANVAS_DELETE_MARGIN     35
+
+#define VTK_KW_PVFE_FIXED_FONT "fixed"
+#define VTK_KW_PVFE_FIXED_FONT_85 "TkDefaultFont"
 
 #define VTK_KW_PVFE_TICKS_TEXT_SIZE          7
 #define VTK_KW_PVFE_TICKS_SEP                2
@@ -5518,6 +5521,8 @@ void vtkKWParameterValueFunctionEditor::RedrawRangeTicks()
 
   vtksys_ios::ostringstream tk_cmd;
 
+  int tcl_major = 0, tcl_minor = 0, tcl_patch_level = 0;
+
   // Create the ticks if not created already
 
   int has_p_tag = 
@@ -5526,6 +5531,16 @@ void vtkKWParameterValueFunctionEditor::RedrawRangeTicks()
     {
     if (this->ParameterTicksVisibility)
       {
+      const char *font = NULL;
+      if (this->ParameterTicksFormat)
+        {
+        if (tcl_major == 0)
+          {
+          Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
+          }
+        font = (tcl_major < 8 || (tcl_major == 8 && tcl_minor < 5)) 
+          ? VTK_KW_PVFE_FIXED_FONT : VTK_KW_PVFE_FIXED_FONT_85;
+        }
       for (int i = 0; i < this->NumberOfParameterTicks; i++)
         {
         tk_cmd << canv << " create line 0 0 0 0 "
@@ -5539,7 +5554,8 @@ void vtkKWParameterValueFunctionEditor::RedrawRangeTicks()
         if (this->ParameterTicksFormat)
           {
           tk_cmd << p_t_canv << " create text 0 0 -text {} -anchor n " 
-                 << "-font {{fixed} " << VTK_KW_PVFE_TICKS_TEXT_SIZE << "} "
+                 << "-font {{" << font << "} " 
+                 << VTK_KW_PVFE_TICKS_TEXT_SIZE << "} "
                  << "-tags {p_tick_b_t" << i << " " 
                  << vtkKWParameterValueFunctionEditor::ParameterTicksTag 
                  << "}" 
@@ -5565,6 +5581,12 @@ void vtkKWParameterValueFunctionEditor::RedrawRangeTicks()
     {
     if (this->ValueTicksVisibility)
       {
+      if (tcl_major == 0)
+        {
+        Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
+        }
+      const char *font = (tcl_major < 8 || (tcl_major == 8 && tcl_minor < 5)) 
+        ? VTK_KW_PVFE_FIXED_FONT : VTK_KW_PVFE_FIXED_FONT_85;
       for (int i = 0; i < this->NumberOfValueTicks; i++)
         {
         tk_cmd << canv << " create line 0 0 0 0 "
@@ -5576,7 +5598,8 @@ void vtkKWParameterValueFunctionEditor::RedrawRangeTicks()
                << vtkKWParameterValueFunctionEditor::ValueTicksTag << "}" 
                << endl;
         tk_cmd << v_t_canv << " create text 0 0 -text {} -anchor e " 
-               << "-font {{fixed} " << VTK_KW_PVFE_TICKS_TEXT_SIZE << "} "
+               << "-font {{" << font << "} " 
+               << VTK_KW_PVFE_TICKS_TEXT_SIZE << "} "
                << "-tags {v_tick_l_t" << i << " " 
                << vtkKWParameterValueFunctionEditor::ValueTicksTag << "}" 
                << endl;
@@ -5899,8 +5922,13 @@ void vtkKWParameterValueFunctionEditor::RedrawPoint(int id,
         int text_size = 7 - (id > 8 ? 1 : 0);
         sprintf(color, "#%02x%02x%02x", 
                 (int)(rgb[0]*255.0), (int)(rgb[1]*255.0), (int)(rgb[2]*255.0));
+        int tcl_major = 0, tcl_minor = 0, tcl_patch_level = 0;
+        Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
+        const char *font = (tcl_major < 8 || (tcl_major == 8 && tcl_minor < 5)) 
+          ? VTK_KW_PVFE_FIXED_FONT : VTK_KW_PVFE_FIXED_FONT_85;
         *tk_cmd << canv << " itemconfigure t" << id
-                << " -state normal -font {{fixed} " << text_size << "} -fill " 
+                << " -state normal -font {{" << font << "} " 
+                << text_size << "} -fill " 
                 << color << " -text {";
         if (this->SelectedPointText && id == this->GetSelectedPoint())
           {

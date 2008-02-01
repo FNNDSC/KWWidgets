@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry);
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.94 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.95 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
@@ -63,7 +63,7 @@ void vtkKWEntry::CreateWidget()
   // Call the superclass to set the appropriate flags then create manually
 
   if (!vtkKWWidget::CreateSpecificTkWidget(this, 
-        "entry", "-highlightthickness 0 -bd 2"))
+        "entry", "-highlightthickness 0 -bd 2 -background white"))
     {
     vtkErrorMacro("Failed creating widget " << this->GetClassName());
     return;

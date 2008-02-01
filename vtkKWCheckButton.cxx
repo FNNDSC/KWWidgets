@@ -22,7 +22,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCheckButton );
-vtkCxxRevisionMacro(vtkKWCheckButton, "$Revision: 1.59 $");
+vtkCxxRevisionMacro(vtkKWCheckButton, "$Revision: 1.60 $");
 
 //----------------------------------------------------------------------------
 vtkKWCheckButton::vtkKWCheckButton() 
@@ -174,7 +174,7 @@ void vtkKWCheckButton::CreateWidget()
   // Call the superclass to create the widget and set the appropriate flags
 
   if (!vtkKWWidget::CreateSpecificTkWidget(this, 
-        "checkbutton", "-highlightthickness 0 -padx 2 -pady 2"))
+        "checkbutton", "-highlightthickness 0 -bd 2 -padx 2 -pady 2"))
     {
     vtkErrorMacro("Failed creating widget " << this->GetClassName());
     return;
