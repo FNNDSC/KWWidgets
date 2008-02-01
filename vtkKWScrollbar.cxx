@@ -18,7 +18,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWScrollbar);
-vtkCxxRevisionMacro(vtkKWScrollbar, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWScrollbar, "$Revision: 1.13 $");
 
 //----------------------------------------------------------------------------
 void vtkKWScrollbar::CreateWidget()
@@ -29,7 +29,7 @@ void vtkKWScrollbar::CreateWidget()
 #ifdef _WIN32
     "-highlightthickness 0 -bd 2";
 #else
-    "-highlightthickness 0 -width 11 -bd 2";
+    "-highlightthickness 0 -width 13 -bd 2";
 #endif
 
   if (!vtkKWWidget::CreateSpecificTkWidget(this, "scrollbar", options))
