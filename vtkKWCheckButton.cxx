@@ -22,7 +22,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCheckButton );
-vtkCxxRevisionMacro(vtkKWCheckButton, "$Revision: 1.60 $");
+vtkCxxRevisionMacro(vtkKWCheckButton, "$Revision: 1.61 $");
 
 //----------------------------------------------------------------------------
 vtkKWCheckButton::vtkKWCheckButton() 
@@ -119,12 +119,11 @@ int vtkKWCheckButton::GetSelectedState()
       this->Script("expr {${%s}} == {[%s cget -onvalue]}",
                    this->VariableName, this->GetWidgetName()));
 #else
-    const char *varvalue = 
-      Tcl_GetVar(
-        this->GetApplication()->GetMainInterp(), 
-        this->VariableName, TCL_GLOBAL_ONLY);
-    const char *onvalue = this->GetConfigurationOption("-onvalue");
-    return varvalue && onvalue && !strcmp(varvalue, onvalue);
+    vtksys_stl::string varvalue(
+      Tcl_GetVar(this->GetApplication()->GetMainInterp(), 
+                 this->VariableName, TCL_GLOBAL_ONLY));
+    vtksys_stl::string value(this->GetConfigurationOption("-onvalue"));
+    return !strcmp(varvalue.c_str(), value.c_str());
 #endif
     }
   return 0;

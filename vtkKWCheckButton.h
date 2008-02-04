@@ -52,6 +52,8 @@ public:
 
   // Description:
   // Set the variable name.
+  // Important: note that this will *not* copy over the previous variable
+  // value to the new one.
   vtkGetStringMacro(VariableName);
   virtual void SetVariableName(const char *);
 

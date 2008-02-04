@@ -33,7 +33,7 @@ p  Module:    $RCSfile: vtkKWMultiColumnList.cxx,v $
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.88 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.89 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -2063,7 +2063,7 @@ void vtkKWMultiColumnList::SetCellForegroundColor(
 void vtkKWMultiColumnList::GetCellCurrentBackgroundColor(
   int row_index, int col_index, double *r, double *g, double *b)
 {
-  const char *bgcolor;
+  vtksys_stl::string bgcolor;
 
   // If disabled, everything is background
 
@@ -2081,14 +2081,14 @@ void vtkKWMultiColumnList::GetCellCurrentBackgroundColor(
 
     bgcolor = this->GetCellConfigurationOption(
       row_index, col_index, "-selectbackground");
-    if (bgcolor && *bgcolor)
+    if (bgcolor.size())
       {
       this->GetCellSelectionBackgroundColor(row_index, col_index, r, g, b);
       return;
       }
 
     bgcolor = this->GetRowConfigurationOption(row_index, "-selectbackground");
-    if (bgcolor && *bgcolor)
+    if (bgcolor.size())
       {
       this->GetRowSelectionBackgroundColor(row_index, r, g, b);
       return;
@@ -2096,7 +2096,7 @@ void vtkKWMultiColumnList::GetCellCurrentBackgroundColor(
 
     bgcolor = this->GetColumnConfigurationOption(
       col_index, "-selectbackground");
-    if (bgcolor && *bgcolor)
+    if (bgcolor.size())
       {
       this->GetColumnSelectionBackgroundColor(col_index, r, g, b);
       return;
@@ -2108,8 +2108,9 @@ void vtkKWMultiColumnList::GetCellCurrentBackgroundColor(
 
   // Cell color has priority
 
-  bgcolor =  this->GetCellConfigurationOption(row_index, col_index, "-background");
-  if (bgcolor && *bgcolor)
+  bgcolor = 
+    this->GetCellConfigurationOption(row_index, col_index, "-background");
+  if (bgcolor.size())
     {
     this->GetCellBackgroundColor(row_index, col_index, r, g, b);
     return;
@@ -2118,7 +2119,7 @@ void vtkKWMultiColumnList::GetCellCurrentBackgroundColor(
   // Then row color
 
   bgcolor = this->GetRowConfigurationOption(row_index, "-background");
-  if (bgcolor && *bgcolor)
+  if (bgcolor.size())
     {
     this->GetRowBackgroundColor(row_index, r, g, b);
     return;
@@ -2127,7 +2128,7 @@ void vtkKWMultiColumnList::GetCellCurrentBackgroundColor(
   // Then stripe color, if within a stripe
 
   bgcolor = this->GetConfigurationOption("-stripebackground");
-  if (bgcolor && *bgcolor)
+  if (bgcolor.size())
     {
     int stripeh = this->GetStripeHeight();
     if ((row_index / stripeh) & 1)
@@ -2140,7 +2141,7 @@ void vtkKWMultiColumnList::GetCellCurrentBackgroundColor(
   // Then column color
 
   bgcolor = this->GetColumnConfigurationOption(col_index, "-background");
-  if (bgcolor && *bgcolor)
+  if (bgcolor.size())
     {
     this->GetColumnBackgroundColor(col_index, r, g, b);
     return;
@@ -2165,7 +2166,7 @@ double* vtkKWMultiColumnList::GetCellCurrentBackgroundColor(
 void vtkKWMultiColumnList::GetCellCurrentForegroundColor(
   int row_index, int col_index, double *r, double *g, double *b)
 {
-  const char *fgcolor;
+  vtksys_stl::string fgcolor;
 
   // If disabled, everything is disabledforeground
 
@@ -2183,14 +2184,14 @@ void vtkKWMultiColumnList::GetCellCurrentForegroundColor(
 
     fgcolor = this->GetCellConfigurationOption(
       row_index, col_index, "-selectforeground");
-    if (fgcolor && *fgcolor)
+    if (fgcolor.size())
       {
       this->GetCellSelectionForegroundColor(row_index, col_index, r, g, b);
       return;
       }
 
     fgcolor = this->GetRowConfigurationOption(row_index, "-selectforeground");
-    if (fgcolor && *fgcolor)
+    if (fgcolor.size())
       {
       this->GetRowSelectionForegroundColor(row_index, r, g, b);
       return;
@@ -2198,7 +2199,7 @@ void vtkKWMultiColumnList::GetCellCurrentForegroundColor(
 
     fgcolor = this->GetColumnConfigurationOption(
       col_index, "-selectforeground");
-    if (fgcolor && *fgcolor)
+    if (fgcolor.size())
       {
       this->GetColumnSelectionForegroundColor(col_index, r, g, b);
       return;
@@ -2210,8 +2211,9 @@ void vtkKWMultiColumnList::GetCellCurrentForegroundColor(
 
   // Cell color has priority
 
-  fgcolor =  this->GetCellConfigurationOption(row_index, col_index, "-foreground");
-  if (fgcolor && *fgcolor)
+  fgcolor =  
+    this->GetCellConfigurationOption(row_index, col_index, "-foreground");
+  if (fgcolor.size())
     {
     this->GetCellForegroundColor(row_index, col_index, r, g, b);
     return;
@@ -2220,7 +2222,7 @@ void vtkKWMultiColumnList::GetCellCurrentForegroundColor(
   // Then row color
 
   fgcolor = this->GetRowConfigurationOption(row_index, "-foreground");
-  if (fgcolor && *fgcolor)
+  if (fgcolor.size())
     {
     this->GetRowForegroundColor(row_index, r, g, b);
     return;
@@ -2229,7 +2231,7 @@ void vtkKWMultiColumnList::GetCellCurrentForegroundColor(
   // Then stripe color, if within a stripe
 
   fgcolor = this->GetConfigurationOption("-stripeforeground");
-  if (fgcolor && *fgcolor)
+  if (fgcolor.size())
     {
     int stripeh = this->GetStripeHeight();
     if ((row_index / stripeh) & 1)
@@ -2242,7 +2244,7 @@ void vtkKWMultiColumnList::GetCellCurrentForegroundColor(
   // Then column color
 
   fgcolor = this->GetColumnConfigurationOption(col_index, "-foreground");
-  if (fgcolor && *fgcolor)
+  if (fgcolor.size())
     {
     this->GetColumnForegroundColor(col_index, r, g, b);
     return;
