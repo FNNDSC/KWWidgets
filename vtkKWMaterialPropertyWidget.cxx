@@ -35,7 +35,7 @@
 
 //----------------------------------------------------------------------------
 
-vtkCxxRevisionMacro(vtkKWMaterialPropertyWidget, "$Revision: 1.28 $");
+vtkCxxRevisionMacro(vtkKWMaterialPropertyWidget, "$Revision: 1.29 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMaterialPropertyWidgetInternals
@@ -296,6 +296,8 @@ void vtkKWMaterialPropertyWidget::CreateWidget()
     this->PopupButton->GetWidget()->SetText("");
     this->PopupButton->GetWidget()->SetPopupTitle(
       ks_("Material Property Editor|Material Properties"));
+    this->PopupButton->SetBalloonHelpString(
+      ks_("Edit Material Properties."));
 
     this->Script("pack %s -side left -anchor w -fill x",
                  this->PopupButton->GetWidgetName());
