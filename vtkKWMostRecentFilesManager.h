@@ -125,7 +125,18 @@ public:
   vtkGetMacro(LabelVisibilityInMenu, int);
 
   // Description:
-  // Separate path from basename in in menu (Off by default).
+  // Set/Get the basename visibility in menu (On by default).
+  // (i.e., instead of "d:/temp/foo.raw", display "d:/temp")
+  // This setting is ignored per entry if no label is found for that specific
+  // menu entry (in which case only a directory would be displayed, which makes
+  // poor sense).
+  virtual void SetBaseNameVisibilityInMenu(int);
+  vtkBooleanMacro(BaseNameVisibilityInMenu, int);
+  vtkGetMacro(BaseNameVisibilityInMenu, int);
+
+  // Description:
+  // Separate path from basename in menu (Off by default).
+  // (i.e., instead of "d:/temp/foo.raw", display "foo.raw in d:/temp")
   virtual void SetSeparatePathInMenu(int);
   vtkBooleanMacro(SeparatePathInMenu, int);
   vtkGetMacro(SeparatePathInMenu, int);
@@ -151,6 +162,7 @@ protected:
   int         MaximumNumberOfFilesInRegistry;
   int         MaximumNumberOfFilesInMenu;
   int         LabelVisibilityInMenu;
+  int         BaseNameVisibilityInMenu;
   int         SeparatePathInMenu;
 
   //BTX

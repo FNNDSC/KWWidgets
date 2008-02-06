@@ -22,7 +22,7 @@
 #include <vtksys/stl/list>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWMostRecentFilesManager, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWMostRecentFilesManager, "$Revision: 1.18 $");
 vtkStandardNewMacro(vtkKWMostRecentFilesManager );
 
 #define VTK_KW_MRF_REGISTRY_FILENAME_KEYNAME_PATTERN "File%02d"
@@ -65,6 +65,7 @@ vtkKWMostRecentFilesManager::vtkKWMostRecentFilesManager()
   this->RegistryKey           = NULL;
   this->Menu                  = NULL;
   this->LabelVisibilityInMenu = 0;
+  this->BaseNameVisibilityInMenu = 1;
   this->SeparatePathInMenu    = 0;
 
   this->SetRegistryKey("MRU");
@@ -495,9 +496,12 @@ void vtkKWMostRecentFilesManager::PopulateMenu(
             {
             label += "(";
             }
-          label += vtksys::SystemTools::CropString(
-            vtksys::SystemTools::GetFilenameName(filename), 40);
-          label += " ";
+          if (this->BaseNameVisibilityInMenu || !has_label)
+            {
+            label += vtksys::SystemTools::CropString(
+              vtksys::SystemTools::GetFilenameName(filename), 40);
+            label += " ";
+            }
           if (!has_label)
             {
             label += "(";
@@ -513,7 +517,9 @@ void vtkKWMostRecentFilesManager::PopulateMenu(
             {
             label += "(";
             }
-          label += vtksys::SystemTools::CropString(filename, 40);
+          label += vtksys::SystemTools::CropString(
+            this->BaseNameVisibilityInMenu 
+            ? filename : vtksys::SystemTools::GetFilenamePath(filename), 40);
           if (has_label)
             {
             label += ")";
@@ -556,6 +562,19 @@ void vtkKWMostRecentFilesManager::SetLabelVisibilityInMenu(int _arg)
     return;
     }
   this->LabelVisibilityInMenu = _arg;
+  this->Modified();
+
+  this->UpdateMenu();
+}
+
+// ----------------------------------------------------------------------------
+void vtkKWMostRecentFilesManager::SetBaseNameVisibilityInMenu(int _arg)
+{
+  if (this->BaseNameVisibilityInMenu == _arg)
+    {
+    return;
+    }
+  this->BaseNameVisibilityInMenu = _arg;
   this->Modified();
 
   this->UpdateMenu();
@@ -615,6 +634,8 @@ void vtkKWMostRecentFilesManager::PrintSelf(ostream& os, vtkIndent indent)
      << endl;
   os << indent << "LabelVisibilityInMenu: " 
      << (this->LabelVisibilityInMenu ? "On" : "Off") << endl;
+  os << indent << "BaseNameVisibilityInMenu: " 
+     << (this->BaseNameVisibilityInMenu ? "On" : "Off") << endl;
   os << indent << "SeparatePathInMenu: " 
      << (this->SeparatePathInMenu ? "On" : "Off") << endl;
 }
