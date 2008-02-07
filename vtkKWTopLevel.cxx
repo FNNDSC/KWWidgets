@@ -24,7 +24,7 @@
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTopLevel );
-vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.32 $");
+vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.33 $");
 
 //----------------------------------------------------------------------------
 vtkKWTopLevel::vtkKWTopLevel()
@@ -542,6 +542,17 @@ const char* vtkKWTopLevel::GetGeometry()
     return NULL;
     }
   return this->Script("wm geometry %s", this->GetWidgetName());
+}
+
+//----------------------------------------------------------------------------
+void vtkKWTopLevel::Maximize()
+{
+#if defined(_WIN32)
+  if (this->IsCreated())
+    {
+    this->Script("wm state %s zoomed", this->GetWidgetName());
+    }
+#endif
 }
 
 //----------------------------------------------------------------------------

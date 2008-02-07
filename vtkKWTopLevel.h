@@ -228,6 +228,11 @@ public:
   virtual const char* GetGeometry();
 
   // Description:
+  // Arranges for window to be maximized.
+  // Windows only.
+  virtual void Maximize();
+
+  // Description:
   // Set/Get if the toplevel should be displayed without decorations (i.e.
   // ignored by the window manager). Default to 0. If not decorated, the
   // toplevel will usually be displayed without a title bar, resizing handles,
