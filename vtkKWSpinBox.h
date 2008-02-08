@@ -28,6 +28,8 @@
 
 #include "vtkKWCoreWidget.h"
 
+class vtkKWMenu;
+
 class KWWidgets_EXPORT vtkKWSpinBox : public vtkKWCoreWidget
 {
 public:
@@ -278,6 +280,7 @@ public:
   virtual int ValidationCallback(const char *value);
   virtual void TracedVariableChangedCallback(
     const char *, const char *, const char *);
+  virtual void RightClickCallback(int x, int y);
 
 protected:
   vtkKWSpinBox();
@@ -292,6 +295,12 @@ protected:
 
   char *Command;
   char *ValidationCommand;
+
+  vtkKWMenu *ContextMenu;
+
+  // Description:
+  // Populate the context menu
+  virtual void PopulateContextMenu(vtkKWMenu*);
 
   // Description:
   // Configure.

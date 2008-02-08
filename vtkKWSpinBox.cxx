@@ -14,19 +14,22 @@
 #include "vtkKWSpinBox.h"
 
 #include "vtkKWOptions.h"
+#include "vtkKWMenu.h"
 #include "vtkObjectFactory.h"
+#include "vtkKWInternationalization.h"
 
 #include <vtksys/stl/string>
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSpinBox);
-vtkCxxRevisionMacro(vtkKWSpinBox, "$Revision: 1.28 $");
+vtkCxxRevisionMacro(vtkKWSpinBox, "$Revision: 1.29 $");
 
 //----------------------------------------------------------------------------
 vtkKWSpinBox::vtkKWSpinBox() 
 {
   this->Command           = NULL;
   this->ValidationCommand = NULL;
+  this->ContextMenu       = NULL;
   this->RestrictValue     = vtkKWSpinBox::RestrictNone;
   this->CommandTrigger    = (vtkKWSpinBox::TriggerOnFocusOut | 
                              vtkKWSpinBox::TriggerOnReturnKey);
@@ -45,6 +48,12 @@ vtkKWSpinBox::~vtkKWSpinBox()
     {
     delete [] this->ValidationCommand;
     this->ValidationCommand = NULL;
+    }
+
+  if (this->ContextMenu)
+    {
+    this->ContextMenu->Delete();
+    this->ContextMenu = NULL;
     }
 }
 
@@ -67,6 +76,8 @@ void vtkKWSpinBox::CreateWidget()
   this->SetObjectMethodCommand(&command, this, "ValueCallback");
   this->SetConfigurationOption("-command", command);
   delete [] command;
+
+  this->SetBinding("<<Button3>>", this, "RightClickCallback %X %Y");
 
   // Design choice: we assume a keypress is meant for this widget only
 
@@ -589,6 +600,89 @@ void vtkKWSpinBox::UpdateEnableState()
   this->Superclass::UpdateEnableState();
 
   this->SetState(this->GetEnabled());
+}
+
+//---------------------------------------------------------------------------
+void vtkKWSpinBox::RightClickCallback(int x, int y)
+{
+  if (!this->ContextMenu)
+    {
+    this->ContextMenu = vtkKWMenu::New();
+    }
+  if (!this->ContextMenu->IsCreated())
+    {
+    this->ContextMenu->SetParent(this);
+    this->ContextMenu->Create();
+    }
+  this->ContextMenu->DeleteAllItems();
+  this->PopulateContextMenu(this->ContextMenu);
+  if (this->ContextMenu->GetNumberOfItems())
+    {
+    this->ContextMenu->PopUp(x, y);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSpinBox::PopulateContextMenu(vtkKWMenu *menu)
+{
+  if (!menu)
+    {
+    return;
+    }
+
+  if (menu->GetNumberOfItems())
+    {
+    menu->AddSeparator();
+    }
+
+  menu->SetItemStateToDisabled(menu->AddCommand(k_("Set Increment:")));
+
+  double factors[] = { 2, 5, 10, 100 };
+  double increment = this->GetIncrement();
+  char label[256], method[256];
+  int i;
+
+  // Multipliers
+
+  int flag = 0;
+  for (i = 0; i < sizeof(factors) / sizeof(factors[0]); i++)
+    {
+    double new_increment = increment * factors[i];
+    if (this->RestrictValue == vtkKWSpinBox::RestrictInteger &&
+        !atoi(this->Script("string is integer %g", new_increment)))
+      {
+      continue;
+      }
+    sprintf(label, "%g", new_increment);
+    sprintf(method, "SetIncrement %g", new_increment);
+    if (!flag)
+      {
+      menu->AddSeparator();
+      flag = 1;
+      }
+    menu->AddCommand(label, this, method);
+    }
+
+  // Dividers
+
+  flag = 0;
+  for (i = 0; i < sizeof(factors) / sizeof(factors[0]); i++)
+    {
+    double new_increment = increment / factors[i];
+    if (this->RestrictValue == vtkKWSpinBox::RestrictInteger &&
+        !atoi(this->Script("string is integer %g", new_increment)))
+      {
+      continue;
+      }
+    sprintf(label, "%g", new_increment);
+    sprintf(method, "SetIncrement %g", new_increment);
+    if (!flag)
+      {
+      menu->AddSeparator();
+      flag = 1;
+      }
+    menu->AddCommand(label, this, method);
+    }
 }
 
 //----------------------------------------------------------------------------
