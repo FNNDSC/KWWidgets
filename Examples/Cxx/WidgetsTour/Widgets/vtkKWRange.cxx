@@ -25,6 +25,7 @@ void vtkKWRangeItem::Create(vtkKWWidget *parent, vtkKWWindow *)
   range1->SetLabelText("A range:");
   range1->SetWholeRange(0.0, 100.0);
   range1->SetRange(20.0, 60.0);
+  range1->SetResolution(0.1);
   range1->SetReliefToGroove();
   range1->SetBorderWidth(2);
   range1->SetPadX(2);
@@ -48,6 +49,7 @@ void vtkKWRangeItem::Create(vtkKWWidget *parent, vtkKWWindow *)
   range2->SymmetricalInteractionOn();
   range2->SetWholeRange(range1->GetWholeRange());
   range2->SetRange(range1->GetRange());
+  range2->SetResolution(2.0);
   range2->SetLabelPositionToLeft();
   range2->SetEntry1PositionToLeft();
   range2->SetEntry2PositionToRight();

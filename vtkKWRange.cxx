@@ -26,7 +26,7 @@
 #include <vtksys/ios/sstream>
 
 vtkStandardNewMacro( vtkKWRange );
-vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.71 $");
+vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.72 $");
 
 #define VTK_KW_RANGE_MIN_SLIDER_SIZE        2
 #define VTK_KW_RANGE_MIN_THICKNESS          (2*VTK_KW_RANGE_MIN_SLIDER_SIZE+1)
@@ -508,13 +508,25 @@ void vtkKWRange::Bind()
            << " <ButtonRelease-1> {" << this->GetTclName() 
            << " EndInteractionCallback}" << endl;
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_RANGE_TAG
-           << " <B1-Motion> {" << this->GetTclName() 
-           << " RangeMotionCallback %%x %%y}" << endl;
-
     tk_cmd << canv << " bind " <<  VTK_KW_RANGE_RANGE_TAG 
            << " <Double-1> {" << this->GetTclName() 
            << " MaximizeRangeCallback}" << endl;
+
+    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_RANGE_TAG
+           << " <B1-Motion> {" << this->GetTclName() 
+           << " RangeMotionCallback %%x %%y 0 0}" << endl;
+
+    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_RANGE_TAG
+           << " <Shift-B1-Motion> {" << this->GetTclName() 
+           << " RangeMotionCallback %%x %%y 1 0}" << endl;
+
+    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_RANGE_TAG
+           << " <Control-B1-Motion> {" << this->GetTclName() 
+           << " RangeMotionCallback %%x %%y 0 1}" << endl;
+
+    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_RANGE_TAG
+           << " <Shift-Control-B1-Motion> {" << this->GetTclName() 
+           << " RangeMotionCallback %%x %%y 1 1}" << endl;
 
     // Sliders
 
@@ -525,16 +537,46 @@ void vtkKWRange::Bind()
     tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDERS_TAG 
            << " <ButtonRelease-1> {" << this->GetTclName() 
            << " EndInteractionCallback}" << endl;
-
+    
     tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER1_TAG 
            << " <B1-Motion> {" << this->GetTclName() 
            << " SliderMotionCallback " 
-           << vtkKWRange::SliderIndex0 << " %%x %%y}" << endl;
+           << vtkKWRange::SliderIndex0 << " %%x %%y 0 0}" << endl;
+
+    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER1_TAG 
+           << " <Shift-B1-Motion> {" << this->GetTclName() 
+           << " SliderMotionCallback " 
+           << vtkKWRange::SliderIndex0 << " %%x %%y 1 0}" << endl;
+
+    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER1_TAG 
+           << " <Control-B1-Motion> {" << this->GetTclName() 
+           << " SliderMotionCallback " 
+           << vtkKWRange::SliderIndex0 << " %%x %%y 0 1}" << endl;
+
+    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER1_TAG 
+           << " <Shift-Control-B1-Motion> {" << this->GetTclName() 
+           << " SliderMotionCallback " 
+           << vtkKWRange::SliderIndex0 << " %%x %%y 1 1}" << endl;
 
     tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER2_TAG 
            << " <B1-Motion> {" << this->GetTclName() 
            << " SliderMotionCallback " 
-           << vtkKWRange::SliderIndex1 << " %%x %%y}" << endl;
+           << vtkKWRange::SliderIndex1 << " %%x %%y 0 0}" << endl;
+
+    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER2_TAG 
+           << " <Shift-B1-Motion> {" << this->GetTclName() 
+           << " SliderMotionCallback " 
+           << vtkKWRange::SliderIndex1 << " %%x %%y 1 0}" << endl;
+
+    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER2_TAG 
+           << " <Control-B1-Motion> {" << this->GetTclName() 
+           << " SliderMotionCallback " 
+           << vtkKWRange::SliderIndex1 << " %%x %%y 0 1}" << endl;
+
+    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER2_TAG 
+           << " <Shift-Control-B1-Motion> {" << this->GetTclName() 
+           << " SliderMotionCallback " 
+           << vtkKWRange::SliderIndex1 << " %%x %%y 1 1}" << endl;
     }
 
   this->Script(tk_cmd.str().c_str());
@@ -745,11 +787,11 @@ void vtkKWRange::UpdateEntriesValue(double range[2])
 }
 
 //----------------------------------------------------------------------------
-void vtkKWRange::ConstrainRangeToResolution(double range[2], int adjust)
+void vtkKWRange::ConstrainRangeToResolution(
+  double range[2], double res, int adjust)
 {
   int inv = (range[0] > range[1]) ? 1 : 0;
 
-  double res = this->Resolution;
   double epsilon = res / 1000.0;
 
   for (int i = 0; i <= 1; i++)
@@ -876,7 +918,7 @@ void vtkKWRange::ConstrainWholeRange()
   this->WholeRangeAdjusted[0] = this->WholeRange[0];
   this->WholeRangeAdjusted[1] = this->WholeRange[1];
 
-  this->ConstrainRangeToResolution(this->WholeRangeAdjusted);
+  this->ConstrainRangeToResolution(this->WholeRangeAdjusted, this->Resolution);
 }
 
 //----------------------------------------------------------------------------
@@ -888,7 +930,7 @@ void vtkKWRange::ConstrainRange(double *old_range_hint)
   this->RangeAdjusted[0] = this->Range[0];
   this->RangeAdjusted[1] = this->Range[1];
   
-  this->ConstrainRangeToResolution(this->RangeAdjusted);
+  this->ConstrainRangeToResolution(this->RangeAdjusted, this->Resolution);
 }
 
 //----------------------------------------------------------------------------
@@ -2235,7 +2277,8 @@ void vtkKWRange::EndInteractionCallback()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWRange::SliderMotionCallback(int slider_idx, int x, int y)
+void vtkKWRange::SliderMotionCallback(
+  int slider_idx, int x, int y, int shift, int control)
 {
   if (!this->IsCreated())
     {
@@ -2250,7 +2293,8 @@ void vtkKWRange::SliderMotionCallback(int slider_idx, int x, int y)
 
   // Update depending on the orientation
 
-  int min, max, pos;
+  int min, max;
+  double pos;
 
   if (this->Orientation == vtkKWRange::OrientationHorizontal)
     {
@@ -2264,6 +2308,19 @@ void vtkKWRange::SliderMotionCallback(int slider_idx, int x, int y)
     min = 0;
     max = this->Canvas->GetHeight() - 1;
     }
+
+  double factor = 1.0;
+  if (shift)
+    {
+    factor *= 0.1;
+    } 
+  if (control)
+    {
+    factor *= 0.01;
+    }
+
+  pos = (pos - this->StartInteractionPos) * factor + this->StartInteractionPos;
+
   if (pos > max)
     {
     pos = max;
@@ -2378,12 +2435,12 @@ void vtkKWRange::SliderMotionCallback(int slider_idx, int x, int y)
 
   this->ConstrainRangeToWholeRange(
     new_range, this->WholeRangeAdjusted, this->RangeAdjusted);
-  this->ConstrainRangeToResolution(new_range, 0);
+  this->ConstrainRangeToResolution(new_range, this->Resolution * factor, 0);
   this->SetRange(new_range);
 }
 
 //----------------------------------------------------------------------------
-void vtkKWRange::RangeMotionCallback(int x, int y)
+void vtkKWRange::RangeMotionCallback(int x, int y, int shift, int control)
 {
   if (!this->IsCreated())
     {
@@ -2395,7 +2452,8 @@ void vtkKWRange::RangeMotionCallback(int x, int y)
 
   // Update depending on the orientation
 
-  int pos, min, max;
+  int min, max;
+  double pos;
 
   if (this->Orientation == vtkKWRange::OrientationHorizontal)
     {
@@ -2409,6 +2467,18 @@ void vtkKWRange::RangeMotionCallback(int x, int y)
     min = 0;
     max = this->Canvas->GetHeight() - 1;
     }
+
+  double factor = 1.0;
+  if (shift)
+    {
+    factor *= 0.1;
+    } 
+  if (control)
+    {
+    factor *= 0.01;
+    }
+
+  pos = (pos - this->StartInteractionPos) * factor + this->StartInteractionPos;
 
   double rel_delta = 
     whole_range * 
@@ -2424,7 +2494,7 @@ void vtkKWRange::RangeMotionCallback(int x, int y)
 
   this->ConstrainRangeToWholeRange(
     new_range, this->WholeRangeAdjusted, this->RangeAdjusted);
-  this->ConstrainRangeToResolution(new_range, 0);
+  this->ConstrainRangeToResolution(new_range, this->Resolution * factor, 0);
     
   // Check if the constrained new range has the same "width" as the old one
 

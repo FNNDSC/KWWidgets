@@ -352,8 +352,9 @@ public:
   virtual void EntriesUpdateCallback(int i);
   virtual void StartInteractionCallback(int x, int y);
   virtual void EndInteractionCallback();
-  virtual void SliderMotionCallback(int slider_idx, int x, int y);
-  virtual void RangeMotionCallback(int x, int y);
+  virtual void SliderMotionCallback(
+    int slider_idx, int x, int y, int shift, int ctrl);
+  virtual void RangeMotionCallback(int x, int y, int shift, int ctrl);
 
 protected:
   vtkKWRange();
@@ -415,7 +416,8 @@ protected:
 
   // Description:
   // Make sure all elements are constrained correctly
-  virtual void ConstrainRangeToResolution(double range[2], int adjust = 1);
+  virtual void ConstrainRangeToResolution(
+    double range[2], double res, int adjust = 1);
   virtual void ConstrainRangeToWholeRange(
     double range[2], double whole_range[2], double *old_range_hint = 0);
   virtual void ConstrainWholeRange();
