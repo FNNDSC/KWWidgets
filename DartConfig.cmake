@@ -24,7 +24,7 @@ SET(USE_DOXYGEN "On")
 SET(DOXYGEN_URL "http://www.kwwidgets.org/doc/nightly/html/")
 
 SET(USE_GNATS "On")
-SET(GNATS_WEB_URL "${PROJECT_URL}/Bug/query.php?projects=15&status%5B%5D=1&status%5B%5D=2&status%5B%5D=3&status%5B%5D=4&status%5B%5D=6&op=doquery")
+SET(GNATS_WEB_URL "${PROJECT_URL}/Bug/")
 
 CONFIGURE_FILE(
   ${KWWidgets_SOURCE_DIR}/Examples/Resources/KWWidgetsSplashScreenSmall.gif 
