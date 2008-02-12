@@ -20,7 +20,7 @@
 #include "vtkKWInternationalization.h"
 
 vtkStandardNewMacro( vtkKWSplitFrame );
-vtkCxxRevisionMacro(vtkKWSplitFrame, "$Revision: 1.45 $");
+vtkCxxRevisionMacro(vtkKWSplitFrame, "$Revision: 1.46 $");
 
 //----------------------------------------------------------------------------
 vtkKWSplitFrame::vtkKWSplitFrame()
@@ -846,7 +846,7 @@ void vtkKWSplitFrame::Pack()
     {
     separator_size = 0;
     separator_margin = 0;
-    total_separator_size = this->SeparatorMargin;
+    total_separator_size = 0;
     remaining = this->GetTotalSeparatorSize() - total_separator_size;
     }
   frame1_size = this->Frame1Size + (remaining / 2);
