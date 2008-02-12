@@ -36,7 +36,7 @@ const char *vtkKWText::TagFgDarkGreen = "_fg_dark_green_tag_";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWText);
-vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.57 $");
+vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.58 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTextInternals
@@ -281,14 +281,19 @@ void vtkKWText::CreateWidget()
 {
   // Call the superclass to set the appropriate flags then create manually
 
-  const char *options = 
-#if (TCL_MAJOR_VERSION == 8) && (TCL_MINOR_VERSION <= 4)
-    "-width 20 -wrap word -height 5 -highlightthickness 0 -background white";
-#else
-    "-width 20 -wrap word -height 5 -highlightthickness 0 -background white -bd 2 -font TkDefaultFont";
-#endif
+  vtksys_stl::string options;
+  int tcl_major, tcl_minor, tcl_patch_level;
+  Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
+  if (tcl_major > 8 || (tcl_major == 8 && tcl_minor >= 5))
+    {
+    options = "-width 20 -wrap word -height 5 -highlightthickness 0 -background white -bd 2 -font TkDefaultFont";
+    }
+  else
+    {
+    options = "-width 20 -wrap word -height 5 -highlightthickness 0 -background white";
+    }
 
-  if (!vtkKWWidget::CreateSpecificTkWidget(this, "text", options))
+  if (!vtkKWWidget::CreateSpecificTkWidget(this, "text", options.c_str()))
     {
     vtkErrorMacro("Failed creating widget " << this->GetClassName());
     return;
