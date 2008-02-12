@@ -44,7 +44,7 @@
 #include <vtksys/stl/map>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.160 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.161 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -1393,7 +1393,11 @@ void vtkKWRenderWidget::PopulateAnnotationMenu(vtkKWMenu *menu)
     menu->AddSeparator();
     }
 
-  int index, show_icons = 0;
+  int tcl_major, tcl_minor, tcl_patch_level;
+  Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
+  int show_icons = (tcl_major > 8 || (tcl_major == 8 && tcl_minor >= 5));
+
+  int index;
 
   // Corner Annotation
 

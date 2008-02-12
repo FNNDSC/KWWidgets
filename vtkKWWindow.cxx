@@ -19,6 +19,7 @@
 #include "vtkKWFrame.h"
 #include "vtkKWFrameWithLabel.h"
 #include "vtkKWInternationalization.h"
+#include "vtkKWIcon.h"
 #include "vtkKWLabel.h"
 #include "vtkKWMenu.h"
 #include "vtkKWMessageDialog.h"
@@ -35,7 +36,7 @@
 #include <vtksys/SystemTools.hxx>
 #include <vtksys/ios/sstream> 
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.290 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.291 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindow );
@@ -95,7 +96,7 @@ vtkKWWindow::vtkKWWindow()
       ks_("Menu|Window|&Tcl Interactor"));
   this->LogDialogMenuLabel = 
     vtksys::SystemTools::DuplicateString(
-      ks_("Menu|Window|&Error Log"));
+      ks_("Menu|Window|&Log Window"));
 
   this->DefaultViewPanelName = 
     vtksys::SystemTools::DuplicateString("View");
@@ -293,6 +294,10 @@ void vtkKWWindow::PopulateWindowMenu()
 {
   this->Superclass::PopulateWindowMenu();
 
+  int tcl_major, tcl_minor, tcl_patch_level;
+  Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
+  int show_icons = (tcl_major > 8 || (tcl_major == 8 && tcl_minor >= 5));
+
   int idx;
   vtkKWMenu *menu = this->GetWindowMenu();
   vtksys_stl::string cmd;
@@ -320,9 +325,14 @@ void vtkKWWindow::PopulateWindowMenu()
       this->GetLogDialogMenuLabel(), 
       this->GetApplication(), cmd.c_str());
     menu->SetItemHelpString(
-      idx, k_("Display the &error log dialog"));
+      idx, k_("Display the log window"));
     menu->SetItemAccelerator(idx, "Ctrl+Alt+E");
     menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
+    if (show_icons)
+      {
+      menu->SetItemImageToPredefinedIcon(idx, vtkKWIcon::IconErrorRedMini);
+      menu->SetItemCompoundModeToLeft(idx);
+      }
 
     menu->AddSeparator();
     
@@ -332,6 +342,11 @@ void vtkKWWindow::PopulateWindowMenu()
       idx, k_("Display a prompt to interact with the Tcl engine"));
     menu->SetItemAccelerator(idx, "Ctrl+T");
     menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
+    if (show_icons)
+      {
+      menu->SetItemImageToPredefinedIcon(idx, vtkKWIcon::IconBugMini);
+      menu->SetItemCompoundModeToLeft(idx);
+      }
     }
 }
 
