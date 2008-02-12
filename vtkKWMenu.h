@@ -363,6 +363,7 @@ public:
   // (since it has no knowledge of what the previous accelerator was), this
   // is up to the developper to do so by calling RemoveBinding for example.
   virtual void SetBindingForItemAccelerator(int index, vtkKWWidget*);
+  virtual void RemoveBindingForItemAccelerator(int index, vtkKWWidget*);
 
   // Description:
   // Set/Get the help string for a given item specified by its index.

@@ -33,7 +33,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.119 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.120 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMenuInternals
@@ -1430,6 +1430,22 @@ void vtkKWMenu::SetBindingForItemAccelerator(int index, vtkKWWidget *widget)
         vtksys_stl::string command_safe(command);
         widget->SetBinding(keybinding, command_safe.c_str());
         }
+      }
+    delete [] keybinding;
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMenu::RemoveBindingForItemAccelerator(int index, vtkKWWidget *widget)
+{
+  const char *accelerator = this->GetItemOption(index, "-accelerator");
+  if (accelerator && *accelerator && widget)
+    {
+    char *keybinding = NULL;
+    this->ConvertItemAcceleratorToKeyBinding(accelerator, &keybinding);
+    if (keybinding && *keybinding)
+      {
+      widget->RemoveBinding(keybinding);
       }
     delete [] keybinding;
     }
