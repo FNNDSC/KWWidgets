@@ -59,6 +59,13 @@ public:
   virtual void RemoveBindings(vtkKWWidget *widget);
 
   // Description:
+  // Set/Get if the balloon help is not displayed when the widget Enabled
+  // state is Off.
+  vtkSetMacro(IgnoreIfNotEnabled, int);
+  vtkGetMacro(IgnoreIfNotEnabled, int);
+  vtkBooleanMacro(IgnoreIfNotEnabled, int);
+
+  // Description:
   // Callbacks. Internal, do not use.
   virtual void TriggerCallback(vtkKWWidget *widget);
   virtual void DisplayCallback(vtkKWWidget *widget);
@@ -70,6 +77,7 @@ protected:
   ~vtkKWBalloonHelpManager();
 
   int Visibility;
+  int IgnoreIfNotEnabled;
   int Delay;
 
   vtkKWTopLevel *TopLevel;

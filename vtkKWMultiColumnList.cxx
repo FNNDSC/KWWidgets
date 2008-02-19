@@ -17,6 +17,7 @@ p  Module:    $RCSfile: vtkKWMultiColumnList.cxx,v $
 #include "vtkObjectFactory.h"
 #include "vtkKWTkUtilities.h"
 #include "vtkKWIcon.h"
+#include "vtkKWLabel.h"
 #include "vtkKWCheckButton.h"
 #include "vtkKWComboBox.h"
 #include "vtkKWRadioButton.h"
@@ -33,7 +34,7 @@ p  Module:    $RCSfile: vtkKWMultiColumnList.cxx,v $
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.89 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.90 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -221,11 +222,35 @@ void vtkKWMultiColumnList::CreateWidget()
   this->AddBinding(
     "<FocusOut>", this, "FinishEditing");
 
+  this->AddInteractionBindings();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::AddInteractionBindings()
+{
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
   this->Script("bind [%s bodytag] <<Button3>> [list %s RightClickCallback %%W %%x %%y %%X %%Y]",
                this->GetWidgetName(), this->GetTclName());
  
   this->Script("bind [%s bodytag] <Delete> [list %s KeyPressDeleteCallback]",
                this->GetWidgetName(), this->GetTclName());
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::RemoveInteractionBindings()
+{
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
+  this->Script("bind [%s bodytag] <<Button3>> {}", this->GetWidgetName());
+ 
+  this->Script("bind [%s bodytag] <Delete> {}", this->GetWidgetName());
 }
 
 //----------------------------------------------------------------------------
@@ -2634,6 +2659,7 @@ void vtkKWMultiColumnList::RefreshEnabledStateOfAllCellsWithWindowCommand()
           if (child)
             {
             if (vtkKWCheckButton::SafeDownCast(child) ||
+                vtkKWLabel::SafeDownCast(child) ||
                 vtkKWComboBox::SafeDownCast(child) ||
                 vtkKWRadioButton::SafeDownCast(child))
               {
@@ -4712,6 +4738,17 @@ void vtkKWMultiColumnList::UpdateEnableState()
   this->SetState(this->GetEnabled());
 
   this->ScheduleRefreshEnabledStateOfAllCellsWithWindowCommand();
+
+  // If enabled back, set up the bindings, otherwise remove
+
+  if (this->GetEnabled())
+    {
+    this->AddInteractionBindings();
+    }
+  else
+    {
+    this->RemoveInteractionBindings();
+    }
 }
 
 //----------------------------------------------------------------------------

@@ -24,7 +24,7 @@
 
 #include <ctype.h>
 
-vtkCxxRevisionMacro(vtkKWParameterValueHermiteFunctionEditor, "$Revision: 1.27 $");
+vtkCxxRevisionMacro(vtkKWParameterValueHermiteFunctionEditor, "$Revision: 1.28 $");
 
 const char *vtkKWParameterValueHermiteFunctionEditor::MidPointTag = "midpoint_tag";
 const char *vtkKWParameterValueHermiteFunctionEditor::MidPointGuidelineTag = "midpoint_guideline_tag";
@@ -1584,7 +1584,11 @@ void vtkKWParameterValueHermiteFunctionEditor::UnBind()
 
     tk_cmd << canv << " bind " 
            << vtkKWParameterValueHermiteFunctionEditor::MidPointTag 
-           << " <ButtonRelease-1> {}" << endl;
+           << " <B3-Motion> {}" << endl;
+
+    tk_cmd << canv << " bind " 
+           << vtkKWParameterValueHermiteFunctionEditor::MidPointTag 
+           << " <Any-ButtonRelease> {}" << endl;
     }
   
   this->Script(tk_cmd.str().c_str());

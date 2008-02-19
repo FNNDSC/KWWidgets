@@ -26,7 +26,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWBalloonHelpManager );
-vtkCxxRevisionMacro(vtkKWBalloonHelpManager, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWBalloonHelpManager, "$Revision: 1.15 $");
 
 //----------------------------------------------------------------------------
 vtkKWBalloonHelpManager::vtkKWBalloonHelpManager()
@@ -39,6 +39,7 @@ vtkKWBalloonHelpManager::vtkKWBalloonHelpManager()
 
   this->Delay = 1200;
   this->Visibility = 1;
+  this->IgnoreIfNotEnabled = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -115,6 +116,7 @@ void vtkKWBalloonHelpManager::TriggerCallback(vtkKWWidget *widget)
   // If there is no help string, do not bother
 
   if (!this->Visibility || 
+      (this->IgnoreIfNotEnabled && !widget->GetEnabled()) ||
       (!widget->GetBalloonHelpString() && !widget->GetBalloonHelpIcon()))
     {
     this->SetAfterTimerId(NULL);
@@ -186,7 +188,9 @@ void vtkKWBalloonHelpManager::WithdrawCallback()
 void vtkKWBalloonHelpManager::DisplayCallback(vtkKWWidget *widget)
 {
   if (!this->GetApplication() || this->ApplicationInExit() ||
-      !this->Visibility || !widget || !widget->IsAlive())
+      !this->Visibility || 
+      !widget || !widget->IsAlive() ||
+      (this->IgnoreIfNotEnabled && !widget->GetEnabled()))
     {
     return;
     }
@@ -395,5 +399,6 @@ void vtkKWBalloonHelpManager::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
   os << indent << "Visibility: " << (this->Visibility ? "on":"off") << endl;
+  os << indent << "IgnoreIfNotEnabled: " << (this->IgnoreIfNotEnabled ? "on":"off") << endl;
   os << indent << "Delay: " << this->GetDelay() << endl;
 }

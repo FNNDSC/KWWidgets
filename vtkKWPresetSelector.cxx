@@ -59,7 +59,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.63 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.64 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -3351,6 +3351,7 @@ void vtkKWPresetSelector::PresetCellThumbnailCallback(
       // we can set a much shorter delay
       vtkKWBalloonHelpManager *mgr = vtkKWBalloonHelpManager::New();
       mgr->SetApplication(list->GetApplication());
+      mgr->SetIgnoreIfNotEnabled(1);
       child->SetBalloonHelpManager(mgr);
       mgr->SetDelay(10);
       mgr->Delete();

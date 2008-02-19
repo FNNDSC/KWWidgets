@@ -40,7 +40,7 @@
 #include <vtksys/stl/algorithm>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.106 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.107 $");
 
 //----------------------------------------------------------------------------
 #define VTK_KW_PVFE_POINT_RADIUS_MIN         2
@@ -1485,7 +1485,10 @@ void vtkKWParameterValueFunctionEditor::CreateRangeLabel()
     this->RangeLabel->SetBorderWidth(0);
     this->RangeLabel->SetAnchorToWest();
     this->UpdateRangeLabel();
-    this->Bind(); // in case we have bindings on the label
+    if (this->GetEnabled())
+      {
+      this->Bind(); // in case we have bindings on the label
+      }
     }
 }
 
@@ -1644,7 +1647,10 @@ void vtkKWParameterValueFunctionEditor::CreateValueTicksCanvas()
     this->ValueTicksCanvas->SetReliefToSolid();
     this->ValueTicksCanvas->SetHeight(0);
     this->ValueTicksCanvas->SetBorderWidth(0);
-    this->Bind(); // in case we have bindings on this canvas
+    if (this->GetEnabled())
+      {
+      this->Bind(); // in case we have bindings on this canvas
+      }
     }
 }
 
@@ -1661,7 +1667,10 @@ void vtkKWParameterValueFunctionEditor::CreateParameterTicksCanvas()
     this->ParameterTicksCanvas->SetBorderWidth(0);
     this->ParameterTicksCanvas->SetHeight(
       VTK_KW_PVFE_TICKS_PARAMETER_CANVAS_HEIGHT);
-    this->Bind(); // in case we have bindings on this canvas
+    if (this->GetEnabled())
+      {
+      this->Bind(); // in case we have bindings on this canvas
+      }
     }
 }
 
@@ -1678,7 +1687,10 @@ void vtkKWParameterValueFunctionEditor::CreateGuidelineValueCanvas()
     this->GuidelineValueCanvas->SetBorderWidth(0);
     this->GuidelineValueCanvas->SetHeight(
       VTK_KW_PVFE_GUIDELINE_VALUE_CANVAS_HEIGHT);
-    this->Bind(); // in case we have bindings on this canvas
+    if (this->GetEnabled())
+      {
+      this->Bind(); // in case we have bindings on this canvas
+      }
     }
 }
 
@@ -2235,7 +2247,7 @@ void vtkKWParameterValueFunctionEditor::UnBind()
 
     // Mouse motion
 
-    this->Canvas->RemoveBinding("<ButtonPress-1>");
+    this->Canvas->RemoveBinding("<Any-ButtonPress>");
 
     tk_cmd << canv << " bind " 
            << vtkKWParameterValueFunctionEditor::PointTag 

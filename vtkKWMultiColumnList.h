@@ -1480,6 +1480,11 @@ protected:
   // Remove all the window destroy commands.
   virtual void RemoveAllWindowDestroyCommandFromCells();
 
+  // Description:
+  // Add/Remove some interaction bindings
+  virtual void AddInteractionBindings();
+  virtual void RemoveInteractionBindings();
+
 private:
   vtkKWMultiColumnList(const vtkKWMultiColumnList&); // Not implemented
   void operator=(const vtkKWMultiColumnList&); // Not implemented
