@@ -33,7 +33,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.120 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.121 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMenuInternals
@@ -1235,6 +1235,8 @@ void vtkKWMenu::SetState(int state)
 //----------------------------------------------------------------------------
 void vtkKWMenu::SetItemImage(int index, const char *imgname)
 {
+  vtksys_stl::string img(imgname ? imgname : "");
+
   if (!this->IsCreated() || index < 0 || index >= this->GetNumberOfItems())
     {
     return;
@@ -1258,7 +1260,7 @@ void vtkKWMenu::SetItemImage(int index, const char *imgname)
     }
 
   this->Script("%s entryconfigure %d -image %s", 
-               this->GetWidgetName(), index, imgname);
+               this->GetWidgetName(), index, img.c_str());
 }
 
 //----------------------------------------------------------------------------
