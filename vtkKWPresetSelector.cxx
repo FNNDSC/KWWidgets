@@ -59,7 +59,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.64 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.65 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -1324,6 +1324,13 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
 
   char command[256], label[256];
 
+  int tcl_major, tcl_minor, tcl_patch_level;
+  Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
+  int show_icons = (tcl_major > 8 || (tcl_major == 8 && tcl_minor >= 5));
+
+  int index;
+  vtkKWPushButton *pb;
+
   const char *filename = this->GetPresetFileName(id);
   int has_file = 
     (filename && *filename && vtksys::SystemTools::FileExists(filename));
@@ -1333,7 +1340,14 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
   if (this->PresetApplyCommand)
     {
     sprintf(command, "PresetApplyCallback %d", id);
-    menu->AddCommand("Apply", this, command);
+    index = menu->AddCommand("Apply", this, command);
+    if (show_icons)
+      {
+      pb = vtkKWPushButton::SafeDownCast(
+        this->PresetButtons->GetWidget(vtkKWPresetSelector::ApplyButtonId));
+      menu->SetItemImage(index, pb->GetConfigurationOption("-image"));
+      menu->SetItemCompoundModeToLeft(index);
+      }
     }
 
   // Update preset
@@ -1341,7 +1355,14 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
   if (this->PresetUpdateCommand)
     {
     sprintf(command, "PresetUpdateCallback %d", id);
-    menu->AddCommand("Update", this, command);
+    index = menu->AddCommand("Update", this, command);
+    if (show_icons)
+      {
+      pb = vtkKWPushButton::SafeDownCast(
+        this->PresetButtons->GetWidget(vtkKWPresetSelector::UpdateButtonId));
+      menu->SetItemImage(index, pb->GetConfigurationOption("-image"));
+      menu->SetItemCompoundModeToLeft(index);
+      }
     }
 
   // Remove preset
@@ -1349,7 +1370,14 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
   if (this->RemoveMenuEntryVisibility)
     {
     sprintf(command, "PresetRemoveCallback %d", id);
-    menu->AddCommand("Remove", this, command);
+    index = menu->AddCommand("Remove", this, command);
+    if (show_icons)
+      {
+      pb = vtkKWPushButton::SafeDownCast(
+        this->PresetButtons->GetWidget(vtkKWPresetSelector::RemoveButtonId));
+      menu->SetItemImage(index, pb->GetConfigurationOption("-image"));
+      menu->SetItemCompoundModeToLeft(index);
+      }
     }
 
   // Locate preset
@@ -1357,7 +1385,14 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
   if (has_file && this->LocateMenuEntryVisibility)
     {
     sprintf(command, "PresetLocateCallback %d", id);
-    menu->AddCommand("Locate", this, command);
+    index = menu->AddCommand("Locate", this, command);
+    if (show_icons)
+      {
+      pb = vtkKWPushButton::SafeDownCast(
+        this->PresetButtons->GetWidget(vtkKWPresetSelector::LocateButtonId));
+      menu->SetItemImage(index, pb->GetConfigurationOption("-image"));
+      menu->SetItemCompoundModeToLeft(index);
+      }
     }
 
   // Email preset
@@ -1365,7 +1400,14 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
   if (has_file && this->EmailMenuEntryVisibility)
     {
     sprintf(command, "PresetEmailCallback %d", id);
-    menu->AddCommand("Email", this, command);
+    index = menu->AddCommand("Email", this, command);
+    if (show_icons)
+      {
+      pb = vtkKWPushButton::SafeDownCast(
+        this->PresetButtons->GetWidget(vtkKWPresetSelector::EmailButtonId));
+      menu->SetItemImage(index, pb->GetConfigurationOption("-image"));
+      menu->SetItemCompoundModeToLeft(index);
+      }
     }
 
   // now the editable fields
