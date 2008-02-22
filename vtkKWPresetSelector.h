@@ -595,6 +595,7 @@ public:
   virtual void PresetUpdateCallback();
   virtual void PresetUpdateCallback(int id);
   virtual void PresetRemoveCallback();
+  virtual void PresetRemoveAllCallback();
   virtual void PresetRemoveCallback(int id);
   virtual void PresetEmailCallback();
   virtual void PresetEmailCallback(int id);

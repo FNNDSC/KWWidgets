@@ -59,7 +59,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.65 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.66 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -1378,6 +1378,8 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
       menu->SetItemImage(index, pb->GetConfigurationOption("-image"));
       menu->SetItemCompoundModeToLeft(index);
       }
+
+    index = menu->AddCommand("Remove All", this, "PresetRemoveAllCallback");
     }
 
   // Locate preset
@@ -3525,7 +3527,7 @@ void vtkKWPresetSelector::PresetRemoveCallback(int id)
       vtkKWMessageDialog::PopupYesNo( 
         this->GetApplication(), 
         this->GetApplication()->GetNthWindow(0), 
-        ks_("Preset Selector|Delete Preset Dialog|Title|Delete Preset ?"),
+        ks_("Preset Selector|Delete Preset Dialog|Title|Delete Preset?"),
         k_("Are you sure you want to delete the selected item?"), 
         vtkKWMessageDialog::WarningIcon | 
         vtkKWMessageDialog::InvokeAtPointer))
@@ -3534,6 +3536,41 @@ void vtkKWPresetSelector::PresetRemoveCallback(int id)
       {
       this->RemovePreset(id);
       }
+    }
+}
+
+//---------------------------------------------------------------------------
+void vtkKWPresetSelector::PresetRemoveAllCallback()
+{
+  if (!this->PromptBeforeRemovePreset ||
+      vtkKWMessageDialog::PopupYesNo( 
+        this->GetApplication(), 
+        this->GetApplication()->GetNthWindow(0), 
+        ks_("Preset Selector|Delete Preset Dialog|Title|Delete All Presets?"),
+        k_("Are you sure you want to delete all items?"), 
+        vtkKWMessageDialog::WarningIcon | 
+        vtkKWMessageDialog::InvokeAtPointer))
+    {
+    vtkKWPresetSelectorInternals::PresetPoolIterator end = 
+      this->Internals->PresetPool.end();
+    int has_removed;
+    do
+      {
+      has_removed = 0;
+      vtkKWPresetSelectorInternals::PresetPoolIterator it = 
+        this->Internals->PresetPool.begin();
+      for (; it != end; ++it)
+        {
+        int id = it->second->Id;
+        if (this->GetPresetVisibility(id) &&
+            this->InvokePresetRemoveCommand(id) &&
+            this->RemovePreset(id))
+          {
+          has_removed = 1;
+          break;
+          }
+        }
+      } while (has_removed);
     }
 }
 
