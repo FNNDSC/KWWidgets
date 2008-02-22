@@ -24,7 +24,7 @@
 #include <vtksys/ios/sstream>
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWScalarComponentSelectionWidget, "$Revision: 1.22 $");
+vtkCxxRevisionMacro(vtkKWScalarComponentSelectionWidget, "$Revision: 1.23 $");
 vtkStandardNewMacro(vtkKWScalarComponentSelectionWidget);
 
 //----------------------------------------------------------------------------
@@ -168,11 +168,6 @@ void vtkKWScalarComponentSelectionWidget::Update()
       {
       menubutton->SetValue("");
       }
-
-    if (!this->IndependentComponents || this->NumberOfComponents <= 1)
-      {
-      this->SelectedComponentOptionMenu->SetEnabled(0);
-      }
     }
 }
 
@@ -182,6 +177,11 @@ void vtkKWScalarComponentSelectionWidget::UpdateEnableState()
   this->Superclass::UpdateEnableState();
 
   this->PropagateEnableState(this->SelectedComponentOptionMenu);
+
+  if (!this->IndependentComponents || this->NumberOfComponents <= 1)
+    {
+    this->SelectedComponentOptionMenu->SetEnabled(0);
+    }
 }
 
 //----------------------------------------------------------------------------
