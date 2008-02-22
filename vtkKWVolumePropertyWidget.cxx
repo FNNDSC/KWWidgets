@@ -54,7 +54,7 @@
 #define VTK_KW_VPW_TESTING 0
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.47 $");
+vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.48 $");
 vtkStandardNewMacro(vtkKWVolumePropertyWidget);
 
 //----------------------------------------------------------------------------
@@ -563,6 +563,7 @@ void vtkKWVolumePropertyWidget::CreateWidget()
   this->ComponentWeightScaleSet->Create();
   this->ComponentWeightScaleSet->SetLabelText(
     ks_("Volume Property Editor|Component Weights:"));
+  this->ComponentWeightScaleSet->SetLabelPositionToTop();
 
   vtkKWScaleWithEntrySet *scaleset = 
     this->ComponentWeightScaleSet->GetWidget();
@@ -580,6 +581,7 @@ void vtkKWVolumePropertyWidget::CreateWidget()
     scaleset->HideWidget(i);
     vtkKWScaleWithEntry *scale = scaleset->GetWidget(i);
     scale->SetResolution(0.01);
+    scale->SetRange(0.0, 1.0);
     sprintf(label, "%d:", i + 1);
     scale->SetLabelText(label);
     sprintf(command, "ComponentWeightChangedCallback %d", i);
