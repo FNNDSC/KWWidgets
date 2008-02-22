@@ -44,7 +44,7 @@
 #include <vtksys/stl/map>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.161 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.162 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -785,10 +785,6 @@ void vtkKWRenderWidget::AddBindings()
     // Setup some default bindings
     
     this->VTKWidget->SetBinding("<Expose>", this, "ExposeCallback");
-    this->VTKWidget->SetBinding("<Enter>", this, "EnterCallback %x %y");
-    this->VTKWidget->SetBinding("<Leave>", this, "LeaveCallback %x %y");
-    this->VTKWidget->SetBinding("<FocusIn>", this, "FocusInCallback");
-    this->VTKWidget->SetBinding("<FocusOut>", this, "FocusOutCallback");
     }
 
   // Many attemps have been made to attach <Configure> to the VTKWidget
@@ -820,10 +816,6 @@ void vtkKWRenderWidget::RemoveBindings()
   if (this->VTKWidget->IsAlive())
     {
     this->VTKWidget->RemoveBinding("<Expose>");
-    this->VTKWidget->RemoveBinding("<Enter>");
-    this->VTKWidget->RemoveBinding("<Leave>");
-    this->VTKWidget->RemoveBinding("<FocusIn>");
-    this->VTKWidget->RemoveBinding("<FocusOut>");
     }
 
   this->RemoveBinding("<Configure>");
@@ -854,6 +846,11 @@ void vtkKWRenderWidget::AddInteractionBindings()
 
   if (this->VTKWidget->IsAlive())
     {
+    this->VTKWidget->SetBinding("<Enter>", this, "EnterCallback %x %y");
+    this->VTKWidget->SetBinding("<Leave>", this, "LeaveCallback %x %y");
+    this->VTKWidget->SetBinding("<FocusIn>", this, "FocusInCallback");
+    this->VTKWidget->SetBinding("<FocusOut>", this, "FocusOutCallback");
+
     typedef struct
     {
       const char *Modifier;
@@ -944,6 +941,11 @@ void vtkKWRenderWidget::RemoveInteractionBindings()
 
   if (this->VTKWidget->IsAlive())
     {
+    this->VTKWidget->RemoveBinding("<Enter>");
+    this->VTKWidget->RemoveBinding("<Leave>");
+    this->VTKWidget->RemoveBinding("<FocusIn>");
+    this->VTKWidget->RemoveBinding("<FocusOut>");
+
     typedef struct
     {
       const char *Modifier;
