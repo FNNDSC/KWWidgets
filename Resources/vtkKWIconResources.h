@@ -985,6 +985,24 @@ static const unsigned char image_netdrive[] =
 
 /* 
  * Resource generated for file:
+ *    oblique_probe.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_oblique_probe_width          = 16;
+static const unsigned int  image_oblique_probe_height         = 16;
+static const unsigned int  image_oblique_probe_pixel_size     = 4;
+static const unsigned long image_oblique_probe_length         = 364;
+static const unsigned long image_oblique_probe_decoded_length = 1024;
+
+static const unsigned char image_oblique_probe[] = 
+  "eNqtkz0KhDAQhdNZ2W0leAIL67SewcLazsLaxmLBQkHBnwvZehMLzxCy88KsiBgWdAMPxJ"
+  "ePSWZetNZCPxCvF0nf0Ma8JK348H1fFkWxiot18naGVh6G4TyOo6iqKifNJHEh43VdJ+I4"
+  "zombmX9HUaT7vtfk/xT2YT845pckSdK2bVFjIaWW+sabpkkEQbAQlzKPe8gsy0Rd1yvtkR"
+  "Z+HYZBep63M8wrkluWJfYokmvhVdM0ruM4O8NS+AeP+SvWeKjxZY5zwJlwNpzRwkvcDXc8"
+  "zS5FL9AT7tti4Y2HHqPX6PmfZjcjC8gE5ya31DceMoasIXPH2eED2URGr7J78o6z226+Hb"
+  "y5R28X+gDQIXmI";
+
+/* 
+ * Resource generated for file:
  *    orientation_cube_annotation.png (zlib, base64) (image file)
  */
 static const unsigned int  image_orientation_cube_annotation_width          = 16;
@@ -1312,6 +1330,28 @@ static const unsigned char image_stopwatch[] =
   "58wBVmGI6y7xsHH+/BY+o4alXUY/2eL/7M2vs2fkpJOR9n2MeepmoGZs9xguac9cKTT4sF"
   "j/8l+zxf+BbLc9h7wOP5oODWpVeY/ylDB8tn4AvP+9+ToXWG4XG3X2/uEfv4+2fr7fvN+k"
   "8tCF7Dnw==";
+
+/* 
+ * Resource generated for file:
+ *    testtube.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_testtube_width          = 16;
+static const unsigned int  image_testtube_height         = 16;
+static const unsigned int  image_testtube_pixel_size     = 3;
+static const unsigned long image_testtube_length         = 672;
+static const unsigned long image_testtube_decoded_length = 768;
+
+static const unsigned char image_testtube[] = 
+  "eNq7/OTJZbLQlSdPzty/P2f//rJly0qWLAGShYsW1a1evebUqUuPH2Oq33D2bFJXl5SaWk"
+  "J2dnJubkpeXlJurmtgoIqNTe2qVSfv3r3+/DlE5bVnzzadO1e6dOmSgwdj09MTq6uXb9y4"
+  "Zf/+A1evBkVEdMybN3XXruqVK4FaIOqBzqhYvnztqVMfv307d/WqY1LS1vPnv/78CUTFFR"
+  "VA8tmHD71bt07Yvv0G2Iplx441rVv34uNHoNTVmzcx1QPRxYcPgd45dPMmUH3VypWrTp6E"
+  "iAPVqzk6FkycCHTP3vPn0/LzIeKvP30Cmrn4yBGg+ux5884+eABXr2JnF19T0zxlSs+SJX"
+  "D1n3/8WHL06LyDB4Hqs+bOvf70KVy9upNTSkND4+TJXQsXZhQUQMSBCBiwEPVAh22BORiX"
+  "+vdfv07auXM+WP203bsnbt8ODBw86h+8eVO6bNm2ixeB6vdfu1a0ePHpe/dwqf/4/fvKEy"
+  "eqVqy4+vQpUD2QnLF3b8PatdefPbuCoR5o787Ll4GxCXQzUAE0PTx+PGHHDqAJMzdtkre2"
+  "tk1Lq+jtBaqPTE9feOhQ8ZIly48fR0s/QL3rT5/OmT1b2dLSIjraMj7eKznZLS+vdvXqA9"
+  "evXwG7BEsqffp03cmThbW1QNQxezYkQpERAK4JK2s=";
 
 /* 
  * Resource generated for file:

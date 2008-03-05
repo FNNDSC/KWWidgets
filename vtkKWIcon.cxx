@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.43 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.44 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -479,6 +479,15 @@ void vtkKWIcon::SetImage(int image)
         image_move_v_length);
       break;      
 
+    case vtkKWIcon::IconObliqueProbe:
+      this->SetImage(
+        image_oblique_probe, 
+        image_oblique_probe_width, 
+        image_oblique_probe_height,
+        image_oblique_probe_pixel_size, 
+        image_oblique_probe_length);
+      break;
+
     case vtkKWIcon::IconOrientationCubeAnnotation:
       this->SetImage(
         image_orientation_cube_annotation, 
@@ -936,6 +945,14 @@ void vtkKWIcon::SetImage(int image)
         image_folderxp_width, image_folderxp_height,
         image_folderxp_pixel_size, 
         image_folderxp_length);
+      break;
+
+    case vtkKWIcon::IconTestTube:
+      this->SetImage(
+        image_testtube, 
+        image_testtube_width, image_testtube_height,
+        image_testtube_pixel_size, 
+        image_testtube_length);
       break;
     }
 }

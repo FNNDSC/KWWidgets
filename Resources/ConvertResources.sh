@@ -66,6 +66,7 @@ KWConvertImageToHeader --zlib --base64 \
     move_h.png \
     move_v.png \
     netdrive.png \
+    oblique_probe.png \
     orientation_cube_annotation.png \
     pan_hand.png \
     plus.png \
@@ -89,6 +90,7 @@ KWConvertImageToHeader --zlib --base64 \
     spin_right.png \
     spin_up.png \
     stopwatch.png \
+    testtube.png \
     transport_beginning.png \
     transport_end.png \
     transport_fast_forward.png \
