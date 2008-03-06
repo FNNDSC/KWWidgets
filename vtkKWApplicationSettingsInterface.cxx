@@ -40,7 +40,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWApplicationSettingsInterface);
-vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.60 $");
+vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.61 $");
 
 //----------------------------------------------------------------------------
 vtkKWApplicationSettingsInterface::vtkKWApplicationSettingsInterface()
@@ -445,7 +445,7 @@ void vtkKWApplicationSettingsInterface::Create()
   this->PrintSettingsFrame->SetParent(this->GetPagesParentWidget());
   this->PrintSettingsFrame->Create();
   this->PrintSettingsFrame->SetLabelText(
-    ks_("Application Settings|Page Setup"));
+    ks_("Application Settings|Print Settings"));
     
   tk_cmd << "pack " << this->PrintSettingsFrame->GetWidgetName()
          << " -side top -anchor nw -fill x -padx 2 -pady 2 "  
