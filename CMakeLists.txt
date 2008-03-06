@@ -520,11 +520,10 @@ ENDIF(WIN32)
 # --------------------------------------------------------------------------
 # Internationalization
 
-IF(DEFINED KWWidgets_USE_INTERNATIONALIZATION)
-  SET(default_val ${KWWidgets_USE_INTERNATIONALIZATION})
-ELSE(DEFINED KWWidgets_USE_INTERNATIONALIZATION)
-  SET(default_val 0)
-ENDIF(DEFINED KWWidgets_USE_INTERNATIONALIZATION)
+SET(default_val 0)
+IF(DEFINED KWWidgets_USE_INTERNATIONALIZATION_DEFAULT)
+  SET(default_val ${KWWidgets_USE_INTERNATIONALIZATION_DEFAULT})
+ENDIF(DEFINED KWWidgets_USE_INTERNATIONALIZATION_DEFAULT)
 OPTION(KWWidgets_USE_INTERNATIONALIZATION 
   "Enable internationalization support in KWWidgets." ${default_val})
 MARK_AS_ADVANCED(KWWidgets_USE_INTERNATIONALIZATION)
@@ -553,11 +552,10 @@ ENDIF(KWWidgets_USE_INTERNATIONALIZATION)
 # --------------------------------------------------------------------------
 # Use [incr Tcl]
 
-IF(DEFINED KWWidgets_USE_INCR_TCL)
-  SET(default_val ${KWWidgets_USE_INCR_TCL})
-ELSE(DEFINED KWWidgets_USE_INCR_TCL)
-  SET(default_val 0)
-ENDIF(DEFINED KWWidgets_USE_INCR_TCL)
+SET(default_val 0)
+IF(DEFINED KWWidgets_USE_INCR_TCL_DEFAULT)
+  SET(default_val ${KWWidgets_USE_INCR_TCL_DEFAULT})
+ENDIF(DEFINED KWWidgets_USE_INCR_TCL_DEFAULT)
 OPTION(KWWidgets_USE_INCR_TCL 
   "Enable [incr Tcl] support in KWWidgets." ${default_val})
 MARK_AS_ADVANCED(KWWidgets_USE_INCR_TCL)
