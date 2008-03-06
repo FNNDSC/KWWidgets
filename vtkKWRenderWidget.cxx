@@ -44,7 +44,7 @@
 #include <vtksys/stl/map>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.162 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.163 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -96,6 +96,7 @@ vtkKWRenderWidget::vtkKWRenderWidget()
 
   this->RenderWindow = vtkRenderWindow::New();
   this->RenderWindow->SetNumberOfLayers(2);
+  this->RenderWindow->SetAlphaBitPlanes(1);
 
   // Create a default (generic) interactor, which is pretty much
   // the only way to interact with a VTK Tk render widget
