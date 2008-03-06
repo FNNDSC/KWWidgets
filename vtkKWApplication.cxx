@@ -88,7 +88,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.325 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.326 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1632,9 +1632,11 @@ vtkKWBalloonHelpManager *vtkKWApplication::GetBalloonHelpManager()
 }
 
 //----------------------------------------------------------------------------
-int vtkKWApplication::SetRegistryValue(int level, const char* subkey, 
+int vtkKWApplication::SetRegistryValue(int level, 
+                                       const char* subkey, 
                                        const char* key, 
-                                       const char* format, ...)
+                                       const char* format, 
+                                       ...)
 {
   if (this->GetRegistryLevel() < 0 || this->GetRegistryLevel() < level)
     {
@@ -1656,10 +1658,13 @@ int vtkKWApplication::SetRegistryValue(int level, const char* subkey,
 }
 
 //----------------------------------------------------------------------------
-int vtkKWApplication::GetRegistryValue(int level, const char* subkey, 
-                                       const char* key, char* value)
+int vtkKWApplication::GetRegistryValue(int level, 
+                                       const char* subkey, 
+                                       const char* key, 
+                                       char* value)
 {
-  if (this->GetRegistryLevel() < 0 || this->GetRegistryLevel() < level)
+  if (this->GetRegistryLevel() < 0 || this->GetRegistryLevel() < level ||
+      !value)
     {
     return 0;
     }
@@ -1673,7 +1678,7 @@ int vtkKWApplication::GetRegistryValue(int level, const char* subkey,
 
   buff[0] = 0;
   res = reg->ReadValue(buffer, key, buff);
-  if (res && *buff && value)
+  if (res)
     {
     *value = 0;
     strcpy(value, buff);
@@ -1683,7 +1688,8 @@ int vtkKWApplication::GetRegistryValue(int level, const char* subkey,
 }
 
 //----------------------------------------------------------------------------
-int vtkKWApplication::DeleteRegistryValue(int level, const char* subkey, 
+int vtkKWApplication::DeleteRegistryValue(int level, 
+                                          const char* subkey, 
                                           const char* key)
 {
   if (this->GetRegistryLevel() < 0 || this->GetRegistryLevel() < level)
@@ -1700,7 +1706,8 @@ int vtkKWApplication::DeleteRegistryValue(int level, const char* subkey,
 }
 
 //----------------------------------------------------------------------------
-int vtkKWApplication::HasRegistryValue(int level, const char* subkey, 
+int vtkKWApplication::HasRegistryValue(int level, 
+                                       const char* subkey, 
                                        const char* key)
 {
   char buffer[vtkKWRegistryHelper::RegistryKeyValueSizeMax];
@@ -1708,7 +1715,8 @@ int vtkKWApplication::HasRegistryValue(int level, const char* subkey,
 }
 
 //----------------------------------------------------------------------------
-float vtkKWApplication::GetFloatRegistryValue(int level, const char* subkey, 
+float vtkKWApplication::GetFloatRegistryValue(int level, 
+                                              const char* subkey, 
                                               const char* key)
 {
   if (this->GetRegistryLevel() < 0 || this->GetRegistryLevel() < level)
@@ -1725,8 +1733,9 @@ float vtkKWApplication::GetFloatRegistryValue(int level, const char* subkey,
 }
 
 //----------------------------------------------------------------------------
-int vtkKWApplication::GetIntRegistryValue(int level, const char* subkey, 
-                                      const char* key)
+int vtkKWApplication::GetIntRegistryValue(int level, 
+                                          const char* subkey, 
+                                          const char* key)
 {
   if (this->GetRegistryLevel() < 0 || this->GetRegistryLevel() < level)
     {
@@ -1742,8 +1751,10 @@ int vtkKWApplication::GetIntRegistryValue(int level, const char* subkey,
 }
 
 //----------------------------------------------------------------------------
-int vtkKWApplication::GetBooleanRegistryValue(
-  int level, const char* subkey, const char* key, const char* trueval)
+int vtkKWApplication::GetBooleanRegistryValue(int level, 
+                                              const char* subkey, 
+                                              const char* key, 
+                                              const char* trueval)
 {
   if (this->GetRegistryLevel() < 0 || this->GetRegistryLevel() < level)
     {
@@ -1762,16 +1773,18 @@ int vtkKWApplication::GetBooleanRegistryValue(
 }
 
 //----------------------------------------------------------------------------
-void vtkKWApplication::SaveColorRegistryValue(
-  int level, const char* key, double rgb[3])
+void vtkKWApplication::SaveColorRegistryValue(int level, 
+                                              const char* key, 
+                                              double rgb[3])
 {
   this->SetRegistryValue(
     level, "Colors", key, "Color: %lf %lf %lf", rgb[0], rgb[1], rgb[2]);
 }
 
 //----------------------------------------------------------------------------
-int vtkKWApplication::RetrieveColorRegistryValue(
-  int level, const char* key, double rgb[3])
+int vtkKWApplication::RetrieveColorRegistryValue(int level, 
+                                                 const char* key, 
+                                                 double rgb[3])
 {
   char buffer[1024];
   rgb[0] = -1;
