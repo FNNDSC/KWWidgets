@@ -78,7 +78,7 @@ ENDIF(KWWidgets_BUILD_EXAMPLES)
 # based on KWWidgets, you should omit this section, unless your application
 # supports that feature too and you checked how the macro is working.
 
-IF(BUILD_TESTING)
+IF(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
   INCLUDE("${KWWidgets_CMAKE_DIR}/KWWidgetsTestingMacros.cmake")
   KWWidgets_ADD_TEST_FROM_C_EXAMPLE(KWWidgets-${PROJECT_NAME} ${EXE_NAME})
-ENDIF(BUILD_TESTING)
+ENDIF(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
