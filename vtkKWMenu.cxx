@@ -33,7 +33,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.121 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.122 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMenuInternals
@@ -480,8 +480,13 @@ const char* vtkKWMenu::GetItemVariableValue(const char *varname)
 //----------------------------------------------------------------------------
 void vtkKWMenu::SetItemVariableValue(const char *varname, const char *value)
 {
-  this->Script("if {![info exists %s] || \"$%s\" ne \"%s\"} {set %s \"%s\"}",
-               varname, varname, value, varname, value);
+  if (varname)
+    {
+    this->Script("if {![info exists %s] || \"$%s\" ne \"%s\"} {set %s \"%s\"}",
+                 varname, 
+                 varname, value ? value : "", 
+                 varname, value ? value : "");
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -498,8 +503,11 @@ int vtkKWMenu::GetItemVariableValueAsInt(const char *varname)
 //----------------------------------------------------------------------------
 void vtkKWMenu::SetItemVariableValueAsInt(const char *varname, int value)
 {
-  this->Script("if {![info exists %s] || $%s != %d} {set %s %d}",
-               varname, varname, value, varname, value);
+  if (varname)
+    {
+    this->Script("if {![info exists %s] || $%s != %d} {set %s %d}",
+                 varname, varname, value, varname, value);
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -509,8 +517,11 @@ void vtkKWMenu::SetItemVariable(int index, const char *varname)
     {
     return;
     }
-  this->Script("%s entryconfigure %d -variable {%s}", 
-               this->GetWidgetName(), index, varname);
+  if (varname)
+    {
+    this->Script("%s entryconfigure %d -variable {%s}", 
+                 this->GetWidgetName(), index, varname);
+    }
 }
 
 //----------------------------------------------------------------------------

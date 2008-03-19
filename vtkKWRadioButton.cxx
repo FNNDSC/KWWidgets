@@ -19,7 +19,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWRadioButton );
-vtkCxxRevisionMacro(vtkKWRadioButton, "$Revision: 1.32 $");
+vtkCxxRevisionMacro(vtkKWRadioButton, "$Revision: 1.33 $");
 
 //----------------------------------------------------------------------------
 void vtkKWRadioButton::CreateWidget()
@@ -63,16 +63,16 @@ int vtkKWRadioButton::GetValueAsInt()
 //----------------------------------------------------------------------------
 void vtkKWRadioButton::SetVariableValue(const char *v)
 {
-  if (this->IsCreated())
+  if (this->IsCreated() && this->GetVariableName())
     {
-    this->Script("set %s {%s}", this->GetVariableName(), v);
+    this->Script("set %s {%s}", this->GetVariableName(), v ? v : "");
     }
 }
 
 //----------------------------------------------------------------------------
 const char* vtkKWRadioButton::GetVariableValue()
 {
-  if (this->IsCreated())
+  if (this->IsCreated() && this->GetVariableName())
     {
     return this->Script("set %s", this->GetVariableName());
     }
@@ -96,7 +96,7 @@ int vtkKWRadioButton::GetVariableValueAsInt()
 //----------------------------------------------------------------------------
 int vtkKWRadioButton::GetSelectedState()
 {
-  if (this->IsCreated())
+  if (this->IsCreated() && this->GetVariableName())
     {
 #if 0
     return atoi(

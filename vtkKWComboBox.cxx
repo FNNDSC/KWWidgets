@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWComboBox);
-vtkCxxRevisionMacro(vtkKWComboBox, "$Revision: 1.19 $");
+vtkCxxRevisionMacro(vtkKWComboBox, "$Revision: 1.20 $");
 
 //----------------------------------------------------------------------------
 vtkKWComboBox::vtkKWComboBox()
@@ -79,7 +79,7 @@ void vtkKWComboBox::SetValue(const char *s)
 //----------------------------------------------------------------------------
 void vtkKWComboBox::AddValue(const char* value)
 {
-  if (!this->IsCreated() || this->HasValue(value))
+  if (!this->IsCreated() || !value || this->HasValue(value))
     {
     return;
     }
@@ -99,7 +99,7 @@ void vtkKWComboBox::AddValueAsInt(int value)
 //----------------------------------------------------------------------------
 void vtkKWComboBox::ReplaceNthValue( int idx, const char *value )
 {
-  if (!this->IsCreated() || this->HasValue(value))
+  if (!this->IsCreated() || !value || this->HasValue(value))
     {
     return;
     }
