@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDialog );
-vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.58 $");
+vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.59 $");
 
 //----------------------------------------------------------------------------
 vtkKWDialog::vtkKWDialog()
@@ -38,6 +38,12 @@ int vtkKWDialog::PreInvoke()
 
   if (!this->IsMapped())
     {
+    vtkKWTopLevel *master_top = 
+      vtkKWTopLevel::SafeDownCast(this->GetMasterWindow());
+    if (master_top && !master_top->IsMapped())
+      {
+      master_top->Display();
+      }
     this->GetApplication()->RegisterDialogUp(this);
     this->Display();
     }
