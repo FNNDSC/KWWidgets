@@ -1,4 +1,4 @@
-proc vtkKWColorPresetSelectorEntryPoint {parent win} {
+proc vtkKWColorPresetMenuEntryPoint {parent win} {
 
   set app [$parent GetApplication] 
 
@@ -38,7 +38,7 @@ proc vtkKWColorPresetSelectorEntryPoint {parent win} {
 
   # Create a color preset selector
 
-  set cpsel1 [vtkKWColorPresetSelector New]
+  set cpsel1 [vtkKWColorPresetMenu New]
   $cpsel1 SetParent $parent
   $cpsel1 Create
   $cpsel1 SetColorTransferFunction $cpsel_func
@@ -53,7 +53,7 @@ proc vtkKWColorPresetSelectorEntryPoint {parent win} {
 
   # Create another color preset selector only the solid color
 
-  set cpsel2 [vtkKWColorPresetSelector New]
+  set cpsel2 [vtkKWColorPresetMenu New]
   $cpsel2 SetParent $parent
   $cpsel2 Create
   $cpsel2 SetLabelText "Solid Color Presets:"
@@ -69,7 +69,7 @@ proc vtkKWColorPresetSelectorEntryPoint {parent win} {
 
   # Create another color preset selector custom colors
 
-  set cpsel3 [vtkKWColorPresetSelector New]
+  set cpsel3 [vtkKWColorPresetMenu New]
   $cpsel3 SetParent $parent
   $cpsel3 Create
   $cpsel3 SetLabelPositionToRight
@@ -93,6 +93,6 @@ proc vtkKWColorPresetSelectorEntryPoint {parent win} {
   pack [$cpsel_tfunc_editor GetWidgetName] -side top -anchor nw -expand n -padx 2 -pady 20
 }
 
-proc vtkKWColorPresetSelectorGetType {} {
+proc vtkKWColorPresetMenuGetType {} {
   return "TypeVTK"
 }

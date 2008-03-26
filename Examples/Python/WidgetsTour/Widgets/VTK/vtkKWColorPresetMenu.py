@@ -1,4 +1,4 @@
-from kwwidgets import vtkKWColorPresetSelector
+from kwwidgets import vtkKWColorPresetMenu
 from kwwidgets import vtkKWColorTransferFunctionEditor
 from vtk import vtkColorTransferFunction
 from kwwidgets import vtkKWApplication
@@ -6,7 +6,7 @@ from kwwidgets import vtkKWWindow
 
 
 
-def vtkKWColorPresetSelectorEntryPoint(parent, win):
+def vtkKWColorPresetMenuEntryPoint(parent, win):
 
     app = parent.GetApplication()
     
@@ -47,7 +47,7 @@ def vtkKWColorPresetSelectorEntryPoint(parent, win):
     
     # Create a color preset selector
     
-    cpsel1 = vtkKWColorPresetSelector()
+    cpsel1 = vtkKWColorPresetMenu()
     cpsel1.SetParent(parent)
     cpsel1.Create()
     cpsel1.SetColorTransferFunction(cpsel_func)
@@ -64,7 +64,7 @@ def vtkKWColorPresetSelectorEntryPoint(parent, win):
     
     # Create another color preset selector, only the solid color
     
-    cpsel2 = vtkKWColorPresetSelector()
+    cpsel2 = vtkKWColorPresetMenu()
     cpsel2.SetParent(parent)
     cpsel2.Create()
     cpsel2.SetLabelText("Solid Color Presets:")
@@ -82,7 +82,7 @@ def vtkKWColorPresetSelectorEntryPoint(parent, win):
     
     # Create another color preset selector, custom colors
     
-    cpsel3 = vtkKWColorPresetSelector()
+    cpsel3 = vtkKWColorPresetMenu()
     cpsel3.SetParent(parent)
     cpsel3.Create()
     cpsel3.SetLabelPositionToRight()

@@ -1,6 +1,6 @@
 /*=========================================================================
 
-  Module:    $RCSfile: vtkKWColorPresetSelector.h,v $
+  Module:    $RCSfile: vtkKWColorPresetMenu.h,v $
 
   Copyright (c) Kitware, Inc.
   All rights reserved.
@@ -11,26 +11,26 @@
      PURPOSE.  See the above copyright notice for more information.
 
 =========================================================================*/
-// .NAME vtkKWColorPresetSelector - a color preset selector.
+// .NAME vtkKWColorPresetMenu - a color preset selector.
 // .SECTION Description
 // This class displays a color preset selector as an option menu.
 // Different type of presets can be enabled/disabled.
 // .SECTION See Also
 // vtkKWMenuButton
 
-#ifndef __vtkKWColorPresetSelector_h
-#define __vtkKWColorPresetSelector_h
+#ifndef __vtkKWColorPresetMenu_h
+#define __vtkKWColorPresetMenu_h
 
 #include "vtkKWMenuButtonWithLabel.h"
 
 class vtkColorTransferFunction;
-class vtkKWColorPresetSelectorInternals;
+class vtkKWColorPresetMenuInternals;
 
-class KWWidgets_EXPORT vtkKWColorPresetSelector : public vtkKWMenuButtonWithLabel
+class KWWidgets_EXPORT vtkKWColorPresetMenu : public vtkKWMenuButtonWithLabel
 {
 public:
-  static vtkKWColorPresetSelector* New();
-  vtkTypeRevisionMacro(vtkKWColorPresetSelector,vtkKWMenuButtonWithLabel);
+  static vtkKWColorPresetMenu* New();
+  vtkTypeRevisionMacro(vtkKWColorPresetMenu,vtkKWMenuButtonWithLabel);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
@@ -144,8 +144,8 @@ public:
   virtual void PresetSelectedCallback(const char *name);
 
 protected:
-  vtkKWColorPresetSelector();
-  ~vtkKWColorPresetSelector();
+  vtkKWColorPresetMenu();
+  ~vtkKWColorPresetMenu();
 
   // Description:
   // Create the widget.
@@ -164,7 +164,7 @@ protected:
 
   // PIMPL Encapsulation for STL containers
 
-  vtkKWColorPresetSelectorInternals *Internals;
+  vtkKWColorPresetMenuInternals *Internals;
 
   // Description:
   // Query if there is a preset with a given name, create a preset
@@ -200,8 +200,8 @@ protected:
   virtual void PopulatePresetMenu();
 
 private:
-  vtkKWColorPresetSelector(const vtkKWColorPresetSelector&); // Not implemented
-  void operator=(const vtkKWColorPresetSelector&); // Not Implemented
+  vtkKWColorPresetMenu(const vtkKWColorPresetMenu&); // Not implemented
+  void operator=(const vtkKWColorPresetMenu&); // Not Implemented
 };
 
 #endif

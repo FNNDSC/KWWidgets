@@ -1,4 +1,4 @@
-#include "vtkKWColorPresetSelector.h"
+#include "vtkKWColorPresetMenu.h"
 #include "vtkKWColorTransferFunctionEditor.h"
 #include "vtkColorTransferFunction.h"
 #include "vtkKWApplication.h"
@@ -6,14 +6,14 @@
 
 #include "vtkKWWidgetsTourExample.h"
 
-class vtkKWColorPresetSelectorItem : public KWWidgetsTourItem
+class vtkKWColorPresetMenuItem : public KWWidgetsTourItem
 {
 public:
   virtual int GetType();
   virtual void Create(vtkKWWidget *parent, vtkKWWindow *);
 };
 
-void vtkKWColorPresetSelectorItem::Create(vtkKWWidget *parent, vtkKWWindow *)
+void vtkKWColorPresetMenuItem::Create(vtkKWWidget *parent, vtkKWWindow *)
 {
   vtkKWApplication *app = parent->GetApplication();
 
@@ -55,7 +55,7 @@ void vtkKWColorPresetSelectorItem::Create(vtkKWWidget *parent, vtkKWWindow *)
 
   // Create a color preset selector
 
-  vtkKWColorPresetSelector *cpsel1 = vtkKWColorPresetSelector::New();
+  vtkKWColorPresetMenu *cpsel1 = vtkKWColorPresetMenu::New();
   cpsel1->SetParent(parent);
   cpsel1->Create();
   cpsel1->SetColorTransferFunction(cpsel_func);
@@ -72,7 +72,7 @@ void vtkKWColorPresetSelectorItem::Create(vtkKWWidget *parent, vtkKWWindow *)
 
   // Create another color preset selector, only the solid color
 
-  vtkKWColorPresetSelector *cpsel2 = vtkKWColorPresetSelector::New();
+  vtkKWColorPresetMenu *cpsel2 = vtkKWColorPresetMenu::New();
   cpsel2->SetParent(parent);
   cpsel2->Create();
   cpsel2->SetLabelText("Solid Color Presets:");
@@ -90,7 +90,7 @@ void vtkKWColorPresetSelectorItem::Create(vtkKWWidget *parent, vtkKWWindow *)
 
   // Create another color preset selector, custom colors
 
-  vtkKWColorPresetSelector *cpsel3 = vtkKWColorPresetSelector::New();
+  vtkKWColorPresetMenu *cpsel3 = vtkKWColorPresetMenu::New();
   cpsel3->SetParent(parent);
   cpsel3->Create();
   cpsel3->SetLabelPositionToRight();
@@ -124,12 +124,12 @@ void vtkKWColorPresetSelectorItem::Create(vtkKWWidget *parent, vtkKWWindow *)
   cpsel_func->Delete();
 }
 
-int vtkKWColorPresetSelectorItem::GetType()
+int vtkKWColorPresetMenuItem::GetType()
 {
   return KWWidgetsTourItem::TypeVTK;
 }
 
-KWWidgetsTourItem* vtkKWColorPresetSelectorEntryPoint()
+KWWidgetsTourItem* vtkKWColorPresetMenuEntryPoint()
 {
-  return new vtkKWColorPresetSelectorItem();
+  return new vtkKWColorPresetMenuItem();
 }

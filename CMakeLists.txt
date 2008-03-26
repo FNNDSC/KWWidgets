@@ -266,7 +266,7 @@ IF(KWWidgets_BUILD_VTK_WIDGETS)
     MESSAGE(FATAL_ERROR "Please set VTK_USE_TK to ON in VTK for KWWidgets_BUILD_VTK_WIDGETS to be ON as well.")
   ENDIF(NOT VTK_USE_TK)
   SET(KWWidgets_SRCS ${KWWidgets_SRCS}
-    vtkKWColorPresetSelector.cxx
+    vtkKWColorPresetMenu.cxx
     vtkKWColorTransferFunctionEditor.cxx
     vtkKWCornerAnnotationEditor.cxx
     vtkKWGenericRenderWindowInteractor.cxx

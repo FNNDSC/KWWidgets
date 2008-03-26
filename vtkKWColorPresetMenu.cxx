@@ -1,6 +1,6 @@
 /*=========================================================================
 
-  Module:    $RCSfile: vtkKWColorPresetSelector.cxx,v $
+  Module:    $RCSfile: vtkKWColorPresetMenu.cxx,v $
 
   Copyright (c) Kitware, Inc.
   All rights reserved.
@@ -12,7 +12,7 @@
 
 =========================================================================*/
 
-#include "vtkKWColorPresetSelector.h"
+#include "vtkKWColorPresetMenu.h"
 
 #include "vtkColorTransferFunction.h"
 #include "vtkKWLabel.h"
@@ -27,13 +27,13 @@
 #include <vtksys/stl/string>
 
 //----------------------------------------------------------------------------
-vtkStandardNewMacro(vtkKWColorPresetSelector);
-vtkCxxRevisionMacro(vtkKWColorPresetSelector, "$Revision: 1.29 $");
+vtkStandardNewMacro(vtkKWColorPresetMenu);
+vtkCxxRevisionMacro(vtkKWColorPresetMenu, "$Revision: 1.1 $");
 
-vtkCxxSetObjectMacro(vtkKWColorPresetSelector,ColorTransferFunction,vtkColorTransferFunction);
+vtkCxxSetObjectMacro(vtkKWColorPresetMenu,ColorTransferFunction,vtkColorTransferFunction);
 
 //----------------------------------------------------------------------------
-class vtkKWColorPresetSelectorInternals
+class vtkKWColorPresetMenuInternals
 {
 public:
   struct PresetNode
@@ -49,7 +49,7 @@ public:
 };
 
 //----------------------------------------------------------------------------
-vtkKWColorPresetSelector::vtkKWColorPresetSelector()
+vtkKWColorPresetMenu::vtkKWColorPresetMenu()
 {
   // Create a default transfer function
 
@@ -64,7 +64,7 @@ vtkKWColorPresetSelector::vtkKWColorPresetSelector()
 
   // Internal structs (the presets)
 
-  this->Internals = new vtkKWColorPresetSelectorInternals;
+  this->Internals = new vtkKWColorPresetMenuInternals;
 
   this->PreviewSize                 = 12;
   this->SolidColorPresetsVisibility = 1;
@@ -78,7 +78,7 @@ vtkKWColorPresetSelector::vtkKWColorPresetSelector()
 }
 
 //----------------------------------------------------------------------------
-vtkKWColorPresetSelector::~vtkKWColorPresetSelector()
+vtkKWColorPresetMenu::~vtkKWColorPresetMenu()
 {
   this->SetColorTransferFunction(NULL);
 
@@ -99,13 +99,13 @@ vtkKWColorPresetSelector::~vtkKWColorPresetSelector()
 
 //----------------------------------------------------------------------------
 vtkColorTransferFunction* 
-vtkKWColorPresetSelector::GetPresetColorTransferFunction(const char *name)
+vtkKWColorPresetMenu::GetPresetColorTransferFunction(const char *name)
 {
   if (name)
     {
-    vtkKWColorPresetSelectorInternals::PresetContainerIterator it = 
+    vtkKWColorPresetMenuInternals::PresetContainerIterator it = 
       this->Internals->Presets.begin();
-    vtkKWColorPresetSelectorInternals::PresetContainerIterator end = 
+    vtkKWColorPresetMenuInternals::PresetContainerIterator end = 
       this->Internals->Presets.end();
     for (; it != end; ++it)
       {
@@ -120,7 +120,7 @@ vtkKWColorPresetSelector::GetPresetColorTransferFunction(const char *name)
 }
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::MapColorTransferFunction(
+int vtkKWColorPresetMenu::MapColorTransferFunction(
   vtkColorTransferFunction *source, double source_range[2],
   vtkColorTransferFunction *target, double target_range[2])
 {
@@ -155,13 +155,13 @@ int vtkKWColorPresetSelector::MapColorTransferFunction(
 
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::HasPreset(const char *name)
+int vtkKWColorPresetMenu::HasPreset(const char *name)
 {
   return this->GetPresetColorTransferFunction(name) ? 1 : 0;
 }
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::AllocatePreset(const char *name)
+int vtkKWColorPresetMenu::AllocatePreset(const char *name)
 {
   if (!name || this->HasPreset(name))
     {
@@ -170,7 +170,7 @@ int vtkKWColorPresetSelector::AllocatePreset(const char *name)
 
   // Create a new node and allocate a new color tfunc
 
-  vtkKWColorPresetSelectorInternals::PresetNode node;
+  vtkKWColorPresetMenuInternals::PresetNode node;
   node.Name.assign(name); 
   node.ColorTransferFunction = vtkColorTransferFunction::New();
   node.ColorTransferFunction->Register(this);
@@ -184,13 +184,13 @@ int vtkKWColorPresetSelector::AllocatePreset(const char *name)
 }
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::RemovePreset(const char *name)
+int vtkKWColorPresetMenu::RemovePreset(const char *name)
 {
   if (name && this->Internals)
     {
-    vtkKWColorPresetSelectorInternals::PresetContainerIterator it = 
+    vtkKWColorPresetMenuInternals::PresetContainerIterator it = 
       this->Internals->Presets.begin();
-    vtkKWColorPresetSelectorInternals::PresetContainerIterator end = 
+    vtkKWColorPresetMenuInternals::PresetContainerIterator end = 
       this->Internals->Presets.end();
     for (; it != end; ++it)
       {
@@ -212,13 +212,13 @@ int vtkKWColorPresetSelector::RemovePreset(const char *name)
 }
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::RemoveAllPresets()
+int vtkKWColorPresetMenu::RemoveAllPresets()
 {
   if (this->Internals)
     {
-    vtkKWColorPresetSelectorInternals::PresetContainerIterator it = 
+    vtkKWColorPresetMenuInternals::PresetContainerIterator it = 
       this->Internals->Presets.begin();
-    vtkKWColorPresetSelectorInternals::PresetContainerIterator end = 
+    vtkKWColorPresetMenuInternals::PresetContainerIterator end = 
       this->Internals->Presets.end();
     for (; it != end; ++it)
       {
@@ -236,7 +236,7 @@ int vtkKWColorPresetSelector::RemoveAllPresets()
 }
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::AddPreset(
+int vtkKWColorPresetMenu::AddPreset(
   const char *name, vtkColorTransferFunction *func, double range[2])
 {
   // Check parameters, check if preset is not present, add it otherwise
@@ -265,35 +265,35 @@ int vtkKWColorPresetSelector::AddPreset(
 }
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::AddSolidRGBPreset(
+int vtkKWColorPresetMenu::AddSolidRGBPreset(
   const char *name, double r, double g, double b)
 {
   return this->AddGradientRGBPreset(name, r, g, b, r, g, b);
 }
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::AddSolidRGBPreset(
+int vtkKWColorPresetMenu::AddSolidRGBPreset(
   const char *name, double rgb[3])
 {
   return this->AddGradientRGBPreset(name, rgb, rgb);
 }
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::AddSolidHSVPreset(
+int vtkKWColorPresetMenu::AddSolidHSVPreset(
   const char *name, double h, double s, double v)
 {
   return this->AddGradientHSVPreset(name, h, s, v, h, s, v);
 }
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::AddSolidHSVPreset(
+int vtkKWColorPresetMenu::AddSolidHSVPreset(
   const char *name, double hsv[3])
 {
   return this->AddGradientHSVPreset(name, hsv, hsv);
 }
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::AddGradientRGBPreset(
+int vtkKWColorPresetMenu::AddGradientRGBPreset(
   const char *name, double rgb1[3], double rgb2[3])
 {
   if (!rgb1 || !rgb2)
@@ -305,7 +305,7 @@ int vtkKWColorPresetSelector::AddGradientRGBPreset(
 }
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::AddGradientRGBPreset(
+int vtkKWColorPresetMenu::AddGradientRGBPreset(
   const char *name, 
   double r1, double g1, double b1, 
   double r2, double g2, double b2)
@@ -322,7 +322,7 @@ int vtkKWColorPresetSelector::AddGradientRGBPreset(
 }
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::AddGradientHSVPreset(
+int vtkKWColorPresetMenu::AddGradientHSVPreset(
   const char *name, double hsv1[3], double hsv2[3])
 {
   if (!hsv1 || !hsv2)
@@ -334,7 +334,7 @@ int vtkKWColorPresetSelector::AddGradientHSVPreset(
 }
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::AddGradientHSVPreset(
+int vtkKWColorPresetMenu::AddGradientHSVPreset(
   const char *name, 
   double h1, double s1, double v1, 
   double h2, double s2, double v2)
@@ -351,7 +351,7 @@ int vtkKWColorPresetSelector::AddGradientHSVPreset(
 }
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::AddFlagRGBPreset(
+int vtkKWColorPresetMenu::AddFlagRGBPreset(
   const char *name, int nb_colors, double **rgb, int repeat)
 {
   if (!name || nb_colors < 1 || !rgb || repeat < 1)
@@ -414,7 +414,7 @@ int vtkKWColorPresetSelector::AddFlagRGBPreset(
 }
 
 //----------------------------------------------------------------------------
-void vtkKWColorPresetSelector::CreateDefaultPresets()
+void vtkKWColorPresetMenu::CreateDefaultPresets()
 {
   vtkColorTransferFunction *func;
 
@@ -610,7 +610,7 @@ void vtkKWColorPresetSelector::CreateDefaultPresets()
 }
 
 // ---------------------------------------------------------------------------
-void vtkKWColorPresetSelector::CreateWidget()
+void vtkKWColorPresetMenu::CreateWidget()
 {
   if (this->IsCreated())
     {
@@ -636,7 +636,7 @@ void vtkKWColorPresetSelector::CreateWidget()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWColorPresetSelector::PresetSelectedCallback(const char *name)
+void vtkKWColorPresetMenu::PresetSelectedCallback(const char *name)
 {
   if (!name || !this->ColorTransferFunction)
     {
@@ -670,7 +670,7 @@ void vtkKWColorPresetSelector::PresetSelectedCallback(const char *name)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWColorPresetSelector::SetPreviewSize(int arg)
+void vtkKWColorPresetMenu::SetPreviewSize(int arg)
 {
   if (arg < 3)
     {
@@ -690,7 +690,7 @@ void vtkKWColorPresetSelector::SetPreviewSize(int arg)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWColorPresetSelector::SetSolidColorPresetsVisibility(int arg)
+void vtkKWColorPresetMenu::SetSolidColorPresetsVisibility(int arg)
 {
   if (this->SolidColorPresetsVisibility == arg)
     {
@@ -705,7 +705,7 @@ void vtkKWColorPresetSelector::SetSolidColorPresetsVisibility(int arg)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWColorPresetSelector::SetGradientPresetsVisibility(int arg)
+void vtkKWColorPresetMenu::SetGradientPresetsVisibility(int arg)
 {
   if (this->GradientPresetsVisibility == arg)
     {
@@ -720,7 +720,7 @@ void vtkKWColorPresetSelector::SetGradientPresetsVisibility(int arg)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWColorPresetSelector::SetPresetNameVisibility(int arg)
+void vtkKWColorPresetMenu::SetPresetNameVisibility(int arg)
 {
   if (this->PresetNameVisibility == arg)
     {
@@ -735,7 +735,7 @@ void vtkKWColorPresetSelector::SetPresetNameVisibility(int arg)
 }
 
 // ---------------------------------------------------------------------------
-void vtkKWColorPresetSelector::PopulatePresetMenu()
+void vtkKWColorPresetMenu::PopulatePresetMenu()
 {
   if (!this->IsCreated())
     {
@@ -751,9 +751,9 @@ void vtkKWColorPresetSelector::PopulatePresetMenu()
   double *data_start, *data_ptr, *data_ptr_end;
   int count = 0;
 
-  vtkKWColorPresetSelectorInternals::PresetContainerIterator it = 
+  vtkKWColorPresetMenuInternals::PresetContainerIterator it = 
     this->Internals->Presets.begin();
-  vtkKWColorPresetSelectorInternals::PresetContainerIterator end = 
+  vtkKWColorPresetMenuInternals::PresetContainerIterator end = 
     this->Internals->Presets.end();
   for (; it != end; ++it)
     {
@@ -850,7 +850,7 @@ void vtkKWColorPresetSelector::PopulatePresetMenu()
 }
 
 //----------------------------------------------------------------------------
-int vtkKWColorPresetSelector::CreateColorTransferFunctionPreview(
+int vtkKWColorPresetMenu::CreateColorTransferFunctionPreview(
   vtkColorTransferFunction *func, const char *img_name)
 {
   if (!this->IsCreated() || !func || !img_name || this->PreviewSize < 3)
@@ -913,14 +913,14 @@ int vtkKWColorPresetSelector::CreateColorTransferFunctionPreview(
 }
 
 //----------------------------------------------------------------------------
-void vtkKWColorPresetSelector::SetPresetSelectedCommand(
+void vtkKWColorPresetMenu::SetPresetSelectedCommand(
   vtkObject *object, const char *method)
 {
   this->SetObjectMethodCommand(&this->PresetSelectedCommand, object, method);
 }
 
 //----------------------------------------------------------------------------
-void vtkKWColorPresetSelector::InvokePresetSelectedCommand(const char *name)
+void vtkKWColorPresetMenu::InvokePresetSelectedCommand(const char *name)
 {
   if (this->PresetSelectedCommand && *this->PresetSelectedCommand && 
       this->GetApplication())
@@ -932,7 +932,7 @@ void vtkKWColorPresetSelector::InvokePresetSelectedCommand(const char *name)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWColorPresetSelector::PrintSelf(ostream& os, vtkIndent indent)
+void vtkKWColorPresetMenu::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
 

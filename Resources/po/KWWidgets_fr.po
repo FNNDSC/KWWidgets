@@ -234,95 +234,95 @@ msgstr ""
 msgid "Change Color Button|Set Color..."
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:452
+#: ../../vtkKWColorPresetMenu.cxx:452
 msgid "Color Preset|Rainbow"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:463
+#: ../../vtkKWColorPresetMenu.cxx:463
 msgid "Color Preset|Jet"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:474
+#: ../../vtkKWColorPresetMenu.cxx:474
 msgid "Color Preset|HSV"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:479
+#: ../../vtkKWColorPresetMenu.cxx:479
 msgid "Color Preset|Spring"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:484
+#: ../../vtkKWColorPresetMenu.cxx:484
 msgid "Color Preset|Summer"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:488
+#: ../../vtkKWColorPresetMenu.cxx:488
 msgid "Color Preset|Autumn"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:493
+#: ../../vtkKWColorPresetMenu.cxx:493
 msgid "Color Preset|Winter"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:507
+#: ../../vtkKWColorPresetMenu.cxx:507
 msgid "Color Preset|Hot"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:512
+#: ../../vtkKWColorPresetMenu.cxx:512
 msgid "Color Preset|Cool"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:528
+#: ../../vtkKWColorPresetMenu.cxx:528
 msgid "Color Preset|Bone"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:553
+#: ../../vtkKWColorPresetMenu.cxx:553
 msgid "Color Preset|Pink"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:565
+#: ../../vtkKWColorPresetMenu.cxx:565
 msgid "Color Preset|Copper"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:570
+#: ../../vtkKWColorPresetMenu.cxx:570
 msgid "Color Preset|Gray"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:574
+#: ../../vtkKWColorPresetMenu.cxx:574
 msgid "Color Preset|White"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:576
+#: ../../vtkKWColorPresetMenu.cxx:576
 msgid "Color Preset|Red"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:578
+#: ../../vtkKWColorPresetMenu.cxx:578
 msgid "Color Preset|Green"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:580
+#: ../../vtkKWColorPresetMenu.cxx:580
 msgid "Color Preset|Blue"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:582
+#: ../../vtkKWColorPresetMenu.cxx:582
 msgid "Color Preset|Cyan"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:584
+#: ../../vtkKWColorPresetMenu.cxx:584
 msgid "Color Preset|Magenta"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:586
+#: ../../vtkKWColorPresetMenu.cxx:586
 msgid "Color Preset|Yellow"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:598
+#: ../../vtkKWColorPresetMenu.cxx:598
 msgid "Color Preset|Flag"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:609
+#: ../../vtkKWColorPresetMenu.cxx:609
 msgid "Color Preset|Prism"
 msgstr ""
 
-#: ../../vtkKWColorPresetSelector.cxx:630
+#: ../../vtkKWColorPresetMenu.cxx:630
 msgid ""
 "Color Preset Selector|Select a preset to use the transfer function that will "
 "map scalar values to colors."
