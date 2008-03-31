@@ -67,7 +67,9 @@ void vtkKWEntryItem::Create(vtkKWWidget *parent, vtkKWWindow *)
   vtkKWEntryWithLabel *entry3 = vtkKWEntryWithLabel::New();
   entry3->SetParent(parent);
   entry3->Create();
-  entry3->SetLabelText("Another entry, with a label in front:");
+  entry3->GetWidget()->SetRestrictValueToHexadecimal();
+  entry3->SetLabelText(
+    "Another entry, restricted to hex, with a label in front:");
   entry3->SetBalloonHelpString(
     "This is a vtkKWEntryWithLabel, i.e. a entry associated to a "
     "label that can be positioned around the entry.");

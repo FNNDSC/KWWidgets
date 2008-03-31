@@ -75,24 +75,28 @@ public:
   virtual int GetPasswordMode();
 
   // Description:
-  // Restrict the value to a given type (integer, double, or no restriction).
+  // Restrict the value to a given type (integer, hexadecimal, double, or 
+  // no restriction).
   // Note: checks against RestrictValue are performed before ValidationCommand.
   //BTX
   enum
   {
     RestrictNone = 0,
     RestrictInteger,
-    RestrictDouble
+    RestrictDouble,
+    RestrictHexadecimal
   };
   //ETX
   vtkGetMacro(RestrictValue, int);
   virtual void SetRestrictValue(int);
   virtual void SetRestrictValueToInteger();
   virtual void SetRestrictValueToDouble();
+  virtual void SetRestrictValueToHexadecimal();
   virtual void SetRestrictValueToNone();
 
   // Description:
-  // Specifies a command to validate the value.
+  // Specifies a command to associate with this step. This command can
+  // be used to validate the contents of the widget.
   // Note: checks against RestrictValue are performed before ValidationCommand.
   // The 'object' argument is the object that will have the method called on
   // it. The 'method' argument is the name of the method to be called and any

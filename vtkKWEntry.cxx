@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry);
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.95 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.96 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
@@ -239,6 +239,11 @@ void vtkKWEntry::SetValue(const char *s)
       this->Script("if {[string is integer \"%s\"]} {%s insert 0 \"%s\"}", 
                    val ? val : "", this->GetWidgetName(), val ? val : "");
       }
+    else if (this->RestrictValue == vtkKWEntry::RestrictHexadecimal)
+      {
+      this->Script("if {[string is xdigit \"%s\"]} {%s insert 0 \"%s\"}", 
+                   val ? val : "", this->GetWidgetName(), val ? val : "");
+      }
     else if (this->RestrictValue == vtkKWEntry::RestrictDouble)
       {
       this->Script("if {[string is double \"%s\"]} {%s insert 0 \"%s\"}", 
@@ -369,6 +374,11 @@ void vtkKWEntry::SetRestrictValueToDouble()
   this->SetRestrictValue(vtkKWEntry::RestrictDouble); 
 }
 
+void vtkKWEntry::SetRestrictValueToHexadecimal()
+{ 
+  this->SetRestrictValue(vtkKWEntry::RestrictHexadecimal); 
+}
+
 void vtkKWEntry::SetRestrictValueToNone()
 { 
   this->SetRestrictValue(vtkKWEntry::RestrictNone); 
@@ -407,6 +417,10 @@ int vtkKWEntry::ValidationCallback(const char *value)
     res &= atoi(this->Script(
           "expr {[string is integer %s] || [string is integer \"%s0\"]}", 
           value, value));
+    }
+  else if (this->RestrictValue == vtkKWEntry::RestrictHexadecimal)
+    {
+    res &= atoi(this->Script("expr {[string is xdigit %s]}", value));
     }
   else if (this->RestrictValue == vtkKWEntry::RestrictDouble)
     {
