@@ -25,7 +25,7 @@
 #include "vtkKWWidgets.h" // Needed for export symbols directives
 #include "vtkObject.h"
 
-#define KWWidgets_SOURCE_VERSION "KWWidgets version " KWWidgets_VERSION ", KWWidgets source $Revision: 1.590 $, $Date: 2008-04-06 12:14:40 $ (GMT)"
+#define KWWidgets_SOURCE_VERSION "KWWidgets version " KWWidgets_VERSION ", KWWidgets source $Revision: 1.591 $, $Date: 2008-04-07 12:08:53 $ (GMT)"
 
 class KWWidgets_EXPORT vtkKWWidgetsVersion : public vtkObject
 {
