@@ -42,6 +42,9 @@ The changes are:
   should be moved from Tree::_mouse_select to the end of Tree::selection,
   *after* _redraw_idle $path 1
 
+- in Tree::_auto_scroll, replace all occurences of 6 with a variable set to
+  15 so that auto-scroll is easier to trigger.
+
 --------------------------------------------------------------------------
 
 BWidget ToolKit 1.7.0				December 2003

@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 #  tree.tcl
 #  This file is part of Unifix BWidget Toolkit
-#  $Id: tree.tcl,v 1.3 2006-08-04 19:06:10 barre Exp $
+#  $Id: tree.tcl,v 1.4 2008-04-10 16:31:13 barre Exp $
 # ----------------------------------------------------------------------------
 #  Index of commands:
 #     - Tree::create
@@ -1797,26 +1797,26 @@ proc Tree::_over_cmd { path source event X Y op type dnddata } {
 proc Tree::_auto_scroll { path x y } {
     variable $path
     upvar 0  $path data
-
+    set margin 15
     set xmax   [winfo width  $path]
     set ymax   [winfo height $path]
     set scroll {}
-    if { $y <= 6 } {
+    if { $y <= $margin } {
         if { [lindex [$path.c yview] 0] > 0 } {
             set scroll [list yview -1]
             DropSite::setcursor sb_up_arrow
         }
-    } elseif { $y >= $ymax-6 } {
+    } elseif { $y >= $ymax-$margin } {
         if { [lindex [$path.c yview] 1] < 1 } {
             set scroll [list yview 1]
             DropSite::setcursor sb_down_arrow
         }
-    } elseif { $x <= 6 } {
+    } elseif { $x <= $margin } {
         if { [lindex [$path.c xview] 0] > 0 } {
             set scroll [list xview -1]
             DropSite::setcursor sb_left_arrow
         }
-    } elseif { $x >= $xmax-6 } {
+    } elseif { $x >= $xmax-$margin } {
         if { [lindex [$path.c xview] 1] < 1 } {
             set scroll [list xview 1]
             DropSite::setcursor sb_right_arrow
