@@ -33,7 +33,7 @@
 #include <vtksys/stl/string>
 
 vtkStandardNewMacro(vtkKWColorTransferFunctionEditor);
-vtkCxxRevisionMacro(vtkKWColorTransferFunctionEditor, "$Revision: 1.58 $");
+vtkCxxRevisionMacro(vtkKWColorTransferFunctionEditor, "$Revision: 1.59 $");
 
 #define VTK_KW_CTFE_COLOR_RAMP_TAG "color_ramp_tag"
 
@@ -780,6 +780,7 @@ void vtkKWColorTransferFunctionEditor::CreateValueEntries()
       this->ValueEntries[i]->SetParent(this->PointEntriesFrame);
       this->ValueEntries[i]->Create();
       this->ValueEntries[i]->GetWidget()->SetWidth(4);
+      this->ValueEntries[i]->GetWidget()->SetRestrictValueToDouble();
       this->ValueEntries[i]->GetWidget()->SetCommand(
         this, "ValueEntriesCallback");
       }
@@ -1071,7 +1072,7 @@ void vtkKWColorTransferFunctionEditor::DoubleClickOnPointCallback(
       this->GetPointColorAsRGB(id, rgb) &&
       vtkKWTkUtilities::QueryUserForColor(
         this->GetApplication(),
-        this->GetWidgetName(),
+        this,
         NULL,
         rgb[0], rgb[1], rgb[2],
         &rgb[0], &rgb[1], &rgb[2]))

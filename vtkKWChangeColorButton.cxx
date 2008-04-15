@@ -13,9 +13,11 @@
 =========================================================================*/
 #include "vtkKWChangeColorButton.h"
 
+#include "vtkObjectFactory.h"
+
+#include "vtkKWApplication.h"
 #include "vtkKWFrame.h"
 #include "vtkKWLabel.h"
-#include "vtkObjectFactory.h"
 #include "vtkKWTkUtilities.h"
 #include "vtkKWInternationalization.h"
 
@@ -23,7 +25,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWChangeColorButton);
-vtkCxxRevisionMacro(vtkKWChangeColorButton, "$Revision: 1.74 $");
+vtkCxxRevisionMacro(vtkKWChangeColorButton, "$Revision: 1.75 $");
 
 //----------------------------------------------------------------------------
 vtkKWChangeColorButton::vtkKWChangeColorButton()
@@ -389,7 +391,7 @@ void vtkKWChangeColorButton::QueryUserForColor()
 {  
   if (vtkKWTkUtilities::QueryUserForColor(
         this->GetApplication(),
-        this->GetWidgetName(),
+        this,
         this->DialogTitle,
         this->Color[0], this->Color[1], this->Color[2],
         &this->Color[0], &this->Color[1], &this->Color[2]))

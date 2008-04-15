@@ -148,13 +148,8 @@ public:
   // Convenience methods are provided to specify a vtkKWApplication
   // instead of the Tcl interpreter. 
   // Return 1 on success, 0 otherwise.
-  static int QueryUserForColor(Tcl_Interp *interp,
-                               const char *dialog_parent,
-                               const char *dialog_title,
-                               double in_r, double in_g, double in_b,
-                               double *out_r, double *out_g, double *out_b);
   static int QueryUserForColor(vtkKWApplication *app,
-                               const char *dialog_parent,
+                               vtkKWWidget *dialog_parent,
                                const char *dialog_title,
                                double in_r, double in_g, double in_b,
                                double *out_r, double *out_g, double *out_b);

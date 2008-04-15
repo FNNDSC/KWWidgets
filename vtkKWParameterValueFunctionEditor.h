@@ -505,6 +505,14 @@ public:
   vtkGetMacro(DisableAddAndRemove, int);
 
   // Description:
+  // Set/Get if points can move on a single click, i.e. by clicking directly
+  // inside the canvas, instead of dragging a point. This technically
+  // prevents the user from adding a point by single clicking in the canvas.
+  vtkSetMacro(EnableDirectMove, int);
+  vtkBooleanMacro(EnableDirectMove, int);
+  vtkGetMacro(EnableDirectMove, int);
+
+  // Description:
   // Convenience method to set both LockPointsParameter, LockPointsValue
   // and DisableAddAndRemove to On or Off
   virtual void SetReadOnly(int);
@@ -1101,7 +1109,7 @@ public:
   virtual void VisibleParameterRangeChangedCallback(double, double);
   virtual void VisibleValueRangeChangingCallback(double, double);
   virtual void VisibleValueRangeChangedCallback(double, double);
-  virtual void StartInteractionCallback(int x, int y);
+  virtual void StartInteractionCallback(int x, int y, int shift);
   virtual void MovePointCallback(int x, int y, int shift);
   virtual void EndInteractionCallback(int x, int y);
   virtual void ParameterCursorStartInteractionCallback(int x);
@@ -1192,6 +1200,7 @@ protected:
   int   LockPointsValue;
   int   RescaleBetweenEndPoints;
   int   DisableAddAndRemove;
+  int   EnableDirectMove;
   int   DisableRedraw;
   int   PointRadiusX;
   int   PointRadiusY;

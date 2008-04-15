@@ -40,7 +40,7 @@
 #include <vtksys/stl/algorithm>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.107 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.108 $");
 
 //----------------------------------------------------------------------------
 #define VTK_KW_PVFE_POINT_RADIUS_MIN         2
@@ -102,6 +102,7 @@ vtkKWParameterValueFunctionEditor::vtkKWParameterValueFunctionEditor()
   this->LockPointsValue             = 0;
   this->RescaleBetweenEndPoints     = 0;
   this->DisableAddAndRemove         = 0;
+  this->EnableDirectMove            = 0;
   this->DisableRedraw               = 0;
   this->PointRadiusX                = 4;
   this->PointRadiusY                = this->PointRadiusX;
@@ -1269,6 +1270,7 @@ void vtkKWParameterValueFunctionEditor::CreateWidget()
   this->Canvas->SetHeight(this->RequestedCanvasHeight);
   this->Canvas->SetWidth(
     this->ExpandCanvasWidth ? 0 : this->RequestedCanvasWidth);
+  this->Canvas->SetConfigurationOptionAsInt("-takefocus", 0);
 
   // Both are needed, the first one in case the canvas is not visible, the
   // second because if it is visible, we want it to notify us precisely
@@ -1531,6 +1533,7 @@ void vtkKWParameterValueFunctionEditor::CreateParameterEntry()
     this->ParameterEntry->SetParent(this->PointEntriesFrame);
     this->ParameterEntry->Create();
     this->ParameterEntry->GetWidget()->SetWidth(7);
+    this->ParameterEntry->GetWidget()->SetRestrictValueToDouble();
     this->ParameterEntry->GetLabel()->SetText(
       ks_("Transfer Function Editor|Parameter|P:"));
 
@@ -1647,6 +1650,8 @@ void vtkKWParameterValueFunctionEditor::CreateValueTicksCanvas()
     this->ValueTicksCanvas->SetReliefToSolid();
     this->ValueTicksCanvas->SetHeight(0);
     this->ValueTicksCanvas->SetBorderWidth(0);
+    this->ValueTicksCanvas->SetConfigurationOptionAsInt("-takefocus", 0);
+
     if (this->GetEnabled())
       {
       this->Bind(); // in case we have bindings on this canvas
@@ -1667,6 +1672,8 @@ void vtkKWParameterValueFunctionEditor::CreateParameterTicksCanvas()
     this->ParameterTicksCanvas->SetBorderWidth(0);
     this->ParameterTicksCanvas->SetHeight(
       VTK_KW_PVFE_TICKS_PARAMETER_CANVAS_HEIGHT);
+    this->ParameterTicksCanvas->SetConfigurationOptionAsInt("-takefocus", 0);
+
     if (this->GetEnabled())
       {
       this->Bind(); // in case we have bindings on this canvas
@@ -1687,6 +1694,8 @@ void vtkKWParameterValueFunctionEditor::CreateGuidelineValueCanvas()
     this->GuidelineValueCanvas->SetBorderWidth(0);
     this->GuidelineValueCanvas->SetHeight(
       VTK_KW_PVFE_GUIDELINE_VALUE_CANVAS_HEIGHT);
+    this->GuidelineValueCanvas->SetConfigurationOptionAsInt("-takefocus", 0);
+
     if (this->GetEnabled())
       {
       this->Bind(); // in case we have bindings on this canvas
@@ -2071,7 +2080,10 @@ void vtkKWParameterValueFunctionEditor::Bind()
     // Mouse motion
 
     this->Canvas->SetBinding(
-      "<Any-ButtonPress>", this, "StartInteractionCallback %x %y");
+      "<Any-ButtonPress>", this, "StartInteractionCallback %x %y 0");
+
+    this->Canvas->SetBinding(
+      "<Shift-Any-ButtonPress>", this, "StartInteractionCallback %x %y 1");
 
     tk_cmd << canv << " bind " 
            << vtkKWParameterValueFunctionEditor::PointTag
@@ -8113,15 +8125,22 @@ void vtkKWParameterValueFunctionEditor::DoubleClickOnPointCallback(
 }
 
 //----------------------------------------------------------------------------
-void vtkKWParameterValueFunctionEditor::StartInteractionCallback(int x, int y)
+void vtkKWParameterValueFunctionEditor::StartInteractionCallback(
+  int x, int y, int shift)
 {
   int id, c_x, c_y;
 
   // No point found, then let's add that point
 
+  int move_selection_to_click = 0;
+
   if (!this->FindFunctionPointAtCanvasCoordinates(x, y, &id, &c_x, &c_y))
     {
-    if (!this->AddPointAtCanvasCoordinates(c_x, c_y, &id))
+    if (this->EnableDirectMove && this->HasSelection())
+      {
+      move_selection_to_click = 1;
+      }
+    else if (!this->AddPointAtCanvasCoordinates(c_x, c_y, &id))
       {
       return;
       }
@@ -8138,12 +8157,18 @@ void vtkKWParameterValueFunctionEditor::StartInteractionCallback(int x, int y)
   // Invoke the commands/callbacks
 
   this->InvokeFunctionStartChangingCommand();
+
+  if (move_selection_to_click)
+    {
+    this->MovePointCallback(x, y, shift);
+    this->EndInteractionCallback(x, y);
+    }
 }
 
 //----------------------------------------------------------------------------
 void vtkKWParameterValueFunctionEditor::MovePointCallback(
   int x, int y, int shift)
-{
+{  
   if (!this->IsCreated() || !this->HasSelection() || !this->InUserInteraction)
     {
     return;
@@ -8481,6 +8506,8 @@ void vtkKWParameterValueFunctionEditor::PrintSelf(
   os << indent << "ParameterCursorInteractionStyle: " << this->ParameterCursorInteractionStyle << endl;
   os << indent << "DisableAddAndRemove: "
      << (this->DisableAddAndRemove ? "On" : "Off") << endl;
+  os << indent << "EnableDirectMove: "
+     << (this->EnableDirectMove ? "On" : "Off") << endl;
   os << indent << "ChangeMouseCursor: "
      << (this->ChangeMouseCursor ? "On" : "Off") << endl;
   os << indent << "SelectedPoint: "<< this->GetSelectedPoint() << endl;

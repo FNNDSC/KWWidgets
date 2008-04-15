@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.44 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.45 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -270,6 +270,14 @@ void vtkKWIcon::SetImage(int image)
         image_document_length);
       break;
 
+    case vtkKWIcon::IconDocumentRGBColor:
+      this->SetImage(
+        image_document_rgb_color, 
+        image_document_rgb_color_width, image_document_rgb_color_height,
+        image_document_rgb_color_pixel_size, 
+        image_document_rgb_color_length);
+      break;
+
     case vtkKWIcon::IconDocumentWindowLevel:
       this->SetImage(
         image_document_window_level, 
@@ -421,6 +429,14 @@ void vtkKWIcon::SetImage(int image)
         image_helpbubble_width, image_helpbubble_height,
         image_helpbubble_pixel_size, 
         image_helpbubble_length);
+      break;      
+
+    case vtkKWIcon::IconHSVDiagram:
+      this->SetImage(
+        image_hsv_diagram, 
+        image_hsv_diagram_width, image_hsv_diagram_height,
+        image_hsv_diagram_pixel_size, 
+        image_hsv_diagram_length);
       break;      
 
     case vtkKWIcon::IconInfoMini:
@@ -687,6 +703,14 @@ void vtkKWIcon::SetImage(int image)
         image_stopwatch_width, image_stopwatch_height,
         image_stopwatch_pixel_size, 
         image_stopwatch_length);
+      break;
+      
+    case vtkKWIcon::IconTime:
+      this->SetImage(
+        image_time, 
+        image_time_width, image_time_height,
+        image_time_pixel_size, 
+        image_time_length);
       break;
       
     case vtkKWIcon::IconTransportBeginning:

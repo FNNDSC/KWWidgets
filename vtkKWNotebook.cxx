@@ -50,7 +50,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.107 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.108 $");
 
 //----------------------------------------------------------------------------
 class vtkKWNotebookInternals
@@ -416,7 +416,7 @@ vtkKWNotebook::Page* vtkKWNotebook::GetPage(const char *title)
 //----------------------------------------------------------------------------
 vtkKWNotebook::Page* vtkKWNotebook::GetPage(const char *title, int tag)
 {
-  if (title && this->Internals)
+  if (this->Internals)
     {
     vtkKWNotebookInternals::PagesContainerIterator it = 
       this->Internals->Pages.begin();
@@ -425,7 +425,8 @@ vtkKWNotebook::Page* vtkKWNotebook::GetPage(const char *title, int tag)
     for (; it != end; ++it)
       {
       if (*it && (*it)->Tag == tag && 
-          (*it)->Title && !strcmp(title, (*it)->Title))
+          ((!title && !(*it)->Title) ||
+           (title && (*it)->Title && !strcmp(title, (*it)->Title))))
         {
         return (*it);
         }
@@ -832,8 +833,12 @@ int vtkKWNotebook::AddPage(const char *title,
 
   // Store the page title for fast page retrieval on title
 
-  page->Title = new char [strlen(title) + 1];
-  strcpy(page->Title, title);
+  page->Title = NULL;
+  if (title)
+    {
+    page->Title = new char [strlen(title) + 1];
+    strcpy(page->Title, title);
+    }
 
   // Create the "tab" part of the page
 
@@ -849,7 +854,10 @@ int vtkKWNotebook::AddPage(const char *title,
   page->Label->SetParent(page->TabFrame);
   page->Label->Create();
   page->Label->SetHighlightThickness(0);
-  page->Label->SetText(page->Title);
+  if (page->Title)
+    {
+    page->Label->SetText(page->Title);
+    }
   if (balloon)
     {
     page->Label->SetBalloonHelpString(balloon);
@@ -874,6 +882,10 @@ int vtkKWNotebook::AddPage(const char *title,
     page->ImageLabel->SetParent(page->TabFrame);
     page->ImageLabel->Create();
     page->ImageLabel->SetImageToIcon(page->Icon);
+    if (balloon)
+      {
+      page->ImageLabel->SetBalloonHelpString(balloon);
+      }
 
     if (this->ShowIcons)
       {

@@ -57,9 +57,12 @@ public:
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
-  // Add a new preset.
-  // Return the unique Id of the preset
+  // Add a new preset to the end of the list, or insert a preset in front
+  // of another preset, given its Id (if passed -1 as Id, insert at the 
+  // beginning).
+  // Return the unique Id of the new preset, or -1 on error.
   virtual int AddPreset();
+  virtual int InsertPreset(int id);
 
   // Description:
   // Query if pool has given preset.
@@ -124,12 +127,12 @@ public:
 
   // Description:
   // Get the creation time of a preset, as returned by
-  // the vtksys::SystemTools::GetTime() method (can be cast to time_t)
+  // the vtksys::SystemTools::GetTime() method, but in milliseconds.
   // This field is not displayed in this implementation, but is
   // used internally in the thumbnail column so that sorting by
   // "thumbnail" will actually sort by creation time.
   // Return 0 on error.
-  virtual double GetPresetCreationTime(int id);
+  virtual vtkTypeInt64 GetPresetCreationTime(int id);
 
   // Description:
   // Set/Get the thumbnail and screenshot associated to a preset.
@@ -209,6 +212,8 @@ public:
   {
     UserSlotDoubleType = 0,
     UserSlotIntType,
+    UserSlotUnsignedLongType,
+    UserSlotInt64Type,
     UserSlotStringType,
     UserSlotPointerType,
     UserSlotObjectType,
@@ -228,6 +233,14 @@ public:
   virtual int SetPresetUserSlotAsInt(
     int id, const char *slot_name, int value);
   virtual int GetPresetUserSlotAsInt(
+    int id, const char *slot_name);
+  virtual int SetPresetUserSlotAsUnsignedLong(
+    int id, const char *slot_name, unsigned long value);
+  virtual unsigned long GetPresetUserSlotAsUnsignedLong(
+    int id, const char *slot_name);
+  virtual int SetPresetUserSlotAsInt64(
+    int id, const char *slot_name, vtkTypeInt64 value);
+  virtual vtkTypeInt64 GetPresetUserSlotAsInt64(
     int id, const char *slot_name);
   virtual int SetPresetUserSlotAsString(
     int id, const char *slot_name, const char *value);
@@ -294,6 +307,7 @@ public:
 
   // Description:
   // Query if a given preset matches the current preset filter constraints.
+  // Return 1 if match or if no filter was defined, 0 otherwise
   virtual int IsPresetFiltered(int id);
 
   // Description:
@@ -303,6 +317,14 @@ public:
   virtual int GetNumberOfPresets();
   virtual int GetNumberOfPresetsWithGroup(const char *group);
   virtual int GetNumberOfVisiblePresets();
+
+  // Description:
+  // Set/Get the maximum number of presets. When this number is passed, the 
+  // oldest preset (according to the PresetCreationTime) is deleted 
+  // automatically. Set it to 0 (default) to allow for unlimited number
+  // of presets.
+  vtkGetMacro(MaximumNumberOfPresets, int);
+  virtual void SetMaximumNumberOfPresets(int);
 
   // Description:
   // Query if a given preset is visible (i.e. displayed in the list).
@@ -497,6 +519,21 @@ public:
   virtual void SetPresetRemoveCommand(vtkObject *object, const char *method);
 
   // Description:
+  // Specifies a command to associate with the widget. This command is 
+  // typically invoked when a preset has been removed as a result of
+  // pressing the "remove selected preset" button. As opposed to the
+  // PresetRemoveCommand, this command is called *after* the preset is
+  // removed from the pool and only if it has been removed (its Id is
+  // therefore not passed to the callback as a parameter). Do not confuse
+  // this command with PresetRemoveCommand which gives the opportunity for 
+  // the application to decide if the preset should be removed or not.
+  // The 'object' argument is the object that will have the method called on
+  // it. The 'method' argument is the name of the method to be called and any
+  // arguments in string form. If the object is NULL, the method is still
+  // evaluated as a simple command. 
+  virtual void SetPresetRemovedCommand(vtkObject *object, const char *method);
+
+  // Description:
   // Set/Get if the user should be prompted before removing one or
   // more presets using "remove selected preset" button.
   vtkSetMacro(PromptBeforeRemovePreset, int);
@@ -606,6 +643,8 @@ public:
   virtual void PresetRightClickCallback(int row, int col, int x, int y);
   virtual void UpdatePresetRowCallback(int id);
   virtual void UpdatePresetRowsCallback();
+  virtual void ColumnSortedCallback();
+  virtual void RowMovedCallback();
 
 protected:
   vtkKWPresetSelector();
@@ -667,6 +706,13 @@ protected:
   virtual void SetToolbarPresetButtonsHelpStrings();
 
   // Description:
+  // Configure a new preset.
+  // Subclasses should override this method to configure a newly allocated
+  // preset, i.e. assign its internal values (do not forget to call the
+  // superclass first).
+  virtual void ConfigureNewPreset(int id);
+
+  // Description:
   // Deallocate a preset.
   // Subclasses should override this method to release the memory allocated
   // by their own preset fields  (do not forget to call the superclass
@@ -684,6 +730,15 @@ protected:
   virtual int UpdatePresetRow(int id);
   virtual void ScheduleUpdatePresetRow(int id);
 
+  // Description:
+  // Update the preset row itself in the list, i.e. add or remove a row
+  // for a specific preset id in the multicolumn list. UpdatePresetRow() and/or
+  // ScheduleUpdatePresetRow() will call this function first, then add
+  // the contents of the row itself. Pass/set is_new to 1 if you are 
+  // sure the preset is new and was never inserted in the list.
+  // Return row index on success (can be 0), -1 otherwise.
+  virtual int UpdatePresetRowInMultiColumnList(int id, int is_new = 0);
+
   vtkKWMultiColumnListWithScrollbars *PresetList;
   vtkKWFrame                         *PresetControlFrame;
   vtkKWPushButtonSet                 *PresetButtons;
@@ -700,9 +755,16 @@ protected:
   int ThumbnailSize;
   int ScreenshotSize;
   int PromptBeforeRemovePreset;
+  int MaximumNumberOfPresets;
 
   // Description:
-  // Called when the number of presets has changed
+  // Called when the number of presets has changed.
+  // Note that the name of this function can be a bit misleading: if 
+  // MaximumNumberOfPresets is set to a positive number, and the max
+  // has been reached, this function will *still* be called twice, once
+  // when the max is passed as a result of adding a preset, and then another
+  // time when a preset is automatically deleted to get back to the maximum
+  // value (which is, in most case, what you want to know anyway).
   virtual void NumberOfPresetsHasChanged();
 
   // PIMPL Encapsulation for STL containers
@@ -727,6 +789,9 @@ protected:
 
   char *PresetRemoveCommand;
   virtual int InvokePresetRemoveCommand(int id);
+
+  char *PresetRemovedCommand;
+  virtual void InvokePresetRemovedCommand();
 
   char *PresetHasChangedCommand;
   virtual void InvokePresetHasChangedCommand(int id);
@@ -790,12 +855,38 @@ protected:
   vtkKWToolbar *Toolbar;
   vtkKWIcon *PresetButtonsBaseIcon;
   
-private:
+  // Description:
+  // Manage the preset Id to row index cache.
+  virtual void SetPresetIdToRowIndexCacheEntry(int id, int row_index);
+  virtual int GetPresetIdToRowIndexCacheEntry(int id);
+  virtual void InvalidatePresetIdToRowIndexCache();
 
   // Description:
-  // Set the creation time of a preset
+  // Manage the row index to preset Id cache.
+  virtual void SetRowIndexToPresetIdCacheEntry(int row_index, int id);
+  virtual int GetRowIndexToPresetIdCacheEntry(int row_index);
+  virtual void InvalidateRowIndexToPresetIdCache();
+
+  // Description:
+  // Processes the events that are passed through CallbackCommand (or others).
+  // Subclasses can oberride this method to process their own events, but
+  // should call the superclass too.
+  virtual void ProcessCallbackCommandEvents(
+    vtkObject *caller, unsigned long event, void *calldata);
+
+  // Description:
+  // Constrain the number of presets (given MaximumNumberOfPresets).
+  virtual void ConstrainNumberOfPresets();
+  
+  // Description:
+  // Set the creation time of a preset.
+  // Not a public method, but subclass may have a need to set it manually,
+  // say if the presets are serialized to disk, one may want to load/bring 
+  // them back with the same creation time as when they were first created.
   // Return 0 on error.
-  virtual int SetPresetCreationTime(int id, double value);
+  virtual int SetPresetCreationTime(int id, vtkTypeInt64 value);
+
+private:
 
   vtkKWPresetSelector(const vtkKWPresetSelector&); // Not implemented
   void operator=(const vtkKWPresetSelector&); // Not implemented

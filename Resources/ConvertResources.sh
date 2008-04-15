@@ -30,6 +30,7 @@ KWConvertImageToHeader --zlib --base64 \
     crop_tool.png \
     distance_tool.png \
     document.png \
+    document_rgb_color.png \
     document_volume_property.png \
     document_window_level.png \
     empty_16x16.png \
@@ -58,6 +59,7 @@ KWConvertImageToHeader --zlib --base64 \
     harddisk.png \
     header_annotation.png \
     helpbubble.png \
+    hsv_diagram.png \
     info_mini.png \
     lock.png \
     mag_glass.png \
@@ -91,6 +93,7 @@ KWConvertImageToHeader --zlib --base64 \
     spin_up.png \
     stopwatch.png \
     testtube.png \
+    time.png \
     transport_beginning.png \
     transport_end.png \
     transport_fast_forward.png \

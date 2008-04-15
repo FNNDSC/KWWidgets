@@ -24,7 +24,7 @@
 
 #include <ctype.h>
 
-vtkCxxRevisionMacro(vtkKWParameterValueHermiteFunctionEditor, "$Revision: 1.28 $");
+vtkCxxRevisionMacro(vtkKWParameterValueHermiteFunctionEditor, "$Revision: 1.29 $");
 
 const char *vtkKWParameterValueHermiteFunctionEditor::MidPointTag = "midpoint_tag";
 const char *vtkKWParameterValueHermiteFunctionEditor::MidPointGuidelineTag = "midpoint_guideline_tag";
@@ -1597,7 +1597,7 @@ void vtkKWParameterValueHermiteFunctionEditor::UnBind()
 //----------------------------------------------------------------------------
 void 
 vtkKWParameterValueHermiteFunctionEditor::StartInteractionCallback(
-  int x, int y)
+  int x, int y, int shift)
 {
   int id, c_x, c_y, p_id, p_c_x, p_c_y;
 
@@ -1644,7 +1644,7 @@ vtkKWParameterValueHermiteFunctionEditor::StartInteractionCallback(
 
   if (!found_mid_point || found_point)
     {
-    this->Superclass::StartInteractionCallback(x, y);
+    this->Superclass::StartInteractionCallback(x, y, shift);
     return;
     }
 

@@ -30,14 +30,19 @@ public:
 
   // Description:
   // Set/Get the value of the entry in a few different formats.
-  // In the SetValue method with double, values are printed in printf's f or e
-  // format, whichever is more compact for the given value and precision. 
-  // The e format is used only when the exponent of the value is less than
+  // In the SetValue method with double, values are printed in printf's %f 
+  // or %e format, whichever is more compact for the given value and precision. 
+  // The %e format is used only when the exponent of the value is less than
   // -4 or greater than or equal to the precision argument (which can be
   // controlled using the second parameter of SetValue). Trailing zeros
   // are truncated, and the decimal point appears only if one or more digits
   // follow it.
+  // Set/GetHexadecimalValueAsRGB provides a convenience way to enter/parse
+  // a RGB triplet formatted in hexadecimal. Note that the values are
+  // int, not double (i.e. 0 to 255 instead of VTK's normalized 0.0 to 1.0)
   // IMPORTANT: whenever possible, use any of the GetValueAs...() methods
+  // GetHexadecimalValueAsRGB will set r,g,b to -1, -1, -1 if the hexadecimal
+  // value could not be parsed.
   // to retrieve the value if it is meant to be a number. This is faster
   // than calling GetValue() and converting the resulting string to a number.
   virtual void SetValue(const char *);
@@ -47,6 +52,8 @@ public:
   virtual void SetValueAsFormattedDouble(double f, int size);
   virtual void SetValueAsDouble(double f);
   virtual double GetValueAsDouble();
+  virtual void SetHexadecimalValueAsRGB(int r, int g, int b);
+  virtual void GetHexadecimalValueAsRGB(int &r, int &g, int &b);
   
   // Description:
   // The width is the number of charaters wide the entry box can fit.

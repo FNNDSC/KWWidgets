@@ -163,15 +163,24 @@ SET(KWWidgets_SRCS
   vtkKWCheckButtonWithChangeColorButton.cxx
   vtkKWCheckButtonWithPopupFrame.cxx
   vtkKWClipboardHelper.cxx
+  vtkKWColorPickerDialog.cxx
+  vtkKWColorPickerWidget.cxx
+  vtkKWColorPresetSelector.cxx
+  vtkKWColorSpectrumWidget.cxx
   vtkKWComboBox.cxx
   vtkKWCompositeWidget.cxx
   vtkKWCoreWidget.cxx
   vtkKWDialog.cxx
+  vtkKWDirectoryExplorer.cxx 
   vtkKWDragAndDropTargetSet.cxx
   vtkKWEntry.cxx
   vtkKWEvent.cxx
   vtkKWEventMap.cxx
   vtkKWExtent.cxx
+  vtkKWFavoriteDirectoriesFrame.cxx 
+  vtkKWFileBrowserDialog.cxx
+  vtkKWFileBrowserWidget.cxx 
+  vtkKWFileListTable.cxx 
   vtkKWFrame.cxx
   vtkKWFrameWithLabel.cxx
   vtkKWFrameWithScrollbar.cxx
@@ -184,8 +193,8 @@ SET(KWWidgets_SRCS
   vtkKWListBoxToListBoxSelectionEditor.cxx
   vtkKWLoadSaveButton.cxx
   vtkKWLoadSaveDialog.cxx
-  vtkKWLogWidget.cxx
   vtkKWLogDialog.cxx
+  vtkKWLogWidget.cxx
   vtkKWMaterialPropertyWidget.cxx
   vtkKWMatrixWidget.cxx
   vtkKWMenu.cxx
@@ -222,11 +231,11 @@ SET(KWWidgets_SRCS
   vtkKWSplitFrame.cxx
   vtkKWStateMachine.cxx
   vtkKWStateMachineCluster.cxx
+  vtkKWStateMachineDOTWriter.cxx
   vtkKWStateMachineInput.cxx
   vtkKWStateMachineState.cxx
   vtkKWStateMachineTransition.cxx
   vtkKWStateMachineWriter.cxx
-  vtkKWStateMachineDOTWriter.cxx
   vtkKWTclInteractor.cxx
   vtkKWText.cxx
   vtkKWTheme.cxx
@@ -254,12 +263,6 @@ SET(KWWidgets_SRCS
   vtkKWWizardStep.cxx
   vtkKWWizardWidget.cxx
   vtkKWWizardWorkflow.cxx
-  vtkKWDirectoryExplorer.cxx 
-  vtkKWFileListTable.cxx 
-  vtkKWFavoriteDirectoriesFrame.cxx 
-  vtkKWFileBrowserWidget.cxx 
-  vtkKWFileBrowserDialog.cxx
-# vtkKWColorPicker.cxx
 )
 
 IF(KWWidgets_BUILD_VTK_WIDGETS)
@@ -317,6 +320,7 @@ SET_SOURCE_FILES_PROPERTIES(
   vtkKWUserInterfaceManager.cxx
   vtkKWWidgetSet.cxx
   vtkKWWidgetWithScrollbars.cxx
+  vtkKWClipboardHelper.cxx
   vtkKWRegistryHelper.cxx
   ${KWWidgets_UTILS_SRCS}
   ABSTRACT

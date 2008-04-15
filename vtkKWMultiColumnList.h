@@ -151,9 +151,9 @@ public:
   // indexing is done using numerical index.
   // Note that the name of a column has nothing to do with its title, which
   // is used to label the column in the table.
-  virtual void SetColumnName(int col_index, const char *name);
+  virtual void SetColumnName(int col_index, const char *col_name);
   virtual const char* GetColumnName(int col_index);
-  virtual int GetColumnIndexWithName(const char *name);
+  virtual int GetColumnIndexWithName(const char *col_name);
 
   // Description:
   // Get number columns.
@@ -287,7 +287,7 @@ public:
 
   // Description:
   // Sort by a given column.
-  // The GetLastSortedColumn teturns the numerical index of the column by
+  // The GetLastSortedColumn returns the numerical index of the column by
   // which the items were last sorted with the aid of the SortByColumn or -1 if
   // they haven't been sorted at all.
   //BTX
@@ -541,10 +541,10 @@ public:
 
   // Description:
   // Add a row(rows) at the end, or insert it(them) at a given location.
-  virtual void InsertRow(int row_index);
-  virtual void InsertRows(int row_index, int num_rows);
   virtual void AddRow();
   virtual void AddRows(int num_rows);
+  virtual void InsertRow(int row_index);
+  virtual void InsertRows(int row_index, int num_rows);
   
   // Description:
   // Get number of rows.
@@ -629,6 +629,9 @@ public:
   // SetCellText is the fast version and assumes the cell already exists!
   // InsertCellText will insert one (or more) full row(s) if there is no
   // row/cell at that location (using InsertRow).
+  // Note that InsertCellTextAsDouble will insert a number using the 
+  // printf-style %f format type. Use InsertCellTextAsFormattedDouble to
+  // restrict the number of digits (i.e. if size = 5, format will be %.5g)
   virtual void InsertCellText(
     int row_index, int col_index, const char *text);
   virtual void InsertCellTextAsInt(
@@ -855,8 +858,14 @@ public:
   // normalized R, G, B values. Note that the EditStartCommand, 
   // EditEndCommand and CellUpdatedCommand are handled the same way.
   // Check the SetCellWindowCommand method for more information.
+  // Set UseBalloonHelpStringInCellColorButton to On to set the color button
+  // balloon help string automatically (it will be set to display the
+  // color in different color space). Off by default for performance reasons.
   virtual void SetCellWindowCommandToColorButton(int row_index, int col_index);
   virtual vtkKWFrame* GetCellWindowAsFrame(int row_index, int col_index);
+  vtkBooleanMacro(UseBalloonHelpStringInCellColorButton, int);
+  vtkGetMacro(UseBalloonHelpStringInCellColorButton, int);
+  virtual void SetUseBalloonHelpStringInCellColorButton(int);
 
   // Description:
   // Specifies a command to be invoked when the window embedded into the cell
@@ -1184,6 +1193,24 @@ public:
     vtkObject *object, const char *method);
 
   // Description:
+  // Specifies a command to be invoked when a row has been moved. 
+  // The 'object' argument is the object that will have the method called on
+  // it. The 'method' argument is the name of the method to be called and any
+  // arguments in string form. If the object is NULL, the method is still
+  // evaluated as a simple command. 
+  virtual void SetRowMovedCommand(
+    vtkObject *object, const char *method);
+
+  // Description:
+  // Specifies a command to be invoked when the number of rows changed. 
+  // The 'object' argument is the object that will have the method called on
+  // it. The 'method' argument is the name of the method to be called and any
+  // arguments in string form. If the object is NULL, the method is still
+  // evaluated as a simple command. 
+  virtual void SetNumberOfRowsChangedCommand(
+    vtkObject *object, const char *method);
+
+  // Description:
   // Specifies a command to be invoked when the interactive editing of a cell's
   // contents is started. The command is automatically concatenated with
   // the cell's row and column indices, as well as the text displayed in
@@ -1324,7 +1351,8 @@ public:
   //BTX
   enum
   {
-    SelectionChangedEvent = 10000
+    SelectionChangedEvent = 10000,
+    NumberOfRowsChangedEvent
   };
   //ETX
 
@@ -1350,6 +1378,8 @@ public:
   virtual void CellWindowCommandToColorButtonCallback(
     const char*, int, int, const char*);
   virtual void ColumnSortedCallback();
+  virtual void ColumnMovedCallback();
+  virtual void RowMovedCallback();
   virtual void RightClickCallback(
     const char *w, int x, int y, int root_x, int root_y);
   virtual void RefreshColorsOfAllCellsWithWindowCommandCallback();
@@ -1389,6 +1419,12 @@ protected:
 
   char *ColumnSortedCommand;
   void InvokeColumnSortedCommand();
+
+  char *RowMovedCommand;
+  void InvokeRowMovedCommand();
+
+  char *NumberOfRowsChangedCommand;
+  void InvokeNumberOfRowsChangedCommand();
 
   char *RightClickCommand;
   void InvokeRightClickCommand(int row, int col, int x, int y);
@@ -1484,6 +1520,23 @@ protected:
   // Add/Remove some interaction bindings
   virtual void AddInteractionBindings();
   virtual void RemoveInteractionBindings();
+
+  // Description:
+  // Manage the column name to index cache
+  virtual void SetColumnNameToIndexCacheEntry(
+    const char *col_name, int col_index);
+  virtual int GetColumnNameToIndexCacheEntry(const char *col_name);
+  virtual void DeleteColumnNameToIndexCacheEntry(const char *col_name);
+  virtual void InvalidateColumnNameToIndexCache();
+
+  // Description:
+  // Manage the column name to visibility cache
+  virtual void SetColumnIndexToVisibilityCacheEntry(
+    int col_index, int vis);
+  virtual int GetColumnIndexToVisibilityCacheEntry(int col_index);
+  virtual void InvalidateColumnIndexToVisibilityCache();
+
+  int UseBalloonHelpStringInCellColorButton;
 
 private:
   vtkKWMultiColumnList(const vtkKWMultiColumnList&); // Not implemented

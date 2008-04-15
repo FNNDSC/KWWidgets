@@ -21,8 +21,9 @@
 #define __vtkKWClipboardHelper_h
 
 #include "vtkObject.h"
-#include "vtkImageData.h"
 #include "vtkKWWidgets.h" // Needed for export symbols directives
+
+class vtkImageData;
 
 class KWWidgets_EXPORT vtkKWClipboardHelper : public vtkObject
 {

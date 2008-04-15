@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry);
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.96 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.97 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
@@ -334,6 +334,31 @@ void vtkKWEntry::SetValueAsFormattedDouble(double f, int size)
   sprintf(tmp, format, f);
 
   this->SetValue(tmp);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWEntry::SetHexadecimalValueAsRGB(int r, int g, int b)
+{
+  int old_r, old_g, old_b;
+  this->GetHexadecimalValueAsRGB(old_r, old_g, old_b);
+  if (old_r < 0 || old_g < 0 || old_b < 0 ||
+      r != old_r || g != old_g || b != old_b)
+    {
+    static char buffer[20];
+    sprintf(buffer, "%02x%02x%02x", r, g, b);
+    this->SetValue(buffer);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWEntry::GetHexadecimalValueAsRGB(int &r, int &g, int &b)
+{
+  const char *value = this->GetValue();
+  if (!value || !*value || strlen(value) != 6 ||
+      sscanf(value, "%02x%02x%02x", &r, &g, &b) != 3)
+    {
+    r = g = b = -1;
+    }
 }
 
 //----------------------------------------------------------------------------

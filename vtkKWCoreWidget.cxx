@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCoreWidget );
-vtkCxxRevisionMacro(vtkKWCoreWidget, "$Revision: 1.20 $");
+vtkCxxRevisionMacro(vtkKWCoreWidget, "$Revision: 1.21 $");
 
 //----------------------------------------------------------------------------
 class vtkKWCoreWidgetInternals
@@ -35,12 +35,19 @@ public:
   double ConfigurationOptionAsColorTemp[3];
   vtksys_stl::string ConvertInternalStringToTclStringTemp;
   vtksys_stl::string ConvertTclStringToInternalStringTemp;
+
+  // For performance, let's cache the -state option value so that we
+  // can query it faster. This is important as setting a lot of other
+  // options on a widget can only be achieved given a specific state.
+
+  int CachedStateOption; 
 };
 
 //----------------------------------------------------------------------------
 vtkKWCoreWidget::vtkKWCoreWidget()
 {
   this->Internals = new vtkKWCoreWidgetInternals;
+  this->Internals->CachedStateOption = vtkKWOptions::StateUnknown;
 }
 
 //----------------------------------------------------------------------------
@@ -339,8 +346,9 @@ const char* vtkKWCoreWidget::GetTextOption(const char *option)
 //----------------------------------------------------------------------------
 void vtkKWCoreWidget::SetState(int state)
 {
-  if (this->IsAlive())
+  if (this->GetState() != state && this->IsAlive())
     {
+    this->Internals->CachedStateOption = state;
     this->SetConfigurationOption(
       "-state", vtkKWOptions::GetStateAsTkOptionValue(state));
     }
@@ -364,12 +372,14 @@ void vtkKWCoreWidget::SetStateToReadOnly()
 //----------------------------------------------------------------------------
 int vtkKWCoreWidget::GetState()
 {
-  if (this->IsAlive())
+  if (this->Internals->CachedStateOption == vtkKWOptions::StateUnknown &&
+      this->IsAlive())
     {
-    return vtkKWOptions::GetStateFromTkOptionValue(
-      this->GetConfigurationOption("-state"));
+    this->Internals->CachedStateOption = 
+      vtkKWOptions::GetStateFromTkOptionValue(
+        this->GetConfigurationOption("-state"));
     }
-  return vtkKWOptions::StateUnknown;
+  return this->Internals->CachedStateOption;
 }
 
 //----------------------------------------------------------------------------

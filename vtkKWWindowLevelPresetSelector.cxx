@@ -34,7 +34,7 @@ const char *vtkKWWindowLevelPresetSelector::ModalityColumnName  = "Modality";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindowLevelPresetSelector);
-vtkCxxRevisionMacro(vtkKWWindowLevelPresetSelector, "$Revision: 1.18 $");
+vtkCxxRevisionMacro(vtkKWWindowLevelPresetSelector, "$Revision: 1.19 $");
 
 //----------------------------------------------------------------------------
 vtkKWWindowLevelPresetSelector::vtkKWWindowLevelPresetSelector()
@@ -193,11 +193,11 @@ int vtkKWWindowLevelPresetSelector::UpdatePresetRow(int id)
   list->SetCellText(
     row, this->GetModalityColumnIndex(), this->GetPresetModality(id));
   
-  list->SetCellTextAsDouble(
-    row, this->GetWindowColumnIndex(), this->GetPresetWindow(id));
+  list->SetCellTextAsFormattedDouble(
+    row, this->GetWindowColumnIndex(), this->GetPresetWindow(id), 5);
 
-  list->SetCellTextAsDouble(
-    row, this->GetLevelColumnIndex(), this->GetPresetLevel(id));
+  list->SetCellTextAsFormattedDouble(
+    row, this->GetLevelColumnIndex(), this->GetPresetLevel(id), 5);
   
   return 1;
 }

@@ -17,6 +17,8 @@
 #include "vtkKWApplication.h"
 #include "vtkKWResourceUtilities.h"
 #include "vtkKWIcon.h"
+#include "vtkKWColorPickerDialog.h"
+#include "vtkKWColorPickerWidget.h"
 
 #include "vtkObjectFactory.h"
 #include "vtkTclUtil.h"
@@ -44,7 +46,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.91 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.92 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -478,7 +480,7 @@ void vtkKWTkUtilities::SetOptionColor(vtkKWWidget *widget,
 //----------------------------------------------------------------------------
 int vtkKWTkUtilities::QueryUserForColor(
   vtkKWApplication *app,  
-  const char *dialog_parent,
+  vtkKWWidget *dialog_parent,
   const char *dialog_title,
   double in_r, double in_g, double in_b,
   double *out_r, double *out_g, double *out_b)
@@ -488,32 +490,16 @@ int vtkKWTkUtilities::QueryUserForColor(
     return 0;
     }
 
+  Tcl_Interp *interp = app->GetMainInterp(); 
+
+#if 0
   app->RegisterDialogUp(NULL);
 
-  int res = vtkKWTkUtilities::QueryUserForColor(
-    app->GetMainInterp(), 
-    dialog_parent,
-    dialog_title,
-    in_r, in_g, in_b,
-    out_r, out_g, out_b);
-
-  app->UnRegisterDialogUp(NULL);
-  return res;
-}
-
-//----------------------------------------------------------------------------
-int vtkKWTkUtilities::QueryUserForColor(
-  Tcl_Interp *interp,
-  const char *dialog_parent,
-  const char *dialog_title,
-  double in_r, double in_g, double in_b,
-  double *out_r, double *out_g, double *out_b)
-{
   vtksys_stl::string cmd("tk_chooseColor");
   if (dialog_parent)
     {
     cmd += " -parent {";
-    cmd += dialog_parent;
+    cmd += dialog_parent->GetWidgetName();
     cmd += "}";
     }
   if (dialog_title)
@@ -544,6 +530,8 @@ int vtkKWTkUtilities::QueryUserForColor(
 
   const char *result = Tcl_GetStringResult(interp);
 
+  app->UnRegisterDialogUp(NULL);
+
   if (strlen(result) > 6)
     {
     char tmp[3];
@@ -571,6 +559,35 @@ int vtkKWTkUtilities::QueryUserForColor(
     }
 
   return 0;
+#else
+  vtkKWColorPickerDialog *dlg = vtkKWColorPickerDialog::New();
+  dlg->SetApplication(app);
+  if (dialog_title)
+    {
+    dlg->SetTitle(dialog_title);
+    }
+  // do not set the master window otherwise TAB doesn't switch focus
+  //  dlg->SetMasterWindow(dialog_parent); 
+  dlg->Create();
+  dlg->SetDisplayPositionToPointer();
+  
+  dlg->GetColorPickerWidget()->SetNewColorAsRGB(in_r, in_g, in_b);
+  
+  if (dlg->Invoke())
+    {
+    dlg->GetColorPickerWidget()->GetNewColorAsRGB(*out_r, *out_g, *out_b);
+    }
+  else
+    {
+    *out_r = in_r;
+    *out_g = in_g;
+    *out_b = in_b;
+    }
+
+  dlg->Delete();
+
+  return 1;
+#endif
 }
 
 //----------------------------------------------------------------------------

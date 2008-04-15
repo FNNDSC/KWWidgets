@@ -54,7 +54,7 @@
 #define VTK_KW_VPW_TESTING 0
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.48 $");
+vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.49 $");
 vtkStandardNewMacro(vtkKWVolumePropertyWidget);
 
 //----------------------------------------------------------------------------
@@ -2108,7 +2108,7 @@ void vtkKWVolumePropertyWidget::DoubleClickOnScalarOpacityPointCallback(int id)
       this->ScalarColorFunctionEditor->GetPointColorAsRGB(sce_id, rgb) &&
       vtkKWTkUtilities::QueryUserForColor(
         this->GetApplication(),
-        this->GetWidgetName(),
+        this,
         NULL,
         rgb[0], rgb[1], rgb[2],
         &rgb[0], &rgb[1], &rgb[2]))

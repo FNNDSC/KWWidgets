@@ -32,7 +32,7 @@
 #include <vtksys/stl/string>
 
 vtkStandardNewMacro(vtkKWPiecewiseFunctionEditor);
-vtkCxxRevisionMacro(vtkKWPiecewiseFunctionEditor, "$Revision: 1.57 $");
+vtkCxxRevisionMacro(vtkKWPiecewiseFunctionEditor, "$Revision: 1.58 $");
 
 #define EPSILON 0.0001
 #define EPSILON_MIN_WINDOW (EPSILON * 2.5)
@@ -768,6 +768,7 @@ void vtkKWPiecewiseFunctionEditor::CreateValueEntry()
     this->ValueEntry->SetParent(this->PointEntriesFrame);
     this->ValueEntry->Create();
     this->ValueEntry->GetWidget()->SetWidth(6);
+    this->ValueEntry->GetWidget()->SetRestrictValueToDouble();
     this->ValueEntry->GetLabel()->SetText(
       ks_("Transfer Function Editor|Value|V:"));
 

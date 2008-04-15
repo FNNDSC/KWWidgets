@@ -211,7 +211,7 @@ public:
   virtual void MidPointEntryChangingCallback(double value);
   virtual void SharpnessEntryChangedCallback(double value);
   virtual void SharpnessEntryChangingCallback(double value);
-  virtual void StartInteractionCallback(int x, int y);
+  virtual void StartInteractionCallback(int x, int y, int shift);
   virtual void MoveMidPointCallback(int x, int y, int button);
   virtual void EndMidPointInteractionCallback(int x, int y);
 
