@@ -162,6 +162,7 @@ SET(KWWidgets_SRCS
   vtkKWCheckButton.cxx
   vtkKWCheckButtonWithChangeColorButton.cxx
   vtkKWCheckButtonWithPopupFrame.cxx
+  vtkKWClipboardHelper.cxx
   vtkKWComboBox.cxx
   vtkKWCompositeWidget.cxx
   vtkKWCoreWidget.cxx

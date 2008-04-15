@@ -28,6 +28,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "vtkKWOptions.h"
 #include "vtkImageData.h"
 #include "vtkKWApplication.h"
+#include "vtkKWClipboardHelper.h"
 #include "vtkKWEntry.h"
 #include "vtkKWEntryWithLabel.h"
 #include "vtkKWInternationalization.h"
@@ -76,7 +77,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.83 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.84 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -2198,6 +2199,14 @@ int vtkKWSelectionFrameLayoutManager::AppendWidgetsToImageData(
             {
             rwwidget->SetOffScreenRendering(1);
             }
+
+//Currently, if OffScreenRendering is turned on, the screenshot of 
+//Volume Render Window with label widget on Mac shows some weird 
+//resulting image. Turn off for now... until we have a better fix.
+#if defined(__APPLE__) 
+  rwwidget->SetOffScreenRendering(0);
+#endif
+
           w2i_filters[idx]->SetInput(rwwidget->GetRenderWindow());
           w2i_filters[idx]->Update();
           rwwidget->SetOffScreenRendering(offscreen);
@@ -2455,10 +2464,6 @@ int vtkKWSelectionFrameLayoutManager::CopyScreenshotAllWidgetsToClipboard()
     return 0;
     }
 
-  // Save to clipboard
-
-#ifdef _WIN32
-
   vtkKWSelectionFrame *first_widget = this->GetNthWidget(0);
   if (!first_widget)
     {
@@ -2471,57 +2476,13 @@ int vtkKWSelectionFrameLayoutManager::CopyScreenshotAllWidgetsToClipboard()
     return 0;
     }
 
-  if (::OpenClipboard(
-        (HWND)first_rwwidget->GetRenderWindow()->GetGenericWindowId()))
+  // Save to clipboard
+  vtkKWClipboardHelper* clipboard = vtkKWClipboardHelper::New();
+  if(clipboard)
     {
-    extent = iData->GetWholeExtent();
-    
-    int size[2];
-    size[0] = extent[1] - extent[0] + 1;
-    size[1] = extent[3] - extent[2] + 1;
-
-    int data_width = ((size[0] * 3 + 3) / 4) * 4;
-    int src_width = size[0] * 3;
-  
-    EmptyClipboard();
-
-    DWORD dwLen = sizeof(BITMAPINFOHEADER) + data_width * size[1];
-    HANDLE hDIB = ::GlobalAlloc(GHND, dwLen);
-    LPBITMAPINFOHEADER lpbi = (LPBITMAPINFOHEADER) ::GlobalLock(hDIB);
-    
-    lpbi->biSize = sizeof(BITMAPINFOHEADER);
-    lpbi->biWidth = size[0];
-    lpbi->biHeight = size[1];
-    lpbi->biPlanes = 1;
-    lpbi->biBitCount = 24;
-    lpbi->biCompression = BI_RGB;
-    lpbi->biClrUsed = 0;
-    lpbi->biClrImportant = 0;
-    lpbi->biSizeImage = data_width * size[1];
-    
-    // Copy the data to the clipboard
-
-    unsigned char *ptr = (unsigned char *)(iData->GetScalarPointer());
-    unsigned char *dest = (unsigned char *)lpbi + lpbi->biSize;
-
-    int i,j;
-    for (i = 0; i < size[1]; i++)
-      {
-      for (j = 0; j < size[0]; j++)
-        {
-        *dest++ = ptr[2];
-        *dest++ = ptr[1];
-        *dest++ = *ptr;
-        ptr += 3;
-        }
-      dest = dest + (data_width - src_width);
-      }
-    
-    SetClipboardData (CF_DIB, hDIB);
-    ::GlobalUnlock(hDIB);
-    CloseClipboard();
-    }           
-#endif
+    clipboard->CopyImageToClipboard(iData);
+    clipboard->Delete();
+    }
 
   iData->Delete();
   
