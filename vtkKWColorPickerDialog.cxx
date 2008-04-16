@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerDialog );
-vtkCxxRevisionMacro(vtkKWColorPickerDialog, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWColorPickerDialog, "$Revision: 1.2 $");
 
 //----------------------------------------------------------------------------
 vtkKWColorPickerDialog::vtkKWColorPickerDialog()
@@ -68,7 +68,7 @@ void vtkKWColorPickerDialog::CreateWidget()
   this->Superclass::CreateWidget();
 
   this->SetResizable(0, 0);
-  this->SetSize(626, 334);
+  this->SetSize(632, 334);
   vtksys_stl::string title;
   if (this->GetApplication()->GetName())
     {
