@@ -40,7 +40,7 @@ const char *vtkKWColorPresetSelector::ColorColumnName = "Color";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWColorPresetSelector);
-vtkCxxRevisionMacro(vtkKWColorPresetSelector, "$Revision: 1.31 $");
+vtkCxxRevisionMacro(vtkKWColorPresetSelector, "$Revision: 1.32 $");
 
 //----------------------------------------------------------------------------
 vtkKWColorPresetSelector::vtkKWColorPresetSelector()
@@ -431,8 +431,7 @@ void vtkKWColorPresetSelector::RestorePresetsFromRegistry()
         const char *c_time_ptr = color->GetAttribute("c_time");
         if (c_time_ptr)
           {
-          vtksys_ios::stringstream c_time_str;
-          c_time_str << c_time_ptr;
+          vtksys_ios::istringstream c_time_str(c_time_ptr);
           vtkTypeInt64 c_time;
           c_time_str >> c_time;
           this->SetPresetCreationTime(id, c_time);
@@ -520,9 +519,9 @@ int vtkKWColorPresetSelector::CompareRGBColors(
   double r2, double g2, double b2)
 {
   double epsilon = 0.001;
-  return (abs(r1 - r2) < epsilon &&
-          abs(g1 - g2) < epsilon &&
-          abs(b1 - b2) < epsilon) ? 1 : 0;
+  return (fabs(r1 - r2) < epsilon &&
+          fabs(g1 - g2) < epsilon &&
+          fabs(b1 - b2) < epsilon) ? 1 : 0;
 }
 
 //----------------------------------------------------------------------------

@@ -26,7 +26,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorSpectrumWidget );
-vtkCxxRevisionMacro(vtkKWColorSpectrumWidget, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWColorSpectrumWidget, "$Revision: 1.2 $");
 
 #define VTK_KW_COLOR_SPECTRUM_WIDGET_FIXED_FONT "fixed"
 #define VTK_KW_COLOR_SPECTRUM_WIDGET_FIXED_FONT_85 "TkDefaultFont"
@@ -525,6 +525,8 @@ void vtkKWColorSpectrumWidget::UpdateColorCanvas()
 
   unsigned char *img_ptr = img_buffer;
 
+  int i, j;
+
   switch (this->FixedAxis)
     {
     // over R, G vertically (1.0 -> 0.0), B horizontally (0.0 -> 1.0)
@@ -537,10 +539,10 @@ void vtkKWColorSpectrumWidget::UpdateColorCanvas()
       this->Internals->PreviousFixedAxisValue = this->InternalColorRGB[0];
       r = this->InternalColorRGB[0];
       g = 1.0;
-      for (int i = 0; i < size; i++)
+      for (i = 0; i < size; i++)
         {
         b = 0.0;
-        for (int j = 0; j < size; j++)
+        for (j = 0; j < size; j++)
           {
           *img_ptr++ = (unsigned char)(255.0 * r);
           *img_ptr++ = (unsigned char)(255.0 * g);
@@ -561,10 +563,10 @@ void vtkKWColorSpectrumWidget::UpdateColorCanvas()
       this->Internals->PreviousFixedAxisValue = this->InternalColorRGB[1];
       g = this->InternalColorRGB[1];
       r = 1.0;
-      for (int i = 0; i < size; i++)
+      for (i = 0; i < size; i++)
         {
         b = 0.0;
-        for (int j = 0; j < size; j++)
+        for (j = 0; j < size; j++)
           {
           *img_ptr++ = (unsigned char)(255.0 * r);
           *img_ptr++ = (unsigned char)(255.0 * g);
@@ -585,10 +587,10 @@ void vtkKWColorSpectrumWidget::UpdateColorCanvas()
       this->Internals->PreviousFixedAxisValue = this->InternalColorRGB[2];
       b = this->InternalColorRGB[2];
       g = 1.0;
-      for (int i = 0; i < size; i++)
+      for (i = 0; i < size; i++)
         {
         r = 0.0;
-        for (int j = 0; j < size; j++)
+        for (j = 0; j < size; j++)
           {
           *img_ptr++ = (unsigned char)(255.0 * r);
           *img_ptr++ = (unsigned char)(255.0 * g);
@@ -609,10 +611,10 @@ void vtkKWColorSpectrumWidget::UpdateColorCanvas()
       this->Internals->PreviousFixedAxisValue = this->InternalColorHSV[0];
       h = this->InternalColorHSV[0];
       v = 1.0;
-      for (int i = 0; i < size; i++)
+      for (i = 0; i < size; i++)
         {
         s = 0.0;
-        for (int j = 0; j < size; j++)
+        for (j = 0; j < size; j++)
           {
           one_s = 1.0 - s;
           if (h > onesixth && h <= onethird) // green/red
@@ -659,10 +661,10 @@ void vtkKWColorSpectrumWidget::UpdateColorCanvas()
       s = this->InternalColorHSV[1];
       one_s = 1.0 - s;
       v = 1.0;
-      for (int i = 0; i < size; i++)
+      for (i = 0; i < size; i++)
         {
         h = 0.0;
-        for (int j = 0; j < size; j++)
+        for (j = 0; j < size; j++)
           {
           if (h > onesixth && h <= onethird) // green/red
             {
@@ -707,11 +709,11 @@ void vtkKWColorSpectrumWidget::UpdateColorCanvas()
       this->Internals->PreviousFixedAxisValue = this->InternalColorHSV[2];
       v = this->InternalColorHSV[2];
       s = 1.0;
-      for (int i = 0; i < size; i++)
+      for (i = 0; i < size; i++)
         {
         one_s = 1.0 - s;
         h = 0.0;
-        for (int j = 0; j < size; j++)
+        for (j = 0; j < size; j++)
           {
           if (h > onesixth && h <= onethird) // green/red
             {
