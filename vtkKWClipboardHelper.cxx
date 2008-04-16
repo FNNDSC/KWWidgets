@@ -12,10 +12,13 @@
 
 =========================================================================*/
 
-#if defined(__APPLE__) && (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_4)
+#ifdef VTK_USE_APPLE_LOADER
+#include <AvailabilityMacros.h>
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_4
 #include <Carbon/Carbon.h>
 #define Cursor X11Cursor 
 #endif
+#endif // VTK_USE_APPLE_LOADER
 
 #include "vtkWindows.h"
 
@@ -25,9 +28,11 @@
 #include "vtkImageData.h"
 #include "vtkObjectFactory.h"
 
-#if defined(__APPLE__) && (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_4)
+#ifdef VTK_USE_APPLE_LOADER
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_4
 #undef Cursor
 #endif
+#endif // VTK_USE_APPLE_LOADER
 
 vtkStandardNewMacro( vtkKWClipboardHelper );
 vtkCxxRevisionMacro(vtkKWClipboardHelper, "1.0");
@@ -61,11 +66,13 @@ int vtkKWClipboardHelper::CopyTextToClipboard(const char* text)
       SetClipboardData(CF_TEXT, hDIB);
       ::GlobalUnlock(hDIB);
       CloseClipboard();
+      return 1;
       }
 #endif
 
-// For MacOsX - 10.4+                                                                    
-#if defined(__APPLE__) && (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_4)
+// For MacOsX - 10.4+     
+#ifdef VTK_USE_APPLE_LOADER
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_4
 
     PasteboardRef pb = NULL;
     if(noErr == PasteboardCreate(kPasteboardClipboard,&pb))
@@ -79,10 +86,12 @@ int vtkKWClipboardHelper::CopyTextToClipboard(const char* text)
 
       CFRelease(filedata);
       CFRelease(pb);
+      return 1;
       }
 #endif
+#endif
 
-  return 1;
+  return 0;
 }
 //----------------------------------------------------------------------------
 int vtkKWClipboardHelper::CopyImageToClipboard(vtkImageData* iData)
@@ -151,11 +160,13 @@ int vtkKWClipboardHelper::CopyImageToClipboard(vtkImageData* iData)
     SetClipboardData (CF_DIB, hDIB);
     ::GlobalUnlock(hDIB);
     CloseClipboard();
+    return 1;
     }           
 #endif
 
 // For MacOsX - 10.4+
-#if defined(__APPLE__) && (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_4)
+#ifdef VTK_USE_APPLE_LOADER
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_4
 
   void* bitmapData;
   int bytePRow = size[0]*4;
@@ -221,7 +232,8 @@ int vtkKWClipboardHelper::CopyImageToClipboard(vtkImageData* iData)
   OSStatus err = noErr;
 
   PasteboardRef pb = NULL;
-  if(noErr == PasteboardCreate(kPasteboardClipboard,&pb))
+  err = PasteboardCreate(kPasteboardClipboard,&pb);
+  if(err == noErr)
     {
     PasteboardClear(pb);
     PasteboardSyncFlags syncFlags = PasteboardSynchronize(pb);
@@ -238,10 +250,14 @@ int vtkKWClipboardHelper::CopyImageToClipboard(vtkImageData* iData)
      }
 
   free(bitmapData);
- 
+  if(err == noErr)
+    {
+    return 1;
+    }
+#endif
 #endif
 
-  return 1;
+  return 0;
 }
 
 //----------------------------------------------------------------------------
