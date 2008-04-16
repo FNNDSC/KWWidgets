@@ -13,7 +13,12 @@
 =========================================================================*/
 #include "vtkKWApplication.h"
 
+#include "vtkObjectFactory.h"
+#include "vtkOutputWindow.h"
+#include "vtkTclUtil.h"
+
 #include "vtkKWBalloonHelpManager.h"
+#include "vtkKWColorPickerDialog.h"
 #include "vtkKWEntry.h"
 #include "vtkKWEntryWithLabel.h"
 #include "vtkKWEvent.h"
@@ -40,10 +45,6 @@
 #include "vtkKWTkcon.h"
 #include "vtkKWToolbar.h"
 #include "vtkKWWindowBase.h"
-#include "vtkKWWindowBase.h"
-#include "vtkObjectFactory.h"
-#include "vtkOutputWindow.h"
-#include "vtkTclUtil.h"
 
 #include <stdarg.h>
 
@@ -88,7 +89,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.326 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.327 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -264,6 +265,7 @@ vtkKWApplication::vtkKWApplication()
   this->Theme                     = NULL;
   this->LogDialog                 = vtkKWLogDialog::New();
   this->TclInteractor             = NULL;
+  this->ColorPickerDialog             = NULL;
 
   /* IMPORTANT:
      Do *NOT* call anything that retrieves the application's TclName.
@@ -408,6 +410,13 @@ void vtkKWApplication::PrepareForDelete()
     this->TclInteractor->SetMasterWindow(NULL);
     this->TclInteractor->Delete();
     this->TclInteractor = NULL;
+    }
+
+  if (this->ColorPickerDialog)
+    {
+    this->ColorPickerDialog->SetMasterWindow(NULL);
+    this->ColorPickerDialog->Delete();
+    this->ColorPickerDialog = NULL;
     }
 
   // vtkKWOutputWindow is actually using the LogDialog, so before deleting
@@ -2749,6 +2758,25 @@ void vtkKWApplication::DisplayTclInteractor(vtkKWTopLevel *master)
 }
 
 //----------------------------------------------------------------------------
+vtkKWColorPickerDialog* vtkKWApplication::GetColorPickerDialog()
+{
+  if (!this->ColorPickerDialog)
+    {
+    this->ColorPickerDialog = vtkKWColorPickerDialog::New();
+    }
+
+  if (!this->ColorPickerDialog->IsCreated())
+    {
+    this->ColorPickerDialog->SetApplication(this);
+    // do not set the master window otherwise TAB doesn't switch focus
+    this->ColorPickerDialog->Create();
+    this->ColorPickerDialog->SetDisplayPositionToPointer();
+    }
+  
+  return this->ColorPickerDialog;
+}
+
+//----------------------------------------------------------------------------
 void vtkKWApplication::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
@@ -2817,4 +2845,5 @@ void vtkKWApplication::PrintSelf(ostream& os, vtkIndent indent)
      << (this->ReleaseMode ? "On" : "Off") << endl;
   os << indent << "PrintTargetDPI: " << this->GetPrintTargetDPI() << endl;
   os << indent << "TclInteractor: " << this->GetTclInteractor() << endl;
+  os << indent << "ColorPickerDialog: " << this->GetColorPickerDialog() << endl;
 }

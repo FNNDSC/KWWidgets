@@ -46,7 +46,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.92 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.93 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -560,19 +560,14 @@ int vtkKWTkUtilities::QueryUserForColor(
 
   return 0;
 #else
-  vtkKWColorPickerDialog *dlg = vtkKWColorPickerDialog::New();
-  dlg->SetApplication(app);
-  if (dialog_title)
+  vtkKWColorPickerDialog *dlg = app->GetColorPickerDialog();
+  if (!dlg)
     {
-    dlg->SetTitle(dialog_title);
+    return 0;
     }
-  // do not set the master window otherwise TAB doesn't switch focus
-  //  dlg->SetMasterWindow(dialog_parent); 
-  dlg->Create();
+  dlg->SetTitle(dialog_title);
   dlg->SetDisplayPositionToPointer();
-  
   dlg->GetColorPickerWidget()->SetNewColorAsRGB(in_r, in_g, in_b);
-  
   if (dlg->Invoke())
     {
     dlg->GetColorPickerWidget()->GetNewColorAsRGB(*out_r, *out_g, *out_b);
@@ -583,8 +578,6 @@ int vtkKWTkUtilities::QueryUserForColor(
     *out_g = in_g;
     *out_b = in_b;
     }
-
-  dlg->Delete();
 
   return 1;
 #endif

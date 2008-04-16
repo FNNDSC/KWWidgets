@@ -27,20 +27,19 @@
 
 class vtkKWApplicationInternals;
 class vtkKWBalloonHelpManager;
+class vtkKWColorPickerDialog;
 class vtkKWLabel;
-class vtkKWLoadSaveDialog;
+class vtkKWLogDialog;
 class vtkKWMessageDialog;
 class vtkKWOptionDataBase;
 class vtkKWRegistryHelper;
 class vtkKWSplashScreen;
-class vtkKWText;
+class vtkKWTclInteractor;
 class vtkKWTextWithScrollbars;
 class vtkKWTheme;
-class vtkKWWidget;
 class vtkKWTopLevel;
+class vtkKWWidget;
 class vtkKWWindowBase;
-class vtkKWLogDialog;
-class vtkKWTclInteractor;
 
 class KWWidgets_EXPORT vtkKWApplication : public vtkKWObject
 {
@@ -360,7 +359,12 @@ public:
 
   // Description:
   // Return the Balloon Help helper object. 
-  vtkKWBalloonHelpManager *GetBalloonHelpManager();
+  virtual vtkKWBalloonHelpManager *GetBalloonHelpManager();
+
+  // Description:
+  // Return the appplication-wide color picker dialog. Redefine this method
+  // in your application sub-class to provide a customized color picker.
+  virtual vtkKWColorPickerDialog *GetColorPickerDialog();
 
   // Description:
   // Evaluate Tcl script/code and perform argument substitutions.
@@ -628,6 +632,10 @@ protected:
   // Description:
   // Tcl interactor.
   vtkKWTclInteractor *TclInteractor;
+
+  // Description:
+  // Color picker dialog
+  vtkKWColorPickerDialog *ColorPickerDialog;
 
 private:
 
