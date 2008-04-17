@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.152 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.153 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetInternals
@@ -628,14 +628,16 @@ int vtkKWWidget::IsAlive()
     return 0;
     }
 
-  return atoi(this->Script("winfo exists %s", this->GetWidgetName()));
+  return this->GetApplication()->EvaluateBooleanExpression(
+    "winfo exists %s", this->GetWidgetName());
 }
 
 //----------------------------------------------------------------------------
 int vtkKWWidget::IsMapped()
 {
-  return this->IsAlive() && this->GetApplication()->EvaluateBooleanExpression(
-    "winfo ismapped %s", this->GetWidgetName());
+  return this->GetApplication()->EvaluateBooleanExpression(
+    "expr [winfo exists %s] && [winfo ismapped %s]", 
+    this->GetWidgetName(), this->GetWidgetName());
 }
 
 //----------------------------------------------------------------------------

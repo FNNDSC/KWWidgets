@@ -60,7 +60,7 @@ $widgets_tree Create
 
 set tree [$widgets_tree GetWidget]
 $tree RedrawOnIdleOn
-$tree SelectionFillOff
+$tree SelectionFillOn
 
 foreach {node text} {"core" "Core Widgets" "composite" "Composite Widgets" "VTK" "VTK Widgets"} {
   $tree AddNode "" $node $text
@@ -230,14 +230,6 @@ foreach widget $widgets {
       }
     }
     [$widgets_tree GetWidget] AddNode $parent_node $name $name
-
-    set w_name "foo_$name"
-    vtkKWCheckButton $w_name
-    $w_name SetParent [$widgets_tree GetWidget]
-    $w_name Create
-    $w_name SetBackgroundColor 1.0 1.0 1.0
-    [$widgets_tree GetWidget] SetNodeWindow $name $w_name
-    [$widgets_tree GetWidget] SetNodePadX $name 30
   }
 }
 
