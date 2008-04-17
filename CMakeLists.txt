@@ -386,6 +386,7 @@ SET(list
   vtkKWCheckButton
   vtkKWComboBox
   vtkKWEntry
+  vtkKWFrame
   vtkKWLabel
   vtkKWLabelWithLabel
   vtkKWPushButton

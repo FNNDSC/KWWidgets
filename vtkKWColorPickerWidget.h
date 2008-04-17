@@ -15,9 +15,9 @@
 // .SECTION Description
 // A widget that can be used to pick a color. It provides interactive
 // RGB and HSV sliders, a color spectrum area, and various other means to
-// select or enter color coordinates. It features a color preset editor
-// that can be used store a list of persistent/favorite colors. It can also 
-// maintain a history of "recently picked" colors.
+// select or enter color coordinates. It features a set of basic colors, a 
+// color preset editor that can be used store a list of persistent/favorite 
+// colors, and a history of "recently picked" colors.
 // This widget can be embedded in any other UI. For a standalone 
 // toplevel/dialog color picker, check the vtkKWColorPickerDialog class.
 // .SECTION Thanks
@@ -39,6 +39,7 @@ class vtkKWColorPresetSelector;
 class vtkKWColorTransferFunctionEditor;
 class vtkKWEntryWithLabel;
 class vtkKWFrame;
+class vtkKWFrameSet;
 class vtkKWLabel;
 class vtkKWLabelSet;
 class vtkKWNotebook;
@@ -80,6 +81,12 @@ public:
   vtkGetMacro(ColorSpectrumVisibility, int);
 
   // Description:
+  // Set/Get the basic colors visibility.
+  vtkBooleanMacro(BasicColorsVisibility, int);
+  virtual void SetBasicColorsVisibility(int);
+  vtkGetMacro(BasicColorsVisibility, int);
+
+  // Description:
   // Set/Get the favorites preset selector visibility.
   vtkBooleanMacro(FavoritesVisibility, int);
   virtual void SetFavoritesVisibility(int);
@@ -102,6 +109,7 @@ public:
   virtual void CurrentColorCallback();
   virtual void HexadecimalColorEntryCallback(const char*);
   virtual void ColorSpectrumChangingCallback();
+  virtual void BasicColorsCallback(const char *color);
 
   // Description:
   // Update the "enable" state of the object and its internal parts.
@@ -149,9 +157,10 @@ protected:
   vtkKWNotebook *Notebook;
 
   vtkKWEntryWithLabel              *HexadecimalColorEntry;
-  vtkKWColorSpectrumWidget     *ColorSpectrumWidget;
+  vtkKWColorSpectrumWidget         *ColorSpectrumWidget;
   vtkKWColorPresetSelector         *FavoritesColorPresetSelector;
   vtkKWColorPresetSelector         *HistoryColorPresetSelector;
+  vtkKWFrameSet                    *BasicColorsFrameSet;
 
   vtkKWFrame                       *ColorsFrame;
   vtkKWLabelSet                    *ColorsLabelSet;
@@ -163,11 +172,13 @@ protected:
   virtual void UpdateHexadecimalColorEntry(double rgb[3]);
 
   int ColorSpectrumVisibility;
+  int BasicColorsVisibility;
   int FavoritesVisibility;
   int HistoryVisibility;
 
   virtual void CreateFavoritesColorPresetSelector();
   virtual void CreateHistoryColorPresetSelector();
+  virtual void CreateBasicColorsFrameSet();
 
   // Description:
   // Processes the events that are passed through CallbackCommand (or others).

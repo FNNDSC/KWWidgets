@@ -25,6 +25,7 @@
 #include "vtkKWEntryWithLabel.h"
 #include "vtkKWEvent.h"
 #include "vtkKWFrame.h"
+#include "vtkKWFrameSet.h"
 #include "vtkKWIcon.h"
 #include "vtkKWLabel.h"
 #include "vtkKWLabelSet.h"
@@ -32,17 +33,19 @@
 #include "vtkKWRadioButton.h"
 
 #define VTK_KW_COLOR_PICKER_WIDGET_SPECTRUM_TAG 0
-#define VTK_KW_COLOR_PICKER_WIDGET_FAVORITES_TAG 1
-#define VTK_KW_COLOR_PICKER_WIDGET_HISTORY_TAG 2
+#define VTK_KW_COLOR_PICKER_WIDGET_BASIC_COLORS_TAG 1
+#define VTK_KW_COLOR_PICKER_WIDGET_FAVORITES_TAG 2
+#define VTK_KW_COLOR_PICKER_WIDGET_HISTORY_TAG 3
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.2 $");
 
 //----------------------------------------------------------------------------
 vtkKWColorPickerWidget::vtkKWColorPickerWidget()
 {
   this->ColorSpectrumVisibility = 1;
+  this->BasicColorsVisibility = 1;
   this->FavoritesVisibility = 1;
   this->HistoryVisibility = 1;
 
@@ -68,6 +71,7 @@ vtkKWColorPickerWidget::vtkKWColorPickerWidget()
   this->ColorSpectrumWidget      = NULL;
   this->FavoritesColorPresetSelector = vtkKWColorPresetSelector::New();
   this->HistoryColorPresetSelector   = vtkKWColorPresetSelector::New();
+  this->BasicColorsFrameSet   = NULL;
   this->ColorsFrame                  = NULL;
   this->ColorsLabelSet               = NULL;
   this->ColorsNameLabelSet           = NULL;
@@ -174,6 +178,12 @@ vtkKWColorPickerWidget::~vtkKWColorPickerWidget()
     this->HistoryColorPresetSelector->Delete();
     this->HistoryColorPresetSelector = NULL;
     }
+
+  if (this->BasicColorsFrameSet)
+    {
+    this->BasicColorsFrameSet->Delete();
+    this->BasicColorsFrameSet = NULL;
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -240,6 +250,17 @@ void vtkKWColorPickerWidget::CreateWidget()
   tk_cmd << "pack " << this->ColorSpectrumWidget->GetWidgetName() 
          << " -side left -anchor nw -expand y -fill both -padx 2 -pady 2" 
          << endl;
+
+  // --------------------------------------------------------------
+  // Basic Colors
+
+  icon->SetImage(vtkKWIcon::IconColorSquares);
+
+  page_id = this->Notebook->AddPage(
+    NULL, "Basic Colors", icon, VTK_KW_COLOR_PICKER_WIDGET_BASIC_COLORS_TAG);
+  this->Notebook->SetPageVisibility(page_id, this->BasicColorsVisibility);
+
+  this->CreateBasicColorsFrameSet();
 
   // --------------------------------------------------------------
   // Favorites presets
@@ -701,6 +722,67 @@ void vtkKWColorPickerWidget::CreateWidget()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::CreateBasicColorsFrameSet()
+{
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
+  if (!this->BasicColorsFrameSet)
+    {
+    this->BasicColorsFrameSet = vtkKWFrameSet::New();
+    }
+
+  if (this->BasicColorsFrameSet->IsCreated())
+    {
+    return;
+    }
+
+  this->BasicColorsFrameSet->SetParent(
+    this->Notebook->GetFrame(NULL, 
+                             VTK_KW_COLOR_PICKER_WIDGET_BASIC_COLORS_TAG));
+  this->BasicColorsFrameSet->Create();
+  this->BasicColorsFrameSet->PackHorizontallyOn();
+  this->BasicColorsFrameSet->SetMaximumNumberOfWidgetsInPackingDirection(13);
+  this->BasicColorsFrameSet->SetWidgetsPadX(2);
+  this->BasicColorsFrameSet->SetWidgetsPadY(2);
+
+  const char *colors[] = 
+    {
+      "#ff8080", "#ffff80", "#80ff80", "#00ff80", 
+      "#80ffff", "#0080ff", "#ff80c0", "#ff80ff",
+      "#ff0000", "#ffff00", "#80ff00", "#00ff40", 
+      "#00ffff", "#0080c0", "#8080c0", "#ff00ff",
+      "#804040", "#ff8040", "#00ff00", "#008080", 
+      "#004080", "#8080ff", "#800040", "#ff0080",
+      "#800000", "#ff8000", "#008000", "#008040", 
+      "#0000ff", "#0000a0", "#800080", "#8000ff",
+      "#400000", "#804000", "#004000", "#004040", 
+      "#000080", "#000040", "#400040", "#400080",
+      "#000000", "#808000", "#808040", "#808080", 
+      "#408080", "#c0c0c0", "#400040", "#ffffff"
+    };
+
+  int i;
+  char command[128];
+
+  for (i = 0; i < sizeof(colors) / sizeof(colors[0]); i++)
+    {
+    vtkKWFrame *frame = this->BasicColorsFrameSet->AddWidget(i);
+    // for speed, use Script
+    this->Script(
+      "%s configure -bd 1 -relief solid -width 16 -height 16 -bg %s", 
+      frame->GetWidgetName(), colors[i]);
+    sprintf(command, "BasicColorsCallback {%s}", colors[i]);
+    frame->SetBinding("<Any-ButtonPress>", this, command);
+    }
+
+  this->Script("pack %s -side left -anchor nw -expand n -fill none",
+               this->BasicColorsFrameSet->GetWidgetName());
+}
+
+//----------------------------------------------------------------------------
 void vtkKWColorPickerWidget::CreateFavoritesColorPresetSelector()
 {
   if (!this->IsCreated())
@@ -777,6 +859,7 @@ void vtkKWColorPickerWidget::Pack()
   tk_cmd << "pack " << this->SlidersFrame->GetWidgetName();
 
   if (this->ColorSpectrumVisibility ||
+      this->BasicColorsVisibility ||
       this->FavoritesVisibility ||
       this->HistoryVisibility)
     {
@@ -1333,6 +1416,17 @@ void vtkKWColorPickerWidget::HistoryColorPresetApplyCallback(int id)
 }
 
 //---------------------------------------------------------------------------
+void vtkKWColorPickerWidget::BasicColorsCallback(const char *color)
+{
+  int r, g, b;
+  if (color && sscanf(color, "#%02x%02x%02x", &r, &g, &b) == 3)
+    {
+    this->SetNewColorAsRGB(
+      (double)r / 255.0, (double)g / 255.0,(double)b / 255.0);
+    }
+}
+
+//---------------------------------------------------------------------------
 void vtkKWColorPickerWidget::CurrentColorCallback()
 {
   if (!this->ColorsLabelSet)
@@ -1442,6 +1536,28 @@ void vtkKWColorPickerWidget::SetColorSpectrumVisibility(int arg)
     this->Notebook->SetPageVisibility(
       NULL, VTK_KW_COLOR_PICKER_WIDGET_SPECTRUM_TAG, 
       this->ColorSpectrumVisibility);
+    }
+
+  this->Pack();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::SetBasicColorsVisibility(int arg)
+{
+  if (this->BasicColorsVisibility == arg)
+    {
+    return;
+    }
+
+  this->BasicColorsVisibility = arg;
+
+  this->Modified();
+
+  if (this->Notebook)
+    {
+    this->Notebook->SetPageVisibility(
+      NULL, VTK_KW_COLOR_PICKER_WIDGET_BASIC_COLORS_TAG, 
+      this->BasicColorsVisibility);
     }
 
   this->Pack();
@@ -1562,6 +1678,7 @@ void vtkKWColorPickerWidget::UpdateEnableState()
 
   this->PropagateEnableState(this->HexadecimalColorEntry);
   this->PropagateEnableState(this->ColorSpectrumWidget);
+  this->PropagateEnableState(this->BasicColorsFrameSet);
   this->PropagateEnableState(this->FavoritesColorPresetSelector);
   this->PropagateEnableState(this->HistoryColorPresetSelector);
 
@@ -1575,6 +1692,9 @@ void vtkKWColorPickerWidget::PrintSelf(ostream& os, vtkIndent indent)
 {
   os << indent << "ColorSpectrumVisibility: "
      << (this->ColorSpectrumVisibility ? "On" : "Off") << endl;
+
+  os << indent << "BasicColorsVisibility: "
+     << (this->BasicColorsVisibility ? "On" : "Off") << endl;
 
   os << indent << "FavoritesVisibility: "
      << (this->FavoritesVisibility ? "On" : "Off") << endl;

@@ -40,7 +40,7 @@ const char *vtkKWColorPresetSelector::ColorColumnName = "Color";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWColorPresetSelector);
-vtkCxxRevisionMacro(vtkKWColorPresetSelector, "$Revision: 1.32 $");
+vtkCxxRevisionMacro(vtkKWColorPresetSelector, "$Revision: 1.33 $");
 
 //----------------------------------------------------------------------------
 vtkKWColorPresetSelector::vtkKWColorPresetSelector()
@@ -200,7 +200,8 @@ void vtkKWColorPresetSelector::CreateColumns()
   list->SetColumnResizable(col, 0);
   list->SetColumnStretchable(col, 0);
   list->SetColumnEditable(col, 0);
-  list->SetColumnLabelImageToPredefinedIcon(col, vtkKWIcon::IconColorSquares);
+  //list->SetColumnLabelImageToPredefinedIcon(col, vtkKWIcon::IconColorSquares);
+  list->SetColumnLabelImageToPredefinedIcon(col, vtkKWIcon::IconEmpty16x16);
   list->SetColumnFormatCommandToEmptyOutput(col);
 }
 
@@ -297,39 +298,35 @@ int vtkKWColorPresetSelector::HasPresetCommentAsHexadecimalRGB(int id)
 //----------------------------------------------------------------------------
 void vtkKWColorPresetSelector::AddDefaultColorPresets()
 {
-  int id;
+  const char *colors[] = 
+    {
+      "#ff8080", "#ffff80", "#80ff80", "#00ff80", 
+      "#80ffff", "#0080ff", "#ff80c0", "#ff80ff",
+      "#ff0000", "#ffff00", "#80ff00", "#00ff40", 
+      "#00ffff", "#0080c0", "#8080c0", "#ff00ff",
+      "#804040", "#ff8040", "#00ff00", "#008080", 
+      "#004080", "#8080ff", "#800040", "#ff0080",
+      "#800000", "#ff8000", "#008000", "#008040", 
+      "#0000ff", "#0000a0", "#800080", "#8000ff",
+      "#400000", "#804000", "#004000", "#004040", 
+      "#000080", "#000040", "#400040", "#400080",
+      "#000000", "#808000", "#808040", "#808080", 
+      "#408080", "#c0c0c0", "#400040", "#ffffff"
+    };
 
-  id = this->AddPreset();
-  this->SetPresetColorAsRGB(id, 1.0, 1.0, 1.0);
-  this->SetPresetComment(id, "White");
-  
-  id = this->AddPreset();
-  this->SetPresetColorAsRGB(id, 0.0, 0.0, 0.0);
-  this->SetPresetComment(id, "Black");
-  
-  id = this->AddPreset();
-  this->SetPresetColorAsRGB(id, 1.0, 0.0, 0.0);
-  this->SetPresetComment(id, "Red");
-  
-  id = this->AddPreset();
-  this->SetPresetColorAsRGB(id, 0.0, 1.0, 0.0);
-  this->SetPresetComment(id, "Green");
+  int i, id;
+  int r, g, b;
 
-  id = this->AddPreset();
-  this->SetPresetColorAsRGB(id, 0.0, 0.0, 1.0);
-  this->SetPresetComment(id, "Blue");
-
-  id = this->AddPreset();
-  this->SetPresetColorAsRGB(id, 1.0, 1.0, 0.0);
-  this->SetPresetComment(id, "Yellow");
-
-  id = this->AddPreset();
-  this->SetPresetColorAsRGB(id, 1.0, 0.0, 1.0);
-  this->SetPresetComment(id, "Magenta");
-
-  id = this->AddPreset();
-  this->SetPresetColorAsRGB(id, 0.0, 1.0, 1.0);
-  this->SetPresetComment(id, "Cyan");
+  for (i = 0; i < sizeof(colors) / sizeof(colors[0]); i++)
+    {
+    if (sscanf(colors[i], "#%02x%02x%02x", &r, &g, &b) == 3)
+      {
+      id = this->AddPreset();
+      this->SetPresetColorAsRGB(
+        id, (double)r / 255.0, (double)g / 255.0, (double)b / 255.0);
+      this->SetPresetComment(id, colors[i]);
+      }
+    }
 }
 
 //----------------------------------------------------------------------------
