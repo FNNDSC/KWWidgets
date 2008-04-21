@@ -347,6 +347,20 @@ public:
   virtual void Resize();
 
   // Description:
+  // Events: the following events are send by a notebook instance.
+  // The below events are sent as a result of a direct user interaction
+  // (clicking, context menu), not as a result of a programmatical call.
+  // The following parameters are also passed as client data:
+  // - the title/tag pair for the page, as a const char *[2] (first item
+  //   in the array is title (eventually NULL), second is its numerical tag, 
+  //   as a string)
+  // vtkKWEvent::NotebookRaisePageEvent: a page has been raised
+  // vtkKWEvent::NotebookPinPageEvent:   a page has been pinned (context menu)
+  // vtkKWEvent::NotebookUnpinPageEvent: a page has been unpinned (context menu)
+  // vtkKWEvent::NotebookShowPageEvent:  a page was shown  (context menu?)
+  // vtkKWEvent::NotebookHidePageEvent:  a page was hidden (context menu)
+
+  // Description:
   // Callbacks. Internal, do not use.
   virtual void PageTabContextMenuCallback(int id, int x, int y);
   virtual void RaiseCallback(int id);
