@@ -110,9 +110,12 @@ int vtkKWSetApplicationIconCmdInternal(Tcl_Interp *interp,
 
   if (hIcon != NULL)
     {
+#ifdef _WIN64
     // http://search.cpan.org/src/NI-S/Tk-804.027/pTk/mTk/win/tkWinWm.c
-    //    SetClassLong(winHandle, set_small ? GCL_HICONSM : GCL_HICON, (LONG)hIcon);
     SetClassLongPtr(winHandle, set_small ? GCLP_HICONSM : GCLP_HICON, (LONG_PTR)hIcon);
+#else
+    SetClassLong(winHandle, set_small ? GCL_HICONSM : GCL_HICON, (LONG)hIcon);
+#endif
     }
 #if 0
   else
