@@ -2,56 +2,56 @@
 # KWWidgets_GET_CMAKE_BUILD_TYPE
 # Get CMAKE_BUILD_TYPE
 
-MACRO(KWWidgets_GET_CMAKE_BUILD_TYPE varname)
+macro(KWWidgets_GET_CMAKE_BUILD_TYPE varname)
 
-  SET(cmake_build_type_found "${CMAKE_BUILD_TYPE}")
-  IF(CMAKE_CONFIGURATION_TYPES)
-    IF(NOT cmake_build_type_found)
-      FOREACH(var ${CMAKE_CONFIGURATION_TYPES})
-        IF(NOT cmake_build_type_found)
-          SET(cmake_build_type_found "${var}")
-        ENDIF(NOT cmake_build_type_found)
-      ENDFOREACH(var)
-    ENDIF(NOT cmake_build_type_found)
-  ENDIF(CMAKE_CONFIGURATION_TYPES)
+  set(cmake_build_type_found "${CMAKE_BUILD_TYPE}")
+  if(CMAKE_CONFIGURATION_TYPES)
+    if(NOT cmake_build_type_found)
+      foreach(var ${CMAKE_CONFIGURATION_TYPES})
+        if(NOT cmake_build_type_found)
+          set(cmake_build_type_found "${var}")
+        endif(NOT cmake_build_type_found)
+      endforeach(var)
+    endif(NOT cmake_build_type_found)
+  endif(CMAKE_CONFIGURATION_TYPES)
   
-  SET(${varname} ${cmake_build_type_found})
+  set(${varname} ${cmake_build_type_found})
 
-ENDMACRO(KWWidgets_GET_CMAKE_BUILD_TYPE)
+endmacro(KWWidgets_GET_CMAKE_BUILD_TYPE)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_GET_FULL_PATH_TO_EXECUTABLE
 # Get full path to exec
 
-MACRO(KWWidgets_GET_FULL_PATH_TO_EXECUTABLE exe_name varname)
+macro(KWWidgets_GET_FULL_PATH_TO_EXECUTABLE exe_name varname)
 
-  GET_FILENAME_COMPONENT(exe_name_name "${exe_name}" NAME)
-  IF("${exe_name_name}" STREQUAL "${exe_name}")
-    IF(EXECUTABLE_OUTPUT_PATH)
-      SET(exe_dir "${EXECUTABLE_OUTPUT_PATH}/")
-    ELSE(EXECUTABLE_OUTPUT_PATH)
-      SET(exe_dir "${CMAKE_CURRENT_BINARY_DIR}/")
-    ENDIF(EXECUTABLE_OUTPUT_PATH)
-  ELSE("${exe_name_name}" STREQUAL "${exe_name}")
-    SET(exe_dir)
-  ENDIF("${exe_name_name}" STREQUAL "${exe_name}")
+  get_filename_component(exe_name_name "${exe_name}" NAME)
+  if("${exe_name_name}" STREQUAL "${exe_name}")
+    if(EXECUTABLE_OUTPUT_PATH)
+      set(exe_dir "${EXECUTABLE_OUTPUT_PATH}/")
+    else(EXECUTABLE_OUTPUT_PATH)
+      set(exe_dir "${CMAKE_CURRENT_BINARY_DIR}/")
+    endif(EXECUTABLE_OUTPUT_PATH)
+  else("${exe_name_name}" STREQUAL "${exe_name}")
+    set(exe_dir)
+  endif("${exe_name_name}" STREQUAL "${exe_name}")
 
-  KWWidgets_GET_CMAKE_BUILD_TYPE(DEFAULT_CMAKE_BUILD_TYPE)
-  IF(CMAKE_CONFIGURATION_TYPES)
-    SET(CONFIGURATION_TYPE "${DEFAULT_CMAKE_BUILD_TYPE}/")
-  ELSE(CMAKE_CONFIGURATION_TYPES)
-    SET(CONFIGURATION_TYPE)
-  ENDIF(CMAKE_CONFIGURATION_TYPES)
+  kwwidgets_get_cmake_build_type(DEFAULT_CMAKE_BUILD_TYPE)
+  if(CMAKE_CONFIGURATION_TYPES)
+    set(CONFIGURATION_TYPE "${DEFAULT_CMAKE_BUILD_TYPE}/")
+  else(CMAKE_CONFIGURATION_TYPES)
+    set(CONFIGURATION_TYPE)
+  endif(CMAKE_CONFIGURATION_TYPES)
 
-  SET(${varname} "${exe_dir}${CONFIGURATION_TYPE}${exe_name}")
+  set(${varname} "${exe_dir}${CONFIGURATION_TYPE}${exe_name}")
 
-ENDMACRO(KWWidgets_GET_FULL_PATH_TO_EXECUTABLE)
+endmacro(KWWidgets_GET_FULL_PATH_TO_EXECUTABLE)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_ADD_TEST_WITH_LAUNCHER
 # Add specific distribution-related C test
 
-MACRO(KWWidgets_ADD_TEST_WITH_LAUNCHER
+macro(KWWidgets_ADD_TEST_WITH_LAUNCHER
     test_name
     exe_name)
 
@@ -59,170 +59,170 @@ MACRO(KWWidgets_ADD_TEST_WITH_LAUNCHER
   # unique launcher created by the library, instead of creating
   # a specific launcher when building out-of-source.
   
-  IF(KWWidgets_SOURCE_DIR)
-    SET(LAUNCHER_EXE_NAME "KWWidgetsSetupPathsLauncher")
-    KWWidgets_GET_FULL_PATH_TO_EXECUTABLE(${exe_name} exe_path)
-    ADD_TEST(${test_name} 
+  if(KWWidgets_SOURCE_DIR)
+    set(LAUNCHER_EXE_NAME "KWWidgetsSetupPathsLauncher")
+    kwwidgets_get_full_path_to_executable(${exe_name} exe_path)
+    add_test(${test_name} 
       ${EXECUTABLE_OUTPUT_PATH}/${LAUNCHER_EXE_NAME} ${exe_path} ${ARGN})
-  ELSE(KWWidgets_SOURCE_DIR)
-    INCLUDE("${KWWidgets_CMAKE_DIR}/KWWidgetsPathsMacros.cmake")
-    SET(LAUNCHER_EXE_NAME "${exe_name}Launcher")
-    KWWidgets_GENERATE_SETUP_PATHS_LAUNCHER(
+  else(KWWidgets_SOURCE_DIR)
+    include("${KWWidgets_CMAKE_DIR}/KWWidgetsPathsMacros.cmake")
+    set(LAUNCHER_EXE_NAME "${exe_name}Launcher")
+    kwwidgets_generate_setup_paths_launcher(
       "${CMAKE_CURRENT_BINARY_DIR}" "${LAUNCHER_EXE_NAME}" 
       "${EXECUTABLE_OUTPUT_PATH}" "${exe_name}")
-    ADD_TEST(${test_name} 
+    add_test(${test_name} 
       ${EXECUTABLE_OUTPUT_PATH}/${LAUNCHER_EXE_NAME} ${ARGN})
-  ENDIF(KWWidgets_SOURCE_DIR)
+  endif(KWWidgets_SOURCE_DIR)
 
-ENDMACRO(KWWidgets_ADD_TEST_WITH_LAUNCHER)
+endmacro(KWWidgets_ADD_TEST_WITH_LAUNCHER)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_ADD_TEST_FROM_EXAMPLE
 # Add specific distribution-related test
 
-MACRO(KWWidgets_ADD_TEST_FROM_EXAMPLE 
+macro(KWWidgets_ADD_TEST_FROM_EXAMPLE 
     test_name
     exe_name exe_options
     out_of_source_exe_name out_of_source_exe_options)
 
-  ADD_TEST(${test_name} 
+  add_test(${test_name} 
     ${EXECUTABLE_OUTPUT_PATH}/${exe_name} ${exe_options} ${ARGN})
 
-  IF(KWWidgets_SOURCE_DIR AND KWWidgets_TEST_OUT_OF_SOURCE)
-    KWWidgets_ADD_OUT_OF_SOURCE_TEST(
+  if(KWWidgets_SOURCE_DIR AND KWWidgets_TEST_OUT_OF_SOURCE)
+    kwwidgets_add_out_of_source_test(
       ${test_name}OoS
       ${PROJECT_NAME}
       "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}OoS"
       ${out_of_source_exe_name} ${out_of_source_exe_options} ${ARGN})
-  ENDIF(KWWidgets_SOURCE_DIR AND KWWidgets_TEST_OUT_OF_SOURCE)
+  endif(KWWidgets_SOURCE_DIR AND KWWidgets_TEST_OUT_OF_SOURCE)
 
-ENDMACRO(KWWidgets_ADD_TEST_FROM_EXAMPLE)
+endmacro(KWWidgets_ADD_TEST_FROM_EXAMPLE)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_ADD_TEST_FROM_C_EXAMPLE
 # Add specific distribution-related C test
 
-MACRO(KWWidgets_ADD_TEST_FROM_C_EXAMPLE 
+macro(KWWidgets_ADD_TEST_FROM_C_EXAMPLE 
     test_name
     exe_name)
 
   # Try to find the full path to the test executable
 
-  KWWidgets_GET_FULL_PATH_TO_EXECUTABLE(${exe_name} exe_path)
+  kwwidgets_get_full_path_to_executable(${exe_name} exe_path)
 
   # If we are building the test from the library itself, use the
   # unique launcher created by the library, instead of creating
   # a specific launcher when building out-of-source.
   
-  SET(LAUNCHER_EXE_NAME "${exe_name}Launcher")
+  set(LAUNCHER_EXE_NAME "${exe_name}Launcher")
 
-  IF(KWWidgets_SOURCE_DIR)
-    KWWidgets_ADD_TEST_FROM_EXAMPLE(${test_name} 
-     "KWWidgetsSetupPathsLauncher" "${exe_path}"
-     ${LAUNCHER_EXE_NAME} ""
-     "--test")
-  ELSE(KWWidgets_SOURCE_DIR)
+  if(KWWidgets_SOURCE_DIR)
+    kwwidgets_add_test_from_example(${test_name} 
+      "KWWidgetsSetupPathsLauncher" "${exe_path}"
+      ${LAUNCHER_EXE_NAME} ""
+      "--test")
+  else(KWWidgets_SOURCE_DIR)
     # No need to create a launcher (supposed to be done by the example already)
-    KWWidgets_ADD_TEST_FROM_EXAMPLE(${test_name} 
+    kwwidgets_add_test_from_example(${test_name} 
       ${LAUNCHER_EXE_NAME} ""
       ${LAUNCHER_EXE_NAME} ""
       "--test")
-  ENDIF(KWWidgets_SOURCE_DIR)
+  endif(KWWidgets_SOURCE_DIR)
 
-ENDMACRO(KWWidgets_ADD_TEST_FROM_C_EXAMPLE)
+endmacro(KWWidgets_ADD_TEST_FROM_C_EXAMPLE)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_ADD_TEST_FROM_TCL_EXAMPLE
 # Add specific distribution-related Tcl test
 
-MACRO(KWWidgets_ADD_TEST_FROM_TCL_EXAMPLE 
+macro(KWWidgets_ADD_TEST_FROM_TCL_EXAMPLE 
     test_name
     script_name)
 
-  IF(KWWidgets_BUILD_SHARED_LIBS AND VTK_WRAP_TCL AND TCL_TCLSH)
+  if(KWWidgets_BUILD_SHARED_LIBS AND VTK_WRAP_TCL AND TCL_TCLSH)
 
-    GET_FILENAME_COMPONENT(name_we "${script_name}" NAME_WE)
-    SET(LAUNCHER_EXE_NAME "${name_we}TclLauncher")
+    get_filename_component(name_we "${script_name}" NAME_WE)
+    set(LAUNCHER_EXE_NAME "${name_we}TclLauncher")
 
     # If we are building the test from the library itself, use the
     # unique launcher created by the library, instead of creating
     # a specific launcher when building out-of-source.
 
-    IF(KWWidgets_SOURCE_DIR)
-      KWWidgets_ADD_TEST_FROM_EXAMPLE(${test_name} 
+    if(KWWidgets_SOURCE_DIR)
+      kwwidgets_add_test_from_example(${test_name} 
         "KWWidgetsSetupPathsLauncher" "${TCL_TCLSH}"
         ${LAUNCHER_EXE_NAME} ""
         "${script_name}" "--test")
-    ELSE(KWWidgets_SOURCE_DIR)
-      INCLUDE("${KWWidgets_CMAKE_DIR}/KWWidgetsPathsMacros.cmake")
-      KWWidgets_GENERATE_SETUP_PATHS_LAUNCHER(
+    else(KWWidgets_SOURCE_DIR)
+      include("${KWWidgets_CMAKE_DIR}/KWWidgetsPathsMacros.cmake")
+      kwwidgets_generate_setup_paths_launcher(
         "${CMAKE_CURRENT_BINARY_DIR}" "${LAUNCHER_EXE_NAME}" "" "${TCL_TCLSH}")
-      KWWidgets_ADD_TEST_FROM_EXAMPLE(${test_name} 
+      kwwidgets_add_test_from_example(${test_name} 
         ${LAUNCHER_EXE_NAME} "" 
         ${LAUNCHER_EXE_NAME} "" 
         "${script_name}" "--test")
-    ENDIF(KWWidgets_SOURCE_DIR)
+    endif(KWWidgets_SOURCE_DIR)
 
-  ENDIF(KWWidgets_BUILD_SHARED_LIBS AND VTK_WRAP_TCL AND TCL_TCLSH)
+  endif(KWWidgets_BUILD_SHARED_LIBS AND VTK_WRAP_TCL AND TCL_TCLSH)
 
-ENDMACRO(KWWidgets_ADD_TEST_FROM_TCL_EXAMPLE)
+endmacro(KWWidgets_ADD_TEST_FROM_TCL_EXAMPLE)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_ADD_TEST_FROM_PYTHON_EXAMPLE
 # Add specific distribution-related Python test
 
-MACRO(KWWidgets_ADD_TEST_FROM_PYTHON_EXAMPLE 
+macro(KWWidgets_ADD_TEST_FROM_PYTHON_EXAMPLE 
     test_name
     script_name)
 
-  IF(KWWidgets_BUILD_SHARED_LIBS AND VTK_WRAP_PYTHON AND PYTHON_EXECUTABLE)
+  if(KWWidgets_BUILD_SHARED_LIBS AND VTK_WRAP_PYTHON AND PYTHON_EXECUTABLE)
 
-    GET_FILENAME_COMPONENT(name_we "${script_name}" NAME_WE)
-    SET(LAUNCHER_EXE_NAME "${name_we}PythonLauncher")
+    get_filename_component(name_we "${script_name}" NAME_WE)
+    set(LAUNCHER_EXE_NAME "${name_we}PythonLauncher")
 
     # If we are building the test from the library itself, use the
     # unique launcher created by the library, instead of creating
     # a specific launcher when building out-of-source.
 
-    IF(KWWidgets_SOURCE_DIR)
-      KWWidgets_ADD_TEST_FROM_EXAMPLE(${test_name} 
+    if(KWWidgets_SOURCE_DIR)
+      kwwidgets_add_test_from_example(${test_name} 
         "KWWidgetsSetupPathsLauncher" "${PYTHON_EXECUTABLE}"
         ${LAUNCHER_EXE_NAME} ""
         "${script_name}" "--test")
-    ELSE(KWWidgets_SOURCE_DIR)
-      INCLUDE("${KWWidgets_CMAKE_DIR}/KWWidgetsPathsMacros.cmake")
-      KWWidgets_GENERATE_SETUP_PATHS_LAUNCHER(
+    else(KWWidgets_SOURCE_DIR)
+      include("${KWWidgets_CMAKE_DIR}/KWWidgetsPathsMacros.cmake")
+      kwwidgets_generate_setup_paths_launcher(
         "${CMAKE_CURRENT_BINARY_DIR}" "${LAUNCHER_EXE_NAME}" "" "${PYTHON_EXECUTABLE}")
-      KWWidgets_ADD_TEST_FROM_EXAMPLE(${test_name} 
+      kwwidgets_add_test_from_example(${test_name} 
         ${LAUNCHER_EXE_NAME} "" 
         ${LAUNCHER_EXE_NAME} "" 
         "${script_name}" "--test")
-    ENDIF(KWWidgets_SOURCE_DIR)
+    endif(KWWidgets_SOURCE_DIR)
 
-  ENDIF(KWWidgets_BUILD_SHARED_LIBS AND VTK_WRAP_PYTHON AND PYTHON_EXECUTABLE)
+  endif(KWWidgets_BUILD_SHARED_LIBS AND VTK_WRAP_PYTHON AND PYTHON_EXECUTABLE)
 
-ENDMACRO(KWWidgets_ADD_TEST_FROM_PYTHON_EXAMPLE)
+endmacro(KWWidgets_ADD_TEST_FROM_PYTHON_EXAMPLE)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_ADD_OUT_OF_SOURCE_TEST
 # Add an out-of-source test 
 
-MACRO(KWWidgets_ADD_OUT_OF_SOURCE_TEST 
+macro(KWWidgets_ADD_OUT_OF_SOURCE_TEST 
     test_name 
     project_name 
     src_dir bin_dir 
     exe_name)
 
-  IF(VTK_WRAP_TCL)
+  if(VTK_WRAP_TCL)
 
-    KWWidgets_GET_CMAKE_BUILD_TYPE(DEFAULT_CMAKE_BUILD_TYPE)
-    IF(CMAKE_CONFIGURATION_TYPES)
-      SET(CONFIGURATION_TYPE "${DEFAULT_CMAKE_BUILD_TYPE}/")
-    ELSE(CMAKE_CONFIGURATION_TYPES)
-      SET(CONFIGURATION_TYPE)
-    ENDIF(CMAKE_CONFIGURATION_TYPES)
+    kwwidgets_get_cmake_build_type(DEFAULT_CMAKE_BUILD_TYPE)
+    if(CMAKE_CONFIGURATION_TYPES)
+      set(CONFIGURATION_TYPE "${DEFAULT_CMAKE_BUILD_TYPE}/")
+    else(CMAKE_CONFIGURATION_TYPES)
+      set(CONFIGURATION_TYPE)
+    endif(CMAKE_CONFIGURATION_TYPES)
 
-    ADD_TEST("${test_name}" ${CMAKE_CTEST_COMMAND}
+    add_test("${test_name}" ${CMAKE_CTEST_COMMAND}
       --build-and-test "${src_dir}" "${bin_dir}"
       --build-generator ${CMAKE_GENERATOR}
       --build-makeprogram ${CMAKE_MAKE_PROGRAM}
@@ -247,8 +247,8 @@ MACRO(KWWidgets_ADD_OUT_OF_SOURCE_TEST
       "-DGETTEXT_XGETTEXT_EXECUTABLE:FILEPATH=${GETTEXT_XGETTEXT_EXECUTABLE}"
       --test-command "${CONFIGURATION_TYPE}${exe_name}" ${ARGN})
 
-    IF(KWWidgets_TEST_INSTALLATION AND CMAKE_INSTALL_PREFIX)
-      ADD_TEST("${test_name}wInst" ${CMAKE_CTEST_COMMAND}
+    if(KWWidgets_TEST_INSTALLATION AND CMAKE_INSTALL_PREFIX)
+      add_test("${test_name}wInst" ${CMAKE_CTEST_COMMAND}
         --build-and-test "${src_dir}" "${bin_dir}wInst"
         --build-generator ${CMAKE_GENERATOR}
         --build-makeprogram ${CMAKE_MAKE_PROGRAM}
@@ -272,8 +272,8 @@ MACRO(KWWidgets_ADD_OUT_OF_SOURCE_TEST
         "-DGETTEXT_MSGMERGE_EXECUTABLE:FILEPATH=${GETTEXT_MSGMERGE_EXECUTABLE}"
         "-DGETTEXT_XGETTEXT_EXECUTABLE:FILEPATH=${GETTEXT_XGETTEXT_EXECUTABLE}"
         --test-command "${CONFIGURATION_TYPE}${exe_name}" ${ARGN})
-    ENDIF(KWWidgets_TEST_INSTALLATION AND CMAKE_INSTALL_PREFIX)
+    endif(KWWidgets_TEST_INSTALLATION AND CMAKE_INSTALL_PREFIX)
 
-  ENDIF(VTK_WRAP_TCL)
+  endif(VTK_WRAP_TCL)
 
-ENDMACRO(KWWidgets_ADD_OUT_OF_SOURCE_TEST)
+endmacro(KWWidgets_ADD_OUT_OF_SOURCE_TEST)

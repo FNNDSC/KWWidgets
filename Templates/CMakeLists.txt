@@ -1,19 +1,19 @@
 # Configuration options that can be exported
 
-CONFIGURE_FILE(
+configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/vtkKWWidgetsConfigure.h.in 
   ${KWWidgets_BINARY_DIR}/vtkKWWidgetsConfigure.h)
 
 # Configuration options that are relevant to the build tree only
 
-CONFIGURE_FILE(
+configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/vtkKWWidgetsBuildConfigure.h.in 
   ${KWWidgets_BINARY_DIR}/vtkKWWidgetsBuildConfigure.h)
 
-IF(NOT KWWidgets_INSTALL_NO_DEVELOPMENT)
-  INSTALL_FILES(${KWWidgets_INSTALL_INCLUDE_DIR} FILES 
+if(NOT KWWidgets_INSTALL_NO_DEVELOPMENT)
+  install_files(${KWWidgets_INSTALL_INCLUDE_DIR} FILES 
     ${KWWidgets_BINARY_DIR}/vtkKWWidgetsConfigure.h)
-  INSTALL_FILES(${KWWidgets_INSTALL_INCLUDE_DIR}/Templates FILES 
+  install_files(${KWWidgets_INSTALL_INCLUDE_DIR}/Templates FILES 
     KWWidgetsContents.in
     KWWidgetsSetupPaths.bat.in
     KWWidgetsSetupPaths.cmake.in
@@ -29,4 +29,4 @@ IF(NOT KWWidgets_INSTALL_NO_DEVELOPMENT)
     vtkKWWidgetWithScrollbarsSubclass.h.in
     vtkKWWidgetWithSpinButtonsSubclass.cxx.in
     vtkKWWidgetWithSpinButtonsSubclass.h.in)
-ENDIF(NOT KWWidgets_INSTALL_NO_DEVELOPMENT)
+endif(NOT KWWidgets_INSTALL_NO_DEVELOPMENT)

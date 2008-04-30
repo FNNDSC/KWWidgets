@@ -1,6 +1,6 @@
-ADD_EXECUTABLE(KWConvertImageToHeader KWConvertImageToHeader.cxx)
-TARGET_LINK_LIBRARIES(KWConvertImageToHeader ${KWWidgets_LIBRARIES})
+add_executable(KWConvertImageToHeader KWConvertImageToHeader.cxx)
+target_link_libraries(KWConvertImageToHeader ${KWWidgets_LIBRARIES})
 
-SUBDIRS(
+subdirs(
   Doxygen
   )

@@ -1,11 +1,11 @@
-IF(WIN32)
-  IF(NOT KWWidgets_INSTALL_NO_DEVELOPMENT)
-    INSTALL_FILES(${KWWidgets_INSTALL_DATA_DIR}/Resources FILES
+if(WIN32)
+  if(NOT KWWidgets_INSTALL_NO_DEVELOPMENT)
+    install_files(${KWWidgets_INSTALL_DATA_DIR}/Resources FILES
       ${KWWidgets_RESOURCES_DIR}/KWWidgets.rc.in
       ${KWWidgets_RESOURCES_DIR}/KWWidgetsSetupManifest.xml)
-    INSTALL_FILES(${KWWidgets_INSTALL_INCLUDE_DIR}/Resources FILES
+    install_files(${KWWidgets_INSTALL_INCLUDE_DIR}/Resources FILES
       ${KWWidgets_RESOURCES_DIR}/KWWidgets.rc.h
       ${KWWidgets_RESOURCES_DIR}/KWWidgetsIcon16.ico
       ${KWWidgets_RESOURCES_DIR}/KWWidgetsIcon32.ico)
-  ENDIF(NOT KWWidgets_INSTALL_NO_DEVELOPMENT)
-ENDIF(WIN32)
+  endif(NOT KWWidgets_INSTALL_NO_DEVELOPMENT)
+endif(WIN32)

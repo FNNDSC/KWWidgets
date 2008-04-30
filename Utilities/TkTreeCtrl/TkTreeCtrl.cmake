@@ -1,36 +1,36 @@
-MACRO(TkTreeCtrl_GET_LIBRARY supported sources include_path libs)
+macro(TkTreeCtrl_GET_LIBRARY supported sources include_path libs)
 
-  IF(DEFINED ${supported})
-    SET(default_val ${supported})
-  ELSE(DEFINED ${supported})
-    SET(default_val 0)
-  ENDIF(DEFINED ${supported})
+  if(DEFINED ${supported})
+    set(default_val ${supported})
+  else(DEFINED ${supported})
+    set(default_val 0)
+  endif(DEFINED ${supported})
 
   # Visual Studio 6 does not support/provide uxtheme.h
   # Borland fails on tkTreeDrag.c 
   # (http://public.kitware.com/pipermail/kwwidgets/2007-August/000491.html)
 
-  IF(CMAKE_GENERATOR MATCHES "Visual Studio 6" OR BORLAND)
-    SET(default_val 0)
-  ENDIF(CMAKE_GENERATOR MATCHES "Visual Studio 6" OR BORLAND)
+  if(CMAKE_GENERATOR MATCHES "Visual Studio 6" OR BORLAND)
+    set(default_val 0)
+  endif(CMAKE_GENERATOR MATCHES "Visual Studio 6" OR BORLAND)
 
-  OPTION(${supported}
+  option(${supported}
     "Enable TkTreeCtrl support in KWWidgets." ${default_val})
-  MARK_AS_ADVANCED(${supported})
+  mark_as_advanced(${supported})
 
-  SET(${sources})
-  SET(${include_path})
-  SET(${libs})
+  set(${sources})
+  set(${include_path})
+  set(${libs})
   
-  IF(${supported})
-    SET(_tktreectrl_path "${KWWidgets_SOURCE_DIR}/Utilities/TkTreeCtrl")
+  if(${supported})
+    set(_tktreectrl_path "${KWWidgets_SOURCE_DIR}/Utilities/TkTreeCtrl")
     
-    SET(_tktreectrl_include_path
+    set(_tktreectrl_include_path
       ${VTK_TK_INTERNAL_DIR}
       ${_tktreectrl_path}/generic
       )
 
-    SET(_tktreectrl_srcs 
+    set(_tktreectrl_srcs 
       ${_tktreectrl_path}/generic/qebind.c
       ${_tktreectrl_path}/generic/tkTreeColumn.c
       ${_tktreectrl_path}/generic/tkTreeCtrl.c
@@ -45,24 +45,24 @@ MACRO(TkTreeCtrl_GET_LIBRARY supported sources include_path libs)
       ${_tktreectrl_path}/generic/tkTreeUtils.c
       )
 
-    IF(WIN32)
-      SET(_tktreectrl_win32_srcs
+    if(WIN32)
+      set(_tktreectrl_win32_srcs
         ${_tktreectrl_path}/shellicon/shellicon.c
         )
-      SET(_tktreectrl_srcs ${_tktreectrl_srcs} ${_tktreectrl_win32_srcs})
-    ENDIF(WIN32)
+      set(_tktreectrl_srcs ${_tktreectrl_srcs} ${_tktreectrl_win32_srcs})
+    endif(WIN32)
 
-    SET_SOURCE_FILES_PROPERTIES(${_tktreectrl_srcs}
+    set_source_files_properties(${_tktreectrl_srcs}
       PROPERTIES LANGUAGE C)
 
-    SET(_tktreectrl_srcs ${_tktreectrl_srcs} 
+    set(_tktreectrl_srcs ${_tktreectrl_srcs} 
       ${_tktreectrl_path}/vtkKWTkTreeCtrlInit.cxx
       )
 
-    SET(${sources} ${_tktreectrl_srcs})
-    SET(${include_path} ${_tktreectrl_include_path})
-    SET(${libs})
+    set(${sources} ${_tktreectrl_srcs})
+    set(${include_path} ${_tktreectrl_include_path})
+    set(${libs})
     
-  ENDIF(${supported})
+  endif(${supported})
 
-ENDMACRO(TkTreeCtrl_GET_LIBRARY)
+endmacro(TkTreeCtrl_GET_LIBRARY)

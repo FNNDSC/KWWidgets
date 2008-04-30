@@ -1,10 +1,10 @@
 # Handle the subdirectories
 
-SUBDIRS(Tcl)
+subdirs(Tcl)
 
-IF(VTK_WRAP_PYTHON)
-  SUBDIRS(Python)
-ENDIF(VTK_WRAP_PYTHON)
+if(VTK_WRAP_PYTHON)
+  subdirs(Python)
+endif(VTK_WRAP_PYTHON)
 
 # Generate a few small scripts (.bat, .sh, .csh) that can be sourced to set
 # the various environments variables (PATH, TCLLIBPATH, LD_LIBRARY_PATH, etc.) 
@@ -13,13 +13,13 @@ ENDIF(VTK_WRAP_PYTHON)
 # Also Generate a lightweight C launcher for testing purposes. This 
 # launcher sets the above environment variables before launching an executable.
 
-IF(KWWidgets_USE_SOVIEWER AND SOV_FOUND)
-  INCLUDE(${SOV_USE_FILE})
-ENDIF(KWWidgets_USE_SOVIEWER AND SOV_FOUND)
+if(KWWidgets_USE_SOVIEWER AND SOV_FOUND)
+  include(${SOV_USE_FILE})
+endif(KWWidgets_USE_SOVIEWER AND SOV_FOUND)
 
-INCLUDE("${KWWidgets_CMAKE_DIR}/KWWidgetsPathsMacros.cmake")
-KWWidgets_GENERATE_SETUP_PATHS_SCRIPTS("${EXECUTABLE_OUTPUT_PATH}")
-IF(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
-  KWWidgets_GENERATE_SETUP_PATHS_LAUNCHER(
+include("${KWWidgets_CMAKE_DIR}/KWWidgetsPathsMacros.cmake")
+kwwidgets_generate_setup_paths_scripts("${EXECUTABLE_OUTPUT_PATH}")
+if(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
+  kwwidgets_generate_setup_paths_launcher(
     "${CMAKE_CURRENT_BINARY_DIR}" "KWWidgetsSetupPathsLauncher" "" "")
-ENDIF(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
+endif(BUILD_TESTING AND KWWidgets_BUILD_TESTING)

@@ -1,18 +1,17 @@
-SUBDIRS(Tcl)
-SUBDIRS(Cxx)
+subdirs(Tcl)
+subdirs(Cxx)
 
-IF (VTK_WRAP_PYTHON)
-  SUBDIRS(Python)
-ENDIF (VTK_WRAP_PYTHON)
+if (VTK_WRAP_PYTHON)
+  subdirs(Python)
+endif (VTK_WRAP_PYTHON)
 
-IF(PYTHON_EXECUTABLE AND VTK_HEADER_TESTING_PY)
-  ADD_TEST(KWWidgets-HeaderTesting ${PYTHON_EXECUTABLE}
-           ${VTK_HEADER_TESTING_PY}
-           "${KWWidgets_SOURCE_DIR}"
-           vtkKWEvent.h
-           vtkKWWidgets.h
-           vtkKWFileBrowserUtilities.h
-           vtkKWRenderWidgetCallbackCommand.h
-           )
-ENDIF(PYTHON_EXECUTABLE AND VTK_HEADER_TESTING_PY)
-
+if(PYTHON_EXECUTABLE AND VTK_HEADER_TESTING_PY)
+  add_test(KWWidgets-HeaderTesting ${PYTHON_EXECUTABLE}
+    ${VTK_HEADER_TESTING_PY}
+    "${KWWidgets_SOURCE_DIR}"
+    vtkKWEvent.h
+    vtkKWWidgets.h
+    vtkKWFileBrowserUtilities.h
+    vtkKWRenderWidgetCallbackCommand.h
+    )
+endif(PYTHON_EXECUTABLE AND VTK_HEADER_TESTING_PY)

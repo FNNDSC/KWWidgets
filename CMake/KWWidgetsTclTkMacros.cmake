@@ -9,45 +9,45 @@
 # INCR_TCL_GET_VERSION("INCR_TCL_MAJOR_VERSION" "INCR_TCL_MINOR_VERSION")
 # SET(INCR_TCL_VERSION "${INCR_TCL_MAJOR_VERSION}.${INCR_TCL_MINOR_VERSION}")
 
-MACRO(INCR_TCL_GET_VERSION major_version minor_version)
+macro(INCR_TCL_GET_VERSION major_version minor_version)
 
   # Try to find the current version by matching TCL_LIBRARY against some
   # version numbers
 
-  SET(${major_version} "")
-  SET(${minor_version} "")
+  set(${major_version} "")
+  set(${minor_version} "")
 
-  FOREACH(major_version_try "3")
-    FOREACH(minor_version_try "2" "3")
-      IF("${INCR_TCL_LIBRARY}" 
+  foreach(major_version_try "3")
+    foreach(minor_version_try "2" "3")
+      if("${INCR_TCL_LIBRARY}" 
           MATCHES "tcl${major_version_try}\\.?${minor_version_try}")
-        SET(${major_version} ${major_version_try})
-        SET(${minor_version} ${minor_version_try})
-      ENDIF("${INCR_TCL_LIBRARY}" 
+        set(${major_version} ${major_version_try})
+        set(${minor_version} ${minor_version_try})
+      endif("${INCR_TCL_LIBRARY}" 
         MATCHES "tcl${major_version_try}\\.?${minor_version_try}")
-    ENDFOREACH(minor_version_try)
-  ENDFOREACH(major_version_try)
+    endforeach(minor_version_try)
+  endforeach(major_version_try)
   
   # Try to find the current version directly from the include file
 
-  IF(NOT ${major_version} AND NOT ${minor_version})
-    FOREACH(dir ${INCR_TCL_INCLUDE_PATH})
-      IF(EXISTS "${dir}/itcl.h")
-        FILE(READ "${dir}/itcl.h" itcl_include_file)
-        STRING(REGEX REPLACE
+  if(NOT ${major_version} AND NOT ${minor_version})
+    foreach(dir ${INCR_TCL_INCLUDE_PATH})
+      if(EXISTS "${dir}/itcl.h")
+        file(READ "${dir}/itcl.h" itcl_include_file)
+        string(REGEX REPLACE
           ".*#define ITCL_VERSION[ \t]*\"([0-9][0-9]*\\.[0-9][0-9]*)\".*" "\\1"
           itcl_include_file "${itcl_include_file}")
-        IF(${itcl_include_file} MATCHES "^[0-9]*\\.[0-9]*$")
-          STRING(REGEX REPLACE "^([0-9]*)\\.([0-9]*)$" "\\1" ${major_version}
+        if(${itcl_include_file} MATCHES "^[0-9]*\\.[0-9]*$")
+          string(REGEX REPLACE "^([0-9]*)\\.([0-9]*)$" "\\1" ${major_version}
             "${itcl_include_file}")
-          STRING(REGEX REPLACE "^([0-9]*)\\.([0-9]*)$" "\\2" ${minor_version}
+          string(REGEX REPLACE "^([0-9]*)\\.([0-9]*)$" "\\2" ${minor_version}
             "${itcl_include_file}")
-        ENDIF(${itcl_include_file} MATCHES "^[0-9]*\\.[0-9]*$")
-      ENDIF(EXISTS "${dir}/itcl.h")
-    ENDFOREACH(dir)
-  ENDIF(NOT ${major_version} AND NOT ${minor_version})
+        endif(${itcl_include_file} MATCHES "^[0-9]*\\.[0-9]*$")
+      endif(EXISTS "${dir}/itcl.h")
+    endforeach(dir)
+  endif(NOT ${major_version} AND NOT ${minor_version})
 
-ENDMACRO(INCR_TCL_GET_VERSION)
+endmacro(INCR_TCL_GET_VERSION)
 
 # ----------------------------------------------------------------------------
 # INCR_TCL_GET_SUPPORT_DIR, INCR_TK_GET_SUPPORT_DIR
@@ -59,45 +59,45 @@ ENDMACRO(INCR_TCL_GET_VERSION)
 # ex: 
 # INCR_TCL_GET_SUPPORT_LIB_DIR("INCR_TCL_SUPPORT_LIB_DIR")
 
-MACRO(INCR_TCL_GET_SUPPORT_LIB_DIR incr_tcl_support_lib_dir)
+macro(INCR_TCL_GET_SUPPORT_LIB_DIR incr_tcl_support_lib_dir)
 
-  SET(${incr_tcl_support_lib_dir} "")
-  IF(INCR_TCL_LIBRARY)
-    GET_FILENAME_COMPONENT(incr_tcl_path "${INCR_TCL_LIBRARY}" PATH)
+  set(${incr_tcl_support_lib_dir} "")
+  if(INCR_TCL_LIBRARY)
+    get_filename_component(incr_tcl_path "${INCR_TCL_LIBRARY}" PATH)
     # On Win32, the lib is into the support dir, on Unix it's one up.
-    INCR_TCL_GET_VERSION("INCR_TCL_MAJOR_VERSION" "INCR_TCL_MINOR_VERSION")
-    SET(INCR_TCL_VERSION "${INCR_TCL_MAJOR_VERSION}.${INCR_TCL_MINOR_VERSION}")
-    IF(EXISTS "${incr_tcl_path}/itcl.tcl")
-      SET(${incr_tcl_support_lib_dir} "${incr_tcl_path}")
-    ELSE(EXISTS "${incr_tcl_path}/itcl.tcl")
-      SET(incr_tcl_path "${incr_tcl_path}/itcl${INCR_TCL_VERSION}")
-      IF(EXISTS "${incr_tcl_path}/itcl.tcl")
-        SET(${incr_tcl_support_lib_dir} "${incr_tcl_path}")
-      ENDIF(EXISTS "${incr_tcl_path}/itcl.tcl")
-    ENDIF(EXISTS "${incr_tcl_path}/itcl.tcl")
-  ENDIF(INCR_TCL_LIBRARY)
+    incr_tcl_get_version("INCR_TCL_MAJOR_VERSION" "INCR_TCL_MINOR_VERSION")
+    set(INCR_TCL_VERSION "${INCR_TCL_MAJOR_VERSION}.${INCR_TCL_MINOR_VERSION}")
+    if(EXISTS "${incr_tcl_path}/itcl.tcl")
+      set(${incr_tcl_support_lib_dir} "${incr_tcl_path}")
+    else(EXISTS "${incr_tcl_path}/itcl.tcl")
+      set(incr_tcl_path "${incr_tcl_path}/itcl${INCR_TCL_VERSION}")
+      if(EXISTS "${incr_tcl_path}/itcl.tcl")
+        set(${incr_tcl_support_lib_dir} "${incr_tcl_path}")
+      endif(EXISTS "${incr_tcl_path}/itcl.tcl")
+    endif(EXISTS "${incr_tcl_path}/itcl.tcl")
+  endif(INCR_TCL_LIBRARY)
 
-ENDMACRO(INCR_TCL_GET_SUPPORT_LIB_DIR)
+endmacro(INCR_TCL_GET_SUPPORT_LIB_DIR)
 
-MACRO(INCR_TK_GET_SUPPORT_LIB_DIR incr_tk_support_lib_dir)
+macro(INCR_TK_GET_SUPPORT_LIB_DIR incr_tk_support_lib_dir)
 
-  SET(${incr_tk_support_lib_dir} "")
-  IF(INCR_TK_LIBRARY)
-    GET_FILENAME_COMPONENT(incr_tk_path "${INCR_TK_LIBRARY}" PATH)
+  set(${incr_tk_support_lib_dir} "")
+  if(INCR_TK_LIBRARY)
+    get_filename_component(incr_tk_path "${INCR_TK_LIBRARY}" PATH)
     # On Win32, the lib is into the support dir, on Unix it's one up.
-    INCR_TCL_GET_VERSION("INCR_TCL_MAJOR_VERSION" "INCR_TCL_MINOR_VERSION")
-    SET(INCR_TCL_VERSION "${INCR_TCL_MAJOR_VERSION}.${INCR_TCL_MINOR_VERSION}")
-    IF(EXISTS "${incr_tk_path}/itk.tcl")
-      SET(${incr_tk_support_lib_dir} "${incr_tk_path}")
-    ELSE(EXISTS "${incr_tk_path}/itk.tcl")
-      SET(incr_tk_path "${incr_tk_path}/itk${INCR_TCL_VERSION}")
-      IF(EXISTS "${incr_tk_path}/itk.tcl")
-        SET(${incr_tk_support_lib_dir} "${incr_tk_path}")
-      ENDIF(EXISTS "${incr_tk_path}/itk.tcl")
-    ENDIF(EXISTS "${incr_tk_path}/itk.tcl")
-  ENDIF(INCR_TK_LIBRARY)
+    incr_tcl_get_version("INCR_TCL_MAJOR_VERSION" "INCR_TCL_MINOR_VERSION")
+    set(INCR_TCL_VERSION "${INCR_TCL_MAJOR_VERSION}.${INCR_TCL_MINOR_VERSION}")
+    if(EXISTS "${incr_tk_path}/itk.tcl")
+      set(${incr_tk_support_lib_dir} "${incr_tk_path}")
+    else(EXISTS "${incr_tk_path}/itk.tcl")
+      set(incr_tk_path "${incr_tk_path}/itk${INCR_TCL_VERSION}")
+      if(EXISTS "${incr_tk_path}/itk.tcl")
+        set(${incr_tk_support_lib_dir} "${incr_tk_path}")
+      endif(EXISTS "${incr_tk_path}/itk.tcl")
+    endif(EXISTS "${incr_tk_path}/itk.tcl")
+  endif(INCR_TK_LIBRARY)
 
-ENDMACRO(INCR_TK_GET_SUPPORT_LIB_DIR)
+endmacro(INCR_TK_GET_SUPPORT_LIB_DIR)
 
 # ----------------------------------------------------------------------------
 # INCR_TCL_GET_SUPPORT_FILES, INCR_TK_GET_SUPPORT_FILES
@@ -118,27 +118,27 @@ ENDMACRO(INCR_TK_GET_SUPPORT_LIB_DIR)
 # in: support_lib_dir: path to the [incr Tcl] (or Tk) support lib dir
 #     list:            name of the var the list is written to
 
-MACRO(INCR_TCL_GET_SUPPORT_FILES incr_tcl_support_lib_dir list)
+macro(INCR_TCL_GET_SUPPORT_FILES incr_tcl_support_lib_dir list)
 
   # [incr Tcl] support files (*.tcl)
 
-  FILE(GLOB INCR_TCL_SUPPORT_FILES_TCL "${incr_tcl_support_lib_dir}/*.tcl")
-  SET(${list} ${INCR_TCL_SUPPORT_FILES_TCL})
+  file(GLOB INCR_TCL_SUPPORT_FILES_TCL "${incr_tcl_support_lib_dir}/*.tcl")
+  set(${list} ${INCR_TCL_SUPPORT_FILES_TCL})
 
-ENDMACRO(INCR_TCL_GET_SUPPORT_FILES)
+endmacro(INCR_TCL_GET_SUPPORT_FILES)
 
-MACRO(INCR_TK_GET_SUPPORT_FILES incr_tk_support_lib_dir list)
+macro(INCR_TK_GET_SUPPORT_FILES incr_tk_support_lib_dir list)
 
   # [incr Tk] support files (*.tcl + *.itk + tclIndex, etc.)
 
-  FILE(GLOB INCR_TK_SUPPORT_FILES_TCL "${incr_tk_support_lib_dir}/*.tcl")
-  FILE(GLOB INCR_TK_SUPPORT_FILES_ITK "${incr_tk_support_lib_dir}/*.itk")
-  SET(${list}
+  file(GLOB INCR_TK_SUPPORT_FILES_TCL "${incr_tk_support_lib_dir}/*.tcl")
+  file(GLOB INCR_TK_SUPPORT_FILES_ITK "${incr_tk_support_lib_dir}/*.itk")
+  set(${list}
     "${incr_tk_support_lib_dir}/tclIndex" 
     ${INCR_TK_SUPPORT_FILES_TCL}
     ${INCR_TK_SUPPORT_FILES_ITK})
 
-ENDMACRO(INCR_TK_GET_SUPPORT_FILES)
+endmacro(INCR_TK_GET_SUPPORT_FILES)
 
 # ----------------------------------------------------------------------------
 # INCR_TCLTK_COPY_SUPPORT_FILES
@@ -169,7 +169,7 @@ ENDMACRO(INCR_TK_GET_SUPPORT_FILES)
 #     to:
 #       d:/vtk-bin/TclTk/lib/itk3.2
 
-MACRO(INCR_TCLTK_COPY_SUPPORT_FILES 
+macro(INCR_TCLTK_COPY_SUPPORT_FILES 
     incr_tcl_support_lib_dir 
     incr_tcl_support_lib_dest 
     incr_tk_support_lib_dir 
@@ -179,44 +179,44 @@ MACRO(INCR_TCLTK_COPY_SUPPORT_FILES
   # Check if EXISTS to work around CONFIGURE_FILE bug (if file does not
   # exist, it would create the subdirs anyway)
 
-  INCR_TCL_GET_SUPPORT_FILES(
+  incr_tcl_get_support_files(
     ${incr_tcl_support_lib_dir} "INCR_TCL_SUPPORT_FILES")
-  STRING(REGEX REPLACE "^/" "" 
+  string(REGEX REPLACE "^/" "" 
     incr_tcl_support_lib_dest_cm24 "${incr_tcl_support_lib_dest}")
-  FOREACH(file ${INCR_TCL_SUPPORT_FILES})
-    IF(EXISTS ${file})
-      STRING(REGEX REPLACE "${incr_tcl_support_lib_dir}/" "" filebase ${file})
-      IF("${ARGV4}" STREQUAL "INSTALL")
-        GET_FILENAME_COMPONENT(dir ${filebase} PATH)
-        INSTALL(FILES "${file}"
+  foreach(file ${INCR_TCL_SUPPORT_FILES})
+    if(EXISTS ${file})
+      string(REGEX REPLACE "${incr_tcl_support_lib_dir}/" "" filebase ${file})
+      if("${ARGV4}" STREQUAL "INSTALL")
+        get_filename_component(dir ${filebase} PATH)
+        install(FILES "${file}"
           DESTINATION "${incr_tcl_support_lib_dest_cm24}/${dir}"
           COMPONENT RuntimeLibraries)
-      ELSE("${ARGV4}" STREQUAL "INSTALL")
-        CONFIGURE_FILE(
+      else("${ARGV4}" STREQUAL "INSTALL")
+        configure_file(
           ${file} "${incr_tcl_support_lib_dest}/${filebase}" COPYONLY)
-      ENDIF("${ARGV4}" STREQUAL "INSTALL")
-    ENDIF(EXISTS ${file})
-  ENDFOREACH(file)
+      endif("${ARGV4}" STREQUAL "INSTALL")
+    endif(EXISTS ${file})
+  endforeach(file)
 
-  INCR_TK_GET_SUPPORT_FILES(${incr_tk_support_lib_dir} "INCR_TK_SUPPORT_FILES")
-  STRING(REGEX REPLACE "^/" "" 
+  incr_tk_get_support_files(${incr_tk_support_lib_dir} "INCR_TK_SUPPORT_FILES")
+  string(REGEX REPLACE "^/" "" 
     incr_tk_support_lib_dest_cm24 "${incr_tk_support_lib_dest}")
-  FOREACH(file ${INCR_TK_SUPPORT_FILES})
-    IF(EXISTS ${file})
-      STRING(REGEX REPLACE "${incr_tk_support_lib_dir}/" "" filebase ${file})
-      IF("${ARGV4}" STREQUAL "INSTALL")
-        GET_FILENAME_COMPONENT(dir ${filebase} PATH)
-        INSTALL(FILES "${file}"
+  foreach(file ${INCR_TK_SUPPORT_FILES})
+    if(EXISTS ${file})
+      string(REGEX REPLACE "${incr_tk_support_lib_dir}/" "" filebase ${file})
+      if("${ARGV4}" STREQUAL "INSTALL")
+        get_filename_component(dir ${filebase} PATH)
+        install(FILES "${file}"
           DESTINATION "${incr_tk_support_lib_dest_cm24}/${dir}"
           COMPONENT RuntimeLibraries)
-      ELSE("${ARGV4}" STREQUAL "INSTALL")
-        CONFIGURE_FILE(
+      else("${ARGV4}" STREQUAL "INSTALL")
+        configure_file(
           ${file} "${incr_tk_support_lib_dest}/${filebase}" COPYONLY)
-      ENDIF("${ARGV4}" STREQUAL "INSTALL")
-    ENDIF(EXISTS ${file})
-  ENDFOREACH(file)
+      endif("${ARGV4}" STREQUAL "INSTALL")
+    endif(EXISTS ${file})
+  endforeach(file)
 
-ENDMACRO(INCR_TCLTK_COPY_SUPPORT_FILES)
+endmacro(INCR_TCLTK_COPY_SUPPORT_FILES)
 
 # ----------------------------------------------------------------------------
 # INCR_TCLTK_COPY_SUPPORT_FILES_TO_DIR
@@ -243,23 +243,23 @@ ENDMACRO(INCR_TCLTK_COPY_SUPPORT_FILES)
 #       d:/vtk-bin/lib/itcl3.2
 #       d:/vtk-bin/lib/itk3.2
 
-MACRO(INCR_TCLTK_COPY_SUPPORT_FILES_TO_DIR 
+macro(INCR_TCLTK_COPY_SUPPORT_FILES_TO_DIR 
     incr_tcl_support_lib_dir 
     incr_tk_support_lib_dir 
     target_dir)
-  INCR_TCL_GET_VERSION("INCR_TCL_MAJOR_VERSION" "INCR_TCL_MINOR_VERSION")
-  IF(INCR_TCL_MAJOR_VERSION AND INCR_TCL_MINOR_VERSION)
-    SET(INCR_TCL_VERSION "${INCR_TCL_MAJOR_VERSION}.${INCR_TCL_MINOR_VERSION}")
-    INCR_TCLTK_COPY_SUPPORT_FILES(
+  incr_tcl_get_version("INCR_TCL_MAJOR_VERSION" "INCR_TCL_MINOR_VERSION")
+  if(INCR_TCL_MAJOR_VERSION AND INCR_TCL_MINOR_VERSION)
+    set(INCR_TCL_VERSION "${INCR_TCL_MAJOR_VERSION}.${INCR_TCL_MINOR_VERSION}")
+    incr_tcltk_copy_support_files(
       "${incr_tcl_support_lib_dir}"
       "${target_dir}/itcl${INCR_TCL_VERSION}"
       "${incr_tk_support_lib_dir}"
       "${target_dir}/itk${INCR_TCL_VERSION}"
       "${ARGV3}"
       )
-  ENDIF(INCR_TCL_MAJOR_VERSION AND INCR_TCL_MINOR_VERSION)
+  endif(INCR_TCL_MAJOR_VERSION AND INCR_TCL_MINOR_VERSION)
 
-ENDMACRO(INCR_TCLTK_COPY_SUPPORT_FILES_TO_DIR)
+endmacro(INCR_TCLTK_COPY_SUPPORT_FILES_TO_DIR)
 
 # ----------------------------------------------------------------------------
 # INCR_TCLTK_COPY_SUPPORT_FILES_TO_BUILD_DIR
@@ -292,7 +292,7 @@ ENDMACRO(INCR_TCLTK_COPY_SUPPORT_FILES_TO_DIR)
 #       d:/vtk-bin/Debug/TclTk/lib/itk3.2
 #       etc.
 
-MACRO(INCR_TCLTK_COPY_SUPPORT_FILES_TO_BUILD_DIR 
+macro(INCR_TCLTK_COPY_SUPPORT_FILES_TO_BUILD_DIR 
     incr_tcl_support_lib_dir 
     incr_tk_support_lib_dir 
     build_dir 
@@ -302,20 +302,20 @@ MACRO(INCR_TCLTK_COPY_SUPPORT_FILES_TO_BUILD_DIR
   # Copy the TclTk support files to the corresponding sub-directory inside
   # the build dir
 
-  IF(CMAKE_CONFIGURATION_TYPES)
-    SET(CONFIG_TYPES ${CMAKE_CONFIGURATION_TYPES})
-  ELSE(CMAKE_CONFIGURATION_TYPES)
-    SET(CONFIG_TYPES .)
-  ENDIF(CMAKE_CONFIGURATION_TYPES)
-  FOREACH(config ${CONFIG_TYPES})
-    INCR_TCLTK_COPY_SUPPORT_FILES_TO_DIR(
+  if(CMAKE_CONFIGURATION_TYPES)
+    set(CONFIG_TYPES ${CMAKE_CONFIGURATION_TYPES})
+  else(CMAKE_CONFIGURATION_TYPES)
+    set(CONFIG_TYPES .)
+  endif(CMAKE_CONFIGURATION_TYPES)
+  foreach(config ${CONFIG_TYPES})
+    incr_tcltk_copy_support_files_to_dir(
       "${incr_tcl_support_lib_dir}"
       "${incr_tk_support_lib_dir}"
       "${build_dir}/${config}/${dir}"
       )
-  ENDFOREACH(config)
+  endforeach(config)
 
-ENDMACRO(INCR_TCLTK_COPY_SUPPORT_FILES_TO_BUILD_DIR)
+endmacro(INCR_TCLTK_COPY_SUPPORT_FILES_TO_BUILD_DIR)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_COPY_TCL_TK_SUPPORT_FILES
@@ -328,39 +328,39 @@ ENDMACRO(INCR_TCLTK_COPY_SUPPORT_FILES_TO_BUILD_DIR)
 #   d:/myapp-bin/lib/itcl3.2
 #   d:/myapp-bin/lib/itk3.2
 
-MACRO(KWWidgets_COPY_TCL_TK_SUPPORT_FILES dir)
+macro(KWWidgets_COPY_TCL_TK_SUPPORT_FILES dir)
 
   # Copy support files only if VTK_TCL_TK_COPY_SUPPORT_LIBRARY is ON
   # which is set in VTK by default to 1 if VTK_TCL_TK_STATIC is ON.
 
-  IF(VTK_TCL_TK_COPY_SUPPORT_LIBRARY)
+  if(VTK_TCL_TK_COPY_SUPPORT_LIBRARY)
 
     # Tcl/Tk support files
 
-    IF(VTK_TCL_SUPPORT_LIBRARY_PATH AND VTK_TK_SUPPORT_LIBRARY_PATH)
-      INCLUDE(${VTK_TCL_TK_MACROS_MODULE})
-      VTK_COPY_TCL_TK_SUPPORT_FILES_TO_DIR(
+    if(VTK_TCL_SUPPORT_LIBRARY_PATH AND VTK_TK_SUPPORT_LIBRARY_PATH)
+      include(${VTK_TCL_TK_MACROS_MODULE})
+      vtk_copy_tcl_tk_support_files_to_dir(
         ${VTK_TCL_SUPPORT_LIBRARY_PATH} 
         ${VTK_TK_SUPPORT_LIBRARY_PATH}
         "${dir}")
-    ENDIF(VTK_TCL_SUPPORT_LIBRARY_PATH AND VTK_TK_SUPPORT_LIBRARY_PATH)
+    endif(VTK_TCL_SUPPORT_LIBRARY_PATH AND VTK_TK_SUPPORT_LIBRARY_PATH)
 
     # [incr Tcl/Tk] support files
 
-    IF(KWWidgets_USE_INCR_TCL)
-      INCR_TCL_GET_SUPPORT_LIB_DIR("INCR_TCL_SUPPORT_LIB_DIR")
-      INCR_TK_GET_SUPPORT_LIB_DIR("INCR_TK_SUPPORT_LIB_DIR")
-      IF(INCR_TCL_SUPPORT_LIB_DIR AND INCR_TK_SUPPORT_LIB_DIR)
-        INCR_TCLTK_COPY_SUPPORT_FILES_TO_DIR(
+    if(KWWidgets_USE_INCR_TCL)
+      incr_tcl_get_support_lib_dir("INCR_TCL_SUPPORT_LIB_DIR")
+      incr_tk_get_support_lib_dir("INCR_TK_SUPPORT_LIB_DIR")
+      if(INCR_TCL_SUPPORT_LIB_DIR AND INCR_TK_SUPPORT_LIB_DIR)
+        incr_tcltk_copy_support_files_to_dir(
           ${INCR_TCL_SUPPORT_LIB_DIR} 
           ${INCR_TK_SUPPORT_LIB_DIR}
           "${dir}")
-      ENDIF(INCR_TCL_SUPPORT_LIB_DIR AND INCR_TK_SUPPORT_LIB_DIR)
-    ENDIF(KWWidgets_USE_INCR_TCL)
+      endif(INCR_TCL_SUPPORT_LIB_DIR AND INCR_TK_SUPPORT_LIB_DIR)
+    endif(KWWidgets_USE_INCR_TCL)
 
-  ENDIF(VTK_TCL_TK_COPY_SUPPORT_LIBRARY)
+  endif(VTK_TCL_TK_COPY_SUPPORT_LIBRARY)
 
-ENDMACRO(KWWidgets_COPY_TCL_TK_SUPPORT_FILES)
+endmacro(KWWidgets_COPY_TCL_TK_SUPPORT_FILES)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_COPY_TCL_TK_SUPPORT_FILES
@@ -373,38 +373,38 @@ ENDMACRO(KWWidgets_COPY_TCL_TK_SUPPORT_FILES)
 #   ${install_prefix}/lib/itcl3.2
 #   ${install_prefix}/lib/itk3.2
 
-MACRO(KWWidgets_INSTALL_TCL_TK_SUPPORT_FILES dir)
+macro(KWWidgets_INSTALL_TCL_TK_SUPPORT_FILES dir)
 
   # Install support files only if VTK_TCL_TK_COPY_SUPPORT_LIBRARY is ON
   # which is set in VTK by default to 1 if VTK_TCL_TK_STATIC is ON.
 
-  IF(VTK_TCL_TK_COPY_SUPPORT_LIBRARY)
+  if(VTK_TCL_TK_COPY_SUPPORT_LIBRARY)
 
     # Tcl/Tk support files
 
-    IF(VTK_TCL_SUPPORT_LIBRARY_PATH AND VTK_TK_SUPPORT_LIBRARY_PATH)
-      INCLUDE(${VTK_TCL_TK_MACROS_MODULE})
-      VTK_COPY_TCL_TK_SUPPORT_FILES_TO_DIR(
+    if(VTK_TCL_SUPPORT_LIBRARY_PATH AND VTK_TK_SUPPORT_LIBRARY_PATH)
+      include(${VTK_TCL_TK_MACROS_MODULE})
+      vtk_copy_tcl_tk_support_files_to_dir(
         ${VTK_TCL_SUPPORT_LIBRARY_PATH} 
         ${VTK_TK_SUPPORT_LIBRARY_PATH}
         "${dir}" 
         INSTALL)
-    ENDIF(VTK_TCL_SUPPORT_LIBRARY_PATH AND VTK_TK_SUPPORT_LIBRARY_PATH)
+    endif(VTK_TCL_SUPPORT_LIBRARY_PATH AND VTK_TK_SUPPORT_LIBRARY_PATH)
 
     # [incr Tcl/Tk] support files
 
-    IF(KWWidgets_USE_INCR_TCL)
-      INCR_TCL_GET_SUPPORT_LIB_DIR("INCR_TCL_SUPPORT_LIB_DIR")
-      INCR_TK_GET_SUPPORT_LIB_DIR("INCR_TK_SUPPORT_LIB_DIR")
-      IF(INCR_TCL_SUPPORT_LIB_DIR AND INCR_TK_SUPPORT_LIB_DIR)
-        INCR_TCLTK_COPY_SUPPORT_FILES_TO_DIR(
+    if(KWWidgets_USE_INCR_TCL)
+      incr_tcl_get_support_lib_dir("INCR_TCL_SUPPORT_LIB_DIR")
+      incr_tk_get_support_lib_dir("INCR_TK_SUPPORT_LIB_DIR")
+      if(INCR_TCL_SUPPORT_LIB_DIR AND INCR_TK_SUPPORT_LIB_DIR)
+        incr_tcltk_copy_support_files_to_dir(
           ${INCR_TCL_SUPPORT_LIB_DIR} 
           ${INCR_TK_SUPPORT_LIB_DIR}
           "${dir}" 
           INSTALL)
-      ENDIF(INCR_TCL_SUPPORT_LIB_DIR AND INCR_TK_SUPPORT_LIB_DIR)
-    ENDIF(KWWidgets_USE_INCR_TCL)
+      endif(INCR_TCL_SUPPORT_LIB_DIR AND INCR_TK_SUPPORT_LIB_DIR)
+    endif(KWWidgets_USE_INCR_TCL)
 
-  ENDIF(VTK_TCL_TK_COPY_SUPPORT_LIBRARY)
+  endif(VTK_TCL_TK_COPY_SUPPORT_LIBRARY)
 
-ENDMACRO(KWWidgets_INSTALL_TCL_TK_SUPPORT_FILES)
+endmacro(KWWidgets_INSTALL_TCL_TK_SUPPORT_FILES)

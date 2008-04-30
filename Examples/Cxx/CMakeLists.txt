@@ -1,4 +1,4 @@
-SUBDIRS(
+subdirs(
   Callbacks
   FileBrowserDialog
   HelloWorld
@@ -6,18 +6,18 @@ SUBDIRS(
   WidgetsTour
   WindowWithPanels
   WizardDialog
-)
+  )
 
-IF(KWWidgets_USE_INTERNATIONALIZATION)
-  SUBDIRS(Internationalization)
-ENDIF(KWWidgets_USE_INTERNATIONALIZATION)
+if(KWWidgets_USE_INTERNATIONALIZATION)
+  subdirs(Internationalization)
+endif(KWWidgets_USE_INTERNATIONALIZATION)
 
-IF(KWWidgets_BUILD_VTK_WIDGETS)
-  SUBDIRS(
+if(KWWidgets_BUILD_VTK_WIDGETS)
+  subdirs(
     MedicalImageViewer
     PolygonalObjectViewer
     )
-  IF(KWWidgets_USE_SOVIEWER)
-    SUBDIRS(SOViewer)
-  ENDIF(KWWidgets_USE_SOVIEWER)
-ENDIF(KWWidgets_BUILD_VTK_WIDGETS)
+  if(KWWidgets_USE_SOVIEWER)
+    subdirs(SOViewer)
+  endif(KWWidgets_USE_SOVIEWER)
+endif(KWWidgets_BUILD_VTK_WIDGETS)

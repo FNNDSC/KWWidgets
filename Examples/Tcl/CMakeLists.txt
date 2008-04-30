@@ -1,13 +1,12 @@
-SUBDIRS(
+subdirs(
   HelloWorld
   WidgetsTour
   WindowWithPanels
-)
+  )
 
-IF(KWWidgets_BUILD_VTK_WIDGETS)
-  SUBDIRS(
+if(KWWidgets_BUILD_VTK_WIDGETS)
+  subdirs(
     MedicalImageViewer
     PolygonalObjectViewer
     )
-ENDIF(KWWidgets_BUILD_VTK_WIDGETS)
-  
+endif(KWWidgets_BUILD_VTK_WIDGETS)

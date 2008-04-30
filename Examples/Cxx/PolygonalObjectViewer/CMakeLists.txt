@@ -1,51 +1,51 @@
-PROJECT(PolygonalObjectViewer)
+project(PolygonalObjectViewer)
 
 # If we are not in the KWWidgets source tree, make sure we can find KWWidgets
 # as an external package, and use it. If you are using this CMakeLists.txt 
 # file to create your own application based on KWWidgets, you only need the
 # FIND_PACKAGE(...) and INCLUDE(...) commands. 
 
-IF(NOT KWWidgets_SOURCE_DIR)
-  FIND_PACKAGE(KWWidgets REQUIRED)
-  INCLUDE(${KWWidgets_USE_FILE})
-ENDIF(NOT KWWidgets_SOURCE_DIR)
+if(NOT KWWidgets_SOURCE_DIR)
+  find_package(KWWidgets REQUIRED)
+  include(${KWWidgets_USE_FILE})
+endif(NOT KWWidgets_SOURCE_DIR)
 
 # The name of our targets (executable or libraries) will simply be based
 # on the project name, with an extra prefix and suffix.
 
-SET(TARGET_BASE_NAME "KW${PROJECT_NAME}Example")
+set(TARGET_BASE_NAME "KW${PROJECT_NAME}Example")
 
 # The name of our executable and the corresponding source file.
 
-SET(EXE_NAME "${TARGET_BASE_NAME}")
-SET(EXE_SRCS "${EXE_NAME}.cxx")
+set(EXE_NAME "${TARGET_BASE_NAME}")
+set(EXE_SRCS "${EXE_NAME}.cxx")
 
 # On Win32 platforms, let's create a .rc resource file to setup a decent
 # application icon as well as some additional information in the "Version"
 # tab of the properties panel.
 
-IF(WIN32 AND NOT BORLAND AND NOT CYGWIN)
-  INCLUDE("${KWWidgets_CMAKE_DIR}/KWWidgetsResourceMacros.cmake")
-  SET(RC_FILENAME "${CMAKE_CURRENT_BINARY_DIR}/${EXE_NAME}.rc")
-  KWWidgets_CREATE_RC_FILE(
+if(WIN32 AND NOT BORLAND AND NOT CYGWIN)
+  include("${KWWidgets_CMAKE_DIR}/KWWidgetsResourceMacros.cmake")
+  set(RC_FILENAME "${CMAKE_CURRENT_BINARY_DIR}/${EXE_NAME}.rc")
+  kwwidgets_create_rc_file(
     RC_FILENAME "${RC_FILENAME}"
     RC_APPLICATION_NAME "${EXE_NAME}"
     RC_COMPANY_NAME "Kitware, Inc.")
-ENDIF(WIN32 AND NOT BORLAND AND NOT CYGWIN)
+endif(WIN32 AND NOT BORLAND AND NOT CYGWIN)
 
 # This example uses some files from the KWWidgets distribution tree.
 # Let's configure KWWidgets's vtkKWWidgetsPaths.h.in into our
 # own header file so that we can find the paths to KWWidgets files.
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
-CONFIGURE_FILE(
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+configure_file(
   ${KWWidgets_TEMPLATES_DIR}/vtkKWWidgetsPaths.h.in 
   ${CMAKE_CURRENT_BINARY_DIR}/vtkKWWidgetsPaths.h)
 
 # Create the executable, and link it against the KWWidgets libraries.
 
-ADD_EXECUTABLE(${EXE_NAME} WIN32 ${EXE_SRCS} ${RC_FILENAME})
-TARGET_LINK_LIBRARIES(${EXE_NAME} ${KWWidgets_LIBRARIES})
+add_executable(${EXE_NAME} WIN32 ${EXE_SRCS} ${RC_FILENAME})
+target_link_libraries(${EXE_NAME} ${KWWidgets_LIBRARIES})
 
 # If we are building this example as a standalone external project:
 # - Generate a few small scripts (.bat, .sh, .csh) that can be sourced to set
@@ -55,31 +55,31 @@ TARGET_LINK_LIBRARIES(${EXE_NAME} ${KWWidgets_LIBRARIES})
 # - Generate a lightweight C launcher for this *specific* executable: It sets
 # the above environment variables before launching the executable itself.
 
-IF(NOT KWWidgets_SOURCE_DIR)
-  INCLUDE("${KWWidgets_CMAKE_DIR}/KWWidgetsPathsMacros.cmake")
-  KWWidgets_GENERATE_SETUP_PATHS_SCRIPTS("${CMAKE_CURRENT_BINARY_DIR}")
-  SET(LAUNCHER_EXE_NAME "${EXE_NAME}Launcher")
-  KWWidgets_GENERATE_SETUP_PATHS_LAUNCHER(
+if(NOT KWWidgets_SOURCE_DIR)
+  include("${KWWidgets_CMAKE_DIR}/KWWidgetsPathsMacros.cmake")
+  kwwidgets_generate_setup_paths_scripts("${CMAKE_CURRENT_BINARY_DIR}")
+  set(LAUNCHER_EXE_NAME "${EXE_NAME}Launcher")
+  kwwidgets_generate_setup_paths_launcher(
     "${CMAKE_CURRENT_BINARY_DIR}" "${LAUNCHER_EXE_NAME}" "" "${EXE_NAME}")
-ENDIF(NOT KWWidgets_SOURCE_DIR)
+endif(NOT KWWidgets_SOURCE_DIR)
 
 # If needed, copy the Tcl/Tk support files required at run-time 
 # to initialize Tcl/Tk. This is only triggered if VTK was built
 # against a Tcl/Tk static library.
 
-INCLUDE("${KWWidgets_CMAKE_DIR}/KWWidgetsTclTkMacros.cmake")
-IF(NOT KWWidgets_SOURCE_DIR)
-  KWWidgets_COPY_TCL_TK_SUPPORT_FILES("${PROJECT_BINARY_DIR}/lib")
-ENDIF(NOT KWWidgets_SOURCE_DIR)
+include("${KWWidgets_CMAKE_DIR}/KWWidgetsTclTkMacros.cmake")
+if(NOT KWWidgets_SOURCE_DIR)
+  kwwidgets_copy_tcl_tk_support_files("${PROJECT_BINARY_DIR}/lib")
+endif(NOT KWWidgets_SOURCE_DIR)
 
 # Install the example target. If you are using this CMakeLists.txt file
 # to create your own application based on KWWidgets, you can most likely 
 # omit this section or change the installation directory, unless you want
 # to install your application right where KWWidgets is already installed.
 
-IF(KWWidgets_BUILD_EXAMPLES)
-  INSTALL_TARGETS(${KWWidgets_INSTALL_BIN_DIR} ${EXE_NAME})
-ENDIF(KWWidgets_BUILD_EXAMPLES)
+if(KWWidgets_BUILD_EXAMPLES)
+  install_targets(${KWWidgets_INSTALL_BIN_DIR} ${EXE_NAME})
+endif(KWWidgets_BUILD_EXAMPLES)
 
 # Register this example as a test. Our executable supports a --test
 # configuration option so that it can be run non-interactively as a test.
@@ -87,7 +87,7 @@ ENDIF(KWWidgets_BUILD_EXAMPLES)
 # based on KWWidgets, you should omit this section, unless your application
 # supports that feature too and you checked how the macro is working.
 
-IF(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
-  INCLUDE("${KWWidgets_CMAKE_DIR}/KWWidgetsTestingMacros.cmake")
-  KWWidgets_ADD_TEST_FROM_C_EXAMPLE(KWWidgets-${PROJECT_NAME} ${EXE_NAME})
-ENDIF(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
+if(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
+  include("${KWWidgets_CMAKE_DIR}/KWWidgetsTestingMacros.cmake")
+  kwwidgets_add_test_from_c_example(KWWidgets-${PROJECT_NAME} ${EXE_NAME})
+endif(BUILD_TESTING AND KWWidgets_BUILD_TESTING)

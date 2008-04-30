@@ -12,25 +12,25 @@
 #    MESSAGE(FATAL_ERROR "Sorry, your KWWidgets library was last updated on ${source_date}. Its source revision, according to vtkKWWidgetsVersion.h, is ${source_revision}. Please update to a newer revision.")
 #   ENDIF(source_revision LESS 1.4)
 
-MACRO(KWWidgets_GET_SOURCE_REVISION_AND_DATE
+macro(KWWidgets_GET_SOURCE_REVISION_AND_DATE
     revision_varname
     date_varname)
 
-  SET(${revision_varname})
-  SET(${date_varname})
-  FOREACH(dir ${KWWidgets_INCLUDE_DIRS} ${KWWidgets_INCLUDE_PATH})
-    SET(file "${dir}/vtkKWWidgetsVersion.h")
-    IF(EXISTS ${file})
-      FILE(READ ${file} file_contents)
-      STRING(REGEX REPLACE "(.*Revision: )([0-9]+\\.[0-9]+)( .*)" "\\2" 
+  set(${revision_varname})
+  set(${date_varname})
+  foreach(dir ${KWWidgets_INCLUDE_DIRS} ${KWWidgets_INCLUDE_PATH})
+    set(file "${dir}/vtkKWWidgetsVersion.h")
+    if(EXISTS ${file})
+      file(READ ${file} file_contents)
+      string(REGEX REPLACE "(.*Revision: )([0-9]+\\.[0-9]+)( .*)" "\\2" 
         ${revision_varname} "${file_contents}")
-      STRING(REGEX REPLACE "(.*Date: )(.+)( \\$.*)" "\\2" 
+      string(REGEX REPLACE "(.*Date: )(.+)( \\$.*)" "\\2" 
         ${date_varname} "${file_contents}")
-    ENDIF(EXISTS ${file})
-  ENDFOREACH(dir)
+    endif(EXISTS ${file})
+  endforeach(dir)
 
-  IF(NOT ${revision_varname} OR NOT ${date_varname})
-    MESSAGE("Sorry, vtkKWWidgetsVersion's source revision could not be found, either because vtkKWWidgetsVersion.h is nowhere in sight, or its contents could not be parsed successfully.")
-  ENDIF(NOT ${revision_varname} OR NOT ${date_varname})
+  if(NOT ${revision_varname} OR NOT ${date_varname})
+    message("Sorry, vtkKWWidgetsVersion's source revision could not be found, either because vtkKWWidgetsVersion.h is nowhere in sight, or its contents could not be parsed successfully.")
+  endif(NOT ${revision_varname} OR NOT ${date_varname})
 
-ENDMACRO(KWWidgets_GET_SOURCE_REVISION_AND_DATE)
+endmacro(KWWidgets_GET_SOURCE_REVISION_AND_DATE)

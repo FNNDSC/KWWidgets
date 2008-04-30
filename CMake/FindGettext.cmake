@@ -21,12 +21,12 @@
 # As a convenience, try to find everything as soon as we set any one of
 # the cache variables.
 
-MACRO(GETTEXT_FIND_POTENTIAL_DIRS)
+macro(GETTEXT_FIND_POTENTIAL_DIRS)
 
-  SET(potential_bin_dirs)
-  SET(potential_lib_dirs)
-  SET(potential_include_dirs)
-  FOREACH(filepath 
+  set(potential_bin_dirs)
+  set(potential_lib_dirs)
+  set(potential_include_dirs)
+  foreach(filepath 
       "${GETTEXT_INTL_LIBRARY}"
       "${GETTEXT_XGETTEXT_EXECUTABLE}"
       "${GETTEXT_MSGINIT_EXECUTABLE}"
@@ -35,97 +35,97 @@ MACRO(GETTEXT_FIND_POTENTIAL_DIRS)
       "${GETTEXT_MSGCONV_EXECUTABLE}"
       "${GETTEXT_MSGFMT_EXECUTABLE}"
       )
-    GET_FILENAME_COMPONENT(path "${filepath}" PATH)
-    SET(potential_bin_dirs ${potential_bin_dirs} "${path}/../bin")
-    SET(potential_lib_dirs ${potential_lib_dirs} "${path}/../lib")
-    SET(potential_include_dirs ${potential_include_dirs} "${path}/../include")
-  ENDFOREACH(filepath)
+    get_filename_component(path "${filepath}" PATH)
+    set(potential_bin_dirs ${potential_bin_dirs} "${path}/../bin")
+    set(potential_lib_dirs ${potential_lib_dirs} "${path}/../lib")
+    set(potential_include_dirs ${potential_include_dirs} "${path}/../include")
+  endforeach(filepath)
 
-  FOREACH(path 
+  foreach(path 
       "${GETTEXT_INCLUDE_DIR}"
       "${GETTEXT_SEARCH_PATH}"
       )
-    SET(potential_bin_dirs ${potential_bin_dirs} "${path}/../bin")
-    SET(potential_lib_dirs ${potential_lib_dirs} "${path}/../lib")
-    SET(potential_include_dirs ${potential_include_dirs} "${path}/../include")
-  ENDFOREACH(path)
+    set(potential_bin_dirs ${potential_bin_dirs} "${path}/../bin")
+    set(potential_lib_dirs ${potential_lib_dirs} "${path}/../lib")
+    set(potential_include_dirs ${potential_include_dirs} "${path}/../include")
+  endforeach(path)
 
-ENDMACRO(GETTEXT_FIND_POTENTIAL_DIRS)
+endmacro(GETTEXT_FIND_POTENTIAL_DIRS)
 
 # --------------------------------------------------------------------------
 # Find the runtime lib
 
-MACRO(GETTEXT_FIND_RUNTIME_LIBRARY)
+macro(GETTEXT_FIND_RUNTIME_LIBRARY)
 
-  SET(GETTEXT_RUNTIME_FOUND 1)
+  set(GETTEXT_RUNTIME_FOUND 1)
 
   # The gettext intl include dir (libintl.h)
   
-  FIND_PATH(GETTEXT_INCLUDE_DIR 
+  find_path(GETTEXT_INCLUDE_DIR 
     libintl.h 
     ${potential_include_dirs}
     DOC "Path to gettext include directory (where libintl.h can be found)")
-  MARK_AS_ADVANCED(GETTEXT_INCLUDE_DIR)
-  IF(NOT GETTEXT_INCLUDE_DIR)
-    SET(GETTEXT_RUNTIME_FOUND 0)
-  ENDIF(NOT GETTEXT_INCLUDE_DIR)
+  mark_as_advanced(GETTEXT_INCLUDE_DIR)
+  if(NOT GETTEXT_INCLUDE_DIR)
+    set(GETTEXT_RUNTIME_FOUND 0)
+  endif(NOT GETTEXT_INCLUDE_DIR)
 
-  SET(GETTEXT_LIBRARIES)
+  set(GETTEXT_LIBRARIES)
 
   # The gettext intl library
   # Some Unix system (like Linux) have gettext right into libc
 
-  IF(WIN32)
-    SET(HAVE_GETTEXT 0)
-  ELSE(WIN32)
-    INCLUDE(CheckFunctionExists)
-    CHECK_FUNCTION_EXISTS(gettext HAVE_GETTEXT)
-  ENDIF(WIN32)
+  if(WIN32)
+    set(HAVE_GETTEXT 0)
+  else(WIN32)
+    include(CheckFunctionExists)
+    check_function_exists(gettext HAVE_GETTEXT)
+  endif(WIN32)
 
-  IF(HAVE_GETTEXT)
+  if(HAVE_GETTEXT)
     # Even if we have a system one, let the user provide another one
     # eventually (i.e., more recent, or GNU).
-    SET(GETTEXT_INTL_LIBRARY "" CACHE FILEPATH
+    set(GETTEXT_INTL_LIBRARY "" CACHE FILEPATH
       "Path to gettext intl library (leave it empty to use the system one)")
-  ELSE(HAVE_GETTEXT)
-    FIND_LIBRARY(GETTEXT_INTL_LIBRARY 
+  else(HAVE_GETTEXT)
+    find_library(GETTEXT_INTL_LIBRARY 
       NAMES intl 
       PATHS ${potential_lib_dirs}
       DOC "Path to gettext intl library")
-    IF(NOT GETTEXT_INTL_LIBRARY)
-      SET(GETTEXT_RUNTIME_FOUND 0)
-    ENDIF(NOT GETTEXT_INTL_LIBRARY)
-  ENDIF(HAVE_GETTEXT)
+    if(NOT GETTEXT_INTL_LIBRARY)
+      set(GETTEXT_RUNTIME_FOUND 0)
+    endif(NOT GETTEXT_INTL_LIBRARY)
+  endif(HAVE_GETTEXT)
 
-  MARK_AS_ADVANCED(GETTEXT_INTL_LIBRARY)
-  IF(GETTEXT_INTL_LIBRARY)
-    SET(GETTEXT_LIBRARIES ${GETTEXT_LIBRARIES} ${GETTEXT_INTL_LIBRARY})
-  ENDIF(GETTEXT_INTL_LIBRARY)
+  mark_as_advanced(GETTEXT_INTL_LIBRARY)
+  if(GETTEXT_INTL_LIBRARY)
+    set(GETTEXT_LIBRARIES ${GETTEXT_LIBRARIES} ${GETTEXT_INTL_LIBRARY})
+  endif(GETTEXT_INTL_LIBRARY)
 
   # The gettext asprintf library
   # Actually not useful as it does not seem to exist on Unix
 
-#   IF(WIN32)
-#     FIND_LIBRARY(GETTEXT_ASPRINTF_LIBRARY 
-#       NAMES asprintf 
-#       PATHS ${potential_lib_dirs}
-#       DOC "Gettext asprintf library")
-#     MARK_AS_ADVANCED(GETTEXT_ASPRINTF_LIBRARY)
-#     IF(NOT GETTEXT_ASPRINTF_LIBRARY)
-#       SET(GETTEXT_RUNTIME_FOUND 0)
-#     ELSE(NOT GETTEXT_ASPRINTF_LIBRARY)
-#       SET(GETTEXT_LIBRARIES ${GETTEXT_LIBRARIES} ${GETTEXT_ASPRINTF_LIBRARY})
-#     ENDIF(NOT GETTEXT_ASPRINTF_LIBRARY)
-#   ENDIF(WIN32)
+  #   IF(WIN32)
+  #     FIND_LIBRARY(GETTEXT_ASPRINTF_LIBRARY 
+  #       NAMES asprintf 
+  #       PATHS ${potential_lib_dirs}
+  #       DOC "Gettext asprintf library")
+  #     MARK_AS_ADVANCED(GETTEXT_ASPRINTF_LIBRARY)
+  #     IF(NOT GETTEXT_ASPRINTF_LIBRARY)
+  #       SET(GETTEXT_RUNTIME_FOUND 0)
+  #     ELSE(NOT GETTEXT_ASPRINTF_LIBRARY)
+  #       SET(GETTEXT_LIBRARIES ${GETTEXT_LIBRARIES} ${GETTEXT_ASPRINTF_LIBRARY})
+  #     ENDIF(NOT GETTEXT_ASPRINTF_LIBRARY)
+  #   ENDIF(WIN32)
 
-ENDMACRO(GETTEXT_FIND_RUNTIME_LIBRARY)
+endmacro(GETTEXT_FIND_RUNTIME_LIBRARY)
 
 # --------------------------------------------------------------------------
 # Find the tools
 
-MACRO(GETTEXT_FIND_TOOLS)
-  SET(GETTEXT_TOOLS_FOUND 1)
-  FOREACH(tool
+macro(GETTEXT_FIND_TOOLS)
+  set(GETTEXT_TOOLS_FOUND 1)
+  foreach(tool
       xgettext
       msginit
       msgmerge
@@ -133,50 +133,50 @@ MACRO(GETTEXT_FIND_TOOLS)
       msgconv
       msgfmt
       )
-    STRING(TOUPPER ${tool} tool_upper)
-    FIND_PROGRAM(GETTEXT_${tool_upper}_EXECUTABLE
+    string(TOUPPER ${tool} tool_upper)
+    find_program(GETTEXT_${tool_upper}_EXECUTABLE
       NAMES ${tool} 
       PATHS ${potential_bin_dirs}
       DOC "Path to gettext ${tool} tool")
-    MARK_AS_ADVANCED(GETTEXT_${tool_upper}_EXECUTABLE)
-    IF(NOT GETTEXT_${tool_upper}_EXECUTABLE)
-      SET(GETTEXT_TOOLS_FOUND 0)
-    ENDIF(NOT GETTEXT_${tool_upper}_EXECUTABLE)
-  ENDFOREACH(tool)
-ENDMACRO(GETTEXT_FIND_TOOLS)
-  
+    mark_as_advanced(GETTEXT_${tool_upper}_EXECUTABLE)
+    if(NOT GETTEXT_${tool_upper}_EXECUTABLE)
+      set(GETTEXT_TOOLS_FOUND 0)
+    endif(NOT GETTEXT_${tool_upper}_EXECUTABLE)
+  endforeach(tool)
+endmacro(GETTEXT_FIND_TOOLS)
+
 # --------------------------------------------------------------------------
 # Some convenient info about gettext, where to get it, etc.
 
-SET(GETTEXT_INFO_MSG "More information about gettext can be found at http://directory.fsf.org/gettext.html.")
-IF(WIN32)
-  SET(GETTEXT_INFO_MSG "${GETTEXT_INFO_MSG} Windows users can download gettext-runtime-0.13.1.bin.woe32.zip (LGPL), gettext-tools-0.13.1.bin.woe32.zip (GPL) as well as libiconv-1.9.1.bin.woe32.zip (LGPL) from any GNU mirror (say, http://mirrors.kernel.org/gnu/gettext/ and http://mirrors.kernel.org/gnu/libiconv/), unpack the archives in the same directory, then set GETTEXT_INTL_LIBRARY to 'lib/intl.lib' in and GETTEXT_INCLUDE_DIR to 'include' in that directory.\n\nWarning: if you are using ActiveTcl, the ActiveState binary distribution for Tcl, make sure you overwrite the iconv.dll file found in both the Tcl bin/ and lib/ directories with the iconv.dll file found in your gettext bin/ directory.")
-ENDIF(WIN32)
+set(GETTEXT_INFO_MSG "More information about gettext can be found at http://directory.fsf.org/gettext.html.")
+if(WIN32)
+  set(GETTEXT_INFO_MSG "${GETTEXT_INFO_MSG} Windows users can download gettext-runtime-0.13.1.bin.woe32.zip (LGPL), gettext-tools-0.13.1.bin.woe32.zip (GPL) as well as libiconv-1.9.1.bin.woe32.zip (LGPL) from any GNU mirror (say, http://mirrors.kernel.org/gnu/gettext/ and http://mirrors.kernel.org/gnu/libiconv/), unpack the archives in the same directory, then set GETTEXT_INTL_LIBRARY to 'lib/intl.lib' in and GETTEXT_INCLUDE_DIR to 'include' in that directory.\n\nWarning: if you are using ActiveTcl, the ActiveState binary distribution for Tcl, make sure you overwrite the iconv.dll file found in both the Tcl bin/ and lib/ directories with the iconv.dll file found in your gettext bin/ directory.")
+endif(WIN32)
 
 # --------------------------------------------------------------------------
 # Found ?
 
-GETTEXT_FIND_POTENTIAL_DIRS()
-GETTEXT_FIND_RUNTIME_LIBRARY()
-GETTEXT_FIND_TOOLS()
+gettext_find_potential_dirs()
+gettext_find_runtime_library()
+gettext_find_tools()
 
 # Try again with new potential dirs now that we may have found the runtime
 # or the tools
 
-GETTEXT_FIND_POTENTIAL_DIRS()
-IF(NOT GETTEXT_RUNTIME_FOUND)
-  GETTEXT_FIND_RUNTIME_LIBRARY()
-ENDIF(NOT GETTEXT_RUNTIME_FOUND)
-IF(NOT GETTEXT_TOOLS_FOUND)
-  GETTEXT_FIND_TOOLS()
-ENDIF(NOT GETTEXT_TOOLS_FOUND)
+gettext_find_potential_dirs()
+if(NOT GETTEXT_RUNTIME_FOUND)
+  gettext_find_runtime_library()
+endif(NOT GETTEXT_RUNTIME_FOUND)
+if(NOT GETTEXT_TOOLS_FOUND)
+  gettext_find_tools()
+endif(NOT GETTEXT_TOOLS_FOUND)
 
-IF(GETTEXT_RUNTIME_FOUND AND GETTEXT_TOOLS_FOUND)
-  SET(GETTEXT_FOUND 1)
-ELSE(GETTEXT_RUNTIME_FOUND AND GETTEXT_TOOLS_FOUND)
-  SET(GETTEXT_FOUND 0)
-ENDIF(GETTEXT_RUNTIME_FOUND AND GETTEXT_TOOLS_FOUND)
+if(GETTEXT_RUNTIME_FOUND AND GETTEXT_TOOLS_FOUND)
+  set(GETTEXT_FOUND 1)
+else(GETTEXT_RUNTIME_FOUND AND GETTEXT_TOOLS_FOUND)
+  set(GETTEXT_FOUND 0)
+endif(GETTEXT_RUNTIME_FOUND AND GETTEXT_TOOLS_FOUND)
 
-IF(NOT GETTEXT_FOUND AND NOT Gettext_FIND_QUIETLY AND Gettext_FIND_REQUIRED)
-  MESSAGE(FATAL_ERROR "Could not find gettext runtime library and tools for internationalization purposes.\n\n${GETTEXT_INFO_MSG}")
-ENDIF(NOT GETTEXT_FOUND AND NOT Gettext_FIND_QUIETLY AND Gettext_FIND_REQUIRED)
+if(NOT GETTEXT_FOUND AND NOT Gettext_FIND_QUIETLY AND Gettext_FIND_REQUIRED)
+  message(FATAL_ERROR "Could not find gettext runtime library and tools for internationalization purposes.\n\n${GETTEXT_INFO_MSG}")
+endif(NOT GETTEXT_FOUND AND NOT Gettext_FIND_QUIETLY AND Gettext_FIND_REQUIRED)

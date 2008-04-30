@@ -6,45 +6,45 @@
 #   INCLUDE(${KWWidgets_USE_FILE})
 #
 
-IF(NOT KWWidgets_USE_FILE_INCLUDED)
-  SET(KWWidgets_USE_FILE_INCLUDED 1)
+if(NOT KWWidgets_USE_FILE_INCLUDED)
+  set(KWWidgets_USE_FILE_INCLUDED 1)
 
   # Load the compiler settings used for KWWidgets.
-  IF(KWWidgets_BUILD_SETTINGS_FILE)
-    INCLUDE(${CMAKE_ROOT}/Modules/CMakeImportBuildSettings.cmake)
-    CMAKE_IMPORT_BUILD_SETTINGS(${KWWidgets_BUILD_SETTINGS_FILE})
-  ENDIF(KWWidgets_BUILD_SETTINGS_FILE)
+  if(KWWidgets_BUILD_SETTINGS_FILE)
+    include(${CMAKE_ROOT}/Modules/CMakeImportBuildSettings.cmake)
+    cmake_import_build_settings(${KWWidgets_BUILD_SETTINGS_FILE})
+  endif(KWWidgets_BUILD_SETTINGS_FILE)
 
   # Add compiler flags needed to use KWWidgets.
-  SET(CMAKE_C_FLAGS 
+  set(CMAKE_C_FLAGS 
     "${CMAKE_C_FLAGS} ${KWWidgets_REQUIRED_C_FLAGS}")
-  SET(CMAKE_CXX_FLAGS 
+  set(CMAKE_CXX_FLAGS 
     "${CMAKE_CXX_FLAGS} ${KWWidgets_REQUIRED_CXX_FLAGS}")
-  SET(CMAKE_EXE_LINKER_FLAGS 
+  set(CMAKE_EXE_LINKER_FLAGS 
     "${CMAKE_EXE_LINKER_FLAGS} ${KWWidgets_REQUIRED_EXE_LINKER_FLAGS}")
-  SET(CMAKE_SHARED_LINKER_FLAGS 
+  set(CMAKE_SHARED_LINKER_FLAGS 
     "${CMAKE_SHARED_LINKER_FLAGS} ${KWWidgets_REQUIRED_SHARED_LINKER_FLAGS}")
-  SET(CMAKE_MODULE_LINKER_FLAGS 
+  set(CMAKE_MODULE_LINKER_FLAGS 
     "${CMAKE_MODULE_LINKER_FLAGS} ${KWWidgets_REQUIRED_MODULE_LINKER_FLAGS}")
 
   # Add include directories needed to use KWWidgets.
-  INCLUDE_DIRECTORIES(${KWWidgets_INCLUDE_DIRS})
+  include_directories(${KWWidgets_INCLUDE_DIRS})
 
   # Add link directories needed to use KWWidgets.
-  LINK_DIRECTORIES(${KWWidgets_LIBRARY_DIRS})
+  link_directories(${KWWidgets_LIBRARY_DIRS})
 
   # Add cmake module path.
-  SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${KWWidgets_CMAKE_DIR}")
+  set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${KWWidgets_CMAKE_DIR}")
 
   # Use VTK.
-  IF(NOT KWWidgets_NO_USE_VTK)
-    SET(VTK_DIR ${KWWidgets_VTK_DIR})
-    FIND_PACKAGE(VTK)
-    IF(VTK_FOUND)
-      INCLUDE(${VTK_USE_FILE})
-    ELSE(VTK_FOUND)
-      MESSAGE("VTK not found in KWWidgets_VTK_DIR=\"${KWWidgets_VTK_DIR}\".")
-    ENDIF(VTK_FOUND)
-  ENDIF(NOT KWWidgets_NO_USE_VTK)
+  if(NOT KWWidgets_NO_USE_VTK)
+    set(VTK_DIR ${KWWidgets_VTK_DIR})
+    find_package(VTK)
+    if(VTK_FOUND)
+      include(${VTK_USE_FILE})
+    else(VTK_FOUND)
+      message("VTK not found in KWWidgets_VTK_DIR=\"${KWWidgets_VTK_DIR}\".")
+    endif(VTK_FOUND)
+  endif(NOT KWWidgets_NO_USE_VTK)
 
-ENDIF(NOT KWWidgets_USE_FILE_INCLUDED)
+endif(NOT KWWidgets_USE_FILE_INCLUDED)

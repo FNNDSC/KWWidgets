@@ -18,55 +18,55 @@
 # 'files_from': 
 # GETTEXT_XGETTEXT_EXECUTABLE (string): path to the 'xgettext' executable
 
-SET(SUCCESS 1)
-IF(NOT "${GETTEXT_XGETTEXT_EXECUTABLE}" STREQUAL "")
+set(SUCCESS 1)
+if(NOT "${GETTEXT_XGETTEXT_EXECUTABLE}" STREQUAL "")
 
   # Extract the strings, store the result in a variable instead of a POT file
 
-  EXEC_PROGRAM(${GETTEXT_XGETTEXT_EXECUTABLE} 
+  exec_program(${GETTEXT_XGETTEXT_EXECUTABLE} 
     RETURN_VALUE xgettext_return
     OUTPUT_VARIABLE xgettext_output
     ARGS --output="-" ${options} ${keywords} --msgid-bugs-address="${msgid_bugs_address}" --copyright-holder="${copyright_holder}" --files-from="${files_from}")
-  IF(xgettext_return)
-    MESSAGE("${xgettext_output}")
-    SET(SUCCESS 0)
-  ELSE(xgettext_return)
+  if(xgettext_return)
+    message("${xgettext_output}")
+    set(SUCCESS 0)
+  else(xgettext_return)
 
-    SET(xgettext_output "${xgettext_output}\n")
+    set(xgettext_output "${xgettext_output}\n")
 
     # Check if the new POT file would be different than the old one
     # without taking into account the POT-Creation-Date.
 
-    SET(update_pot_file 0)
-    IF(EXISTS ${pot_build_file})
-      STRING(REGEX REPLACE "\"POT-Creation-Date:[^\"]*\"" "" 
+    set(update_pot_file 0)
+    if(EXISTS ${pot_build_file})
+      string(REGEX REPLACE "\"POT-Creation-Date:[^\"]*\"" "" 
         xgettext_output_nodate "${xgettext_output}")
-      FILE(READ "${pot_build_file}" xgettext_old)
-      STRING(REGEX REPLACE "\"POT-Creation-Date:[^\"]*\"" "" 
+      file(READ "${pot_build_file}" xgettext_old)
+      string(REGEX REPLACE "\"POT-Creation-Date:[^\"]*\"" "" 
         xgettext_old_nodate "${xgettext_old}")
-      IF(NOT "${xgettext_output_nodate}" STREQUAL "${xgettext_old_nodate}")
-        SET(update_pot_file 1)
-      ENDIF(NOT "${xgettext_output_nodate}" STREQUAL "${xgettext_old_nodate}")
-    ELSE(EXISTS ${pot_build_file})
-      SET(update_pot_file 1)
-    ENDIF(EXISTS ${pot_build_file})
+      if(NOT "${xgettext_output_nodate}" STREQUAL "${xgettext_old_nodate}")
+        set(update_pot_file 1)
+      endif(NOT "${xgettext_output_nodate}" STREQUAL "${xgettext_old_nodate}")
+    else(EXISTS ${pot_build_file})
+      set(update_pot_file 1)
+    endif(EXISTS ${pot_build_file})
 
     # Create the POT file if it is really needed
 
-    IF(update_pot_file)
-      MESSAGE("Updating ${pot_build_file}")
-      FILE(WRITE "${pot_build_file}" "${xgettext_output}")
-    ENDIF(update_pot_file)
+    if(update_pot_file)
+      message("Updating ${pot_build_file}")
+      file(WRITE "${pot_build_file}" "${xgettext_output}")
+    endif(update_pot_file)
 
     # Update the dummy file to say: this POT target is up to date as
     # far as its dependencies are concerned. This will prevent the POT
     # target to be triggered again and again because the sources are older
     # than the POT, but the POT does not really need to be changed, etc.
 
-    IF(SUCCESS)
-      FILE(WRITE "${pot_uptodate_file}" 
+    if(SUCCESS)
+      file(WRITE "${pot_uptodate_file}" 
         "${pot_build_file} is *really* up-to-date.")
-    ENDIF(SUCCESS)
+    endif(SUCCESS)
 
-  ENDIF(xgettext_return)
-ENDIF(NOT "${GETTEXT_XGETTEXT_EXECUTABLE}" STREQUAL "")
+  endif(xgettext_return)
+endif(NOT "${GETTEXT_XGETTEXT_EXECUTABLE}" STREQUAL "")

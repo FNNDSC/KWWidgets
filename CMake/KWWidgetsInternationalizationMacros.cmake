@@ -115,144 +115,144 @@
 #    CREATE_MO_TARGET was true.
 #    Default to 0.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.2.2) # We need FILE(RELATIVE_PATH...)
+cmake_minimum_required(VERSION 2.2.2) # We need FILE(RELATIVE_PATH...)
 
-MACRO(KWWidgets_CREATE_GETTEXT_TARGETS)
+macro(KWWidgets_CREATE_GETTEXT_TARGETS)
 
-  SET(notset_value             "__not_set__")
+  set(notset_value             "__not_set__")
 
   # Provide some reasonable defaults
 
-  SET(domain_name              ${PROJECT_NAME})
-  SET(po_dir                   "${CMAKE_CURRENT_SOURCE_DIR}/po")
-  SET(po_build_dir             "${CMAKE_CURRENT_BINARY_DIR}/po")
-  SET(pot_build_dir            "${CMAKE_CURRENT_BINARY_DIR}/po")
-  SET(locale_list              "")
-  SET(default_po_encoding      "utf-8")
-  SET(mo_install_dir           "")
-  SET(copyright_holder         "")
-  SET(msgid_bugs_address       "foo@bar.com")
-  SET(sources                  )
-  SET(po_prefix                ${notset_value})
-  SET(extra_gettext_keywords   "")
-  SET(extra_dgettext_keywords  "")
+  set(domain_name              ${PROJECT_NAME})
+  set(po_dir                   "${CMAKE_CURRENT_SOURCE_DIR}/po")
+  set(po_build_dir             "${CMAKE_CURRENT_BINARY_DIR}/po")
+  set(pot_build_dir            "${CMAKE_CURRENT_BINARY_DIR}/po")
+  set(locale_list              "")
+  set(default_po_encoding      "utf-8")
+  set(mo_install_dir           "")
+  set(copyright_holder         "")
+  set(msgid_bugs_address       "foo@bar.com")
+  set(sources                  )
+  set(po_prefix                ${notset_value})
+  set(extra_gettext_keywords   "")
+  set(extra_dgettext_keywords  "")
 
-  SET(target_basename          ${notset_value})
-  SET(create_pot_target        0)
-  SET(create_po_target         0)
-  SET(create_po_locale_targets 0)
-  SET(create_mo_target         1)
-  SET(create_mo_locale_targets 0)
-  SET(add_mo_target_to_all     0)
+  set(target_basename          ${notset_value})
+  set(create_pot_target        0)
+  set(create_po_target         0)
+  set(create_po_locale_targets 0)
+  set(create_mo_target         1)
+  set(create_mo_locale_targets 0)
+  set(add_mo_target_to_all     0)
 
-  IF(EXECUTABLE_OUTPUT_PATH)
-    GET_FILENAME_COMPONENT(
+  if(EXECUTABLE_OUTPUT_PATH)
+    get_filename_component(
       mo_build_dir "${EXECUTABLE_OUTPUT_PATH}/../locale" ABSOLUTE)
-  ELSE(EXECUTABLE_OUTPUT_PATH)
-    SET(mo_build_dir "${CMAKE_CURRENT_BINARY_DIR}/locale")
-  ENDIF(EXECUTABLE_OUTPUT_PATH)
+  else(EXECUTABLE_OUTPUT_PATH)
+    set(mo_build_dir "${CMAKE_CURRENT_BINARY_DIR}/locale")
+  endif(EXECUTABLE_OUTPUT_PATH)
 
   # Parse the arguments
 
-  SET(valued_parameter_names "^(TARGET_BASENAME|DOMAIN_NAME|POT_BUILD_DIR|PO_DIR|PO_BUILD_DIR|DEFAULT_PO_ENCODING|MO_BUILD_DIR|MO_INSTALL_DIR|COPYRIGHT_HOLDER|MSGID_BUGS_ADDRESS|PO_PREFIX)$")
-  SET(boolean_parameter_names "^(ADD_MO_TARGET_TO_ALL|CREATE_POT_TARGET|CREATE_PO_TARGET|CREATE_PO_LOCALE_TARGETS|CREATE_MO_TARGET|CREATE_MO_LOCALE_TARGETS)$")
-  SET(list_parameter_names "^(SOURCES|LOCALE_LIST|EXTRA_GETTEXT_KEYWORDS|EXTRA_DGETTEXT_KEYWORDS)$")
+  set(valued_parameter_names "^(TARGET_BASENAME|DOMAIN_NAME|POT_BUILD_DIR|PO_DIR|PO_BUILD_DIR|DEFAULT_PO_ENCODING|MO_BUILD_DIR|MO_INSTALL_DIR|COPYRIGHT_HOLDER|MSGID_BUGS_ADDRESS|PO_PREFIX)$")
+  set(boolean_parameter_names "^(ADD_MO_TARGET_TO_ALL|CREATE_POT_TARGET|CREATE_PO_TARGET|CREATE_PO_LOCALE_TARGETS|CREATE_MO_TARGET|CREATE_MO_LOCALE_TARGETS)$")
+  set(list_parameter_names "^(SOURCES|LOCALE_LIST|EXTRA_GETTEXT_KEYWORDS|EXTRA_DGETTEXT_KEYWORDS)$")
 
-  SET(next_arg_should_be_value 0)
-  SET(prev_arg_was_boolean 0)
-  SET(prev_arg_was_list 0)
-  SET(unknown_parameters)
+  set(next_arg_should_be_value 0)
+  set(prev_arg_was_boolean 0)
+  set(prev_arg_was_list 0)
+  set(unknown_parameters)
   
-  STRING(REGEX REPLACE ";;" ";FOREACH_FIX;" parameter_list "${ARGV}")
-  FOREACH(arg ${parameter_list})
+  string(REGEX REPLACE ";;" ";FOREACH_FIX;" parameter_list "${ARGV}")
+  foreach(arg ${parameter_list})
 
-    IF("${arg}" STREQUAL "FOREACH_FIX")
-      SET(arg "")
-    ENDIF("${arg}" STREQUAL "FOREACH_FIX")
+    if("${arg}" STREQUAL "FOREACH_FIX")
+      set(arg "")
+    endif("${arg}" STREQUAL "FOREACH_FIX")
 
-    SET(matches_valued 0)
-    IF("${arg}" MATCHES ${valued_parameter_names})
-      SET(matches_valued 1)
-    ENDIF("${arg}" MATCHES ${valued_parameter_names})
+    set(matches_valued 0)
+    if("${arg}" MATCHES ${valued_parameter_names})
+      set(matches_valued 1)
+    endif("${arg}" MATCHES ${valued_parameter_names})
 
-    SET(matches_boolean 0)
-    IF("${arg}" MATCHES ${boolean_parameter_names})
-      SET(matches_boolean 1)
-    ENDIF("${arg}" MATCHES ${boolean_parameter_names})
+    set(matches_boolean 0)
+    if("${arg}" MATCHES ${boolean_parameter_names})
+      set(matches_boolean 1)
+    endif("${arg}" MATCHES ${boolean_parameter_names})
 
-    SET(matches_list 0)
-    IF("${arg}" MATCHES ${list_parameter_names})
-      SET(matches_list 1)
-    ENDIF("${arg}" MATCHES ${list_parameter_names})
-      
-    IF(matches_valued OR matches_boolean OR matches_list)
-      IF(prev_arg_was_boolean)
-        STRING(TOLOWER ${prev_arg_name} prev_arg_name)
-        SET(${prev_arg_name} 1)
-      ELSE(prev_arg_was_boolean)
-        IF(next_arg_should_be_value AND NOT prev_arg_was_list)
-          MESSAGE(FATAL_ERROR 
+    set(matches_list 0)
+    if("${arg}" MATCHES ${list_parameter_names})
+      set(matches_list 1)
+    endif("${arg}" MATCHES ${list_parameter_names})
+    
+    if(matches_valued OR matches_boolean OR matches_list)
+      if(prev_arg_was_boolean)
+        string(TOLOWER ${prev_arg_name} prev_arg_name)
+        set(${prev_arg_name} 1)
+      else(prev_arg_was_boolean)
+        if(next_arg_should_be_value AND NOT prev_arg_was_list)
+          message(FATAL_ERROR 
             "Found ${arg} instead of value for ${prev_arg_name}")
-        ENDIF(next_arg_should_be_value AND NOT prev_arg_was_list)
-      ENDIF(prev_arg_was_boolean)
-      SET(next_arg_should_be_value 1)
-      SET(prev_arg_was_boolean ${matches_boolean})
-      SET(prev_arg_was_list ${matches_list})
-      SET(prev_arg_name ${arg})
-    ELSE(matches_valued OR matches_boolean OR matches_list)
-      IF(next_arg_should_be_value)
-        IF(prev_arg_was_boolean)
-          IF(NOT "${arg}" STREQUAL "1" AND NOT "${arg}" STREQUAL "0")
-            MESSAGE(FATAL_ERROR 
+        endif(next_arg_should_be_value AND NOT prev_arg_was_list)
+      endif(prev_arg_was_boolean)
+      set(next_arg_should_be_value 1)
+      set(prev_arg_was_boolean ${matches_boolean})
+      set(prev_arg_was_list ${matches_list})
+      set(prev_arg_name ${arg})
+    else(matches_valued OR matches_boolean OR matches_list)
+      if(next_arg_should_be_value)
+        if(prev_arg_was_boolean)
+          if(NOT "${arg}" STREQUAL "1" AND NOT "${arg}" STREQUAL "0")
+            message(FATAL_ERROR 
               "Found ${arg} instead of 0 or 1 for ${prev_arg_name}")
-          ENDIF(NOT "${arg}" STREQUAL "1" AND NOT "${arg}" STREQUAL "0")
-        ENDIF(prev_arg_was_boolean)
-        STRING(TOLOWER ${prev_arg_name} prev_arg_name)
-        IF(prev_arg_was_list)
-          SET(${prev_arg_name} ${${prev_arg_name}} ${arg})
-        ELSE(prev_arg_was_list)
-          SET(${prev_arg_name} ${arg})
-          SET(next_arg_should_be_value 0)
-        ENDIF(prev_arg_was_list)
-      ELSE(next_arg_should_be_value)
-        SET(unknown_parameters ${unknown_parameters} ${arg})
-      ENDIF(next_arg_should_be_value)
-      SET(prev_arg_was_boolean 0)
-    ENDIF(matches_valued OR matches_boolean OR matches_list)
+          endif(NOT "${arg}" STREQUAL "1" AND NOT "${arg}" STREQUAL "0")
+        endif(prev_arg_was_boolean)
+        string(TOLOWER ${prev_arg_name} prev_arg_name)
+        if(prev_arg_was_list)
+          set(${prev_arg_name} ${${prev_arg_name}} ${arg})
+        else(prev_arg_was_list)
+          set(${prev_arg_name} ${arg})
+          set(next_arg_should_be_value 0)
+        endif(prev_arg_was_list)
+      else(next_arg_should_be_value)
+        set(unknown_parameters ${unknown_parameters} ${arg})
+      endif(next_arg_should_be_value)
+      set(prev_arg_was_boolean 0)
+    endif(matches_valued OR matches_boolean OR matches_list)
 
-  ENDFOREACH(arg)
+  endforeach(arg)
 
-  IF(next_arg_should_be_value)
-    IF(prev_arg_was_boolean)
-      STRING(TOLOWER ${prev_arg_name} prev_arg_name)
-      SET(${prev_arg_name} 1)
-    ELSE(prev_arg_was_boolean)
-      IF(prev_arg_was_list)
-        STRING(TOLOWER ${prev_arg_name} prev_arg_name)
-        SET(${prev_arg_name} ${${prev_arg_name}} ${arg})
-      ELSE(prev_arg_was_list)
-        MESSAGE(FATAL_ERROR "Missing value for ${prev_arg_name}")
-      ENDIF(prev_arg_was_list)
-    ENDIF(prev_arg_was_boolean)
-  ENDIF(next_arg_should_be_value)
-  IF(unknown_parameters)
-    MESSAGE(FATAL_ERROR "Unknown parameter(s): ${unknown_parameters}")
-  ENDIF(unknown_parameters)
+  if(next_arg_should_be_value)
+    if(prev_arg_was_boolean)
+      string(TOLOWER ${prev_arg_name} prev_arg_name)
+      set(${prev_arg_name} 1)
+    else(prev_arg_was_boolean)
+      if(prev_arg_was_list)
+        string(TOLOWER ${prev_arg_name} prev_arg_name)
+        set(${prev_arg_name} ${${prev_arg_name}} ${arg})
+      else(prev_arg_was_list)
+        message(FATAL_ERROR "Missing value for ${prev_arg_name}")
+      endif(prev_arg_was_list)
+    endif(prev_arg_was_boolean)
+  endif(next_arg_should_be_value)
+  if(unknown_parameters)
+    message(FATAL_ERROR "Unknown parameter(s): ${unknown_parameters}")
+  endif(unknown_parameters)
 
   # Fix some defaults
 
-  IF(${target_basename} STREQUAL ${notset_value})
-    SET(target_basename ${domain_name})
-  ENDIF(${target_basename} STREQUAL ${notset_value})
+  if(${target_basename} STREQUAL ${notset_value})
+    set(target_basename ${domain_name})
+  endif(${target_basename} STREQUAL ${notset_value})
 
-  IF(${po_prefix} STREQUAL ${notset_value})
-    SET(po_prefix "${domain_name}_")
-  ENDIF(${po_prefix} STREQUAL ${notset_value})
+  if(${po_prefix} STREQUAL ${notset_value})
+    set(po_prefix "${domain_name}_")
+  endif(${po_prefix} STREQUAL ${notset_value})
 
   # Create the targets
 
-  IF(NOT "${sources}" STREQUAL "")
-    KWWidgets_CREATE_POT_TARGET(
+  if(NOT "${sources}" STREQUAL "")
+    kwwidgets_create_pot_target(
       "${domain_name}"
       "${pot_build_dir}"
       "${po_dir}"
@@ -264,9 +264,9 @@ MACRO(KWWidgets_CREATE_GETTEXT_TARGETS)
       "${extra_gettext_keywords}"
       "${extra_dgettext_keywords}"
       )
-  ENDIF(NOT "${sources}" STREQUAL "")
+  endif(NOT "${sources}" STREQUAL "")
   
-  KWWidgets_CREATE_PO_TARGETS(
+  kwwidgets_create_po_targets(
     "${domain_name}"
     "${pot_build_dir}"
     "${po_dir}"
@@ -279,7 +279,7 @@ MACRO(KWWidgets_CREATE_GETTEXT_TARGETS)
     "${create_po_locale_targets}"
     )
 
-  KWWidgets_CREATE_MO_TARGETS(
+  kwwidgets_create_mo_targets(
     "${domain_name}"
     "${po_dir}"
     "${po_build_dir}"
@@ -293,7 +293,7 @@ MACRO(KWWidgets_CREATE_GETTEXT_TARGETS)
     "${add_mo_target_to_all}"
     )
 
-ENDMACRO(KWWidgets_CREATE_GETTEXT_TARGETS)
+endmacro(KWWidgets_CREATE_GETTEXT_TARGETS)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_GET_POT_FILENAME
@@ -302,12 +302,12 @@ ENDMACRO(KWWidgets_CREATE_GETTEXT_TARGETS)
 # 'varname': name of the var the template filename should be stored into
 # 'domain_name': translation domain name (i.e. name of application or library)
 # 'pot_build_dir': path in the build tree where the template should be stored
- 
-MACRO(KWWidgets_GET_POT_FILENAME varname domain_name pot_build_dir)
 
-  SET(${varname} "${pot_build_dir}/${domain_name}.pot")
+macro(KWWidgets_GET_POT_FILENAME varname domain_name pot_build_dir)
 
-ENDMACRO(KWWidgets_GET_POT_FILENAME)
+  set(${varname} "${pot_build_dir}/${domain_name}.pot")
+
+endmacro(KWWidgets_GET_POT_FILENAME)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_GET_PO_FILENAME
@@ -317,12 +317,12 @@ ENDMACRO(KWWidgets_GET_POT_FILENAME)
 # 'po_dir': path to the po directory where the PO file are stored
 # 'po_prefix': string that is used to prefix each translation file.
 # 'locale': a locale (say, "fr")
- 
-MACRO(KWWidgets_GET_PO_FILENAME varname po_dir po_prefix locale)
 
-  SET(${varname} "${po_dir}/${po_prefix}${locale}.po")
+macro(KWWidgets_GET_PO_FILENAME varname po_dir po_prefix locale)
 
-ENDMACRO(KWWidgets_GET_PO_FILENAME)
+  set(${varname} "${po_dir}/${po_prefix}${locale}.po")
+
+endmacro(KWWidgets_GET_PO_FILENAME)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_GET_PO_SAFE_BUILD_DIR
@@ -333,17 +333,17 @@ ENDMACRO(KWWidgets_GET_PO_FILENAME)
 # 'varname': name of the var the PO safe build dir should be stored into
 # 'po_dir': path to the po directory where the PO file are stored
 # 'po_build_dir': build path where up-to-date PO files should be stored
- 
-MACRO(KWWidgets_GET_PO_SAFE_BUILD_DIR varname po_dir po_build_dir)
 
-  IF("${po_build_dir}" STREQUAL "${po_dir}")
-    SET(${varname} "${CMAKE_CURRENT_BINARY_DIR}/po")
+macro(KWWidgets_GET_PO_SAFE_BUILD_DIR varname po_dir po_build_dir)
+
+  if("${po_build_dir}" STREQUAL "${po_dir}")
+    set(${varname} "${CMAKE_CURRENT_BINARY_DIR}/po")
     #SET_DIRECTORY_PROPERTIES(PROPERTIES CLEAN_NO_CUSTOM 1)
-  ELSE("${po_build_dir}" STREQUAL "${po_dir}")
-    SET(${varname} "${po_build_dir}")
-  ENDIF("${po_build_dir}" STREQUAL "${po_dir}")
+  else("${po_build_dir}" STREQUAL "${po_dir}")
+    set(${varname} "${po_build_dir}")
+  endif("${po_build_dir}" STREQUAL "${po_dir}")
 
-ENDMACRO(KWWidgets_GET_PO_SAFE_BUILD_DIR)
+endmacro(KWWidgets_GET_PO_SAFE_BUILD_DIR)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_GET_MO_FILENAME
@@ -353,12 +353,12 @@ ENDMACRO(KWWidgets_GET_PO_SAFE_BUILD_DIR)
 # 'domain_name': translation domain name (i.e. name of application or library)
 # 'mo_build_dir': directory where the binary MO files should be saved to
 # 'locale': a locale (say, "fr")
- 
-MACRO(KWWidgets_GET_MO_FILENAME varname domain_name mo_build_dir locale)
 
-  SET(${varname} "${mo_build_dir}/${locale}/LC_MESSAGES/${domain_name}.mo")
+macro(KWWidgets_GET_MO_FILENAME varname domain_name mo_build_dir locale)
 
-ENDMACRO(KWWidgets_GET_MO_FILENAME)
+  set(${varname} "${mo_build_dir}/${locale}/LC_MESSAGES/${domain_name}.mo")
+
+endmacro(KWWidgets_GET_MO_FILENAME)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_GET_ABSOLUTE_SOURCES
@@ -366,18 +366,18 @@ ENDMACRO(KWWidgets_GET_MO_FILENAME)
 # 'varname': name of the var the list of absolute paths should be stored into
 # 'sources': list of source files
 
-MACRO(KWWidgets_GET_ABSOLUTE_SOURCES varname sources)
+macro(KWWidgets_GET_ABSOLUTE_SOURCES varname sources)
 
-  SET(${varname})
-  FOREACH(file ${sources})
-    GET_FILENAME_COMPONENT(abs_file ${file} ABSOLUTE)
-    IF(NOT EXISTS ${abs_file})
-      SET(abs_file "${CMAKE_CURRENT_SOURCE_DIR}/${file}")
-    ENDIF(NOT EXISTS ${abs_file})
-    SET(${varname} ${${varname}} ${abs_file})
-  ENDFOREACH(file)
+  set(${varname})
+  foreach(file ${sources})
+    get_filename_component(abs_file ${file} ABSOLUTE)
+    if(NOT EXISTS ${abs_file})
+      set(abs_file "${CMAKE_CURRENT_SOURCE_DIR}/${file}")
+    endif(NOT EXISTS ${abs_file})
+    set(${varname} ${${varname}} ${abs_file})
+  endforeach(file)
 
-ENDMACRO(KWWidgets_GET_ABSOLUTE_SOURCES)
+endmacro(KWWidgets_GET_ABSOLUTE_SOURCES)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_GET_RELATIVE_SOURCES
@@ -387,17 +387,17 @@ ENDMACRO(KWWidgets_GET_ABSOLUTE_SOURCES)
 # 'dir': path to the dir we want relative path from
 # 'sources': list of *absolute* path to the source files
 
-MACRO(KWWidgets_GET_RELATIVE_SOURCES varname dir sources)
+macro(KWWidgets_GET_RELATIVE_SOURCES varname dir sources)
 
-  GET_FILENAME_COMPONENT(dir_abs ${dir} ABSOLUTE)
+  get_filename_component(dir_abs ${dir} ABSOLUTE)
 
-  SET(${varname})
-  FOREACH(file ${sources})
-    FILE(RELATIVE_PATH rel_file "${dir}" "${file}")
-    SET(${varname} ${${varname}} ${rel_file})
-  ENDFOREACH(file)
+  set(${varname})
+  foreach(file ${sources})
+    file(RELATIVE_PATH rel_file "${dir}" "${file}")
+    set(${varname} ${${varname}} ${rel_file})
+  endforeach(file)
 
-ENDMACRO(KWWidgets_GET_RELATIVE_SOURCES)
+endmacro(KWWidgets_GET_RELATIVE_SOURCES)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_CREATE_POT_TARGET
@@ -415,7 +415,7 @@ ENDMACRO(KWWidgets_GET_RELATIVE_SOURCES)
 # 'extra_gettext_keywords': semicolon-separated list of extra gettext keywords
 # 'extra_dgettext_keywords':semicolon-separated list of extra dgettext keywords
 
-MACRO(KWWidgets_CREATE_POT_TARGET
+macro(KWWidgets_CREATE_POT_TARGET
     domain_name
     pot_build_dir
     po_dir
@@ -428,53 +428,53 @@ MACRO(KWWidgets_CREATE_POT_TARGET
     extra_dgettext_keywords
     )
 
-  KWWidgets_GET_POT_FILENAME(pot_build_file 
+  kwwidgets_get_pot_filename(pot_build_file 
     "${domain_name}" "${pot_build_dir}")
 
   # We need the absolute path to each source file
 
-  KWWidgets_GET_ABSOLUTE_SOURCES(abs_sources "${sources}")
+  kwwidgets_get_absolute_sources(abs_sources "${sources}")
 
   # Put the list on sources to internationalize in an internal cache var
   # so that sub-projects can use it to create their own translation
 
-  SET(${domain_name}_INTERNATIONALIZED_SRCS_INTERNAL "${abs_sources}"
+  set(${domain_name}_INTERNATIONALIZED_SRCS_INTERNAL "${abs_sources}"
     CACHE INTERNAL "Sources that were internationalized for ${domain_name}")
 
   # Get relative sources to the PO files
 
-  KWWidgets_GET_RELATIVE_SOURCES(rel_sources "${po_dir}" "${abs_sources}")
+  kwwidgets_get_relative_sources(rel_sources "${po_dir}" "${abs_sources}")
 
   # The extra keywords
 
-  SET(keywords)
-  FOREACH(keyword ${extra_gettext_keywords})
-    SET(keywords ${keywords} 
+  set(keywords)
+  foreach(keyword ${extra_gettext_keywords})
+    set(keywords ${keywords} 
       "--keyword=${keyword}" "--flag=${keyword}:1:pass-c-format")
-  ENDFOREACH(keyword)
-  FOREACH(keyword ${extra_dgettext_keywords})
-    SET(keywords ${keywords} 
+  endforeach(keyword)
+  foreach(keyword ${extra_dgettext_keywords})
+    set(keywords ${keywords} 
       "--keyword=${keyword}:2" "--flag=${keyword}:2:pass-c-format")
-  ENDFOREACH(keyword)
+  endforeach(keyword)
 
   # Define a symbol in each source file that can be used by dgettext
 
-  SET_SOURCE_FILES_PROPERTIES(${sources}
+  set_source_files_properties(${sources}
     COMPILE_FLAGS "-DGETTEXT_DOMAIN=\\\"${domain_name}\\\"")  
 
-  FILE(MAKE_DIRECTORY ${pot_build_dir})
+  file(MAKE_DIRECTORY ${pot_build_dir})
 
   # Output the list of sources to a file. This fill will be read
   # by xgettext (so that we do not have to pass it as a huge command
   # line argument below)
 
-  KWWidgets_GET_PO_SAFE_BUILD_DIR(
+  kwwidgets_get_po_safe_build_dir(
     safe_build_dir "${po_dir}" "${pot_build_dir}")
 
-  SET(files_from "${safe_build_dir}/${domain_name}_srcs.txt")
+  set(files_from "${safe_build_dir}/${domain_name}_srcs.txt")
 
-  STRING(REGEX REPLACE ";" "\n" contents "${rel_sources}")
-  FILE(WRITE "${files_from}" "${contents}")
+  string(REGEX REPLACE ";" "\n" contents "${rel_sources}")
+  file(WRITE "${files_from}" "${contents}")
   #CONFIGURE_FILE(${KWWidgets_TEMPLATES_DIR}/KWWidgetsContents.in ${files_from})
 
   # We need a dummy file that will just say: this POT target is up to date as
@@ -482,15 +482,15 @@ MACRO(KWWidgets_CREATE_POT_TARGET
   # target to be triggered again and again because the sources are older
   # than the POT, but the POT does not really need to be changed, etc.
 
-  KWWidgets_GET_POT_FILENAME(pot_uptodate_file 
+  kwwidgets_get_pot_filename(pot_uptodate_file 
     "${domain_name}" "${safe_build_dir}")
-  SET(pot_uptodate_file "${pot_uptodate_file}.upd")
+  set(pot_uptodate_file "${pot_uptodate_file}.upd")
 
   # Extract strings to translate to template file (pot)
 
-  IF(NOT "${GETTEXT_XGETTEXT_EXECUTABLE}" STREQUAL "")
-    SET(options "--foreign-user")
-    SET(keywords ${keyword}
+  if(NOT "${GETTEXT_XGETTEXT_EXECUTABLE}" STREQUAL "")
+    set(options "--foreign-user")
+    set(keywords ${keyword}
       "--keyword=_" "--flag=_:1:pass-c-format"
       "--keyword=N_" "--flag=N_:1:pass-c-format"
       "--flag=autosprintf:1:c-format"
@@ -503,17 +503,17 @@ MACRO(KWWidgets_CREATE_POT_TARGET
       "--flag=kww_sprintf:2:c-format" 
       "--flag=kww_fprintf:2:c-format")
 
-    ADD_CUSTOM_COMMAND(
+    add_custom_command(
       OUTPUT "${pot_uptodate_file}"
       DEPENDS ${abs_sources}
       COMMAND ${CMAKE_COMMAND} 
       ARGS -E chdir "${po_dir}" ${CMAKE_COMMAND} -DCMAKE_BACKWARDS_COMPATIBILITY:STRING=${CMAKE_BACKWARDS_COMPATIBILITY} -Dpot_build_file:STRING=${pot_build_file} -Dpot_uptodate_file:STRING=${pot_uptodate_file} -Dpo_dir:STRING=${po_dir} -Doptions:STRING="${options}" -Dkeywords:STRING="${keywords}" -Dcopyright_holder:STRING="${copyright_holder}" -Dmsgid_bugs_address:STRING="${msgid_bugs_address}" -Dfiles_from:STRING=${files_from} -DGETTEXT_XGETTEXT_EXECUTABLE:STRING=${GETTEXT_XGETTEXT_EXECUTABLE} -P "${KWWidgets_CMAKE_DIR}/KWWidgetsGettextExtract.cmake")
-    IF(create_pot_target)
-      ADD_CUSTOM_TARGET(${target_basename}_pot DEPENDS ${pot_build_file})
-    ENDIF(create_pot_target)
-  ENDIF(NOT "${GETTEXT_XGETTEXT_EXECUTABLE}" STREQUAL "")
+    if(create_pot_target)
+      add_custom_target(${target_basename}_pot DEPENDS ${pot_build_file})
+    endif(create_pot_target)
+  endif(NOT "${GETTEXT_XGETTEXT_EXECUTABLE}" STREQUAL "")
 
-ENDMACRO(KWWidgets_CREATE_POT_TARGET)
+endmacro(KWWidgets_CREATE_POT_TARGET)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_CREATE_PO_TARGETS
@@ -535,7 +535,7 @@ ENDMACRO(KWWidgets_CREATE_POT_TARGET)
 # 'create_po_target': create one unique target for all locale PO files
 # 'create_po_locale_targets': create one target per locale PO file
 
-MACRO(KWWidgets_CREATE_PO_TARGETS
+macro(KWWidgets_CREATE_PO_TARGETS
     domain_name
     pot_build_dir
     po_dir
@@ -548,54 +548,54 @@ MACRO(KWWidgets_CREATE_PO_TARGETS
     create_po_locale_targets
     )
 
-  KWWidgets_GET_POT_FILENAME(pot_build_file 
+  kwwidgets_get_pot_filename(pot_build_file 
     "${domain_name}" "${pot_build_dir}")
 
-  FILE(MAKE_DIRECTORY ${po_build_dir})
+  file(MAKE_DIRECTORY ${po_build_dir})
 
   # We need dummy files that will just say: this PO target is up to date as 
   # far as its dependencies are concerned. This will prevent the PO
   # targets to be triggered again and again because the POT file is older
   # than the PO, but the PO does not really need to be changed, etc.
 
-  KWWidgets_GET_PO_SAFE_BUILD_DIR(safe_build_dir "${po_dir}" "${po_build_dir}")
+  kwwidgets_get_po_safe_build_dir(safe_build_dir "${po_dir}" "${po_build_dir}")
 
-  KWWidgets_GET_POT_FILENAME(pot_uptodate_file 
+  kwwidgets_get_pot_filename(pot_uptodate_file 
     "${domain_name}" "${safe_build_dir}")
-  SET(pot_uptodate_file "${pot_uptodate_file}.upd")
+  set(pot_uptodate_file "${pot_uptodate_file}.upd")
 
-  SET(po_build_files)
+  set(po_build_files)
 
-  FOREACH(locale ${locale_list})
-    KWWidgets_GET_PO_FILENAME(po_file 
+  foreach(locale ${locale_list})
+    kwwidgets_get_po_filename(po_file 
       "${po_dir}" "${po_prefix}" "${locale}")
-    KWWidgets_GET_PO_FILENAME(po_build_file 
+    kwwidgets_get_po_filename(po_build_file 
       "${po_build_dir}" "${po_prefix}" "${locale}")
-    KWWidgets_GET_PO_FILENAME(po_uptodate_file 
+    kwwidgets_get_po_filename(po_uptodate_file 
       "${safe_build_dir}" "${po_prefix}" "${locale}")
-    SET(po_uptodate_file "${po_uptodate_file}.upd")
-    SET(po_uptodate_files ${po_uptodate_files} ${po_uptodate_file})
-    SET(depends "${pot_uptodate_file}")
-    IF(EXISTS "${po_file}")
-      SET(depends ${depends} "${po_file}")
-    ENDIF(EXISTS "${po_file}")
-    ADD_CUSTOM_COMMAND(
+    set(po_uptodate_file "${po_uptodate_file}.upd")
+    set(po_uptodate_files ${po_uptodate_files} ${po_uptodate_file})
+    set(depends "${pot_uptodate_file}")
+    if(EXISTS "${po_file}")
+      set(depends ${depends} "${po_file}")
+    endif(EXISTS "${po_file}")
+    add_custom_command(
       OUTPUT "${po_uptodate_file}"
       DEPENDS ${depends}
       COMMAND ${CMAKE_COMMAND} 
       ARGS -DCMAKE_BACKWARDS_COMPATIBILITY:STRING=${CMAKE_BACKWARDS_COMPATIBILITY} -Dpo_file:STRING=${po_file} -Dpo_build_file:STRING=${po_build_file} -Dpo_uptodate_file:STRING=${po_uptodate_file} -Ddefault_po_encoding:STRING=${default_po_encoding} -Dpot_build_file:STRING=${pot_build_file} -Dlocale:STRING=${locale} -DGETTEXT_MSGINIT_EXECUTABLE:STRING=${GETTEXT_MSGINIT_EXECUTABLE} -DGETTEXT_MSGCONV_EXECUTABLE:STRING=${GETTEXT_MSGCONV_EXECUTABLE} -DGETTEXT_MSGMERGE_EXECUTABLE:STRING=${GETTEXT_MSGMERGE_EXECUTABLE} -DGETTEXT_MSGCAT_EXECUTABLE:STRING=${GETTEXT_MSGCAT_EXECUTABLE} -P "${KWWidgets_CMAKE_DIR}/KWWidgetsGettextInitOrMerge.cmake"
       )
-    IF(create_po_locale_targets)
-      ADD_CUSTOM_TARGET(
+    if(create_po_locale_targets)
+      add_custom_target(
         ${target_basename}_po_${locale} DEPENDS ${po_uptodate_file})
-    ENDIF(create_po_locale_targets)
-  ENDFOREACH(locale ${locale_list})
+    endif(create_po_locale_targets)
+  endforeach(locale ${locale_list})
 
-  IF(create_po_target)
-    ADD_CUSTOM_TARGET(${target_basename}_po DEPENDS ${po_uptodate_files})
-  ENDIF(create_po_target)
+  if(create_po_target)
+    add_custom_target(${target_basename}_po DEPENDS ${po_uptodate_files})
+  endif(create_po_target)
 
-ENDMACRO(KWWidgets_CREATE_PO_TARGETS)
+endmacro(KWWidgets_CREATE_PO_TARGETS)
 
 # ---------------------------------------------------------------------------
 # KWWidgets_CREATE_MO_TARGETS
@@ -618,7 +618,7 @@ ENDMACRO(KWWidgets_CREATE_PO_TARGETS)
 # 'create_mo_locale_targets': create one target per locale MO file
 # 'add_mo_target_to_all': if true, add the unique MO target to the 'ALL' target
 
-MACRO(KWWidgets_CREATE_MO_TARGETS
+macro(KWWidgets_CREATE_MO_TARGETS
     domain_name
     po_dir
     po_build_dir
@@ -632,49 +632,49 @@ MACRO(KWWidgets_CREATE_MO_TARGETS
     add_mo_target_to_all
     )
 
-  SET(mo_files)
+  set(mo_files)
 
-  KWWidgets_GET_PO_SAFE_BUILD_DIR(safe_build_dir "${po_dir}" "${po_build_dir}")
+  kwwidgets_get_po_safe_build_dir(safe_build_dir "${po_dir}" "${po_build_dir}")
 
-  IF(NOT "${GETTEXT_MSGFMT_EXECUTABLE}" STREQUAL "")
+  if(NOT "${GETTEXT_MSGFMT_EXECUTABLE}" STREQUAL "")
 
-    FOREACH(locale ${locale_list})
-      KWWidgets_GET_PO_FILENAME(po_build_file 
+    foreach(locale ${locale_list})
+      kwwidgets_get_po_filename(po_build_file 
         "${po_build_dir}" "${po_prefix}" "${locale}")
-      KWWidgets_GET_PO_FILENAME(po_uptodate_file 
+      kwwidgets_get_po_filename(po_uptodate_file 
         "${safe_build_dir}" "${po_prefix}" "${locale}")
-      SET(po_uptodate_file "${po_uptodate_file}.upd")
-      KWWidgets_GET_MO_FILENAME(mo_file 
+      set(po_uptodate_file "${po_uptodate_file}.upd")
+      kwwidgets_get_mo_filename(mo_file 
         "${domain_name}" "${mo_build_dir}" "${locale}")
-      GET_FILENAME_COMPONENT(mo_dir "${mo_file}" PATH)
-      FILE(MAKE_DIRECTORY ${mo_dir})
-      SET(mo_files ${mo_files} ${mo_file})
+      get_filename_component(mo_dir "${mo_file}" PATH)
+      file(MAKE_DIRECTORY ${mo_dir})
+      set(mo_files ${mo_files} ${mo_file})
       # --check-accelerators 
-      ADD_CUSTOM_COMMAND(
+      add_custom_command(
         OUTPUT "${mo_file}"
         DEPENDS "${po_uptodate_file}"
         COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} 
         ARGS --output-file=${mo_file} --check-format "${po_build_file}"
         )
-      IF(create_mo_locale_targets)
-        ADD_CUSTOM_TARGET(${target_basename}_mo_${locale} DEPENDS ${mo_file})
-      ENDIF(create_mo_locale_targets)
+      if(create_mo_locale_targets)
+        add_custom_target(${target_basename}_mo_${locale} DEPENDS ${mo_file})
+      endif(create_mo_locale_targets)
       
-      IF(NOT "${mo_install_dir}" STREQUAL "")
-        INSTALL_FILES(
+      if(NOT "${mo_install_dir}" STREQUAL "")
+        install_files(
           "${mo_install_dir}/${locale}/LC_MESSAGES" FILES ${mo_file})
-      ENDIF(NOT "${mo_install_dir}" STREQUAL "")
-    ENDFOREACH(locale ${locale_list})
+      endif(NOT "${mo_install_dir}" STREQUAL "")
+    endforeach(locale ${locale_list})
 
-    IF(create_mo_target OR add_mo_target_to_all)
-      SET(target_name "${target_basename}_mo")
-      IF(add_mo_target_to_all)
-        ADD_CUSTOM_TARGET(${target_name} ALL DEPENDS ${mo_files})
-      ELSE(add_mo_target_to_all)
-        ADD_CUSTOM_TARGET(${target_name} DEPENDS ${mo_files})
-      ENDIF(add_mo_target_to_all)
-    ENDIF(create_mo_target OR add_mo_target_to_all)
+    if(create_mo_target OR add_mo_target_to_all)
+      set(target_name "${target_basename}_mo")
+      if(add_mo_target_to_all)
+        add_custom_target(${target_name} ALL DEPENDS ${mo_files})
+      else(add_mo_target_to_all)
+        add_custom_target(${target_name} DEPENDS ${mo_files})
+      endif(add_mo_target_to_all)
+    endif(create_mo_target OR add_mo_target_to_all)
     
-  ENDIF(NOT "${GETTEXT_MSGFMT_EXECUTABLE}" STREQUAL "")
+  endif(NOT "${GETTEXT_MSGFMT_EXECUTABLE}" STREQUAL "")
 
-ENDMACRO(KWWidgets_CREATE_MO_TARGETS)
+endmacro(KWWidgets_CREATE_MO_TARGETS)

@@ -1,51 +1,51 @@
-PROJECT(WidgetsTour)
+project(WidgetsTour)
 
 # If we are not in the KWWidgets source tree, make sure we can find KWWidgets
 # as an external package, and use it. If you are using this CMakeLists.txt 
 # file to create your own application based on KWWidgets, you only need the
 # FIND_PACKAGE(...) and INCLUDE(...) commands. 
 
-IF (NOT KWWidgets_SOURCE_DIR)
-  FIND_PACKAGE(KWWidgets REQUIRED)
-  INCLUDE(${KWWidgets_USE_FILE})
-ENDIF (NOT KWWidgets_SOURCE_DIR)
+if (NOT KWWidgets_SOURCE_DIR)
+  find_package(KWWidgets REQUIRED)
+  include(${KWWidgets_USE_FILE})
+endif (NOT KWWidgets_SOURCE_DIR)
 
 # The name of our targets (scripts, mainly) will simply be based
 # on the project name, with an extra prefix and suffix.
 
-SET(TARGET_BASE_NAME "KW${PROJECT_NAME}Example")
+set(TARGET_BASE_NAME "KW${PROJECT_NAME}Example")
 
 # The name of our executable script (and additional helper scripts if any).
 
-SET(EXE_NAME "${TARGET_BASE_NAME}")
-SET(EXE_SRCS "${EXE_NAME}.py")
+set(EXE_NAME "${TARGET_BASE_NAME}")
+set(EXE_SRCS "${EXE_NAME}.py")
 
 # Install the scripts in the KWWidgets examples section. If you are
 # using this CMakeLists.txt file to create your own application based on
 # KWWidgets, you can most likely omit this section, unless you want to 
 # install your scripts right where KWWidgets is already installed.
 
-IF(KWWidgets_BUILD_EXAMPLES)
-  INSTALL_FILES(
+if(KWWidgets_BUILD_EXAMPLES)
+  install_files(
     "${KWWidgets_INSTALL_DATA_DIR}/Examples/Python/${PROJECT_NAME}"
     .py ${EXE_SRCS})
-ENDIF(KWWidgets_BUILD_EXAMPLES)
+endif(KWWidgets_BUILD_EXAMPLES)
 
 # Install all individual widgets examples. They are used by the executable
 # to display the C++ and Python source code side-by-side.
 
-IF(KWWidgets_BUILD_EXAMPLES)
-  FILE(GLOB WIDGETS_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/Widgets/*.py")
-  INSTALL_FILES(
+if(KWWidgets_BUILD_EXAMPLES)
+  file(GLOB WIDGETS_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/Widgets/*.py")
+  install_files(
     "${KWWidgets_INSTALL_DATA_DIR}/Examples/Python/${PROJECT_NAME}/Widgets" 
     .py ${WIDGETS_SRCS})
-  IF(KWWidgets_BUILD_VTK_WIDGETS)
-    FILE(GLOB WIDGETS_VTK_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/Widgets/VTK/*.py")
-    INSTALL_FILES(
+  if(KWWidgets_BUILD_VTK_WIDGETS)
+    file(GLOB WIDGETS_VTK_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/Widgets/VTK/*.py")
+    install_files(
       "${KWWidgets_INSTALL_DATA_DIR}/Examples/Python/${PROJECT_NAME}/Widgets/VTK" 
       .py ${WIDGETS_VTK_SRCS})
-  ENDIF(KWWidgets_BUILD_VTK_WIDGETS)
-ENDIF(KWWidgets_BUILD_EXAMPLES)
+  endif(KWWidgets_BUILD_VTK_WIDGETS)
+endif(KWWidgets_BUILD_EXAMPLES)
 
 # Register this example as a test. Our script supports a --test
 # configuration option so that it can be run non-interactively as a test.
@@ -53,8 +53,8 @@ ENDIF(KWWidgets_BUILD_EXAMPLES)
 # based on KWWidgets, you should omit this section, unless your application
 # supports that feature too and you checked how the macro is working.
 
-IF(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
-  INCLUDE("${KWWidgets_CMAKE_DIR}/KWWidgetsTestingMacros.cmake")
-  KWWidgets_ADD_TEST_FROM_PYTHON_EXAMPLE(KWWidgets-${PROJECT_NAME}Py
+if(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
+  include("${KWWidgets_CMAKE_DIR}/KWWidgetsTestingMacros.cmake")
+  kwwidgets_add_test_from_python_example(KWWidgets-${PROJECT_NAME}Py
     "${CMAKE_CURRENT_SOURCE_DIR}/${EXE_NAME}.py")
-ENDIF(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
+endif(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
