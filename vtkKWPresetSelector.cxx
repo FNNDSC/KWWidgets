@@ -59,7 +59,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.67 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.68 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -2764,7 +2764,7 @@ int vtkKWPresetSelector::SetPresetUserSlotAsUnsignedLong(
       if (s_it != node->UserSlotPool.end())
         {
         if (s_it->second.Type == vtkKWPresetSelector::UserSlotUnsignedLongType 
-            && s_it->second.IntValue == value)
+            && s_it->second.UnsignedLongValue == value)
           {
           return 1;
           }
@@ -2826,7 +2826,7 @@ int vtkKWPresetSelector::SetPresetUserSlotAsInt64(
       if (s_it != node->UserSlotPool.end())
         {
         if (s_it->second.Type == vtkKWPresetSelector::UserSlotInt64Type 
-            && s_it->second.IntValue == value)
+            && s_it->second.Int64Value == value)
           {
           return 1;
           }
