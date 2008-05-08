@@ -767,6 +767,14 @@ protected:
   // value (which is, in most case, what you want to know anyway).
   virtual void NumberOfPresetsHasChanged();
 
+  // Description:
+  // Called when preset filtering *may* have changed, i.e. a filter
+  // constraint has been added/removed (see, ClearPresetFilter or
+  // SetPresetFilterUserSlotConstraint), or the value of a slot has changed
+  // and that slot was filtered, therefore possibly making the preset
+  // filtered or not-filtered.
+  virtual void PresetFilteringMayHaveChanged();
+
   // PIMPL Encapsulation for STL containers
   //BTX
   vtkKWPresetSelectorInternals *Internals;

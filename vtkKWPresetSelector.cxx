@@ -59,7 +59,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.68 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.69 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -2077,6 +2077,7 @@ int vtkKWPresetSelector::SetPresetGroup(int id, const char *group)
     // Changing the group of a preset may change the number of visible widgets
     // (for example, if the visibility of presets is filtered by groups), 
     // which can enable/disable some buttons
+    this->PresetFilteringMayHaveChanged();
     this->Update(); 
     }
   return res;
@@ -2652,6 +2653,7 @@ int vtkKWPresetSelector::SetPresetUserSlotAsDouble(
       slot.Type = vtkKWPresetSelector::UserSlotDoubleType;
       if (this->GetPresetFilterUserSlotConstraint(slot_name))
         {
+        this->PresetFilteringMayHaveChanged();
         this->UpdatePresetRow(id);
         }
       else
@@ -2714,6 +2716,7 @@ int vtkKWPresetSelector::SetPresetUserSlotAsInt(
       slot.Type = vtkKWPresetSelector::UserSlotIntType;
       if (this->GetPresetFilterUserSlotConstraint(slot_name))
         {
+        this->PresetFilteringMayHaveChanged();
         this->UpdatePresetRow(id);
         }
       else
@@ -2776,6 +2779,7 @@ int vtkKWPresetSelector::SetPresetUserSlotAsUnsignedLong(
       slot.Type = vtkKWPresetSelector::UserSlotUnsignedLongType;
       if (this->GetPresetFilterUserSlotConstraint(slot_name))
         {
+        this->PresetFilteringMayHaveChanged();
         this->UpdatePresetRow(id);
         }
       else
@@ -2838,6 +2842,7 @@ int vtkKWPresetSelector::SetPresetUserSlotAsInt64(
       slot.Type = vtkKWPresetSelector::UserSlotInt64Type;
       if (this->GetPresetFilterUserSlotConstraint(slot_name))
         {
+        this->PresetFilteringMayHaveChanged();
         this->UpdatePresetRow(id);
         }
       else
@@ -2901,6 +2906,7 @@ int vtkKWPresetSelector::SetPresetUserSlotAsString(
       slot.Type = vtkKWPresetSelector::UserSlotStringType;
       if (this->GetPresetFilterUserSlotConstraint(slot_name))
         {
+        this->PresetFilteringMayHaveChanged();
         this->UpdatePresetRow(id);
         }
       else
@@ -2963,6 +2969,7 @@ int vtkKWPresetSelector::SetPresetUserSlotAsPointer(
       slot.Type = vtkKWPresetSelector::UserSlotPointerType;
       if (this->GetPresetFilterUserSlotConstraint(slot_name))
         {
+        this->PresetFilteringMayHaveChanged();
         this->UpdatePresetRow(id);
         }
       else
@@ -3029,6 +3036,7 @@ int vtkKWPresetSelector::SetPresetUserSlotAsObject(
         }
       if (this->GetPresetFilterUserSlotConstraint(slot_name))
         {
+        this->PresetFilteringMayHaveChanged();
         this->UpdatePresetRow(id);
         }
       else
@@ -3372,11 +3380,22 @@ void vtkKWPresetSelector::NumberOfPresetsHasChanged()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWPresetSelector::PresetFilteringMayHaveChanged()
+{
+  // Since filtering may have changed, some presets may show up or be
+  // hidden, hence their location will change
+
+  this->InvalidatePresetIdToRowIndexCache();
+  this->InvalidateRowIndexToPresetIdCache();
+}
+
+//----------------------------------------------------------------------------
 void vtkKWPresetSelector::ClearPresetFilter()
 {
   if (this->Internals && this->Internals->PresetFilter.size())
     {
     this->Internals->PresetFilter.clear();
+    this->PresetFilteringMayHaveChanged();
     this->ScheduleUpdatePresetRows();
     }
 }
@@ -3420,6 +3439,7 @@ void vtkKWPresetSelector::SetPresetFilterUserSlotConstraint(
     }
   if (update)
     {
+    this->PresetFilteringMayHaveChanged();
     this->ScheduleUpdatePresetRows();
     }
 }
@@ -3447,6 +3467,7 @@ void vtkKWPresetSelector::SetPresetFilterUserSlotConstraintToRegularExpression(
       !(*it).second.IsRegularExpression)
     {
     (*it).second.IsRegularExpression = 1;
+    this->PresetFilteringMayHaveChanged();
     this->ScheduleUpdatePresetRows();
     }
 }
@@ -3461,6 +3482,7 @@ void vtkKWPresetSelector::SetPresetFilterUserSlotConstraintToString(
       (*it).second.IsRegularExpression)
     {
     (*it).second.IsRegularExpression = 0;
+    this->PresetFilteringMayHaveChanged();
     this->ScheduleUpdatePresetRows();
     }
 }
