@@ -58,8 +58,8 @@ endif(KWWidgets_BUILD_EXAMPLES)
 # based on KWWidgets, you should omit this section, unless your application
 # supports that feature too and you checked how the macro is working.
 
-if(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
+if(BUILD_TESTING AND KWWidgets_BUILD_TESTING AND NOT APPLE)
   include("${KWWidgets_CMAKE_DIR}/KWWidgetsTestingMacros.cmake")
   kwwidgets_add_test_from_tcl_example(KWWidgets-${PROJECT_NAME}Tcl
     "${CMAKE_CURRENT_SOURCE_DIR}/${EXE_NAME}.tcl")
-endif(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
+endif(BUILD_TESTING AND KWWidgets_BUILD_TESTING AND NOT APPLE)
