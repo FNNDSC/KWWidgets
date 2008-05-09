@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.40 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.41 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -2033,18 +2033,12 @@ void vtkKWDirectoryExplorer::DirectoryOpenedCallback(
     {
     return;
     }
-  int isSelectedDir = 0;
-  if (strcmp(node, this->GetNthSelectedNode(0)) == 0)
-    {
-    isSelectedDir = 1;
-    }
   vtkKWTkUtilities::SetTopLevelMouseCursor(this, "watch");
   this->UpdateDirectoryNode(node);
   this->InvokeDirectoryOpenedCommand(
     this->DirectoryTree->GetWidget()->GetNodeUserData(node));
   vtkKWTkUtilities::SetTopLevelMouseCursor(this, NULL);
 }
-
 
 //----------------------------------------------------------------------------
 void vtkKWDirectoryExplorer::DirectorySelectedCallback()
