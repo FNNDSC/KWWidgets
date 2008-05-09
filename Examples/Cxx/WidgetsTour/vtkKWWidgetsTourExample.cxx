@@ -39,7 +39,7 @@ public:
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidgetsTourExample );
-vtkCxxRevisionMacro(vtkKWWidgetsTourExample, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWWidgetsTourExample, "$Revision: 1.7 $");
 
 //----------------------------------------------------------------------------
 vtkKWWidgetsTourExample::vtkKWWidgetsTourExample()
@@ -427,7 +427,7 @@ void vtkKWWidgetsTourExample::SelectExample(const char *name)
 
   vtksys_stl::string source;
   vtksys_stl::string line;
-  char buffer[1024];
+  vtksys_stl::string source_file;
 
   typedef struct
   {
@@ -446,29 +446,28 @@ void vtkKWWidgetsTourExample::SelectExample(const char *name)
   for (size_t i = 0; i < sizeof(entries) / sizeof(entries[0]); i++)
     {
     entry_type entry = entries[i];
-    sprintf(buffer, "%s/%s/WidgetsTour/Widgets/%s.%s", 
-            KWWidgets_EXAMPLES_DIR, entry.dir, name, entry.ext);
-    if (!vtksys::SystemTools::FileExists(buffer))
+    source_file = KWWidgets_EXAMPLES_DIR;
+    source_file = source_file + "/" + entry.dir + "/WidgetsTour/Widgets/" + name + "." + entry.ext;
+    if (!vtksys::SystemTools::FileExists(source_file.c_str()))
       {
-      sprintf(buffer, "%s/%s/WidgetsTour/Widgets/VTK/%s.%s", 
-              KWWidgets_EXAMPLES_DIR, entry.dir, name, entry.ext);
-      if (!vtksys::SystemTools::FileExists(buffer))
+      source_file = KWWidgets_EXAMPLES_DIR;
+      source_file = source_file + "/" + entry.dir + "/WidgetsTour/Widgets/VTK/" + name + "." + entry.ext;
+      if (!vtksys::SystemTools::FileExists(source_file.c_str()) &&
+          app->GetInstallationDirectory())
         {
-        sprintf(buffer, "%s/..%s/Examples/%s/WidgetsTour/Widgets/%s.%s",
-                app->GetInstallationDirectory(), 
-                KWWidgets_INSTALL_DATA_DIR, entry.dir, name, entry.ext);
-        if (!vtksys::SystemTools::FileExists(buffer))
+        source_file = app->GetInstallationDirectory();
+        source_file = source_file + "/.." + KWWidgets_INSTALL_DATA_DIR + "/Examples/" + entry.dir + "/WidgetsTour/Widgets/" + name + "." + entry.ext;
+        if (!vtksys::SystemTools::FileExists(source_file.c_str()))
           {
-          sprintf(buffer, "%s/..%s/Examples/%s/WidgetsTour/Widgets/VTK/%s.%s",
-                  app->GetInstallationDirectory(), 
-                  KWWidgets_INSTALL_DATA_DIR, entry.dir, name, entry.ext);
+          source_file = app->GetInstallationDirectory();
+          source_file = source_file + "/.." + KWWidgets_INSTALL_DATA_DIR + "/Examples/" + entry.dir + "/WidgetsTour/Widgets/VTK/" + name + "." + entry.ext;
           }
         }
       }
     source = "";
-    if (vtksys::SystemTools::FileExists(buffer))
+    if (vtksys::SystemTools::FileExists(source_file.c_str()))
       {
-      ifstream ifs(buffer);
+      ifstream ifs(source_file.c_str());
       while (vtksys::SystemTools::GetLineFromStream(ifs, line))
         {
         source += line;
