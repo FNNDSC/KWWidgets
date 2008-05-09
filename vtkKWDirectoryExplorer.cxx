@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.39 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.40 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -1988,7 +1988,7 @@ void vtkKWDirectoryExplorer::DirectoryClosedCallback(
   // If the closed node is the selected node, or the selected node
   // is not one of the parent nodes of the selected node, just return
 
-  if (strcmp(node, selectednode.c_str()) == 0)
+  if (selectednode.empty() || strcmp(node, selectednode.c_str()) == 0)
     {
     return;
     }
