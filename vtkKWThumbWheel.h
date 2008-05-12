@@ -66,8 +66,15 @@ public:
   // Description:
   // Set/Get the resolution of the thumbwheel. Moving the thumbwheel will
   // increase/decrease the value by an amount proportional to this resolution.
+  // If the Clamp option is set, then the value will always be an integer 
+  // number of increments of Resolution offset from the MinimumValue; for 
+  // example, if the MinimumValue is -0.5 and the MaximumValue is 1.0 and 
+  // the Resolution is set to .75, then Value can only be -0.5, 0.25, or 1.0.
   virtual void SetResolution(double r);
   vtkGetMacro(Resolution, double);
+  vtkSetMacro(ClampResolution, int);
+  vtkGetMacro(ClampResolution, int);
+  vtkBooleanMacro(ClampResolution, int);  
   
   // Description:
   // Set the interaction modes (mode 0 is left button, 1 is middle, 
@@ -105,7 +112,9 @@ public:
   // Example: if the threshold is 0.1, the current width is 100 pixels and
   // the resolution is 2, then the mouse must be moved 10 pixels to "the right"
   // to add 2 to the current value.
-  vtkSetMacro(LinearThreshold, double);
+  // If set to 0, a reasonable value will be picked computed from the
+  // whole range and the resolution.
+  vtkSetClampMacro(LinearThreshold, double, 0.0, 1.0);
   vtkGetMacro(LinearThreshold, double);
 
   // Description:
@@ -301,6 +310,7 @@ protected:
   double      MaximumValue;
   int         ClampMaximumValue;
   double      Resolution;
+  int         ClampResolution;
   double      NonLinearMaximumMultiplier;
   double      LinearThreshold;
 

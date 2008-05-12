@@ -37,7 +37,7 @@
 
 // ---------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWThumbWheel );
-vtkCxxRevisionMacro(vtkKWThumbWheel, "$Revision: 1.56 $");
+vtkCxxRevisionMacro(vtkKWThumbWheel, "$Revision: 1.57 $");
 
 // ---------------------------------------------------------------------------
 /* 
@@ -57,6 +57,7 @@ vtkKWThumbWheel::vtkKWThumbWheel()
 {
   this->Value                      = 0;
   this->Resolution                 = 1;
+  this->ClampResolution            = 0;
   this->NonLinearMaximumMultiplier = 20;
   this->ThumbWheelWidth            = 80;
   this->ThumbWheelHeight           = 16;
@@ -230,6 +231,14 @@ void vtkKWThumbWheel::SetValue(double arg)
   if (this->ClampMaximumValue && arg > this->MaximumValue)
     {
     arg = this->MaximumValue;
+    }
+
+  if (this->ClampResolution && this->Resolution != 0.0)
+    {
+    double offset = arg - this->MinimumValue;
+    double frac = offset / this->Resolution;
+    int steps = (int)frac;
+    arg = this->MinimumValue + steps * this->Resolution;
     }
 
   if (this->Value == arg)
@@ -892,9 +901,16 @@ void vtkKWThumbWheel::PerformLinearMotionCallback()
   double pos = this->GetMousePositionInThumbWheel();
   double distance = pos - this->StartLinearMotionState.MousePosition;
 
+  double linear_threshold = this->LinearThreshold;
+  if (linear_threshold <= 0)
+    {
+    linear_threshold = 
+      1.0 / ((this->MaximumValue - this->MinimumValue) / this->Resolution + 1);
+    }
+
   double new_value = 
     this->StartLinearMotionState.Value + 
-    (distance / this->LinearThreshold) * this->Resolution;
+    (distance / linear_threshold) * this->Resolution;
 
   // Update thumbwheel aspect
 
@@ -904,7 +920,8 @@ void vtkKWThumbWheel::PerformLinearMotionCallback()
 
   // If the resolution implies an integer, round the value
 
-  if ((double)((int)this->Resolution) == this->Resolution)
+  if (!this->ClampResolution && 
+      (double)((int)this->Resolution) == this->Resolution)
     {
     this->SetValue((int)(new_value));
     }

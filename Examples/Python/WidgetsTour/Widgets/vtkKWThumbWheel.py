@@ -19,6 +19,7 @@ def vtkKWThumbWheelEntryPoint(parent, win):
     thumbwheel1.SetLength(150)
     thumbwheel1.DisplayEntryOn()
     thumbwheel1.DisplayLabelOn()
+    thumbwheel1.DisplayEntryAndLabelOnTopOff()
     thumbwheel1.GetLabel().SetText("A thumbwheel:")
     
     app.Script(
@@ -32,17 +33,22 @@ def vtkKWThumbWheelEntryPoint(parent, win):
     thumbwheel2 = vtkKWThumbWheel()
     thumbwheel2.SetParent(parent)
     thumbwheel2.Create()
-    thumbwheel2.SetRange(-10.0, 10.0)
     thumbwheel2.ClampMinimumValueOn()
     thumbwheel2.ClampMaximumValueOn()
+    thumbwheel2.ClampResolutionOn()
+    thumbwheel2.SetRange(-0.5, 1.0)
+    thumbwheel2.SetResolution(0.75)
+    thumbwheel2.SetValue(-0.5)
+    thumbwheel2.SetLinearThreshold(0)
     thumbwheel2.SetLength(275)
     thumbwheel2.SetSizeOfNotches(thumbwheel2.GetSizeOfNotches() * 3)
     thumbwheel2.DisplayEntryAndLabelOnTopOn()
     thumbwheel2.DisplayLabelOn()
-    thumbwheel2.GetLabel().SetText("A thumbwheel with label/entry on top:")
+    thumbwheel2.DisplayEntryOn()
+    thumbwheel2.GetLabel().SetText("A clamped thumbwheel:")
     thumbwheel2.SetBalloonHelpString(
-        "This time, the label and entry are on top, and we clamp the range, "
-        "and bigger notches")
+        "This time, the label and entry are on top, and we clamp the range "
+        "and resolution, and bigger notches")
     
     app.Script(
         "pack %s -side top -anchor nw -expand n -padx 2 -pady 6",
