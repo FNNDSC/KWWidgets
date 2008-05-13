@@ -9,8 +9,10 @@
 
 // MetaIO
 
+#if 0 // could not commit to damn' MetaIO in KWPublic.
 #ifdef VTK_USE_METAIO
 #include "vtkmetaio/metaLine.h"
+#endif
 #endif
 
 // DICOM Parser
@@ -29,9 +31,11 @@ int main()
 
   // MetaIO
 
+#if 0 // could not commit to damn' MetaIO in KWPublic.
 #ifdef VTK_USE_METAIO
   vtkmetaio::MetaLine line;
   (void)line;
+#endif
 #endif
 
   // DICOM Parser
