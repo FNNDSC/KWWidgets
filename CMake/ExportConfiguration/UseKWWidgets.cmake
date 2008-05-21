@@ -10,10 +10,10 @@ if(NOT KWWidgets_USE_FILE_INCLUDED)
   set(KWWidgets_USE_FILE_INCLUDED 1)
 
   # Load the compiler settings used for KWWidgets.
-  if(KWWidgets_BUILD_SETTINGS_FILE)
+  if(KWWidgets_BUILD_SETTINGS_FILE AND NOT_SKIP_KWWidgets_BUILD_SETTINGS_FILE)
     include(${CMAKE_ROOT}/Modules/CMakeImportBuildSettings.cmake)
     cmake_import_build_settings(${KWWidgets_BUILD_SETTINGS_FILE})
-  endif(KWWidgets_BUILD_SETTINGS_FILE)
+  endif(KWWidgets_BUILD_SETTINGS_FILE AND NOT_SKIP_KWWidgets_BUILD_SETTINGS_FILE)
 
   # Add compiler flags needed to use KWWidgets.
   set(CMAKE_C_FLAGS 
