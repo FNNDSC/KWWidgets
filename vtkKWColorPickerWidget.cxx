@@ -39,7 +39,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.3 $");
 
 //----------------------------------------------------------------------------
 vtkKWColorPickerWidget::vtkKWColorPickerWidget()
@@ -1366,11 +1366,11 @@ void vtkKWColorPickerWidget::FavoritesColorPresetApplyCallback(int id)
 }
 
 //---------------------------------------------------------------------------
-void vtkKWColorPickerWidget::FavoritesColorPresetAddCallback()
+int vtkKWColorPickerWidget::FavoritesColorPresetAddCallback()
 {
   if (!this->FavoritesColorPresetSelector)
     {
-    return;
+    return -1;
     }
 
   int id = this->FavoritesColorPresetSelector->InsertPreset(
@@ -1379,6 +1379,8 @@ void vtkKWColorPickerWidget::FavoritesColorPresetAddCallback()
   this->FavoritesColorPresetUpdateCallback(id);
 
   this->FavoritesColorPresetSelector->SelectPreset(id);
+
+  return id;
 }
 
 //---------------------------------------------------------------------------

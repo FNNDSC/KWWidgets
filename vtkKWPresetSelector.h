@@ -448,6 +448,8 @@ public:
   // it. The 'method' argument is the name of the method to be called and any
   // arguments in string form. If the object is NULL, the method is still
   // evaluated as a simple command. 
+  // The following output is expected from the command:
+  // - the unique id of the preset that was added (by calling AddPreset()), -1 otherwise
   virtual void SetPresetAddCommand(vtkObject *object, const char *method);
 
   // Description:
@@ -626,7 +628,7 @@ public:
 
   // Description:
   // Callbacks. Internal, do not use.
-  virtual void PresetAddCallback();
+  virtual int  PresetAddCallback();
   virtual void PresetApplyCallback();
   virtual void PresetApplyCallback(int id);
   virtual void PresetUpdateCallback();
@@ -787,7 +789,7 @@ protected:
   virtual void CancelScheduleUpdatePresetRows();
 
   char *PresetAddCommand;
-  virtual void InvokePresetAddCommand();
+  virtual int InvokePresetAddCommand();
 
   char *PresetUpdateCommand;
   virtual void InvokePresetUpdateCommand(int id);

@@ -29,6 +29,7 @@
 #include "vtkKWPushButton.h"
 #include "vtkKWPushButtonSet.h"
 #include "vtkKWToolbar.h"
+#include "vtkKWTkUtilities.h"
 #include "vtkObjectFactory.h"
 #include "vtkRenderWindow.h"
 #include "vtkWindowToImageFilter.h"
@@ -59,7 +60,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.69 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.70 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -3862,9 +3863,9 @@ void vtkKWPresetSelector::PresetCellUpdatedCallback(
 }
 
 //---------------------------------------------------------------------------
-void vtkKWPresetSelector::PresetAddCallback()
+int vtkKWPresetSelector::PresetAddCallback()
 {
-  this->InvokePresetAddCommand();
+  return this->InvokePresetAddCommand();
 }
 
 //---------------------------------------------------------------------------
@@ -4189,9 +4190,14 @@ void vtkKWPresetSelector::SetPresetAddCommand(
 }
 
 //----------------------------------------------------------------------------
-void vtkKWPresetSelector::InvokePresetAddCommand()
+int vtkKWPresetSelector::InvokePresetAddCommand()
 {
-  this->InvokeObjectMethodCommand(this->PresetAddCommand);
+  if (this->PresetAddCommand && *this->PresetAddCommand && this->IsCreated())
+    {
+    return atoi(vtkKWTkUtilities::EvaluateSimpleString(
+                  this->GetApplication(), this->PresetAddCommand));
+    }
+  return -1;
 }
 
 //----------------------------------------------------------------------------

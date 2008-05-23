@@ -103,7 +103,7 @@ public:
   virtual void RGBSlidersChangingCallback();
   virtual void HSVSlidersChangingCallback();
   virtual void FavoritesColorPresetApplyCallback(int id);
-  virtual void FavoritesColorPresetAddCallback();
+  virtual int  FavoritesColorPresetAddCallback();
   virtual void FavoritesColorPresetUpdateCallback(int id);
   virtual void HistoryColorPresetApplyCallback(int id);
   virtual void CurrentColorCallback();

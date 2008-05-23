@@ -26,7 +26,7 @@ public:
   virtual void SetSliceOrientationToXZCallback();
   virtual void SetSliceOrientationToYZCallback();
   virtual void WindowLevelPresetApplyCallback(int id);
-  virtual void WindowLevelPresetAddCallback();
+  virtual int  WindowLevelPresetAddCallback();
   virtual void WindowLevelPresetUpdateCallback(int id);
   virtual void WindowLevelPresetHasChangedCallback(int id);
 

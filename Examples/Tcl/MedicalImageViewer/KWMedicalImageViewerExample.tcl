@@ -147,6 +147,7 @@ proc wl_preset_add {} {
   set id [$wl_preset_selector AddPreset]
   wl_preset_update $id
   $wl_preset_selector SelectPreset $id
+  return $id
 }
 
 proc wl_preset_update {id} {

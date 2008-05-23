@@ -155,7 +155,7 @@ protected:
   int DrawColorCellAsColorButton;
   char *RegistryKey;
 
-  virtual void InvokePresetAddCommand();
+  virtual int  InvokePresetAddCommand();
   virtual void InvokePresetRemovedCommand();
   virtual void InvokePresetUpdateCommand(int id);
   virtual void InvokePresetHasChangedCommand(int id);
