@@ -176,6 +176,7 @@ set(KWWidgets_SRCS
   vtkKWCoreWidget.cxx
   vtkKWDialog.cxx
   vtkKWDirectoryExplorer.cxx 
+  vtkKWDirectoryPresetSelector.cxx
   vtkKWDragAndDropTargetSet.cxx
   vtkKWEntry.cxx
   vtkKWEvent.cxx
