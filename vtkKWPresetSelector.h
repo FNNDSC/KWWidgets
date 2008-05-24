@@ -48,6 +48,7 @@ class vtkKWPushButtonSet;
 class vtkRenderWindow;
 class vtkKWMenu;
 class vtkKWToolbar;
+class vtkKWLabelWithLabel;
 
 class KWWidgets_EXPORT vtkKWPresetSelector : public vtkKWCompositeWidget
 {
@@ -436,6 +437,14 @@ public:
   vtkBooleanMacro(RemoveMenuEntryVisibility,int);
 
   // Description:
+  // Set/Get the visibility of the help message.
+  virtual void SetHelpLabelVisibility(int);
+  vtkGetMacro(HelpLabelVisibility,int);
+  vtkBooleanMacro(HelpLabelVisibility,int);
+  vtkGetObjectMacro(HelpLabel, vtkKWLabelWithLabel);
+  virtual void SetHelpLabelText(const char *);
+
+  // Description:
   // Specifies a command to associate with the widget. This command is 
   // typically invoked when the "add preset" button is pressed.
   // This gives the opportunity for the application to check and collect the
@@ -744,6 +753,7 @@ protected:
   vtkKWMultiColumnListWithScrollbars *PresetList;
   vtkKWFrame                         *PresetControlFrame;
   vtkKWPushButtonSet                 *PresetButtons;
+  vtkKWLabelWithLabel                *HelpLabel;
 
   int ApplyPresetOnSelection;
   int SelectSpinButtonsVisibility;
@@ -753,6 +763,7 @@ protected:
   int LocateMenuEntryVisibility;
   int RemoveButtonVisibility;
   int RemoveMenuEntryVisibility;
+  int HelpLabelVisibility;
 
   int ThumbnailSize;
   int ScreenshotSize;

@@ -22,6 +22,7 @@
 #include "vtkKWInternationalization.h"
 #include "vtkKWLabel.h"
 #include "vtkKWMessageDialog.h"
+#include "vtkKWLabelWithLabel.h"
 #include "vtkKWMenu.h"
 #include "vtkKWWindowBase.h"
 #include "vtkKWMultiColumnList.h"
@@ -60,7 +61,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.70 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.71 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -306,6 +307,7 @@ vtkKWPresetSelector::vtkKWPresetSelector()
   this->PresetList              = NULL;
   this->PresetControlFrame      = NULL;
   this->PresetButtons           = NULL;
+  this->HelpLabel      = NULL;
 
   this->ApplyPresetOnSelection = 1;
   this->SelectSpinButtonsVisibility = 1;
@@ -315,6 +317,7 @@ vtkKWPresetSelector::vtkKWPresetSelector()
   this->RemoveMenuEntryVisibility = 1;
   this->EmailButtonVisibility = 0;
   this->EmailMenuEntryVisibility = 0;
+  this->HelpLabelVisibility = 0;
 
   this->ThumbnailSize = 32;
   this->ScreenshotSize = 144;
@@ -353,6 +356,12 @@ vtkKWPresetSelector::~vtkKWPresetSelector()
     {
     this->PresetButtons->Delete();
     this->PresetButtons = NULL;
+    }
+
+  if (this->HelpLabel)
+    {
+    this->HelpLabel->Delete();
+    this->HelpLabel = NULL;
     }
 
   if (this->PresetAddCommand)
@@ -513,6 +522,25 @@ void vtkKWPresetSelector::CreateWidget()
 
   this->SetPresetButtonsIcons();
   this->SetPresetButtonsHelpStrings();
+
+  // --------------------------------------------------------------
+  // Help message
+
+  if (!this->HelpLabel)
+    {
+    this->HelpLabel = vtkKWLabelWithLabel::New();
+    }
+
+  this->HelpLabel->SetParent(this);
+  this->HelpLabel->Create();
+  this->HelpLabel->ExpandWidgetOn();
+  this->HelpLabel->GetLabel()->SetImageToPredefinedIcon(
+    vtkKWIcon::IconHelpBubble);
+
+  vtkKWLabel *msg = this->HelpLabel->GetWidget();
+  msg->SetJustificationToLeft();
+  msg->SetAnchorToNorthWest();
+  msg->AdjustWrapLengthToWidthOn();
 
   // Pack
 
@@ -1533,6 +1561,17 @@ void vtkKWPresetSelector::Pack()
     this->Script("pack %s -side top -anchor nw -fill none -expand t",
                  this->PresetButtons->GetWidgetName());
     }
+
+  if (this->HelpLabelVisibility)
+    {
+    this->Script("pack %s -side top -anchor nw -fill x -expand t -before %s",
+                 this->HelpLabel->GetWidgetName(),
+                 this->PresetList->GetWidgetName());
+    }
+  else
+    {
+    this->HelpLabel->Unpack();
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -1688,6 +1727,29 @@ void vtkKWPresetSelector::SetEmailButtonVisibility(int arg)
   this->Modified();
 
   this->Update();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWPresetSelector::SetHelpLabelVisibility(int arg)
+{
+  if (this->HelpLabelVisibility == arg)
+    {
+    return;
+    }
+
+  this->HelpLabelVisibility = arg;
+  this->Modified();
+
+  this->Pack();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWPresetSelector::SetHelpLabelText(const char *str)
+{
+  if (this->HelpLabel)
+    {
+    this->HelpLabel->GetWidget()->SetText(str);
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -4374,6 +4436,11 @@ void vtkKWPresetSelector::UpdateEnableState()
   if (this->PresetButtons)
     {
     this->PresetButtons->SetEnabled(this->GetEnabled());
+    }
+
+  if (this->HelpLabel)
+    {
+    this->HelpLabel->SetEnabled(this->GetEnabled());
     }
 
   this->PropagateEnableState(this->Toolbar);
