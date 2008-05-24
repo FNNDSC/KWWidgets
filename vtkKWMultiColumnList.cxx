@@ -38,7 +38,7 @@ p  Module:    $RCSfile: vtkKWMultiColumnList.cxx,v $
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.91 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.92 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -3170,6 +3170,8 @@ void vtkKWMultiColumnList::CellWindowCommandToCheckButtonCreateCallback(
     child->SetWidgetName(widget);
     child->SetParent(this);
     child->Create();
+    child->SetPadX(0);
+    child->SetPadY(0);
     child->Delete();
     }
 
