@@ -39,7 +39,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.42 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.43 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -587,6 +587,8 @@ int vtkKWFileBrowserDialog::SetupInitialSelectedFiles()
   if (!this->InitialSelecttedFileNames || 
     !this->InitialSelecttedFileNames->GetNumberOfValues())
     {
+    this->FileBrowserWidget->GetDirectoryExplorer()->ClearSelection();
+    this->FileBrowserWidget->GetFileListTable()->ClearSelection();
     return 0;
     }
 
@@ -809,12 +811,13 @@ void vtkKWFileBrowserDialog::SetMultipleSelection(int arg)
 void vtkKWFileBrowserDialog::SetInitialSelectedFileNames(
   vtkStringArray* filenames)
 {
+  this->InitialSelecttedFileNames->Reset();
+
   if (!filenames || !filenames->GetNumberOfValues())
     {
     return;
     }
 
-  this->InitialSelecttedFileNames->Reset();
   this->InitialSelecttedFileNames->DeepCopy(filenames);
 }
 
@@ -1168,7 +1171,8 @@ int vtkKWFileBrowserDialog::OpenMultipleFileNames(const char* inputnames)
 //----------------------------------------------------------------------------
 void vtkKWFileBrowserDialog::SetFileName(const char *arg)
 {
-  if (this->FileName == NULL && arg == NULL) 
+  if (this->FileName == NULL && !this->FileNames->GetNumberOfValues() && 
+      arg == NULL) 
     { 
     return;
     }
