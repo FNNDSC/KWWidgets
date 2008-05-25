@@ -40,7 +40,7 @@ const char *vtkKWDirectoryPresetSelector::DirectoryEnabledColumnName = "Director
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWDirectoryPresetSelector);
-vtkCxxRevisionMacro(vtkKWDirectoryPresetSelector, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWDirectoryPresetSelector, "$Revision: 1.2 $");
 
 //----------------------------------------------------------------------------
 vtkKWDirectoryPresetSelector::vtkKWDirectoryPresetSelector()
@@ -597,7 +597,7 @@ int vtkKWDirectoryPresetSelector::UpdatePresetDirectoriesFromEnabledPresetDirect
       break;
       }
     int enabled = atoi((*update_it).c_str());
-    vtksys_stl::vector<vtksys_stl::string>::iterator found = find(
+    vtksys_stl::vector<vtksys_stl::string>::iterator found = vtksys_stl::find(
       from_paths.begin(), from_paths.end(), dir);
     if (enabled)
       {
