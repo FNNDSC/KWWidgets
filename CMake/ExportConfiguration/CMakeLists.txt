@@ -186,7 +186,8 @@ if(VTK_BINARY_DIR)
   endif(NOT KWWidgets_VTK_INSTALL_PACKAGE_DIR)
   set(KWWidgets_VTK_DIR_CONFIG ${KWWidgets_VTK_INSTALL_PACKAGE_DIR})
 else(VTK_BINARY_DIR)
-  set(KWWidgets_VTK_DIR_CONFIG ${VTK_DIR})
+  # Otherwise try to find VTK relative to ourself
+  set(KWWidgets_VTK_DIR_CONFIG ${DOLLAR}{KWWidgets_INSTALL_PREFIX}${VTK_INSTALL_LIB_DIR})
 endif(VTK_BINARY_DIR)
 
 # The gettext library. This is only defined for build dirs to help projects
