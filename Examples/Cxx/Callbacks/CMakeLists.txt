@@ -122,6 +122,10 @@ endif(NOT KWWidgets_SOURCE_DIR)
 
 if(KWWidgets_BUILD_EXAMPLES)
   install_targets(${KWWidgets_INSTALL_BIN_DIR} ${EXE_NAME})
+  install_targets(
+    ${KWWidgets_INSTALL_LIB_DIR}
+    RUNTIME_DIRECTORY ${KWWidgets_INSTALL_BIN_DIR}
+    ${LIB_NAME})
 endif(KWWidgets_BUILD_EXAMPLES)
 
 # Register this example as a test. Our executable supports a --test
