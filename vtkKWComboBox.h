@@ -43,9 +43,14 @@ public:
   virtual void DeleteValue(int idx);
   virtual int HasValue(const char* value);
   virtual int GetValueIndex(const char* value);
-  virtual const char* GetValueFromIndex(int idx);
   virtual int GetNumberOfValues();
   virtual void DeleteAllValues();
+
+  // Description:
+  // Get the corresponding value given an index 
+  // Note that the output of GetValueFromIndex is a pointer to a
+  // temporary buffer that should be copied *immediately* to your own storage.
+  virtual const char* GetValueFromIndex(int idx);
 
   // Description:
   // Replace the nth value in the combo box with another string value.
