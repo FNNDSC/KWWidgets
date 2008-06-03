@@ -39,7 +39,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.43 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.44 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -563,10 +563,9 @@ void vtkKWFileBrowserDialog::Display()
 
     if (this->FileTypesBox->GetNumberOfValues() > 0)
       {
-      this->FileTypesBox->SetValue(
-        this->FileTypesBox->GetValueFromIndex(0));
-      this->FileTypeChangedCallback(
-        this->FileTypesBox->GetValueFromIndex(0));
+      vtksys_stl::string buffer(this->FileTypesBox->GetValueFromIndex(0));
+      this->FileTypesBox->SetValue(buffer.c_str());
+      this->FileTypeChangedCallback(buffer.c_str());
       }
 
     if (this->InitialFileName && *this->InitialFileName)
@@ -671,10 +670,9 @@ void vtkKWFileBrowserDialog::SetFileTypes(const char* _arg)
     this->PopulateFileTypes();
     if (this->FileTypesBox->GetNumberOfValues() > 0)
       {
-      this->FileTypesBox->SetValue(
-        this->FileTypesBox->GetValueFromIndex(0));
-      this->FileTypeChangedCallback(
-        this->FileTypesBox->GetValueFromIndex(0));
+      vtksys_stl::string buffer(this->FileTypesBox->GetValueFromIndex(0));
+      this->FileTypesBox->SetValue(buffer.c_str());
+      this->FileTypeChangedCallback(buffer.c_str());
       }
     }
 }
