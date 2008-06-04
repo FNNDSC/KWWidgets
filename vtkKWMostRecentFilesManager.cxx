@@ -22,7 +22,7 @@
 #include <vtksys/stl/list>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWMostRecentFilesManager, "$Revision: 1.18 $");
+vtkCxxRevisionMacro(vtkKWMostRecentFilesManager, "$Revision: 1.19 $");
 vtkStandardNewMacro(vtkKWMostRecentFilesManager );
 
 #define VTK_KW_MRF_REGISTRY_FILENAME_KEYNAME_PATTERN "File%02d"
@@ -518,8 +518,9 @@ void vtkKWMostRecentFilesManager::PopulateMenu(
             label += "(";
             }
           label += vtksys::SystemTools::CropString(
-            this->BaseNameVisibilityInMenu 
-            ? filename : vtksys::SystemTools::GetFilenamePath(filename), 40);
+            this->BaseNameVisibilityInMenu ?
+            vtksys_stl::string(filename) : 
+            vtksys::SystemTools::GetFilenamePath(filename), 40);
           if (has_label)
             {
             label += ")";
