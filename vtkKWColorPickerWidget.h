@@ -55,15 +55,32 @@ public:
   // Description:
   // Set/Get the current color as RGB, or HSV.
   virtual double *GetNewColorAsRGB();
-  virtual void GetNewColorAsRGB(double &_arg1, double &_arg2, double &_arg3);
+  virtual void GetNewColorAsRGB(double &, double &, double &);
   virtual void GetNewColorAsRGB(double _arg[3]);
   virtual void SetNewColorAsRGB(double r, double g, double b);
   virtual void SetNewColorAsRGB(double rgb[3]);
   virtual double *GetNewColorAsHSV();
-  virtual void GetNewColorAsHSV(double &_arg1, double &_arg2, double &_arg3);
+  virtual void GetNewColorAsHSV(double &, double &, double &);
   virtual void GetNewColorAsHSV(double _arg[3]);
   virtual void SetNewColorAsHSV(double r, double g, double b);
   virtual void SetNewColorAsHSV(double rgb[3]);
+
+  // Description:
+  // Set/Get the current color as RGB, or HSV.
+  // WARNING: the "current" color is not the one that is modified 
+  // interactively; the "new" color is (see Set/GetNewColorAs...). Think
+  // of the "current" color as a reference against which the user can 
+  // compare his new choice at all time.
+  virtual double *GetCurrentColorAsRGB();
+  virtual void GetCurrentColorAsRGB(double &, double &, double &);
+  virtual void GetCurrentColorAsRGB(double _arg[3]);
+  virtual void SetCurrentColorAsRGB(double r, double g, double b);
+  virtual void SetCurrentColorAsRGB(double rgb[3]);
+  virtual double *GetCurrentColorAsHSV();
+  virtual void GetCurrentColorAsHSV(double &, double &, double &);
+  virtual void GetCurrentColorAsHSV(double _arg[3]);
+  virtual void SetCurrentColorAsHSV(double r, double g, double b);
+  virtual void SetCurrentColorAsHSV(double rgb[3]);
 
   // Description:
   // Access the color preset selector. Note that you can set their
@@ -133,7 +150,7 @@ protected:
   virtual void Pack();
 
   // Description:
-  // Set/Get internal colors. 
+  // Set/Get internal new color. 
   double InternalNewColorAsRGB[3];
   vtkGetVector3Macro(InternalNewColorAsRGB, double);
   virtual void SetInternalNewColorAsRGB(double r, double g, double b);
@@ -142,6 +159,17 @@ protected:
   vtkGetVector3Macro(InternalNewColorAsHSV, double);
   virtual void SetInternalNewColorAsHSV(double h, double s, double v);
   virtual void SetInternalNewColorAsHSV(double hsv[3]);
+
+  // Description:
+  // Set/Get internal current color. 
+  double InternalCurrentColorAsRGB[3];
+  vtkGetVector3Macro(InternalCurrentColorAsRGB, double);
+  virtual void SetInternalCurrentColorAsRGB(double r, double g, double b);
+  virtual void SetInternalCurrentColorAsRGB(double rgb[3]);
+  double InternalCurrentColorAsHSV[3];
+  vtkGetVector3Macro(InternalCurrentColorAsHSV, double);
+  virtual void SetInternalCurrentColorAsHSV(double h, double s, double v);
+  virtual void SetInternalCurrentColorAsHSV(double hsv[3]);
 
   vtkKWFrame                       *SlidersFrame;
 

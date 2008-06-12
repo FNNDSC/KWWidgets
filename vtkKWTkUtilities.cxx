@@ -46,7 +46,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.93 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.94 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -567,6 +567,7 @@ int vtkKWTkUtilities::QueryUserForColor(
     }
   dlg->SetTitle(dialog_title);
   dlg->SetDisplayPositionToPointer();
+  dlg->GetColorPickerWidget()->SetCurrentColorAsRGB(in_r, in_g, in_b);
   dlg->GetColorPickerWidget()->SetNewColorAsRGB(in_r, in_g, in_b);
   if (dlg->Invoke())
     {

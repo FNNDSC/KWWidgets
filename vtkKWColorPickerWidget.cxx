@@ -39,7 +39,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.4 $");
 
 //----------------------------------------------------------------------------
 vtkKWColorPickerWidget::vtkKWColorPickerWidget()
@@ -76,14 +76,21 @@ vtkKWColorPickerWidget::vtkKWColorPickerWidget()
   this->ColorsLabelSet               = NULL;
   this->ColorsNameLabelSet           = NULL;
 
+  this->InternalCurrentColorAsRGB[0] = -1; /* unitialized */
+  this->InternalCurrentColorAsRGB[1] = -1;
+  this->InternalCurrentColorAsRGB[2] = -1;
+  this->InternalCurrentColorAsHSV[0] = -1;
+  this->InternalCurrentColorAsHSV[1] = -1;
+  this->InternalCurrentColorAsHSV[2] = -1;
+
+  this->SetCurrentColorAsHSV(0.5, 1.0, 1.0);
+
   this->InternalNewColorAsRGB[0] = -1; /* unitialized */
   this->InternalNewColorAsRGB[1] = -1;
   this->InternalNewColorAsRGB[2] = -1;
   this->InternalNewColorAsHSV[0] = -1;
   this->InternalNewColorAsHSV[1] = -1;
   this->InternalNewColorAsHSV[2] = -1;
-
-  this->SetNewColorAsHSV(0.5, 1.0, 1.0);
 }
 
 //----------------------------------------------------------------------------
@@ -205,6 +212,19 @@ void vtkKWColorPickerWidget::CreateWidget()
   int i, page_id;
 
   vtkKWIcon *icon = vtkKWIcon::New();
+
+
+  // --------------------------------------------------------------
+
+  if (this->InternalNewColorAsRGB[0] == -1 ||
+      this->InternalNewColorAsRGB[1] == -1 ||
+      this->InternalNewColorAsRGB[2] == -1 ||
+      this->InternalNewColorAsHSV[0] == -1 ||
+      this->InternalNewColorAsHSV[1] == -1 ||
+      this->InternalNewColorAsHSV[2] == -1)
+    {
+    this->SetNewColorAsHSV(this->GetCurrentColorAsHSV());
+    }
 
   // --------------------------------------------------------------
   // Notebook
@@ -714,7 +734,7 @@ void vtkKWColorPickerWidget::CreateWidget()
     this->ColorsLabelSet->GetWidget(0), this->InternalNewColorAsRGB);
 
   this->UpdateColorLabel(
-    this->ColorsLabelSet->GetWidget(1), this->InternalNewColorAsRGB);
+    this->ColorsLabelSet->GetWidget(1), this->InternalCurrentColorAsRGB);
 
   this->UpdateHexadecimalColorEntry(this->InternalNewColorAsRGB);
 
@@ -1066,6 +1086,178 @@ void vtkKWColorPickerWidget::GetNewColorAsHSV(
 void vtkKWColorPickerWidget::GetNewColorAsHSV(double _arg[3])
 { 
   this->GetNewColorAsHSV(_arg[0], _arg[1], _arg[2]); 
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::SetInternalCurrentColorAsRGB(double rgb[3])
+{
+  this->SetInternalCurrentColorAsRGB(rgb[0], rgb[1], rgb[2]);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::SetInternalCurrentColorAsRGB(
+  double r, double g, double b)
+{
+  double range[2] = {0.0, 1.0};
+  vtkMath::ClampValue(&r, range);
+  vtkMath::ClampValue(&g, range);
+  vtkMath::ClampValue(&b, range);
+
+  if (r == this->InternalCurrentColorAsRGB[0] &&
+      g == this->InternalCurrentColorAsRGB[1] &&
+      b == this->InternalCurrentColorAsRGB[2])
+    {
+    return;
+    }
+
+  this->InternalCurrentColorAsRGB[0] = r;
+  this->InternalCurrentColorAsRGB[1] = g;
+  this->InternalCurrentColorAsRGB[2] = b;
+
+  this->Modified();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::SetCurrentColorAsRGB(double r, double g, double b)
+{
+  double range[2] = {0.0, 1.0};
+  vtkMath::ClampValue(&r, range);
+  vtkMath::ClampValue(&g, range);
+  vtkMath::ClampValue(&b, range);
+
+  double current_rgb[3];
+  this->GetCurrentColorAsRGB(current_rgb);
+  if (r == current_rgb[0] && g == current_rgb[1] && b == current_rgb[2])
+    {
+    return;
+    }
+
+  this->Modified();
+
+  this->SetInternalCurrentColorAsRGB(r, g, b);
+
+  double h, s, v;
+  vtkMath::RGBToHSV(r, g, b, &h, &s, &v);
+  this->SetInternalCurrentColorAsHSV(h, s, v);
+
+  // Update UI (with RGB in mind)
+
+  if (this->ColorsLabelSet)
+    {
+    this->UpdateColorLabel(
+      this->ColorsLabelSet->GetWidget(1), this->InternalCurrentColorAsRGB);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::SetCurrentColorAsRGB(double rgb[3])
+{
+  this->SetCurrentColorAsRGB(rgb[0], rgb[1], rgb[2]);
+}
+
+//----------------------------------------------------------------------------
+double* vtkKWColorPickerWidget::GetCurrentColorAsRGB()
+{
+  return this->GetInternalCurrentColorAsRGB();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::GetCurrentColorAsRGB(
+  double &_arg1, double &_arg2, double &_arg3)
+{
+  this->GetInternalCurrentColorAsRGB(_arg1, _arg2, _arg3);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::GetCurrentColorAsRGB(double _arg[3])
+{
+  this->GetCurrentColorAsRGB(_arg[0], _arg[1], _arg[2]);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::SetInternalCurrentColorAsHSV(double hsv[3])
+{ 
+  this->SetInternalCurrentColorAsHSV(hsv[0], hsv[1], hsv[2]); 
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::SetInternalCurrentColorAsHSV(
+  double h, double s, double v)
+{
+  double range[2] = {0.0, 1.0};
+  vtkMath::ClampValue(&h, range);
+  vtkMath::ClampValue(&s, range);
+  vtkMath::ClampValue(&v, range);
+
+  if (h == this->InternalCurrentColorAsHSV[0] &&
+      s == this->InternalCurrentColorAsHSV[1] &&
+      v == this->InternalCurrentColorAsHSV[2])
+    {
+    return;
+    }
+
+  this->InternalCurrentColorAsHSV[0] = h;
+  this->InternalCurrentColorAsHSV[1] = s;
+  this->InternalCurrentColorAsHSV[2] = v;
+
+  this->Modified();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::SetCurrentColorAsHSV(double h, double s, double v)
+{
+  double range[2] = {0.0, 1.0};
+  vtkMath::ClampValue(&h, range);
+  vtkMath::ClampValue(&s, range);
+  vtkMath::ClampValue(&v, range);
+
+  double current_hsv[3];
+  this->GetCurrentColorAsHSV(current_hsv);
+  if (h == current_hsv[0] && s == current_hsv[1] && v == current_hsv[2])
+    {
+    return;
+    }
+
+  this->Modified();
+
+  this->SetInternalCurrentColorAsHSV(h, s, v);
+
+  double r, g, b;
+  vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
+  this->SetInternalCurrentColorAsRGB(r, g, b);
+
+  // Update UI (with HSV in mind)
+
+  if (this->ColorsLabelSet)
+    {
+    this->UpdateColorLabel(
+      this->ColorsLabelSet->GetWidget(1), this->InternalCurrentColorAsRGB);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::SetCurrentColorAsHSV(double hsv[3])
+{ 
+  this->SetCurrentColorAsHSV(hsv[0], hsv[1], hsv[2]); 
+}
+
+//----------------------------------------------------------------------------
+double* vtkKWColorPickerWidget::GetCurrentColorAsHSV()
+{
+  return this->GetInternalCurrentColorAsHSV();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::GetCurrentColorAsHSV(
+  double &_arg1, double &_arg2, double &_arg3)
+{
+  this->GetInternalCurrentColorAsHSV(_arg1, _arg2, _arg3);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::GetCurrentColorAsHSV(double _arg[3])
+{ 
+  this->GetCurrentColorAsHSV(_arg[0], _arg[1], _arg[2]); 
 }
 
 //----------------------------------------------------------------------------
