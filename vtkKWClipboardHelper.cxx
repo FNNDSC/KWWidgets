@@ -14,7 +14,7 @@
 
 #ifdef __APPLE__
 #include <AvailabilityMacros.h>
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_4
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1040
 #include <Carbon/Carbon.h>
 #define Cursor X11Cursor 
 #endif
@@ -29,7 +29,7 @@
 #include "vtkObjectFactory.h"
 
 #ifdef __APPLE__
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_4
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1040
 #undef Cursor
 #endif
 #endif // __APPLE__
@@ -72,7 +72,7 @@ int vtkKWClipboardHelper::CopyTextToClipboard(const char* text)
 
 // For MacOsX - 10.4+     
 #ifdef __APPLE__
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_4
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1040
 
     PasteboardRef pb = NULL;
     if(noErr == PasteboardCreate(kPasteboardClipboard,&pb))
@@ -166,7 +166,7 @@ int vtkKWClipboardHelper::CopyImageToClipboard(vtkImageData* iData)
 
 // For MacOsX - 10.4+
 #ifdef __APPLE__
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_4
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1040
 
   void* bitmapData;
   int bytePRow = size[0]*4;
