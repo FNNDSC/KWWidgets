@@ -44,7 +44,7 @@
 #include <vtksys/stl/map>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.164 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.165 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -132,7 +132,7 @@ vtkKWRenderWidget::vtkKWRenderWidget()
   this->HeaderAnnotation = vtkTextActor::New();
   this->HeaderAnnotation->SetNonLinearFontScale(0.7,10);
   this->HeaderAnnotation->SetMaximumLineHeight(0.07);
-#if VTK_MAJOR_VERSION > 5 || (VTK_MAJOR_VERSION == 5 && VTK_MINOR_VERSION > 2)
+#if VTK_MAJOR_VERSION > 5 || (VTK_MAJOR_VERSION == 5 && VTK_MINOR_VERSION >= 2)
   this->HeaderAnnotation->SetTextScaleModeToProp();
 #else
   this->HeaderAnnotation->ScaledTextOn();
