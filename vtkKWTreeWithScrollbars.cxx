@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTreeWithScrollbars);
-vtkCxxRevisionMacro(vtkKWTreeWithScrollbars, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWTreeWithScrollbars, "$Revision: 1.2 $");
 
 //----------------------------------------------------------------------------
 vtkKWTreeWithScrollbars::vtkKWTreeWithScrollbars()
@@ -103,6 +103,7 @@ void vtkKWTreeWithScrollbars::CreateWidget()
   this->VerticalButtons->PackHorizontallyOff();
   this->VerticalButtons->ExpandWidgetsOn();
   this->VerticalButtons->Create();
+  this->VerticalButtons->SetWidgetsPadY(2);
 
   vtkKWPushButton *pb = NULL;
 
@@ -126,6 +127,7 @@ void vtkKWTreeWithScrollbars::CreateWidget()
   this->HorizontalButtons->PackHorizontallyOn();
   this->HorizontalButtons->ExpandWidgetsOn();
   this->HorizontalButtons->Create();
+  this->HorizontalButtons->SetWidgetsPadX(2);
 
   pb = this->HorizontalButtons->AddWidget(VTK_KWTWS_EXPAND_BUTTON_ID);
   pb->SetBinding("<Shift-ButtonRelease-1>", 
