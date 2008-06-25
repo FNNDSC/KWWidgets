@@ -1,4 +1,5 @@
 #include "vtkKWTree.h"
+#include "vtkKWTreeWithScrollbars.h"
 #include "vtkKWApplication.h"
 #include "vtkKWWindow.h"
 
@@ -19,29 +20,32 @@ void vtkKWTreeItem::Create(vtkKWWidget *parent, vtkKWWindow *)
 
   // Create a tree
 
-  vtkKWTree *tree1 = vtkKWTree::New();
+  vtkKWTreeWithScrollbars *tree1 = vtkKWTreeWithScrollbars::New();
   tree1->SetParent(parent);
   tree1->Create();
-  tree1->SelectionFillOn();
   tree1->SetBalloonHelpString("A simple tree");
   tree1->SetBorderWidth(2);
   tree1->SetReliefToGroove();
-  tree1->EnableReparentingOn();
+  tree1->ResizeButtonsVisibilityOn();
 
-  tree1->AddNode(NULL, "inbox_node", "Inbox");
+  vtkKWTree *tree = tree1->GetWidget();
+  tree->SelectionFillOn();
+  tree->EnableReparentingOn();
 
-  tree1->AddNode(NULL, "outbox_node", "Outbox");
-  
-  tree1->AddNode(NULL, "kitware_node", "Kitware");
-  tree1->SetNodeFontWeightToBold("kitware_node");
-  tree1->SetNodeSelectableFlag("kitware_node", 0);
-  tree1->OpenTree("kitware_node");
+  tree->AddNode(NULL, "inbox_node", "Inbox");
 
-  tree1->AddNode("kitware_node", "berk_node", "Berk Geveci");
+  tree->AddNode(NULL, "outbox_node", "Outbox");
   
-  tree1->AddNode("kitware_node", "seb_node", "Sebastien Barre");
+  tree->AddNode(NULL, "kitware_node", "Kitware");
+  tree->SetNodeFontWeightToBold("kitware_node");
+  tree->SetNodeSelectableFlag("kitware_node", 0);
+  tree->OpenTree("kitware_node");
+
+  tree->AddNode("kitware_node", "berk_node", "Berk Geveci");
   
-  tree1->AddNode("kitware_node", "ken_node", "Ken Martin");
+  tree->AddNode("kitware_node", "seb_node", "Sebastien Barre");
+  
+  tree->AddNode("kitware_node", "ken_node", "Ken Martin");
   
   app->Script(
     "pack %s -side top -anchor nw -expand n -padx 2 -pady 2", 

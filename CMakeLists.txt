@@ -251,6 +251,7 @@ set(KWWidgets_SRCS
   vtkKWToolbarSet.cxx
   vtkKWTopLevel.cxx
   vtkKWTree.cxx
+  vtkKWTreeWithScrollbars.cxx
   vtkKWUserInterfaceManager.cxx
   vtkKWUserInterfaceManagerDialog.cxx
   vtkKWUserInterfaceManagerNotebook.cxx
@@ -464,7 +465,6 @@ set(list
   vtkKWListBox
   vtkKWMultiColumnList
   vtkKWText
-  vtkKWTree
   )
 foreach(WidgetType ${list})
   kwwidgets_autogenerate_class(

@@ -20,7 +20,7 @@
 #include <vtksys/ios/sstream> 
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWWidgetWithScrollbars, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWWidgetWithScrollbars, "$Revision: 1.11 $");
 
 //----------------------------------------------------------------------------
 vtkKWWidgetWithScrollbars::vtkKWWidgetWithScrollbars()
@@ -167,26 +167,26 @@ void vtkKWWidgetWithScrollbars::PackScrollbarsWithWidget(vtkKWWidget *widget)
   if (widget && widget->IsCreated())
     {
     tk_cmd << "grid " << widget->GetWidgetName() 
-           << " -row 0 -column 0 -sticky news" << endl;
+           << " -row 0 -column 0 -columnspan 3 -rowspan 3 -sticky news" << endl;
     }
 
   if (this->VerticalScrollbarVisibility && 
       this->VerticalScrollbar && this->VerticalScrollbar->IsCreated())
     {
     tk_cmd << "grid " << this->VerticalScrollbar->GetWidgetName() 
-           << " -row 0 -column 1 -sticky ns" << endl;
+           << " -row 1 -column 3 -sticky ns" << endl;
     }
 
   if (this->HorizontalScrollbarVisibility && 
       this->HorizontalScrollbar && this->HorizontalScrollbar->IsCreated())
     {
     tk_cmd << "grid " << this->HorizontalScrollbar->GetWidgetName() 
-           << " -row 1 -column 0 -sticky ew" << endl;
+           << " -row 3 -column 1 -sticky ew" << endl;
     }
 
-  tk_cmd << "grid rowconfigure " << this->GetWidgetName() << " 0 -weight 1" 
+  tk_cmd << "grid rowconfigure " << this->GetWidgetName() << " 1 -weight 1" 
          << endl;
-  tk_cmd << "grid columnconfigure " << this->GetWidgetName() << " 0 -weight 1" 
+  tk_cmd << "grid columnconfigure " << this->GetWidgetName() << " 1 -weight 1" 
          << endl;
 
   this->Script(tk_cmd.str().c_str());
