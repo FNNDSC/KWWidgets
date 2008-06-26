@@ -1,4 +1,5 @@
 from kwwidgets import vtkKWTree
+from kwwidgets import vtkKWTreeWithScrollbars
 from kwwidgets import vtkKWApplication
 from kwwidgets import vtkKWWindow
 
