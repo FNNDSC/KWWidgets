@@ -769,6 +769,11 @@ if(WIN32)
   endif(HTML_HELP_INCLUDE_PATH AND HTML_HELP_LIBRARY)
 endif(WIN32)
 
+# link ApplicationServices.framework on OSX for vtkKWClipboardHelper 
+IF(APPLE)
+  target_link_libraries (KWWidgets "-framework ApplicationServices")
+ENDIF(APPLE)
+
 if(KWWidgets_USE_INTERNATIONALIZATION AND GETTEXT_RUNTIME_FOUND)
   target_link_libraries(KWWidgets ${GETTEXT_LIBRARIES})
 endif(KWWidgets_USE_INTERNATIONALIZATION AND GETTEXT_RUNTIME_FOUND)
