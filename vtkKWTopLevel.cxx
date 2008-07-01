@@ -24,7 +24,7 @@
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTopLevel );
-vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.33 $");
+vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.34 $");
 
 //----------------------------------------------------------------------------
 vtkKWTopLevel::vtkKWTopLevel()
@@ -88,7 +88,7 @@ void vtkKWTopLevel::CreateWidget()
       opts += "} ";
       }
     }
-  opts += " -visual best -highlightthickness 0";
+  opts += " -highlightthickness 0";
 
   // Call the superclass to set the appropriate flags then create manually
 
