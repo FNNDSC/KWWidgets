@@ -61,7 +61,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.71 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.72 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -4180,10 +4180,14 @@ void vtkKWPresetSelector::PresetEmailCallback(int id)
     message += "\n";
     }
         
-  message += ks_("Preset Selector|Email Preset|Creation Time:");
-  message += " ";
-  time_t t = (time_t)this->GetPresetCreationTime(id);
-  message += ctime(&t);
+  time_t t = (time_t)(this->GetPresetCreationTime(id) / 1000);
+  const char *ctime_buffer = ctime(&t);
+  if (ctime_buffer)
+    {
+    message += ks_("Preset Selector|Email Preset|Creation Time:");
+    message += " ";
+    message += ctime_buffer;
+    }
 
   this->GetApplication()->SendEmail(
     NULL, subject.c_str(), message.c_str(), native_filename.c_str(), NULL);
