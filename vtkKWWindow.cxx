@@ -36,7 +36,7 @@
 #include <vtksys/SystemTools.hxx>
 #include <vtksys/ios/sstream> 
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.291 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.292 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindow );
@@ -1076,7 +1076,7 @@ void vtkKWWindow::PrintSettingsCallback()
     app_settings_uim->RaiseSection(
       app_settings, 
       NULL, 
-      ks_("Application Settings|Page Setup"));
+      ks_("Application Settings|Print Settings"));
     }
   else
     {

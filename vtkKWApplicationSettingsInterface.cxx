@@ -40,7 +40,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWApplicationSettingsInterface);
-vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.61 $");
+vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.62 $");
 
 //----------------------------------------------------------------------------
 vtkKWApplicationSettingsInterface::vtkKWApplicationSettingsInterface()
@@ -465,7 +465,7 @@ void vtkKWApplicationSettingsInterface::Create()
   this->DPIOptionMenu->Create();
 
   this->DPIOptionMenu->GetLabel()->SetText(
-    ks_("Application Settings|Page Setup|DPI:"));
+    ks_("Application Settings|Print Settings|DPI:"));
 
   double dpis[] = { 100.0, 150.0, 300.0, 600.0 };
   for (unsigned int i = 0; i < sizeof(dpis) / sizeof(double); i++)
