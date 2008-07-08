@@ -89,7 +89,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.327 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.328 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -2555,6 +2555,7 @@ const char* vtkKWApplication::GetUserDataDirectory()
           personal)) 
       {
       dir = personal;
+
       dir += "/";
       }
 #else
@@ -2562,7 +2563,7 @@ const char* vtkKWApplication::GetUserDataDirectory()
     dir += "/.";
 #endif
 
-    dir += this->GetVersionName();
+    dir += this->GetName();
     vtksys::SystemTools::ConvertToUnixSlashes(dir);
 
     // We assume that if the user data dir is being requested, we should

@@ -188,6 +188,10 @@ public:
   // Description:
   // Set/Get the directory in which the application can store
   // user data. 
+  // On Windows, this is usually: 
+  //  C:\Documents and Settings\<username>\My Documents\NameOfTheApplication
+  // On Unix/MacOSX, this is usually:
+  //  $HOME/.NameOfTheApplication (ex: /users/barre/.VolView)
   virtual const char* GetUserDataDirectory();
   vtkSetStringMacro(UserDataDirectory);
   
