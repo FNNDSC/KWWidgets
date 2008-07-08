@@ -33,6 +33,7 @@
 #include "vtkIntArray.h"
 
 #include <ctype.h>
+#include <limits>
 
 #include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
@@ -40,7 +41,7 @@
 #include <vtksys/stl/algorithm>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.108 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.109 $");
 
 //----------------------------------------------------------------------------
 #define VTK_KW_PVFE_POINT_RADIUS_MIN         2
@@ -472,6 +473,7 @@ vtkKWParameterValueFunctionEditor::~vtkKWParameterValueFunctionEditor()
     }
 
   this->SetParameterTicksFormat(NULL);
+  this->SetParameterEntryFormat(NULL);
   this->SetValueTicksFormat(NULL);
 }
 
@@ -1849,7 +1851,8 @@ void vtkKWParameterValueFunctionEditor::Pack()
       }
     }
 
-  if (this->UserFrame && this->UserFrame->IsCreated())
+  if (this->UserFrameVisibility && 
+      this->UserFrame && this->UserFrame->IsCreated())
     {
     tk_cmd << "pack " << this->UserFrame->GetWidgetName() 
            << " -side left -fill both -padx 0 -pady 0" << endl;
@@ -2505,7 +2508,14 @@ void vtkKWParameterValueFunctionEditor::SetRelativeVisibleParameterRange(
 void vtkKWParameterValueFunctionEditor::SetRelativeVisibleParameterRange(
   double r0, double r1)
 {
-  this->ParameterRange->SetRelativeRange(r0, r1);
+  double range[2];
+  const double epsilon = vtkstd::numeric_limits<double>::epsilon();
+  this->ParameterRange->GetRelativeRange(range);
+  if ((fabs(range[0] - r0) > epsilon) || 
+      (fabs(range[1] - r1) > epsilon))
+    {
+    this->ParameterRange->SetRelativeRange(r0, r1);
+    }
 
   // VisibleParameterRangeChangingCallback is invoked automatically 
   // by the line above
