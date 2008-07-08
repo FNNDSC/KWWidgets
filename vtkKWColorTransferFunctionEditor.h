@@ -260,6 +260,13 @@ protected:
   // Redraw the histogram
   virtual void RedrawHistogram();
 
+  // Description:
+  // Processes the events that are passed through CallbackCommand (or others).
+  // Subclasses can oberride this method to process their own events, but
+  // should call the superclass too.
+  virtual void ProcessCallbackCommandEvents(
+    vtkObject *caller, unsigned long event, void *calldata);
+  
 private:
   vtkKWColorTransferFunctionEditor(const vtkKWColorTransferFunctionEditor&); // Not implemented
   void operator=(const vtkKWColorTransferFunctionEditor&); // Not implemented

@@ -14,26 +14,30 @@
 #include "vtkKWColorTransferFunctionEditor.h"
 
 #include "vtkColorTransferFunction.h"
+#include "vtkMath.h"
+#include "vtkObjectFactory.h"
+
+#include "vtkKWApplication.h"
+#include "vtkKWCanvas.h"
+#include "vtkKWColorPickerDialog.h"
+#include "vtkKWColorPickerWidget.h"
 #include "vtkKWEntry.h"
+#include "vtkKWEntryWithLabel.h"
 #include "vtkKWFrame.h"
 #include "vtkKWHistogram.h"
-#include "vtkKWLabel.h"
-#include "vtkKWEntryWithLabel.h"
 #include "vtkKWInternationalization.h"
-#include "vtkKWScaleWithEntry.h"
+#include "vtkKWLabel.h"
 #include "vtkKWMenu.h"
 #include "vtkKWMenuButton.h"
 #include "vtkKWRange.h"
-#include "vtkKWCanvas.h"
+#include "vtkKWScaleWithEntry.h"
 #include "vtkKWTkUtilities.h"
-#include "vtkMath.h"
-#include "vtkObjectFactory.h"
 
 #include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 
 vtkStandardNewMacro(vtkKWColorTransferFunctionEditor);
-vtkCxxRevisionMacro(vtkKWColorTransferFunctionEditor, "$Revision: 1.59 $");
+vtkCxxRevisionMacro(vtkKWColorTransferFunctionEditor, "$Revision: 1.60 $");
 
 #define VTK_KW_CTFE_COLOR_RAMP_TAG "color_ramp_tag"
 
@@ -1049,46 +1053,6 @@ void vtkKWColorTransferFunctionEditor::ValueEntriesCallback(const char *)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWColorTransferFunctionEditor::DoubleClickOnPointCallback(
-  int x, int y)
-{
-  this->Superclass::DoubleClickOnPointCallback(x, y);
-
-  int id, c_x, c_y;
-
-  // No point found
-
-  if (!this->FindFunctionPointAtCanvasCoordinates(x, y, &id, &c_x, &c_y))
-    {
-    return;
-    }
-
-  // Select the point and change its color
-
-  this->SelectPoint(id);
-  
-  double rgb[3];
-  if (!this->FunctionPointValueIsLocked(id) &&
-      this->GetPointColorAsRGB(id, rgb) &&
-      vtkKWTkUtilities::QueryUserForColor(
-        this->GetApplication(),
-        this,
-        NULL,
-        rgb[0], rgb[1], rgb[2],
-        &rgb[0], &rgb[1], &rgb[2]))
-    {
-    unsigned long mtime = this->GetFunctionMTime();
-
-    this->SetPointColorAsRGB(id, rgb);
-
-    if (this->GetFunctionMTime() > mtime)
-      {
-      this->InvokeFunctionChangedCommand();
-      }
-    }
-}
-
-//----------------------------------------------------------------------------
 void vtkKWColorTransferFunctionEditor::SetColorSpaceOptionMenuVisibility(int arg)
 {
   if (this->ColorSpaceOptionMenuVisibility == arg)
@@ -1765,6 +1729,107 @@ void vtkKWColorTransferFunctionEditor::UpdateHistogramImageDescriptor(
       ? this->ColorRampTransferFunction : this->ColorTransferFunction;
     desc->DrawGrid = 1;
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorTransferFunctionEditor::DoubleClickOnPointCallback(
+  int x, int y)
+{
+  this->Superclass::DoubleClickOnPointCallback(x, y);
+
+  int id, c_x, c_y;
+
+  // No point found
+
+  if (!this->FindFunctionPointAtCanvasCoordinates(x, y, &id, &c_x, &c_y))
+    {
+    return;
+    }
+
+  // Select the point and change its color
+
+  this->SelectPoint(id);
+  
+  double old_rgb[3], new_rgb[3];
+  if (!this->FunctionPointValueIsLocked(id) &&
+      this->GetPointColorAsRGB(id, old_rgb))
+    {
+    vtkKWColorPickerWidget *color_picker_widget = NULL;
+    vtkKWColorPickerDialog *color_picker_dlg = 
+      this->GetApplication()->GetColorPickerDialog();
+    if (color_picker_dlg)
+      {
+      color_picker_widget = color_picker_dlg->GetColorPickerWidget();
+      this->AddCallbackCommandObserver(
+        color_picker_widget, vtkKWColorPickerWidget::NewColorChangedEvent);
+      this->AddCallbackCommandObserver(
+        color_picker_widget, vtkKWColorPickerWidget::NewColorChangingEvent);
+      }
+    
+    int ok = vtkKWTkUtilities::QueryUserForColor(
+      this->GetApplication(),
+      this,
+      NULL,
+      old_rgb[0], old_rgb[1], old_rgb[2],
+      &new_rgb[0], &new_rgb[1], &new_rgb[2]);
+
+    unsigned long mtime = this->GetFunctionMTime();
+    this->SetPointColorAsRGB(id, ok ? new_rgb : old_rgb);
+    if (this->GetFunctionMTime() > mtime)
+      {
+      this->InvokeFunctionChangedCommand();
+      }
+
+    if (color_picker_dlg)
+      {
+      this->RemoveCallbackCommandObserver(
+        color_picker_widget, vtkKWColorPickerWidget::NewColorChangedEvent);
+      this->RemoveCallbackCommandObserver(
+        color_picker_widget, vtkKWColorPickerWidget::NewColorChangingEvent);
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorTransferFunctionEditor::ProcessCallbackCommandEvents(
+  vtkObject *caller,
+  unsigned long event,
+  void *calldata)
+{
+  vtkKWColorPickerWidget *color_picker_widget = NULL;
+  vtkKWColorPickerDialog *color_picker_dlg = 
+    this->GetApplication()->GetColorPickerDialog();
+  if (color_picker_dlg)
+    {
+    color_picker_widget = color_picker_dlg->GetColorPickerWidget();
+    }
+  
+  int id;
+
+  if (caller == color_picker_widget)
+    {
+    switch (event)
+      {
+      case vtkKWColorPickerWidget::NewColorChangingEvent:
+        id = this->GetSelectedPoint();
+        if (id != -1)
+          {
+          unsigned long mtime = this->GetFunctionMTime();
+          this->SetPointColorAsRGB(
+            id, color_picker_widget->GetNewColorAsRGB());
+          if (this->GetFunctionMTime() > mtime)
+            {
+            this->InvokeFunctionChangingCommand();
+            }
+          }
+        break;
+      case vtkKWColorPickerWidget::NewColorChangedEvent:
+        this->InvokeFunctionChangedCommand();
+        break;
+      }
+    }
+
+  this->Superclass::ProcessCallbackCommandEvents(caller, event, calldata);
 }
 
 //----------------------------------------------------------------------------

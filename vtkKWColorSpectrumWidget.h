@@ -111,6 +111,16 @@ public:
   virtual void SetColorChangingCommand(vtkObject *object, const char *method);
 
   // Description:
+  // Events.
+  //BTX
+  enum
+  {
+    ColorChangedEvent = 10000,
+    ColorChangingEvent
+  };
+  //ETX
+
+  // Description:
   // Update the "enable" state of the object and its internal parts.
   // Depending on different Ivars (this->Enabled, the application's 
   // Limited Edition Mode, etc.), the "enable" state of the object is updated

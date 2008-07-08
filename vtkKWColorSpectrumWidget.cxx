@@ -26,7 +26,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorSpectrumWidget );
-vtkCxxRevisionMacro(vtkKWColorSpectrumWidget, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWColorSpectrumWidget, "$Revision: 1.3 $");
 
 #define VTK_KW_COLOR_SPECTRUM_WIDGET_FIXED_FONT "fixed"
 #define VTK_KW_COLOR_SPECTRUM_WIDGET_FIXED_FONT_85 "TkDefaultFont"
@@ -1036,6 +1036,7 @@ void vtkKWColorSpectrumWidget::SetColorChangedCommand(
 //----------------------------------------------------------------------------
 void vtkKWColorSpectrumWidget::InvokeColorChangedCommand()
 {
+  this->InvokeEvent(vtkKWColorSpectrumWidget::ColorChangedEvent);
   this->InvokeObjectMethodCommand(this->ColorChangedCommand);
 }
 
@@ -1049,6 +1050,7 @@ void vtkKWColorSpectrumWidget::SetColorChangingCommand(
 //----------------------------------------------------------------------------
 void vtkKWColorSpectrumWidget::InvokeColorChangingCommand()
 {
+  this->InvokeEvent(vtkKWColorSpectrumWidget::ColorChangingEvent);
   this->InvokeObjectMethodCommand(this->ColorChangingCommand);
 }
 

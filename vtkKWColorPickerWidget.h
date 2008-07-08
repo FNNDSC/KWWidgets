@@ -116,16 +116,23 @@ public:
   vtkGetMacro(HistoryVisibility, int);
 
   // Description:
+  // Events.
+  //BTX
+  enum
+  {
+    NewColorChangedEvent = 10000,
+    NewColorChangingEvent
+  };
+  //ETX
+
+  // Description:
   // Callbacks
-  virtual void RGBSlidersChangingCallback();
-  virtual void HSVSlidersChangingCallback();
   virtual void FavoritesColorPresetApplyCallback(int id);
   virtual int  FavoritesColorPresetAddCallback();
   virtual void FavoritesColorPresetUpdateCallback(int id);
   virtual void HistoryColorPresetApplyCallback(int id);
   virtual void CurrentColorCallback();
   virtual void HexadecimalColorEntryCallback(const char*);
-  virtual void ColorSpectrumChangingCallback();
   virtual void BasicColorsCallback(const char *color);
 
   // Description:
@@ -207,6 +214,10 @@ protected:
   virtual void CreateFavoritesColorPresetSelector();
   virtual void CreateHistoryColorPresetSelector();
   virtual void CreateBasicColorsFrameSet();
+
+  virtual void ColorSpectrumChangingCallback();
+  virtual void RGBSlidersChangingCallback();
+  virtual void HSVSlidersChangingCallback();
 
   // Description:
   // Processes the events that are passed through CallbackCommand (or others).
