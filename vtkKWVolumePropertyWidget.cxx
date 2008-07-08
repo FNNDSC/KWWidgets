@@ -54,7 +54,7 @@
 #define VTK_KW_VPW_TESTING 0
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.49 $");
+vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.50 $");
 vtkStandardNewMacro(vtkKWVolumePropertyWidget);
 
 //----------------------------------------------------------------------------
@@ -920,17 +920,18 @@ void vtkKWVolumePropertyWidget::Update()
 
   if (this->LockOpacityAndColorCheckButton)
     {
+    int state = this->LockOpacityAndColor[this->SelectedComponent];
+
     // If dependents or W/L, we can not lock
 
     if (this->WindowLevelMode[this->SelectedComponent] ||
         (has_prop && !this->GetIndependentComponents()))
       {
-      this->LockOpacityAndColor[this->SelectedComponent] = 0;
+      state = 0;
       this->LockOpacityAndColorCheckButton->SetEnabled(0);
       }
 
-    this->LockOpacityAndColorCheckButton->SetSelectedState(
-      this->LockOpacityAndColor[this->SelectedComponent]);
+    this->LockOpacityAndColorCheckButton->SetSelectedState(state);
     }
 
   // Enable shading for all
@@ -1183,10 +1184,38 @@ void vtkKWVolumePropertyWidget::Update()
     int have_funcs = (this->ScalarOpacityFunctionEditor->HasFunction() &&
                       this->ScalarColorFunctionEditor->HasFunction());
 
+    // Sync of the parameter range and the points will only happen if:
+    // - the components are independent (since each scalar field has its own
+    //   pair color tfunc and opacity tfunc, therefore they can be displayed
+    //   on top of each other and use the same histogram)
+    // - the components are dependent, but there are only two of them *and*
+    //   the user specifically requested that the color function is used
+    //   in the scalar opacity editor. When components are dependent, two
+    //   possibilities are considered:
+    //     * 4 (RGBA) components, in which case the color can not be edited,
+    //       so we don't need to sync both editors, only the opacity tfunc
+    //       editor will ever be displayed.
+    //     * 2 components, in which case the first component is passed through
+    //       the first color tfunc, and the second component is passed through
+    //       the first opacity tfunc. Now the be reasonably accurate, both
+    //       editors should not be merged because both scalar fields are
+    //       different (which histogram should be displayed?), and both
+    //       scalar ranges might be different as well. *But* in many cases,
+    //       the histogram of the second (opacity) scalar field is the most
+    //       interesting one, and both scalar range are, in fact, the same.
+    //       Under those assumptions both editors will indeed be sync'ed, but
+    //       only if the user gave us a hint by setting
+    //       UseScalarColorFunctionInScalarOpacityEditor to On.
+    // UPDATE: not for now..., let's stick to the really correct way
+    // int can_sync = this->GetIndependentComponents() || 
+    // (nb_components <= 2 && this->UseScalarColorFunctionInScalarOpacityEditor);
+
+    int can_sync = this->GetIndependentComponents();
+
     // Synchronize the parameter range if RGB and opacity are the same
     // scalar field
 
-    if (this->GetIndependentComponents() && have_funcs)
+    if (can_sync && have_funcs)
       {
       this->ScalarColorFunctionEditor->SynchronizeVisibleParameterRange(
         this->ScalarOpacityFunctionEditor);
@@ -1199,7 +1228,7 @@ void vtkKWVolumePropertyWidget::Update()
 
     // (un)Synchronize both opacity and color functions points
     
-    if (this->GetIndependentComponents() &&
+    if (can_sync &&
         this->LockOpacityAndColor[this->SelectedComponent] && have_funcs)
       {
       this->ScalarColorFunctionEditor->SynchronizePoints(

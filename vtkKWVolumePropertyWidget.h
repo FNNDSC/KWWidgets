@@ -180,7 +180,7 @@ public:
   // Set/Get if the scalar color transfer function should be used to color
   // each point in the scalar opacity editor. This also makes sure that
   // any changes made to one or the other will be propagated accordingly. 
-  // This alszo enables the user to pick a color by double-clicking on
+  // This also enables the user to pick a color by double-clicking on
   // the scalar opacity points.
   vtkBooleanMacro(UseScalarColorFunctionInScalarOpacityEditor, int);
   virtual void SetUseScalarColorFunctionInScalarOpacityEditor(int);
