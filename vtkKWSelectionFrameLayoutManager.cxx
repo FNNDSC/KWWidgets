@@ -77,7 +77,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.84 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.85 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -2142,6 +2142,10 @@ int vtkKWSelectionFrameLayoutManager::AppendWidgetsToImageData(
   int ForceUpdateOnScreenRendering)
 {
   int nb_slots = this->Resolution[0] * this->Resolution[1];
+  if (!nb_slots)
+    {
+    return 0;
+    }
 
   // We need a window to image filter for each widget in the grid
 
@@ -2312,7 +2316,7 @@ int vtkKWSelectionFrameLayoutManager::AppendSelectedWidgetToImageDataFast(
 //---------------------------------------------------------------------------
 int vtkKWSelectionFrameLayoutManager::SaveScreenshotAllWidgets()
 {
-  if (!this->IsCreated())
+  if (!this->IsCreated() || !this->GetNumberOfWidgets())
     {
     return 0;
     }
@@ -2497,6 +2501,7 @@ int vtkKWSelectionFrameLayoutManager::PrintWidgets(
   vtkKWSelectionFrame *first_widget = this->GetNthWidget(0);
   if (!first_widget)
     {
+    return 0;
     }
   
   PRINTDLG pd;
