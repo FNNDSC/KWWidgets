@@ -33,7 +33,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.122 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.123 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMenuInternals
@@ -1546,13 +1546,18 @@ const char* vtkKWMenu::GetItemHelpString(int index)
 //----------------------------------------------------------------------------
 void vtkKWMenu::SetItemUnderline(int index, int underline_index)
 {
-  if (!this->IsCreated() || index < 0 || index >= this->GetNumberOfItems() 
-      || underline_index < 0)
+#ifndef __APPLE__
+  if (!this->IsCreated() || 
+      index < 0 || index >= this->GetNumberOfItems() || underline_index < 0)
     {
     return;
     }
   this->Script("%s entryconfigure %d -underline %d", 
                this->GetWidgetName(), index, underline_index);
+#else
+  (void)index;
+  (void)underline_index;
+#endif
 }
 
 //----------------------------------------------------------------------------

@@ -80,6 +80,10 @@ static Tcl_Interp *Et_Interp = 0;
 #include "Utilities/ApplicationIcon/vtkKWSetApplicationIconTclCommand.h"
 #endif
 
+#if defined(__APPLE__) && MAC_OS_X_VERSION_MIN_REQUIRED >= 1040
+#include <CoreFoundation/CoreFoundation.h>
+#include <ApplicationServices/ApplicationServices.h>
+#endif
 
 const char *vtkKWApplication::ExitDialogName = "ExitApplication";
 const char *vtkKWApplication::BalloonHelpVisibilityRegKey = "ShowBalloonHelp";
@@ -89,7 +93,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.328 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.329 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1215,11 +1219,7 @@ void vtkKWApplication::TclBgErrorCallback(const char* message)
 }
 
 //----------------------------------------------------------------------------
-int vtkKWApplication::OpenLink(const char *
-#ifdef _WIN32
-                               link
-#endif
-)
+int vtkKWApplication::OpenLink(const char *link)
 {
 #ifdef _WIN32
   HINSTANCE result = ShellExecute(
@@ -1228,8 +1228,31 @@ int vtkKWApplication::OpenLink(const char *
     {
     return 0;
     }
-#endif
   return 1;
+#endif
+
+#if defined(__APPLE__) && MAC_OS_X_VERSION_MIN_REQUIRED >= 1040
+  /* Refs:
+     http://developer.apple.com/documentation/Carbon/Reference/LaunchServicesReference/Reference/reference.html
+     http://developer.apple.com/qa/qa2001/qa1028.html
+     http://www.omnigroup.com/mailman/archive/macosx-dev/2001-May/026547.html
+     http://anonsvn.wireshark.org/wireshark/trunk/gtk/webbrowser.c
+  */
+
+
+
+#endif
+
+  vtksys_stl::string msg(k_("Please open:\n"));
+  if (link)
+    {
+    msg += link;
+    }
+  vtkKWMessageDialog::PopupMessage(
+    this, this->GetNthWindow(0), 
+    ks_("Display Help Dialog|Title|Open Link"), 
+    msg.c_str(), vtkKWMessageDialog::WarningIcon);
+  return 0;
 }
 
 //----------------------------------------------------------------------------
@@ -1386,8 +1409,7 @@ void vtkKWApplication::DisplayHelpDialog(vtkKWTopLevel* master)
   const char *res = vtksys::SystemTools::FileExists(helplink.c_str()) 
     ? helplink.c_str() : this->HelpDialogStartingPage;
 
-#ifdef _WIN32
-#ifdef KWWidgets_USE_HTML_HELP
+#if defined(_WIN32) && defined(KWWidgets_USE_HTML_HELP)
   // .chm ?
 
   if (strstr(helplink.c_str(), ".chm") || 
@@ -1399,17 +1421,10 @@ void vtkKWApplication::DisplayHelpDialog(vtkKWTopLevel* master)
   // otherwise just try to open
 
   else
-#endif
-    {
-    status = this->OpenLink(helplink.c_str());
-    }
 #else
-  sprintf(buffer, 
-          k_("Please check the help resource %s for more information."), res);
-  vtkKWMessageDialog::PopupMessage(
-    this, master, 
-    ks_("Display Help Dialog|Title|Help Error!"), 
-    buffer, vtkKWMessageDialog::WarningIcon);
+    {
+    this->OpenLink(helplink.c_str());
+    }
 #endif
 
   if (!status)
