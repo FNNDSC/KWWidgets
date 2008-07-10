@@ -11,6 +11,15 @@
      PURPOSE.  See the above copyright notice for more information.
 
 =========================================================================*/
+
+#ifdef __APPLE__
+#include <AvailabilityMacros.h>
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1040
+#include <Carbon/Carbon.h>
+#define Cursor X11Cursor 
+#endif
+#endif // __APPLE__
+
 #include "vtkKWApplication.h"
 
 #include "vtkObjectFactory.h"
@@ -80,10 +89,11 @@ static Tcl_Interp *Et_Interp = 0;
 #include "Utilities/ApplicationIcon/vtkKWSetApplicationIconTclCommand.h"
 #endif
 
-#if defined(__APPLE__) && MAC_OS_X_VERSION_MIN_REQUIRED >= 1040
-#include <CoreFoundation/CoreFoundation.h>
-#include <ApplicationServices/ApplicationServices.h>
+#ifdef __APPLE__
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1040
+#undef Cursor
 #endif
+#endif // __APPLE__
 
 const char *vtkKWApplication::ExitDialogName = "ExitApplication";
 const char *vtkKWApplication::BalloonHelpVisibilityRegKey = "ShowBalloonHelp";
@@ -93,7 +103,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.329 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.330 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1224,11 +1234,10 @@ int vtkKWApplication::OpenLink(const char *link)
 #ifdef _WIN32
   HINSTANCE result = ShellExecute(
     NULL, "open", link, NULL, NULL, SW_SHOWNORMAL);
-  if ((int)result <= 32)
+  if ((int)result > 32)
     {
-    return 0;
+    return 1;
     }
-  return 1;
 #endif
 
 #if defined(__APPLE__) && MAC_OS_X_VERSION_MIN_REQUIRED >= 1040
@@ -1239,8 +1248,47 @@ int vtkKWApplication::OpenLink(const char *link)
      http://anonsvn.wireshark.org/wireshark/trunk/gtk/webbrowser.c
   */
 
+  CFStringRef link_CFString = 
+    CFStringCreateWithCString(NULL, link, kCFStringEncodingASCII);
+  if (link_CFString)
+    {
+    // Get URL from string and open it
+    CFURLRef link_CFURL = CFURLCreateWithString(NULL, link_CFString, NULL);
+    CFRelease(link_CFString);
+    if (link_CFURL) 
+      {
+      OSStatus status = LSOpenCFURLRef(link_CFURL, NULL);
+      CFRelease(link_CFURL);
+      if (!status)
+        {
+        return 1;
+        }
+      }
+    }
 
+  // Failed? Tried to interpret it as a filesystem path
 
+  vtksys_stl::string path = 
+    vtksys::SystemTools::CollapseFullPath(link);
+
+  CFStringRef path_CFString = 
+    CFStringCreateWithCString(NULL, link, kCFStringEncodingASCII);
+  if (path_CFString)
+    {
+    Boolean is_dir = vtksys::SystemTools::FileIsDirectory(path.c_str());
+    CFURLRef path_CFURL = CFURLCreateWithFileSystemPath(
+      NULL, path_CFString, kCFURLPOSIXPathStyle, is_dir);
+    CFRelease(path_CFString);
+    if (path_CFURL) 
+      {
+      OSStatus status = LSOpenCFURLRef(path_CFURL, NULL);
+      CFRelease(path_CFURL);
+      if (!status)
+        {
+        return 1;
+        }
+      }
+    }
 #endif
 
   vtksys_stl::string msg(k_("Please open:\n"));
@@ -1252,44 +1300,107 @@ int vtkKWApplication::OpenLink(const char *link)
     this, this->GetNthWindow(0), 
     ks_("Display Help Dialog|Title|Open Link"), 
     msg.c_str(), vtkKWMessageDialog::WarningIcon);
+
   return 0;
 }
 
 //----------------------------------------------------------------------------
 int vtkKWApplication::ExploreLink(const char *link)
 {
-  vtksys_stl::string filename = 
+  vtksys_stl::string path = 
     vtksys::SystemTools::CollapseFullPath(link);
 
 #ifdef _WIN32
-
-  vtksys::SystemTools::ReplaceString(filename, "/", "\\");
-
+  vtksys::SystemTools::ReplaceString(path, "/", "\\");
   vtksys_stl::string command("explorer.exe /n,/e,");
-  if (!vtksys::SystemTools::FileIsDirectory(filename.c_str()))
+  if (!vtksys::SystemTools::FileIsDirectory(path.c_str()))
     {
     command += "/select,";
     }
-  command += filename;
-  if (WinExec(command.c_str(), SW_SHOWNORMAL) <= 32)
+  command += path;
+  if (WinExec(command.c_str(), SW_SHOWNORMAL) > 32)
     {
-    return 0;
+    return 1;
+    }
+#endif
+
+#if defined(__APPLE__) && MAC_OS_X_VERSION_MIN_REQUIRED >= 1040
+
+  /* Refs: AppleEvents
+     http://developer.apple.com/documentation/AppleScript/Conceptual/AppleEvents/create_send_aepg/chapter_7_section_4.html
+  */
+
+  AppleEvent reveal_Event;
+
+  CFStringRef path_CFString = 
+    CFStringCreateWithCString(NULL, path.c_str(), kCFStringEncodingUTF8);
+  if (path_CFString)
+    {
+    Boolean is_dir = vtksys::SystemTools::FileIsDirectory(path.c_str());
+    CFURLRef path_CFURL = CFURLCreateWithFileSystemPath(
+      kCFAllocatorDefault, path_CFString, kCFURLPOSIXPathStyle, is_dir);
+    if (path_CFURL)
+      {
+      FSRef path_FSRef;
+      if (CFURLGetFSRef(path_CFURL, &path_FSRef))
+        {
+        AliasHandle path_Alias;
+        if (FSNewAlias(NULL, &path_FSRef, &path_Alias) == noErr)
+          {
+          const OSType finderSignature = 'MACS';
+          if (AEBuildAppleEvent(
+                kAEMiscStandards,
+                kAEMakeObjectsVisible,
+                typeApplSignature,
+                &finderSignature,
+                sizeof(finderSignature),
+                kAutoGenerateReturnID,
+                kAnyTransactionID,
+                &reveal_Event,
+                NULL,
+                "'----':[alis(@@)]",
+                path_Alias) == noErr)
+            {
+            OSErr err = AESendMessage(
+              &reveal_Event,
+              NULL,
+              kAENoReply | kAEAlwaysInteract | kAECanSwitchLayer,
+              kAEDefaultTimeout
+              );
+            AEDisposeDesc(&reveal_Event);
+            if (err == noErr)
+              {
+              return 1;
+              }
+            }
+          }
+        }
+      }
     }
 
-#else
+  /* Refs (Navigation Services)
+     http://developer.apple.com/documentation/Carbon/Conceptual/NavServicesIntro/ns_intro_carb/chapter_1_section_1.html
+     http://developer.apple.com/documentation/Carbon/Conceptual/ProvidingNavigationDialogs/nsx_intro/chapter_1_section_1.html
+     http://developer.apple.com/documentation/Carbon/Reference/Navigation_Services_Ref/Reference/reference.html
+     http://developer.apple.com/documentation/Carbon/Conceptual/ProvidingNavigationDialogs/nsx_tasks/chapter_3_section_3.html
+     http://developer.apple.com/qa/qa2001/qa1151.html
+     http://developer.apple.com/documentation/Carbon/Reference/File_Manager/Reference/reference.html#//apple_ref/c/func/FSPathMakeRef
+  */
+
+#endif
 
   vtkKWLoadSaveDialog *dlg = vtkKWLoadSaveDialog::New();
   dlg->SetApplication(this);
-  dlg->SetInitialFileName(filename.c_str());
+  dlg->SetInitialFileName(path.c_str());
   dlg->SaveDialogOff();
-  if (vtksys::SystemTools::FileIsDirectory(filename.c_str()))
+  if (vtksys::SystemTools::FileIsDirectory(path.c_str()))
     {
     dlg->ChooseDirectoryOn();
     }
   else
     {
     vtksys_stl::string ext =
-      vtksys::SystemTools::GetFilenameExtension(filename);
+      vtksys::SystemTools::GetFilenameExtension(path);
     dlg->SetDefaultExtension(ext.c_str());
     vtksys_stl::string file_types("{{");
     file_types += ext;
@@ -1299,12 +1410,10 @@ int vtkKWApplication::ExploreLink(const char *link)
     dlg->SetFileTypes(file_types.c_str());
     }
   dlg->MultipleSelectionOff();
-  dlg->GenerateLastPath(filename.c_str());
+  dlg->GenerateLastPath(path.c_str());
   dlg->Create();
   dlg->Invoke();
   dlg->Delete();
-
-#endif
 
   return 1;
 }
