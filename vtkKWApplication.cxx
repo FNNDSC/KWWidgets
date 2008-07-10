@@ -103,7 +103,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.330 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.331 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1301,7 +1301,7 @@ int vtkKWApplication::OpenLink(const char *link)
     ks_("Display Help Dialog|Title|Open Link"), 
     msg.c_str(), vtkKWMessageDialog::WarningIcon);
 
-  return 0;
+  return 1;
 }
 
 //----------------------------------------------------------------------------
@@ -1530,11 +1530,10 @@ void vtkKWApplication::DisplayHelpDialog(vtkKWTopLevel* master)
   // otherwise just try to open
 
   else
-#else
-    {
-    this->OpenLink(helplink.c_str());
-    }
 #endif
+    {
+    status = this->OpenLink(helplink.c_str());
+    }
 
   if (!status)
     {
