@@ -34,6 +34,8 @@ public:
   // Description:
   // Set/Get the percentage displayed for the primary progress gauge. 
   // This number is clamped between 0.0 and 100.0.
+  // Note: setting the progress to zero resets the gauge to its nominal
+  // blank appearance.
   virtual void SetValue(double value);
   virtual double GetValue();
   
@@ -42,6 +44,8 @@ public:
   // the secondary progress gauges. If rank = 0, calling this method is
   // the same as calling the SetValue method.
   // This number is clamped between 0.0 and 100.0.
+  // Note: setting the progress to zero resets the gauge to its nominal
+  // blank appearance.
   // All progress gauges are stacked vertically on top of each other, with the
   // lower rank at the top by default (this can be changed with 
   // the SetPrimaryGaugePosition method). Space for the primary gauge
