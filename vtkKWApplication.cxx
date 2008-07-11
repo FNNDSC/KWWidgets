@@ -103,7 +103,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.331 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.332 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1673,6 +1673,14 @@ void vtkKWApplication::AddAboutText(ostream &os)
     os << ")";
     }
   os << endl;
+
+  this->FindInstallationDirectory();
+  if (this->InstallationDirectory)
+    {
+    os << "Installation directory: " 
+       << this->GetInstallationDirectory() << endl;
+    }
+  os << "User data directory: " << this->GetUserDataDirectory() << endl;
 
 #ifdef KWWidgets_USE_INTERNATIONALIZATION
   int lang = vtkKWLanguage::GetCurrentLanguage();
