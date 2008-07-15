@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeTheme.c,v 1.4 2007-09-19 19:18:44 barre Exp $
+ * RCS: @(#) $Id: tkTreeTheme.c,v 1.5 2008-07-15 22:21:04 barre Exp $
  */
 
 #if defined(WIN32) && !defined(WINVER)
@@ -20,6 +20,7 @@
 #define COLUMN_STATE_PRESSED 2
 
 #ifdef WIN32
+#include "vtkWin32Header.h" // vtkSetWindowLong
 #include "tkWinInt.h"
 
 #include <uxtheme.h>
@@ -587,7 +588,8 @@ int TreeTheme_GetArrowSize(TreeCtrl *tree, Drawable drawable, int up, int *width
 static LRESULT WINAPI
 WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-    Tcl_Interp *interp = (Tcl_Interp *)GetWindowLong(hwnd, GWL_USERDATA);
+  /*Tcl_Interp *interp = (Tcl_Interp *)GetWindowLong(hwnd, GWL_USERDATA); */
+    Tcl_Interp *interp = (Tcl_Interp *)vtkGetWindowLong(hwnd,vtkGWL_USERDATA);
 
     switch (msg) {
   case WM_THEMECHANGED:
@@ -636,7 +638,9 @@ CreateThemeMonitorWindow(HINSTANCE hinst, Tcl_Interp *interp)
     if (!hwnd)
   return NULL;
 
-    SetWindowLong(hwnd, GWL_USERDATA, (LONG)interp);
+    /* SetWindowLong(hwnd, GWL_USERDATA, (LONG)interp); */
+    vtkSetWindowLong(hwnd, vtkGWL_USERDATA, (vtkLONG)interp);
+
     ShowWindow(hwnd, SW_HIDE);
     UpdateWindow(hwnd);
 

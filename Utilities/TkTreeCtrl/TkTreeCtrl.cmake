@@ -54,6 +54,10 @@ macro(TkTreeCtrl_GET_LIBRARY supported sources include_path libs)
 
     set_source_files_properties(${_tktreectrl_srcs}
       PROPERTIES LANGUAGE C)
+    if(WIN32)
+      set_source_files_properties(${_tktreectrl_srcs}
+        PROPERTIES COMPILE_FLAGS -DSTDC_HEADERS)
+    endif(WIN32)
 
     set(_tktreectrl_srcs ${_tktreectrl_srcs} 
       ${_tktreectrl_path}/vtkKWTkTreeCtrlInit.cxx
