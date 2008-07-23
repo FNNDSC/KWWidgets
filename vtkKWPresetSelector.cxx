@@ -61,7 +61,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.73 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.74 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -266,12 +266,12 @@ vtkKWPresetSelector::vtkKWPresetSelector()
   this->Internals = new vtkKWPresetSelectorInternals;
   this->Internals->PresetNodeCounter = 0;
 
-  this->Internals->GroupSlotName = "DefaultGroupSlot";
-  this->Internals->CommentSlotName = "DefaultCommentSlot";
-  this->Internals->FileNameSlotName = "DefaultFileNameSlot";
+  this->Internals->GroupSlotName        = "DefaultGroupSlot";
+  this->Internals->CommentSlotName      = "DefaultCommentSlot";
+  this->Internals->FileNameSlotName     = "DefaultFileNameSlot";
   this->Internals->CreationTimeSlotName = "DefaultCreationTimeSlot";
-  this->Internals->ThumbnailSlotName = "DefaultThumbnailSlot";
-  this->Internals->ScreenshotSlotName = "DefaultScreenshotSlot";
+  this->Internals->ThumbnailSlotName    = "DefaultThumbnailSlot";
+  this->Internals->ScreenshotSlotName   = "DefaultScreenshotSlot";
 
   this->Internals->SelectPreviousButtonLabel = 
     ks_("Preset Selector|Button|Previous");
@@ -307,22 +307,24 @@ vtkKWPresetSelector::vtkKWPresetSelector()
   this->PresetList              = NULL;
   this->PresetControlFrame      = NULL;
   this->PresetButtons           = NULL;
-  this->HelpLabel      = NULL;
+  this->HelpLabel               = NULL;
 
-  this->ApplyPresetOnSelection = 1;
+  this->ApplyPresetOnSelection      = 1;
   this->SelectSpinButtonsVisibility = 1;
-  this->LocateButtonVisibility = 0;
-  this->LocateMenuEntryVisibility = 0;
-  this->RemoveButtonVisibility = 1;
-  this->RemoveMenuEntryVisibility = 1;
-  this->EmailButtonVisibility = 0;
-  this->EmailMenuEntryVisibility = 0;
-  this->HelpLabelVisibility = 0;
+  this->LocateButtonVisibility      = 0;
+  this->LocateMenuEntryVisibility   = 0;
+  this->RemoveButtonVisibility      = 1;
+  this->RemoveMenuEntryVisibility   = 1;
+  this->EmailButtonVisibility       = 0;
+  this->EmailMenuEntryVisibility    = 0;
+  this->HelpLabelVisibility         = 0;
 
-  this->ThumbnailSize = 32;
-  this->ScreenshotSize = 144;
-  this->PromptBeforeRemovePreset = 1;
-  this->MaximumNumberOfPresets = 0;
+  this->ThumbnailSize               = 32;
+  this->ScreenshotSize              = 144;
+  this->PromptBeforeRemovePreset    = 1;
+  this->MaximumNumberOfPresets      = 0;
+
+  this->EmailBody                 = NULL;
 
   this->ContextMenu = NULL;
 
@@ -426,6 +428,8 @@ vtkKWPresetSelector::~vtkKWPresetSelector()
     this->PresetButtonsBaseIcon->Delete();
     this->PresetButtonsBaseIcon = NULL;
     }
+
+  this->SetEmailBody(NULL);
 }
 
 //----------------------------------------------------------------------------
@@ -4189,6 +4193,12 @@ void vtkKWPresetSelector::PresetEmailCallback(int id)
     message += ctime_buffer;
     }
 
+  if (this->EmailBody)
+    {
+    message += "\n";
+    message += this->EmailBody;
+    }
+
   this->GetApplication()->SendEmail(
     NULL, subject.c_str(), message.c_str(), native_filename.c_str(), NULL);
 }
@@ -4541,6 +4551,9 @@ void vtkKWPresetSelector::PrintSelf(ostream& os, vtkIndent indent)
 {
   os << indent << "MaximumNumberOfPresets: " 
      << this->MaximumNumberOfPresets << endl;
+
+  os << indent << "EmailBody: " 
+     << (this->EmailBody ? this->EmailBody : "(None)") << endl;
 
   this->Superclass::PrintSelf(os,indent);
 }

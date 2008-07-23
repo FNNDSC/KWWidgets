@@ -425,6 +425,15 @@ public:
   vtkBooleanMacro(EmailMenuEntryVisibility,int);
 
   // Description:
+  // Set/Get the body of the email that will be sent alongside the attached
+  // preset when the "Email Preset" button or menu entry is triggered.
+  // Note that it will still appear after a shot paragraph describing which
+  // application sent that preset, the location of the preset on the sender's
+  // computer, the comment associated to the preset and its creation time.
+  vtkSetStringMacro(EmailBody);
+  vtkGetStringMacro(EmailBody);
+
+  // Description:
   // Set/Get the visibility of the remove preset button or the "Remove" entry
   // in the context menu (visible by default).
   // If visible, triggering this button will remove all selected presets and
@@ -769,6 +778,8 @@ protected:
   int ScreenshotSize;
   int PromptBeforeRemovePreset;
   int MaximumNumberOfPresets;
+
+  char *EmailBody;
 
   // Description:
   // Called when the number of presets has changed.
