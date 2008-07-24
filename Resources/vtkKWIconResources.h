@@ -1155,17 +1155,31 @@ static const unsigned char image_preset_email[] =
 
 /* 
  * Resource generated for file:
+ *    preset_load.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_preset_load_width          = 16;
+static const unsigned int  image_preset_load_height         = 16;
+static const unsigned int  image_preset_load_pixel_size     = 4;
+static const unsigned long image_preset_load_length         = 100;
+static const unsigned long image_preset_load_decoded_length = 1024;
+
+static const unsigned char image_preset_load[] = 
+  "eNr7//8/w/9RPKAYCP4jY1L1/n93EgWjm4fPTGz6sWFcZsD0Y7OTGHfAxYl0Q3RkyP7Bpp"
+  "8UvbjsJwaj64VhmLnEYHS9AFFOstM=";
+
+/* 
+ * Resource generated for file:
  *    preset_locate.png (zlib, base64) (image file)
  */
 static const unsigned int  image_preset_locate_width          = 16;
 static const unsigned int  image_preset_locate_height         = 16;
 static const unsigned int  image_preset_locate_pixel_size     = 4;
-static const unsigned long image_preset_locate_length         = 100;
+static const unsigned long image_preset_locate_length         = 76;
 static const unsigned long image_preset_locate_decoded_length = 1024;
 
 static const unsigned char image_preset_locate[] = 
-  "eNr7//8/w/9RPKAYCP4jY1L1/n93EgWjm4fPTGz6sWFcZsD0Y7OTGHfAxYl0Q3RkyP7Bpp"
-  "8UvbjsJwaj64VhmLnEYHS9AFFOstM=";
+  "eNr7//8/w/9RPOQxEPyHYXL0/n93cj8Mk2IGul5SzRho/bj839DQsJ/c8AfpJccMZEwvMw"
+  "Br4Nvr";
 
 /* 
  * Resource generated for file:

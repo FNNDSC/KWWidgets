@@ -108,6 +108,7 @@ public:
     IconPresetApply               = 95,
     IconPresetDelete              = 96,
     IconPresetEmail               = 97,
+    IconPresetLoad                = 210,
     IconPresetLocate              = 98,
     IconPresetNext                = 173,
     IconPresetPrevious            = 174,

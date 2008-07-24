@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.45 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.46 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -567,6 +567,14 @@ void vtkKWIcon::SetImage(int image)
         image_preset_email_width, image_preset_email_height,
         image_preset_email_pixel_size, 
         image_preset_email_length);
+      break;      
+
+    case vtkKWIcon::IconPresetLoad:
+      this->SetImage(
+        image_preset_load, 
+        image_preset_load_width, image_preset_load_height,
+        image_preset_load_pixel_size, 
+        image_preset_load_length);
       break;      
 
     case vtkKWIcon::IconPresetLocate:

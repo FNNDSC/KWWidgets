@@ -53,6 +53,7 @@ int vtkKWPresetSelector::UpdateButtonId         = 4;
 int vtkKWPresetSelector::RemoveButtonId         = 5;
 int vtkKWPresetSelector::LocateButtonId         = 6;
 int vtkKWPresetSelector::EmailButtonId          = 7;
+int vtkKWPresetSelector::LoadButtonId           = 8;
 
 const char *vtkKWPresetSelector::IdColumnName        = "Id";
 const char *vtkKWPresetSelector::ThumbnailColumnName = "Image";
@@ -61,7 +62,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.74 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.75 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -165,6 +166,7 @@ public:
   vtksys_stl::string RemoveButtonLabel;
   vtksys_stl::string LocateButtonLabel;
   vtksys_stl::string EmailButtonLabel;
+  vtksys_stl::string LoadButtonLabel;
 
   // Let's try to speed things up by caching some info
   // - preset id to row index
@@ -297,12 +299,16 @@ vtkKWPresetSelector::vtkKWPresetSelector()
   this->Internals->EmailButtonLabel = 
     ks_("Preset Selector|Button|Email");
 
+  this->Internals->LoadButtonLabel = 
+    ks_("Preset Selector|Button|Load");
+
   this->PresetAddCommand        = NULL;
   this->PresetUpdateCommand     = NULL;
   this->PresetApplyCommand      = NULL;
   this->PresetRemoveCommand     = NULL;
   this->PresetRemovedCommand    = NULL;
   this->PresetHasChangedCommand = NULL;
+  this->PresetLoadCommand       = NULL;
 
   this->PresetList              = NULL;
   this->PresetControlFrame      = NULL;
@@ -400,6 +406,12 @@ vtkKWPresetSelector::~vtkKWPresetSelector()
     {
     delete [] this->PresetHasChangedCommand;
     this->PresetHasChangedCommand = NULL;
+    }
+
+  if (this->PresetLoadCommand)
+    {
+    delete [] this->PresetLoadCommand;
+    this->PresetLoadCommand = NULL;
     }
 
   // Remove all presets
@@ -655,6 +667,11 @@ void vtkKWPresetSelector::CreatePresetButtons()
 
   pb = this->PresetButtons->AddWidget(vtkKWPresetSelector::EmailButtonId);
   pb->SetCommand(this, "PresetEmailCallback");
+
+  // Load preset
+
+  pb = this->PresetButtons->AddWidget(vtkKWPresetSelector::LoadButtonId);
+  pb->SetCommand(this, "PresetLoadCallback");
 }
 
 //---------------------------------------------------------------------------
@@ -752,6 +769,12 @@ void vtkKWPresetSelector::UpdatePresetButtons()
   this->PresetButtons->GetWidget(
     vtkKWPresetSelector::EmailButtonId)->SetEnabled(
       has_filenames_in_selection ? this->PresetButtons->GetEnabled() : 0);
+
+  // Load
+
+  this->PresetButtons->SetWidgetVisibility(
+    vtkKWPresetSelector::LoadButtonId, 
+    (this->PresetLoadCommand && *this->PresetLoadCommand) ? 1 : 0);
 }
 
 //----------------------------------------------------------------------------
@@ -890,6 +913,21 @@ void vtkKWPresetSelector::SetPresetButtonsIcons()
     pb->SetImageToPredefinedIcon(vtkKWIcon::IconPresetEmail);
     }
 
+  // Load
+
+  pb = 
+    this->PresetButtons->GetWidget(vtkKWPresetSelector::LoadButtonId);
+  if (this->PresetButtonsBaseIcon)
+    {
+    icon->SetImage(this->PresetButtonsBaseIcon);
+    icon->Compose(vtkKWIcon::IconPresetLoad);
+    pb->SetImageToIcon(icon);
+    }
+  else
+    {
+    pb->SetImageToPredefinedIcon(vtkKWIcon::IconPresetLoad);
+    }
+
   // Release icon
 
   if (icon)
@@ -946,6 +984,11 @@ void vtkKWPresetSelector::SetPresetButtonsHelpStrings()
 
   this->PresetButtons->GetWidget(vtkKWPresetSelector::EmailButtonId)->
     SetBalloonHelpString(ks_("Preset Selector|Email the selected preset(s)"));
+
+  // Load
+
+  this->PresetButtons->GetWidget(vtkKWPresetSelector::LoadButtonId)->
+    SetBalloonHelpString(ks_("Preset Selector|Load a preset"));
 }
 
 //----------------------------------------------------------------------------
@@ -1066,6 +1109,20 @@ void vtkKWPresetSelector::CreateToolbarPresetButtons()
   pb = vtkKWPushButton::SafeDownCast(
     this->PresetButtons->GetWidget(
       vtkKWPresetSelector::EmailButtonId));
+  toolbar_pb->SetConfigurationOption(
+    "-command", pb->GetConfigurationOption("-command"));
+  this->Toolbar->AddWidget(toolbar_pb);
+  toolbar_pb->Delete();
+
+  // Load preset
+
+  toolbar_pb = vtkKWPushButton::New();
+  toolbar_pb->SetParent(this->Toolbar->GetFrame());
+  toolbar_pb->Create();
+  toolbar_pb->SetText(this->GetLoadButtonLabel());
+  pb = vtkKWPushButton::SafeDownCast(
+    this->PresetButtons->GetWidget(
+      vtkKWPresetSelector::LoadButtonId));
   toolbar_pb->SetConfigurationOption(
     "-command", pb->GetConfigurationOption("-command"));
   this->Toolbar->AddWidget(toolbar_pb);
@@ -1203,6 +1260,21 @@ void vtkKWPresetSelector::UpdateToolbarPresetButtons()
       this->PresetButtons->GetWidget(
         vtkKWPresetSelector::EmailButtonId)->GetEnabled());
     }
+
+  // Load
+
+  toolbar_pb = vtkKWPushButton::SafeDownCast(
+    this->Toolbar->GetWidget(this->GetLoadButtonLabel()));
+  if (toolbar_pb)
+    {
+    this->Toolbar->SetWidgetVisibility(
+      toolbar_pb,
+      this->PresetButtons->GetWidgetVisibility(
+        vtkKWPresetSelector::LoadButtonId));
+    toolbar_pb->SetEnabled(
+      this->PresetButtons->GetWidget(
+        vtkKWPresetSelector::LoadButtonId)->GetEnabled());
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -1319,6 +1391,19 @@ void vtkKWPresetSelector::SetToolbarPresetButtonsIcons()
     toolbar_pb->SetConfigurationOption(
       "-image", pb->GetConfigurationOption("-image"));
     }
+
+  // Load preset
+
+  toolbar_pb = vtkKWPushButton::SafeDownCast(
+    this->Toolbar->GetWidget(this->GetLoadButtonLabel()));
+  if (toolbar_pb)
+    {
+    pb = vtkKWPushButton::SafeDownCast(
+      this->PresetButtons->GetWidget(
+        vtkKWPresetSelector::LoadButtonId));
+    toolbar_pb->SetConfigurationOption(
+      "-image", pb->GetConfigurationOption("-image"));
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -1409,6 +1494,16 @@ void vtkKWPresetSelector::SetToolbarPresetButtonsHelpStrings()
     toolbar_pb->SetBalloonHelpString(
       this->PresetButtons->GetWidget(
         vtkKWPresetSelector::EmailButtonId)->GetBalloonHelpString());
+    }
+
+  // Load preset
+
+  toolbar_pb = this->Toolbar->GetWidget(this->GetLoadButtonLabel());
+  if (toolbar_pb)
+    {
+    toolbar_pb->SetBalloonHelpString(
+      this->PresetButtons->GetWidget(
+        vtkKWPresetSelector::LoadButtonId)->GetBalloonHelpString());
     }
 }
 
@@ -4220,6 +4315,12 @@ void vtkKWPresetSelector::PresetEmailCallback()
 }
 
 //---------------------------------------------------------------------------
+int vtkKWPresetSelector::PresetLoadCallback()
+{
+  return this->InvokePresetLoadCommand();
+}
+
+//---------------------------------------------------------------------------
 void vtkKWPresetSelector::PresetSelectionCallback()
 {
   this->Update(); // this enable/disable the remove button if no selection
@@ -4365,6 +4466,25 @@ void vtkKWPresetSelector::InvokePresetHasChangedCommand(int id)
 }
 
 //----------------------------------------------------------------------------
+void vtkKWPresetSelector::SetPresetLoadCommand(
+  vtkObject *object, const char *method)
+{
+  this->SetObjectMethodCommand(&this->PresetLoadCommand, object, method);
+  this->Update(); // this show/hide the load button
+}
+
+//----------------------------------------------------------------------------
+int vtkKWPresetSelector::InvokePresetLoadCommand()
+{
+  if (this->PresetLoadCommand && *this->PresetLoadCommand && this->IsCreated())
+    {
+    return atoi(vtkKWTkUtilities::EvaluateSimpleString(
+                  this->GetApplication(), this->PresetLoadCommand));
+    }
+  return -1;
+}
+
+//----------------------------------------------------------------------------
 vtkKWToolbar* vtkKWPresetSelector::GetToolbar()
 {
   if (!this->Toolbar)
@@ -4421,6 +4541,12 @@ const char* vtkKWPresetSelector::GetLocateButtonLabel()
 const char* vtkKWPresetSelector::GetEmailButtonLabel()
 {
   return this->Internals->EmailButtonLabel.c_str();
+}
+
+//---------------------------------------------------------------------------
+const char* vtkKWPresetSelector::GetLoadButtonLabel()
+{
+  return this->Internals->LoadButtonLabel.c_str();
 }
 
 //---------------------------------------------------------------------------

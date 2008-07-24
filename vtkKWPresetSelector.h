@@ -467,7 +467,8 @@ public:
   // arguments in string form. If the object is NULL, the method is still
   // evaluated as a simple command. 
   // The following output is expected from the command:
-  // - the unique id of the preset that was added (by calling AddPreset()), -1 otherwise
+  // - the unique id of the preset that was added (by calling AddPreset()), 
+  //   -1 otherwise
   virtual void SetPresetAddCommand(vtkObject *object, const char *method);
 
   // Description:
@@ -580,6 +581,25 @@ public:
     vtkObject *object, const char *method);
 
   // Description:
+  // Specifies a command to associate with the widget. This command is 
+  // typically invoked when the "load preset" button is pressed.
+  // This gives the opportunity for the application to invoke a file dialog,
+  // let the user pick a preset file, load it and collect the relevant 
+  // information to store in a new preset. The application is then
+  // free to add the preset (using the AddPreset() method) and set its
+  // fields independently (using the SetPresetGroup(), SetPresetComment(),
+  // SetPreset...() methods).
+  // Note that if not set, the "load preset" button is not visible.
+  // The 'object' argument is the object that will have the method called on
+  // it. The 'method' argument is the name of the method to be called and any
+  // arguments in string form. If the object is NULL, the method is still
+  // evaluated as a simple command. 
+  // The following output is expected from the command:
+  // - the unique id of the preset that was loaded and added (by calling
+  //   AddPreset()), -1 otherwise
+  virtual void SetPresetLoadCommand(vtkObject *object, const char *method);
+
+  // Description:
   // Refresh the interface.
   virtual void Update();
 
@@ -661,6 +681,7 @@ public:
   virtual void PresetSelectionCallback();
   virtual void PresetSelectionChangedCallback() {};
   virtual void PresetRightClickCallback(int row, int col, int x, int y);
+  virtual int  PresetLoadCallback();
   virtual void UpdatePresetRowCallback(int id);
   virtual void UpdatePresetRowsCallback();
   virtual void ColumnSortedCallback();
@@ -828,6 +849,9 @@ protected:
   char *PresetHasChangedCommand;
   virtual void InvokePresetHasChangedCommand(int id);
 
+  char *PresetLoadCommand;
+  virtual int InvokePresetLoadCommand();
+
   // Description:
   // Get the index of a given column.
   virtual int GetIdColumnIndex();
@@ -860,6 +884,7 @@ protected:
   static int RemoveButtonId;
   static int LocateButtonId;
   static int EmailButtonId;
+  static int LoadButtonId;
   //ETX
 
   // Description:
@@ -872,6 +897,7 @@ protected:
   virtual const char* GetRemoveButtonLabel();
   virtual const char* GetLocateButtonLabel();
   virtual const char* GetEmailButtonLabel();
+  virtual const char* GetLoadButtonLabel();
   
   // Description:
   // Delete all presets, i.e. deallocate all presets and remove them
