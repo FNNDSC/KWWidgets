@@ -1,5 +1,172 @@
-What is new in Tablelist 4.5?
+What is new in Tablelist 4.9?
 -----------------------------
+
+1.  Added the "-wrap" column configuration option, which makes it
+    possible to display long texts in word-wrapped multi-line rather
+    than snipped form (thanks to Alexander Schöpe and Anant Adke for
+    their proposals).  Also, added support for interactive cell editing
+    with a word- or char-wrapped text widget when using Tk 8.5 (thanks
+    to Juberi Rajib for discussions on this topic).
+
+2.  Support for dynamic-width embedded windows, with the aid of the new
+    "-stretchwindow" cell configuration option (thanks to Kurt Kurczyk,
+    Bryan Oakley, and Rasmus Debitsch for their proposals). The demo
+    script "embeddedWindows.tcl" and its tile-based counterpart now make
+    use of this option.
+
+3.  New "formatinfo" subcommand, returning information about the cell
+    whose content is being formatted by a command specified as the value
+    of the "-formatcommand" column configuration option (thanks to Goran
+    Ivankovic and Sebastien Barre for their proposals).
+
+4.  Changed the default value of the "-activestyle" configuration option
+    from "underline" to "frame" and that of the "-setfocus" option from
+    0 to 1, making them conform to similar changes in Tk 8.5 related to
+    the listbox widget.
+
+5.  Improved the appearance of the header labels for the "aqua" theme
+    (thanks to Torsten Berg for discussing this topic on the Wiki).
+
+6.  Eliminated the potential invocation of the "unknown" command from
+    within the Tablelist code (thanks to Roger Niva for discussions on
+    this topic).
+
+7.  When starting the interactive cell editing with the aid of a
+    combobox widget, the list associated with the latter is only dropped
+    down if the combobox is read-only (thanks to Bryan Oakley for his
+    proposal).
+
+8.  The "setThemeDefaults" command no longer throws an error if the
+    current theme is not explicitly supported by Tablelist.  Instead, it
+    uses the options set by the current theme and falls back to the
+    "default" one for the rest (thanks to Schelte Bron for his valuable
+    contribution).
+
+9.  Improved the tablelist widget's appearance when the header labels
+    are not shown (thanks to Mark Garvey for his input).
+
+10. Fixed two bugs related to the optimized item insertion (thanks to
+    Harold Campbell and Bryan Oakley for their bug reports).
+
+11. Fixed a bug related to the "-showlinenumbers" column configuration
+    option (thanks to Martin Lemburg for his bug report).
+
+12. Several further improvements and minor bug fixes.
+
+What was new in Tablelist 4.8?
+------------------------------
+
+This release fixes a few nasty bugs related to the optimized item
+insertion, introduced in the previous Tablelist version (thanks to
+Harold Campbell, Roger Niva, and Jörg Klingseisen for their bug
+reports).
+
+What was new in Tablelist 4.7?
+------------------------------
+
+1.  Significant performance improvements related to the "insert",
+    "rowconfigure", "sort", "sortbycolumn", and "sortbycolumnlist"
+    subcommands (thanks to Harold Campbell for his valuable
+    contribution to speeding up the item insertion).  The extent of the
+    speed-up depends on the configuration options present at column,
+    row, and cell levels.
+
+2.  Support for cell- and column label-specific balloon help, with the
+    aid of the new configuration options "-tooltipaddcommand" and
+    "-tooltipdelcommand".
+
+3.  New subcommands "iselemsnipped" and "istitlesnipped", which make it
+    very easy to display the full cell texts and column titles as
+    tooltips for cells and header labels with snipped contents.
+
+4.  New subcommands "configcolumnlist", "configcolumns",
+    "configrowlist", "configrows", "configcelllist", and "configcells",
+    which allow you to configure several columns/rows/cells with a
+    single command invocation (thanks to Harold Campbell, Jeff Godfrey,
+    and Paul Obermeier for their proposals).
+
+5.  Worked around some performance problems regarding the "switch"
+    command in Tcl 8.5a6/8.5b1 and ActiveTcl 8.4.14.
+
+6.  Made sure that ActiveState's "style::as" package won't break the
+    mousewheel bindings (thanks to Michael Schlenker for drawing my
+    attention to this problem).
+
+7.  Improved the focus handling when resizing a column interactively
+    (thanks to Jorge Enderr for his bug report).
+
+8.  Corrected a typo in the adaptation of vertical scrolling to the
+    text widget changes made in Tk 8.5 (thanks to Julian M Noble for
+    his posting on the Wiki related to this subject).
+
+9.  Fixed a bug related to hidden rows when having "-selecttype cell",
+    introduced in Tablelist version 4.3 (thanks to Harold Campbell for
+    his bug report and discussions on this subject).
+
+10. Fixed a bug in the "cellconfigure" subcommand, introduced in the
+    previous Tablelist release (thanks to Roy Terry for reporting this
+    problem on the Wiki).
+
+11. Fixed a bug in the "-changesnipside" option (thanks to Kai Morich
+    for his bug report).
+
+12. Numerous further improvements in the code and documentation.
+
+What was new in Tablelist 4.6?
+------------------------------
+
+1.  Tablelist_tile now supports tile 0.8 and Tk 8.5a6/8.5b1 (where tile
+    is integrated in the core).  The new commands "tablelist::setTheme",
+    "tablelist::getCurrentTheme", and "tablelist::getThemes" enable you
+    to set and get the current theme and to query the available ones,
+    without having to worry about the incompatibilities between the
+    various tile versions.
+
+2.  New column configuration option "-changesnipside", which allows you
+    to override the alignment-specific default snip side (thanks to
+    Georgios Petasis for his proposal).
+
+3.  New "columnwidth" subcommand, with the options "-requested",
+    "-stretched", and "-total" (thanks to Matthew Callaghan, Richard
+    Finstad, Lieven Forrez, and Tom Roeder for their proposals).
+
+4.  Support for the new virtual event <<TablelistColumnResized>>,
+    generated after resizing a column interactively (thanks to Kurt
+    Kurczyk for his proposal).
+
+5.  Visual improvement:  Within an active row, the gap to the left or
+    right of an embedded image or window no longer appears underlined
+    (when the "-activestyle" option has its default value "underline").
+
+6.  Embedded images and windows are no longer hidden during interactive
+    cell editing (except the editing with the aid of a Tk or tile
+    checkbutton widget).
+
+7.  Significantly improved the redraw and stretching behavior when
+    resizing a column interactively.
+
+8.  Eliminated some annoying visual effects caused by hidden columns
+    when displaying the items of an already visible tablelist widget
+    (thanks to Rolf Ade for discussions on this topic).
+
+9.  Adapted the implementation of vertical scrolling to the text widget
+    changes made in Tk 8.5 (thanks to Julian M Noble for his posting on
+    the Wiki related to this subject).
+
+10. Fixed a bug related to hidden rows, introduced in Tablelist version
+    4.3 (thanks to Matthew Callaghan for his bug report).
+
+11. Eliminated the possible endless loop caused by some option database
+    settings in the "seecell" subcommand (thanks to Erik Allaert and
+    Mauro Comin for reporting this bug).
+
+12. Added a detailed performance-related hint to the description of the
+    "-listvariable" configuration option.
+
+13. Numerous further improvements and minor bug fixes.
+
+What was new in Tablelist 4.5?
+------------------------------
 
 1.  Static-width columns are now displayed much faster than in earlier
     Tablelist releases.

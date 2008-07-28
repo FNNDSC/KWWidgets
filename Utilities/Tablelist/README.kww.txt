@@ -1,4 +1,4 @@
-This is the Tablelist 4.5 widget. See info and license below.
+This is the Tablelist 4.9 widget. See info and license below.
 
 The changes are:
 

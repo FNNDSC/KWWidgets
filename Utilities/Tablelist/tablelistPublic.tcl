@@ -1,16 +1,15 @@
 #==============================================================================
 # Main Tablelist and Tablelist_tile package module.
 #
-# Copyright (c) 2000-2006  Csaba Nemethi (E-mail: csaba.nemethi@t-online.de)
+# Copyright (c) 2000-2008  Csaba Nemethi (E-mail: csaba.nemethi@t-online.de)
 #==============================================================================
 
 namespace eval ::tablelist {
     #
     # Public variables:
     #
-    variable version	4.5
-    #variable library	[DIR]
-	variable library	[file dirname [info script]]
+    variable version	4.9.1
+    variable library	[file dirname [info script]]
 
     #
     # Creates a new tablelist widget:
@@ -18,14 +17,9 @@ namespace eval ::tablelist {
     namespace export	tablelist
 
     #
-    # Sorts the items of a tablelist widget based on one of its columns:
+    # Sort the items of a tablelist widget by one or more of its columns:
     #
-    namespace export	sortByColumn
-
-    #
-    # Extends or updates the list of sort columns:
-    #
-    namespace export	addToSortColumns
+    namespace export	sortByColumn addToSortColumns
 
     #
     # Helper procedures used in binding scripts:
@@ -41,11 +35,6 @@ namespace eval ::tablelist {
     namespace export	addOakleyCombobox
     namespace export	addDateMentry addTimeMentry addFixedPointMentry \
     			addIPAddrMentry
-
-    #
-    # Sets some configuration options to theme-specific default values:
-    #
-    namespace export	setThemeDefaults
 }
 
 package provide tablelist::common $::tablelist::version
