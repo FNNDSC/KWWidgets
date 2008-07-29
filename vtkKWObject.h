@@ -73,9 +73,13 @@ public:
 
   // Description:
   // Add all the default observers needed by that object, or remove
-  // all the observers that were added through AddCallbackCommandObserver.
+  // all the observers that were added through AddCallbackCommandObservers.
   // Subclasses can override these methods to add/remove their own default
   // observers, but should call the superclass too.
+  // Note that RemoveCallbackCommandObservers should not remove *all* the
+  // observers that were added using AddCallbackCommandObserver, but only
+  // the ones that were added in AddCallbackCommandObservers (i.e. they
+  // are symmetrical methods).
   virtual void AddCallbackCommandObservers() {};
   virtual void RemoveCallbackCommandObservers();
 

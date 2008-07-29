@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWObject);
-vtkCxxRevisionMacro(vtkKWObject, "$Revision: 1.59 $");
+vtkCxxRevisionMacro(vtkKWObject, "$Revision: 1.60 $");
 
 vtkCxxSetObjectMacro(vtkKWObject, Application, vtkKWApplication);
 
@@ -42,6 +42,8 @@ vtkKWObject::~vtkKWObject()
   if (this->CallbackCommand)
     {
     this->RemoveCallbackCommandObservers();
+    this->CallbackCommand->SetClientData(NULL); 
+    this->CallbackCommand->SetCallback(NULL);
     this->CallbackCommand->Delete();
     this->CallbackCommand = NULL;
     }
@@ -125,11 +127,10 @@ vtkCallbackCommand* vtkKWObject::GetCallbackCommand()
   if (!this->CallbackCommand)
     {
     this->CallbackCommand = vtkCallbackCommand::New();
+    this->CallbackCommand->SetClientData(this); 
+    this->CallbackCommand->SetCallback(
+      vtkKWObject::ProcessCallbackCommandEventsFunction);
     }
-
-  this->CallbackCommand->SetClientData(this); 
-  this->CallbackCommand->SetCallback(
-    vtkKWObject::ProcessCallbackCommandEventsFunction);
 
   return this->CallbackCommand;
 }
@@ -164,8 +165,6 @@ void vtkKWObject::RemoveCallbackCommandObservers()
   if (this->CallbackCommand)
     {
     this->RemoveObserver(this->CallbackCommand);
-    this->CallbackCommand->SetClientData(NULL); 
-    this->CallbackCommand->SetCallback(NULL);
     }
 }
 

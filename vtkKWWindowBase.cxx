@@ -34,7 +34,7 @@
 
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.61 $");
+vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.62 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindowBase );
@@ -284,6 +284,7 @@ void vtkKWWindowBase::PrepareForDelete()
     }
 
   this->RemoveCallbackCommandObservers();
+  this->RemoveErrorCallbackCommandObservers();
 }
 
 //----------------------------------------------------------------------------
@@ -407,6 +408,7 @@ void vtkKWWindowBase::CreateWidget()
   this->Pack();
 
   this->AddCallbackCommandObservers();
+  this->AddErrorCallbackCommandObservers();
 }
 
 //----------------------------------------------------------------------------
@@ -1368,7 +1370,17 @@ void vtkKWWindowBase::UpdateMenuState()
 void vtkKWWindowBase::AddCallbackCommandObservers()
 {
   this->Superclass::AddCallbackCommandObservers();
+}
 
+//----------------------------------------------------------------------------
+void vtkKWWindowBase::RemoveCallbackCommandObservers()
+{
+  this->Superclass::RemoveCallbackCommandObservers();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWindowBase::AddErrorCallbackCommandObservers()
+{
   if (this->GetApplication())
     {
     // If the application or log dialog sends an error/warning/debug/info, 
@@ -1408,10 +1420,8 @@ void vtkKWWindowBase::AddCallbackCommandObservers()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWWindowBase::RemoveCallbackCommandObservers()
+void vtkKWWindowBase::RemoveErrorCallbackCommandObservers()
 {
-  this->Superclass::RemoveCallbackCommandObservers();
-
   if (this->GetApplication())
     {
     this->RemoveCallbackCommandObserver(

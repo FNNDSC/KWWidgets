@@ -311,6 +311,14 @@ public:
   virtual void RemoveCallbackCommandObservers();
 
   // Description:
+  // Add observers required to propagate error messages. Note that they
+  // were not put in AddCallbackCommandObservers on purpose, so that they
+  // do not get accidentally removed by RemoveCallbackCommandObservers: 
+  // propagation of error messages, after all, should never be disabled.
+  virtual void AddErrorCallbackCommandObservers();
+  virtual void RemoveErrorCallbackCommandObservers();
+
+  // Description:
   // Callbacks. Internal, do not use.
   virtual void ErrorIconCallback();
   virtual void PrintSettingsCallback() {};
