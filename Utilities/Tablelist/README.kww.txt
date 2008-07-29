@@ -25,7 +25,7 @@ The changes are:
     	# Finish a possibly active cell editing
     	#
 	    if {$data(editRow) >= 0} {
-	        finisheditingSubCmd $win
+           doFinishEditing $win
     	  } else {
             event generate $win <<TablelistUneditableCellSelected>>
           }
