@@ -42,7 +42,7 @@
  * NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
  * MODIFICATIONS.
  *
- * RCS: @(#) $Id: tkDND.cpp,v 1.8 2007-09-20 15:29:37 barre Exp $
+ * RCS: @(#) $Id: tkDND.cpp,v 1.9 2008-07-30 14:54:28 barre Exp $
  */
 
 #include "tkDND.h"
@@ -216,7 +216,7 @@ int TkDND_DndObjCmd(ClientData clientData, Tcl_Interp *interp,
         *ptr, *event, *cursor_callback = NULL;
     int button = 0, i, j, elem_nu, des_nu, des_len, index, status, priority;
     unsigned long eventType, eventMask;     /* Laurent Riesterer 06/07/2000 */
-    static char *Methods[] = {
+    static const char *Methods[] = {
         "aware", "bindsource", "bindtarget",
         "clearsource", "cleartarget", "drag", (char *) NULL
     };

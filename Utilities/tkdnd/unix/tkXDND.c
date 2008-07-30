@@ -620,7 +620,7 @@ static int TkDND_WidgetApplyPosition(DndClass *dnd, Window widgets_window,
 static int TkDND_ParseAction(DndClass *dnd, DndInfo *infoPtr, DndType *typePtr,
                              Atom default_action, Atom *supported_action,
                              Atom *desired_type) {
-    static char *Actions[] = {
+    static const char *Actions[] = {
         "none", "default", "copy", "move", "link", "ask", "private",
         (char *) NULL
     };

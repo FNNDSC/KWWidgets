@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeElem.c,v 1.5 2007-09-20 15:00:42 barre Exp $
+ * RCS: @(#) $Id: tkTreeElem.c,v 1.6 2008-07-30 14:54:28 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -3418,18 +3418,18 @@ struct ElementWindow
 static Tk_OptionSpec windowOptionSpecs[] = {
 #ifdef CLIP_WINDOW
     {TK_OPTION_CUSTOM, "-clip", (char *) NULL, (char *) NULL,
-     (char) NULL, -1, Tk_Offset(ElementWindow, clip),
+     (char *) NULL, -1, Tk_Offset(ElementWindow, clip),
      TK_OPTION_NULL_OK, (ClientData) &booleanCO, 0},
 #endif
     {TK_OPTION_CUSTOM, "-destroy", (char *) NULL, (char *) NULL,
-     (char) NULL, -1, Tk_Offset(ElementWindow, destroy),
+     (char *) NULL, -1, Tk_Offset(ElementWindow, destroy),
      TK_OPTION_NULL_OK, (ClientData) &booleanCO, 0},
     {TK_OPTION_CUSTOM, "-draw", (char *) NULL, (char *) NULL,
      (char *) NULL,
      Tk_Offset(ElementWindow, draw.obj), Tk_Offset(ElementWindow, draw),
      TK_OPTION_NULL_OK, (ClientData) NULL, EWIN_CONF_DRAW},
     {TK_OPTION_WINDOW, "-window", (char *) NULL, (char *) NULL,
-     (char) NULL, -1, Tk_Offset(ElementWindow, tkwin),
+     (char *) NULL, -1, Tk_Offset(ElementWindow, tkwin),
      TK_OPTION_NULL_OK, (ClientData) NULL, EWIN_CONF_WINDOW},
     {TK_OPTION_END, (char *) NULL, (char *) NULL, (char *) NULL,
      (char *) NULL, 0, -1, 0, (ClientData) NULL, 0}

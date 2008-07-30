@@ -39,7 +39,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.6 $");
 
 //----------------------------------------------------------------------------
 vtkKWColorPickerWidget::vtkKWColorPickerWidget()
@@ -495,8 +495,8 @@ void vtkKWColorPickerWidget::CreateWidget()
   // --------------------------------------------------------------
   // RGB sliders
 
-  char *rgb_label[3] = {"R:", "G:", "B:"};
-  char *rgb_unit[3] = {" ", " ", " "};
+  const char *rgb_label[3] = {"R:", "G:", "B:"};
+  const char *rgb_unit[3] = {" ", " ", " "};
 
   for (i = 0; i < 3; i++)
     {
@@ -602,8 +602,8 @@ void vtkKWColorPickerWidget::CreateWidget()
   // --------------------------------------------------------------
   // HSV sliders
 
-  char *hsv_label[3] = {"H:", "S:", "V:"};
-  char *hsv_unit[3] = {"°", "%", "%"};
+  const char *hsv_label[3] = {"H:", "S:", "V:"};
+  const char *hsv_unit[3] = {"°", "%", "%"};
 
   for (i = 0; i < 3; i++)
     {
