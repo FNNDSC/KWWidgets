@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWHistogramSet);
-vtkCxxRevisionMacro(vtkKWHistogramSet, "$Revision: 1.7 $");
+vtkCxxRevisionMacro(vtkKWHistogramSet, "$Revision: 1.8 $");
 
 //----------------------------------------------------------------------------
 class vtkKWHistogramSetInternals
@@ -107,7 +107,7 @@ vtkKWHistogramSet::~vtkKWHistogramSet()
 //----------------------------------------------------------------------------
 int vtkKWHistogramSet::GetNumberOfHistograms()
 {
-  return this->Internals ? this->Internals->Histograms.size() : 0;
+  return this->Internals ? (int)this->Internals->Histograms.size() : 0;
 }
 
 //----------------------------------------------------------------------------

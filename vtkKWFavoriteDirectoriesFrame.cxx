@@ -56,7 +56,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.24 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.25 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -1137,7 +1137,7 @@ void vtkKWFavoriteDirectoriesFrame::WriteFavoriteDirectoriesToSystemRegistry()
     return;
     }
 
-  int num_dir = this->Internals->FavoriteDirectories.size();
+  int num_dir = (int)this->Internals->FavoriteDirectories.size();
   if (num_dir <= 0)
     {
     return;

@@ -7,7 +7,7 @@
  * Copyright (c) 2002-2003 Christian Krone
  * Copyright (c) 2003 ActiveState Corporation
  *
- * RCS: @(#) $Id: tkTreeColumn.c,v 1.3 2008-01-24 20:11:40 barre Exp $
+ * RCS: @(#) $Id: tkTreeColumn.c,v 1.4 2008-07-30 16:47:20 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -4518,7 +4518,7 @@ Column_Draw(
   char staticStr[256], *text = staticStr;
   int textLen = column->textLen;
   char *ellipsis = "...";
-  int ellipsisLen = strlen(ellipsis);
+  int ellipsisLen = (int)strlen(ellipsis);
   int tx, ty, h;
 
   if (textLen + ellipsisLen > sizeof(staticStr))

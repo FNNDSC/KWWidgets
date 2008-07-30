@@ -42,7 +42,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLogWidget );
-vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.11 $");
 
 vtkIdType vtkKWLogWidget::IdCounter = 1;
 
@@ -392,7 +392,7 @@ int vtkKWLogWidget::GetNumberOfRecords()
 {
   if (this->Internals)
     {
-    return this->Internals->RecordContainer.size();
+    return (int)this->Internals->RecordContainer.size();
     }
   return 0;
 }
@@ -671,7 +671,7 @@ int vtkKWLogWidget::AddRecord(
   // there is more. The whole description will be displayed 
   // in the description box when this record is selected.
 
-  int newline_pos = record.Description.find_first_of('\n');
+  int newline_pos = (int)record.Description.find_first_of('\n');
   if (newline_pos > 0 && newline_pos < (int)record.Description.length())
     {
     vtksys_stl::string celltext = record.Description.substr(

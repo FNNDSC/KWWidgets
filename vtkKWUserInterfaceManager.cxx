@@ -22,7 +22,7 @@
 #include <vtksys/stl/algorithm>
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWUserInterfaceManager, "$Revision: 1.22 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManager, "$Revision: 1.23 $");
 
 //----------------------------------------------------------------------------
 class vtkKWUserInterfaceManagerInternals
@@ -283,7 +283,7 @@ void vtkKWUserInterfaceManager::UpdateEnableState()
 // ----------------------------------------------------------------------------
 int vtkKWUserInterfaceManager::GetNumberOfPanels()
 {
-  return this->Internals ? this->Internals->Panels.size() : 0;
+  return this->Internals ? (int)this->Internals->Panels.size() : 0;
 }
 
 //----------------------------------------------------------------------------

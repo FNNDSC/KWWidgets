@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDragAndDropTargetSet );
-vtkCxxRevisionMacro(vtkKWDragAndDropTargetSet, "$Revision: 1.15 $");
+vtkCxxRevisionMacro(vtkKWDragAndDropTargetSet, "$Revision: 1.16 $");
 
 //----------------------------------------------------------------------------
 class vtkKWDragAndDropTargetSetInternals
@@ -406,7 +406,7 @@ int vtkKWDragAndDropTargetSet::HasTarget(vtkKWWidget *widget)
 //----------------------------------------------------------------------------
 int vtkKWDragAndDropTargetSet::GetNumberOfTargets()
 {
-  return this->Internals ? this->Internals->Targets.size() : 0;
+  return this->Internals ? (int)this->Internals->Targets.size() : 0;
 }
 
 //----------------------------------------------------------------------------

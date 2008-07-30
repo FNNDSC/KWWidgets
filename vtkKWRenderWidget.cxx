@@ -44,7 +44,7 @@
 #include <vtksys/stl/map>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.165 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.166 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -396,7 +396,7 @@ vtkRenderer* vtkKWRenderWidget::GetNthRenderer(int index)
 //----------------------------------------------------------------------------
 int vtkKWRenderWidget::GetNumberOfRenderers()
 {
-  return this->Internals->RendererPool.size();
+  return (int)this->Internals->RendererPool.size();
 }
 
 //----------------------------------------------------------------------------
@@ -487,7 +487,7 @@ vtkRenderer* vtkKWRenderWidget::GetNthOverlayRenderer(int index)
 //----------------------------------------------------------------------------
 int vtkKWRenderWidget::GetNumberOfOverlayRenderers()
 {
-  return this->Internals->OverlayRendererPool.size();
+  return (int)this->Internals->OverlayRendererPool.size();
 }
 
 //----------------------------------------------------------------------------

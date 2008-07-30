@@ -46,7 +46,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.94 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.95 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -1868,7 +1868,7 @@ int vtkKWTkUtilities::GetSlavesBoundingBoxInPack(Tcl_Interp *interp,
   
   // Browse each slave for its requested width/height
 
-  int buffer_length = strlen(result);
+  int buffer_length = (int)strlen(result);
   char *buffer = new char [buffer_length + 1];
   strcpy(buffer, result);
 
@@ -1975,7 +1975,7 @@ int vtkKWTkUtilities::GetSlaveHorizontalPositionInPack(Tcl_Interp *interp,
   
   // Browse each slave until the right one if found
 
-  int buffer_length = strlen(result);
+  int buffer_length = (int)strlen(result);
   char *buffer = new char [buffer_length + 1];
   strcpy(buffer, result);
 
@@ -2251,7 +2251,7 @@ int vtkKWTkUtilities::SynchroniseLabelsMaximumWidth(
       continue;
       }
     result = Tcl_GetStringResult(interp);
-    length = result ? strlen(result) : 0;
+    length = result ? (int)strlen(result) : 0;
 
     // Store the max
 
@@ -2345,7 +2345,7 @@ int vtkKWTkUtilities::GetSlavesInPack(
   
   // Browse each slave and store it
 
-  int buffer_length = strlen(result);
+  int buffer_length = (int)strlen(result);
   char *buffer = new char [buffer_length + 1];
   strcpy(buffer, result);
 

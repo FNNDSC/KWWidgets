@@ -22,7 +22,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWStateMachineCluster);
-vtkCxxRevisionMacro(vtkKWStateMachineCluster, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWStateMachineCluster, "$Revision: 1.4 $");
 
 vtkIdType vtkKWStateMachineCluster::IdCounter = 1;
 
@@ -109,7 +109,7 @@ int vtkKWStateMachineCluster::GetNumberOfStates()
 {
   if (this->Internals)
     {
-    return this->Internals->StatePool.size();
+    return (int)this->Internals->StatePool.size();
     }
 
   return 0;

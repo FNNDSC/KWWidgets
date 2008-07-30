@@ -50,7 +50,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.108 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.109 $");
 
 //----------------------------------------------------------------------------
 class vtkKWNotebookInternals
@@ -2650,8 +2650,8 @@ void vtkKWNotebook::ConstrainVisiblePages()
       ((int)this->Internals->MostRecentPages.size() >
        this->NumberOfMostRecentPages))
     {
-    int diff = 
-      this->Internals->MostRecentPages.size() - this->NumberOfMostRecentPages;
+    int diff = (int)this->Internals->MostRecentPages.size() - 
+      this->NumberOfMostRecentPages;
 
     // There are more pages than allowed, try to remove some of them
 

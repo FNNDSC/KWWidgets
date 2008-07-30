@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.41 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.42 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -513,7 +513,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   vtksys::SystemTools::Split(
     dirtree->GetNodeChildren(node), children, ' ');
   vtksys_stl::vector<vtksys_stl::string>::iterator node_it, node_end;
-  int num_children = children.size();
+  int num_children = (int)children.size();
 
   vtksys_stl::list<vtksys_stl::string> children_text;
   vtksys_stl::list<vtksys_stl::string>::iterator node_text_it, node_text_end;
@@ -1508,7 +1508,7 @@ int vtkKWDirectoryExplorer::GetNumberOfSelectedDirectories()
   vtksys::SystemTools::Split(this->DirectoryTree->GetWidget()->GetSelection(), 
                              selnodes, ' ');
 
-  return selnodes.size();
+  return (int)selnodes.size();
 }
 
 //----------------------------------------------------------------------------
@@ -1596,7 +1596,7 @@ void vtkKWDirectoryExplorer::RemoveDirectoryFromHistory(
 {
   // Update the most recent directory pointer and the history list
 
-  int oldsize = this->Internals->MostRecentDirList.size();
+  int oldsize = (int)this->Internals->MostRecentDirList.size();
   if (oldsize > 0)
     {
     vtksys_stl::string node_str = node;
@@ -1615,7 +1615,7 @@ void vtkKWDirectoryExplorer::RemoveDirectoryFromHistory(
 
     this->Internals->MostRecentDirList.remove(node_str.c_str());
 
-    int newsize = this->Internals->MostRecentDirList.size();
+    int newsize = (int)this->Internals->MostRecentDirList.size();
 
     if (newsize > 0 && newsize < oldsize)
       {

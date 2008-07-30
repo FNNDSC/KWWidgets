@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWResourceUtilities);
-vtkCxxRevisionMacro(vtkKWResourceUtilities, "$Revision: 1.18 $");
+vtkCxxRevisionMacro(vtkKWResourceUtilities, "$Revision: 1.19 $");
 
 //----------------------------------------------------------------------------
 int vtkKWResourceUtilities::ReadImage(
@@ -461,7 +461,8 @@ int vtkKWResourceUtilities::ConvertImageToHeader(
         {
         unsigned long file_length = vtksys::SystemTools::FileLength(filename);
         buffer = new unsigned char [file_length];
-        buffer_length = fread(buffer, 1, file_length, filep);
+        buffer_length = 
+          (unsigned long)fread(buffer, 1, (size_t)file_length, filep);
         if (ferror(filep))
           {
           if (feof(filep))

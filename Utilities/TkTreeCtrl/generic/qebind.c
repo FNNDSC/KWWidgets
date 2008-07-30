@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: qebind.c,v 1.2 2007-09-19 19:18:43 barre Exp $
+ * RCS: @(#) $Id: qebind.c,v 1.3 2008-07-30 16:47:20 barre Exp $
  */
 
 /*
@@ -217,7 +217,7 @@ int QE_InstallEvent(QE_BindingTable bindingTable, char *name, QE_ExpandProc expa
   type = bindPtr->nextEventId++;
 
   eiPtr = (EventInfo *) Tcl_Alloc(sizeof(EventInfo));
-  eiPtr->name = Tcl_Alloc(strlen(name) + 1);
+  eiPtr->name = Tcl_Alloc((int)strlen(name) + 1);
   strcpy(eiPtr->name, name);
   eiPtr->type = type;
   eiPtr->expandProc = expandProc;
@@ -673,7 +673,7 @@ int QE_CreateBinding(QE_BindingTable bindingTable, ClientData object,
   /* Append given command to any existing command */
   if (append && cmdOld)
   {
-    length = strlen(cmdOld) + strlen(command) + 2;
+    length = (int)strlen(cmdOld) + (int)strlen(command) + 2;
     cmdNew = Tcl_Alloc((unsigned) length);
     (void) sprintf(cmdNew, "%s\n%s", cmdOld, command);
   }
@@ -1026,7 +1026,7 @@ static void ExpandPercents(BindingTable *bindPtr, ClientData object,
     }
     if (string != command)
     {
-      Tcl_DStringAppend(result, command, string - command);
+    Tcl_DStringAppend(result, command, (int)(string - command));
       command = string;
     }
     if (*command == 0)

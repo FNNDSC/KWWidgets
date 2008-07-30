@@ -62,7 +62,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.75 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.76 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -3239,7 +3239,7 @@ int vtkKWPresetSelector::GetNumberOfPresets()
 {
   if (this->Internals)
     {
-    return this->Internals->PresetPool.size();
+    return (int)this->Internals->PresetPool.size();
     }
   return 0;
 }

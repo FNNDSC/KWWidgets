@@ -31,7 +31,7 @@
 //----------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWToolbarSet);
-vtkCxxRevisionMacro(vtkKWToolbarSet, "$Revision: 1.45 $");
+vtkCxxRevisionMacro(vtkKWToolbarSet, "$Revision: 1.46 $");
 
 //----------------------------------------------------------------------------
 class vtkKWToolbarSetInternals
@@ -544,7 +544,7 @@ void vtkKWToolbarSet::RemoveAllToolbars()
 // ----------------------------------------------------------------------------
 int vtkKWToolbarSet::GetNumberOfToolbars()
 {
-  return this->Internals->Toolbars.size();
+  return (int)this->Internals->Toolbars.size();
 }
 
 //----------------------------------------------------------------------------

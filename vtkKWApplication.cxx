@@ -103,7 +103,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.333 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.334 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -563,7 +563,7 @@ int vtkKWApplication::GetNumberOfWindows()
 {
   if (this->Internals)
     {
-    return this->Internals->Windows.size();
+    return (int)this->Internals->Windows.size();
     }
   return 0;
 }

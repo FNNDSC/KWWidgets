@@ -29,7 +29,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWStateMachine);
-vtkCxxRevisionMacro(vtkKWStateMachine, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWStateMachine, "$Revision: 1.6 $");
 
 //----------------------------------------------------------------------------
 class vtkKWStateMachineInternals
@@ -174,7 +174,7 @@ int vtkKWStateMachine::GetNumberOfStates()
 {
   if (this->Internals)
     {
-    return this->Internals->StatePool.size();
+    return (int)this->Internals->StatePool.size();
     }
 
   return 0;
@@ -313,7 +313,7 @@ int vtkKWStateMachine::GetNumberOfInputs()
 {
   if (this->Internals)
     {
-    return this->Internals->InputPool.size();
+    return (int)this->Internals->InputPool.size();
     }
 
   return 0;
@@ -486,7 +486,7 @@ int vtkKWStateMachine::GetNumberOfTransitions()
 {
   if (this->Internals)
     {
-    return this->Internals->TransitionPool.size();
+    return (int)this->Internals->TransitionPool.size();
     }
 
   return 0;
@@ -648,7 +648,7 @@ void vtkKWStateMachine::PushTransitionToHistory(
 //----------------------------------------------------------------------------
 int vtkKWStateMachine::GetNumberOfTransitionsInHistory()
 {
-  return this->Internals->TransitionHistoryPool.size();
+  return (int)this->Internals->TransitionHistoryPool.size();
 }
 
 //----------------------------------------------------------------------------
@@ -727,7 +727,7 @@ int vtkKWStateMachine::GetNumberOfClusters()
 {
   if (this->Internals)
     {
-    return this->Internals->ClusterPool.size();
+    return (int)this->Internals->ClusterPool.size();
     }
 
   return 0;

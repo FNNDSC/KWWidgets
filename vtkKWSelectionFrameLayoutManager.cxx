@@ -77,7 +77,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.85 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.86 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -1110,7 +1110,7 @@ vtkKWSelectionFrame* vtkKWSelectionFrameLayoutManager::GetWidgetWithTitle(
 //----------------------------------------------------------------------------
 int vtkKWSelectionFrameLayoutManager::GetNumberOfWidgets()
 {
-  return this->Internals->Pool.size();
+  return (int)this->Internals->Pool.size();
 }
 
 //----------------------------------------------------------------------------

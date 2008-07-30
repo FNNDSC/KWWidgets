@@ -7,7 +7,7 @@
  * Copyright (c) 2002-2003 Christian Krone
  * Copyright (c) 2003-2005 ActiveState, a division of Sophos
  *
- * RCS: @(#) $Id: tkTreeCtrl.c,v 1.3 2007-09-19 19:18:43 barre Exp $
+ * RCS: @(#) $Id: tkTreeCtrl.c,v 1.4 2008-07-30 16:47:20 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -1450,8 +1450,8 @@ badWrap:
   }
     }
 
-    tree->itemPrefixLen = strlen(tree->itemPrefix);
-    tree->columnPrefixLen = strlen(tree->columnPrefix);
+    tree->itemPrefixLen = (int)strlen(tree->itemPrefix);
+    tree->columnPrefixLen = (int)strlen(tree->columnPrefix);
 
     Tk_SetWindowBackground(tree->tkwin,
       Tk_3DBorderColor(tree->border)->pixel);
@@ -2766,7 +2766,7 @@ doneCLEAR:
     int first, last;
     TreeItemList items;
 
-    if (TclGetIntForIndex(interp, objv[3], tree->selectCount - 1,
+    if (TclGetIntForIndex(interp, objv[3], (int)tree->selectCount - 1,
       &first) != TCL_OK) {
         return TCL_ERROR;
     }
@@ -2774,7 +2774,7 @@ doneCLEAR:
         first = 0;
     last = first;
     if (objc == 5) {
-        if (TclGetIntForIndex(interp, objv[4], tree->selectCount - 1,
+    if (TclGetIntForIndex(interp, objv[4], (int)tree->selectCount - 1,
           &last) != TCL_OK) {
       return TCL_ERROR;
         }

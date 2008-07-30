@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceManagerNotebook);
-vtkCxxRevisionMacro(vtkKWUserInterfaceManagerNotebook, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManagerNotebook, "$Revision: 1.10 $");
 
 //----------------------------------------------------------------------------
 class vtkKWUserInterfaceManagerNotebookInternals
@@ -935,7 +935,7 @@ vtkKWUserInterfaceManagerNotebook::GetLastDragAndDropEntry(vtkKWWidget *widget)
 //---------------------------------------------------------------------------
 int vtkKWUserInterfaceManagerNotebook::GetNumberOfDragAndDropEntries()
 {
-  return this->Internals ? this->Internals->DragAndDropEntries.size() : 0;
+  return this->Internals ? (int)this->Internals->DragAndDropEntries.size() : 0;
 }
 
 //---------------------------------------------------------------------------

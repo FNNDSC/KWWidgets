@@ -1695,7 +1695,7 @@ Tcl_Obj *TkDND_DropTarget::GetAndConvertData(LPDATAOBJECT pIDataSource,
     int locale;
     Tcl_DString ds;
     Tcl_DStringInit(&ds);
-    len = strlen(str) + 1;
+    len = (int)strlen(str) + 1;
     s = (char *) Tcl_Alloc(sizeof(char) * len);
     memcpy(s, str, len);
 
@@ -2084,7 +2084,7 @@ Tcl_Obj *TkDND_DropTarget::GetAndConvertData(LPDATAOBJECT pIDataSource,
     XDND_DEBUG2("Unhandled Data type \"%s\"\n", dnd->DesiredTypeStr);
     curr->matchedType = dnd->DesiredType;
     dataObj = TkDND_CreateDataObjAccordingToType(curr, NULL,
-                                (unsigned char*) str, strlen(str));
+                                (unsigned char*) str, (int)strlen(str));
     curr->matchedType = 0;
   }
   Tcl_DStringFree(&dString);

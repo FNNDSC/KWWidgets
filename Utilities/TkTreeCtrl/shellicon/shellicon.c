@@ -7,7 +7,7 @@
  *
  * Copyright (c) 2005 Tim Baker
  *
- * RCS: @(#) $Id: shellicon.c,v 1.1 2007-02-06 13:18:15 barre Exp $
+ * RCS: @(#) $Id: shellicon.c,v 1.2 2008-07-30 16:47:21 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -226,7 +226,7 @@ static void LoadIconIfNeeded(ElementArgs *args)
     int overlays = 1;
     int type = -1;
     int useImgList = TRUE;
-    HRESULT result;
+    DWORD_PTR result; /* HRESULT result; */
 
     /* -useimagelist boolean */
     if (elemX->useImgList != -1)

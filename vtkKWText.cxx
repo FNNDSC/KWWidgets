@@ -36,7 +36,7 @@ const char *vtkKWText::TagFgDarkGreen = "_fg_dark_green_tag_";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWText);
-vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.58 $");
+vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.59 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTextInternals
@@ -180,7 +180,7 @@ void vtkKWText::AppendTextInternalTagging(const char *str, const char *tag)
 
     if (closest_marker)
       {
-      int len_marker = strlen(markertag[closest_marker_id * 2]);
+      int len_marker = (int)strlen(markertag[closest_marker_id * 2]);
       const char *end_marker = 
         strstr(closest_marker + len_marker, markertag[closest_marker_id * 2]);
       if (end_marker)

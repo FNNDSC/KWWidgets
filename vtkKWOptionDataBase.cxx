@@ -29,7 +29,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWOptionDataBase);
-vtkCxxRevisionMacro(vtkKWOptionDataBase, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWOptionDataBase, "$Revision: 1.7 $");
 
 //----------------------------------------------------------------------------
 class vtkKWOptionDataBaseInternals
@@ -306,7 +306,7 @@ int vtkKWOptionDataBase::GetNumberOfEntries()
     this->Internals->EntryPool.end();
   for (; p_it != p_end; ++p_it)
     {
-    total += p_it->second.size();
+    total += (int)p_it->second.size();
     }
 
   return total;

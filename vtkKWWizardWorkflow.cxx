@@ -26,7 +26,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWizardWorkflow);
-vtkCxxRevisionMacro(vtkKWWizardWorkflow, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWWizardWorkflow, "$Revision: 1.6 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWizardWorkflowInternals
@@ -370,7 +370,7 @@ int vtkKWWizardWorkflow::GetNumberOfSteps()
 {
   if (this->Internals)
     {
-    return this->Internals->StepPool.size();
+    return (int)this->Internals->StepPool.size();
     }
 
   return 0;
@@ -600,7 +600,7 @@ vtkKWWizardStep* vtkKWWizardWorkflow::PopStepFromNavigationStack()
 //----------------------------------------------------------------------------
 int vtkKWWizardWorkflow::GetNumberOfStepsInNavigationStack()
 {
-  return this->Internals->StepNavigationStackPool.size();
+  return (int)this->Internals->StepNavigationStackPool.size();
 }
 
 //----------------------------------------------------------------------------

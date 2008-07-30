@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeUtils.c,v 1.2 2007-09-19 18:49:06 barre Exp $
+ * RCS: @(#) $Id: tkTreeUtils.c,v 1.3 2008-07-30 16:47:21 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -153,7 +153,7 @@ Ellipsis(
 {
     char staticStr[256], *tmpStr = staticStr;
     int pixels, pixelsTest, bytesThatFit, bytesTest;
-    int ellipsisNumBytes = strlen(ellipsis);
+    int ellipsisNumBytes = (int)strlen(ellipsis);
 
     bytesThatFit = Tk_MeasureChars(tkfont, string, numBytes, *maxPixels, 0,
   &pixels);
@@ -175,7 +175,7 @@ Ellipsis(
     if (force)
   bytesTest = bytesThatFit;
     else
-  bytesTest = Tcl_UtfPrev(string + bytesThatFit, string) - string;
+      bytesTest = (int)(Tcl_UtfPrev(string + bytesThatFit, string) - string);
     if (bytesTest + ellipsisNumBytes > sizeof(staticStr))
   tmpStr = ckalloc(bytesTest + ellipsisNumBytes);
     memcpy(tmpStr, string, bytesTest);
@@ -192,7 +192,7 @@ Ellipsis(
     ckfree(tmpStr);
       return bytesTest;
   }
-  bytesTest = Tcl_UtfPrev(string + bytesTest, string) - string;
+  bytesTest = (int)(Tcl_UtfPrev(string + bytesTest, string) - string);
     }
 
     /* No single char + ellipsis fits. Return number of chars that fit */
@@ -1405,7 +1405,7 @@ static LayoutChunk *NewChunk(LayoutInfo **layoutPtrPtr, int *maxPtr,
     {
   layoutPtr->maxChunks *= 2;
   s = sizeof(LayoutInfo) + ((layoutPtr->maxChunks - 1) * sizeof(LayoutChunk));
-  layoutPtr = (LayoutInfo *) ckrealloc((char *) layoutPtr, s);
+  layoutPtr = (LayoutInfo *) ckrealloc((char *) layoutPtr, (unsigned int)s);
 
   *layoutPtrPtr = layoutPtr;
     }
@@ -1534,8 +1534,8 @@ TextLayout TextLayout_Compute(
   chunkPtr = NULL;
   if (start < special)
   {
-      bytesThisChunk = Tk_MeasureChars(tkfont, start, special - start,
-    wrapLength - curX, flags, &newX);
+  bytesThisChunk = Tk_MeasureChars(tkfont, start, (int)(special - start),
+                                   (int)(wrapLength - curX), flags, &newX);
       newX += curX;
       flags &= ~TK_AT_LEAST_ONE;
       if (bytesThisChunk > 0)
@@ -1605,7 +1605,7 @@ TextLayout TextLayout_Compute(
       CONST char *end;
 
       end = chunkPtr->start + chunkPtr->numBytes;
-      bytesThisChunk = start - end;
+      bytesThisChunk = (int)(start - end);
       if (bytesThisChunk > 0)
       {
     bytesThisChunk =
@@ -1657,7 +1657,7 @@ wrapLine:
     if ((start < end) && (layoutPtr->numChunks > 0))
     {
   char *ellipsis = "...";
-  int ellipsisLen = strlen(ellipsis);
+  int ellipsisLen = (int)strlen(ellipsis);
   char staticStr[256], *buf = staticStr;
 
   chunkPtr = &layoutPtr->chunks[layoutPtr->numChunks - 1];
@@ -1856,7 +1856,7 @@ void TextLayout_Draw(
       {
     firstByte = Tcl_UtfAtIndex(chunkPtr->start, firstChar);
     Tk_MeasureChars(layoutPtr->tkfont, chunkPtr->start,
-        firstByte - chunkPtr->start, -1, 0, &drawX);
+                    (int)(firstByte - chunkPtr->start), -1, 0, &drawX);
       }
       if (lastChar < numDisplayChars)
     numDisplayChars = lastChar;
@@ -1866,14 +1866,14 @@ void TextLayout_Draw(
       {
     char staticStr[256], *buf = staticStr;
     char *ellipsis = "...";
-    int ellipsisLen = strlen(ellipsis);
+    int ellipsisLen = (int)strlen(ellipsis);
 
     if ((lastByte - firstByte) + ellipsisLen > sizeof(staticStr))
-        buf = ckalloc((lastByte - firstByte) + ellipsisLen);
+        buf = ckalloc((int)(lastByte - firstByte) + ellipsisLen);
     memcpy(buf, firstByte, (lastByte - firstByte));
     memcpy(buf + (lastByte - firstByte), ellipsis, ellipsisLen);
     Tk_DrawChars(display, drawable, gc, layoutPtr->tkfont,
-        buf, (lastByte - firstByte) + ellipsisLen,
+        buf, (int)(lastByte - firstByte) + ellipsisLen,
         x + chunkPtr->x + drawX, y + chunkPtr->y);
     if (buf != staticStr)
         ckfree(buf);
@@ -1881,7 +1881,7 @@ void TextLayout_Draw(
       else
 #endif
       Tk_DrawChars(display, drawable, gc, layoutPtr->tkfont,
-    firstByte, lastByte - firstByte, x + chunkPtr->x + drawX,
+                   firstByte, (int)(lastByte - firstByte), x + chunkPtr->x + drawX,
     y + chunkPtr->y);
 #if 1
       if (underline >= firstChar && underline < numDisplayChars)
@@ -1891,7 +1891,7 @@ void TextLayout_Draw(
     Tk_UnderlineChars(display, drawable, gc,
       layoutPtr->tkfont, firstByte,
       x + chunkPtr->x + drawX, y + chunkPtr->y, 
-      fstBytePtr - chunkPtr->start, sndBytePtr - chunkPtr->start);
+                      (int)(fstBytePtr - chunkPtr->start), (int)(sndBytePtr - chunkPtr->start));
       }
 #endif
   }
@@ -2451,7 +2451,7 @@ PerStateInfo_ObjForState(
 
     pData = PerStateInfo_ForState(tree, typePtr, pInfo, state, match);
     if (pData != NULL) {
-  i = ((char *) pData - (char *) pInfo->data) / typePtr->size;
+    i = (int)((char *) pData - (char *) pInfo->data) / (int)typePtr->size;
   Tcl_ListObjIndex(tree->interp, pInfo->obj, i * 2, &obj);
   return obj;
     }

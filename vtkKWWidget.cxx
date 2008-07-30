@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.153 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.154 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetInternals
@@ -392,7 +392,7 @@ int vtkKWWidget::GetNumberOfChildren()
 {
   if (this->Internals && this->Internals->Children)
     {
-    return this->Internals->Children->size();
+    return (int)this->Internals->Children->size();
     }
   return 0;
 }

@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2002-2006 Tim Baker
  *
- * RCS: @(#) $Id: tkTreeElem.c,v 1.6 2008-07-30 14:54:28 barre Exp $
+ * RCS: @(#) $Id: tkTreeElem.c,v 1.7 2008-07-30 16:47:21 barre Exp $
  */
 
 #include "tkTreeCtrl.h"
@@ -3059,7 +3059,7 @@ static void DisplayProcText(ElementArgs *args)
     if (bytesThatFit != textLen) {
   char staticStr[256], *buf = staticStr;
   int bufLen = abs(bytesThatFit);
-  int ellipsisLen = strlen(ellipsis);
+  int ellipsisLen = (int)strlen(ellipsis);
 
   if (bufLen + ellipsisLen > sizeof(staticStr))
       buf = ckalloc(bufLen + ellipsisLen);
@@ -3076,7 +3076,7 @@ static void DisplayProcText(ElementArgs *args)
       CONST char *sndBytePtr = Tcl_UtfNext(fstBytePtr);
       Tk_UnderlineChars(tree->display, args->display.drawable, gc,
         tkfont, buf, x, y + fm.ascent, 
-        fstBytePtr - buf, sndBytePtr - buf);
+                        (int)(fstBytePtr - buf), (int)(sndBytePtr - buf));
   }
 #endif
   if (buf != staticStr)
@@ -3090,7 +3090,7 @@ static void DisplayProcText(ElementArgs *args)
       CONST char *sndBytePtr = Tcl_UtfNext(fstBytePtr);
       Tk_UnderlineChars(tree->display, args->display.drawable, gc,
         tkfont, text, x, y + fm.ascent, 
-        fstBytePtr - text, sndBytePtr - text);
+                        (int)(fstBytePtr - text), (int)(sndBytePtr - text));
   }
 #endif
     }

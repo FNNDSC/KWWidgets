@@ -34,7 +34,7 @@ const char *vtkKWToolbar::WidgetsAspectRegKey = "ToolbarFlatButtons";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
-vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.74 $");
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.75 $");
 
 //----------------------------------------------------------------------------
 class vtkKWToolbarInternals
@@ -308,7 +308,7 @@ int vtkKWToolbar::GetNumberOfWidgets()
 {
   if (this->Internals)
     {
-    return this->Internals->Widgets.size();
+    return (int)this->Internals->Widgets.size();
     }
   return 0;
 }
@@ -673,7 +673,7 @@ void vtkKWToolbar::ConstrainWidgetsLayout()
   int width = 0;
   vtkKWTkUtilities::GetWidgetSize(this, &width, NULL);
 
-  int widthWidget = totReqWidth / this->Internals->Widgets.size();
+  int widthWidget = totReqWidth / (int)this->Internals->Widgets.size();
   int numPerRow = width / widthWidget;
 
   if ( numPerRow > 0 )

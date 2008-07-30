@@ -23,7 +23,7 @@
 #include <vtksys/ios/sstream> 
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWWidgetSet, "$Revision: 1.23 $");
+vtkCxxRevisionMacro(vtkKWWidgetSet, "$Revision: 1.24 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetSetInternals
@@ -123,7 +123,7 @@ int vtkKWWidgetSet::HasWidget(int id)
 //----------------------------------------------------------------------------
 int vtkKWWidgetSet::GetNumberOfWidgets()
 {
-  return this->Internals ? this->Internals->Widgets.size() : 0;
+  return this->Internals ? (int)this->Internals->Widgets.size() : 0;
 }
 
 //----------------------------------------------------------------------------

@@ -24,7 +24,7 @@
 
 #include <ctype.h>
 
-vtkCxxRevisionMacro(vtkKWRegistryHelper, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWRegistryHelper, "$Revision: 1.4 $");
 
 //----------------------------------------------------------------------------
 vtkKWRegistryHelper *vtkKWRegistryHelper::New()
@@ -265,7 +265,7 @@ char *vtkKWRegistryHelper::Strip(char *str)
     {
     return NULL;
     }  
-  len = strlen(str);
+  len = (int)strlen(str);
   nstr = str;
   for( cc=0; cc<len; cc++ )
     {
@@ -275,7 +275,7 @@ char *vtkKWRegistryHelper::Strip(char *str)
       }
     nstr ++;
     }
-  for( cc=(strlen(nstr)-1); cc>=0; cc-- )
+  for( cc=((int)strlen(nstr)-1); cc>=0; cc-- )
     {
     if ( !this->IsSpace( nstr[cc] ) )
       {

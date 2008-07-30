@@ -38,7 +38,7 @@ p  Module:    $RCSfile: vtkKWMultiColumnList.cxx,v $
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.92 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.93 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -4939,7 +4939,7 @@ void vtkKWMultiColumnList::HasSelectionChanged()
 
   int selection_has_changed = 0;
   int prev_nb_of_selected_cells = 
-    this->Internals->LastSelectionRowIndices.size();
+    (int)this->Internals->LastSelectionRowIndices.size();
   if (nb_of_selected_cells != prev_nb_of_selected_cells)
     {
     selection_has_changed = 1;

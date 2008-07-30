@@ -42,7 +42,7 @@
  * NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
  * MODIFICATIONS.
  *
- * RCS: @(#) $Id: tkDND.cpp,v 1.9 2008-07-30 14:54:28 barre Exp $
+ * RCS: @(#) $Id: tkDND.cpp,v 1.10 2008-07-30 16:47:22 barre Exp $
  */
 
 #include "tkDND.h"
@@ -508,7 +508,7 @@ int TkDND_DndObjCmd(ClientData clientData, Tcl_Interp *interp,
                     }
                     for (j = 0; j < elem_nu; j++) {
                         description = Tcl_GetString(elem[j]);
-                        des_len = strlen(description);
+                        des_len = (int)strlen(description);
                         memcpy(ptr, description, des_len+1);
                         ptr += des_len+1;
                     }
@@ -743,7 +743,7 @@ void TkDND_ExpandPercents(DndInfo *infoPtr, DndType *typePtr,
             /* Empty loop body. */
         }
         if (string != before) {
-            Tcl_DStringAppend(dsPtr, before, string-before);
+        Tcl_DStringAppend(dsPtr, before, (int)(string-before));
             before = string;
         }
         if (*before == 0) break;
@@ -918,7 +918,7 @@ int TkDND_ExecuteBinding(Tcl_Interp *interp, char *script, int numBytes,
             (void) Tcl_GetByteArrayFromObj(objPtr, NULL);
         }
         while (data_insert != NULL) {
-            Tcl_DStringAppend(&ds, start, data_insert-start);
+        Tcl_DStringAppend(&ds, start, (int)(data_insert-start));
             if (objPtr == NULL) {
                 Tcl_DStringAppend(&ds, "{}", 2);
             } else {
@@ -997,7 +997,7 @@ char *TkDND_GetDataAccordingToType(DndInfo *info, Tcl_Obj *ResultObj,
          * We will transfer a string in "UTF-8"...
          */
         data = Tcl_GetString(ResultObj);
-        *length = strlen(data);
+        *length = (int)strlen(data);
 #ifdef __WIN32__
         {
             LPWSTR buffer;
@@ -1050,7 +1050,7 @@ char *TkDND_GetDataAccordingToType(DndInfo *info, Tcl_Obj *ResultObj,
         CharToOem((LPCTSTR) data, (LPSTR ) Tcl_DStringValue(&ds));
         data = Tcl_DStringValue(&ds);
 #endif /* __WIN32__ */
-        *length = strlen(data);
+        *length = (int)strlen(data);
     } else if (strcmp(type,  "text/plain")    == 0 ||      /* XDND */
             strcmp(type,  "text/uri-list") == 0 ||      /* XDND */
             strcmp(type,  "text/file")     == 0 ||      /* XDND */
@@ -1233,7 +1233,7 @@ Tcl_Obj *TkDND_CreateDataObjAccordingToType(DndType *typePtr, void *info,
                      */
                     Tcl_ListObjAppendElement(NULL, result,
                             Tcl_NewStringObj(element_start,
-                                    &conv_data[i]-element_start));
+                                             (int)(&conv_data[i]-element_start)));
                 }
                 i += 1; element_number++;
                 element_start = &conv_data[i+1];
@@ -1248,7 +1248,7 @@ Tcl_Obj *TkDND_CreateDataObjAccordingToType(DndType *typePtr, void *info,
                      */
                     Tcl_ListObjAppendElement(NULL, result,
                             Tcl_NewStringObj(element_start,
-                                    &conv_data[i]-element_start));
+                                             (int)(&conv_data[i]-element_start)));
                 }
                 i += 2; element_number++;
                 element_start = &conv_data[i];
@@ -1262,7 +1262,7 @@ Tcl_Obj *TkDND_CreateDataObjAccordingToType(DndType *typePtr, void *info,
                      */
                     Tcl_ListObjAppendElement(NULL, result,
                             Tcl_NewStringObj(element_start,
-                                    &conv_data[i]-element_start));
+                                             (int)(&conv_data[i]-element_start)));
                 }
                 element_number++;
                 element_start = &conv_data[i+1];

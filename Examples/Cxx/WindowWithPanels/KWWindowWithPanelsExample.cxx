@@ -114,7 +114,7 @@ int my_main(int argc, char *argv[])
 
   const char* texts[] = { "Hello, World", "Bonjour, Monde", "Hallo, Welt"};
   vtkKWRadioButton *rb = NULL;
-  for (size_t id = 0; id < sizeof(texts) / sizeof(texts[0]); id++)
+  for (int id = 0; id < sizeof(texts) / sizeof(texts[0]); id++)
     {
     rb = rbs->AddWidget(id);
     rb->SetText(texts[id]);

@@ -16,8 +16,6 @@ void vtkKWMultiColumnListItem::Create(vtkKWWidget *parent, vtkKWWindow *)
 {
   vtkKWApplication *app = parent->GetApplication();
 
-  size_t i;
-
   typedef struct
   {
     const char *Name;
@@ -113,6 +111,7 @@ void vtkKWMultiColumnListItem::Create(vtkKWWidget *parent, vtkKWWindow *)
 
   // Insert each project entry
 
+  int i;
   for (i = 0; i < sizeof(projects) / sizeof(projects[0]); i++)
     {
     ProjectEntry project = projects[i];

@@ -323,7 +323,7 @@ int TkDND_AddHandler(Tcl_Interp *interp, Tk_Window topwin,
          * Replace older script...
          */
         Tcl_Free(curr->script);
-        len = strlen(script) + 1;
+        len = (int)strlen(script) + 1;
         curr->script = (char *) Tcl_Alloc(sizeof(char)*len);
         memcpy(curr->script, script, len);
         removed = True;
@@ -393,13 +393,13 @@ int TkDND_AddHandler(Tcl_Interp *interp, Tk_Window topwin,
   for (i=0; i<TkDND_ACTUAL_TYPE_NU && ActualType[i]!=NULL; i++) {
     tnew = (DndType *) Tcl_Alloc(sizeof(DndType));
     tnew->priority = priority;
-    len = strlen(typeStr) + 1;
+    len = (int)strlen(typeStr) + 1;
     tnew->matchedType = 0;
     tnew->typeStr = (char *) Tcl_Alloc(sizeof(char)*len);
     memcpy(tnew->typeStr, typeStr, len);
     tnew->eventType = eventType;
     tnew->eventMask = eventMask;
-    len = strlen(script) + 1;
+    len = (int)strlen(script) + 1;
     tnew->script = (char *) Tcl_Alloc(sizeof(char)*len);
     memcpy(tnew->script, script, len);
     tnew->next = NULL;
@@ -489,7 +489,7 @@ char *TkDND_GetCurrentTypeCode(void) {
   char tmp[64], *str;
   
   sprintf(tmp, "0x%08x", dnd->DesiredType);
-  str = Tcl_Alloc(sizeof(char) * (strlen(tmp)+1));
+  str = Tcl_Alloc((int)(sizeof(char) * (strlen(tmp)+1)));
   strcpy(str, tmp);
   return str;
 } /* TkDND_GetCurrentTypeCode */
@@ -888,7 +888,7 @@ int TkDND_GetDataFromImage(DndInfo *info, char *imageName,
      * This function does nothing. The whole job is done by 
      * TkDND_DataObject::GetData in win/OleDND.cpp...
      */
-    *length = strlen(imageName)+1;
+  *length = (int)strlen(imageName)+1;
     *result = Tcl_Alloc(*length*sizeof(char));
     if (*result != NULL) {
       strcpy(*result, imageName);
