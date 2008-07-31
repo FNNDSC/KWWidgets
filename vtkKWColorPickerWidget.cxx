@@ -18,8 +18,8 @@
 #include "vtkObjectFactory.h"
 
 #include "vtkKWApplication.h"
-#include "vtkKWColorPresetSelector.h"
 #include "vtkKWColorSpectrumWidget.h"
+#include "vtkKWColorPresetSelector.h"
 #include "vtkKWColorTransferFunctionEditor.h"
 #include "vtkKWEntry.h"
 #include "vtkKWEntryWithLabel.h"
@@ -29,7 +29,6 @@
 #include "vtkKWIcon.h"
 #include "vtkKWLabel.h"
 #include "vtkKWLabelSet.h"
-#include "vtkKWLabelWithLabel.h"
 #include "vtkKWNotebook.h"
 #include "vtkKWRadioButton.h"
 
@@ -40,21 +39,11 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.7 $");
-
-//----------------------------------------------------------------------------
-class vtkKWColorPickerWidgetInternals
-{
-public:
-  vtksys_stl::string ScheduleUpdateInfoLabelTimerId;
-
-};
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.8 $");
 
 //----------------------------------------------------------------------------
 vtkKWColorPickerWidget::vtkKWColorPickerWidget()
 {
-  this->Internals = new vtkKWColorPickerWidgetInternals;
-
   this->ColorSpectrumVisibility = 1;
   this->BasicColorsVisibility = 1;
   this->FavoritesVisibility = 1;
@@ -79,14 +68,13 @@ vtkKWColorPickerWidget::vtkKWColorPickerWidget()
 
   this->Notebook                     = NULL;
   this->HexadecimalColorEntry        = NULL;
-  this->ColorSpectrumWidget          = NULL;
+  this->ColorSpectrumWidget      = NULL;
   this->FavoritesColorPresetSelector = vtkKWColorPresetSelector::New();
   this->HistoryColorPresetSelector   = vtkKWColorPresetSelector::New();
-  this->BasicColorsFrameSet          = NULL;
+  this->BasicColorsFrameSet   = NULL;
   this->ColorsFrame                  = NULL;
   this->ColorsLabelSet               = NULL;
   this->ColorsNameLabelSet           = NULL;
-  this->InfoLabel                    = NULL;
 
   this->InternalCurrentColorAsRGB[0] = -1; /* unitialized */
   this->InternalCurrentColorAsRGB[1] = -1;
@@ -180,12 +168,6 @@ vtkKWColorPickerWidget::~vtkKWColorPickerWidget()
     this->HexadecimalColorEntry = NULL;
     }
 
-  if (this->InfoLabel)
-    {
-    this->InfoLabel->Delete();
-    this->InfoLabel = NULL;
-    }
-
   if (this->ColorSpectrumWidget)
     {
     this->ColorSpectrumWidget->Delete();
@@ -209,9 +191,6 @@ vtkKWColorPickerWidget::~vtkKWColorPickerWidget()
     this->BasicColorsFrameSet->Delete();
     this->BasicColorsFrameSet = NULL;
     }
-
-  delete this->Internals;
-  this->Internals = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -233,6 +212,7 @@ void vtkKWColorPickerWidget::CreateWidget()
   int i, page_id;
 
   vtkKWIcon *icon = vtkKWIcon::New();
+
 
   // --------------------------------------------------------------
 
@@ -443,50 +423,16 @@ void vtkKWColorPickerWidget::CreateWidget()
   this->HSVSlidersFrame->SetRelief(this->RGBSlidersFrame->GetRelief());
   hsv_frame = this->HSVSlidersFrame;
 
-  // --------------------------------------------------------------
-  // Info label
-
-  if (!this->InfoLabel)
-    {
-    this->InfoLabel = vtkKWLabelWithLabel::New();
-    }
-  this->InfoLabel->SetParent(this->SlidersFrame);
-  this->InfoLabel->Create();
-  this->InfoLabel->LabelVisibilityOff();
-  this->InfoLabel->GetLabel()->SetImageToPredefinedIcon(
-    vtkKWIcon::IconHelpBubble);
-
-  label = this->InfoLabel->GetWidget();
-  //label->AdjustWrapLengthToWidthOn();
-
-  double fr, fg, fb, fh, fs, fv;
-  label->GetForegroundColor(&fr, &fg, &fb);
-  vtkMath::RGBToHSV(fr, fg, fb, &fh, &fs, &fv);
-
-  double br, bg, bb, bh, bs, bv;
-  label->GetBackgroundColor(&br, &bg, &bb);
-  vtkMath::RGBToHSV(br, bg, bb, &bh, &bs, &bv);
-
-  fv = (fv + bv) * 0.5;
-  vtkMath::HSVToRGB(fh, fs, fv, &fr, &fg, &fb);
-  label->SetForegroundColor(fr, fg, fb);
-
-  // Pack
-
   tk_cmd << "pack " << this->ColorsFrame->GetWidgetName() 
          << " -side top -anchor center -expand n -fill none -padx 0 -pady 0" 
          << endl;
 
   tk_cmd << "pack " << this->RGBSlidersFrame->GetWidgetName() 
-         << " -side top -anchor sw -expand n -fill both -padx 0 -pady 15" 
+         << " -side top -anchor sw -expand n -fill both -padx 0 -pady 20" 
          << endl;
 
   tk_cmd << "pack " << this->HSVSlidersFrame->GetWidgetName() 
          << " -side top -anchor sw -expand n -fill both -padx 0 -pady 0" 
-         << endl;
-
-  tk_cmd << "pack " << this->InfoLabel->GetWidgetName() 
-         << " -side bottom -anchor sw -expand n -fill none -padx 0 -pady 2"
          << endl;
 
   // --------------------------------------------------------------
@@ -799,8 +745,6 @@ void vtkKWColorPickerWidget::CreateWidget()
 
   this->UpdateHexadecimalColorEntry(this->InternalNewColorAsRGB);
 
-  this->UpdateInfoLabel();
-
   this->Pack();
 }
 
@@ -949,7 +893,7 @@ void vtkKWColorPickerWidget::Pack()
     tk_cmd << " " << this->Notebook->GetWidgetName();
     }
   
-  tk_cmd << " -padx 2 -pady 2 -side left -anchor nw -expand n -fill none" 
+  tk_cmd << " -padx 2 -pady 2 -side left -anchor nw -expand n -fill both" 
          << endl;
 
   tk_cmd << ends;
@@ -1027,8 +971,6 @@ void vtkKWColorPickerWidget::SetNewColorAsRGB(double r, double g, double b)
   this->UpdateHexadecimalColorEntry(this->InternalNewColorAsRGB);
 
   this->UpdateSlidersHSV(this->InternalNewColorAsHSV);
-
-  this->ScheduleUpdateInfoLabel();
 }
 
 //----------------------------------------------------------------------------
@@ -1126,8 +1068,6 @@ void vtkKWColorPickerWidget::SetNewColorAsHSV(double h, double s, double v)
     }
 
   this->UpdateSlidersHSV(this->InternalNewColorAsHSV);
-
-  this->ScheduleUpdateInfoLabel();
 }
 
 //----------------------------------------------------------------------------
@@ -1214,8 +1154,6 @@ void vtkKWColorPickerWidget::SetCurrentColorAsRGB(double r, double g, double b)
     this->UpdateColorLabel(
       this->ColorsLabelSet->GetWidget(1), this->InternalCurrentColorAsRGB);
     }
-
-  this->ScheduleUpdateInfoLabel();
 }
 
 //----------------------------------------------------------------------------
@@ -1302,8 +1240,6 @@ void vtkKWColorPickerWidget::SetCurrentColorAsHSV(double h, double s, double v)
     this->UpdateColorLabel(
       this->ColorsLabelSet->GetWidget(1), this->InternalCurrentColorAsRGB);
     }
-
-  this->ScheduleUpdateInfoLabel();
 }
 
 //----------------------------------------------------------------------------
@@ -1441,8 +1377,6 @@ void vtkKWColorPickerWidget::RGBSlidersChangingCallback()
 
   this->UpdateSlidersHSV(this->InternalNewColorAsHSV);
 
-  this->ScheduleUpdateInfoLabel();
-
   this->InvokeEvent(vtkKWColorPickerWidget::NewColorChangingEvent);
 }
 
@@ -1567,8 +1501,6 @@ void vtkKWColorPickerWidget::HSVSlidersChangingCallback()
     this->ColorSpectrumWidget->SetColorAsHSV(this->InternalNewColorAsHSV);
     }
 
-  this->ScheduleUpdateInfoLabel();
-
   this->InvokeEvent(vtkKWColorPickerWidget::NewColorChangingEvent);
 }
 
@@ -1605,61 +1537,6 @@ void vtkKWColorPickerWidget::UpdateHexadecimalColorEntry(double rgb[3])
       vtkMath::Round(rgb[1] * 255.0), 
       vtkMath::Round(rgb[2] * 255.0));
     }
-}
-
-//---------------------------------------------------------------------------
-void vtkKWColorPickerWidget::UpdateInfoLabel()
-{
-  if (!this->InfoLabel || !this->InfoLabel->IsCreated())
-    {
-    return;
-    }
-
-  if (this->ColorSpectrumWidget &&
-      //      this->ColorSpectrumWidget->IsMapped() && 
-      this->ColorSpectrumWidget->GetFixedAxis() == vtkKWColorSpectrumWidget::FixedAxisV &&
-      this->InternalNewColorAsHSV[2] == 0.0)
-    {
-    this->InfoLabel->LabelVisibilityOn();
-    this->InfoLabel->GetWidget()->SetText(
-      "The spectrum widget on the right may appear black when interpolating "
-      "Hue (H) and Saturation (S) over a zero Value (V)."
-      );
-    return;
-    }
-  
-  this->InfoLabel->GetWidget()->SetText(NULL);
-  this->InfoLabel->LabelVisibilityOff();
-}
-
-//----------------------------------------------------------------------------
-void vtkKWColorPickerWidget::ScheduleUpdateInfoLabel()
-{
-  // Already scheduled
-
-  if (this->Internals->ScheduleUpdateInfoLabelTimerId.size() ||
-      !this->IsCreated())
-    {
-    return;
-    }
-
-  this->Internals->ScheduleUpdateInfoLabelTimerId =
-    this->Script(
-      "after 500 {catch {%s UpdateInfoLabelCallback}}", this->GetTclName());
-}
-
-//----------------------------------------------------------------------------
-void vtkKWColorPickerWidget::UpdateInfoLabelCallback()
-{
-  if (!this->GetApplication() || 
-      this->GetApplication()->GetInExit() ||
-      !this->IsAlive())
-    {
-    return;
-    }
-
-  this->UpdateInfoLabel();
-  this->Internals->ScheduleUpdateInfoLabelTimerId = "";
 }
 
 //---------------------------------------------------------------------------
@@ -1836,8 +1713,6 @@ void vtkKWColorPickerWidget::ColorSpectrumChangingCallback()
       
       this->UpdateSlidersHSV(this->InternalNewColorAsHSV);
 
-      this->ScheduleUpdateInfoLabel();
-
       this->InvokeEvent(vtkKWColorPickerWidget::NewColorChangingEvent);
 
       break;
@@ -1872,8 +1747,6 @@ void vtkKWColorPickerWidget::ColorSpectrumChangingCallback()
       this->UpdateHexadecimalColorEntry(this->InternalNewColorAsRGB);
 
       this->UpdateSlidersHSV(this->InternalNewColorAsHSV);
-
-      this->ScheduleUpdateInfoLabel();
 
       this->InvokeEvent(vtkKWColorPickerWidget::NewColorChangingEvent);
 
@@ -2005,7 +1878,6 @@ void vtkKWColorPickerWidget::ProcessCallbackCommandEvents(vtkObject *caller,
           {
           this->CreateHistoryColorPresetSelector();
           }
-        this->ScheduleUpdateInfoLabel();
         break;
       }
     }

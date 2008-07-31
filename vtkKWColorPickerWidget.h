@@ -44,8 +44,6 @@ class vtkKWLabel;
 class vtkKWLabelSet;
 class vtkKWNotebook;
 class vtkKWRadioButton;
-class vtkKWLabelWithLabel;
-class vtkKWColorPickerWidgetInternals;
 
 class KWWidgets_EXPORT vtkKWColorPickerWidget : public vtkKWCompositeWidget
 {
@@ -136,7 +134,6 @@ public:
   virtual void CurrentColorCallback();
   virtual void HexadecimalColorEntryCallback(const char*);
   virtual void BasicColorsCallback(const char *color);
-  virtual void UpdateInfoLabelCallback();
 
   // Description:
   // Update the "enable" state of the object and its internal parts.
@@ -204,14 +201,10 @@ protected:
   vtkKWLabelSet                    *ColorsLabelSet;
   vtkKWLabelSet                    *ColorsNameLabelSet;
 
-  vtkKWLabelWithLabel              *InfoLabel;
-
   virtual void UpdateSlidersRGB(double rgb[3]);
   virtual void UpdateSlidersHSV(double hsv[3]);
   virtual void UpdateColorLabel(vtkKWLabel *label, double rgb[3]);
   virtual void UpdateHexadecimalColorEntry(double rgb[3]);
-  virtual void UpdateInfoLabel();
-  virtual void ScheduleUpdateInfoLabel();
 
   int ColorSpectrumVisibility;
   int BasicColorsVisibility;
@@ -233,11 +226,6 @@ protected:
   virtual void ProcessCallbackCommandEvents(
     vtkObject *caller, unsigned long event, void *calldata);
   
-  // PIMPL Encapsulation for STL containers
-  //BTX
-  vtkKWColorPickerWidgetInternals *Internals;
-  //ETX
-
 private:
   vtkKWColorPickerWidget(const vtkKWColorPickerWidget&); // Not implemented
   void operator=(const vtkKWColorPickerWidget&); // Not implemented
