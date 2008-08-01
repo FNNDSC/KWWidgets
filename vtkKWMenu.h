@@ -179,20 +179,37 @@ public:
   virtual void SetItemSelectedValueAsInt(int index, int value);
   virtual int GetItemSelectedValueAsInt(int index);
 
+  // Description:
+  // Set/Get the index of an item given its selected value (as set by
+  // SetItemSelectedValue).
+  virtual int GetIndexOfItemWithSelectedValue(const char *value);
+  virtual int GetIndexOfItemWithSelectedValueAsInt(int value);
+
+  // Description: 
+  // Select the item which selected value (as it was set per item
+  // using SetItemSelectedValue) matches a given value. Convenience method is
+  // provided to select the item using a value as an integer.
+  // Returns the item that was selected, -1 otherwise.
+  virtual int SelectItemWithSelectedValue(const char *value);
+  virtual int SelectItemWithSelectedValueAsInt(int value);
+
   // Description: 
   // Select the item in a group which selected value (as it was set per item
   // using SetItemSelectedValue) matches a given value. Convenience method is
   // provided to select the item using a value as an integer.
   // Returns the item that was selected, -1 otherwise.
   virtual int SelectItemInGroupWithSelectedValue(
-    const char *group_name, const char *selected_value);
+    const char *group_name, const char *value);
   virtual int SelectItemInGroupWithSelectedValueAsInt(
-    const char *group_name, int selected_value);
+    const char *group_name, int value);
 
   // Description: 
   // Get the index of the selected item in a group.
+  // If group is not specified, use the group of the last entry; note that
+  // this will only work there is only one group in the menu.
   // Return -1 on error.
   virtual int GetIndexOfSelectedItemInGroup(const char *group_name);
+  virtual int GetIndexOfSelectedItem();
 
   // Description:
   // Set/Get the value associated to the de-selected state of a checkbutton
@@ -446,6 +463,13 @@ public:
   virtual int GetItemVariableValueAsInt(const char *varname);
   virtual void SetItemVariableValueAsInt(const char *varname, int value);
 
+  // Description: 
+  // Get the index of an item gien its variable name and its selected value.
+  virtual int GetIndexOfItemWithVariableAndSelectedValue(
+    const char *varname, const char *value);
+  virtual int GetIndexOfItemWithVariableAndSelectedValueAsInt(
+    const char *varname, int value);
+
   // Description:
   // Set/Get if this menu is a tearoff menu.  By dafault this value is off.
   virtual void SetTearOff(int val);
@@ -624,12 +648,6 @@ protected:
   // 'underline' parameter is set to -1.
   virtual int GetLabelWithoutUnderline(
     const char *label, char **clean_label, int *underline_index);
-
-  // Description: 
-  // Get the index of the radiobutton using a specific variable name and
-  // selected value.
-  virtual int GetIndexOfItemUsingVariableAndSelectedValue(
-    const char *varname, const char *selected_value);
 
   int TearOff;
 

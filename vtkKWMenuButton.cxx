@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenuButton );
-vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.41 $");
+vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.42 $");
 
 //----------------------------------------------------------------------------
 vtkKWMenuButton::vtkKWMenuButton()
@@ -63,9 +63,11 @@ void vtkKWMenuButton::CreateWidget()
 
   this->SetConfigurationOption("-menu", this->Menu->GetWidgetName());
 
-  this->Script("set %s_Value {}", this->GetTclName());
-  this->Script("trace variable %s_Value w {%s TracedVariableChangedCallback}",
-               this->GetTclName(), this->GetTclName());
+  this->Script("set %s_RB_group {}", this->Menu->GetTclName());
+  this->Script(
+    "trace variable %s_RB_group w {%s TracedVariableChangedCallback}",
+    this->Menu->GetTclName(), 
+    this->GetTclName());
 
   this->AddCallbackCommandObservers();
 }
@@ -84,7 +86,8 @@ const char *vtkKWMenuButton::GetValue()
     // guarantee the variable has been changed before or after calling the
     // callback. To ensure it is true, always refresh the value from
     // the variable itself.
-    this->SetCurrentValue(this->Script("set %s_Value", this->GetTclName()));
+    this->SetCurrentValue(
+      this->Script("set %s_RB_group", this->Menu->GetTclName()));
     }
   return this->CurrentValue;  
 }
@@ -94,7 +97,7 @@ void vtkKWMenuButton::SetValue(const char *s)
 {
   if (this->IsCreated() && s && strcmp(s, this->GetValue()))
     {
-    this->Script("set %s_Value {%s}", this->GetTclName(), s);
+    this->Script("set %s_RB_group {%s}", this->Menu->GetTclName(), s);
 
     if (this->Menu && *s)
       {
@@ -170,19 +173,36 @@ void vtkKWMenuButton::TracedVariableChangedCallback(
 //----------------------------------------------------------------------------
 void vtkKWMenuButton::UpdateMenuButtonLabel()
 {
-  if (this->IsCreated())
+  if (!this->IsCreated())
     {
-    if (this->MaximumLabelWidth <= 0)
-      {
-      this->SetConfigurationOption("-text", this->GetValue());
-      }
-    else
-      {
-      vtksys_stl::string cropped = 
-        vtksys::SystemTools::CropString(
-          this->GetValue(), (size_t)this->MaximumLabelWidth);
-      this->SetConfigurationOption("-text", cropped.c_str());
-      }
+    return;
+    }
+
+  // When a radiobutton entry is inserted in the internal menu, we override
+  // its selected value to match the label of the entry, for convenience.
+  // However, if the user choose to reset that selected value to something
+  // else, chances are, it is still the label that should be displayed.
+  // The code below takes care of it (if the user didn't interfere, it will
+  // return the selected value, which was already set to match the label)
+
+  vtksys_stl::string varname(this->Menu->GetTclName());
+  varname += "_RB_group";
+
+  const char *label = 
+    this->Menu->GetItemLabel(
+      this->Menu->GetIndexOfItemWithVariableAndSelectedValue(
+        varname.c_str(), this->GetValue()));
+
+  if (this->MaximumLabelWidth <= 0)
+    {
+    this->SetConfigurationOption("-text", label);
+    }
+  else
+    {
+    vtksys_stl::string cropped = 
+      vtksys::SystemTools::CropString(
+        label, (size_t)this->MaximumLabelWidth);
+    this->SetConfigurationOption("-text", cropped.c_str());
     }
 }
 
@@ -482,10 +502,6 @@ void vtkKWMenuButton::SetImageToIcon(vtkKWIcon* icon)
       icon->GetData(), 
       icon->GetWidth(), icon->GetHeight(), icon->GetPixelSize());
     }
-  else
-    {
-    this->SetConfigurationOption("-image", "");
-    }
 }
 
 //----------------------------------------------------------------------------
@@ -579,8 +595,8 @@ void vtkKWMenuButton::ProcessCallbackCommandEvents(vtkObject *caller,
     switch (event)
       {
       case vtkKWMenu::RadioButtonItemAddedEvent:
-        vtksys_stl::string varname(this->GetTclName());
-        varname += "_Value";
+        vtksys_stl::string varname(this->Menu->GetTclName());
+        varname += "_RB_group";
         this->Menu->SetItemVariable(index, varname.c_str());
         this->Menu->SetItemSelectedValue(
           index, this->Menu->GetItemLabel(index));

@@ -33,7 +33,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.123 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.124 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMenuInternals
@@ -606,6 +606,56 @@ int vtkKWMenu::GetItemSelectedValueAsInt(int index)
 }
 
 //----------------------------------------------------------------------------
+int vtkKWMenu::GetIndexOfItemWithSelectedValue(
+  const char *value)
+{
+  if (value)
+    {
+    vtksys_stl::string value_safe(value);
+
+    int nb_of_items = this->GetNumberOfItems();
+    for(int i = 0; i < nb_of_items; i++)
+      {
+      const char *temp = this->GetItemSelectedValue(i);
+      if (temp && !strcmp(temp, value_safe.c_str()))
+        {
+        return i;
+        }
+      }
+    }
+  
+  return -1;
+}
+    
+//----------------------------------------------------------------------------
+int vtkKWMenu::GetIndexOfItemWithSelectedValueAsInt(int value)
+{
+  char buffer[50];
+  sprintf(buffer, "%d", value);
+  return this->GetIndexOfItemWithSelectedValue(buffer);
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMenu::SelectItemWithSelectedValue(const char *value)
+{
+  int index = this->GetIndexOfItemWithSelectedValue(value);
+  if (index >= 0)
+    {
+    this->SelectItem(index);
+    }
+  return index;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMenu::SelectItemWithSelectedValueAsInt(
+  int value)
+{
+  char buffer[50];
+  sprintf(buffer, "%d", value);
+  return this->SelectItemWithSelectedValue(buffer);
+}
+
+//----------------------------------------------------------------------------
 void vtkKWMenu::SetItemDeselectedValue(int index, const char* value)
 {
   if (!this->IsCreated() || index < 0 || index >= this->GetNumberOfItems())
@@ -756,13 +806,13 @@ const char* vtkKWMenu::GetItemGroupName(int index)
 }
 
 //----------------------------------------------------------------------------
-int vtkKWMenu::GetIndexOfItemUsingVariableAndSelectedValue(
-  const char *varname, const char *selected_value)
+int vtkKWMenu::GetIndexOfItemWithVariableAndSelectedValue(
+  const char *varname, const char *value)
 {
-  if (varname && selected_value)
+  if (varname && value)
     {
     vtksys_stl::string varname_safe(varname);
-    vtksys_stl::string selected_value_safe(selected_value);
+    vtksys_stl::string value_safe(value);
 
     int nb_of_items = this->GetNumberOfItems();
     for(int i = 0; i < nb_of_items; i++)
@@ -771,7 +821,7 @@ int vtkKWMenu::GetIndexOfItemUsingVariableAndSelectedValue(
       if (temp && !strcmp(varname_safe.c_str(), temp))
         {
         temp = this->GetItemSelectedValue(i);
-        if (temp && !strcmp(temp, selected_value_safe.c_str()))
+        if (temp && !strcmp(temp, value_safe.c_str()))
           {
           return i;
           }
@@ -781,17 +831,26 @@ int vtkKWMenu::GetIndexOfItemUsingVariableAndSelectedValue(
   
   return -1;
 }
+
+//----------------------------------------------------------------------------
+int vtkKWMenu::GetIndexOfItemWithVariableAndSelectedValueAsInt(
+  const char *varname, int value)
+{
+  char buffer[50];
+  sprintf(buffer, "%d", value);
+  return this->GetIndexOfItemWithVariableAndSelectedValue(varname, buffer);
+}
     
 //----------------------------------------------------------------------------
 int vtkKWMenu::SelectItemInGroupWithSelectedValue(
-  const char *group_name, const char *selected_value)
+  const char *group_name, const char *value)
 {
   int index = -1;
   char *varname = this->CreateItemVariableName(this, group_name);
   if (varname)
     {
-    index = this->GetIndexOfItemUsingVariableAndSelectedValue(
-      varname, selected_value);
+    index = this->GetIndexOfItemWithVariableAndSelectedValue(
+      varname, value);
     if (index >= 0)
       {
       this->SelectItem(index);
@@ -803,10 +862,10 @@ int vtkKWMenu::SelectItemInGroupWithSelectedValue(
 
 //----------------------------------------------------------------------------
 int vtkKWMenu::SelectItemInGroupWithSelectedValueAsInt(
-  const char *group_name, int selected_value)
+  const char *group_name, int value)
 {
   char buffer[50];
-  sprintf(buffer, "%d", selected_value);
+  sprintf(buffer, "%d", value);
   return this->SelectItemInGroupWithSelectedValue(
     group_name, buffer);
 }
@@ -820,11 +879,19 @@ int vtkKWMenu::GetIndexOfSelectedItemInGroup(const char *group_name)
   if (temp)
     {
     vtksys_stl::string varvalue(temp);
-    index = this->GetIndexOfItemUsingVariableAndSelectedValue(
+    index = this->GetIndexOfItemWithVariableAndSelectedValue(
       varname, varvalue.c_str());
     }
   delete [] varname;
   return index;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMenu::GetIndexOfSelectedItem()
+{
+  vtksys_stl::string group(
+    this->GetItemGroupName(this->GetNumberOfItems() - 1));
+  return this->GetIndexOfSelectedItemInGroup(group.c_str());
 }
 
 //----------------------------------------------------------------------------
