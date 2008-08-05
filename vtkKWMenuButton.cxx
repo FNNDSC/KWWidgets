@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenuButton );
-vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.42 $");
+vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.43 $");
 
 //----------------------------------------------------------------------------
 vtkKWMenuButton::vtkKWMenuButton()
@@ -193,9 +193,9 @@ void vtkKWMenuButton::UpdateMenuButtonLabel()
       this->Menu->GetIndexOfItemWithVariableAndSelectedValue(
         varname.c_str(), this->GetValue()));
 
-  if (this->MaximumLabelWidth <= 0)
+  if (this->MaximumLabelWidth <= 0 || !label)
     {
-    this->SetConfigurationOption("-text", label);
+    this->SetConfigurationOption("-text", label ? label : "");
     }
   else
     {
