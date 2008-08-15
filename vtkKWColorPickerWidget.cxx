@@ -42,7 +42,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.12 $");
 
 //----------------------------------------------------------------------------
 class vtkKWColorPickerWidgetInternals
@@ -462,12 +462,19 @@ void vtkKWColorPickerWidget::CreateWidget()
   label = this->InfoLabel->GetWidget();
   label->AdjustWrapLengthToWidthOn();
 
+  // Can't decrease the font on Win32 for now, it's flickering :(
+
+  int info_label_margin = 6;
+
+#ifndef WIN32
+  info_label_margin = 0;
   int tcl_major = 0, tcl_minor = 0, tcl_patch_level = 0;
   Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
   const char *font = (tcl_major < 8 || (tcl_major == 8 && tcl_minor < 5)) 
     ? "fixed" : "TkDefaultFont";
   tk_cmd << label->GetWidgetName() << " config -font {{" << font << "} 7} "
          << endl;
+#endif
 
   double fr, fg, fb, fh, fs, fv;
   label->GetForegroundColor(&fr, &fg, &fb);
@@ -496,8 +503,8 @@ void vtkKWColorPickerWidget::CreateWidget()
          << endl;
 
   tk_cmd << "grid " << this->InfoLabel->GetWidgetName() 
-         << " -row 3 -column 0 -sticky ews -padx 8 -pady 0" 
-         << endl;
+         << " -row 3 -column 0 -sticky ews -padx " << info_label_margin
+         << " -pady 0" << endl;
 
   tk_cmd << "grid rowconfigure " 
          << this->InfoLabel->GetParent()->GetWidgetName() 
