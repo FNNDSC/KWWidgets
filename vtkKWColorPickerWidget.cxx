@@ -42,7 +42,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.9 $");
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.10 $");
 
 //----------------------------------------------------------------------------
 class vtkKWColorPickerWidgetInternals
@@ -461,6 +461,13 @@ void vtkKWColorPickerWidget::CreateWidget()
 
   label = this->InfoLabel->GetWidget();
   label->AdjustWrapLengthToWidthOn();
+
+  int tcl_major = 0, tcl_minor = 0, tcl_patch_level = 0;
+  Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
+  const char *font = (tcl_major < 8 || (tcl_major == 8 && tcl_minor < 5)) 
+    ? "fixed" : "TkDefaultFont";
+  tk_cmd << label->GetWidgetName() << " config -font {{" << font << "} 7} "
+         << endl;
 
   double fr, fg, fb, fh, fs, fv;
   label->GetForegroundColor(&fr, &fg, &fb);
