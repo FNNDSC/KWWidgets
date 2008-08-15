@@ -42,7 +42,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.13 $");
 
 //----------------------------------------------------------------------------
 class vtkKWColorPickerWidgetInternals
@@ -466,7 +466,7 @@ void vtkKWColorPickerWidget::CreateWidget()
 
   int info_label_margin = 6;
 
-#ifndef WIN32
+#if 0
   info_label_margin = 0;
   int tcl_major = 0, tcl_minor = 0, tcl_patch_level = 0;
   Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
