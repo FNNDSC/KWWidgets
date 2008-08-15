@@ -39,7 +39,7 @@ public:
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidgetsTourExample );
-vtkCxxRevisionMacro(vtkKWWidgetsTourExample, "$Revision: 1.7 $");
+vtkCxxRevisionMacro(vtkKWWidgetsTourExample, "$Revision: 1.8 $");
 
 //----------------------------------------------------------------------------
 vtkKWWidgetsTourExample::vtkKWWidgetsTourExample()
@@ -321,24 +321,35 @@ int vtkKWWidgetsTourExample::Run(int argc, char *argv[])
     if (item)
       {
       this->Internals->KWWidgetsTourItems[node_ptr->Name] = item;
-      const char *parent_node = NULL;
-      switch (item->GetType())
-        {
-        default:
-        case KWWidgetsTourItem::TypeCore:
-          parent_node = "core";
-          break;
-        case KWWidgetsTourItem::TypeComposite:
-          parent_node = "composite";
-          break;
-        case KWWidgetsTourItem::TypeVTK:
-          parent_node = "VTK";
-          break;
-        }
-      this->WidgetsTree->GetWidget()->AddNode(
-        parent_node, node_ptr->Name, node_ptr->Name);
       }
     node_ptr++;
+    }
+
+  vtkKWWidgetsTourExampleInternals::KWWidgetsTourItemsContainerIterator end = 
+    this->Internals->KWWidgetsTourItems.end();
+  vtkKWWidgetsTourExampleInternals::KWWidgetsTourItemsContainerIterator it = 
+    this->Internals->KWWidgetsTourItems.begin();
+
+  for (; it != end ; it++)
+    {
+    vtksys_stl::string name(it->first);
+    KWWidgetsTourItem *item = it->second;
+    const char *parent_node = NULL;
+    switch (item->GetType())
+      {
+      default:
+      case KWWidgetsTourItem::TypeCore:
+        parent_node = "core";
+        break;
+      case KWWidgetsTourItem::TypeComposite:
+        parent_node = "composite";
+        break;
+      case KWWidgetsTourItem::TypeVTK:
+        parent_node = "VTK";
+        break;
+      }
+    this->WidgetsTree->GetWidget()->AddNode(
+      parent_node, name.c_str(), name.c_str());
     }
 
   this->WidgetsTree->GetWidget()->SetSelectionChangedCommand(
@@ -354,10 +365,8 @@ int vtkKWWidgetsTourExample::Run(int argc, char *argv[])
   app->ProcessPendingEvents();
   source_split->SetSeparatorPosition(0.33);
   
-  vtkKWWidgetsTourExampleInternals::KWWidgetsTourItemsContainerIterator end = 
-    this->Internals->KWWidgetsTourItems.end();
-  vtkKWWidgetsTourExampleInternals::KWWidgetsTourItemsContainerIterator it = 
-    this->Internals->KWWidgetsTourItems.begin();
+  end = this->Internals->KWWidgetsTourItems.end();
+  it = this->Internals->KWWidgetsTourItems.begin();
 
   if (!option_test)
     {

@@ -196,14 +196,14 @@ pack [$python_source_text GetWidgetName] -side top -expand y -fill both -padx 2 
 
 [$win GetViewNotebook] ShowOnlyPagesWithSameTagOn
 
-set widgets [glob -path "[file join [file dirname [info script]] Widgets]/" *.tcl]
+set widgets [lsort [glob -path "[file join [file dirname [info script]] Widgets]/" *.tcl]]
 if {[info commands vtkKWRenderWidget] != ""} {
   set has_vtk_widgets 1 
 } {
   set has_vtk_widgets 0
 }
 if {$has_vtk_widgets} {
-  set widgets [concat $widgets [glob -path "[file join [file dirname [info script]] Widgets]/VTK/" *.tcl]]
+  set widgets [lsort [concat $widgets [glob -path "[file join [file dirname [info script]] Widgets]/VTK/" *.tcl]]]
 }
 foreach widget $widgets {
   set name [file rootname [file tail $widget]]
