@@ -42,7 +42,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.11 $");
 
 //----------------------------------------------------------------------------
 class vtkKWColorPickerWidgetInternals
@@ -477,7 +477,7 @@ void vtkKWColorPickerWidget::CreateWidget()
   label->GetBackgroundColor(&br, &bg, &bb);
   vtkMath::RGBToHSV(br, bg, bb, &bh, &bs, &bv);
 
-  fv = (fv + bv) * 0.5;
+  fv = 0.7 * fv + 0.3 * bv;
   vtkMath::HSVToRGB(fh, fs, fv, &fr, &fg, &fb);
   label->SetForegroundColor(fr, fg, fb);
 
@@ -496,7 +496,7 @@ void vtkKWColorPickerWidget::CreateWidget()
          << endl;
 
   tk_cmd << "grid " << this->InfoLabel->GetWidgetName() 
-         << " -row 3 -column 0 -sticky ews -padx 0 -pady 0" 
+         << " -row 3 -column 0 -sticky ews -padx 8 -pady 0" 
          << endl;
 
   tk_cmd << "grid rowconfigure " 
