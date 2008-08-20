@@ -819,6 +819,11 @@ public:
   // the cell is updated automatically (to 0 or 1). Note that the
   // EditEndCommand and CellUpdatedCommand are handled the same way.
   // Check the SetCellWindowCommand method for more information.
+  // Important: note that you can not set the Command for this checkbutton
+  // (doing so will prevent CellUpdatedCommand from being called for example
+  // or the cell contents to be updated). Also note that a new checkbutton
+  // instance will be created each time you sort its column (by design of
+  // the third-party tablelist Tk widget used under the hood).
   virtual void SetCellWindowCommandToCheckButton(int row_index, int col_index);
   virtual vtkKWCheckButton *GetCellWindowAsCheckButton(
     int row_index, int col_index);
