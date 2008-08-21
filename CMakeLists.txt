@@ -635,11 +635,7 @@ incr_tcl_get_version("INCR_TCL_MAJOR_VERSION" "INCR_TCL_MINOR_VERSION")
 if(VTK_WRAP_PYTHON)
 
   set(KWWidgetsPythonExtra_SRCS)
-  if(APPLE OR VTK_MAJOR_VERSION GREATER 4)
-    set(KWWidgetsPython_LIBS vtkCommonPythonD)
-  else(APPLE OR VTK_MAJOR_VERSION GREATER 4)
-    set(KWWidgetsPython_LIBS vtkCommonPython)
-  endif(APPLE OR VTK_MAJOR_VERSION GREATER 4)
+  set(KWWidgetsPython_LIBS vtkCommonPythonD)
 
   include("${VTK_CMAKE_DIR}/vtkWrapPython.cmake")
 
@@ -654,8 +650,10 @@ if(VTK_WRAP_PYTHON)
       "EXPORTS\ninitKWWidgetsPython=_initKWWidgetsPython\n")
   endif(BORLAND)
 
-  add_library(KWWidgetsPythonD ${KWWidgetsPython_SRCS}
-    ${KWWidgetsPythonExtra_SRCS})
+  add_library(KWWidgetsPythonD 
+    ${KWWidgetsPython_SRCS} 
+    ${KWWidgetsPythonExtra_SRCS}
+    )
   target_link_libraries(KWWidgetsPythonD KWWidgets ${KWWidgetsPython_LIBS})
   if(KWWidgets_BUILD_VTK_WIDGETS AND 
       VTK_USE_RENDERING OR VTK_USE_RENDERING_ISSET)
@@ -674,13 +672,23 @@ if(VTK_WRAP_PYTHON)
       KWWidgetsPythonD)
   endif(NOT KWWidgets_INSTALL_NO_LIBRARIES)
 
+  # Create a python module that can be loaded dynamically.
+
   add_library(KWWidgetsPython MODULE
     Wrapping/Python/KWWidgetsPythonExtraInit.cxx)
   target_link_libraries(KWWidgetsPython KWWidgetsPythonD)
 
+  # Python extension modules on Windows must have the extension ".pyd"
+  # instead of ".dll" as of Python 2.5.  Older python versions do support
+  # this suffix.
+  if(WIN32 AND NOT CYGWIN)
+    set_target_properties(KWWidgetsPython PROPERTIES SUFFIX ".pyd")
+  endif(WIN32 AND NOT CYGWIN)
+
   if(WIN32 OR APPLE)
     target_link_libraries(KWWidgetsPython ${VTK_PYTHON_LIBRARIES})
   endif(WIN32 OR APPLE)
+
   if(KWWidgets_BUILD_VTK_WIDGETS AND 
       VTK_USE_RENDERING OR VTK_USE_RENDERING_ISSET)
     # TARGET_LINK_LIBRARIES(KWWidgetsPython vtkRenderingPython)
@@ -770,9 +778,9 @@ if(WIN32)
 endif(WIN32)
 
 # link ApplicationServices.framework on OSX for vtkKWClipboardHelper 
-IF(APPLE)
+if(APPLE)
   target_link_libraries (KWWidgets "-framework ApplicationServices")
-ENDIF(APPLE)
+endif(APPLE)
 
 if(KWWidgets_USE_INTERNATIONALIZATION AND GETTEXT_RUNTIME_FOUND)
   target_link_libraries(KWWidgets ${GETTEXT_LIBRARIES})

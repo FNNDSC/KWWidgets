@@ -62,7 +62,7 @@ def get_libs():
     else:
         dir = kwwidgets_bin_dir.replace('/', '\\')
         prefix = ''
-        suffix = 'Python.dll'
+        suffix = 'Python.pyd'
 
     # If this build has configuration types append the selected configuration.
     if kwwidgets_has_configuration_types:
