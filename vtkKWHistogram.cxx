@@ -22,6 +22,9 @@
 #include "vtkObjectFactory.h"
 #include "vtkDoubleArray.h"
 #include "vtkIntArray.h"
+#include "vtkMath.h"
+
+#include <float.h>
 
 #define VTK_KW_HIST_TESTING 0
 
@@ -30,7 +33,7 @@
 //----------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWHistogram);
-vtkCxxRevisionMacro(vtkKWHistogram, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWHistogram, "$Revision: 1.13 $");
 
 //----------------------------------------------------------------------------
 vtkKWHistogram::vtkKWHistogram()
@@ -184,11 +187,18 @@ void vtkKWHistogramBuildFloat(
      (double)self->GetNumberOfBins() / (range[1] - range[0]));
 
   double *bins_ptr = self->GetBins()->GetPointer(0);
+  int index;
 
   T *data_end = data + nb_tuples * nb_of_components;
   while (data < data_end)
     {
-    bins_ptr[vtkMath::Floor(((double)*data - range[0]) * bin_width)]++;
+#if defined(WIN32) && defined(_MSC_VER)
+    if (!_isnan((double)*data))
+#endif
+      {
+      index = vtkMath::Floor(((double)*data - range[0]) * bin_width);
+      bins_ptr[index]++;
+      }
     data += nb_of_components;
     }
 }
