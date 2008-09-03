@@ -201,6 +201,16 @@ public:
   virtual int LoadScript(const char* filename);
 
   // Description:
+  // Run an AppleScript provided as a string (don't forget to escape the
+  // quotes). Only on Apple platforms.
+  // Return 1 if successful, 0 otherwise
+#ifdef __APPLE__
+  //BTX
+  static int RunAppleScript(const char *text);
+  //ETX
+#endif
+
+  // Description:
   // Set/Get the "exit after load script" flag. If this flag is set, then 
   // the application will automatically Exit() after a call to LoadScript(). 
   // This is mainly used for testing purposes. Even though a Tcl script

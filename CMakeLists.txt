@@ -627,6 +627,7 @@ endif(TclTk_INSTALL_LIB_DIR)
 include("${KWWidgets_CMAKE_DIR}/KWWidgetsTclTkMacros.cmake")
 kwwidgets_copy_tcl_tk_support_files("${PROJECT_BINARY_DIR}/lib")
 kwwidgets_install_tcl_tk_support_files("${KWWidgets_TclTk_INSTALL_LIB_DIR}")
+
 incr_tcl_get_version("INCR_TCL_MAJOR_VERSION" "INCR_TCL_MINOR_VERSION")
 
 # --------------------------------------------------------------------------
@@ -780,6 +781,10 @@ endif(WIN32)
 # link ApplicationServices.framework on OSX for vtkKWClipboardHelper 
 if(APPLE)
   target_link_libraries (KWWidgets "-framework ApplicationServices")
+  # As much as we should try to avoid linking against Carbon, I'm
+  # afraid we will need it to run an AppleScript using OSAExecute()
+  # (see vtkKWApplication::RunAppleScript and SendEmail)
+  target_link_libraries (KWWidgets "-framework Carbon")
 endif(APPLE)
 
 if(KWWidgets_USE_INTERNATIONALIZATION AND GETTEXT_RUNTIME_FOUND)

@@ -103,7 +103,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.335 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.336 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -2657,6 +2657,7 @@ void vtkKWApplication::EmailFeedback()
 }
 
 //----------------------------------------------------------------------------
+#ifdef __APPLE__
 int vtkKWApplication::RunAppleScript(
   const char *text)
 {
@@ -2722,6 +2723,7 @@ int vtkKWApplication::RunAppleScript(
   (void)text;
   return 0;
 }
+#endif
 
 //----------------------------------------------------------------------------
 void vtkKWApplication::RegisterDialogUp(vtkKWWidget *)
