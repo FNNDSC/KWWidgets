@@ -14,7 +14,7 @@
 
 #ifdef __APPLE__
 #include <AvailabilityMacros.h>
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1040
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1040
 #include <Carbon/Carbon.h>
 #define Cursor X11Cursor 
 #endif
@@ -90,7 +90,7 @@ static Tcl_Interp *Et_Interp = 0;
 #endif
 
 #ifdef __APPLE__
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1040
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1040
 #undef Cursor
 #endif
 #endif // __APPLE__
@@ -103,7 +103,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.334 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.335 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1240,7 +1240,7 @@ int vtkKWApplication::OpenLink(const char *link)
     }
 #endif
 
-#if defined(__APPLE__) && MAC_OS_X_VERSION_MIN_REQUIRED >= 1040
+#if defined(__APPLE__) && MAC_OS_X_VERSION_MAX_ALLOWED >= 1040
   /* Refs:
      http://developer.apple.com/documentation/Carbon/Reference/LaunchServicesReference/Reference/reference.html
      http://developer.apple.com/qa/qa2001/qa1028.html
@@ -1324,7 +1324,7 @@ int vtkKWApplication::ExploreLink(const char *link)
     }
 #endif
 
-#if defined(__APPLE__) && MAC_OS_X_VERSION_MIN_REQUIRED >= 1040
+#if defined(__APPLE__) && MAC_OS_X_VERSION_MAX_ALLOWED >= 1040
 
   /* Refs: AppleEvents
      http://developer.apple.com/documentation/AppleScript/Conceptual/AppleEvents/create_send_aepg/chapter_7_section_4.html
@@ -2418,10 +2418,69 @@ int vtkKWApplication::SendEmail(
 
     ::FreeLibrary(g_hMAPI);
     }
-
+  
   return (err != SUCCESS_SUCCESS ? 0 : 1);
 
-#else
+#endif
+
+#if defined(__APPLE__) && MAC_OS_X_VERSION_MAX_ALLOWED >= 1040
+  /* Refs
+     http://lists.apple.com/archives/applescript-studio/2006/Nov/msg00012.html
+     http://www.mackb.com/Uwe/Forum.aspx/entourage/21582/Applescript-to-create-new-message
+     http://www.microsoft.com/mac/developers/default.mspx?CTT=PageView&clr=99-21-0&target=9efe4640-7277-4372-a304-4181b2c098f21033&srcid=40d869d3-e1a6-4bce-9e5b-fb5b87bec3f41033&ep=7
+     http://forums.macosxhints.com/archive/index.php/t-73192.html
+     http://forums.macosxhints.com/archive/index.php/t-31163.html
+
+     http://groups.google.com/group/EasyTask-Users/browse_thread/thread/fb2632fe253dd8e3
+     http://fundisom.com/apple/search/applescript-send-mail/
+     http://www.mail-archive.com/cocoa-dev@lists.apple.com/msg08778.html
+     http://www.aaronsw.com/weblog/001054
+     http://akosut.com/software/mailscripts.html
+  */
+
+  // Sending an email using AppleEvents directly is just plain
+  // hard. Let's write and run an AppleScript instead.
+
+  vtksys_stl::string script;
+  script = 
+    "tell application \"Mail\"\n"
+    "  activate\n"
+    "  set newMessage to make new outgoing message\n"
+    "  tell newMessage\n"
+    "    set visible to true\n";
+  if (to)
+    {
+    script = script +
+      "    make new recipient at end of to recipients with properties {address:\"" + to + "\"}\n";
+    }
+  if (subject)
+    {
+    script = script +
+      "    set subject to \"" + 
+      vtksys::SystemTools::EscapeChars(subject, "\"") + "\"\n";
+    }
+  if (message)
+    {
+    script = script +
+      "    set content to \"" + 
+      vtksys::SystemTools::EscapeChars(message, "\"") + "\n\n\n\"\n";
+    }
+  if (attachment_filename)
+    {
+    script = script +
+      "    set filepath to POSIX path of \"" + attachment_filename + "\"\n" +
+      "    make new attachment with properties {file name:filepath}\n";
+    }
+  script = script +
+    "  end tell\n"
+    "end tell\n";
+  
+  if (vtkKWApplication::RunAppleScript(script.c_str()))
+    {
+    return 1;
+    }
+
+#endif
 
   vtksys_stl::string msg =
     k_("Sorry, sending an email from this operating system is not "
@@ -2441,7 +2500,6 @@ int vtkKWApplication::SendEmail(
   dlg->Invoke();
 
   return 0;
-#endif
 }
 
 //----------------------------------------------------------------------------
@@ -2596,6 +2654,73 @@ void vtkKWApplication::EmailFeedback()
     message.str().c_str(),
     NULL,
     buffer);
+}
+
+//----------------------------------------------------------------------------
+int vtkKWApplication::RunAppleScript(
+  const char *text)
+{
+#if defined(__APPLE__) && MAC_OS_X_VERSION_MAX_ALLOWED >= 1040
+
+  // Source: http://developer.apple.com/qa/qa2001/qa1026.html
+  // Gotta link against -framework Carbon now :(
+
+  long textLength = strlen(text);
+
+  AEDesc scriptTextDesc;
+  AECreateDesc(typeNull, NULL, 0, &scriptTextDesc);
+
+  AEDesc resultData;
+  OSStatus err;
+
+  // Open the scripting component
+  ComponentInstance theComponent = 
+    OpenDefaultComponent(kOSAComponentType, typeAppleScript);
+  if (theComponent == NULL) 
+    { 
+    err = paramErr; 
+    }
+  else
+    {
+    // Put the script text into an aedesc 
+    err = AECreateDesc(typeChar, text, textLength, &scriptTextDesc);
+    if (err == noErr) 
+      {
+      // Compile the script 
+      OSAID scriptID = kOSANullScript;;
+      err = OSACompile(theComponent, &scriptTextDesc, kOSAModeNull, &scriptID);
+      if (err == noErr) 
+        {
+        // Run the script 
+        OSAID resultID = kOSANullScript;;
+        err = OSAExecute(
+          theComponent, scriptID, kOSANullScript, kOSAModeNull, &resultID);
+        // Collect the results - if any
+        AECreateDesc(typeNull, NULL, 0, &resultData);
+        if (err == errOSAScriptError) 
+          {
+          OSAScriptError(theComponent, kOSAErrorMessage, typeChar, &resultData);
+          } 
+        else if (err == noErr && resultID != kOSANullScript) 
+          {
+          OSADisplay(
+            theComponent, resultID, typeChar, kOSAModeNull, &resultData);
+          OSADispose(theComponent, resultID);
+          }
+        OSADispose(theComponent, scriptID);
+        }
+      }
+    CloseComponent(theComponent);
+    }
+
+  AEDisposeDesc(&scriptTextDesc);
+
+  return err == noErr ? 1 : 0;
+
+#endif
+
+  (void)text;
+  return 0;
 }
 
 //----------------------------------------------------------------------------
