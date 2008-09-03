@@ -77,7 +77,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSimpleAnimationWidget);
-vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.32 $");
+vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.33 $");
 
 //----------------------------------------------------------------------------
 vtkKWSimpleAnimationWidget::vtkKWSimpleAnimationWidget()
@@ -86,7 +86,7 @@ vtkKWSimpleAnimationWidget::vtkKWSimpleAnimationWidget()
 
   this->AnimationType = vtkKWSimpleAnimationWidget::AnimationTypeCamera;
 
-  this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationStopped;
+  this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationDone;
   
   this->Parameters = NULL;
   this->AnimationButtonSet = NULL;
@@ -779,6 +779,23 @@ void vtkKWSimpleAnimationWidget::CreateAnimationCallback()
     {
     this->CreateSliceAnimation(file_root.c_str(), ext.c_str(), width, height);
     }
+
+  if (this->AnimationStatus == vtkKWSimpleAnimationWidget::AnimationDone)
+    {
+    vtkKWMessageDialog::PopupMessage(
+      this->GetApplication(), this->GetParentTopLevel(), 
+      ks_("Animation|Create Animation Completion Dialog|Title|Create Movie"), 
+      k_("Your movie was created successfully!"), 
+      vtkKWMessageDialog::WarningIcon);
+    }
+  else if (this->AnimationStatus == vtkKWSimpleAnimationWidget::AnimationFailed)
+    {
+    vtkKWMessageDialog::PopupMessage(
+      this->GetApplication(), this->GetParentTopLevel(), 
+      ks_("Animation|Create Animation Completion Dialog|Title|Create Movie"), 
+      k_("Error! Sorry, it appears your movie was not created successfully!"), 
+      vtkKWMessageDialog::ErrorIcon);
+    }
   
   // Reenable buttons
 
@@ -799,8 +816,8 @@ void vtkKWSimpleAnimationWidget::PreviewCameraAnimation()
 
 //----------------------------------------------------------------------------
 void vtkKWSimpleAnimationWidget::CreateCameraAnimation(const char *file_root,
-                                              const char *ext,
-                                              int width, int height)
+                                                       const char *ext,
+                                                       int width, int height)
 {
   this->PerformCameraAnimation(file_root, ext, width, height);
 }
@@ -812,6 +829,7 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
 {
   if (!this->IsCreated() || !this->RenderWidget)
     {
+    this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationFailed;
     return;
     }
 
@@ -819,7 +837,7 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
   vtkKWWindowBase *win = vtkKWWindowBase::SafeDownCast(
     this->GetParentTopLevel());
 
-  int old_render_mode = 0, old_size[2], status;
+  int old_render_mode = 0, old_size[2];
 
   vtkWindowToImageFilter *w2i = NULL;
   vtkGenericMovieWriter *movie_writer = NULL;
@@ -834,7 +852,7 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
       {
       win->SetStatusText(ks_("Progress|Previewing animation"));
       }
-    status = vtkKWSimpleAnimationWidget::AnimationPreviewing;
+    this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationPreviewing;
     }
   else
     {
@@ -881,7 +899,7 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
       win->SetStatusText(
         ks_("Progress|Generating animation (rendering to memory; please wait)"));
       }
-    status = vtkKWSimpleAnimationWidget::AnimationCreating;
+    this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationCreating;
 
     w2i = vtkWindowToImageFilter::New();
     w2i->SetInput(this->RenderWidget->GetRenderWindow());
@@ -899,8 +917,6 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
       image_filename = new char[strlen(file_root) + strlen(ext) + 25];
       }
     }
-
-  this->AnimationStatus = status;
 
   // Save the camera state
 
@@ -977,15 +993,20 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
 
   // Update status
 
+  if (this->AnimationStatus != vtkKWSimpleAnimationWidget::AnimationCanceled)
+    {
+    this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationDone;
+    }
+
   if (win)
     {
     vtksys_stl::string end_msg(win->GetStatusText());
     end_msg += " -- ";
-    if (this->AnimationStatus != status)
+    if (this->AnimationStatus == vtkKWSimpleAnimationWidget::AnimationCanceled)
       {
       end_msg += ks_("Progress|Canceled");
       }
-    else
+    else if (this->AnimationStatus == vtkKWSimpleAnimationWidget::AnimationDone)
       {
       end_msg += ks_("Progress|Done");
       }
@@ -993,7 +1014,6 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
     win->GetProgressGauge()->SetValue(0);
     }
   
-  this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationStopped;
 
   // Restore camera state
 
@@ -1056,6 +1076,7 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
 {
   if (!this->IsCreated() || !this->RenderWidget)
     {
+    this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationFailed;
     return;
     }
 
@@ -1064,7 +1085,7 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
     this->GetParentTopLevel());
   
   int slice = this->InvokeSliceGetCommand();
-  int old_size[2], status;
+  int old_size[2];
 
   vtkWindowToImageFilter *w2i = NULL;
   vtkGenericMovieWriter *movie_writer = 0;
@@ -1077,7 +1098,7 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
       {
       win->SetStatusText(ks_("Progress|Previewing animation"));
       }
-    status = vtkKWSimpleAnimationWidget::AnimationPreviewing;
+    this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationPreviewing;
     }
   else
     {
@@ -1125,7 +1146,7 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
       win->SetStatusText(
         ks_("Progress|Generating animation (rendering to memory; please wait)"));
       }
-    status = vtkKWSimpleAnimationWidget::AnimationCreating;
+    this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationCreating;
 
     w2i = vtkWindowToImageFilter::New();
     w2i->SetInput(this->RenderWidget->GetRenderWindow());
@@ -1143,8 +1164,6 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
       image_filename = new char[strlen(file_root) + strlen(ext) + 25];
       }
     }
-
-  this->AnimationStatus = status;
 
   // Save the camera state
 
@@ -1218,15 +1237,20 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
 
   // Update status
 
+  if (this->AnimationStatus != vtkKWSimpleAnimationWidget::AnimationCanceled)
+    {
+    this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationDone;
+    }
+
   if (win)
     {
     vtksys_stl::string end_msg(win->GetStatusText());
     end_msg += " -- ";
-    if (this->AnimationStatus != status)
+    if (this->AnimationStatus == vtkKWSimpleAnimationWidget::AnimationCanceled)
       {
       end_msg += ks_("Progress|Canceled");
       }
-    else
+    else if (this->AnimationStatus == vtkKWSimpleAnimationWidget::AnimationDone)
       {
       end_msg += ks_("Progress|Done");
       }
@@ -1234,8 +1258,6 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
     win->GetProgressGauge()->SetValue(0);
     }
   
-  this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationStopped;
-
   // Restore camera state
 
   cam->SetPosition(pos);
@@ -1362,7 +1384,10 @@ void vtkKWSimpleAnimationWidget::UpdateEnableState()
   this->PropagateEnableState(this->AnimationButtonSet);
   
   if (this->AnimationButtonSet &&
-      !(this->AnimationStatus & vtkKWSimpleAnimationWidget::AnimationPlaying))
+      !(this->AnimationStatus & vtkKWSimpleAnimationWidget::AnimationCreating ||
+        this->AnimationStatus & vtkKWSimpleAnimationWidget::AnimationPreviewing
+        )
+    )
     {
     this->AnimationButtonSet
       ->GetWidget(VTK_VV_ANIMATION_BUTTON_CANCEL_ID)->SetEnabled(0);

@@ -175,11 +175,11 @@ protected:
   //BTX
   enum
   {
-    AnimationStopped    = 0,
+    AnimationDone       = 0,
     AnimationPreviewing = 1,
     AnimationCreating   = 2,
-    AnimationPlaying    = 3,
-    AnimationCanceled  = 4
+    AnimationCanceled   = 4,
+    AnimationFailed     = 8
   };
   //ETX
   int AnimationStatus;
