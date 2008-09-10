@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenuButton );
-vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.43 $");
+vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.44 $");
 
 //----------------------------------------------------------------------------
 vtkKWMenuButton::vtkKWMenuButton()
@@ -101,6 +101,7 @@ void vtkKWMenuButton::SetValue(const char *s)
 
     if (this->Menu && *s)
       {
+      // TODO: this does not support multiple-level of menus (i.e. cascade)
       int nb_items = this->Menu->GetNumberOfItems();
       for (int i = 0; i < nb_items; i++)
         {
@@ -171,6 +172,45 @@ void vtkKWMenuButton::TracedVariableChangedCallback(
 }
 
 //----------------------------------------------------------------------------
+int vtkKWMenuButton::UpdateMenuButtonLabelFromMenu(
+  const char *varname, const char *value, vtkKWMenu *menu)
+{
+  const char *label = 
+    menu->GetItemLabel(
+      menu->GetIndexOfItemWithVariableAndSelectedValue(varname, value));
+
+  if (label)
+    {
+    if (this->MaximumLabelWidth <= 0)
+      {
+      this->SetConfigurationOption("-text", label);
+      }
+    else
+      {
+      vtksys_stl::string cropped = vtksys::SystemTools::CropString(
+        label, (size_t)this->MaximumLabelWidth);
+      this->SetConfigurationOption("-text", cropped.c_str());
+      }
+    return 1;
+    }
+
+  // Not found? Try harder in the submenus (cascade)
+
+  int i, nb_items = menu->GetNumberOfItems();
+  for (i = 0; i < nb_items; i++)
+    {
+    if (menu->GetItemType(i) == vtkKWMenu::CascadeItemType &&
+        this->UpdateMenuButtonLabelFromMenu(
+          varname, value, this->Menu->GetItemCascade(i)))
+      {
+      return 1;
+      }
+    }
+  
+  return 0;
+}
+
+//----------------------------------------------------------------------------
 void vtkKWMenuButton::UpdateMenuButtonLabel()
 {
   if (!this->IsCreated())
@@ -188,21 +228,13 @@ void vtkKWMenuButton::UpdateMenuButtonLabel()
   vtksys_stl::string varname(this->Menu->GetTclName());
   varname += "_RB_group";
 
-  const char *label = 
-    this->Menu->GetItemLabel(
-      this->Menu->GetIndexOfItemWithVariableAndSelectedValue(
-        varname.c_str(), this->GetValue()));
+  vtksys_stl::string value(this->GetValue());
 
-  if (this->MaximumLabelWidth <= 0 || !label)
+  int found = this->UpdateMenuButtonLabelFromMenu(
+    varname.c_str(), value.c_str(), this->Menu);
+  if (!found)
     {
-    this->SetConfigurationOption("-text", label ? label : "");
-    }
-  else
-    {
-    vtksys_stl::string cropped = 
-      vtksys::SystemTools::CropString(
-        label, (size_t)this->MaximumLabelWidth);
-    this->SetConfigurationOption("-text", cropped.c_str());
+    this->SetConfigurationOption("-text", "");
     }
 }
 
@@ -570,6 +602,9 @@ void vtkKWMenuButton::AddCallbackCommandObservers()
 
   this->AddCallbackCommandObserver(
     this->Menu, vtkKWMenu::RadioButtonItemAddedEvent);
+
+  this->AddCallbackCommandObserver(
+    this->Menu, vtkKWMenu::CascadeItemAddedEvent);
 }
 
 //----------------------------------------------------------------------------
@@ -579,27 +614,45 @@ void vtkKWMenuButton::RemoveCallbackCommandObservers()
 
   this->RemoveCallbackCommandObserver(
     this->Menu, vtkKWMenu::RadioButtonItemAddedEvent);
+
+  this->RemoveCallbackCommandObserver(
+    this->Menu, vtkKWMenu::CascadeItemAddedEvent);
 }
 
 //----------------------------------------------------------------------------
 void vtkKWMenuButton::ProcessCallbackCommandEvents(vtkObject *caller,
-                                                     unsigned long event,
-                                                     void *calldata)
+                                                   unsigned long event,
+                                                   void *calldata)
 {
   // Make sure all radiobuttons share the same variable as we 
   // are using internally.
 
-  if (caller == this->Menu)
+  vtkKWMenu *caller_menu = vtkKWMenu::SafeDownCast(caller);
+  vtkKWMenu *cascade_menu = NULL;
+  vtksys_stl::string varname;
+
+  if (caller_menu)
     {
     int index = *(static_cast<int*>(calldata));
     switch (event)
       {
       case vtkKWMenu::RadioButtonItemAddedEvent:
-        vtksys_stl::string varname(this->Menu->GetTclName());
+        varname = this->Menu->GetTclName();
         varname += "_RB_group";
-        this->Menu->SetItemVariable(index, varname.c_str());
-        this->Menu->SetItemSelectedValue(
-          index, this->Menu->GetItemLabel(index));
+        caller_menu->SetItemVariable(index, varname.c_str());
+        caller_menu->SetItemSelectedValue(
+          index, caller_menu->GetItemLabel(index));
+        break;
+
+      case vtkKWMenu::CascadeItemAddedEvent:
+        cascade_menu = caller_menu->GetItemCascade(index);
+        if (cascade_menu)
+          {
+          this->AddCallbackCommandObserver(
+            cascade_menu, vtkKWMenu::RadioButtonItemAddedEvent);
+          this->AddCallbackCommandObserver(
+            cascade_menu, vtkKWMenu::CascadeItemAddedEvent);
+          }
         break;
       }
     }

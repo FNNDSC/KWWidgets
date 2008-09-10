@@ -41,6 +41,7 @@ public:
   // Description:
   // Set/Get the current entry to the previous or next entry.
   // and call the corresponding callback if any.
+  // WARNING: this does not support multiple menu levels (i.e. cascade)
   virtual void NextValue();
   virtual void PreviousValue();
 
@@ -194,7 +195,7 @@ public:
   // is specified then it overrides other options that specify a bitmap or
   // textual value to display in the widget. Invoke vtkKWWidget's 
   // SetConfigurationOption("-image", imagename) to use a specific 
-  // pre-existing Tk image, or call one of the following functions:
+  // pre-existing Tk image, or call one of the following functions.
   // The SetImageToPredefinedIcon method accepts an index to one of the
   // predefined icon listed in vtkKWIcon.
   // The SetImageToPixels method sets the image using pixel data. It expects
@@ -267,6 +268,8 @@ protected:
   int       MaximumLabelWidth;
 
   virtual void UpdateMenuButtonLabel();
+  virtual int UpdateMenuButtonLabelFromMenu(
+    const char *varname, const char *value, vtkKWMenu *menu);
 
   // Description:
   // Processes the events that are passed through CallbackCommand (or others).
