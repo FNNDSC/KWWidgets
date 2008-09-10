@@ -264,6 +264,21 @@ public:
   virtual int HasItem(const char *label);
 
   // Description:
+  // Returns the type of a specific menu item.
+  //BTX
+  enum
+  {
+    UnknownItemType = 0,
+    RadioButtonItemType,
+    CheckButtonItemType,
+    CommandItemType,
+    SeparatorItemType,
+    CascadeItemType
+  };
+  //ETX
+  virtual int GetItemType(int index);
+
+  // Description:
   // Set/Get the label of a specific menu item at a given index.
   // Note that the output of GetItemLabel is a pointer to a
   // temporary buffer that should be copied *immediately* to your own storage.

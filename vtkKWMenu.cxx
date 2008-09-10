@@ -33,7 +33,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.124 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.125 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMenuInternals
@@ -1179,6 +1179,45 @@ int vtkKWMenu::SetItemLabel(int index, const char *label)
 const char* vtkKWMenu::GetItemLabel(int index)
 {
   return this->GetItemOption(index, "-label");
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMenu::GetItemType(int index)
+{
+  if (!this->IsCreated() || index < 0 || index >= this->GetNumberOfItems())
+    {
+    return vtkKWMenu::UnknownItemType;
+    }
+ 
+  const char *type = 
+    this->Script("%s type %d", this->GetWidgetName(), index);
+  if (!type || !*type)
+    {
+    return vtkKWMenu::UnknownItemType;
+    }
+
+  if (!strcmp(type, "command"))
+    {
+    return vtkKWMenu::CommandItemType;
+    }
+  if (!strcmp(type, "checkbutton"))
+    {
+    return vtkKWMenu::CheckButtonItemType;
+    }
+  if (!strcmp(type, "radiobutton"))
+    {
+    return vtkKWMenu::CheckButtonItemType;
+    }
+  if (!strcmp(type, "separator"))
+    {
+    return vtkKWMenu::SeparatorItemType;
+    }
+  if (!strcmp(type, "cascade"))
+    {
+    return vtkKWMenu::CascadeItemType;
+    }
+
+  return vtkKWMenu::UnknownItemType;
 }
 
 //----------------------------------------------------------------------------
