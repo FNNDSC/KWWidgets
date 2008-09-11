@@ -268,7 +268,7 @@ protected:
   int       MaximumLabelWidth;
 
   virtual void UpdateMenuButtonLabel();
-  virtual int UpdateMenuButtonLabelFromMenu(
+  virtual const char* UpdateMenuButtonLabelFromMenu(
     const char *varname, const char *value, vtkKWMenu *menu);
 
   // Description:

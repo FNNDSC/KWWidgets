@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenuButton );
-vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.44 $");
+vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.45 $");
 
 //----------------------------------------------------------------------------
 vtkKWMenuButton::vtkKWMenuButton()
@@ -172,26 +172,15 @@ void vtkKWMenuButton::TracedVariableChangedCallback(
 }
 
 //----------------------------------------------------------------------------
-int vtkKWMenuButton::UpdateMenuButtonLabelFromMenu(
+const char* vtkKWMenuButton::UpdateMenuButtonLabelFromMenu(
   const char *varname, const char *value, vtkKWMenu *menu)
 {
   const char *label = 
     menu->GetItemLabel(
       menu->GetIndexOfItemWithVariableAndSelectedValue(varname, value));
-
   if (label)
     {
-    if (this->MaximumLabelWidth <= 0)
-      {
-      this->SetConfigurationOption("-text", label);
-      }
-    else
-      {
-      vtksys_stl::string cropped = vtksys::SystemTools::CropString(
-        label, (size_t)this->MaximumLabelWidth);
-      this->SetConfigurationOption("-text", cropped.c_str());
-      }
-    return 1;
+    return label;
     }
 
   // Not found? Try harder in the submenus (cascade)
@@ -199,15 +188,18 @@ int vtkKWMenuButton::UpdateMenuButtonLabelFromMenu(
   int i, nb_items = menu->GetNumberOfItems();
   for (i = 0; i < nb_items; i++)
     {
-    if (menu->GetItemType(i) == vtkKWMenu::CascadeItemType &&
-        this->UpdateMenuButtonLabelFromMenu(
-          varname, value, this->Menu->GetItemCascade(i)))
+    if (menu->GetItemType(i) == vtkKWMenu::CascadeItemType)
       {
-      return 1;
+      label = this->UpdateMenuButtonLabelFromMenu(
+        varname, value, this->Menu->GetItemCascade(i));
+      if (label)
+        {
+        return label;
+        }
       }
     }
   
-  return 0;
+  return NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -230,11 +222,28 @@ void vtkKWMenuButton::UpdateMenuButtonLabel()
 
   vtksys_stl::string value(this->GetValue());
 
-  int found = this->UpdateMenuButtonLabelFromMenu(
+  const char *found = this->UpdateMenuButtonLabelFromMenu(
     varname.c_str(), value.c_str(), this->Menu);
+  vtksys_stl::string label;
   if (!found)
     {
-    this->SetConfigurationOption("-text", "");
+    found = value.c_str(); // nothing found, use the value directly
+    }
+  else
+    {
+    label = found; // for safety, save to string (could have been Tcl buffer)
+    found = label.c_str();
+    }
+
+  if (this->MaximumLabelWidth <= 0)
+    {
+    this->SetConfigurationOption("-text", found);
+    }
+  else
+    {
+    vtksys_stl::string cropped = vtksys::SystemTools::CropString(
+      found, (size_t)this->MaximumLabelWidth);
+    this->SetConfigurationOption("-text", cropped.c_str());
     }
 }
 

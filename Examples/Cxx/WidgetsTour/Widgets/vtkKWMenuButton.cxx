@@ -6,6 +6,7 @@
 #include "vtkKWWindow.h"
 
 #include "vtkKWWidgetsTourExample.h"
+#include <vtksys/stl/string>
 
 class vtkKWMenuButtonItem : public KWWidgetsTourItem
 {
@@ -21,6 +22,8 @@ void vtkKWMenuButtonItem::Create(vtkKWWidget *parent, vtkKWWindow *)
   size_t i;
   const char* days[] = 
     {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+  const char* days_fr[] = 
+    {"Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"};
 
   // -----------------------------------------------------------------------
 
@@ -48,7 +51,7 @@ void vtkKWMenuButtonItem::Create(vtkKWWidget *parent, vtkKWWindow *)
   vtkKWMenuButtonWithSpinButtons *menubutton1b = vtkKWMenuButtonWithSpinButtons::New();
   menubutton1b->SetParent(parent);
   menubutton1b->Create();
-  menubutton1b->GetWidget()->SetWidth(20);
+  menubutton1b->GetWidget()->SetWidth(30);
   menubutton1b->SetBalloonHelpString(
     "This is a vtkKWMenuButtonWithSpinButtons, i.e. a menu button associated "
     "to a set of spin buttons (vtkKWSpinButtons) that can be used to "
@@ -56,7 +59,12 @@ void vtkKWMenuButtonItem::Create(vtkKWWidget *parent, vtkKWWindow *)
 
   for (i = 0; i < sizeof(days) / sizeof(days[0]); i++)
     {
-    menubutton1b->GetWidget()->GetMenu()->AddRadioButton(days[i]);
+    vtksys_stl::string label(days[i]);
+    label = label + " (" + days_fr[i] + ")";
+    vtksys_stl::string command("SetValue \"");
+    command = command + label + "\"";
+    menubutton1b->GetWidget()->GetMenu()->AddCommand(
+      label.c_str(), menubutton1b->GetWidget(), command.c_str());
     }
 
   app->Script(
