@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenuButton );
-vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.45 $");
+vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.46 $");
 
 //----------------------------------------------------------------------------
 vtkKWMenuButton::vtkKWMenuButton()
@@ -175,6 +175,11 @@ void vtkKWMenuButton::TracedVariableChangedCallback(
 const char* vtkKWMenuButton::UpdateMenuButtonLabelFromMenu(
   const char *varname, const char *value, vtkKWMenu *menu)
 {
+  if (!menu)
+    {
+    return NULL;
+    }
+
   const char *label = 
     menu->GetItemLabel(
       menu->GetIndexOfItemWithVariableAndSelectedValue(varname, value));
