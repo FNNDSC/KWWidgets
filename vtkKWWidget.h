@@ -305,6 +305,8 @@ private:
 
   static int UseClassNameInWidgetName;
 
+  virtual unsigned long GetNextAvailableChildID();
+
   vtkKWWidget(const vtkKWWidget&); // Not implemented
   void operator=(const vtkKWWidget&); // Not implemented
 };

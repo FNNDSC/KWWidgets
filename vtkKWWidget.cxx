@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.154 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.155 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetInternals
@@ -41,9 +41,11 @@ public:
 
   vtkKWWidgetInternals() { this->Children = NULL; };
   ~vtkKWWidgetInternals() { delete this->Children; };
+
+  unsigned long NextAvailableChildID;
 };
 
-int vtkKWWidget::UseClassNameInWidgetName = 0;
+int vtkKWWidget::UseClassNameInWidgetName = 1;
 
 //----------------------------------------------------------------------------
 vtkKWWidget::vtkKWWidget()
@@ -51,6 +53,7 @@ vtkKWWidget::vtkKWWidget()
   // Instantiate the PIMPL Encapsulation for STL containers
 
   this->Internals = new vtkKWWidgetInternals;
+  this->Internals->NextAvailableChildID = 0;
 
   this->WidgetName               = NULL;
   this->Parent                   = NULL;
@@ -161,21 +164,27 @@ const char *vtkKWWidget::GetWidgetName()
 
   // Create this widgets name
 
+  unsigned long id;
   vtksys_stl::string widget_name;
   if (this->Parent)
     {
     widget_name += this->Parent->GetWidgetName();
+    id = this->Parent->GetNextAvailableChildID();
+    }
+  else
+    {
+    id = count++;
     }
 
   char local[512];
   const char *ptr;
   if (vtkKWWidget::UseClassNameInWidgetName)
     {
-    sprintf(local, ".%s%lu", this->GetClassName(), count);
+    sprintf(local, ".%s%lu", this->GetClassName(), id);
     }
   else
     {
-    sprintf(local, ".%lu", count);
+    sprintf(local, ".%lu", id);
     }
 
   if (this->Parent)
@@ -190,8 +199,6 @@ const char *vtkKWWidget::GetWidgetName()
 
   this->WidgetName = new char [strlen(ptr) + 1];
   strcpy(this->WidgetName, ptr);
-
-  count++;
 
   return this->WidgetName;
 }
@@ -322,7 +329,7 @@ int vtkKWWidget::IsCreated()
 //----------------------------------------------------------------------------
 void vtkKWWidget::AddChild(vtkKWWidget *child) 
 {
-  if (this->Internals)
+  if (child && this->Internals)
     {
     if (!this->Internals->Children)
       {
@@ -836,6 +843,12 @@ void vtkKWWidget::SetDropFileBinding(vtkObject *object, const char *method)
     delete [] command;
     }
 #endif
+}
+
+//----------------------------------------------------------------------------
+unsigned long vtkKWWidget::GetNextAvailableChildID()
+{
+  return this->Internals ? this->Internals->NextAvailableChildID++ : 0;
 }
 
 //----------------------------------------------------------------------------
