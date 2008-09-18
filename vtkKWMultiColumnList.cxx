@@ -22,6 +22,8 @@ p  Module:    $RCSfile: vtkKWMultiColumnList.cxx,v $
 #include "vtkKWFrame.h"
 #include "vtkKWIcon.h"
 #include "vtkKWLabel.h"
+#include "vtkKWLoadSaveButton.h"
+#include "vtkKWLoadSaveDialog.h"
 #include "vtkKWMultiColumnList.h"
 #include "vtkKWOptions.h"
 #include "vtkKWRadioButton.h"
@@ -38,7 +40,7 @@ p  Module:    $RCSfile: vtkKWMultiColumnList.cxx,v $
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.93 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.94 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -3315,6 +3317,117 @@ vtkKWFrame* vtkKWMultiColumnList::GetCellWindowAsFrame(
 }
 
 //----------------------------------------------------------------------------
+void vtkKWMultiColumnList::SetCellWindowCommandToPickDirectoryButton(
+  int row_index, int col_index)
+{
+  this->SetCellWindowCommand(row_index, col_index, NULL, NULL);
+  this->SetCellWindowCommand(
+    row_index, col_index, this, 
+    "CellWindowCommandToPickDirectoryButtonCallback");
+  this->SetCellWindowDestroyCommandToRemoveChild(row_index, col_index);
+}
+
+//----------------------------------------------------------------------------
+vtkKWLoadSaveButton* vtkKWMultiColumnList::GetCellWindowAsPickDirectoryButton(
+  int row_index, int col_index)
+{
+  const char *child_name = this->GetCellWindowWidgetName(
+    row_index, col_index);
+  return vtkKWLoadSaveButton::SafeDownCast(
+    this->GetChildWidgetWithName(child_name));
+}
+
+//---------------------------------------------------------------------------
+void vtkKWMultiColumnList::CellWindowCommandToPickDirectoryButtonCallback(
+  const char *, int row, int col, const char *widget)
+{
+  vtkKWLoadSaveButton *child = 
+    this->GetCellWindowAsPickDirectoryButton(row, col);
+  if (!child)
+    {
+    child = vtkKWLoadSaveButton::New();
+    child->SetWidgetName(widget);
+    child->SetParent(this);
+    child->Create();
+    child->SetPadX(0);
+    child->SetPadY(0);
+    child->TrimPathFromFileNameOff();
+    //child->SetMaximumFileNameLength(44);
+    child->GetLoadSaveDialog()->ChooseDirectoryOn();
+    child->Delete();
+    }
+
+  vtksys_stl::string cell_text(this->GetCellText(row, col));
+  child->GetLoadSaveDialog()->RetrieveLastPathFromRegistry(
+    "OpenPath");
+  if(!cell_text.empty() && vtksys::SystemTools::FileExists(cell_text.c_str()))
+    {
+    child->SetInitialFileName(cell_text.c_str());
+    }
+
+  child->SetEnabled(this->GetEnabled()); 
+
+  char command[256];
+  sprintf(command, 
+          "CellWindowCommandToPickDirectoryButtonChangeCallback %s %d %d", 
+          child->GetTclName(), row, col);
+  child->SetCommand(this, command);
+}
+
+//---------------------------------------------------------------------------
+void vtkKWMultiColumnList::CellWindowCommandToPickDirectoryButtonChangeCallback(
+  vtkKWWidget *widget, int row, int col)
+{
+  vtkKWLoadSaveButton *lsb = vtkKWLoadSaveButton::SafeDownCast(widget);
+  if (lsb)
+    {
+    // Make sure we are dealing with the right one
+    // Sometimes when a column is sorted, not *all* cells with a user-defined
+    // window are re-created. In our case, our user-defined vtkKWLoadSaveButton
+    // has its row,col location coded in its callback. Yet, sorting the
+    // column might have moved the vtkKWLoadSaveButton around, without re-creating
+    // it, i.e. without updating its callback. Let's check if this is the
+    // case, and look for the right location if not matching.
+
+    if (strcmp(widget->GetWidgetName(), 
+               this->GetCellWindowWidgetName(row, col)))
+      {
+      for (row = 0; row < this->GetNumberOfRows(); row++)
+        {
+        if (!strcmp(widget->GetWidgetName(), 
+                    this->GetCellWindowWidgetName(row, col)))
+          {
+          break;
+          }
+        }
+      if (row == this->GetNumberOfRows())
+        {
+        return;
+        }
+      }
+
+    
+    const char *newName = lsb->GetLoadSaveDialog()->GetFileName();
+      
+      if(newName && *newName &&
+        !vtksys::SystemTools::ComparePath(this->GetCellText(row, col), newName))
+        {
+        this->SetCellText(row, col, newName);
+        lsb->SetInitialFileName(newName);
+
+        this->InvokeCellUpdatedCommand(row, col, newName);
+        this->RefreshCellWithWindowCommand(row, col);
+        }
+      else
+        {
+        lsb->SetInitialFileName(this->GetCellText(row, col));
+        }
+      this->InvokeEditEndCommand(row, col, newName);
+      
+    }
+}
+
+//----------------------------------------------------------------------------
 void vtkKWMultiColumnList::SetCellWindowCommandToComboBoxWithValuesAsSemiColonSeparated(
   int row_index, int col_index, const char *values)
 {
@@ -4692,6 +4805,10 @@ void vtkKWMultiColumnList::InvokeCellUpdatedCommand(
     this->Script("%s %d %d {%s}", 
                  this->CellUpdatedCommand, row, col, text);
     }
+
+  char data[1024];
+  sprintf(data, "%d %d {%s}", row, col, text);
+  this->InvokeEvent(vtkKWMultiColumnList::CellUpdatedEvent, data);
 }
 
 //----------------------------------------------------------------------------

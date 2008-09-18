@@ -42,6 +42,7 @@ class vtkKWMultiColumnListInternals;
 class vtkKWCheckButton;
 class vtkKWComboBox;
 class vtkKWFrame;
+class vtkKWLoadSaveButton;
 class vtkStringArray;
 
 class KWWidgets_EXPORT vtkKWMultiColumnList : public vtkKWCoreWidget
@@ -873,6 +874,16 @@ public:
   virtual void SetUseBalloonHelpStringInCellColorButton(int);
 
   // Description:
+  // The SetCellWindowCommandToPickDirectoryButton is a convenience method
+  // to automatically display a LoadSaveButton with ChooseDirectoryOn
+  // in the cell. The selected directory of the button is interpreted 
+  // directly from the text in the cell, as set by SetCellText for example.  
+  virtual void SetCellWindowCommandToPickDirectoryButton(
+    int row_index, int col_index);
+  virtual vtkKWLoadSaveButton* GetCellWindowAsPickDirectoryButton(
+    int row_index, int col_index);
+
+  // Description:
   // Specifies a command to be invoked when the window embedded into the cell
   // located at (row_index, col_index) is destroyed. It is automatically 
   // concatenated the same parameter as the SetCellWindowCommand method that
@@ -1357,7 +1368,8 @@ public:
   enum
   {
     SelectionChangedEvent = 10000,
-    NumberOfRowsChangedEvent
+    NumberOfRowsChangedEvent,
+    CellUpdatedEvent
   };
   //ETX
 
@@ -1382,6 +1394,10 @@ public:
     vtkKWWidget*, int, int, const char *);
   virtual void CellWindowCommandToColorButtonCallback(
     const char*, int, int, const char*);
+  virtual void CellWindowCommandToPickDirectoryButtonCallback(
+    const char*, int, int, const char*);
+  virtual void CellWindowCommandToPickDirectoryButtonChangeCallback(
+    vtkKWWidget*, int, int);
   virtual void ColumnSortedCallback();
   virtual void ColumnMovedCallback();
   virtual void RowMovedCallback();
