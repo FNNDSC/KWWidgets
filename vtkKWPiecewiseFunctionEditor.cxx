@@ -32,7 +32,7 @@
 #include <vtksys/stl/string>
 
 vtkStandardNewMacro(vtkKWPiecewiseFunctionEditor);
-vtkCxxRevisionMacro(vtkKWPiecewiseFunctionEditor, "$Revision: 1.58 $");
+vtkCxxRevisionMacro(vtkKWPiecewiseFunctionEditor, "$Revision: 1.59 $");
 
 #define EPSILON 0.0001
 #define EPSILON_MIN_WINDOW (EPSILON * 2.5)
@@ -755,7 +755,7 @@ void vtkKWPiecewiseFunctionEditor::CreateWindowLevelModeCheckButton()
     this->WindowLevelModeCheckButton->SetCommand(
       this, "WindowLevelModeCallback");
     this->WindowLevelModeCheckButton->SetImageToPredefinedIcon(
-      vtkKWIcon::IconWindowLevel);
+      vtkKWIcon::IconContrast);
     }
 }
 

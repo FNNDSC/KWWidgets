@@ -278,6 +278,21 @@ static const unsigned char image_color_squares[] =
 
 /* 
  * Resource generated for file:
+ *    compress.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_compress_width          = 16;
+static const unsigned int  image_compress_height         = 16;
+static const unsigned int  image_compress_pixel_size     = 4;
+static const unsigned long image_compress_length         = 160;
+static const unsigned long image_compress_decoded_length = 1024;
+
+static const unsigned char image_compress[] = 
+  "eNrFklEKwDAIQz16j+bN3CwIwcXq9rNCKC2+2EpUVbTQWsuYuto43zuViFhm/d5s328Pr6"
+  "mEHplFD1TUM75byEe/Jy/0Hb5P+IrFeXzrbz/37///VjlDLCOn/LEMZp3y17GVF85hysX8"
+  "MdPTN+AcmIfXXEM0ahM=";
+
+/* 
+ * Resource generated for file:
  *    connection.png (zlib, base64) (image file)
  */
 static const unsigned int  image_connection_width          = 16;
@@ -327,6 +342,29 @@ static const unsigned char image_contour_tool[] =
   "vxkgeZA6bPEIBIsm9nXi1Hvl/In/C+fO+M8gefE9jnh3s7e1hqvfv3vL/77utv/hoUH/1V"
   "RVIGlI8tI7BpnXV3HlDVC8Ojna/+fl4QGpvwrE84A4EYi1COUrSJ55dwlsPgMDH7n5jlQ9"
   "APFsqHM=";
+
+/* 
+ * Resource generated for file:
+ *    contrast.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_contrast_width          = 16;
+static const unsigned int  image_contrast_height         = 16;
+static const unsigned int  image_contrast_pixel_size     = 4;
+static const unsigned long image_contrast_length         = 720;
+static const unsigned long image_contrast_decoded_length = 1024;
+
+static const unsigned char image_contrast[] = 
+  "eNqtkzlrYlEYhucHWAXyE4wal7iQWKYaGIjBuATBRguLCIIgGBEkINhFBAvbgMS1EAvLNF"
+  "aB2PgP3PctwjUuOPjO+Q4YHJilSfGCcH3u857vOxfAN3xh8vn8EUskl8tVWebZbFZgqabT"
+  "6QjL8X9YU6lUWrTbbazXa+x2O57VaoVWq4Visbh4fn62/oW9rFQqWC6X2G63nHl/f8dsNo"
+  "MgCNhsNlgsFkgkErDZbD8OWdZTxLwtek5eYiaTCUajEYbDIfr9Pnq9HsrlMvx+P25vb2tW"
+  "q1V04H6gfuSdTqc8xA0GA852Oh3E43Ho9XqEw2G43W5YLJbwns9kMq/kJf94PP50drtd0C"
+  "yIvbi4gE6ng91u5x3MZvPbnmdz/Ulzos7kpK7kpE6xWAzn5+fQarVQq9VQKpUIhUK4ubnB"
+  "nk+lUpwndu9sNpucJY5ydnYGhUIBuVyOYDAIo9F4yL9+fHzwuZGz0WggGo3+5iRWJpPBZD"
+  "LB6/US/9k/mUw+1Go1vrt6vY7Hx0fOqlQqzp2enkIqleLk5ASBQABOpxPX19fhA15UKBRa"
+  "8/kcLy8v3EksdSWnRCKBWCzmc7u7u4PBYKixiA7vwNPT0yWd1+fz8fmw/fDeGo2GXJylvb"
+  "G7Q/z3P91BthN2PJPgcrn4Ge/v7/n7PB4PHA4HccLV1ZX1X98A28sRm02Epcq8G/b/OeOq"
+  "LBH2+xhf/L3+AtIBuUk=";
 
 /* 
  * Resource generated for file:
@@ -1287,6 +1325,19 @@ static const unsigned long image_scale_bar_annotation_decoded_length = 768;
 
 static const unsigned char image_scale_bar_annotation[] = 
   "eNpjYCAZPH1wg0g0ktUja8TDRlOPi8SqnmAEjczwJwkAAKI609c=";
+
+/* 
+ * Resource generated for file:
+ *    seed_tool.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_seed_tool_width          = 16;
+static const unsigned int  image_seed_tool_height         = 16;
+static const unsigned int  image_seed_tool_pixel_size     = 4;
+static const unsigned long image_seed_tool_length         = 64;
+static const unsigned long image_seed_tool_decoded_length = 1024;
+
+static const unsigned char image_seed_tool[] = 
+  "eNpjYCAK/GegDAyE/v9IGBufVvb/H4T6qRVW/ym0fyD0D1Q6GIz6MQAA0yQj3Q==";
 
 /* 
  * Resource generated for file:

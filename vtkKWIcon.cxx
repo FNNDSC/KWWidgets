@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.46 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.47 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -214,6 +214,14 @@ void vtkKWIcon::SetImage(int image)
         image_color_squares_length);
       break;
 
+    case vtkKWIcon::IconCompress:
+      this->SetImage(
+        image_compress, 
+        image_compress_width, image_compress_height,
+        image_compress_pixel_size, 
+        image_compress_length);
+      break;
+
     case vtkKWIcon::IconConnection:
       this->SetImage(
         image_connection, 
@@ -236,6 +244,14 @@ void vtkKWIcon::SetImage(int image)
         image_contour_segment_width, image_contour_segment_height,
         image_contour_segment_pixel_size, 
         image_contour_segment_length);
+      break;
+
+    case vtkKWIcon::IconContrast:
+      this->SetImage(
+        image_contrast, 
+        image_contrast_width, image_contrast_height,
+        image_contrast_pixel_size, 
+        image_contrast_length);
       break;
 
     case vtkKWIcon::IconCornerAnnotation:
@@ -705,6 +721,14 @@ void vtkKWIcon::SetImage(int image)
         image_error_red_mini_length);
       break;
 
+    case vtkKWIcon::IconSeedTool:
+      this->SetImage(
+        image_seed_tool, 
+        image_seed_tool_width, image_seed_tool_height,
+        image_seed_tool_pixel_size, 
+        image_seed_tool_length);
+      break;
+      
     case vtkKWIcon::IconStopwatch:
       this->SetImage(
         image_stopwatch, 

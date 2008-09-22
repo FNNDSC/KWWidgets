@@ -23,9 +23,11 @@ KWConvertImageToHeader --zlib --base64 \
     cdrom.png \
     color_bar_annotation.png \
     color_squares.png \
+    compress.png \
     connection.png \
     contour_segment.png \
     contour_tool.png \
+    contrast.png \
     corner_annotation.png \
     crop_tool.png \
     distance_tool.png \
@@ -86,6 +88,7 @@ KWConvertImageToHeader --zlib --base64 \
     reload.png \
     rotate.png \
     scale_bar_annotation.png \
+    seed_tool.png \
     shrink.png \
     side_annotation.png \
     spin_down.png \
@@ -113,3 +116,4 @@ KWConvertImageToHeader --zlib --base64 \
     warning.png \
     warning_mini.png \
     window_level.png
+
