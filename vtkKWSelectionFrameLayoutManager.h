@@ -289,6 +289,12 @@ public:
   //ETX
 
   // Description:
+  // The command is invoked when the user double-clicks on the layout frame,
+  // i.e. any region of the frame that is not occupied by one selection frame.
+  virtual void SetDoubleClickOnLayoutFrameCommand(
+    vtkObject *object, const char *method);
+
+  // Description:
   // Update the "enable" state of the object and its internal parts.
   // Depending on different Ivars (this->Enabled, the application's 
   // Limited Edition Mode, etc.), the "enable" state of the object is updated
@@ -312,6 +318,7 @@ public:
     const char *title, vtkKWSelectionFrame *widget);
   virtual void ResolutionCallback(int i, int j);
   virtual void NumberOfWidgetsHasChangedCallback();
+  virtual void DoubleClickOnLayoutFrameCallback();
 
   // Description:
   // Pack all widgets. You shouldn't have to call this method, as it is called
@@ -366,6 +373,9 @@ protected:
 
   virtual void InvokeSelectionChangedCommand();
   char *SelectionChangedCommand;
+
+  char *DoubleClickOnLayoutFrameCommand;
+  virtual void InvokeDoubleClickOnLayoutFrameCommand();
 
   vtkKWFrame *LayoutFrame;
 

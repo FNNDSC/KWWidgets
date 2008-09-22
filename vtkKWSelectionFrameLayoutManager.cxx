@@ -77,7 +77,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.86 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.87 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -127,6 +127,7 @@ vtkKWSelectionFrameLayoutManager::vtkKWSelectionFrameLayoutManager()
   this->ResolutionEntriesToolbar = NULL;
 
   this->SelectionChangedCommand = NULL;
+  this->DoubleClickOnLayoutFrameCommand = NULL;
 
   this->ReorganizeWidgetPositionsAutomatically = 1;
 
@@ -140,6 +141,11 @@ vtkKWSelectionFrameLayoutManager::~vtkKWSelectionFrameLayoutManager()
     {
     delete [] this->SelectionChangedCommand;
     this->SelectionChangedCommand = NULL;
+    }
+  if (this->DoubleClickOnLayoutFrameCommand)
+    {
+    delete [] this->DoubleClickOnLayoutFrameCommand;
+    this->DoubleClickOnLayoutFrameCommand = NULL;
     }
 
   // Remove all widgets
@@ -200,6 +206,9 @@ void vtkKWSelectionFrameLayoutManager::CreateWidget()
 
   this->Script("pack %s -side top -expand y -fill both -padx 0 -pady 0",
                this->LayoutFrame->GetWidgetName());
+
+  this->LayoutFrame->AddBinding(
+    "<Double-1>", this, "DoubleClickOnLayoutFrameCallback");
 
   // Pack
 
@@ -1789,6 +1798,25 @@ void vtkKWSelectionFrameLayoutManager::InvokeSelectionChangedCommand()
   this->InvokeObjectMethodCommand(this->SelectionChangedCommand);
   this->InvokeEvent(
     vtkKWSelectionFrameLayoutManager::SelectionChangedEvent, NULL);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSelectionFrameLayoutManager::SetDoubleClickOnLayoutFrameCommand(
+  vtkObject *object, const char *method)
+{
+  this->SetObjectMethodCommand(&this->DoubleClickOnLayoutFrameCommand, object, method);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSelectionFrameLayoutManager::InvokeDoubleClickOnLayoutFrameCommand()
+{
+  this->InvokeObjectMethodCommand(this->DoubleClickOnLayoutFrameCommand);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSelectionFrameLayoutManager::DoubleClickOnLayoutFrameCallback()
+{
+  this->InvokeDoubleClickOnLayoutFrameCommand();
 }
 
 //----------------------------------------------------------------------------
