@@ -40,7 +40,7 @@ p  Module:    $RCSfile: vtkKWMultiColumnList.cxx,v $
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.94 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.95 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -4806,8 +4806,10 @@ void vtkKWMultiColumnList::InvokeCellUpdatedCommand(
                  this->CellUpdatedCommand, row, col, text);
     }
 
-  char data[1024];
-  sprintf(data, "%d %d {%s}", row, col, text);
+  void* data[3];
+  data[0] = &row;
+  data[1] = &col;
+  data[2] = &text;
   this->InvokeEvent(vtkKWMultiColumnList::CellUpdatedEvent, data);
 }
 
