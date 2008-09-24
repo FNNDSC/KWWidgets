@@ -1364,6 +1364,14 @@ public:
   // Description:
   // Events. The SelectionChangedEvent is triggered when the selection is 
   // changed (see SetSelectionCommand for more details).
+  // The CellUpdatedEvent is triggered whenever a cell is updated, i.e. 
+  // when InvokeCellUpdatedCommand is called. The following parameters are 
+  // also passed as client data for CellUpdatedEvent:
+  // - the cell location, i.e. its row and column indices: int, int
+  // - the cell's new contents: const char*
+  // Note that given the heterogeneous nature of types passed as client data,
+  // you should treat it as an array of void*[3], each one a pointer to
+  // the parameter (i.e., &int, &int, &const char*).
   //BTX
   enum
   {
