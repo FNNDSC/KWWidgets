@@ -41,7 +41,7 @@
 #include <vtksys/stl/algorithm>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.109 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.110 $");
 
 //----------------------------------------------------------------------------
 #define VTK_KW_PVFE_POINT_RADIUS_MIN         2
@@ -4704,8 +4704,17 @@ void vtkKWParameterValueFunctionEditor::InvokeVisibleRangeChangedCommand()
 {
   this->InvokeObjectMethodCommand(this->VisibleRangeChangedCommand);
 
+  double dargs[4];
+
+  this->GetVisibleParameterRange(dargs[0], dargs[1]);
+  this->GetVisibleValueRange(dargs[2], dargs[3]);
   this->InvokeEvent(
-    vtkKWParameterValueFunctionEditor::VisibleRangeChangedEvent);
+    vtkKWParameterValueFunctionEditor::VisibleRangeChangedEvent, dargs);
+
+  this->GetRelativeVisibleParameterRange(dargs[0], dargs[1]);
+  this->GetRelativeVisibleValueRange(dargs[2], dargs[3]);
+  this->InvokeEvent(
+    vtkKWParameterValueFunctionEditor::RelativeVisibleRangeChangedEvent, dargs);
 }
 
 //----------------------------------------------------------------------------
@@ -4721,8 +4730,17 @@ void vtkKWParameterValueFunctionEditor::InvokeVisibleRangeChangingCommand()
 {
   this->InvokeObjectMethodCommand(this->VisibleRangeChangingCommand);
 
+  double dargs[4];
+  this->GetVisibleParameterRange(dargs[0], dargs[1]);
+  this->GetVisibleValueRange(dargs[2], dargs[3]);
+
   this->InvokeEvent(
-    vtkKWParameterValueFunctionEditor::VisibleRangeChangingEvent);
+    vtkKWParameterValueFunctionEditor::VisibleRangeChangingEvent, dargs);
+
+  this->GetRelativeVisibleParameterRange(dargs[0], dargs[1]);
+  this->GetRelativeVisibleValueRange(dargs[2], dargs[3]);
+  this->InvokeEvent(
+    vtkKWParameterValueFunctionEditor::RelativeVisibleRangeChangingEvent, dargs);
 }
 
 //----------------------------------------------------------------------------
@@ -7989,6 +8007,9 @@ void vtkKWParameterValueFunctionEditor::VisibleValueRangeChangingCallback(
   this->Redraw();
 
   this->InvokeVisibleRangeChangingCommand();
+
+  this->InvokeEvent(
+    vtkKWParameterValueFunctionEditor::VisibleValueRangeChangingEvent);
 }
 
 //----------------------------------------------------------------------------
@@ -7999,6 +8020,9 @@ void vtkKWParameterValueFunctionEditor::VisibleValueRangeChangedCallback(
   this->Redraw();
 
   this->InvokeVisibleRangeChangedCommand();
+
+  this->InvokeEvent(
+    vtkKWParameterValueFunctionEditor::VisibleValueRangeChangedEvent);
 }
 
 //----------------------------------------------------------------------------

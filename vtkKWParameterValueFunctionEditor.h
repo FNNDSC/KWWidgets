@@ -998,8 +998,12 @@ public:
     SelectionChangedEvent,
     VisibleParameterRangeChangedEvent,
     VisibleParameterRangeChangingEvent,
+    VisibleValueRangeChangedEvent,
+    VisibleValueRangeChangingEvent,
     VisibleRangeChangedEvent,
     VisibleRangeChangingEvent,
+    RelativeVisibleRangeChangedEvent,
+    RelativeVisibleRangeChangingEvent,
     ParameterCursorMovedEvent,
     ParameterCursorMovingEvent,
     DoubleClickOnPointEvent
