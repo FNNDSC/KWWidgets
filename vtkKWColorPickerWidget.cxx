@@ -42,7 +42,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.14 $");
 
 //----------------------------------------------------------------------------
 class vtkKWColorPickerWidgetInternals
@@ -61,6 +61,8 @@ vtkKWColorPickerWidget::vtkKWColorPickerWidget()
   this->BasicColorsVisibility = 1;
   this->FavoritesVisibility = 1;
   this->HistoryVisibility = 1;
+
+  this->EventCallData = NULL;
 
   this->SlidersFrame    = NULL;
   this->RGBSlidersFrame = NULL;
@@ -1423,6 +1425,20 @@ void vtkKWColorPickerWidget::UpdateSlidersRGB(double rgb[3])
 }
 
 //----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::NewColorChanging()
+{
+  this->InvokeEvent(
+    vtkKWColorPickerWidget::NewColorChangingEvent, this->EventCallData);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::NewColorChanged()
+{
+  this->InvokeEvent(
+    vtkKWColorPickerWidget::NewColorChangedEvent, this->EventCallData);
+}
+
+//----------------------------------------------------------------------------
 void vtkKWColorPickerWidget::RGBSlidersChangingCallback()
 {
   double new_color_rgb[3];
@@ -1472,7 +1488,7 @@ void vtkKWColorPickerWidget::RGBSlidersChangingCallback()
 
   this->ScheduleUpdateInfoLabel();
 
-  this->InvokeEvent(vtkKWColorPickerWidget::NewColorChangingEvent);
+  this->NewColorChanging();
 }
 
 //----------------------------------------------------------------------------
@@ -1598,7 +1614,7 @@ void vtkKWColorPickerWidget::HSVSlidersChangingCallback()
 
   this->ScheduleUpdateInfoLabel();
 
-  this->InvokeEvent(vtkKWColorPickerWidget::NewColorChangingEvent);
+  this->NewColorChanging();
 }
 
 //---------------------------------------------------------------------------
@@ -1721,7 +1737,7 @@ void vtkKWColorPickerWidget::FavoritesColorPresetApplyCallback(int id)
     this->GetNewColorAsRGB(new_r, new_g, new_b);
     if (old_r != new_r || old_g != new_g || old_b != new_b)
       {
-      this->InvokeEvent(vtkKWColorPickerWidget::NewColorChangedEvent);
+      this->NewColorChanged();
       }
     }
 }
@@ -1779,7 +1795,7 @@ void vtkKWColorPickerWidget::HistoryColorPresetApplyCallback(int id)
     this->GetNewColorAsRGB(new_r, new_g, new_b);
     if (old_r != new_r || old_g != new_g || old_b != new_b)
       {
-      this->InvokeEvent(vtkKWColorPickerWidget::NewColorChangedEvent);
+      this->NewColorChanged();
       }
     }
 }
@@ -1797,7 +1813,7 @@ void vtkKWColorPickerWidget::BasicColorsCallback(const char *color)
     this->GetNewColorAsRGB(new_r, new_g, new_b);
     if (old_r != new_r || old_g != new_g || old_b != new_b)
       {
-      this->InvokeEvent(vtkKWColorPickerWidget::NewColorChangedEvent);
+      this->NewColorChanged();
       }
     }
 }
@@ -1817,7 +1833,7 @@ void vtkKWColorPickerWidget::CurrentColorCallback()
   this->GetNewColorAsRGB(new_r, new_g, new_b);
   if (old_r != new_r || old_g != new_g || old_b != new_b)
     {
-    this->InvokeEvent(vtkKWColorPickerWidget::NewColorChangedEvent);
+    this->NewColorChanged();
     }
 }
 
@@ -1867,7 +1883,7 @@ void vtkKWColorPickerWidget::ColorSpectrumChangingCallback()
 
       this->ScheduleUpdateInfoLabel();
 
-      this->InvokeEvent(vtkKWColorPickerWidget::NewColorChangingEvent);
+      this->NewColorChanging();
 
       break;
 
@@ -1904,7 +1920,7 @@ void vtkKWColorPickerWidget::ColorSpectrumChangingCallback()
 
       this->ScheduleUpdateInfoLabel();
 
-      this->InvokeEvent(vtkKWColorPickerWidget::NewColorChangingEvent);
+      this->NewColorChanging();
 
       break;
     }
@@ -2048,7 +2064,7 @@ void vtkKWColorPickerWidget::ProcessCallbackCommandEvents(vtkObject *caller,
         break;
 
       case vtkKWColorSpectrumWidget::ColorChangedEvent:
-        this->InvokeEvent(vtkKWColorPickerWidget::NewColorChangedEvent);
+        this->NewColorChanged();
         break;
       }
     }
@@ -2064,7 +2080,7 @@ void vtkKWColorPickerWidget::ProcessCallbackCommandEvents(vtkObject *caller,
         break;
 
       case vtkKWParameterValueFunctionEditor::FunctionChangedEvent:
-        this->InvokeEvent(vtkKWColorPickerWidget::NewColorChangedEvent);
+        this->NewColorChanged();
         break;
       }
     }
@@ -2080,7 +2096,7 @@ void vtkKWColorPickerWidget::ProcessCallbackCommandEvents(vtkObject *caller,
         break;
 
       case vtkKWParameterValueFunctionEditor::FunctionChangedEvent:
-        this->InvokeEvent(vtkKWColorPickerWidget::NewColorChangedEvent);
+        this->NewColorChanged();
         break;
       }
     }

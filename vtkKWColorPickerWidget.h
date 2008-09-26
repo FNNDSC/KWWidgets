@@ -119,12 +119,16 @@ public:
 
   // Description:
   // Events.
+  // Not that no color values are passed as parameters (calldata), only
+  // the value of EventCallData (defaults to NULL)
   //BTX
   enum
   {
     NewColorChangedEvent = 10000,
     NewColorChangingEvent
   };
+  vtkGetMacro(EventCallData, void*);
+  vtkSetMacro(EventCallData, void*);
   //ETX
 
   // Description:
@@ -218,6 +222,8 @@ protected:
   int FavoritesVisibility;
   int HistoryVisibility;
 
+  void *EventCallData;
+
   virtual void CreateFavoritesColorPresetSelector();
   virtual void CreateHistoryColorPresetSelector();
   virtual void CreateBasicColorsFrameSet();
@@ -225,6 +231,9 @@ protected:
   virtual void ColorSpectrumChangingCallback();
   virtual void RGBSlidersChangingCallback();
   virtual void HSVSlidersChangingCallback();
+
+  virtual void NewColorChanged();
+  virtual void NewColorChanging();
 
   // Description:
   // Processes the events that are passed through CallbackCommand (or others).
