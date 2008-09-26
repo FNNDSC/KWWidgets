@@ -13,18 +13,11 @@
 =========================================================================*/
 #include "vtkKWRenderWidget.h"
 
-#include "vtkKWApplication.h"
 #include "vtkCallbackCommand.h"
 #include "vtkCamera.h"
 #include "vtkCommand.h"
 #include "vtkCornerAnnotation.h"
-#include "vtkKWEvent.h"
-#include "vtkKWGenericRenderWindowInteractor.h"
-#include "vtkKWIcon.h"
-#include "vtkKWInternationalization.h"
-#include "vtkKWMenu.h"
-#include "vtkKWTkUtilities.h"
-#include "vtkKWWindow.h"
+#include "vtkInteractorStyleSwitch.h"
 #include "vtkMath.h"
 #include "vtkObjectFactory.h"
 #include "vtkProperty2D.h"
@@ -33,7 +26,17 @@
 #include "vtkRendererCollection.h"
 #include "vtkTextActor.h"
 #include "vtkTextProperty.h"
-#include "vtkInteractorStyleSwitch.h"
+
+#include "vtkKWApplication.h"
+#include "vtkKWColorPickerWidget.h"
+#include "vtkKWColorPickerDialog.h"
+#include "vtkKWEvent.h"
+#include "vtkKWGenericRenderWindowInteractor.h"
+#include "vtkKWIcon.h"
+#include "vtkKWInternationalization.h"
+#include "vtkKWMenu.h"
+#include "vtkKWTkUtilities.h"
+#include "vtkKWWindow.h"
 
 #ifdef _WIN32
 #include "vtkWin32OpenGLRenderWindow.h"
@@ -44,7 +47,7 @@
 #include <vtksys/stl/map>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.166 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.167 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -589,6 +592,12 @@ void vtkKWRenderWidget::SetRendererBackgroundColor(double r, double g, double b)
     }
 
   this->Render();
+
+  color[0] = r;
+  color[1] = g;
+  color[2] = b;
+  this->InvokeEvent(
+    vtkKWRenderWidget::RendererBackgroundColorChangedEvent, color);
 }
 
 //----------------------------------------------------------------------------
@@ -604,6 +613,101 @@ void vtkKWRenderWidget::GetRendererBackgroundColor(double *r, double *g, double 
       return;
       }
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRenderWidget::SetRendererBackgroundColor2(double r, double g, double b)
+{
+  double color[3];
+  this->GetRendererBackgroundColor2(color, color + 1, color + 2);
+  if (color[0] == r && color[1] == g && color[2] == b)
+    {
+    return;
+    }
+
+  if (r < 0 || g < 0 || b < 0)
+    {
+    return;
+    }
+  
+  int nb_renderers = this->GetNumberOfRenderers();
+  for (int i = 0; i < nb_renderers; i++)
+    {
+    vtkRenderer *renderer = this->GetNthRenderer(i);
+    if (renderer)
+      {
+      renderer->SetBackground2(r, g, b);
+      }
+    }
+
+  this->Render();
+
+
+  color[0] = r;
+  color[1] = g;
+  color[2] = b;
+  this->InvokeEvent(
+    vtkKWRenderWidget::RendererBackgroundColor2ChangedEvent, color);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRenderWidget::GetRendererBackgroundColor2(double *r, double *g, double *b)
+{
+  int nb_renderers = this->GetNumberOfRenderers();
+  for (int i = 0; i < nb_renderers; i++)
+    {
+    vtkRenderer *renderer = this->GetNthRenderer(i);
+    if (renderer)
+      {
+      renderer->GetBackground2(*r, *g, *b);
+      return;
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRenderWidget::SetRendererGradientBackground(int flag)
+{
+  if (flag == this->GetRendererGradientBackground())
+    {
+    return;
+    }
+
+  int nb_renderers = this->GetNumberOfRenderers();
+  for (int i = 0; i < nb_renderers; i++)
+    {
+    vtkRenderer *renderer = this->GetNthRenderer(i);
+    if (renderer)
+      {
+      renderer->SetGradientBackground(flag ? true : false);
+      }
+    }
+
+  this->Render();
+
+  this->InvokeEvent(
+    vtkKWRenderWidget::RendererGradientBackgroundChangedEvent, &flag);
+}
+
+//----------------------------------------------------------------------------
+int vtkKWRenderWidget::GetRendererGradientBackground()
+{
+  int nb_renderers = this->GetNumberOfRenderers();
+  for (int i = 0; i < nb_renderers; i++)
+    {
+    vtkRenderer *renderer = this->GetNthRenderer(i);
+    if (renderer)
+      {
+      return renderer->GetGradientBackground();
+      }
+    }
+  return 0;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRenderWidget::ToggleRendererGradientBackground()
+{
+  this->SetRendererGradientBackground(!this->GetRendererGradientBackground());
 }
 
 //----------------------------------------------------------------------------
@@ -1385,6 +1489,8 @@ void vtkKWRenderWidget::FocusOutCallback()
 void vtkKWRenderWidget::PopulateContextMenu(vtkKWMenu *menu)
 {
   this->PopulateAnnotationMenu(menu);
+  this->PopulateOptionMenu(menu);
+  this->PopulateColorMenu(menu);
 }
 
 //----------------------------------------------------------------------------
@@ -1437,6 +1543,176 @@ void vtkKWRenderWidget::PopulateAnnotationMenu(vtkKWMenu *menu)
         index, vtkKWIcon::IconHeaderAnnotation);
       menu->SetItemCompoundModeToLeft(index);
       }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRenderWidget::PopulateColorMenu(vtkKWMenu *menu)
+{
+  if (!menu)
+    {
+    return;
+    }
+
+  int tcl_major, tcl_minor, tcl_patch_level;
+  Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
+  int show_icons = (tcl_major > 8 || (tcl_major == 8 && tcl_minor >= 5));
+
+  int index, cascade_index;
+
+  if (menu->GetNumberOfItems())
+    {
+    menu->AddSeparator();
+    }
+
+  // Background Color
+
+  vtkKWMenu *bg_color_menu = vtkKWMenu::New();
+  bg_color_menu->SetParent(this->ContextMenu);
+  bg_color_menu->Create();
+  
+  const int icon_size = 16;
+
+  // Primary Background Color
+
+  cascade_index = bg_color_menu->AddCommand(
+    k_("Primary Background Color"), this, "RendererBackgroundColorCallback");
+  if (show_icons)
+    {
+    double r, g, b;
+    this->GetRendererBackgroundColor(&r, &g, &b);
+    vtkKWIcon *icon = vtkKWIcon::New();
+    icon->SetImageToSolidRGBColor(
+      r, g, b, icon_size, icon_size, vtkKWIcon::ImageOptionDrawDoubleBorder);
+    bg_color_menu->SetItemImageToIcon(cascade_index, icon);
+    bg_color_menu->SetItemCompoundModeToLeft(cascade_index);
+    icon->Delete();
+    }
+
+  // Secondary Background Color
+
+  cascade_index = bg_color_menu->AddCommand(
+    k_("Secondary Background Color"), this, "RendererBackgroundColor2Callback");
+  if (show_icons)
+    {
+    double r, g, b;
+    this->GetRendererBackgroundColor2(&r, &g, &b);
+    vtkKWIcon *icon = vtkKWIcon::New();
+    icon->SetImageToSolidRGBColor(
+      r, g, b, icon_size, icon_size, vtkKWIcon::ImageOptionDrawDoubleBorder);
+    bg_color_menu->SetItemImageToIcon(cascade_index, icon);
+    bg_color_menu->SetItemCompoundModeToLeft(cascade_index);
+    icon->Delete();
+    }
+
+  // Use secondary as gradient
+
+  cascade_index = bg_color_menu->AddCheckButton(
+    k_("Display Gradient"), this, "ToggleRendererGradientBackground");
+  bg_color_menu->SetItemSelectedState(
+    cascade_index, this->GetRendererGradientBackground());
+
+  // Background color menu itself
+
+  index = menu->AddCascade(k_("Background Color"), bg_color_menu);
+  if (show_icons)
+    {
+    double r1, g1, b1, r2, g2, b2;
+    this->GetRendererBackgroundColor(&r1, &g1, &b1);
+    vtkKWIcon *icon = vtkKWIcon::New();
+    if (this->GetRendererGradientBackground())
+      {
+      this->GetRendererBackgroundColor2(&r2, &g2, &b2);
+      icon->SetImageToRGBGradient(
+        r2, g2, b2, r1, g1, b1, 
+        icon_size, icon_size, 
+        vtkKWIcon::ImageOptionDrawDoubleBorder | 
+        vtkKWIcon::ImageOptionDrawVertically);
+      }
+    else
+      {
+      icon->SetImageToSolidRGBColor(
+        r1, g1, b1, icon_size, icon_size, 
+        vtkKWIcon::ImageOptionDrawDoubleBorder);
+      }
+    menu->SetItemImageToIcon(index, icon);
+    menu->SetItemCompoundModeToLeft(index);
+    icon->Delete();
+    }
+  bg_color_menu->Delete();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRenderWidget::RendererBackgroundColorCallback()
+{
+  double r, g, b;
+  this->GetRendererBackgroundColor(&r, &g, &b);
+
+  vtkKWColorPickerWidget *color_picker_widget = NULL;
+  vtkKWColorPickerDialog *color_picker_dlg = 
+    this->GetApplication()->GetColorPickerDialog();
+  void *event_calldata = NULL;
+  if (color_picker_dlg)
+    {
+    color_picker_widget = color_picker_dlg->GetColorPickerWidget();
+    // Since we are listening to the color picker widget for both
+    // the primary and secondary background color but for the same events,
+    // use is EventCallData to "hint" in which context we are.
+    event_calldata = color_picker_widget->GetEventCallData();
+    color_picker_widget->SetEventCallData(
+      (void*)(vtkKWRenderWidget::RendererBackgroundColorChangedEvent));
+    this->AddCallbackCommandObserver(
+      color_picker_widget, vtkKWColorPickerWidget::NewColorChangedEvent);
+    }
+
+  vtkKWTkUtilities::QueryUserForColor(
+    this->GetApplication(),
+    this,
+    k_("Primary Background Color"),
+    r, g, b, NULL, NULL, NULL);
+
+  if (color_picker_dlg)
+    {
+    this->RemoveCallbackCommandObserver(
+      color_picker_widget, vtkKWColorPickerWidget::NewColorChangedEvent);
+    color_picker_widget->SetEventCallData(event_calldata);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRenderWidget::RendererBackgroundColor2Callback()
+{
+  double r, g, b;
+  this->GetRendererBackgroundColor2(&r, &g, &b);
+
+  vtkKWColorPickerWidget *color_picker_widget = NULL;
+  vtkKWColorPickerDialog *color_picker_dlg = 
+    this->GetApplication()->GetColorPickerDialog();
+  void *event_calldata = NULL;
+  if (color_picker_dlg)
+    {
+    color_picker_widget = color_picker_dlg->GetColorPickerWidget();
+    // Since we are listening to the color picker widget for both
+    // the primary and secondary background color but for the same events,
+    // use is EventCallData to "hint" in which context we are.
+    event_calldata = color_picker_widget->GetEventCallData();
+    color_picker_widget->SetEventCallData(
+      (void*)(vtkKWRenderWidget::RendererBackgroundColor2ChangedEvent));
+    this->AddCallbackCommandObserver(
+      color_picker_widget, vtkKWColorPickerWidget::NewColorChangedEvent);
+    }
+
+  vtkKWTkUtilities::QueryUserForColor(
+    this->GetApplication(),
+    this,
+    k_("Primary Background Color"),
+    r, g, b, NULL, NULL, NULL);
+
+  if (color_picker_dlg)
+    {
+    this->RemoveCallbackCommandObserver(
+      color_picker_widget, vtkKWColorPickerWidget::NewColorChangedEvent);
+    color_picker_widget->SetEventCallData(event_calldata);
     }
 }
 
@@ -2102,6 +2378,21 @@ void vtkKWRenderWidget::ProcessCallbackCommandEvents(vtkObject *caller,
       }
     }
 #endif
+
+  vtkKWColorPickerWidget *cpw = vtkKWColorPickerWidget::SafeDownCast(caller);
+  if (cpw && event == vtkKWColorPickerWidget::NewColorChangedEvent)
+    {
+    if (calldata == 
+        (void*)(vtkKWRenderWidget::RendererBackgroundColorChangedEvent))
+      {
+      this->SetRendererBackgroundColor(cpw->GetNewColorAsRGB());
+      }
+    else if (calldata == 
+             (void*)(vtkKWRenderWidget::RendererBackgroundColor2ChangedEvent))
+      {
+      this->SetRendererBackgroundColor2(cpw->GetNewColorAsRGB());
+      }
+    }
 
   this->Superclass::ProcessCallbackCommandEvents(caller, event, calldata);
 }

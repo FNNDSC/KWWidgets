@@ -205,12 +205,19 @@ public:
   virtual void RemoveAllOverlayRenderers();
 
   // Description:
-  // Set the background color of the renderer(s) (not the overlay ones).
+  // Set the backgrounds color of the renderer(s) (not the overlay ones).
   // Note that no default renderers exist before Create() is called.
   virtual void GetRendererBackgroundColor(double *r, double *g, double *b);
   virtual void SetRendererBackgroundColor(double r, double g, double b);
   virtual void SetRendererBackgroundColor(double rgb[3])
     { this->SetRendererBackgroundColor(rgb[0], rgb[1], rgb[2]); };
+  virtual void GetRendererBackgroundColor2(double *r, double *g, double *b);
+  virtual void SetRendererBackgroundColor2(double r, double g, double b);
+  virtual void SetRendererBackgroundColor2(double rgb[3])
+    { this->SetRendererBackgroundColor2(rgb[0], rgb[1], rgb[2]); };
+  virtual void SetRendererGradientBackground(int);
+  virtual int GetRendererGradientBackground();
+  virtual void ToggleRendererGradientBackground();
 
   // Description:
   // Add props (actors) to *all* widget renderer(s) or *all*  overlay
@@ -310,13 +317,18 @@ public:
   virtual void LeaveCallback(int x, int y);
   virtual void FocusInCallback();
   virtual void FocusOutCallback();
+  virtual void RendererBackgroundColorCallback();
+  virtual void RendererBackgroundColor2Callback();
 
   // Description:
   // Event list
   //BTX
   enum
   {
-    CornerAnnotationVisibilityChangedEvent = 24000
+    CornerAnnotationVisibilityChangedEvent = 24000,
+    RendererGradientBackgroundChangedEvent,
+    RendererBackgroundColorChangedEvent,
+    RendererBackgroundColor2ChangedEvent
   };
   //ETX
 
@@ -382,10 +394,13 @@ protected:
   // Populate the context menu
   // Superclass should override this method to populate *and* update this
   // menu with the commands they feel confortable exposing to the user.
-  // This implementation calls PopulateAnnotationMenu() to add all
-  // annotation relevant entries.
+  // This implementation calls PopulateAnnotationMenu(), PopulateOptionMenu()
+  // PopulateColorMenu() in that order to add entries relevant to annotations,
+  // general options, and colors.
   virtual void PopulateContextMenu(vtkKWMenu*);
   virtual void PopulateAnnotationMenu(vtkKWMenu*);
+  virtual void PopulateOptionMenu(vtkKWMenu*) {};
+  virtual void PopulateColorMenu(vtkKWMenu*);
 
   // Description:
   // Update the render window interactor size
