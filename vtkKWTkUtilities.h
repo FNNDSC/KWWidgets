@@ -145,8 +145,6 @@ public:
   
   // Description:
   // Query user for color using a Tk color dialog
-  // Convenience methods are provided to specify a vtkKWApplication
-  // instead of the Tcl interpreter. 
   // Return 1 on success, 0 otherwise.
   static int QueryUserForColor(vtkKWApplication *app,
                                vtkKWWidget *dialog_parent,

@@ -46,7 +46,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.95 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.96 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -549,9 +549,18 @@ int vtkKWTkUtilities::QueryUserForColor(
         tmp[1] = result[6];
         if (sscanf(tmp, "%x", &b) == 1)
           {
-          *out_r = (double)r / 255.0;
-          *out_g = (double)g / 255.0;
-          *out_b = (double)b / 255.0;
+          if (out_r)
+            {
+            *out_r = (double)r / 255.0;
+            }
+          if (out_g)
+            {
+            *out_g = (double)g / 255.0;
+            }
+          if (out_b)
+            {
+            *out_b = (double)b / 255.0;
+            }
           return 1;
           }
         }
@@ -569,15 +578,28 @@ int vtkKWTkUtilities::QueryUserForColor(
   dlg->SetDisplayPositionToPointer();
   dlg->GetColorPickerWidget()->SetCurrentColorAsRGB(in_r, in_g, in_b);
   dlg->GetColorPickerWidget()->SetNewColorAsRGB(in_r, in_g, in_b);
+  double r, g, b;
   if (dlg->Invoke())
     {
-    dlg->GetColorPickerWidget()->GetNewColorAsRGB(*out_r, *out_g, *out_b);
+    dlg->GetColorPickerWidget()->GetNewColorAsRGB(r, g, b);
     }
   else
     {
-    *out_r = in_r;
-    *out_g = in_g;
-    *out_b = in_b;
+    r = in_r;
+    g = in_g;
+    b = in_b;
+    }
+  if (out_r)
+    {
+    *out_r = r;
+    }
+  if (out_g)
+    {
+    *out_g = g;
+    }
+  if (out_b)
+    {
+    *out_b = b;
     }
 
   return 1;
