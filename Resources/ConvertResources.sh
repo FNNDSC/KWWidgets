@@ -23,6 +23,8 @@ KWConvertImageToHeader --zlib --base64 \
     cdrom.png \
     color_bar_annotation.png \
     color_squares.png \
+    color_alpha_squares.png \
+    columns.png \
     compress.png \
     connection.png \
     contour_segment.png \
@@ -56,6 +58,7 @@ KWConvertImageToHeader --zlib --base64 \
     folder_open.png \
     foldernew.png \
     folderxp.png \
+    grayscale_squares.png \
     grid_linear.png \
     grid_log.png \
     harddisk.png \
@@ -63,6 +66,8 @@ KWConvertImageToHeader --zlib --base64 \
     helpbubble.png \
     hsv_diagram.png \
     info_mini.png \
+    interpolation_bilinear.png \
+    interpolation_nearest.png \
     lock.png \
     mag_glass.png \
     minus.png \
@@ -73,6 +78,8 @@ KWConvertImageToHeader --zlib --base64 \
     oblique_probe.png \
     orientation_cube_annotation.png \
     pan_hand.png \
+    parallel_projection.png \
+    perspective_projection.png \
     plus.png \
     point_finger.png \
     preset_add.png \
@@ -87,6 +94,7 @@ KWConvertImageToHeader --zlib --base64 \
     question.png \
     reload.png \
     rotate.png \
+    rows.png \
     scale_bar_annotation.png \
     seed_tool.png \
     shrink.png \

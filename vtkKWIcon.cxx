@@ -15,12 +15,13 @@
 
 #include "vtkObjectFactory.h"
 #include "vtkKWResourceUtilities.h"
+#include "vtkColorTransferFunction.h"
 
 #include "Resources/vtkKWIconResources.h"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.47 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.48 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -212,6 +213,22 @@ void vtkKWIcon::SetImage(int image)
         image_color_squares_width, image_color_squares_height,
         image_color_squares_pixel_size, 
         image_color_squares_length);
+      break;
+
+    case vtkKWIcon::IconColorAlphaSquares:
+      this->SetImage(
+        image_color_alpha_squares, 
+        image_color_alpha_squares_width, image_color_alpha_squares_height,
+        image_color_alpha_squares_pixel_size, 
+        image_color_alpha_squares_length);
+      break;
+
+    case vtkKWIcon::IconColumns:
+      this->SetImage(
+        image_columns, 
+        image_columns_width, image_columns_height,
+        image_columns_pixel_size, 
+        image_columns_length);
       break;
 
     case vtkKWIcon::IconCompress:
@@ -415,6 +432,14 @@ void vtkKWIcon::SetImage(int image)
         image_folder_open_length);
       break;
 
+    case vtkKWIcon::IconGrayscaleSquares:
+      this->SetImage(
+        image_grayscale_squares, 
+        image_grayscale_squares_width, image_grayscale_squares_height,
+        image_grayscale_squares_pixel_size, 
+        image_grayscale_squares_length);
+      break;
+
     case vtkKWIcon::IconGridLinear:
       this->SetImage(
         image_grid_linear, 
@@ -461,6 +486,22 @@ void vtkKWIcon::SetImage(int image)
         image_info_mini_width, image_info_mini_height,
         image_info_mini_pixel_size, 
         image_info_mini_length);
+      break;
+
+    case vtkKWIcon::IconInterpolationBilinear:
+      this->SetImage(
+        image_interpolation_bilinear, 
+        image_interpolation_bilinear_width, image_interpolation_bilinear_height,
+        image_interpolation_bilinear_pixel_size, 
+        image_interpolation_bilinear_length);
+      break;
+
+    case vtkKWIcon::IconInterpolationNearest:
+      this->SetImage(
+        image_interpolation_nearest, 
+        image_interpolation_nearest_width, image_interpolation_nearest_height,
+        image_interpolation_nearest_pixel_size, 
+        image_interpolation_nearest_length);
       break;
 
     case vtkKWIcon::IconLock:
@@ -535,6 +576,22 @@ void vtkKWIcon::SetImage(int image)
         image_pan_hand_width, image_pan_hand_height,
         image_pan_hand_pixel_size, 
         image_pan_hand_length);
+      break;      
+
+    case vtkKWIcon::IconParallelProjection:
+      this->SetImage(
+        image_parallel_projection, 
+        image_parallel_projection_width, image_parallel_projection_height,
+        image_parallel_projection_pixel_size, 
+        image_parallel_projection_length);
+      break;      
+
+    case vtkKWIcon::IconPerspectiveProjection:
+      this->SetImage(
+        image_perspective_projection, 
+        image_perspective_projection_width, image_perspective_projection_height,
+        image_perspective_projection_pixel_size, 
+        image_perspective_projection_length);
       break;      
 
     case vtkKWIcon::IconPlus:
@@ -647,6 +704,14 @@ void vtkKWIcon::SetImage(int image)
         image_rotate_width, image_rotate_height,
         image_rotate_pixel_size, 
         image_rotate_length);
+      break;
+
+    case vtkKWIcon::IconRows:
+      this->SetImage(
+        image_rows, 
+        image_rows_width, image_rows_height,
+        image_rows_pixel_size, 
+        image_rows_length);
       break;
 
     case vtkKWIcon::IconScaleBarAnnotation:
@@ -1233,6 +1298,187 @@ int vtkKWIcon::TrimRight()
     }
 
   return 1;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWIcon::SetImageToGradient(vtkColorTransferFunction *ctf, 
+                                   int width, int height,
+                                   int options)
+{
+  if (!ctf || width < 4 || height < 4)
+    {
+    return;
+    }
+
+  int draw_w_border = 
+    (options & vtkKWIcon::ImageOptionDrawDoubleBorder) ? 1 : 0;
+  int draw_b_border = 
+    (draw_w_border || options & vtkKWIcon::ImageOptionDrawBorder) ? 1 : 0;
+  int draw_vertically = (options & vtkKWIcon::ImageOptionDrawVertically);
+
+  // Get a ramp (leave 2 pixels for the black frame border if needed)
+
+  int ramp_width = width - draw_b_border * 2 - draw_w_border * 2;
+  int bytes_in_ramp = ramp_width * 3;
+  const unsigned char *rgb_table = 
+    ctf->GetTable(ctf->GetRange()[0], ctf->GetRange()[1], ramp_width);
+
+  // Allocate a buffer for the whole image
+
+  int bytes_in_row = width * 3;
+  int buffer_length = height * bytes_in_row;
+
+  unsigned char *buffer = new unsigned char [buffer_length];
+  unsigned char *ptr = buffer;
+
+  // Fill the first row for the border if needed, it will be used for the
+  // last one too
+
+  unsigned char *first_row = ptr;
+  if (draw_b_border)
+    {
+    memset(first_row, 0, bytes_in_row);
+    ptr += bytes_in_row;
+    }
+
+  // Fill the second row for the 2nd border if needed, it will be used for the
+  // last - 1 one too
+
+  unsigned char *second_row = ptr;
+  if (draw_w_border)
+    {
+    memset(ptr, 0, 3);
+    ptr += 3;
+    memset(ptr, 255, 3 + bytes_in_ramp + 3);
+    ptr += 3 + bytes_in_ramp + 3;
+    memset(ptr, 0, 3);
+    ptr += 3;
+    }
+
+  // Now draw the ramp, depending on the direction
+
+  if (draw_vertically)
+    {
+    int j;
+    for (j = draw_b_border + draw_w_border; 
+         j < height - draw_b_border - draw_w_border; 
+         j++)
+      {
+      if (draw_b_border)
+        {
+        memset(ptr, 0, 3);
+        ptr += 3;
+        }
+      if (draw_w_border)
+        {
+        memset(ptr, 255, 3);
+        ptr += 3;
+        }
+      unsigned char *ptr_end = ptr + bytes_in_ramp;
+      while (ptr < ptr_end)
+        {
+        memcpy(ptr, rgb_table, 3);
+        ptr += 3;
+        }
+      if (draw_w_border)
+        {
+        memset(ptr, 255, 3);
+        ptr += 3;
+        }
+      if (draw_b_border)
+        {
+        memset(ptr, 0, 3);
+        ptr += 3;
+        }
+      rgb_table += 3;
+      }
+    }
+  else
+    {
+    // Fill the ramp row, it will be used for all
+    // others row
+
+    unsigned char *ramp_row = ptr;
+    if (draw_b_border)
+      {
+      memset(ptr, 0, 3);
+      ptr += 3;
+      }
+    if (draw_w_border)
+      {
+      memset(ptr, 255, 3);
+      ptr += 3;
+      }
+
+    memcpy(ptr, rgb_table, bytes_in_ramp);
+    ptr += bytes_in_ramp;
+    
+    if (draw_w_border)
+      {
+      memset(ptr, 255, 3);
+      ptr += 3;
+      }
+    if (draw_b_border)
+      {
+      memset(ptr, 0, 3);
+      ptr += 3;
+      }
+
+    // Fill all remaining rows, using the ramp row
+    
+    int j;
+    for (j = 1 + draw_b_border + draw_w_border; 
+         j < height - draw_b_border - draw_w_border; 
+         j++)
+      {
+      memcpy(ptr, ramp_row, bytes_in_row);
+      ptr += bytes_in_row;
+      }
+    }
+
+  // Fill the last rows (border) using the first ones
+
+  if (draw_w_border)
+    {
+    memcpy(ptr, second_row, bytes_in_row);
+    ptr += bytes_in_row;
+    }
+
+  if (draw_b_border)
+    {
+    memcpy(ptr, first_row, bytes_in_row);
+    }
+
+  this->SetData(buffer, width, height, 3);
+
+  delete [] buffer;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWIcon::SetImageToRGBGradient(double r1, double g1, double b1, 
+                                      double r2, double g2, double b2, 
+                                      int width, int height,
+                                      int options)
+{
+  vtkColorTransferFunction *ctf = vtkColorTransferFunction::New();
+  ctf->SetColorSpaceToRGB();
+  ctf->AddRGBPoint(0.0, r1, g1, b1);
+  ctf->AddRGBPoint(1.0, r2, g2, b2);
+  this->SetImageToGradient(ctf, width, height, options);
+  ctf->Delete();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWIcon::SetImageToSolidRGBColor(double r, double g, double b, 
+                                        int width, int height,
+                                        int options)
+{
+  vtkColorTransferFunction *ctf = vtkColorTransferFunction::New();
+  ctf->SetColorSpaceToRGB();
+  ctf->AddRGBPoint(0.0, r, g, b);
+  ctf->AddRGBPoint(1.0, r, g, b);
+  this->SetImageToGradient(ctf, width, height, options);
+  ctf->Delete();
 }
 
 //----------------------------------------------------------------------------

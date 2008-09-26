@@ -24,7 +24,7 @@
 #include "vtkObject.h"
 #include "vtkKWWidgets.h" // Needed for export symbols directives
 
-class vtkKWIcon;
+class vtkColorTransferFunction;
 
 class KWWidgets_EXPORT vtkKWIcon : public vtkObject
 {
@@ -54,6 +54,8 @@ public:
     IconCdRom                     = 75,
     IconColorBarAnnotation        = 12,
     IconColorSquares              = 18,
+    IconColorAlphaSquares         = 216,
+    IconColumns                   = 220,
     IconCompress                  = 211,
     IconConnection                = 1,
     IconContourTool               = 16,
@@ -87,6 +89,7 @@ public:
     IconFolderNew                 = 74,
     IconFolderOpen                = 21,
     IconFolderXP                  = 66,
+    IconGrayscaleSquares          = 218,
     IconGridLinear                = 40,
     IconGridLog                   = 41,
     IconHardDrive                 = 76,
@@ -94,6 +97,8 @@ public:
     IconHelpBubble                = 60,
     IconHSVDiagram                = 207,
     IconInfoMini                  = 61,
+    IconInterpolationBilinear     = 215,
+    IconInterpolationNearest      = 217,
     IconLock                      = 62,
     IconMagGlass                  = 63,
     IconMinus                     = 64,
@@ -104,6 +109,8 @@ public:
     IconObliqueProbe              = 133,
     IconOrientationCubeAnnotation = 83,
     IconPanHand                   = 84,
+    IconParallelProjection        = 213,
+    IconPerspectiveProjection     = 214,
     IconPlus                      = 100,
     IconPointFinger               = 90,
     IconPresetAdd                 = 94,
@@ -118,6 +125,7 @@ public:
     IconQuestion                  = 101,
     IconReload                    = 102,
     IconRotate                    = 105,
+    IconRows                      = 219,
     IconScaleBarAnnotation        = 106,
     IconSeedTool                  = 107,
     IconSideAnnotation            = 110,
@@ -153,11 +161,11 @@ public:
 
   // Description:
   // Select an icon based on the icon name.
-  void SetImage(int image);
+  virtual void SetImage(int image);
 
   // Description:
   // Set image data from another vtkKWIcon.
-  void SetImage(vtkKWIcon*);
+  virtual void SetImage(vtkKWIcon*);
 
   // Description:
   // Set image data from pixel data, eventually zlib and base64.
@@ -177,8 +185,29 @@ public:
                 int options = 0);
 
   // Description:
+  // Set
+  //BTX
+  enum 
+  { 
+    ImageOptionDrawBorder = 1,
+    ImageOptionDrawDoubleBorder = 2,
+    ImageOptionDrawVertically = 4,
+  };
+  //ETX
+  virtual void SetImageToGradient(vtkColorTransferFunction *ctf, 
+                                  int width, int height,
+                                  int options = 0);
+  virtual void SetImageToRGBGradient(double r1, double g1, double b1, 
+                                     double r2, double g2, double b2, 
+                                     int width, int height,
+                                     int options = 0);
+  virtual void SetImageToSolidRGBColor(double r, double g, double b, 
+                                       int width, int height,
+                                       int options = 0);
+
+  // Description:
   // Get the raw image data.
-  const unsigned char* GetData();
+  virtual const unsigned char* GetData();
 
   // Description:
   // Get the width of the image.
