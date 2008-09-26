@@ -33,7 +33,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.125 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.126 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMenuInternals
@@ -1390,7 +1390,7 @@ void vtkKWMenu::SetItemImageToPredefinedIcon(int index, int icon_index)
 
   char buffer[1024];
 
-  sprintf(buffer, "%s.PredefinedIcon%d", this->GetTclName(), icon_index);
+  sprintf(buffer, "%s.PredefinedIcon_%d", this->GetTclName(), icon_index);
   if (!vtkKWTkUtilities::FindPhoto(this->GetApplication(), buffer))
     {
     vtkKWTkUtilities::UpdatePhotoFromPredefinedIcon(
@@ -1400,7 +1400,7 @@ void vtkKWMenu::SetItemImageToPredefinedIcon(int index, int icon_index)
 #if 0
   this->SetItemSelectImage(index, buffer);
 
-  sprintf(buffer, "%s.PredefinedIconFaded%d", this->GetTclName(), icon_index);
+  sprintf(buffer, "%s.PredefinedIconFaded_%d", this->GetTclName(), icon_index);
   if (!vtkKWTkUtilities::FindPhoto(this->GetApplication(), buffer))
     {
     vtkKWIcon *icon_faded = vtkKWIcon::New();
@@ -1413,6 +1413,22 @@ void vtkKWMenu::SetItemImageToPredefinedIcon(int index, int icon_index)
     }
   this->SetItemIndicatorVisibility(index, 0);
 #endif
+
+  this->SetItemImage(index, buffer);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMenu::SetItemImageToIcon(int index, vtkKWIcon *icon)
+{
+  if (!this->IsCreated() || index < 0 || index >= this->GetNumberOfItems())
+    {
+    return;
+    }
+
+  char buffer[1024];
+
+  sprintf(buffer, "%s.Icon_%d_%p", this->GetTclName(), index, icon);
+  vtkKWTkUtilities::UpdatePhotoFromIcon(this->GetApplication(), buffer, icon);
 
   this->SetItemImage(index, buffer);
 }
@@ -1437,12 +1453,28 @@ void vtkKWMenu::SetItemSelectImageToPredefinedIcon(int index, int icon_index)
     }
 
   char buffer[1024];
-  sprintf(buffer, "%s.PredefinedIcon%d", this->GetTclName(), icon_index);
+  sprintf(buffer, "%s.PredefinedIcon_%d", this->GetTclName(), icon_index);
   if (!vtkKWTkUtilities::FindPhoto(this->GetApplication(), buffer))
     {
     vtkKWTkUtilities::UpdatePhotoFromPredefinedIcon(
       this->GetApplication(), buffer, icon_index);
     }
+  this->SetItemSelectImage(index, buffer);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMenu::SetItemSelectImageToIcon(int index, vtkKWIcon *icon)
+{
+  if (!this->IsCreated() || index < 0 || index >= this->GetNumberOfItems())
+    {
+    return;
+    }
+
+  char buffer[1024];
+
+  sprintf(buffer, "%s.Icon_%d_%p", this->GetTclName(), index, icon);
+  vtkKWTkUtilities::UpdatePhotoFromIcon(this->GetApplication(), buffer, icon);
+
   this->SetItemSelectImage(index, buffer);
 }
 

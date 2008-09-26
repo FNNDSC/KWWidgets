@@ -328,6 +328,7 @@ public:
   // image and the label at the same time.
   virtual void SetItemImage(int index, const char *imgname);
   virtual void SetItemImageToPredefinedIcon(int index, int icon_index);
+  virtual void SetItemImageToIcon(int index, vtkKWIcon *icon);
 
   // Description:
   // Set the select image of a menu item.
@@ -336,6 +337,7 @@ public:
   // the menu item when it is selected (instead of the regular image). 
   virtual void SetItemSelectImage(int index, const char *imgname);
   virtual void SetItemSelectImageToPredefinedIcon(int index, int icon_index);
+  virtual void SetItemSelectImageToIcon(int index, vtkKWIcon *icon);
 
   // Description:
   // Specifies if the menu item should display text and bitmaps/images at the
