@@ -191,7 +191,7 @@ public:
   { 
     ImageOptionDrawBorder = 1,
     ImageOptionDrawDoubleBorder = 2,
-    ImageOptionDrawVertically = 4,
+    ImageOptionDrawVertically = 4
   };
   //ETX
   virtual void SetImageToGradient(vtkColorTransferFunction *ctf, 
