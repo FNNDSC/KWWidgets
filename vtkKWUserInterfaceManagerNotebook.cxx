@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceManagerNotebook);
-vtkCxxRevisionMacro(vtkKWUserInterfaceManagerNotebook, "$Revision: 1.10 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManagerNotebook, "$Revision: 1.11 $");
 
 //----------------------------------------------------------------------------
 class vtkKWUserInterfaceManagerNotebookInternals
@@ -222,6 +222,19 @@ int vtkKWUserInterfaceManagerNotebook::RemovePage(
     }
 
   return id;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWUserInterfaceManagerNotebook::SetPageTitle(
+  int id, const char *new_title)
+{
+  if (!this->IsCreated())
+    {
+    vtkErrorMacro("Can not set a page's title if the manager has not been created.");
+    return;
+    }
+
+  this->Notebook->SetPageTitle(id, new_title);
 }
 
 //----------------------------------------------------------------------------

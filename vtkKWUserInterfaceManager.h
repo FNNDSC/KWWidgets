@@ -111,6 +111,10 @@ public:
                          const char *title) = 0;
 
   // Description:
+  // Set a page's title
+  virtual void SetPageTitle(int id, const char *new_title) = 0;
+
+  // Description:
   // Retrieve the widget corresponding to a given page reserved by the manager.
   // This can be done through the unique page ID, or using a panel and the
   // page title. The user UI components should be inserted into this widget.

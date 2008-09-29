@@ -19,7 +19,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfacePanel);
-vtkCxxRevisionMacro(vtkKWUserInterfacePanel, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWUserInterfacePanel, "$Revision: 1.18 $");
 
 //----------------------------------------------------------------------------
 vtkKWUserInterfacePanel::vtkKWUserInterfacePanel()
@@ -138,6 +138,19 @@ int vtkKWUserInterfacePanel::RemovePage(const char *title)
     }
 
   return this->UserInterfaceManager->RemovePage(this, title);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWUserInterfacePanel::SetPageTitle(int id, const char *new_title)
+{
+  if (this->UserInterfaceManager == NULL)
+    {
+    vtkErrorMacro("The UserInterfaceManager manager needs to be set before "
+                  "a page can be set a new title.");
+    return;
+    }
+
+  this->UserInterfaceManager->SetPageTitle(id, new_title);
 }
 
 //----------------------------------------------------------------------------

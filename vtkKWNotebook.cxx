@@ -50,7 +50,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.109 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.110 $");
 
 //----------------------------------------------------------------------------
 class vtkKWNotebookInternals
@@ -1287,6 +1287,32 @@ int vtkKWNotebook::GetPageTag(vtkKWNotebook::Page *page)
 const char* vtkKWNotebook::GetPageTitle(int id)
 {
   return this->GetPageTitle(this->GetPage(id));
+}
+
+//----------------------------------------------------------------------------
+void vtkKWNotebook::SetPageTitle(int id, const char *new_title)
+{
+  vtkKWNotebook::Page *page = this->GetPage(id);
+  if (page)
+    {
+    if (page->Title)
+      {
+      delete [] page->Title;
+      }
+    if (new_title)
+      {
+      page->Title = new char [strlen(new_title) + 1];
+      strcpy(page->Title, new_title);
+      }
+    else
+      {
+      page->Title = NULL;
+      }
+    if (page->Label)
+      {
+      page->Label->SetText(page->Title ? page->Title : "");
+      }
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -2651,7 +2677,7 @@ void vtkKWNotebook::ConstrainVisiblePages()
        this->NumberOfMostRecentPages))
     {
     int diff = (int)this->Internals->MostRecentPages.size() - 
-      this->NumberOfMostRecentPages;
+      (int)this->NumberOfMostRecentPages;
 
     // There are more pages than allowed, try to remove some of them
 

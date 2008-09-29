@@ -54,8 +54,9 @@ public:
   int GetPageId(const char *title, int tag);
 
   // Description:
-  // Accessors
+  // Set/Get a page's title
   const char* GetPageTitle(int id);
+  void SetPageTitle(int id, const char *new_title);
 
   // Description:
   // Return the number of pages in the notebook.

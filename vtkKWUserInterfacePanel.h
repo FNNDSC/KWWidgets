@@ -99,6 +99,10 @@ public:
   virtual int RemovePage(const char *title);
 
   // Description:
+  // Set a page's title
+  virtual void SetPageTitle(int id, const char *new_title);
+
+  // Description:
   // Retrieve the widget corresponding to a given page added to the panel.
   // This can be done through the unique page ID, or using the page title. 
   // The user UI components should be inserted into this widget.
