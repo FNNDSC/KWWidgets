@@ -46,7 +46,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.96 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.97 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -579,7 +579,8 @@ int vtkKWTkUtilities::QueryUserForColor(
   dlg->GetColorPickerWidget()->SetCurrentColorAsRGB(in_r, in_g, in_b);
   dlg->GetColorPickerWidget()->SetNewColorAsRGB(in_r, in_g, in_b);
   double r, g, b;
-  if (dlg->Invoke())
+  int ok = dlg->Invoke();
+  if (ok)
     {
     dlg->GetColorPickerWidget()->GetNewColorAsRGB(r, g, b);
     }
@@ -602,7 +603,7 @@ int vtkKWTkUtilities::QueryUserForColor(
     *out_b = b;
     }
 
-  return 1;
+  return ok;
 #endif
 }
 
