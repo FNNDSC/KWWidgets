@@ -47,7 +47,7 @@
 #include <vtksys/stl/map>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.167 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.168 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -175,6 +175,10 @@ vtkKWRenderWidget::vtkKWRenderWidget()
 
   this->UseContextMenu = 0;
   this->ContextMenu = NULL;
+
+  this->RendererBackgroundColorRegKey = NULL;
+  this->RendererBackgroundColor2RegKey = NULL;
+  this->RendererGradientBackgroundRegKey = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -322,6 +326,10 @@ void vtkKWRenderWidget::CreateWidget()
   // Add the bindings
 
   this->AddBindings();
+
+  // Retrieve default settings
+
+  this->SetRenderersDefaultValues();
 }
 
 //----------------------------------------------------------------------------
@@ -341,6 +349,32 @@ void vtkKWRenderWidget::CreateDefaultRenderers()
     vtkRenderer *renderer = vtkRenderer::New();
     this->AddOverlayRenderer(renderer);
     renderer->Delete();
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRenderWidget::SetRenderersDefaultValues()
+{
+  double rgb[3];
+  if (this->GetRendererBackgroundColorRegKey() && 
+      this->GetApplication()->RetrieveColorRegistryValue(
+        2, this->GetRendererBackgroundColorRegKey(), rgb))
+    {
+    this->SetRendererBackgroundColor(rgb);
+    }
+  if (this->GetRendererBackgroundColor2RegKey() && 
+      this->GetApplication()->RetrieveColorRegistryValue(
+        2, this->GetRendererBackgroundColor2RegKey(), rgb))
+    {
+    this->SetRendererBackgroundColor2(rgb);
+    }
+  if (this->GetRendererGradientBackgroundRegKey() &&
+      this->GetApplication()->HasRegistryValue(
+        2, "Colors", this->GetRendererGradientBackgroundRegKey()))
+    {
+    this->SetRendererGradientBackground(
+      this->GetApplication()->GetIntRegistryValue(
+        2, "Colors", this->GetRendererGradientBackgroundRegKey()));
     }
 }
 
@@ -1608,7 +1642,7 @@ void vtkKWRenderWidget::PopulateColorMenu(vtkKWMenu *menu)
   // Use secondary as gradient
 
   cascade_index = bg_color_menu->AddCheckButton(
-    k_("Display Gradient"), this, "ToggleRendererGradientBackground");
+    k_("Display Gradient"), this, "RendererGradientBackgroundCallback");
   bg_color_menu->SetItemSelectedState(
     cascade_index, this->GetRendererGradientBackground());
 
@@ -1643,10 +1677,10 @@ void vtkKWRenderWidget::PopulateColorMenu(vtkKWMenu *menu)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWRenderWidget::RendererBackgroundColorCallback()
+int vtkKWRenderWidget::RendererBackgroundColorCallback()
 {
-  double r, g, b;
-  this->GetRendererBackgroundColor(&r, &g, &b);
+  double rgb[3], new_rgb[3];
+  this->GetRendererBackgroundColor(rgb, rgb + 1, rgb + 2);
 
   vtkKWColorPickerWidget *color_picker_widget = NULL;
   vtkKWColorPickerDialog *color_picker_dlg = 
@@ -1665,11 +1699,23 @@ void vtkKWRenderWidget::RendererBackgroundColorCallback()
       color_picker_widget, vtkKWColorPickerWidget::NewColorChangedEvent);
     }
 
-  vtkKWTkUtilities::QueryUserForColor(
+  int ok = vtkKWTkUtilities::QueryUserForColor(
     this->GetApplication(),
     this,
     k_("Primary Background Color"),
-    r, g, b, NULL, NULL, NULL);
+    rgb[0], rgb[1], rgb[2], new_rgb, new_rgb + 1, new_rgb + 2);
+  if (ok)
+    {
+    if (this->GetRendererBackgroundColorRegKey())
+      {
+      this->GetApplication()->SaveColorRegistryValue(
+        2, this->GetRendererBackgroundColorRegKey(), new_rgb);
+      }
+    }
+  else
+    {
+    this->SetRendererBackgroundColor(rgb[0], rgb[1], rgb[2]);
+    }
 
   if (color_picker_dlg)
     {
@@ -1677,13 +1723,15 @@ void vtkKWRenderWidget::RendererBackgroundColorCallback()
       color_picker_widget, vtkKWColorPickerWidget::NewColorChangedEvent);
     color_picker_widget->SetEventCallData(event_calldata);
     }
+
+  return ok;
 }
 
 //----------------------------------------------------------------------------
-void vtkKWRenderWidget::RendererBackgroundColor2Callback()
+int vtkKWRenderWidget::RendererBackgroundColor2Callback()
 {
-  double r, g, b;
-  this->GetRendererBackgroundColor2(&r, &g, &b);
+  double rgb[3], new_rgb[3];
+  this->GetRendererBackgroundColor2(rgb, rgb + 1, rgb + 2);
 
   vtkKWColorPickerWidget *color_picker_widget = NULL;
   vtkKWColorPickerDialog *color_picker_dlg = 
@@ -1702,17 +1750,44 @@ void vtkKWRenderWidget::RendererBackgroundColor2Callback()
       color_picker_widget, vtkKWColorPickerWidget::NewColorChangedEvent);
     }
 
-  vtkKWTkUtilities::QueryUserForColor(
+  int ok = vtkKWTkUtilities::QueryUserForColor(
     this->GetApplication(),
     this,
-    k_("Primary Background Color"),
-    r, g, b, NULL, NULL, NULL);
+    k_("Secondary Background Color"),
+    rgb[0], rgb[1], rgb[2], new_rgb, new_rgb + 1, new_rgb + 2);
+  if (ok)
+    {
+    if (this->GetRendererBackgroundColor2RegKey())
+      {
+      this->GetApplication()->SaveColorRegistryValue(
+        2, this->GetRendererBackgroundColor2RegKey(), new_rgb);
+      }
+    }
+  else
+    {
+    this->SetRendererBackgroundColor2(rgb[0], rgb[1], rgb[2]);
+    }
 
   if (color_picker_dlg)
     {
     this->RemoveCallbackCommandObserver(
       color_picker_widget, vtkKWColorPickerWidget::NewColorChangedEvent);
     color_picker_widget->SetEventCallData(event_calldata);
+    }
+
+  return ok;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRenderWidget::RendererGradientBackgroundCallback()
+{
+  this->ToggleRendererGradientBackground();
+
+  if (this->GetRendererGradientBackgroundRegKey())
+    {
+    this->GetApplication()->SetRegistryValue(
+      2, "Colors", this->GetRendererGradientBackgroundRegKey(), "%d",
+      this->GetRendererGradientBackground());
     }
 }
 

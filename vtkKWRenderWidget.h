@@ -317,8 +317,9 @@ public:
   virtual void LeaveCallback(int x, int y);
   virtual void FocusInCallback();
   virtual void FocusOutCallback();
-  virtual void RendererBackgroundColorCallback();
-  virtual void RendererBackgroundColor2Callback();
+  virtual int RendererBackgroundColorCallback();
+  virtual int RendererBackgroundColor2Callback();
+  virtual void RendererGradientBackgroundCallback();
 
   // Description:
   // Event list
@@ -331,6 +332,15 @@ public:
     RendererBackgroundColor2ChangedEvent
   };
   //ETX
+
+  // Description:
+  // Some constants
+  vtkGetStringMacro(RendererBackgroundColorRegKey);
+  vtkSetStringMacro(RendererBackgroundColorRegKey);
+  vtkGetStringMacro(RendererBackgroundColor2RegKey);
+  vtkSetStringMacro(RendererBackgroundColor2RegKey);
+  vtkGetStringMacro(RendererGradientBackgroundRegKey);
+  vtkSetStringMacro(RendererGradientBackgroundRegKey);
 
 protected:
   vtkKWRenderWidget();
@@ -367,6 +377,10 @@ protected:
   // Superclass can override to install them in a different layout.
   // It is called by Create().
   virtual void InstallRenderers();
+
+  // Description:
+  // Set the renderers default values (say, default background colors).
+  virtual void SetRenderersDefaultValues();
 
   // Description:
   // Update the widget according to the units.
@@ -412,6 +426,12 @@ protected:
 
   int SupportCornerAnnotation;
 
+  // Description:
+  // Some constants
+  char *RendererBackgroundColorRegKey;
+  char *RendererBackgroundColor2RegKey;
+  char *RendererGradientBackgroundRegKey;
+  
 private:
   vtkKWRenderWidget(const vtkKWRenderWidget&);  // Not implemented
   void operator=(const vtkKWRenderWidget&);  // Not implemented
