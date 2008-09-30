@@ -73,6 +73,14 @@ int main(int argc, char** argv)
 #endif
 #endif
 
+  /* save the current directory */
+  char saved_working_directory[MAX_PATH_len+1];
+#if defined(_WIN32)
+  _getcwd(saved_working_directory,MAX_PATH_len);
+#else
+  getcwd(saved_working_directory,MAX_PATH_len);
+#endif
+ 
   /* PATH */
 
   strcpy(path_env, 
@@ -217,6 +225,12 @@ int main(int argc, char** argv)
       nb_quoted_argv++;
       }
     }
+#endif
+
+#if defined(_WIN32) && !defined(__CYGWIN__)
+  _chdir(saved_working_directory);
+#else
+  chdir(saved_working_directory);
 #endif
 
 #if defined(_MSC_VER)
