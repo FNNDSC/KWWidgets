@@ -103,7 +103,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.336 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.337 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1030,6 +1030,31 @@ void vtkKWApplication::ParseCommandLineArguments(int argc, char **argv)
 //----------------------------------------------------------------------------
 void vtkKWApplication::Start(int argc, char **argv)
 { 
+#ifdef _WIN32
+  // I hate to do that, but the way Tcl/Tk handles icons in menus is just
+  // plain broken, even after reporting a bug back in 2, this was
+  // half fixed, but icons are still corrupted in cascade menus. 
+  // The only way to fix this is to temporarily disable menu animations
+  // https://sourceforge.net/tracker/?func=detail&aid=1329198&group_id=12997&atid=112997
+
+  OSVERSIONINFO ovi;
+  ovi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+  BOOL bRet = GetVersionEx(&ovi);
+
+  BOOL bMenuFading = FALSE;
+  BOOL bMenuAnim = FALSE;
+  if (ovi.dwMajorVersion >= 5)
+    {
+    SystemParametersInfo(SPI_GETMENUFADE, 0, &bMenuFading, 0);
+    SystemParametersInfo(SPI_SETMENUFADE, 0, 
+                         (LPVOID) FALSE, SPIF_SENDWININICHANGE);
+    
+    SystemParametersInfo(SPI_GETMENUANIMATION, 0, &bMenuAnim, 0);
+    SystemParametersInfo(SPI_SETMENUANIMATION, 0, 
+                         (LPVOID) FALSE, SPIF_SENDWININICHANGE);
+    }
+#endif
+
   // Command line args
 
   this->ParseCommandLineArguments(argc, argv);
@@ -1081,9 +1106,22 @@ void vtkKWApplication::Start(int argc, char **argv)
     this->DoOneTclEvent();
     }
 
+
+#ifdef _WIN32
+  // Restore menu animation
+  if (ovi.dwMajorVersion >= 5)
+    {
+    SystemParametersInfo(SPI_SETMENUFADE, 0, 
+                         (LPVOID) bMenuFading, SPIF_SENDWININICHANGE);
+    SystemParametersInfo(SPI_SETMENUANIMATION, 0, 
+                         (LPVOID) bMenuAnim, SPIF_SENDWININICHANGE);
+    }
+#endif
+
   // In case we never went through Exit()
 
   this->PrepareForDelete();
+
 }
 
 //----------------------------------------------------------------------------
