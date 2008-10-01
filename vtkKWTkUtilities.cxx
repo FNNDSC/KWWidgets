@@ -46,7 +46,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.97 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.98 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -861,7 +861,7 @@ int vtkKWTkUtilities::UpdatePhoto(Tcl_Interp *interp,
   sblock.offset[0] = 0;
   sblock.offset[1] = 1;
   sblock.offset[2] = 2;
-  sblock.offset[3] = 3;
+  sblock.offset[3] = pixel_size > 3 ? 3 : 0;
   sblock.pixelSize = pixel_size;
   sblock.pitch     = sblock.width * sblock.pixelSize;
   unsigned long sblock_size = sblock.pitch * sblock.height;

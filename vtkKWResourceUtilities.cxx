@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWResourceUtilities);
-vtkCxxRevisionMacro(vtkKWResourceUtilities, "$Revision: 1.19 $");
+vtkCxxRevisionMacro(vtkKWResourceUtilities, "$Revision: 1.20 $");
 
 //----------------------------------------------------------------------------
 int vtkKWResourceUtilities::ReadImage(
@@ -218,7 +218,7 @@ int vtkKWResourceUtilities::WritePNGImage(
   const char *filename,
   int width, int height, 
   int pixel_size,
-  unsigned char *pixels)
+  const unsigned char *pixels)
 {
   // Check parameters
 

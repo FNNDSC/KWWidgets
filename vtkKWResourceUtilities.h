@@ -70,7 +70,7 @@ public:
   static int WritePNGImage(const char *filename,
                            int width, int height, 
                            int pixel_size,
-                           unsigned char *pixels);
+                           const unsigned char *pixels);
 
   // Description:
   // Convert 'nb_files' files (stored in an array of filenames given by 

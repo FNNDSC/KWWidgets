@@ -33,7 +33,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.126 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.127 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMenuInternals
@@ -1381,59 +1381,6 @@ void vtkKWMenu::SetItemImage(int index, const char *imgname)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWMenu::SetItemImageToPredefinedIcon(int index, int icon_index)
-{
-  if (!this->IsCreated() || index < 0 || index >= this->GetNumberOfItems())
-    {
-    return;
-    }
-
-  char buffer[1024];
-
-  sprintf(buffer, "%s.PredefinedIcon_%d", this->GetTclName(), icon_index);
-  if (!vtkKWTkUtilities::FindPhoto(this->GetApplication(), buffer))
-    {
-    vtkKWTkUtilities::UpdatePhotoFromPredefinedIcon(
-      this->GetApplication(), buffer, icon_index);
-    }
-
-#if 0
-  this->SetItemSelectImage(index, buffer);
-
-  sprintf(buffer, "%s.PredefinedIconFaded_%d", this->GetTclName(), icon_index);
-  if (!vtkKWTkUtilities::FindPhoto(this->GetApplication(), buffer))
-    {
-    vtkKWIcon *icon_faded = vtkKWIcon::New();
-    icon_faded->SetImage(icon_index);
-    icon_faded->Fade(0.3);
-    
-    vtkKWTkUtilities::UpdatePhotoFromIcon(
-      this->GetApplication(), buffer, icon_faded);
-    icon_faded->Delete();
-    }
-  this->SetItemIndicatorVisibility(index, 0);
-#endif
-
-  this->SetItemImage(index, buffer);
-}
-
-//----------------------------------------------------------------------------
-void vtkKWMenu::SetItemImageToIcon(int index, vtkKWIcon *icon)
-{
-  if (!this->IsCreated() || index < 0 || index >= this->GetNumberOfItems())
-    {
-    return;
-    }
-
-  char buffer[1024];
-
-  sprintf(buffer, "%s.Icon_%d_%p", this->GetTclName(), index, icon);
-  vtkKWTkUtilities::UpdatePhotoFromIcon(this->GetApplication(), buffer, icon);
-
-  this->SetItemImage(index, buffer);
-}
-
-//----------------------------------------------------------------------------
 void vtkKWMenu::SetItemSelectImage(int index, const char *imgname)
 {
   if (!this->IsCreated() || index < 0 || index >= this->GetNumberOfItems())
@@ -1442,6 +1389,25 @@ void vtkKWMenu::SetItemSelectImage(int index, const char *imgname)
     }
   this->Script("%s entryconfigure %d -selectimage %s", 
                this->GetWidgetName(), index, imgname);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMenu::SetItemImageToPredefinedIcon(int index, int icon_index)
+{
+  if (!this->IsCreated() || index < 0 || index >= this->GetNumberOfItems())
+    {
+    return;
+    }
+
+  char buffer[1024];
+  sprintf(buffer, "%s.PredefinedIcon_%d", this->GetTclName(), icon_index);
+  if (!vtkKWTkUtilities::FindPhoto(this->GetApplication(), buffer))
+    {
+    vtkKWTkUtilities::UpdatePhotoFromPredefinedIcon(
+      this->GetApplication(), buffer, icon_index);
+    }
+
+  this->SetItemImage(index, buffer);
 }
 
 //----------------------------------------------------------------------------
@@ -1459,7 +1425,22 @@ void vtkKWMenu::SetItemSelectImageToPredefinedIcon(int index, int icon_index)
     vtkKWTkUtilities::UpdatePhotoFromPredefinedIcon(
       this->GetApplication(), buffer, icon_index);
     }
+
   this->SetItemSelectImage(index, buffer);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMenu::SetItemImageToIcon(int index, vtkKWIcon *icon)
+{
+  if (!this->IsCreated() || index < 0 || index >= this->GetNumberOfItems())
+    {
+    return;
+    }
+
+  char buffer[1024];
+  sprintf(buffer, "%s.Icon_%d_%p", this->GetTclName(), index, icon);
+  vtkKWTkUtilities::UpdatePhotoFromIcon(this->GetApplication(), buffer, icon);
+  this->SetItemImage(index, buffer);
 }
 
 //----------------------------------------------------------------------------
@@ -1471,10 +1452,8 @@ void vtkKWMenu::SetItemSelectImageToIcon(int index, vtkKWIcon *icon)
     }
 
   char buffer[1024];
-
   sprintf(buffer, "%s.Icon_%d_%p", this->GetTclName(), index, icon);
   vtkKWTkUtilities::UpdatePhotoFromIcon(this->GetApplication(), buffer, icon);
-
   this->SetItemSelectImage(index, buffer);
 }
 
