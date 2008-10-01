@@ -17,203 +17,6 @@
 
 namespace eval tablelist {
     #
-    # Define the binding tag TablelistEdit
-    #
-    proc defineTablelistEdit {} {
-	#
-	# Get the supported modifier keys in the set {Alt, Meta, Command} on
-	# the current windowing system ("x11", "win32", "classic", or "aqua")
-	#
-	variable winSys
-	if {[catch {tk windowingsystem} winSys] != 0} {
-	    switch $::tcl_platform(platform) {
-		unix      { set winSys x11 }
-		windows   { set winSys win32 }
-		macintosh { set winSys classic }
-	    }
-	}
-	switch $winSys {
-	    x11		{ set modList {Alt Meta} }
-	    win32	{ set modList {Alt} }
-	    classic -
-	    aqua	{ set modList {Command} }
-	}
-
-	#
-	# Define some bindings for the binding tag TablelistEdit
-	#
-	bind TablelistEdit <Button-1> {
-	    set tablelist::priv(clicked) 1
-	    set tablelist::priv(clickedInEditWin) 1
-	    focus %W
-	}
-	bind TablelistEdit <ButtonRelease-1> {
-	    if {%t != 0} {			;# i.e., no generated event
-		foreach {tablelist::W tablelist::x tablelist::y} \
-		    [tablelist::convEventFields %W %x %y] {}
-
-		set tablelist::priv(x) ""
-		set tablelist::priv(y) ""
-		set tablelist::priv(clicked) 0
-		after cancel $tablelist::priv(afterId)
-		set tablelist::priv(afterId) ""
-		set tablelist::priv(releasedInEditWin) 1
-		if {%t - $tablelist::priv(clickTime) < 300} {
-		    tablelist::moveOrActivate $tablelist::W \
-			$tablelist::priv(row) $tablelist::priv(col)
-		} else {
-		    tablelist::moveOrActivate $tablelist::W \
-			[$tablelist::W nearest       $tablelist::y] \
-			[$tablelist::W nearestcolumn $tablelist::x]
-		}
-		tablelist::condEvalInvokeCmd $tablelist::W
-	    }
-	}
-	bind TablelistEdit <Control-i>    { tablelist::insertChar %W "\t" }
-	bind TablelistEdit <Control-j>    { tablelist::insertChar %W "\n" }
-	bind TablelistEdit <Escape>       { tablelist::cancelEditing %W }
-	foreach key {Return KP_Enter} {
-	    bind TablelistEdit <$key> {
-		if {[string compare [winfo class %W] "Text"] == 0} {
-		    tablelist::insertChar %W "\n"
-		} else {
-		    tablelist::finishEditing %W
-		}
-	    }
-	    bind TablelistEdit <Control-$key> {
-		tablelist::finishEditing %W
-	    }
-	}
-	bind TablelistEdit <Tab>          { tablelist::goToNextPrevCell %W  1 }
-	bind TablelistEdit <Shift-Tab>    { tablelist::goToNextPrevCell %W -1 }
-	bind TablelistEdit <<PrevWindow>> { tablelist::goToNextPrevCell %W -1 }
-	foreach modifier $modList {
-	    bind TablelistEdit <$modifier-Left> {
-		tablelist::goLeftRight %W -1
-	    }
-	    bind TablelistEdit <$modifier-Right> {
-		tablelist::goLeftRight %W 1
-	    }
-	    bind TablelistEdit <$modifier-Up> {
-		tablelist::goUpDown %W -1
-	    }
-	    bind TablelistEdit <$modifier-Down> {
-		tablelist::goUpDown %W 1
-	    }
-	    bind TablelistEdit <$modifier-Prior> {
-		tablelist::goToPriorNextPage %W -1
-	    }
-	    bind TablelistEdit <$modifier-Next> {
-		tablelist::goToPriorNextPage %W 1
-	    }
-	    bind TablelistEdit <$modifier-Home> {
-		tablelist::goToNextPrevCell %W 1 0 -1
-	    }
-	    bind TablelistEdit <$modifier-End> {
-		tablelist::goToNextPrevCell %W -1 0 0
-	    }
-	}
-	foreach direction {Left Right} amount {-1 1} {
-	    bind TablelistEdit <$direction> [format {
-		if {![tablelist::isKeyReserved %%W %%K]} {
-		    tablelist::goLeftRight %%W %d
-		}
-	    } $amount]
-	}
-	foreach direction {Up Down} amount {-1 1} {
-	    bind TablelistEdit <$direction> [format {
-		if {![tablelist::isKeyReserved %%W %%K]} {
-		    tablelist::goUpDown %%W %d
-		}
-	    } $amount]
-	}
-	foreach page {Prior Next} amount {-1 1} {
-	    bind TablelistEdit <$page> [format {
-		if {![tablelist::isKeyReserved %%W %%K]} {
-		    tablelist::goToPriorNextPage %%W %d
-		}
-	    } $amount]
-	}
-	bind TablelistEdit <Control-Home> {
-	    if {![tablelist::isKeyReserved %W Control-Home]} {
-		tablelist::goToNextPrevCell %W 1 0 -1
-	    }
-	}
-	bind TablelistEdit <Control-End> {
-	    if {![tablelist::isKeyReserved %W Control-End]} {
-		tablelist::goToNextPrevCell %W -1 0 0
-	    }
-	}
-	foreach pattern {Tab Shift-Tab ISO_Left_Tab hpBackTab} {
-	    catch {
-		foreach modifier {Control Meta} {
-		    bind TablelistEdit <$modifier-$pattern> [format {
-			mwutil::processTraversal %%W Tablelist <%s>
-		    } $pattern]
-		}
-	    }
-	}
-	bind TablelistEdit <FocusIn> {
-	    set tablelist::W [tablelist::getTablelistPath %W]
-	    set tablelist::ns${tablelist::W}::data(editFocus) %W
-	}
-
-	#
-	# Define some emacs-like key bindings for the binding tag TablelistEdit
-	#
-	foreach pattern {Meta-b Meta-f} amount {-1 1} {
-	    bind TablelistEdit <$pattern> [format {
-		if {!$tk_strictMotif && ![tablelist::isKeyReserved %%W %s]} {
-		    tablelist::goLeftRight %%W %d
-		}
-	    } $pattern $amount]
-	}
-	foreach pattern {Control-p Control-n} amount {-1 1} {
-	    bind TablelistEdit <$pattern> [format {
-		if {!$tk_strictMotif && ![tablelist::isKeyReserved %%W %s]} {
-		    tablelist::goUpDown %%W %d
-		}
-	    } $pattern $amount]
-	}
-	bind TablelistEdit <Meta-less> {
-	    if {!$tk_strictMotif &&
-		![tablelist::isKeyReserved %W Meta-less]} {
-		tablelist::goToNextPrevCell %W 1 0 -1
-	    }
-	}
-	bind TablelistEdit <Meta-greater> {
-	    if {!$tk_strictMotif &&
-		![tablelist::isKeyReserved %W Meta-greater]} {
-		tablelist::goToNextPrevCell %W -1 0 0
-	    }
-	}
-
-	#
-	# Define some bindings for the binding tag TablelistEdit that
-	# propagate the mousewheel events to the tablelist's body
-	#
-	catch {
-	    bind TablelistEdit <MouseWheel> {
-		if {[string compare [winfo class %W] "TCombobox"] != 0 &&
-		    ![tablelist::isComboTopMapped %W]} {
-		    tablelist::genMouseWheelEvent \
-			[[tablelist::getTablelistPath %W] bodypath] %D
-		}
-	    }
-	}
-	foreach detail {4 5} {
-	    bind TablelistEdit <Button-$detail> [format {
-		if {[string compare [winfo class %%W] "TCombobox"] != 0 &&
-		    ![tablelist::isComboTopMapped %%W]} {
-		    event generate \
-			[[tablelist::getTablelistPath %%W] bodypath] <Button-%s>
-		}
-	    } $detail]
-	}
-    }
-    defineTablelistEdit 
-
-    #
     # Register the Tk core widgets entry, text, checkbutton,
     # and spinbox for interactive cell editing
     #
@@ -893,6 +696,100 @@ proc tablelist::addTimeMentry {fmt sep args} {
 }
 
 #------------------------------------------------------------------------------
+# tablelist::addDateTimeMentry
+#
+# Registers the widget created by the mentry::dateTimeMentry command from the
+# Mentry package, with a given format and given separators and with or without
+# the "-gmt 1" option for the mentry::putClockVal and mentry::getClockVal
+# commands, for interactive cell editing.
+#------------------------------------------------------------------------------
+proc tablelist::addDateTimeMentry {fmt dateSep timeSep args} {
+    #
+    # Parse the fmt argument
+    #
+    if {![regexp {^([dmyY])([dmyY])([dmyY])(H|I)(M)(S?)$} $fmt dummy \
+		 fields(0) fields(1) fields(2) fields(3) fields(4) fields(5)]} {
+	return -code error \
+	       "bad format \"$fmt\": must be a string of length 5 or 6,\
+	        with the first 3 characters consisting of the letters d, m,\
+		and y or Y, followed by H or I, then M, and optionally by S"
+    }
+
+    #
+    # Check whether all the three date components are represented in fmt
+    #
+    for {set n 0} {$n < 3} {incr n} {
+	set lfields($n) [string tolower $fields($n)]
+    }
+    if {[string compare $lfields(0) $lfields(1)] == 0 ||
+	[string compare $lfields(0) $lfields(2)] == 0 ||
+	[string compare $lfields(1) $lfields(2)] == 0} {
+	return -code error \
+	       "bad format \"$fmt\": must have unique components for the\
+		day, month, and year"
+    }
+
+    #
+    # Parse the remaining arguments (if any)
+    #
+    switch [llength $args] {
+	0 {
+	    set useGMT 0
+	    set name dateTimeMentry
+	}
+
+	1 {
+	    set arg [lindex $args 0]
+	    if {[string compare $arg "-gmt"] == 0} {
+		set useGMT 1
+		set name dateTimeMentry
+	    } else {
+		set useGMT 0
+		set name $arg
+	    }
+	}
+
+	2 {
+	    set arg0 [lindex $args 0]
+	    if {[string compare $arg0 "-gmt"] != 0} {
+		return -code error "bad option \"$arg0\": must be -gmt"
+	    }
+
+	    set useGMT 1
+	    set name [lindex $args 1]
+	}
+
+	default {
+	    mwutil::wrongNumArgs "addDateTimeMentry format dateSeparator\
+				  timeSeparator ?-gmt? ?name?"
+	}
+    }
+    checkEditWinName $name
+
+    array set ::tablelist::editWin [list \
+	$name-creationCmd	[list mentry::dateTimeMentry %W $fmt \
+				      $dateSep $timeSep] \
+	$name-putValueCmd	"mentry::putClockVal %T %W -gmt $useGMT" \
+	$name-getValueCmd	"mentry::getClockVal %W -gmt $useGMT" \
+	$name-putTextCmd	"" \
+	$name-getTextCmd	"%W getstring" \
+	$name-putListCmd	{eval [list %W put 0] %L} \
+	$name-getListCmd	"%W getlist" \
+	$name-selectCmd		"" \
+	$name-invokeCmd		"" \
+	$name-fontOpt		-font \
+	$name-useFormat		0 \
+	$name-useReqWidth	1 \
+	$name-usePadX		1 \
+	$name-isEntryLike	1 \
+	$name-focusWin		"" \
+	$name-reservedKeys	{Left Right Up Down Prior Next} \
+    ]
+
+    return $name
+}
+
+#------------------------------------------------------------------------------
 # tablelist::addFixedPointMentry
 #
 # Registers the widget created by the mentry::fixedPointMentry command from the
@@ -1093,6 +990,7 @@ proc tablelist::createTileEntry {w args} {
     if {$::tk_version < 8.5 || [regexp {^8\.5a[1-5]$} $::tk_patchLevel]} {
 	package require tile 0.6
     }
+    createTileAliases 
 
     #
     # The style of the tile entry widget should have -borderwidth
@@ -1141,6 +1039,7 @@ proc tablelist::createTileCombobox {w args} {
     if {$::tk_version < 8.5 || [regexp {^8\.5a[1-5]$} $::tk_patchLevel]} {
 	package require tile 0.6
     }
+    createTileAliases 
 
     set win [getTablelistPath $w]
     if {[string compare [getCurrentTheme] "aqua"] == 0} {
@@ -1166,6 +1065,7 @@ proc tablelist::createTileCheckbutton {w args} {
     if {$::tk_version < 8.5 || [regexp {^8\.5a[1-5]$} $::tk_patchLevel]} {
 	package require tile 0.6
     }
+    createTileAliases 
 
     #
     # Define the checkbutton layout; use catch to suppress
@@ -1246,11 +1146,21 @@ proc tablelist::createTileCheckbutton {w args} {
 	    }
 	}
 
-	winnative -
-	xpnative {
+	winnative {
 	    set height [winfo reqheight $w]
 	    [winfo parent $w] configure -width $height -height $height
 	    place $w -x -2
+	}
+
+	xpnative {
+	    set height [winfo reqheight $w]
+	    [winfo parent $w] configure -width $height -height $height
+	    if {[info exists tile::patchlevel] &&
+		[string compare $tile::patchlevel "0.8.0"] < 0} {
+		place $w -x -2
+	    } else {
+		place $w -x 0
+	    }
 	}
 
 	default {
@@ -1317,9 +1227,9 @@ proc tablelist::doEditCell {win row col restore {cmd ""} {charPos -1}} {
     }
 
     #
-    # Create a frame to be embedded into the tablelist's body, together
-    # with a child of column-specific type; replace the binding tag
-    # Frame with TablelistEdit in the list of binding tags of the frame
+    # Create a frame to be embedded into the tablelist's body, together with
+    # a child of column-specific type; replace the binding tag Frame with
+    # $data(editwinTag) and TablelistEdit in the frame's list of binding tags
     #
     seeCell $win $row $col
     set netRowHeight [lindex [bboxSubCmd $win $row] 3]
@@ -1328,7 +1238,7 @@ proc tablelist::doEditCell {win row col restore {cmd ""} {charPos -1}} {
     tk::frame $f -borderwidth 0 -container 0 -height $frameHeight \
 		 -highlightthickness 0 -relief flat -takefocus 0
     catch {$f configure -padx 0 -pady 0}
-    bindtags $f [lreplace [bindtags $f] 1 1 TablelistEdit]
+    bindtags $f [lreplace [bindtags $f] 1 1 $data(editwinTag) TablelistEdit]
     bind $f <Destroy> {
 	array set tablelist::ns[winfo parent [winfo parent %W]]::data \
 		  {editRow -1  editCol -1}
@@ -1397,8 +1307,9 @@ proc tablelist::doEditCell {win row col restore {cmd ""} {charPos -1}} {
     $b mark set editMark $editIdx
 
     #
-    # Insert the binding tag TablelistEdit in the list of binding tags
-    # of some components of w, just before the respective path names
+    # Insert the binding tags $data(editwinTag) and TablelistEdit
+    # into the list of binding tags of some components
+    # of w, just before the respective path names
     #
     if {$isMentry} {
 	set compList [$w entries]
@@ -1410,7 +1321,7 @@ proc tablelist::doEditCell {win row col restore {cmd ""} {charPos -1}} {
     foreach comp $compList {
 	set bindTags [bindtags $comp]
 	set idx [lsearch -exact $bindTags $comp]
-	bindtags $comp [linsert $bindTags $idx TablelistEdit]
+	bindtags $comp [linsert $bindTags $idx $data(editwinTag) TablelistEdit]
     }
 
     #
@@ -1518,15 +1429,15 @@ proc tablelist::doEditCell {win row col restore {cmd ""} {charPos -1}} {
 	#
 	# Adjust the edit window's height
 	#
-	if {[string compare [$w cget -wrap] "none"] != 0 &&
-	    $::tk_version >= 8.5} {
+	if {[string compare [$w cget -wrap] "none"] == 0 ||
+	    $::tk_version < 8.5} {
+	    scan [$w index end-1c] "%d" numLines
+	    $w configure -height $numLines
+	} else {
 	    bind $w <Configure> {
 		%W configure -height [%W count -displaylines 1.0 end]
 		[winfo parent %W] configure -height [winfo reqheight %W]
 	    }
-	} else {
-	    scan [$w index end-1c] "%d" numLines
-	    $w configure -height $numLines
 	}
 	if {[info exists ::wcb::version]} {
 	    wcb::cbappend $w after insert tablelist::adjustTextHeight
@@ -1538,6 +1449,9 @@ proc tablelist::doEditCell {win row col restore {cmd ""} {charPos -1}} {
     # Adjust the frame's dimensions and paddings
     #
     update idletasks
+    if {![winfo exists $win]} {			;# because of update idletasks
+	return ""
+    }
     if {!$isCheckbtn} {
 	$f configure -height [winfo reqheight $w]
 	place $w -relwidth 1.0 -relheight 1.0
@@ -1553,6 +1467,9 @@ proc tablelist::doEditCell {win row col restore {cmd ""} {charPos -1}} {
 	incr pixels $data($col-delta)
 	adjustEditWindow $win $pixels
 	update idletasks
+	if {![winfo exists $win]} {		;# because of update idletasks
+	    return ""
+	}
     }
 
     adjustElidedTextWhenIdle $win
@@ -2068,6 +1985,204 @@ proc tablelist::restoreEditConfigOpts w {
 #
 
 #------------------------------------------------------------------------------
+# tablelist::defineTablelistEdit
+#
+# Defines the bindings for the binding tag TablelistEdit.
+#------------------------------------------------------------------------------
+proc tablelist::defineTablelistEdit {} {
+    #
+    # Get the supported modifier keys in the set {Alt, Meta, Command} on
+    # the current windowing system ("x11", "win32", "classic", or "aqua")
+    #
+    variable winSys
+    switch $winSys {
+	x11	{ set modList {Alt Meta} }
+	win32	{ set modList {Alt} }
+	classic -
+	aqua	{ set modList {Command} }
+    }
+
+    #
+    # Define some bindings for the binding tag TablelistEdit
+    #
+    bind TablelistEdit <Button-1> {
+	set tablelist::priv(clicked) 1
+	set tablelist::priv(clickedInEditWin) 1
+	focus %W
+    }
+    bind TablelistEdit <ButtonRelease-1> {
+	if {%t != 0} {				;# i.e., no generated event
+	    foreach {tablelist::W tablelist::x tablelist::y} \
+		[tablelist::convEventFields %W %x %y] {}
+
+	    set tablelist::priv(x) ""
+	    set tablelist::priv(y) ""
+	    set tablelist::priv(clicked) 0
+	    after cancel $tablelist::priv(afterId)
+	    set tablelist::priv(afterId) ""
+	    set tablelist::priv(releasedInEditWin) 1
+	    if {%t - $tablelist::priv(clickTime) < 300} {
+		tablelist::moveOrActivate $tablelist::W \
+		    $tablelist::priv(row) $tablelist::priv(col)
+	    } else {
+		tablelist::moveOrActivate $tablelist::W \
+		    [$tablelist::W nearest       $tablelist::y] \
+		    [$tablelist::W nearestcolumn $tablelist::x]
+	    }
+	    tablelist::condEvalInvokeCmd $tablelist::W
+	}
+    }
+    bind TablelistEdit <Control-i>    { tablelist::insertChar %W "\t" }
+    bind TablelistEdit <Control-j>    { tablelist::insertChar %W "\n" }
+    bind TablelistEdit <Escape>       { tablelist::cancelEditing %W }
+    foreach key {Return KP_Enter} {
+	bind TablelistEdit <$key> {
+	    if {[string compare [winfo class %W] "Text"] == 0} {
+		tablelist::insertChar %W "\n"
+	    } else {
+		tablelist::finishEditing %W
+	    }
+	}
+	bind TablelistEdit <Control-$key> {
+	    tablelist::finishEditing %W
+	}
+    }
+    bind TablelistEdit <Tab>          { tablelist::goToNextPrevCell %W  1 }
+    bind TablelistEdit <Shift-Tab>    { tablelist::goToNextPrevCell %W -1 }
+    bind TablelistEdit <<PrevWindow>> { tablelist::goToNextPrevCell %W -1 }
+    foreach modifier $modList {
+	bind TablelistEdit <$modifier-Left> {
+	    tablelist::goLeftRight %W -1
+	}
+	bind TablelistEdit <$modifier-Right> {
+	    tablelist::goLeftRight %W 1
+	}
+	bind TablelistEdit <$modifier-Up> {
+	    tablelist::goUpDown %W -1
+	}
+	bind TablelistEdit <$modifier-Down> {
+	    tablelist::goUpDown %W 1
+	}
+	bind TablelistEdit <$modifier-Prior> {
+	    tablelist::goToPriorNextPage %W -1
+	}
+	bind TablelistEdit <$modifier-Next> {
+	    tablelist::goToPriorNextPage %W 1
+	}
+	bind TablelistEdit <$modifier-Home> {
+	    tablelist::goToNextPrevCell %W 1 0 -1
+	}
+	bind TablelistEdit <$modifier-End> {
+	    tablelist::goToNextPrevCell %W -1 0 0
+	}
+    }
+    foreach direction {Left Right} amount {-1 1} {
+	bind TablelistEdit <$direction> [format {
+	    if {![tablelist::isKeyReserved %%W %%K]} {
+		tablelist::goLeftRight %%W %d
+	    }
+	} $amount]
+    }
+    foreach direction {Up Down} amount {-1 1} {
+	bind TablelistEdit <$direction> [format {
+	    if {![tablelist::isKeyReserved %%W %%K]} {
+		tablelist::goUpDown %%W %d
+	    }
+	} $amount]
+    }
+    foreach page {Prior Next} amount {-1 1} {
+	bind TablelistEdit <$page> [format {
+	    if {![tablelist::isKeyReserved %%W %%K]} {
+		tablelist::goToPriorNextPage %%W %d
+	    }
+	} $amount]
+    }
+    bind TablelistEdit <Control-Home> {
+	if {![tablelist::isKeyReserved %W Control-Home]} {
+	    tablelist::goToNextPrevCell %W 1 0 -1
+	}
+    }
+    bind TablelistEdit <Control-End> {
+	if {![tablelist::isKeyReserved %W Control-End]} {
+	    tablelist::goToNextPrevCell %W -1 0 0
+	}
+    }
+    foreach pattern {Tab Shift-Tab ISO_Left_Tab hpBackTab} {
+	catch {
+	    foreach modifier {Control Meta} {
+		bind TablelistEdit <$modifier-$pattern> [format {
+		    mwutil::processTraversal %%W Tablelist <%s>
+		} $pattern]
+	    }
+	}
+    }
+    bind TablelistEdit <FocusIn> {
+	set tablelist::W [tablelist::getTablelistPath %W]
+	set tablelist::ns${tablelist::W}::data(editFocus) %W
+    }
+
+    #
+    # Define some emacs-like key bindings for the binding tag TablelistEdit
+    #
+    foreach pattern {Meta-b Meta-f} amount {-1 1} {
+	bind TablelistEdit <$pattern> [format {
+	    if {!$tk_strictMotif && ![tablelist::isKeyReserved %%W %s]} {
+		tablelist::goLeftRight %%W %d
+	    }
+	} $pattern $amount]
+    }
+    foreach pattern {Control-p Control-n} amount {-1 1} {
+	bind TablelistEdit <$pattern> [format {
+	    if {!$tk_strictMotif && ![tablelist::isKeyReserved %%W %s]} {
+		tablelist::goUpDown %%W %d
+	    }
+	} $pattern $amount]
+    }
+    bind TablelistEdit <Meta-less> {
+	if {!$tk_strictMotif &&
+	    ![tablelist::isKeyReserved %W Meta-less]} {
+	    tablelist::goToNextPrevCell %W 1 0 -1
+	}
+    }
+    bind TablelistEdit <Meta-greater> {
+	if {!$tk_strictMotif &&
+	    ![tablelist::isKeyReserved %W Meta-greater]} {
+	    tablelist::goToNextPrevCell %W -1 0 0
+	}
+    }
+
+    #
+    # Define some bindings for the binding tag TablelistEdit that
+    # propagate the mousewheel events to the tablelist's body
+    #
+    catch {
+	bind TablelistEdit <MouseWheel> {
+	    if {![tablelist::hasMouseWheelBindings %W] &&
+		![tablelist::isComboTopMapped %W]} {
+		tablelist::genMouseWheelEvent \
+		    [[tablelist::getTablelistPath %W] bodypath] %D
+	    }
+	}
+	bind TablelistEdit <Option-MouseWheel> {
+	    if {![tablelist::hasMouseWheelBindings %W] &&
+		![tablelist::isComboTopMapped %W]} {
+		tablelist::genOptionMouseWheelEvent \
+		    [[tablelist::getTablelistPath %W] bodypath] %D
+	    }
+	}
+    }
+    foreach detail {4 5} {
+	bind TablelistEdit <Button-$detail> [format {
+	    if {![tablelist::hasMouseWheelBindings %%W] &&
+		![tablelist::isComboTopMapped %%W]} {
+		event generate \
+		    [[tablelist::getTablelistPath %%W] bodypath] <Button-%s>
+	    }
+	} $detail]
+    }
+}
+
+#------------------------------------------------------------------------------
 # tablelist::insertChar
 #
 # Inserts the string str ("\t" or "\n") into the entry-like widget w at the
@@ -2329,6 +2444,18 @@ proc tablelist::genMouseWheelEvent {w delta} {
 }
 
 #------------------------------------------------------------------------------
+# tablelist::genOptionMouseWheelEvent
+#
+# Generates an <Option-MouseWheel> event with the given delta on the widget w.
+#------------------------------------------------------------------------------
+proc tablelist::genOptionMouseWheelEvent {w delta} {
+    set focus [focus -displayof $w]
+    focus $w
+    event generate $w <Option-MouseWheel> -delta $delta
+    focus $focus
+}
+
+#------------------------------------------------------------------------------
 # tablelist::isKeyReserved
 #
 # Checks whether the given keysym is used in the standard binding scripts
@@ -2342,6 +2469,24 @@ proc tablelist::isKeyReserved {w keySym} {
     set name [getEditWindow $win $data(editRow) $data(editCol)]
     variable editWin
     return [expr {[lsearch -exact $editWin($name-reservedKeys) $keySym] >= 0}]
+}
+
+#------------------------------------------------------------------------------
+# tablelist::hasMouseWheelBindings
+#
+# Checks whether the given widget, which is assumed to be the edit window or
+# one of its descendants, has mouse wheel bindings.
+#------------------------------------------------------------------------------
+proc tablelist::hasMouseWheelBindings w {
+    if {[string compare [winfo class $w] "TCombobox"] == 0} {
+	return 1
+    } else {
+	set bindTags [bindtags $w]
+	return [expr {([lsearch -exact $bindTags "MentryDateTime"] >= 0 ||
+		       [lsearch -exact $bindTags "MentryMeridian"] >= 0 ||
+		       [lsearch -exact $bindTags "MentryIPAddr"] >= 0) &&
+		      ($mentry::version >= 3.2)}]
+    }
 }
 
 #------------------------------------------------------------------------------

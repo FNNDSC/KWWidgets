@@ -91,8 +91,8 @@ proc tablelist::rowIndex {win idx endIsSize} {
 	for {set row 0} {$row < $data(itemCount)} {incr row} {
 	    set key [lindex [lindex $data(itemList) $row] end]
 	    set hasName [info exists data($key-name)]
-	    if {$hasName && [string compare $idx $data($key-name)] == 0 ||
-		!$hasName && [string compare $idx ""] == 0} {
+	    if {($hasName && [string compare $idx $data($key-name)] == 0) ||
+		(!$hasName && [string compare $idx ""] == 0)} {
 		return $row
 	    }
 	}
@@ -322,6 +322,9 @@ proc tablelist::findTabs {win line firstCol lastCol idx1Name idx2Name} {
     for {set col 0} {$col < $firstCol} {incr col} {
 	if {!$data($col-hide) || $canElide} {
 	    set idx [$w search $elide "\t" $idx $endIdx]+2c
+	    if {[string compare $idx "+2c"] == 0} {
+		return 0
+	    }
 	}
     }
     set idx1 [$w index $idx-1c]
@@ -329,9 +332,17 @@ proc tablelist::findTabs {win line firstCol lastCol idx1Name idx2Name} {
     for {} {$col < $lastCol} {incr col} {
 	if {!$data($col-hide) || $canElide} {
 	    set idx [$w search $elide "\t" $idx $endIdx]+2c
+	    if {[string compare $idx "+2c"] == 0} {
+		return 0
+	    }
 	}
     }
     set idx2 [$w search $elide "\t" $idx $endIdx]
+    if {[string compare $idx2 ""] == 0} {
+	return 0
+    }
+
+    return 1
 }
 
 #------------------------------------------------------------------------------
@@ -382,7 +393,6 @@ proc tablelist::deleteColData {win col} {
     if {[info exists data($col-redispId)]} {
 	after cancel $data($col-redispId)
     }
-    set w $data(body)
     foreach name [array names data $col-*] {
 	unset data($name)
     }
@@ -416,6 +426,30 @@ proc tablelist::deleteColData {win col} {
 }
 
 #------------------------------------------------------------------------------
+# tablelist::deleteColAttribs
+#
+# Cleans up the attributes associated with the col'th column of the tablelist
+# widget win.
+#------------------------------------------------------------------------------
+proc tablelist::deleteColAttribs {win col} {
+    upvar ::tablelist::ns${win}::attribs attribs
+
+    #
+    # Remove the elements with names of the form $col-*
+    #
+    foreach name [array names attribs $col-*] {
+	unset attribs($name)
+    }
+
+    #
+    # Remove the elements with names of the form k*,$col-*
+    #
+    foreach name [array names attribs k*,$col-*] {
+	unset attribs($name)
+    }
+}
+
+#------------------------------------------------------------------------------
 # tablelist::moveColData
 #
 # Moves the elements of oldArrName corresponding to oldCol to those of
@@ -442,7 +476,6 @@ proc tablelist::moveColData {oldArrName newArrName imgArrName oldCol newCol} {
     # Move the elements of oldArr with names of the form $oldCol-*
     # to those of newArr with names of the form $newCol-*
     #
-    set w $newArr(body)
     foreach newName [array names newArr $newCol-*] {
 	unset newArr($newName)
     }
@@ -494,6 +527,42 @@ proc tablelist::moveColData {oldArrName newArrName imgArrName oldCol newCol} {
 	    }
 	}
 	set newArr(-stretch) $stretchableCols
+    }
+}
+
+#------------------------------------------------------------------------------
+# tablelist::moveColAttribs
+#
+# Moves the elements of oldArrName corresponding to oldCol to those of
+# newArrName corresponding to newCol.
+#------------------------------------------------------------------------------
+proc tablelist::moveColAttribs {oldArrName newArrName oldCol newCol} {
+    upvar $oldArrName oldArr $newArrName newArr
+
+    #
+    # Move the elements of oldArr with names of the form $oldCol-*
+    # to those of newArr with names of the form $newCol-*
+    #
+    foreach newName [array names newArr $newCol-*] {
+	unset newArr($newName)
+    }
+    foreach oldName [array names oldArr $oldCol-*] {
+	regsub "$oldCol-" $oldName "$newCol-" newName
+	set newArr($newName) $oldArr($oldName)
+	unset oldArr($oldName)
+    }
+
+    #
+    # Move the elements of oldArr with names of the form k*,$oldCol-*
+    # to those of newArr with names of the form k*,$newCol-*
+    #
+    foreach newName [array names newArr k*,$newCol-*] {
+	unset newArr($newName)
+    }
+    foreach oldName [array names oldArr k*,$oldCol-*] {
+	regsub -- ",$oldCol-" $oldName ",$newCol-" newName
+	set newArr($newName) $oldArr($oldName)
+	unset oldArr($oldName)
     }
 }
 
@@ -1622,6 +1691,7 @@ proc tablelist::setupColumns {win columns createLabels} {
 	    }
 	}
 	set data(fmtCmdFlagList) {}
+	set data(hiddenColCount) 0
     }
 
     #
@@ -1664,6 +1734,7 @@ proc tablelist::setupColumns {win columns createLabels} {
 		}
 	    }
 	    lappend data(fmtCmdFlagList) [info exists data($col-formatcommand)]
+	    incr data(hiddenColCount) $data($col-hide)
 
 	    #
 	    # Create the label
@@ -1746,10 +1817,11 @@ proc tablelist::setupColumns {win columns createLabels} {
     set data(hasFmtCmds) [expr {[lsearch -exact $data(fmtCmdFlagList) 1] >= 0}]
 
     #
-    # Clean up the data associated with the deleted columns
+    # Clean up the data and attributes associated with the deleted columns
     #
     for {set col $data(colCount)} {$col < $oldColCount} {incr col} {
 	deleteColData $win $col
+	deleteColAttribs $win $col
     }
 
     #
@@ -1902,8 +1974,8 @@ proc tablelist::getSepX {} {
     if {$usingTile} {
 	set currentTheme [getCurrentTheme]
 	variable xpStyle
-	if {[string compare $currentTheme "aqua"] == 0 ||
-	    [string compare $currentTheme "xpnative"] == 0 && $xpStyle} {
+	if {([string compare $currentTheme "aqua"] == 0) ||
+	    ([string compare $currentTheme "xpnative"] == 0 && $xpStyle)} {
 	    set x 0
 	} elseif {[string compare $currentTheme "tileqt"] == 0 &&
 		  [string compare [string tolower [tileqt_currentThemeName]] \
@@ -2646,6 +2718,10 @@ proc tablelist::updateColors win {
     }
 
     set w $data(body)
+    if {$data(isDisabled)} {
+	$w tag add disabled 1.0 end
+    }
+
     set topLeftIdx "[$w index @0,0] linestart"
     set btmRightIdx "[$w index @0,[expr {[winfo height $w] - 1}]] lineend"
     foreach {dummy path textIdx} [$w dump -window $topLeftIdx $btmRightIdx] {
@@ -2843,6 +2919,9 @@ proc tablelist::updateVScrlbar win {
 
     if {[winfo viewable $win]} {
 	update idletasks
+	if {![winfo exists $win]} {		;# because of update idletasks
+	    return ""
+	}
     }
 
     if {$data(winCount) != 0 || $::tk_version > 8.4} {
@@ -2934,6 +3013,9 @@ proc tablelist::adjustElidedText win {
 		{incr col} {
 		set textIdx2 \
 		    [$w search -elide "\t" $textIdx1+1c $line.end]+1c
+		if {[string compare $textIdx2 "+1c"] == 0} {
+		    break
+		}
 		if {$data($col-hide)} {
 		    incr count
 		    $w tag add hiddenCol $textIdx1 $textIdx2
@@ -2962,6 +3044,9 @@ proc tablelist::adjustElidedText win {
 		    {incr col} {
 		    set textIdx2 \
 			[$w search -elide "\t" $textIdx1+1c $line.end]+1c
+		    if {[string compare $textIdx2 "+1c"] == 0} {
+			break
+		    }
 		    if {$data($col-hide)} {
 			incr count
 			$w tag add hiddenCol $textIdx1 $textIdx2
@@ -3028,8 +3113,9 @@ proc tablelist::adjustElidedText win {
 	    {$line <= $btmLine} {set row $line; incr line} {
 	    set key [lindex [lindex $data(itemList) $row] end]
 	    if {![info exists data($key-hide)]} {
-		findTabs $win $line $firstCol $lastCol tabIdx1 tabIdx2
-		$w tag add elidedCol $tabIdx1 $tabIdx2+1c
+		if {[findTabs $win $line $firstCol $lastCol tabIdx1 tabIdx2]} {
+		    $w tag add elidedCol $tabIdx1 $tabIdx2+1c
+		}
 	    }
 
 	    #
@@ -3044,8 +3130,10 @@ proc tablelist::adjustElidedText win {
 		{$line >= $topLine} {set line $row; incr row -1} {
 		set key [lindex [lindex $data(itemList) $row] end]
 		if {![info exists data($key-hide)]} {
-		    findTabs $win $line $firstCol $lastCol tabIdx1 tabIdx2
-		    $w tag add elidedCol $tabIdx1 $tabIdx2+1c
+		    if {[findTabs $win $line $firstCol $lastCol \
+			 tabIdx1 tabIdx2]} {
+			$w tag add elidedCol $tabIdx1 $tabIdx2+1c
+		    }
 		}
 
 		#

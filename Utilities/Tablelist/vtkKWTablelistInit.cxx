@@ -22,7 +22,7 @@
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTablelistInit );
-vtkCxxRevisionMacro(vtkKWTablelistInit, "$Revision: 1.6 $");
+vtkCxxRevisionMacro(vtkKWTablelistInit, "$Revision: 1.7 $");
 
 int vtkKWTablelistInit::Initialized = 0;
 
@@ -101,14 +101,14 @@ void vtkKWTablelistInit::Initialize(Tcl_Interp* interp)
                           file_tablelistUtil_tcl_decoded_length);
 
   vtkKWTkUtilities::EvaluateEncodedString(interp, 
-                          file_tablelistUtil2_tcl, 
-                          file_tablelistUtil2_tcl_length,
-                          file_tablelistUtil2_tcl_decoded_length);
-
-  vtkKWTkUtilities::EvaluateEncodedString(interp, 
                           file_tablelistWidget_tcl, 
                           file_tablelistWidget_tcl_length,
                           file_tablelistWidget_tcl_decoded_length);
+
+  vtkKWTkUtilities::EvaluateEncodedString(interp, 
+                          file_tablelistUtil2_tcl, 
+                          file_tablelistUtil2_tcl_length,
+                          file_tablelistUtil2_tcl_decoded_length);
 }
 
 //----------------------------------------------------------------------------

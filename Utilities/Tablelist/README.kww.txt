@@ -21,7 +21,7 @@ The changes are:
   a virtual event <<TablelistUneditableCellSelected>>. 
   In tablelistBind.tcl, locate tablelist::condEditContainingCell and find
   the lines above; Add the part after else.
-      #
+        #
     	# Finish a possibly active cell editing
     	#
 	    if {$data(editRow) >= 0} {
@@ -42,3 +42,10 @@ The changes are:
   by:    
     namespace eval ::mwutil {
   Otherwise the <Tab> key won't work (namespace problem?)
+
+- in tablelist.tcl
+  Comment:
+  # ::tablelist::createBindings
+  This line has been moved to tablelistUtil2.tcl so that it is evaluated last.
+  We had a chicken-egg situation here that was relying on Tcl's auto-load
+  feature, which is not available to us.

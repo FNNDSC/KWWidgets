@@ -3,6 +3,7 @@
 #
 # Structure of the module:
 #   - Namespace initialization
+#   - Private procedure creating the default bindings
 #   - Public procedure creating a new tablelist widget
 #   - Private procedures implementing the tablelist widget command
 #   - Private callback procedures
@@ -16,6 +17,56 @@
 #
 
 namespace eval tablelist {
+    #
+    # Get the current windowing system ("x11", "win32", "classic", or "aqua")
+    #
+    variable winSys
+    if {[catch {tk windowingsystem} winSys] != 0} {
+	switch $::tcl_platform(platform) {
+	    unix	{ set winSys x11 }
+	    windows	{ set winSys win32 }
+	    macintosh	{ set winSys classic }
+	}
+    }
+
+    #
+    # Create aliases for a few tile commands if not yet present
+    #
+    proc createTileAliases {} {
+	if {[string compare [interp alias {} ::tablelist::style] ""] != 0} {
+	    return ""
+	}
+
+	if {[string compare [info commands ::ttk::style] ""] == 0} {
+	    interp alias {} ::tablelist::style      {} ::style
+	    if {[string compare $::tile::version "0.7"] >= 0} {
+		interp alias {} ::tablelist::styleConfig {} ::style configure
+	    } else {
+		interp alias {} ::tablelist::styleConfig {} ::style default
+	    }
+	    interp alias {} ::tablelist::getThemes  {} ::tile::availableThemes
+	    interp alias {} ::tablelist::setTheme   {} ::tile::setTheme
+
+	    interp alias {} ::tablelist::tileqt_currentThemeName \
+			 {} ::tile::theme::tileqt::currentThemeName
+	    interp alias {} ::tablelist::tileqt_currentThemeColour \
+			 {} ::tile::theme::tileqt::currentThemeColour
+	} else {
+	    interp alias {} ::tablelist::style	      {} ::ttk::style
+	    interp alias {} ::tablelist::styleConfig  {} ::ttk::style configure
+	    interp alias {} ::tablelist::getThemes    {} ::ttk::themes
+	    interp alias {} ::tablelist::setTheme     {} ::ttk::setTheme
+
+	    interp alias {} ::tablelist::tileqt_currentThemeName \
+			 {} ::ttk::theme::tileqt::currentThemeName
+	    interp alias {} ::tablelist::tileqt_currentThemeColour \
+			 {} ::ttk::theme::tileqt::currentThemeColour
+	}
+    }
+    if {$usingTile} {
+	createTileAliases 
+    }
+
     #
     # The array configSpecs is used to handle configuration options.  The
     # names of its elements are the configuration options for the Tablelist
@@ -105,18 +156,6 @@ namespace eval tablelist {
 	-width			 {width			  Width		      w}
 	-xscrollcommand		 {xScrollCommand	  ScrollCommand	      w}
 	-yscrollcommand		 {yScrollCommand	  ScrollCommand	      w}
-    }
-
-    #
-    # Get the current windowing system ("x11", "win32", "classic", or "aqua")
-    #
-    variable winSys
-    if {[catch {tk windowingsystem} winSys] != 0} {
-	switch $::tcl_platform(platform) {
-	    unix	{ set winSys x11 }
-	    windows	{ set winSys win32 }
-	    macintosh	{ set winSys classic }
-	}
     }
 
     #
@@ -285,19 +324,21 @@ namespace eval tablelist {
     #
     variable cmdOpts [list \
 	activate activatecell attrib bbox bodypath bodytag cancelediting \
-	cellcget cellconfigure cellindex cellselection cget columncget \
-	columnconfigure columncount columnindex columnwidth config \
-	configcelllist configcells configcolumnlist configcolumns \
-	configrowlist configrows configure containing containingcell \
-	containingcolumn curcellselection curselection delete deletecolumns \
-	editcell editwinpath entrypath fillcolumn finishediting formatinfo \
-	get getcells getcolumns getkeys imagelabelpath index insert \
-	insertcolumnlist insertcolumns insertlist iselemsnipped \
+	cellattrib cellcget cellconfigure cellindex cellselection cget \
+	columnattrib columncget columnconfigure columncount columnindex \
+	columnwidth config configcelllist configcells configcolumnlist \
+	configcolumns configrowlist configrows configure containing \
+	containingcell containingcolumn curcellselection curselection delete \
+	deletecolumns editcell editwintag editwinpath entrypath fillcolumn \
+	finishediting formatinfo get getcells getcolumns getkeys hasattrib \
+	hascellattrib hascolumnattrib hasrowattrib imagelabelpath index \
+	insert insertcolumnlist insertcolumns insertlist iselemsnipped \
 	istitlesnipped itemlistvar labelpath labels move movecolumn nearest \
-	nearestcell nearestcolumn rejectinput resetsortinfo rowcget \
+	nearestcell nearestcolumn rejectinput resetsortinfo rowattrib rowcget \
 	rowconfigure scan see seecell seecolumn selection separatorpath \
 	separators size sort sortbycolumn sortbycolumnlist sortcolumn \
 	sortcolumnlist sortorder sortorderlist togglecolumnhide togglerowhide \
+	unsetattrib unsetcellattrib unsetcolumnattrib unsetrowattrib \
 	windowpath xview yview]
     if {!$canElide} {
 	set idx [lsearch -exact $cmdOpts togglerowhide]
@@ -357,7 +398,21 @@ namespace eval tablelist {
 	    return $str
 	}
     }
+}
 
+#
+# Private procedure creating the default bindings
+# ===============================================
+#
+
+#------------------------------------------------------------------------------
+# tablelist::createBindings
+#
+# Creates the default bindings for the binding tags Tablelist, TablelistWindow,
+# TablelistKeyNav, TablelistBody, TablelistLabel, TablelistSubLabel,
+# TablelistArrow, and TablelistEdit.
+#------------------------------------------------------------------------------
+proc tablelist::createBindings {} {
     #
     # Define some Tablelist class bindings
     #
@@ -378,6 +433,7 @@ namespace eval tablelist {
     bind Tablelist <FocusOut>		{ tablelist::removeActiveTag %W }
     bind Tablelist <<TablelistSelect>>	{ event generate %W <<ListboxSelect>> }
     bind Tablelist <Destroy>		{ tablelist::cleanup %W }
+    variable usingTile
     if {$usingTile} {
 	bind Tablelist <<ThemeChanged>>	{
 	    after idle [list tablelist::updateConfigSpecs %W]
@@ -400,6 +456,7 @@ namespace eval tablelist {
     #
     event add <<Button3>> <Button-3>
     event add <<ShiftButton3>> <Shift-Button-3>
+    variable winSys
     if {[string compare $winSys "classic"] == 0 ||
 	[string compare $winSys "aqua"] == 0} {
 	event add <<Button3>> <Control-Button-1>
@@ -428,26 +485,9 @@ namespace eval tablelist {
     defineTablelistArrow 
 
     #
-    # Pre-register some widgets for interactive cell editing
+    # Define the binding tag TablelistEdit if the file tablelistEdit.tcl exists
     #
-    variable editWin
-    array set editWin {
-	entry-registered			1
-	text-registered				1
-	checkbutton-registered			1
-    }
-    if {$::tk_version >= 8.4} {
-	array set editWin {
-	    spinbox-registered			1
-	}
-	if {[llength [package versions tile]] > 0} {
-	    array set editWin {
-		ttk::entry-registered		1
-		ttk::combobox-registered	1
-		ttk::checkbutton-registered	1
-	    }
-	}
-    }
+    catch {defineTablelistEdit}
 }
 
 #
@@ -545,7 +585,7 @@ proc tablelist::tablelist args {
 	# The following array is used to hold arbitrary
 	# attributes and their values for this widget
 	#
-	variable attribVals
+	variable attribs
     }
 
     #
@@ -556,6 +596,7 @@ proc tablelist::tablelist args {
 	set data($opt) [lindex $configSpecs($opt) 3]
     }
     if {$usingTile} {
+	setThemeDefaults
 	variable themeDefaults
 	set data(currentTheme) [getCurrentTheme]
 	set data(themeDefaults) [array get themeDefaults]
@@ -571,6 +612,7 @@ proc tablelist::tablelist args {
     set data(colFontList)	[list $data(-font)]
     set data(listVarTraceCmd)	[list tablelist::listVarTrace $win]
     set data(bodyTag)		body$win
+    set data(editwinTag)	editwin$win
     set data(body)		$win.body
     set data(bodyFr)		$data(body).f
     set data(bodyFrEd)		$data(bodyFr).e
@@ -804,7 +846,7 @@ proc tablelist::activatecellSubCmd {win argList} {
 # tablelist::attribSubCmd
 #------------------------------------------------------------------------------
 proc tablelist::attribSubCmd {win argList} {
-    return [mwutil::attribSubCmd $win $argList]
+    return [mwutil::attribSubCmd $win "widget" $argList]
 }
 
 #------------------------------------------------------------------------------
@@ -870,6 +912,22 @@ proc tablelist::canceleditingSubCmd {win argList} {
     synchronize $win
     displayItems $win
     return [doCancelEditing $win]
+}
+
+#------------------------------------------------------------------------------
+# tablelist::cellattribSubCmd
+#------------------------------------------------------------------------------
+proc tablelist::cellattribSubCmd {win argList} {
+    if {[llength $argList] < 1} {
+	mwutil::wrongNumArgs "$win cellattrib cellIndex ?name? ?value\
+			      name value ...?"
+    }
+
+    synchronize $win
+    foreach {row col} [cellIndex $win [lindex $argList 0] 1] {}
+    upvar ::tablelist::ns${win}::data data
+    set key [lindex [lindex $data(itemList) $row] end]
+    return [mwutil::attribSubCmd $win $key,$col [lrange $argList 1 end]]
 }
 
 #------------------------------------------------------------------------------
@@ -978,6 +1036,20 @@ proc tablelist::cgetSubCmd {win argList} {
     set opt [mwutil::fullConfigOpt [lindex $argList 0] configSpecs]
     upvar ::tablelist::ns${win}::data data
     return $data($opt)
+}
+
+#------------------------------------------------------------------------------
+# tablelist::columnattribSubCmd
+#------------------------------------------------------------------------------
+proc tablelist::columnattribSubCmd {win argList} {
+    if {[llength $argList] < 1} {
+	mwutil::wrongNumArgs "$win columnattrib columnIndex ?name? ?value\
+			      name value ...?"
+    }
+
+    synchronize $win
+    set col [colIndex $win [lindex $argList 0] 1]
+    return [mwutil::attribSubCmd $win $col [lrange $argList 1 end]]
 }
 
 #------------------------------------------------------------------------------
@@ -1402,6 +1474,18 @@ proc tablelist::editcellSubCmd {win argList} {
 }
 
 #------------------------------------------------------------------------------
+# tablelist::editwintagSubCmd
+#------------------------------------------------------------------------------
+proc tablelist::editwintagSubCmd {win argList} {
+    if {[llength $argList] != 0} {
+	mwutil::wrongNumArgs "$win editwintag"
+    }
+
+    upvar ::tablelist::ns${win}::data data
+    return $data(editwinTag)
+}
+
+#------------------------------------------------------------------------------
 # tablelist::editwinpathSubCmd
 #------------------------------------------------------------------------------
 proc tablelist::editwinpathSubCmd {win argList} {
@@ -1710,6 +1794,64 @@ proc tablelist::getkeysSubCmd {win argList} {
 }
 
 #------------------------------------------------------------------------------
+# tablelist::hasattribSubCmd
+#------------------------------------------------------------------------------
+proc tablelist::hasattribSubCmd {win argList} {
+    if {[llength $argList] != 1} {
+	mwutil::wrongNumArgs "$win hasattrib name"
+    }
+
+    return [mwutil::hasattribSubCmd $win "widget" [lindex $argList 0]]
+}
+
+#------------------------------------------------------------------------------
+# tablelist::hascellattribSubCmd
+#------------------------------------------------------------------------------
+proc tablelist::hascellattribSubCmd {win argList} {
+    if {[llength $argList] != 2} {
+	mwutil::wrongNumArgs "$win hascellattrib cellIndex name"
+    }
+
+    synchronize $win
+    foreach {row col} [cellIndex $win [lindex $argList 0] 1] {}
+    upvar ::tablelist::ns${win}::data data
+    set key [lindex [lindex $data(itemList) $row] end]
+    return [mwutil::hasattribSubCmd $win $key,$col [lindex $argList 1]]
+}
+
+#------------------------------------------------------------------------------
+# tablelist::hascolumnattribSubCmd
+#------------------------------------------------------------------------------
+proc tablelist::hascolumnattribSubCmd {win argList} {
+    if {[llength $argList] != 2} {
+	mwutil::wrongNumArgs "$win hascolumnattrib columnIndex name"
+    }
+
+    synchronize $win
+    set col [colIndex $win [lindex $argList 0] 1]
+    return [mwutil::hasattribSubCmd $win $col [lindex $argList 1]]
+}
+
+#------------------------------------------------------------------------------
+# tablelist::hasrowattribSubCmd
+#------------------------------------------------------------------------------
+proc tablelist::hasrowattribSubCmd {win argList} {
+    if {[llength $argList] != 2} {
+	mwutil::wrongNumArgs "$win hasrowattrib index name"
+    }
+
+    synchronize $win
+    set rowSpec [lindex $argList 0]
+    set row [rowIndex $win $rowSpec 0]
+    upvar ::tablelist::ns${win}::data data
+    if {$row < 0 || $row > $data(lastRow)} {
+	return -code error "row index \"$rowSpec\" out of range"
+    }
+    set key [lindex [lindex $data(itemList) $row] end]
+    return [mwutil::hasattribSubCmd $win $key [lindex $argList 1]]
+}
+
+#------------------------------------------------------------------------------
 # tablelist::imagelabelpathSubCmd
 #------------------------------------------------------------------------------
 proc tablelist::imagelabelpathSubCmd {win argList} {
@@ -1822,7 +1964,7 @@ proc tablelist::iselemsnippedSubCmd {win argList} {
     displayItems $win
     foreach {row col} [cellIndex $win [lindex $argList 0] 1] {}
     set fullTextName [lindex $argList 1]
-    upvar 3 $fullTextName fullText
+    upvar 2 $fullTextName fullText
 
     upvar ::tablelist::ns${win}::data data
     set item [lindex $data(itemList) $row]
@@ -1869,7 +2011,7 @@ proc tablelist::istitlesnippedSubCmd {win argList} {
 
     set col [colIndex $win [lindex $argList 0] 1]
     set fullTextName [lindex $argList 1]
-    upvar 3 $fullTextName fullText
+    upvar 2 $fullTextName fullText
 
     upvar ::tablelist::ns${win}::data data
     set fullText [lindex $data(-columns) [expr {3*$col + 1}]]
@@ -2039,6 +2181,26 @@ proc tablelist::resetsortinfoSubCmd {win argList} {
 	adjustColumns $win $whichWidths 1
     }
     return ""
+}
+
+#------------------------------------------------------------------------------
+# tablelist::rowattribSubCmd
+#------------------------------------------------------------------------------
+proc tablelist::rowattribSubCmd {win argList} {
+    if {[llength $argList] < 1} {
+	mwutil::wrongNumArgs "$win rowattrib index ?name? ?value\
+			      name value ...?"
+    }
+
+    synchronize $win
+    set rowSpec [lindex $argList 0]
+    set row [rowIndex $win $rowSpec 0]
+    upvar ::tablelist::ns${win}::data data
+    if {$row < 0 || $row > $data(lastRow)} {
+	return -code error "row index \"$rowSpec\" out of range"
+    }
+    set key [lindex [lindex $data(itemList) $row] end]
+    return [mwutil::attribSubCmd $win $key [lrange $argList 1 end]]
 }
 
 #------------------------------------------------------------------------------
@@ -2513,6 +2675,64 @@ proc tablelist::togglerowhideSubCmd {win argList} {
 	    doRowConfig $row $win -hide [expr {![doRowCget $row $win -hide]}]
 	}
     }
+}
+
+#------------------------------------------------------------------------------
+# tablelist::unsetattribSubCmd
+#------------------------------------------------------------------------------
+proc tablelist::unsetattribSubCmd {win argList} {
+    if {[llength $argList] != 1} {
+	mwutil::wrongNumArgs "$win unsetattrib name"
+    }
+
+    return [mwutil::unsetattribSubCmd $win "widget" [lindex $argList 0]]
+}
+
+#------------------------------------------------------------------------------
+# tablelist::unsetcellattribSubCmd
+#------------------------------------------------------------------------------
+proc tablelist::unsetcellattribSubCmd {win argList} {
+    if {[llength $argList] != 2} {
+	mwutil::wrongNumArgs "$win unsetcellattrib cellIndex name"
+    }
+
+    synchronize $win
+    foreach {row col} [cellIndex $win [lindex $argList 0] 1] {}
+    upvar ::tablelist::ns${win}::data data
+    set key [lindex [lindex $data(itemList) $row] end]
+    return [mwutil::unsetattribSubCmd $win $key,$col [lindex $argList 1]]
+}
+
+#------------------------------------------------------------------------------
+# tablelist::unsetcolumnattribSubCmd
+#------------------------------------------------------------------------------
+proc tablelist::unsetcolumnattribSubCmd {win argList} {
+    if {[llength $argList] != 2} {
+	mwutil::wrongNumArgs "$win unsetcolumnattrib columnIndex name"
+    }
+
+    synchronize $win
+    set col [colIndex $win [lindex $argList 0] 1]
+    return [mwutil::unsetattribSubCmd $win $col [lindex $argList 1]]
+}
+
+#------------------------------------------------------------------------------
+# tablelist::unsetrowattribSubCmd
+#------------------------------------------------------------------------------
+proc tablelist::unsetrowattribSubCmd {win argList} {
+    if {[llength $argList] != 2} {
+	mwutil::wrongNumArgs "$win unsetrowattrib index name"
+    }
+
+    synchronize $win
+    set rowSpec [lindex $argList 0]
+    set row [rowIndex $win $rowSpec 0]
+    upvar ::tablelist::ns${win}::data data
+    if {$row < 0 || $row > $data(lastRow)} {
+	return -code error "row index \"$rowSpec\" out of range"
+    }
+    set key [lindex [lindex $data(itemList) $row] end]
+    return [mwutil::unsetattribSubCmd $win $key [lindex $argList 1]]
 }
 
 #------------------------------------------------------------------------------
@@ -3222,7 +3442,8 @@ proc tablelist::deleteRows {win first last updateListVar} {
     if {$first < 0} {
 	set first 0
     }
-    upvar ::tablelist::ns${win}::data data
+    upvar ::tablelist::ns${win}::data data \
+	  ::tablelist::ns${win}::attribs attribs
     if {$last > $data(lastRow)} {
 	set last $data(lastRow)
     }
@@ -3315,6 +3536,10 @@ proc tablelist::deleteRows {win first last updateListVar} {
 	    }
 	}
 
+	foreach name [array names attribs $key-*] {
+	    unset attribs($name)
+	}
+
 	for {set col 0} {$col < $data(colCount)} {incr col} {
 	    foreach opt {-background -foreground -font} {
 		if {[info exists data($key,$col$opt)]} {
@@ -3338,6 +3563,10 @@ proc tablelist::deleteRows {win first last updateListVar} {
 		unset data($key,$col-reqHeight)
 		incr data(winCount) -1
 	    }
+	}
+
+	foreach name [array names attribs $key,*-*] {
+	    unset attribs($name)
 	}
     }
 
@@ -3417,26 +3646,29 @@ proc tablelist::deleteRows {win first last updateListVar} {
 # Processes the tablelist deletecolumns subcommand.
 #------------------------------------------------------------------------------
 proc tablelist::deleteCols {win first last selCellsName} {
-    upvar ::tablelist::ns${win}::data data $selCellsName selCells
+    upvar ::tablelist::ns${win}::data data \
+	  ::tablelist::ns${win}::attribs attribs $selCellsName selCells
 
     #
-    # Delete the data corresponding to the given range
+    # Delete the data and attributes corresponding to the given range
     #
     for {set col $first} {$col <= $last} {incr col} {
 	if {$data($col-hide)} {
 	    incr data(hiddenColCount) -1
 	}
 	deleteColData $win $col
+	deleteColAttribs $win $col
 	set selCells [deleteColFromCellList $selCells $col]
     }
 
     #
-    # Shift the elements of data corresponding to the column
-    # indices > last to the left by last - first + 1 positions
+    # Shift the elements of data and attribs corresponding to the
+    # column indices > last to the left by last - first + 1 positions
     #
     for {set oldCol [expr {$last + 1}]; set newCol $first} \
 	{$oldCol < $data(colCount)} {incr oldCol; incr newCol} {
 	moveColData data data imgs $oldCol $newCol
+	moveColAttribs attribs attribs $oldCol $newCol
 	set selCells [replaceColInCellList $selCells $oldCol $newCol]
     }
 
@@ -3862,7 +4094,8 @@ proc tablelist::displayItems win {
 #------------------------------------------------------------------------------
 proc tablelist::insertCols {win colIdx argList} {
     set argCount [llength $argList]
-    upvar ::tablelist::ns${win}::data data
+    upvar ::tablelist::ns${win}::data data \
+	  ::tablelist::ns${win}::attribs attribs
     if {$argCount == 0 || $data(isDisabled)} {
 	return ""
     }
@@ -3902,13 +4135,14 @@ proc tablelist::insertCols {win colIdx argList} {
     }
 
     #
-    # Shift the elements of data corresponding to the column
-    # indices >= colIdx to the right by count positions
+    # Shift the elements of data and attribs corresponding to the
+    # column indices >= colIdx to the right by count positions
     #
     set selCells [curCellSelection $win]
     for {set oldCol $data(lastCol); set newCol [expr {$oldCol + $count}]} \
 	{$oldCol >= $colIdx} {incr oldCol -1; incr newCol -1} {
 	moveColData data data imgs $oldCol $newCol
+	moveColAttribs attribs attribs $oldCol $newCol
 	set selCells [replaceColInCellList $selCells $oldCol $newCol]
     }
 
@@ -4101,6 +4335,9 @@ proc tablelist::seeCell {win row col} {
     # Force any geometry manager calculations to be completed first
     #
     update idletasks
+    if {![winfo exists $win]} {			;# because of update idletasks
+	return ""
+    }
 
     #
     # If the tablelist is empty then insert a temporary row
