@@ -36,9 +36,7 @@ public:
 
   //BTX
   // Description:
-  // There are several predefined icons in the Resources/KWIcons.h. Since we
-  // want to save space, we only include that file to vtkKWIcons.cxx.
-  // These constants specify different icons.
+  // Predefined icons.
   enum { 
     IconNoIcon                    = 0,
     IconAngleTool                 = 14,
@@ -160,15 +158,15 @@ public:
   //ETX
 
   // Description:
-  // Select an icon based on the icon name.
-  virtual void SetImage(int image);
+  // Set the icon image based on a predefined icon.
+  virtual void SetImage(int predefined_icon_index);
 
   // Description:
-  // Set image data from another vtkKWIcon.
+  // Set the icon image based on an existing vtkKWIcon.
   virtual void SetImage(vtkKWIcon*);
 
   // Description:
-  // Set image data from pixel data, eventually zlib and base64.
+  // Set the icon image from pixel data, eventually zlib and base64.
   // If 'buffer_length' is 0, compute it automatically by multiplying
   // 'pixel_size', 'width' and 'height' together.
   // If ImageOptionFlipVertical is set in 'option', flip the image vertically
@@ -185,7 +183,9 @@ public:
                 int options = 0);
 
   // Description:
-  // Set
+  // Set the icon image to a color transfer function gradient, or a 2-colors
+  // gradients, or a single color. Borders can be added automatically.
+  // Return 1 on success, 0 otherwise
   //BTX
   enum 
   { 
@@ -194,14 +194,14 @@ public:
     ImageOptionDrawVertically = 4
   };
   //ETX
-  virtual void SetImageToGradient(vtkColorTransferFunction *ctf, 
+  virtual int SetImageToGradient(vtkColorTransferFunction *ctf, 
                                   int width, int height,
                                   int options = 0);
-  virtual void SetImageToRGBGradient(double r1, double g1, double b1, 
+  virtual int SetImageToRGBGradient(double r1, double g1, double b1, 
                                      double r2, double g2, double b2, 
                                      int width, int height,
                                      int options = 0);
-  virtual void SetImageToSolidRGBColor(double r, double g, double b, 
+  virtual int SetImageToSolidRGBColor(double r, double g, double b, 
                                        int width, int height,
                                        int options = 0);
 
@@ -249,6 +249,29 @@ public:
   // Return 1 on success, 0 otherwise
   virtual int TrimTop();
   virtual int TrimRight();
+
+  // Description:
+  // Resize the canvas. The new canvas can be made larger, or smaller
+  // (thus cropping the current image). The position indicates where the
+  // original image should be placed in the new canvas.
+  // Supports pixel size 3 or 4, will create an output with pixel size = 4.
+  // Return 1 on success, 0 otherwise
+  //BTX
+  enum 
+  { 
+    PositionInCanvasCenter    = 0,
+    PositionInCanvasNorthWest = 9,
+    PositionInCanvasNorth     = 1,
+    PositionInCanvasNorthEast = 3,
+    PositionInCanvasEast      = 2,
+    PositionInCanvasSouthEast = 6,
+    PositionInCanvasSouth     = 4,
+    PositionInCanvasSouthWest = 12,
+    PositionInCanvasWest      = 8
+  };
+  //ETX
+  virtual int ResizeCanvas(
+    int resized_width, int resized_height, int position);
 
 protected:
   vtkKWIcon();

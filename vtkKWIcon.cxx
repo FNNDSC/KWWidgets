@@ -21,7 +21,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.48 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.49 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -1142,9 +1142,9 @@ void vtkKWIcon::Flatten(double r, double g, double b)
     data_ptr++;
     }
 
-  this->SetImage(new_data, this->Width, this->Height, 3, new_data_length);
-
-  delete [] new_data;
+  this->PixelSize = 3;
+  delete [] this->Data;
+  this->Data = new_data;
 }
 
 //----------------------------------------------------------------------------
@@ -1301,13 +1301,13 @@ int vtkKWIcon::TrimRight()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWIcon::SetImageToGradient(vtkColorTransferFunction *ctf, 
+int vtkKWIcon::SetImageToGradient(vtkColorTransferFunction *ctf, 
                                    int width, int height,
                                    int options)
 {
   if (!ctf || width < 4 || height < 4)
     {
-    return;
+    return 0;
     }
 
   int draw_w_border = 
@@ -1449,36 +1449,200 @@ void vtkKWIcon::SetImageToGradient(vtkColorTransferFunction *ctf,
     memcpy(ptr, first_row, bytes_in_row);
     }
 
-  this->SetData(buffer, width, height, 3);
+  this->Width  = width;
+  this->Height = height;
+  this->PixelSize = 3;
+  delete [] this->Data;
+  this->Data = buffer;
 
-  delete [] buffer;
+  return 1;
 }
 
 //----------------------------------------------------------------------------
-void vtkKWIcon::SetImageToRGBGradient(double r1, double g1, double b1, 
-                                      double r2, double g2, double b2, 
-                                      int width, int height,
-                                      int options)
+int vtkKWIcon::SetImageToRGBGradient(double r1, double g1, double b1, 
+                                     double r2, double g2, double b2, 
+                                     int width, int height,
+                                     int options)
 {
   vtkColorTransferFunction *ctf = vtkColorTransferFunction::New();
   ctf->SetColorSpaceToRGB();
   ctf->AddRGBPoint(0.0, r1, g1, b1);
   ctf->AddRGBPoint(1.0, r2, g2, b2);
-  this->SetImageToGradient(ctf, width, height, options);
+  int res = this->SetImageToGradient(ctf, width, height, options);
   ctf->Delete();
+  return res;
 }
 
 //----------------------------------------------------------------------------
-void vtkKWIcon::SetImageToSolidRGBColor(double r, double g, double b, 
-                                        int width, int height,
-                                        int options)
+int vtkKWIcon::SetImageToSolidRGBColor(double r, double g, double b, 
+                                       int width, int height,
+                                       int options)
 {
   vtkColorTransferFunction *ctf = vtkColorTransferFunction::New();
   ctf->SetColorSpaceToRGB();
   ctf->AddRGBPoint(0.0, r, g, b);
   ctf->AddRGBPoint(1.0, r, g, b);
-  this->SetImageToGradient(ctf, width, height, options);
+  int res = this->SetImageToGradient(ctf, width, height, options);
   ctf->Delete();
+  return res;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWIcon::ResizeCanvas(
+  int resized_width, int resized_height, int position)
+{
+  if (resized_width < 1 || resized_height < 1 || this->PixelSize < 3)
+    {
+    return 0;
+    }
+
+  // Allocate a buffer for resized image
+
+  int resized_pixel_size = 4;
+  size_t resized_bytes_in_row = 
+    (size_t)resized_width * (size_t)resized_pixel_size;
+  size_t resized_buffer_length = (size_t)resized_height * resized_bytes_in_row;
+  unsigned char *resized_buffer = new unsigned char [resized_buffer_length];
+  memset((void*)(resized_buffer), 0, resized_buffer_length);
+  
+  // Compute the position of the current image in the resized image
+
+  int resized_x, resized_y;
+
+  int intersection_x = 0;
+  int intersection_y = 0;
+  int intersection_width = this->Width;
+  int intersection_height = this->Height;
+
+  if (position & vtkKWIcon::PositionInCanvasEast)
+    {
+    if (resized_width < this->Width)
+      {
+      intersection_x = this->Width - resized_width;
+      intersection_width = resized_width;
+      resized_x = 0;
+      }
+    else
+      {
+      resized_x = resized_width - this->Width;
+      }
+    }
+  else
+    {
+    if (position & vtkKWIcon::PositionInCanvasWest)
+      {
+      resized_x = 0;
+      }
+    else
+      {
+      if (resized_width < this->Width)
+        {
+        int half = (this->Width - resized_width) >> 1;
+        intersection_x = half;
+        intersection_width -= half;
+        resized_x = 0;
+        }
+      else
+        {
+        resized_x = (resized_width - this->Width) >> 1;
+        }
+      }
+    if (resized_x + intersection_width > resized_width)
+      {
+      intersection_width = resized_width - resized_x;
+      }
+    }
+
+  if (position & vtkKWIcon::PositionInCanvasSouth)
+    {
+    if (resized_height < this->Height)
+      {
+      intersection_y = this->Height - resized_height;
+      intersection_height = resized_height;
+      resized_y = 0;
+      }
+    else
+      {
+      resized_y = resized_height - this->Height;
+      }
+    }
+  else
+    {
+    if (position & vtkKWIcon::PositionInCanvasNorth)
+      {
+      resized_y = 0;
+      }
+    else
+      {
+      if (resized_height < this->Height)
+        {
+        int half = (this->Height - resized_height) >> 1;
+        intersection_y = half;
+        intersection_height -= half;
+        resized_y = 0;
+        }
+      else
+        {
+        resized_y = (resized_height - this->Height) >> 1;
+        }
+      }
+    if (resized_y + intersection_height > resized_height)
+      {
+      intersection_height = resized_height - resized_y;
+      }
+    }
+
+  // Copy icon inside buffer
+
+  unsigned char *resized_ptr = resized_buffer + 
+    resized_y * resized_bytes_in_row + resized_x * resized_pixel_size;
+
+  size_t intersection_bytes_in_row = 
+    (size_t)intersection_width * (size_t)this->PixelSize;
+
+  size_t bytes_in_row = (size_t)this->Width * (size_t)this->PixelSize;
+  size_t next_row = bytes_in_row - intersection_bytes_in_row;
+
+  size_t resized_next_row = resized_bytes_in_row - 
+    (size_t)intersection_width * resized_pixel_size;
+
+  unsigned char *ptr = this->Data + intersection_y * bytes_in_row + 
+    intersection_x * this->PixelSize;
+  while (intersection_height)
+    {
+    unsigned char *ptr_end = ptr + intersection_bytes_in_row;
+    if (this->PixelSize == resized_pixel_size)
+      {
+      while (ptr < ptr_end)
+        {
+        *resized_ptr++ = *ptr++; // RGBA
+        }
+      ptr += next_row;
+      resized_ptr += resized_next_row;
+      --intersection_height;
+      }
+    else
+      {
+      while (ptr < ptr_end)
+        {
+        *resized_ptr++ = *ptr++; // R
+        *resized_ptr++ = *ptr++; // G
+        *resized_ptr++ = *ptr++; // B
+        *resized_ptr++ = 0xFF;   // A
+        }
+      ptr += next_row;
+      resized_ptr += resized_next_row;
+      --intersection_height;
+      }
+    }
+
+  this->Width  = resized_width;
+  this->Height = resized_height;
+  this->PixelSize = resized_pixel_size;
+  delete [] this->Data;
+  this->Data = resized_buffer;
+
+  return 1;
 }
 
 //----------------------------------------------------------------------------
