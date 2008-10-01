@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWProgressGauge );
-vtkCxxRevisionMacro(vtkKWProgressGauge, "$Revision: 1.42 $");
+vtkCxxRevisionMacro(vtkKWProgressGauge, "$Revision: 1.43 $");
 
 //----------------------------------------------------------------------------
 class vtkKWProgressGaugeInternals
@@ -321,10 +321,10 @@ void vtkKWProgressGauge::Redraw()
 
     // Set the text to the percent done for the primary gauge (rank 0)
 
-    const char *textcolor = "-fill black";
+    const char *textcolor = "-fill #000000";
     if(value > 50.0)
       {
-      textcolor = "-fill white";
+      textcolor = "-fill #ffffff";
       }
     
     char buffer[5];

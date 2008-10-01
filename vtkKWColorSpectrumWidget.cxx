@@ -26,7 +26,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorSpectrumWidget );
-vtkCxxRevisionMacro(vtkKWColorSpectrumWidget, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWColorSpectrumWidget, "$Revision: 1.4 $");
 
 #define VTK_KW_COLOR_SPECTRUM_WIDGET_FIXED_FONT "fixed"
 #define VTK_KW_COLOR_SPECTRUM_WIDGET_FIXED_FONT_85 "TkDefaultFont"
@@ -833,7 +833,7 @@ void vtkKWColorSpectrumWidget::UpdateColorCursor()
   tk_cmd << this->ColorCanvas->GetWidgetName() 
          << " itemconfigure " << VTK_KW_COLOR_SPECTRUM_WIDGET_CURSOR_TAG
          << " -outline " 
-         << (this->InternalColorHSV[2] > 0.5 ? "black" : "#c9c9c9")
+         << (this->InternalColorHSV[2] > 0.5 ? "#000000" : "#c9c9c9")
          << endl;
 
   tk_cmd << ends;

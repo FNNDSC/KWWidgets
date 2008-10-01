@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWComboBox);
-vtkCxxRevisionMacro(vtkKWComboBox, "$Revision: 1.20 $");
+vtkCxxRevisionMacro(vtkKWComboBox, "$Revision: 1.21 $");
 
 //----------------------------------------------------------------------------
 vtkKWComboBox::vtkKWComboBox()
@@ -45,7 +45,7 @@ void vtkKWComboBox::CreateWidget()
   // Call the superclass to set the appropriate flags then create manually
 
   if (!vtkKWWidget::CreateSpecificTkWidget(this, 
-        "ComboBox", "-highlightthickness 0 -entrybg white"))
+        "ComboBox", "-highlightthickness 0 -entrybg #ffffff"))
     {
     vtkErrorMacro("Failed creating widget " << this->GetClassName());
     return;

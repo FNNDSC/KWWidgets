@@ -24,7 +24,7 @@
 
 #include <ctype.h>
 
-vtkCxxRevisionMacro(vtkKWParameterValueHermiteFunctionEditor, "$Revision: 1.29 $");
+vtkCxxRevisionMacro(vtkKWParameterValueHermiteFunctionEditor, "$Revision: 1.30 $");
 
 const char *vtkKWParameterValueHermiteFunctionEditor::MidPointTag = "midpoint_tag";
 const char *vtkKWParameterValueHermiteFunctionEditor::MidPointGuidelineTag = "midpoint_guideline_tag";
@@ -1023,7 +1023,7 @@ void vtkKWParameterValueHermiteFunctionEditor::RedrawLine(
               (int)(rgb[0]*255.0), (int)(rgb[1]*255.0), (int)(rgb[2]*255.0));
       *tk_cmd << canv << " itemconfigure m_p" << id1
               << " -state normal  -width " << this->PointOutlineWidth
-              << " -outline black -fill " << color << endl;
+              << " -outline #000000 -fill " << color << endl;
       }
     }
 
@@ -1053,7 +1053,7 @@ void vtkKWParameterValueHermiteFunctionEditor::RedrawLine(
       if (!midpoint_guide_exists)
         {
         *tk_cmd 
-          << canv << " create line 0 0 0 0 -fill black -width 1 " 
+          << canv << " create line 0 0 0 0 -fill #000000 -width 1 " 
           << " -tags {m_g" << id1 << " " 
           << vtkKWParameterValueHermiteFunctionEditor::MidPointGuidelineTag 
           << " " << vtkKWParameterValueFunctionEditor::FunctionTag

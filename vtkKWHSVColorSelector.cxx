@@ -24,7 +24,7 @@
 
 #include <vtksys/ios/sstream>
 
-vtkCxxRevisionMacro(vtkKWHSVColorSelector, "$Revision: 1.22 $");
+vtkCxxRevisionMacro(vtkKWHSVColorSelector, "$Revision: 1.23 $");
 vtkStandardNewMacro(vtkKWHSVColorSelector);
 
 #define VTK_KW_HSV_SEL_POINT_RADIUS_MIN     2
@@ -761,7 +761,7 @@ void vtkKWHSVColorSelector::UpdateHueSatWheelSelection()
     {
     if (!has_tag)
       {
-      tk_cmd << canv << " create oval 0 0 0 0 -fill white -tag "
+      tk_cmd << canv << " create oval 0 0 0 0 -fill #ffffff -tag "
              << VTK_KW_HSV_SEL_SELECTION_TAG << endl;
       }
     double wheel_radius = this->HueSatWheelRadius;
@@ -976,7 +976,7 @@ void vtkKWHSVColorSelector::UpdateValueBoxSelection()
     {
     if (!has_tag)
       {
-      tk_cmd << canv << " create rectangle 0 0 0 0 -fill white -tag "
+      tk_cmd << canv << " create rectangle 0 0 0 0 -fill #ffffff -tag "
              << VTK_KW_HSV_SEL_SELECTION_TAG << endl;
       }
     int height_offset = this->HueSatCursorRadius;

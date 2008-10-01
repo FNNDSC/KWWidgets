@@ -36,7 +36,7 @@ const char *vtkKWText::TagFgDarkGreen = "_fg_dark_green_tag_";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWText);
-vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.59 $");
+vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.60 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTextInternals
@@ -286,11 +286,11 @@ void vtkKWText::CreateWidget()
   Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
   if (tcl_major > 8 || (tcl_major == 8 && tcl_minor >= 5))
     {
-    options = "-width 20 -wrap word -height 5 -highlightthickness 0 -background white -bd 2 -font TkDefaultFont";
+    options = "-width 20 -wrap word -height 5 -highlightthickness 0 -background #ffffff -bd 2 -font TkDefaultFont";
     }
   else
     {
-    options = "-width 20 -wrap word -height 5 -highlightthickness 0 -background white";
+    options = "-width 20 -wrap word -height 5 -highlightthickness 0 -background #ffffff";
     }
 
   if (!vtkKWWidget::CreateSpecificTkWidget(this, "text", options.c_str()))

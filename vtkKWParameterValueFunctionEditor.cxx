@@ -41,7 +41,7 @@
 #include <vtksys/stl/algorithm>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.110 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.111 $");
 
 //----------------------------------------------------------------------------
 #define VTK_KW_PVFE_POINT_RADIUS_MIN         2
@@ -6175,7 +6175,7 @@ void vtkKWParameterValueFunctionEditor::RedrawPoint(int id,
         if (this->PointColorStyle == 
             vtkKWParameterValueFunctionEditor::PointColorStyleFill)
           {
-          *tk_cmd << " -outline black -fill " << color << endl;
+          *tk_cmd << " -outline #000000 -fill " << color << endl;
           }
         else
           {
@@ -6210,7 +6210,7 @@ void vtkKWParameterValueFunctionEditor::RedrawPoint(int id,
       {
       if (!guide_exists)
         {
-        *tk_cmd << canv << " create line 0 0 0 0 -fill black -width 1 " 
+        *tk_cmd << canv << " create line 0 0 0 0 -fill #000000 -width 1 " 
                 << " -tags {g" << id << " " 
                 << vtkKWParameterValueFunctionEditor::PointGuidelineTag 
                 << " " << vtkKWParameterValueFunctionEditor::FunctionTag
@@ -6363,7 +6363,7 @@ void vtkKWParameterValueFunctionEditor::RedrawLine(
   
       if (!line_exists)
         {
-        *tk_cmd << canv << " create line 0 0 0 0 -fill black " 
+        *tk_cmd << canv << " create line 0 0 0 0 -fill #000000 " 
                 << " -tags {l" << id2 
                 << " " << vtkKWParameterValueFunctionEditor::LineTag
                 << " " << vtkKWParameterValueFunctionEditor::FunctionTag 
