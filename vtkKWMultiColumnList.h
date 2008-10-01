@@ -428,6 +428,20 @@ public:
   virtual int GetColumnVisibility(int col_index);
 
   // Description:
+  // Set/Get an arbitrary column attribute 
+  // (warning, Get returns a pointer to the Tcl buffer).
+  virtual int HasColumnAttribute(
+    int col_index, const char *name);
+  virtual void SetColumnAttribute(
+    int col_index, const char *name, const char *value);
+  virtual const char* GetColumnAttribute(
+    int col_index, const char *name);
+  virtual void SetColumnAttributeAsInt(
+    int col_index, const char *name, int value);
+  virtual int GetColumnAttributeAsInt(
+    int col_index, const char *name);
+
+  // Description:
   // Set/Get a column background and foreground colors
   virtual void GetColumnBackgroundColor(
     int col_index, double *r, double *g, double *b);
@@ -568,6 +582,20 @@ public:
     int look_for_col_index, const char *look_for_text);
 
   // Description:
+  // Set/Get an arbitrary row attribute 
+  // (warning, Get returns a pointer to the Tcl buffer).
+  virtual int HasRowAttribute(
+    int row_index, const char *name);
+  virtual void SetRowAttribute(
+    int row_index, const char *name, const char *value);
+  virtual const char* GetRowAttribute(
+    int row_index, const char *name);
+  virtual void SetRowAttributeAsInt(
+    int row_index, const char *name, int value);
+  virtual int GetRowAttributeAsInt(
+    int row_index, const char *name);
+
+  // Description:
   // Set/Get a row background and foreground colors
   virtual void GetRowBackgroundColor(
     int row_index, double *r, double *g, double *b);
@@ -643,15 +671,43 @@ public:
     int row_index, int col_index, double value, int size);
   virtual void SetCellText(
     int row_index, int col_index, const char *text);
+  virtual const char* GetCellText(int row_index, int col_index);
   virtual void SetCellTextAsInt(
     int row_index, int col_index, int value);
+  virtual int GetCellTextAsInt(int row_index, int col_index);
   virtual void SetCellTextAsDouble(
     int row_index, int col_index, double value);
   virtual void SetCellTextAsFormattedDouble(
     int row_index, int col_index, double value, int size);
-  virtual const char* GetCellText(int row_index, int col_index);
-  virtual int GetCellTextAsInt(int row_index, int col_index);
   virtual double GetCellTextAsDouble(int row_index, int col_index);
+
+  // Description:
+  // Set/Get an arbitrary cell attribute 
+  // (warning, Get returns a pointer to the Tcl buffer).
+  virtual int HasCellAttribute(
+    int row_index, int col_index, const char *name);
+  virtual void SetCellAttribute(
+    int row_index, int col_index, const char *name, const char *value);
+  virtual const char* GetCellAttribute(
+    int row_index, int col_index, const char *name);
+  virtual void SetCellAttributeAsInt(
+    int row_index, int col_index, const char *name, int value);
+  virtual int GetCellAttributeAsInt(
+    int row_index, int col_index, const char *name);
+
+  // Description:
+  // Convenience function to Set/Get the "enabled" attribute 
+  // on a cell. Note that this doesn't automatically enabled or disabled
+  // the contents of a cell but embedded window should check if this
+  // attribute was set to create themselves enabled or disabled automatically.
+  // SetCellEnabledAttribute will call RefreshCellWithWindowCommand on the
+  // cell to give a chance to an embedded window to enable/disable itself.
+  virtual void SetCellEnabledAttribute(
+    int row_index, int col_index, int value);
+  virtual int GetCellEnabledAttribute(
+    int row_index, int col_index);
+  virtual int HasCellEnabledAttribute(
+    int row_index, int col_index);
 
   // Description:
   // Set the contents of a full row or full column.

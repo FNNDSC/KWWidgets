@@ -1,6 +1,6 @@
 /*=========================================================================
 
-p  Module:    $RCSfile: vtkKWMultiColumnList.cxx,v $
+  Module:    $RCSfile: vtkKWMultiColumnList.cxx,v $
 
   Copyright (c) Kitware, Inc.
   All rights reserved.
@@ -40,7 +40,7 @@ p  Module:    $RCSfile: vtkKWMultiColumnList.cxx,v $
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.96 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.97 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -954,6 +954,131 @@ int vtkKWMultiColumnList::GetColumnVisibility(int col_index)
 }
 
 //----------------------------------------------------------------------------
+void vtkKWMultiColumnList::SetColumnAttribute(
+  int col_index, const char *name, const char *value)
+{
+  if (!name || !*name)
+    {
+    vtkWarningMacro("Wrong attribute name!");
+    return;
+    }
+
+  if (!this->IsCreated())
+    {
+    vtkWarningMacro("Widget is not created yet !");
+    return;
+    }
+
+  vtksys_stl::string escaped_name(
+    this->ConvertInternalStringToTclString(
+      name, vtkKWCoreWidget::ConvertStringEscapeInterpretable));
+  const char *escaped_value = this->ConvertInternalStringToTclString(
+    value, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+
+  this->Script("%s columnattrib %d \"%s\" \"%s\"", 
+               this->GetWidgetName(), 
+               col_index,  
+               escaped_name.c_str(), escaped_value ? escaped_value : "");
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMultiColumnList::HasColumnAttribute(
+  int col_index, const char *name)
+{
+  if (!name || !*name)
+    {
+    vtkWarningMacro("Wrong attribute name!");
+    return 0;
+    }
+
+  if (!this->IsCreated())
+    {
+    vtkWarningMacro("Widget is not created yet !");
+    return 0;
+    }
+
+  const char *escaped_name = this->ConvertInternalStringToTclString(
+    name, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+
+  return atoi(
+    this->Script("%s hascolumnattrib %d \"%s\"", 
+                 this->GetWidgetName(), col_index, escaped_name));
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWMultiColumnList::GetColumnAttribute(
+  int col_index, const char *name)
+{
+  if (!name || !*name)
+    {
+    vtkWarningMacro("Wrong attribute name!");
+    return "";
+    }
+
+  if (!this->IsCreated())
+    {
+    vtkWarningMacro("Widget is not created yet !");
+    return "";
+    }
+
+  const char *escaped_name = this->ConvertInternalStringToTclString(
+    name, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+
+  return this->ConvertTclStringToInternalString(
+    this->Script("%s columnattrib %d \"%s\"", 
+                 this->GetWidgetName(), col_index,  escaped_name));
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::SetColumnAttributeAsInt(
+  int col_index, const char *name, int value)
+{
+  if (!name || !*name)
+    {
+    vtkWarningMacro("Wrong attribute name!");
+    return;
+    }
+
+  if (!this->IsCreated())
+    {
+    vtkWarningMacro("Widget is not created yet !");
+    return;
+    }
+
+  const char *escaped_name = this->ConvertInternalStringToTclString(
+    name, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+
+  this->Script("%s columnattrib %d \"%s\" %d", 
+               this->GetWidgetName(), 
+               col_index,  
+               escaped_name, value);
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMultiColumnList::GetColumnAttributeAsInt(
+  int col_index, const char *name)
+{
+  if (!name || !*name)
+    {
+    vtkWarningMacro("Wrong attribute name!");
+    return 0;
+    }
+
+  if (!this->IsCreated())
+    {
+    vtkWarningMacro("Widget is not created yet !");
+    return 0;
+    }
+
+  const char *escaped_name = this->ConvertInternalStringToTclString(
+    name, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+
+  return atoi(
+    this->Script("%s columnattrib %d \"%s\"", 
+                 this->GetWidgetName(), col_index,  escaped_name));
+}
+
+//----------------------------------------------------------------------------
 void vtkKWMultiColumnList::GetColumnBackgroundColor(
   int col_index, double *r, double *g, double *b)
 {
@@ -1680,6 +1805,131 @@ void vtkKWMultiColumnList::FindAndDeleteRow(
 }
 
 //----------------------------------------------------------------------------
+void vtkKWMultiColumnList::SetRowAttribute(
+  int row_index, const char *name, const char *value)
+{
+  if (!name || !*name)
+    {
+    vtkWarningMacro("Wrong attribute name!");
+    return;
+    }
+
+  if (!this->IsCreated())
+    {
+    vtkWarningMacro("Widget is not created yet !");
+    return;
+    }
+
+  vtksys_stl::string escaped_name(
+    this->ConvertInternalStringToTclString(
+      name, vtkKWCoreWidget::ConvertStringEscapeInterpretable));
+  const char *escaped_value = this->ConvertInternalStringToTclString(
+    value, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+
+  this->Script("%s rowattrib %d \"%s\" \"%s\"", 
+               this->GetWidgetName(), 
+               row_index,  
+               escaped_name.c_str(), escaped_value ? escaped_value : "");
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMultiColumnList::HasRowAttribute(
+  int row_index, const char *name)
+{
+  if (!name || !*name)
+    {
+    vtkWarningMacro("Wrong attribute name!");
+    return 0;
+    }
+
+  if (!this->IsCreated())
+    {
+    vtkWarningMacro("Widget is not created yet !");
+    return 0;
+    }
+
+  const char *escaped_name = this->ConvertInternalStringToTclString(
+    name, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+
+  return atoi(
+    this->Script("%s hasrowattrib %d \"%s\"", 
+                 this->GetWidgetName(), row_index, escaped_name));
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWMultiColumnList::GetRowAttribute(
+  int row_index, const char *name)
+{
+  if (!name || !*name)
+    {
+    vtkWarningMacro("Wrong attribute name!");
+    return "";
+    }
+
+  if (!this->IsCreated())
+    {
+    vtkWarningMacro("Widget is not created yet !");
+    return "";
+    }
+
+  const char *escaped_name = this->ConvertInternalStringToTclString(
+    name, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+
+  return this->ConvertTclStringToInternalString(
+    this->Script("%s rowattrib %d \"%s\"", 
+                 this->GetWidgetName(), row_index,  escaped_name));
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::SetRowAttributeAsInt(
+  int row_index, const char *name, int value)
+{
+  if (!name || !*name)
+    {
+    vtkWarningMacro("Wrong attribute name!");
+    return;
+    }
+
+  if (!this->IsCreated())
+    {
+    vtkWarningMacro("Widget is not created yet !");
+    return;
+    }
+
+  const char *escaped_name = this->ConvertInternalStringToTclString(
+    name, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+
+  this->Script("%s rowattrib %d \"%s\" %d", 
+               this->GetWidgetName(), 
+               row_index,  
+               escaped_name, value);
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMultiColumnList::GetRowAttributeAsInt(
+  int row_index, const char *name)
+{
+  if (!name || !*name)
+    {
+    vtkWarningMacro("Wrong attribute name!");
+    return 0;
+    }
+
+  if (!this->IsCreated())
+    {
+    vtkWarningMacro("Widget is not created yet !");
+    return 0;
+    }
+
+  const char *escaped_name = this->ConvertInternalStringToTclString(
+    name, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+
+  return atoi(
+    this->Script("%s rowattrib %d \"%s\"", 
+                 this->GetWidgetName(), row_index,  escaped_name));
+}
+
+//----------------------------------------------------------------------------
 void vtkKWMultiColumnList::GetRowBackgroundColor(
   int row_index, double *r, double *g, double *b)
 {
@@ -2015,6 +2265,12 @@ void vtkKWMultiColumnList::SetCellText(
 }
 
 //----------------------------------------------------------------------------
+const char* vtkKWMultiColumnList::GetCellText(int row_index, int col_index)
+{
+  return this->GetCellConfigurationOptionAsText(row_index, col_index, "-text");
+}
+
+//----------------------------------------------------------------------------
 void vtkKWMultiColumnList::SetCellTextAsInt(
   int row_index, int col_index, int value)
 {
@@ -2030,6 +2286,12 @@ void vtkKWMultiColumnList::SetCellTextAsInt(
     {
     this->SetState(old_state);
     }
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMultiColumnList::GetCellTextAsInt(int row_index, int col_index)
+{
+  return this->GetCellConfigurationOptionAsInt(row_index, col_index, "-text");
 }
 
 //----------------------------------------------------------------------------
@@ -2071,22 +2333,157 @@ void vtkKWMultiColumnList::SetCellTextAsFormattedDouble(
 }
 
 //----------------------------------------------------------------------------
-const char* vtkKWMultiColumnList::GetCellText(int row_index, int col_index)
-{
-  return this->GetCellConfigurationOptionAsText(row_index, col_index, "-text");
-}
-
-//----------------------------------------------------------------------------
-int vtkKWMultiColumnList::GetCellTextAsInt(int row_index, int col_index)
-{
-  return this->GetCellConfigurationOptionAsInt(row_index, col_index, "-text");
-}
-
-//----------------------------------------------------------------------------
 double vtkKWMultiColumnList::GetCellTextAsDouble(int row_index, int col_index)
 {
   return this->GetCellConfigurationOptionAsDouble(
     row_index, col_index, "-text");
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::SetCellAttribute(
+  int row_index, int col_index, const char *name, const char *value)
+{
+  if (!name || !*name)
+    {
+    vtkWarningMacro("Wrong attribute name!");
+    return;
+    }
+
+  if (!this->IsCreated())
+    {
+    vtkWarningMacro("Widget is not created yet !");
+    return;
+    }
+
+  vtksys_stl::string escaped_name(
+    this->ConvertInternalStringToTclString(
+      name, vtkKWCoreWidget::ConvertStringEscapeInterpretable));
+  const char *escaped_value = this->ConvertInternalStringToTclString(
+    value, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+
+  this->Script("%s cellattrib %d,%d \"%s\" \"%s\"", 
+               this->GetWidgetName(), 
+               row_index, col_index,  
+               escaped_name.c_str(), escaped_value ? escaped_value : "");
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMultiColumnList::HasCellAttribute(
+  int row_index, int col_index, const char *name)
+{
+  if (!name || !*name)
+    {
+    vtkWarningMacro("Wrong attribute name!");
+    return 0;
+    }
+
+  if (!this->IsCreated())
+    {
+    vtkWarningMacro("Widget is not created yet !");
+    return 0;
+    }
+
+  const char *escaped_name = this->ConvertInternalStringToTclString(
+    name, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+
+  return atoi(
+    this->Script("%s hascellattrib %d,%d \"%s\"", 
+                 this->GetWidgetName(), row_index, col_index, escaped_name));
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWMultiColumnList::GetCellAttribute(
+  int row_index, int col_index, const char *name)
+{
+  if (!name || !*name)
+    {
+    vtkWarningMacro("Wrong attribute name!");
+    return "";
+    }
+
+  if (!this->IsCreated())
+    {
+    vtkWarningMacro("Widget is not created yet !");
+    return "";
+    }
+
+  const char *escaped_name = this->ConvertInternalStringToTclString(
+    name, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+
+  return this->ConvertTclStringToInternalString(
+    this->Script("%s cellattrib %d,%d \"%s\"", 
+                 this->GetWidgetName(), row_index, col_index,  escaped_name));
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::SetCellAttributeAsInt(
+  int row_index, int col_index, const char *name, int value)
+{
+  if (!name || !*name)
+    {
+    vtkWarningMacro("Wrong attribute name!");
+    return;
+    }
+
+  if (!this->IsCreated())
+    {
+    vtkWarningMacro("Widget is not created yet !");
+    return;
+    }
+
+  const char *escaped_name = this->ConvertInternalStringToTclString(
+    name, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+
+  this->Script("%s cellattrib %d,%d \"%s\" %d", 
+               this->GetWidgetName(), 
+               row_index, col_index,  
+               escaped_name, value);
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMultiColumnList::GetCellAttributeAsInt(
+  int row_index, int col_index, const char *name)
+{
+  if (!name || !*name)
+    {
+    vtkWarningMacro("Wrong attribute name!");
+    return 0;
+    }
+
+  if (!this->IsCreated())
+    {
+    vtkWarningMacro("Widget is not created yet !");
+    return 0;
+    }
+
+  const char *escaped_name = this->ConvertInternalStringToTclString(
+    name, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+
+  return atoi(
+    this->Script("%s cellattrib %d,%d \"%s\"", 
+                 this->GetWidgetName(), row_index, col_index,  escaped_name));
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::SetCellEnabledAttribute(
+    int row_index, int col_index, int value)
+{
+  this->SetCellAttributeAsInt(row_index, col_index, "enabled", value);
+  this->RefreshCellWithWindowCommand(row_index, col_index);
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMultiColumnList::GetCellEnabledAttribute(
+    int row_index, int col_index)
+{
+  return this->GetCellAttributeAsInt(row_index, col_index, "enabled");
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMultiColumnList::HasCellEnabledAttribute(
+    int row_index, int col_index)
+{
+  return this->HasCellAttribute(row_index, col_index, "enabled");
 }
 
 //----------------------------------------------------------------------------
@@ -2844,7 +3241,10 @@ void vtkKWMultiColumnList::RefreshEnabledStateOfAllCellsWithWindowCommand()
                 vtkKWComboBox::SafeDownCast(child) ||
                 vtkKWRadioButton::SafeDownCast(child))
               {
-              child->SetEnabled(this->GetEnabled());
+              child->SetEnabled(
+                this->HasCellEnabledAttribute(row, col) ? 
+                this->GetCellEnabledAttribute(row, col) :
+                this->GetEnabled());
               this->RefreshColorsOfCellWithWindowCommand(row, col);
               }
             else
@@ -3179,7 +3579,10 @@ void vtkKWMultiColumnList::CellWindowCommandToCheckButtonCreateCallback(
 
   child->SetBackgroundColor(this->GetCellCurrentBackgroundColor(row, col));
   child->SetSelectedState(this->GetCellTextAsInt(row, col));
-  child->SetEnabled(this->GetEnabled()); 
+  child->SetEnabled(
+    this->HasCellEnabledAttribute(row, col) ? 
+    this->GetCellEnabledAttribute(row, col) :
+    this->GetEnabled());
   char command[256];
   sprintf(command, 
           "CellWindowCommandToCheckButtonSelectCallback %s %d %d", 
@@ -3290,7 +3693,10 @@ void vtkKWMultiColumnList::CellWindowCommandToColorButtonCallback(
     }
 
   child->SetBackgroundColor(r, g, b);
-  child->SetEnabled(this->GetEnabled()); 
+  child->SetEnabled(
+    this->HasCellEnabledAttribute(row, col) ? 
+    this->GetCellEnabledAttribute(row, col) :
+    this->GetEnabled());
   this->AddBindingsToWidget(child);
 }
 
@@ -3365,7 +3771,10 @@ void vtkKWMultiColumnList::CellWindowCommandToPickDirectoryButtonCallback(
     child->SetInitialFileName(cell_text.c_str());
     }
 
-  child->SetEnabled(this->GetEnabled()); 
+  child->SetEnabled(
+    this->HasCellEnabledAttribute(row, col) ? 
+    this->GetCellEnabledAttribute(row, col) :
+    this->GetEnabled());
 
   char command[256];
   sprintf(command, 
@@ -3512,7 +3921,10 @@ void vtkKWMultiColumnList::CellWindowCommandToComboBoxCreateCallback(
 
   child->SetBackgroundColor(this->GetCellCurrentBackgroundColor(row, col));
   child->SetForegroundColor(this->GetCellCurrentForegroundColor(row, col));
-  child->SetEnabled(this->GetEnabled()); 
+  child->SetEnabled(
+    this->HasCellEnabledAttribute(row, col) ? 
+    this->GetCellEnabledAttribute(row, col) :
+    this->GetEnabled());
 
   char command[256];
   sprintf(command, 
