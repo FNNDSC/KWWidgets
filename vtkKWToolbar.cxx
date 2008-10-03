@@ -20,7 +20,9 @@
 #include "vtkKWTkUtilities.h"
 #include "vtkObjectFactory.h"
 #include "vtkKWPushButtonWithMenu.h"
+#include "vtkKWLabel.h"
 #include "vtkKWMenuButton.h"
+#include "vtkKWWidgetWithLabel.h"
 
 #include <vtksys/stl/list>
 #include <vtksys/stl/algorithm>
@@ -34,7 +36,7 @@ const char *vtkKWToolbar::WidgetsAspectRegKey = "ToolbarFlatButtons";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
-vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.75 $");
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.76 $");
 
 //----------------------------------------------------------------------------
 class vtkKWToolbarInternals
@@ -378,15 +380,36 @@ vtkKWWidget* vtkKWToolbar::GetWidget(const char *name)
       this->Internals->Widgets.end();
     for (; it != end; ++it)
       {
-      for (int i = 0; i < 4; i++)
+      vtkKWCoreWidget *core = 
+        vtkKWCoreWidget::SafeDownCast((*it).Widget);
+      if (core &&  core->IsCreated())
         {
-        vtkKWCoreWidget *core = vtkKWCoreWidget::SafeDownCast((*it).Widget);
-        if (core->HasConfigurationOption(options[i]) && core->IsCreated())
+        for (int i = 0; i < 4; i++)
           {
-          const char *option = core->GetConfigurationOption(options[i]);
-          if (!strcmp(name, option))
+          if (core->HasConfigurationOption(options[i]))
             {
-            return core;
+            const char *option = core->GetConfigurationOption(options[i]);
+            if (!strcmp(name, option))
+              {
+              return core;
+              }
+            }
+          }
+        vtkKWWidgetWithLabel *wwl = 
+          vtkKWWidgetWithLabel::SafeDownCast((*it).Widget);
+        if (wwl)
+          {
+          core = wwl->GetLabel();
+          for (int i = 0; i < 4; i++)
+            {
+            if (core->HasConfigurationOption(options[i]))
+              {
+              const char *option = core->GetConfigurationOption(options[i]);
+              if (!strcmp(name, option))
+                {
+                return wwl;
+                }
+              }
             }
           }
         }
