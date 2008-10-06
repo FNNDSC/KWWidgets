@@ -36,10 +36,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWCanvas.h"
 #include "vtkObjectFactory.h"
 #include "vtkKWOptions.h"
+#include "vtkColorTransferFunction.h"
+
+#include <vtksys/ios/sstream>
+#include <vtksys/stl/string>
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCanvas );
-vtkCxxRevisionMacro(vtkKWCanvas, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWCanvas, "$Revision: 1.13 $");
 
 //----------------------------------------------------------------------------
 void vtkKWCanvas::CreateWidget()
@@ -165,6 +169,126 @@ void vtkKWCanvas::UpdateEnableState()
   this->Superclass::UpdateEnableState();
 
   this->SetState(this->GetEnabled());
+}
+
+//----------------------------------------------------------------------------
+int vtkKWCanvas::AddGradient(vtkColorTransferFunction *ctf, 
+                             int x1, int y1, int x2, int y2,
+                             const char *tag,
+                             int horizontal)
+{
+  if (!ctf || !this->IsCreated())
+    {
+    return 0;
+    }
+
+  int temp;
+  if (x1 > x2)
+    {
+    temp = x1;
+    x1 = x2;
+    x2 = temp;
+    }
+  if (y1 > y2)
+    {
+    temp = y1;
+    y1 = y2;
+    y2 = temp;
+    }
+
+  int width = x2 - x1 + 1;
+  int height = y2 - y1 + 1;
+
+  const unsigned char *rgb_table = 
+    ctf->GetTable(ctf->GetRange()[0], ctf->GetRange()[1], 
+                  horizontal ? width : height);
+
+  vtksys_ios::ostringstream tk_cmd;
+
+  const char *wname = this->GetWidgetName();
+  char rgb[10];
+
+  vtksys_stl::string extra;
+  if (tag)
+    {
+    extra = extra + " -tags {" + tag + "} ";
+    }
+  extra += " -fill #";
+
+  if (horizontal)
+    {
+    while (x1 <= x2)
+      {
+      sprintf(rgb, "%02x%02x%02x", 
+              (int)*rgb_table++, (int)*rgb_table++, (int)*rgb_table++);
+      tk_cmd << wname << " create line " 
+             << x1 << " " << y1 << " " << x1 << " " << y2 
+             << extra.c_str() << rgb << endl;
+      ++x1;
+      }
+    }
+  else
+    {
+    while (y1 <= y2)
+      {
+      sprintf(rgb, "%02x%02x%02x", 
+              (int)*rgb_table++, (int)*rgb_table++, (int)*rgb_table++);
+      tk_cmd << wname << " create line " 
+             << x1 << " " << y1 << " " << x2 << " " << y1
+             << extra.c_str() << rgb << endl;
+      ++y1;
+      }
+    }
+
+  this->Script(tk_cmd.str().c_str());
+  
+  return 1;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWCanvas::AddHorizontalGradient(vtkColorTransferFunction *ctf, 
+                                       int x1, int y1, int x2, int y2,
+                                       const char *tag)
+{
+  return this->AddGradient(ctf, x1, y1, x2, y2, tag, 1);
+}
+
+//----------------------------------------------------------------------------
+int vtkKWCanvas::AddHorizontalRGBGradient(double r1, double g1, double b1, 
+                                          double r2, double g2, double b2, 
+                                          int x1, int y1, int x2, int y2,
+                                          const char *tag)
+{
+  vtkColorTransferFunction *ctf = vtkColorTransferFunction::New();
+  ctf->SetColorSpaceToRGB();
+  ctf->AddRGBPoint(0.0, r1, g1, b1);
+  ctf->AddRGBPoint(1.0, r2, g2, b2);
+  int res = this->AddHorizontalGradient(ctf, x1, y1, x2, y2, tag);
+  ctf->Delete();
+  return res;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWCanvas::AddVerticalGradient(vtkColorTransferFunction *ctf, 
+                                       int x1, int y1, int x2, int y2,
+                                       const char *tag)
+{
+  return this->AddGradient(ctf, x1, y1, x2, y2, tag, 0);
+}
+
+//----------------------------------------------------------------------------
+int vtkKWCanvas::AddVerticalRGBGradient(double r1, double g1, double b1, 
+                                          double r2, double g2, double b2, 
+                                          int x1, int y1, int x2, int y2,
+                                          const char *tag)
+{
+  vtkColorTransferFunction *ctf = vtkColorTransferFunction::New();
+  ctf->SetColorSpaceToRGB();
+  ctf->AddRGBPoint(0.0, r1, g1, b1);
+  ctf->AddRGBPoint(1.0, r2, g2, b2);
+  int res = this->AddVerticalGradient(ctf, x1, y1, x2, y2, tag);
+  ctf->Delete();
+  return res;
 }
 
 //----------------------------------------------------------------------------

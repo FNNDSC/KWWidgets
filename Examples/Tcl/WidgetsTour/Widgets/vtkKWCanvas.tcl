@@ -14,6 +14,12 @@ proc vtkKWCanvasEntryPoint {parent win} {
   $canvas1 SetBackgroundColor 0.4 0.6 0.9
 
   pack [$canvas1 GetWidgetName] -side top -anchor nw -expand n -padx 2 -pady 2
+  
+  # Add some gradients
+
+  $canvas1 AddVerticalRGBGradient 0.0  0.0  0.54  0.25  0.41  0.88  10  20  20  190  "gradient1"
+
+  $canvas1 AddHorizontalRGBGradient 1.0  1.0  0.0  1.0  0.0  0.0  20  10  390  20  "gradient2"
 
   # There is no C++ API at the moment to access Tk's Canvas functions,
   # so let's just use Tk in the example:

@@ -48,6 +48,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkKWCoreWidget.h"
 
+class vtkColorTransferFunction;
+
 class KWWidgets_EXPORT vtkKWCanvas : public vtkKWCoreWidget
 {
 public:
@@ -62,6 +64,25 @@ public:
   virtual int GetWidth();
   virtual void SetHeight(int);
   virtual int GetHeight();
+
+  // Description:
+  // Add horizontal or vertical gradient (constrained to a rectange).
+  // The arguments x1, y1, x2, and y2 give the coordinates of two diagonally
+  // opposite corners of the rectangle. 
+  virtual int AddHorizontalGradient(vtkColorTransferFunction *ctf, 
+                                    int x1, int y1, int x2, int y2, 
+                                    const char *tag);
+  virtual int AddHorizontalRGBGradient(double r1, double g1, double b1, 
+                                       double r2, double g2, double b2, 
+                                       int x1, int y1, int x2, int y2, 
+                                       const char *tag);
+  virtual int AddVerticalGradient(vtkColorTransferFunction *ctf, 
+                                  int x1, int y1, int x2, int y2, 
+                                  const char *tag);
+  virtual int AddVerticalRGBGradient(double r1, double g1, double b1, 
+                                     double r2, double g2, double b2, 
+                                     int x1, int y1, int x2, int y2, 
+                                     const char *tag);
 
   // Description:
   // Set/Get the background color of the widget.
@@ -115,6 +136,13 @@ protected:
   // Description:
   // Create the widget.
   virtual void CreateWidget();
+
+  // Description:
+  // Add gradient.
+  virtual int AddGradient(vtkColorTransferFunction *ctf, 
+                          int x1, int y1, int x2, int y2, 
+                          const char *tag,
+                          int horizontal);
 
 private:
   vtkKWCanvas(const vtkKWCanvas&); // Not implemented
