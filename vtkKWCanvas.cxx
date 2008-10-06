@@ -43,7 +43,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCanvas );
-vtkCxxRevisionMacro(vtkKWCanvas, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWCanvas, "$Revision: 1.14 $");
 
 //----------------------------------------------------------------------------
 void vtkKWCanvas::CreateWidget()
@@ -220,7 +220,8 @@ int vtkKWCanvas::AddGradient(vtkColorTransferFunction *ctf,
     while (x1 <= x2)
       {
       sprintf(rgb, "%02x%02x%02x", 
-              (int)*rgb_table++, (int)*rgb_table++, (int)*rgb_table++);
+              (int)rgb_table[0], (int)rgb_table[1], (int)rgb_table[2]);
+      rgb_table += 3;
       tk_cmd << wname << " create line " 
              << x1 << " " << y1 << " " << x1 << " " << y2 
              << extra.c_str() << rgb << endl;
@@ -232,7 +233,8 @@ int vtkKWCanvas::AddGradient(vtkColorTransferFunction *ctf,
     while (y1 <= y2)
       {
       sprintf(rgb, "%02x%02x%02x", 
-              (int)*rgb_table++, (int)*rgb_table++, (int)*rgb_table++);
+              (int)rgb_table[0], (int)rgb_table[1], (int)rgb_table[2]);
+      rgb_table += 3;
       tk_cmd << wname << " create line " 
              << x1 << " " << y1 << " " << x2 << " " << y1
              << extra.c_str() << rgb << endl;
