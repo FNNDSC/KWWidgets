@@ -31,6 +31,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "vtkKWClipboardHelper.h"
 #include "vtkKWEntry.h"
 #include "vtkKWEntryWithLabel.h"
+#include "vtkKWIcon.h"
 #include "vtkKWInternationalization.h"
 #include "vtkKWLabel.h"
 #include "vtkKWMenu.h"
@@ -77,7 +78,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.87 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.88 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -2472,6 +2473,32 @@ int vtkKWSelectionFrameLayoutManager::SaveScreenshotAllWidgetsToFile(
          "permissions and enough disk space."),
       vtkKWMessageDialog::ErrorIcon);
     }
+  else
+    {
+    // Acknowledge. This is done because re-rendering all the widgets may
+    // take some time and we want the user to know when the clipboard is ready
+
+    vtkKWIcon *icon = vtkKWIcon::New();
+    icon->SetImage(iData);
+    icon->FitCanvas(128, 128);
+
+    vtkKWMessageDialog *dialog = vtkKWMessageDialog::New();
+    dialog->SetStyleToMessage();
+    dialog->SetMasterWindow(this->GetParentTopLevel());
+    dialog->SetOptions(
+      vtkKWMessageDialog::YesDefault|vtkKWMessageDialog::CustomIcon);
+    dialog->Create();
+    dialog->SetTitle(
+      ks_("Selection Frame Manager|Dialog|Title|Save Screenshot - Success!"));
+    dialog->SetText(k_("Screenshot saved, continue."));
+    dialog->GetIcon()->SetImageToIcon(icon);
+    dialog->SetIcon();
+    dialog->Invoke();
+    dialog->Delete();
+
+    icon->Delete();
+    }
+
   iData->Delete();
 
   return success;
@@ -2509,12 +2536,36 @@ int vtkKWSelectionFrameLayoutManager::CopyScreenshotAllWidgetsToClipboard()
     }
 
   // Save to clipboard
+
   vtkKWClipboardHelper* clipboard = vtkKWClipboardHelper::New();
   if(clipboard)
     {
     clipboard->CopyImageToClipboard(iData);
     clipboard->Delete();
     }
+
+  // Acknowledge. This is done because re-rendering all the widgets may
+  // take some time and we want the user to know when the clipboard is ready
+
+  vtkKWIcon *icon = vtkKWIcon::New();
+  icon->SetImage(iData);
+  icon->FitCanvas(128, 128);
+
+  vtkKWMessageDialog *dialog = vtkKWMessageDialog::New();
+  dialog->SetStyleToMessage();
+  dialog->SetMasterWindow(this->GetParentTopLevel());
+  dialog->SetOptions(
+    vtkKWMessageDialog::YesDefault|vtkKWMessageDialog::CustomIcon);
+  dialog->Create();
+  dialog->SetTitle(
+    ks_("Selection Frame Manager|Dialog|Title|Copy Screenshot - Success!"));
+  dialog->SetText(k_("Screenshot completed, continue."));
+  dialog->GetIcon()->SetImageToIcon(icon);
+  dialog->SetIcon();
+  dialog->Invoke();
+  dialog->Delete();
+
+  icon->Delete();
 
   iData->Delete();
   
