@@ -16,12 +16,18 @@
 #include "vtkObjectFactory.h"
 #include "vtkKWResourceUtilities.h"
 #include "vtkColorTransferFunction.h"
+#include "vtkImageClip.h"
+#include "vtkImageResample.h"
+#include "vtkImageData.h"
+#include "vtkImagePermute.h"
+#include "vtkUnsignedCharArray.h"
+#include "vtkPointData.h"
 
 #include "Resources/vtkKWIconResources.h"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.50 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.51 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -56,6 +62,64 @@ void vtkKWIcon::SetImage(vtkKWIcon* icon)
   this->SetData(icon->GetData(), 
                 icon->GetWidth(), icon->GetHeight(), 
                 icon->GetPixelSize());
+}
+
+//----------------------------------------------------------------------------
+void vtkKWIcon::SetImage(vtkImageData* image)
+{
+  if (!image)
+    {
+    vtkErrorMacro("No image specified");
+    return;
+    }
+
+  // First, let's make sure we are processing the image as it
+  // is by clipping its UpdateExtent. By doing so, we prevent 
+  // our permute filter the process the image's *whole* extent.
+
+  vtkImageClip *clip = vtkImageClip::New();
+  clip->SetInput(image);
+  clip->SetOutputWholeExtent(image->GetUpdateExtent());
+
+  // Permute, as a convenience (in case we were given a XZ or YZ slice)
+
+  vtkImageData *input = NULL;
+
+  clip->Update();
+  int clip_dims[3];
+  clip->GetOutput()->GetDimensions(clip_dims);
+
+  vtkImagePermute *permute = NULL;
+  if (clip_dims[2] != 1)
+    {
+    permute = vtkImagePermute::New();
+    permute->SetInput(clip->GetOutput());
+    if (clip_dims[0] == 1)
+      {
+      permute->SetFilteredAxes(1, 2, 0);
+      }
+    else
+      {
+      permute->SetFilteredAxes(0, 2, 1);
+      }
+    input = permute->GetOutput();
+    }
+  else
+    {
+    input = clip->GetOutput();
+    }
+  input->Update();
+
+  int *input_dims = input->GetDimensions();
+  this->SetData((const unsigned char*)input->GetScalarPointer(),
+                input_dims[0], input_dims[1], 3, 
+                vtkKWIcon::ImageOptionFlipVertical);
+
+  clip->Delete();
+  if (permute)
+    {
+    permute->Delete();
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -1667,6 +1731,91 @@ int vtkKWIcon::ResizeCanvas(
   this->Data = resized_buffer;
 
   return 1;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWIcon::ResampleCanvas(int resampled_width, int resampled_height)
+{
+  if (resampled_width < 0 || resampled_height < 0 || 
+      (resampled_width == 0 && resampled_height == 0))
+    {
+    return 0;
+    }
+
+  if (resampled_width == this->Width &&
+      resampled_height == this->Height)
+    {
+    return 1;
+    }
+
+  double factor_width, factor_height;
+
+  if (resampled_width)
+    {
+    factor_width = (double)resampled_width / (double)this->Width;
+    }
+  if (resampled_height)
+    {
+    factor_height = (double)resampled_height / (double)this->Height;
+    }
+  if (!resampled_width)
+    {
+    factor_width = factor_height;
+    }
+  if (!resampled_height)
+    {
+    factor_height = factor_width;
+    }
+
+  vtkImageData *input = vtkImageData::New();
+  input->SetDimensions(this->Width, this->Height, 1);
+  input->SetScalarTypeToUnsignedChar();
+  input->SetNumberOfScalarComponents(this->PixelSize);
+
+  vtkUnsignedCharArray *array = vtkUnsignedCharArray::New();
+  array->SetNumberOfComponents(this->PixelSize);
+  array->SetArray(this->Data, this->Width * this->Height * this->PixelSize, 1);
+  input->GetPointData()->SetScalars(array);
+
+  vtkImageResample *resample = vtkImageResample::New();
+  resample->SetInput(input);
+  resample->SetInterpolationModeToCubic();
+  resample->SetDimensionality(2);
+
+  resample->SetAxisMagnificationFactor(0, factor_width);
+  resample->SetAxisMagnificationFactor(1, factor_height);
+  resample->UpdateWholeExtent();
+
+  vtkImageData *resample_output = resample->GetOutput();
+  int resample_output_dims[3];
+  resample_output->GetDimensions(resample_output_dims);
+
+  this->SetImage(
+    (const unsigned char*)resample_output->GetScalarPointer(),
+    resample_output_dims[0],
+    resample_output_dims[1],
+    resample_output->GetNumberOfScalarComponents());
+
+  resample->Delete();
+  input->Delete();
+  array->Delete();
+
+  return 1;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWIcon::FitCanvas(int fit_width, int fit_height)
+{
+  if (fit_width <= 0 || fit_height <= 0)
+    {
+    return 0;
+    }
+
+  if (this->Width > this->Height)
+    {
+    return this->ResampleCanvas(fit_width, 0);
+    }
+  return this->ResampleCanvas(0, fit_height);
 }
 
 //----------------------------------------------------------------------------

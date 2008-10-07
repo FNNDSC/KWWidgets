@@ -25,6 +25,7 @@
 #include "vtkKWWidgets.h" // Needed for export symbols directives
 
 class vtkColorTransferFunction;
+class vtkImageData;
 
 class KWWidgets_EXPORT vtkKWIcon : public vtkObject
 {
@@ -169,6 +170,11 @@ public:
   virtual void SetImage(vtkKWIcon*);
 
   // Description:
+  // Set the icon image based on an existing vtkImageData.
+  // A XZ, YZ slice will be permuted into a XY slice automatically.
+  virtual void SetImage(vtkImageData*);
+
+  // Description:
   // Set the icon image from pixel data, eventually zlib and base64.
   // If 'buffer_length' is 0, compute it automatically by multiplying
   // 'pixel_size', 'width' and 'height' together.
@@ -275,6 +281,20 @@ public:
   //ETX
   virtual int ResizeCanvas(
     int resized_width, int resized_height, int position);
+
+  // Description:
+  // Resample the icon to a new size.
+  // If the new 'width' is 0, it will be computed from the new 'height' by
+  // keeping the aspect ratio of the icon (and vice-versa if height is 0).
+  // Return 1 on success, 0 otherwise
+  virtual int ResampleCanvas(int resampled_width, int resampled_height);
+
+  // Description:
+  // Fit (and resample) the icon to a new size. The aspect ratio of the
+  // icon is kept so that the new icon is not larger in any dimension than
+  // the new size.
+  // Return 1 on success, 0 otherwise
+  virtual int FitCanvas(int fit_width, int fit_height);
 
 protected:
   vtkKWIcon();
