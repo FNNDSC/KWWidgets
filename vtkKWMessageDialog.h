@@ -93,7 +93,8 @@ public:
     CancelDefault   = 0x00200,
     Beep            = 0x00400,
     PackVertically  = 0x00800,
-    InvokeAtPointer = 0x01000
+    InvokeAtPointer = 0x01000,
+    CustomIcon      = 0x02000
   };
   //ETX
   vtkSetMacro(Options, int);
@@ -147,6 +148,7 @@ public:
   vtkGetObjectMacro(TopFrame, vtkKWFrame);
   vtkGetObjectMacro(MessageDialogFrame, vtkKWFrame);
   vtkGetObjectMacro(BottomFrame, vtkKWFrame);
+  vtkGetObjectMacro(Icon, vtkKWLabel);
 
   // Description:
   // Set the icon on the message dialog.
