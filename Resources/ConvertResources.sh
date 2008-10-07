@@ -93,6 +93,8 @@ KWConvertImageToHeader --zlib --base64 \
     preset_update.png \
     question.png \
     reload.png \
+    reset_camera.png \
+    reset_contrast.png \
     rotate.png \
     rows.png \
     scale_bar_annotation.png \
@@ -103,6 +105,7 @@ KWConvertImageToHeader --zlib --base64 \
     spin_left.png \
     spin_right.png \
     spin_up.png \
+    standard_view.png \
     stopwatch.png \
     testtube.png \
     time.png \

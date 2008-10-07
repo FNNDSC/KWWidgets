@@ -21,7 +21,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.49 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.50 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -698,6 +698,22 @@ void vtkKWIcon::SetImage(int image)
         image_reload_length);
       break;
 
+    case vtkKWIcon::IconResetCamera:
+      this->SetImage(
+        image_reset_camera, 
+        image_reset_camera_width, image_reset_camera_height,
+        image_reset_camera_pixel_size, 
+        image_reset_camera_length);
+      break;
+
+    case vtkKWIcon::IconResetContrast:
+      this->SetImage(
+        image_reset_contrast, 
+        image_reset_contrast_width, image_reset_contrast_height,
+        image_reset_contrast_pixel_size, 
+        image_reset_contrast_length);
+      break;
+
     case vtkKWIcon::IconRotate:
       this->SetImage(
         image_rotate, 
@@ -800,6 +816,14 @@ void vtkKWIcon::SetImage(int image)
         image_stopwatch_width, image_stopwatch_height,
         image_stopwatch_pixel_size, 
         image_stopwatch_length);
+      break;
+      
+    case vtkKWIcon::IconStandardView:
+      this->SetImage(
+        image_standard_view, 
+        image_standard_view_width, image_standard_view_height,
+        image_standard_view_pixel_size, 
+        image_standard_view_length);
       break;
       
     case vtkKWIcon::IconTime:
