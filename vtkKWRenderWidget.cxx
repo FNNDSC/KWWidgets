@@ -47,7 +47,7 @@
 #include <vtksys/stl/map>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.168 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.169 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -1522,22 +1522,78 @@ void vtkKWRenderWidget::FocusOutCallback()
 //----------------------------------------------------------------------------
 void vtkKWRenderWidget::PopulateContextMenu(vtkKWMenu *menu)
 {
-  this->PopulateAnnotationMenu(menu);
-  this->PopulateOptionMenu(menu);
-  this->PopulateColorMenu(menu);
-}
-
-//----------------------------------------------------------------------------
-void vtkKWRenderWidget::PopulateAnnotationMenu(vtkKWMenu *menu)
-{
   if (!menu)
     {
     return;
     }
 
-  if (menu->GetNumberOfItems())
+  int nb_items, new_nb_items;
+
+  nb_items = menu->GetNumberOfItems();
+
+  // Interactions
+
+  this->PopulateContextMenuWithInteractionEntries(menu);
+  new_nb_items = menu->GetNumberOfItems();
+  if (nb_items && new_nb_items > nb_items)
     {
-    menu->AddSeparator();
+    menu->InsertSeparator(nb_items);
+    new_nb_items++;
+    }
+  nb_items = new_nb_items;
+
+  // Annotations
+
+  this->PopulateContextMenuWithAnnotationEntries(menu);
+  new_nb_items = menu->GetNumberOfItems();
+  if (nb_items && new_nb_items > nb_items)
+    {
+    menu->InsertSeparator(nb_items);
+    new_nb_items++;
+    }
+  nb_items = new_nb_items;
+
+  // Options
+
+  this->PopulateContextMenuWithOptionEntries(menu);
+  new_nb_items = menu->GetNumberOfItems();
+  if (nb_items && new_nb_items > nb_items)
+    {
+    menu->InsertSeparator(nb_items);
+    new_nb_items++;
+    }
+  nb_items = new_nb_items;
+
+  // Camera
+
+  this->PopulateContextMenuWithCameraEntries(menu);
+  new_nb_items = menu->GetNumberOfItems();
+  if (nb_items && new_nb_items > nb_items)
+    {
+    menu->InsertSeparator(nb_items);
+    new_nb_items++;
+    }
+  nb_items = new_nb_items;
+
+  // Color
+
+  this->PopulateContextMenuWithColorEntries(menu);
+  new_nb_items = menu->GetNumberOfItems();
+  if (nb_items && new_nb_items > nb_items)
+    {
+    menu->InsertSeparator(nb_items);
+    new_nb_items++;
+    }
+  nb_items = new_nb_items;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRenderWidget::PopulateContextMenuWithAnnotationEntries(
+  vtkKWMenu *menu)
+{
+  if (!menu)
+    {
+    return;
     }
 
   int tcl_major, tcl_minor, tcl_patch_level;
@@ -1581,7 +1637,32 @@ void vtkKWRenderWidget::PopulateAnnotationMenu(vtkKWMenu *menu)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWRenderWidget::PopulateColorMenu(vtkKWMenu *menu)
+void vtkKWRenderWidget::PopulateContextMenuWithCameraEntries(vtkKWMenu *menu)
+{
+  if (!menu)
+    {
+    return;
+    }
+
+  int tcl_major, tcl_minor, tcl_patch_level;
+  Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
+  int show_icons = (tcl_major > 8 || (tcl_major == 8 && tcl_minor >= 5));
+
+  int index;
+
+  // Reset camera
+
+  index = menu->AddCommand(k_("Reset Camera"), this, "Reset");
+  if (show_icons)
+    {
+    menu->SetItemImageToPredefinedIcon(
+      index, vtkKWIcon::IconResetCamera);
+    menu->SetItemCompoundModeToLeft(index);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRenderWidget::PopulateContextMenuWithColorEntries(vtkKWMenu *menu)
 {
   if (!menu)
     {
@@ -1593,11 +1674,6 @@ void vtkKWRenderWidget::PopulateColorMenu(vtkKWMenu *menu)
   int show_icons = (tcl_major > 8 || (tcl_major == 8 && tcl_minor >= 5));
 
   int index, cascade_index;
-
-  if (menu->GetNumberOfItems())
-    {
-    menu->AddSeparator();
-    }
 
   // Background Color
 

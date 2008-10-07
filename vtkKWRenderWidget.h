@@ -405,16 +405,25 @@ protected:
   vtkKWMenu *ContextMenu;
 
   // Description:
-  // Populate the context menu
-  // Superclass should override this method to populate *and* update this
-  // menu with the commands they feel confortable exposing to the user.
-  // This implementation calls PopulateAnnotationMenu(), PopulateOptionMenu()
-  // PopulateColorMenu() in that order to add entries relevant to annotations,
-  // general options, and colors.
+  // Populate the context menu that pops up when the user right-clicks on
+  // the render area.
+  // Superclass should override this method to populate this
+  // menu with the commands they feel comfortable exposing to the user.
+  // This implementation is actually split into several methods to help
+  // organizing the menu into several categories. It calls, in that order:
+  // - PopulateContextMenuWithInteractionEntries(): interaction mode
+  // - PopulateContextMenuWithAnnotationEntries(): annotations, 2d text
+  // - PopulateContextMenuWithOptionEntries(): misc. options
+  // - PopulateContextMenuWithCameraEntries(): camera, change viewpoints
+  // - PopulateContextMenuWithColorEntries(): background color, etc.
+  // Each method is passed a pointer to the context menu.
+  // A menu separator is added automatically between each non-empty section.
   virtual void PopulateContextMenu(vtkKWMenu*);
-  virtual void PopulateAnnotationMenu(vtkKWMenu*);
-  virtual void PopulateOptionMenu(vtkKWMenu*) {};
-  virtual void PopulateColorMenu(vtkKWMenu*);
+  virtual void PopulateContextMenuWithInteractionEntries(vtkKWMenu*) {};
+  virtual void PopulateContextMenuWithAnnotationEntries(vtkKWMenu*);
+  virtual void PopulateContextMenuWithOptionEntries(vtkKWMenu*) {};
+  virtual void PopulateContextMenuWithCameraEntries(vtkKWMenu*);
+  virtual void PopulateContextMenuWithColorEntries(vtkKWMenu*);
 
   // Description:
   // Update the render window interactor size
