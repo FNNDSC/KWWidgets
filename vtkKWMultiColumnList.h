@@ -881,6 +881,11 @@ public:
   // or the cell contents to be updated). Also note that a new checkbutton
   // instance will be created each time you sort its column (by design of
   // the third-party tablelist Tk widget used under the hood).
+  // WARNING: do NOT use GetCellWindowAsCheckButton and set any value on it;
+  // anytime the table is sorted, a new checkbutton is recreated automatically
+  // by calling the corresponding CellWindowCommand; therefore, any value
+  // you may have set will be lost. The widget itself is just a representation
+  // of the value inside a cell (here, a boolean).
   virtual void SetCellWindowCommandToCheckButton(int row_index, int col_index);
   virtual vtkKWCheckButton *GetCellWindowAsCheckButton(
     int row_index, int col_index);
@@ -891,6 +896,11 @@ public:
   // similar items may be grouped and added in a pull down list. This also
   // prevents overcrowding the Multi-column list by having things hidden in a 
   // combo box.
+  // WARNING: do NOT use GetCellWindowAsComboBox and set any value on it;
+  // anytime the table is sorted, a new combo box is recreated automatically
+  // by calling the corresponding CellWindowCommand; therefore, any value
+  // you may have set will be lost. The widget itself is just a representation
+  // of the value inside a cell.
   virtual void SetCellWindowCommandToComboBox(int row_index, int col_index);
   virtual void SetCellWindowCommandToComboBoxWithValues(
     int row_index, int col_index, int nb_values, const char *values[]);
@@ -923,6 +933,11 @@ public:
   // Set UseBalloonHelpStringInCellColorButton to On to set the color button
   // balloon help string automatically (it will be set to display the
   // color in different color space). Off by default for performance reasons.
+  // WARNING: do NOT use GetCellWindowAsFrame and set any value on it;
+  // anytime the table is sorted, a new frame is recreated automatically
+  // by calling the corresponding CellWindowCommand; therefore, any value
+  // you may have set will be lost. The widget itself is just a representation
+  // of the value inside a cell (here, a color).
   virtual void SetCellWindowCommandToColorButton(int row_index, int col_index);
   virtual vtkKWFrame* GetCellWindowAsFrame(int row_index, int col_index);
   vtkBooleanMacro(UseBalloonHelpStringInCellColorButton, int);
@@ -934,6 +949,11 @@ public:
   // to automatically display a LoadSaveButton with ChooseDirectoryOn
   // in the cell. The selected directory of the button is interpreted 
   // directly from the text in the cell, as set by SetCellText for example.  
+  // WARNING: do NOT use GetCellWindowAsPickDirectoryButton and set any value
+  // on it; anytime the table is sorted, a new directory button is recreated
+  // automatically by calling the corresponding CellWindowCommand; therefore, 
+  // any value you may have set will be lost. The widget itself is just a
+  // representation of the value inside a cell (here, a filename).
   virtual void SetCellWindowCommandToPickDirectoryButton(
     int row_index, int col_index);
   virtual vtkKWLoadSaveButton* GetCellWindowAsPickDirectoryButton(

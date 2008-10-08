@@ -40,7 +40,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.97 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.98 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -4241,11 +4241,11 @@ int vtkKWMultiColumnList::SetCellConfigurationOption(
     return 0;
     }
 
-  //  const char *res = this->Script("%s cellconfigure %d,%d %s {%s}", 
-  this->Script("tablelist::doCellConfig %d %d %s %s {%s}", 
-               row_index, col_index, this->GetWidgetName(), option, value);
-
 #if 0
+  const char *res = 
+    this->Script("%s cellconfigure %d,%d %s {%s}", 
+                 this->GetWidgetName(), row_index, col_index, option, value);
+
   // 'configure' is not supposed to return anything, so let's assume
   // any output is an error
 
@@ -4255,6 +4255,9 @@ int vtkKWMultiColumnList::SetCellConfigurationOption(
       row_index, col_index, option, res);
     return 0;
     }
+#else
+  this->Script("tablelist::doCellConfig %d %d %s %s {%s}", 
+               row_index, col_index, this->GetWidgetName(), option, value);
 #endif
 
   return 1;
