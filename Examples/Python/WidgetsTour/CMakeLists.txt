@@ -30,27 +30,23 @@ set(EXE_SRCS "${EXE_NAME}.py")
 # KWWidgets, you can most likely omit this section, unless you want to 
 # install your scripts right where KWWidgets is already installed.
 
-if(KWWidgets_BUILD_EXAMPLES)
-  install_files(
-    "${KWWidgets_INSTALL_DATA_DIR}/Examples/Python/${PROJECT_NAME}"
-    .py ${EXE_SRCS})
-endif(KWWidgets_BUILD_EXAMPLES)
+install_files(
+  "${KWWidgets_INSTALL_DATA_DIR}/Examples/Python/${PROJECT_NAME}"
+  .py ${EXE_SRCS})
 
 # Install all individual widgets examples. They are used by the executable
 # to display the C++ and Python source code side-by-side.
 
-if(KWWidgets_BUILD_EXAMPLES)
-  file(GLOB WIDGETS_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/Widgets/*.py")
+file(GLOB WIDGETS_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/Widgets/*.py")
+install_files(
+  "${KWWidgets_INSTALL_DATA_DIR}/Examples/Python/${PROJECT_NAME}/Widgets" 
+  .py ${WIDGETS_SRCS})
+if(KWWidgets_BUILD_VTK_WIDGETS)
+  file(GLOB WIDGETS_VTK_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/Widgets/VTK/*.py")
   install_files(
-    "${KWWidgets_INSTALL_DATA_DIR}/Examples/Python/${PROJECT_NAME}/Widgets" 
-    .py ${WIDGETS_SRCS})
-  if(KWWidgets_BUILD_VTK_WIDGETS)
-    file(GLOB WIDGETS_VTK_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/Widgets/VTK/*.py")
-    install_files(
-      "${KWWidgets_INSTALL_DATA_DIR}/Examples/Python/${PROJECT_NAME}/Widgets/VTK" 
-      .py ${WIDGETS_VTK_SRCS})
-  endif(KWWidgets_BUILD_VTK_WIDGETS)
-endif(KWWidgets_BUILD_EXAMPLES)
+    "${KWWidgets_INSTALL_DATA_DIR}/Examples/Python/${PROJECT_NAME}/Widgets/VTK" 
+    .py ${WIDGETS_VTK_SRCS})
+endif(KWWidgets_BUILD_VTK_WIDGETS)
 
 # Register this example as a test. Our script supports a --test
 # configuration option so that it can be run non-interactively as a test.

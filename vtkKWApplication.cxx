@@ -103,7 +103,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.338 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.339 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1529,11 +1529,10 @@ void vtkKWApplication::DisplayHelpDialog(vtkKWTopLevel* master)
   if (is_local && 
       !vtksys::SystemTools::FileExists(this->HelpDialogStartingPage))
     {
-    this->FindInstallationDirectory();
-    if (this->InstallationDirectory)
+    if (this->GetInstallationDirectory())
       {
       vtksys_stl::string try_file;
-      helplink = this->InstallationDirectory;
+      helplink = this->GetInstallationDirectory();
       helplink += "/";
 
       try_file = helplink + this->HelpDialogStartingPage;
@@ -1718,8 +1717,7 @@ void vtkKWApplication::AddAboutText(ostream &os)
     }
   os << endl;
 
-  this->FindInstallationDirectory();
-  if (this->InstallationDirectory)
+  if (this->GetInstallationDirectory())
     {
     os << "Installation directory: " 
        << this->GetInstallationDirectory() << endl;
@@ -2261,11 +2259,10 @@ int vtkKWApplication::GetCheckForUpdatesPath(ostream &
   )
 {
 #ifdef _WIN32
-  this->FindInstallationDirectory();
-  if (this->InstallationDirectory)
+  if (this->GetInstallationDirectory())
     {
     vtksys_ios::ostringstream upd;
-    upd << this->InstallationDirectory << "/WiseUpdt.exe";
+    upd << this->GetInstallationDirectory() << "/WiseUpdt.exe";
     int res = vtksys::SystemTools::FileExists(upd.str().c_str());
     if (res)
       {
@@ -2794,6 +2791,16 @@ int vtkKWApplication::IsDialogUp()
 }
 
 //----------------------------------------------------------------------------
+const char* vtkKWApplication::GetInstallationDirectory()
+{
+  if (!this->InstallationDirectory)
+    {
+    this->FindInstallationDirectory();
+    }
+  return this->InstallationDirectory;
+}
+
+//----------------------------------------------------------------------------
 void vtkKWApplication::FindInstallationDirectory()
 {
   const char *nameofexec = Tcl_GetNameOfExecutable();
@@ -3124,7 +3131,7 @@ void vtkKWApplication::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "SplashScreenVisibility: " << (this->SplashScreenVisibility ? "on":"off") << endl;
   os << indent << "PromptBeforeExit: " << (this->GetPromptBeforeExit() ? "on":"off") << endl;
   os << indent << "InstallationDirectory: " 
-     << (this->InstallationDirectory ? InstallationDirectory : "None") << endl;
+     << (this->GetInstallationDirectory() ? this->GetInstallationDirectory() : "None") << endl;
   os << indent << "UserDataDirectory: " 
      << (this->UserDataDirectory ? UserDataDirectory : "None") << endl;
   os << indent << "SaveUserInterfaceGeometry: " 

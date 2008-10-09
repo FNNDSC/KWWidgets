@@ -77,14 +77,14 @@ if(NOT KWWidgets_SOURCE_DIR)
   kwwidgets_copy_tcl_tk_support_files("${PROJECT_BINARY_DIR}/lib")
 endif(NOT KWWidgets_SOURCE_DIR)
 
-# Install the example target. If you are using this CMakeLists.txt file
-# to create your own application based on KWWidgets, you can most likely 
-# omit this section or change the installation directory, unless you want
-# to install your application right where KWWidgets is already installed.
+# Install the example target. 
+# If we are not building from the KWWidgets directory, install the Tcl/Tk
+# support files as well.
 
-if(KWWidgets_BUILD_EXAMPLES)
-  install_targets(${KWWidgets_INSTALL_BIN_DIR} ${EXE_NAME})
-endif(KWWidgets_BUILD_EXAMPLES)
+install_targets(${KWWidgets_INSTALL_BIN_DIR} ${EXE_NAME})
+if(NOT KWWidgets_SOURCE_DIR)
+  kwwidgets_install_tcl_tk_support_files("/lib")
+endif(NOT KWWidgets_SOURCE_DIR)
 
 # Register this example as a test. Our executable supports a --test
 # configuration option so that it can be run non-interactively as a test.

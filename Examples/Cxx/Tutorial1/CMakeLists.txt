@@ -51,3 +51,12 @@ include("${KWWidgets_CMAKE_DIR}/KWWidgetsTclTkMacros.cmake")
 if(NOT KWWidgets_SOURCE_DIR)
   kwwidgets_copy_tcl_tk_support_files("${PROJECT_BINARY_DIR}/lib")
 endif(NOT KWWidgets_SOURCE_DIR)
+
+# Install the example target. 
+# If we are not building from the KWWidgets directory, install the Tcl/Tk
+# support files as well.
+
+install_targets(${KWWidgets_INSTALL_BIN_DIR} ${EXE_NAME})
+if(NOT KWWidgets_SOURCE_DIR)
+  kwwidgets_install_tcl_tk_support_files("/lib")
+endif(NOT KWWidgets_SOURCE_DIR)

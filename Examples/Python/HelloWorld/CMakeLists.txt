@@ -30,11 +30,9 @@ set(EXE_SRCS "${EXE_NAME}.py")
 # KWWidgets, you can most likely omit this section, unless you want to 
 # install your scripts right where KWWidgets is already installed.
 
-if(KWWidgets_BUILD_EXAMPLES)
-  install_files(
-    "${KWWidgets_INSTALL_DATA_DIR}/Examples/Python/${PROJECT_NAME}"
-    .py ${EXE_SRCS})
-endif(KWWidgets_BUILD_EXAMPLES)
+install_files(
+  "${KWWidgets_INSTALL_DATA_DIR}/Examples/Python/${PROJECT_NAME}"
+  .py ${EXE_SRCS})
 
 # Register this example as a test. Our script supports a --test
 # configuration option so that it can be run non-interactively as a test.

@@ -182,7 +182,7 @@ public:
   // Description:
   // Set/Get the directory in which the application is supposed
   // to be installed. 
-  vtkGetStringMacro(InstallationDirectory);
+  virtual const char *GetInstallationDirectory();
   vtkSetStringMacro(InstallationDirectory);
   
   // Description:
@@ -502,11 +502,6 @@ protected:
   virtual void DoOneTclEvent();
 
   // Description:
-  // Application installation directory
-  char *InstallationDirectory;
-  virtual void FindInstallationDirectory();
-
-  // Description:
   // User data directory
   char *UserDataDirectory;
 
@@ -676,6 +671,11 @@ private:
   // Description:
   // Release mode
   int ReleaseMode;
+
+  // Description:
+  // Application installation directory
+  char *InstallationDirectory;
+  virtual void FindInstallationDirectory();
 
   vtkKWApplication(const vtkKWApplication&);   // Not implemented.
   void operator=(const vtkKWApplication&);  // Not implemented.

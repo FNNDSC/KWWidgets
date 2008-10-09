@@ -1,4 +1,4 @@
-if(KWWidgets_BUILD_EXAMPLES)
+if(KWWidgets_BUILD_EXAMPLES OR KWWidgets_BUILD_TESTING)
   file(GLOB PNG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.png")
   install_files("${KWWidgets_INSTALL_DATA_DIR}/Examples/Resources" FILES ${PNG_FILES})
-endif(KWWidgets_BUILD_EXAMPLES)
+endif(KWWidgets_BUILD_EXAMPLES OR KWWidgets_BUILD_TESTING)

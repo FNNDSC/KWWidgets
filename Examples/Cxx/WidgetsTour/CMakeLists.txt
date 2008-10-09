@@ -126,28 +126,67 @@ if(NOT KWWidgets_SOURCE_DIR)
   kwwidgets_copy_tcl_tk_support_files("${PROJECT_BINARY_DIR}/lib")
 endif(NOT KWWidgets_SOURCE_DIR)
 
-# Install the example target. If you are using this CMakeLists.txt file
-# to create your own application based on KWWidgets, you can most likely 
-# omit this section or change the installation directory, unless you want
-# to install your application right where KWWidgets is already installed.
+# Install the example target. 
+# If we are not building from the KWWidgets directory, install the Tcl/Tk
+# support files as well.
 
-if(KWWidgets_BUILD_EXAMPLES)
-  install_targets(${KWWidgets_INSTALL_BIN_DIR} ${EXE_NAME})
-endif(KWWidgets_BUILD_EXAMPLES)
+install_targets(${KWWidgets_INSTALL_BIN_DIR} ${EXE_NAME})
+if(NOT KWWidgets_SOURCE_DIR)
+  kwwidgets_install_tcl_tk_support_files("/lib")
+endif(NOT KWWidgets_SOURCE_DIR)
 
 # Install all individual widgets examples. They are used by the executable
 # to display the C++ and Tcl source code side-by-side.
 
-if(KWWidgets_BUILD_EXAMPLES)
+install_files(
+  "${KWWidgets_INSTALL_DATA_DIR}/Examples/Cxx/${PROJECT_NAME}/Widgets"
+  .cxx ${WIDGETS_SRCS})
+if(KWWidgets_BUILD_VTK_WIDGETS)
   install_files(
-    "${KWWidgets_INSTALL_DATA_DIR}/Examples/Cxx/${PROJECT_NAME}/Widgets"
-    .cxx ${WIDGETS_SRCS})
-  if(KWWidgets_BUILD_VTK_WIDGETS)
-    install_files(
-      "${KWWidgets_INSTALL_DATA_DIR}/Examples/Cxx/${PROJECT_NAME}/Widgets/VTK"
-      .cxx ${WIDGETS_VTK_SRCS})
-  endif(KWWidgets_BUILD_VTK_WIDGETS)
-endif(KWWidgets_BUILD_EXAMPLES)
+    "${KWWidgets_INSTALL_DATA_DIR}/Examples/Cxx/${PROJECT_NAME}/Widgets/VTK"
+    .cxx ${WIDGETS_VTK_SRCS})
+endif(KWWidgets_BUILD_VTK_WIDGETS)
+
+# If we are not building from the KWWidgets directory, install the Tcl
+# and Python example files as well.
+
+if(NOT KWWidgets_SOURCE_DIR AND KWWidgets_EXAMPLES_DIR)
+  file(GLOB TCL_FILES 
+    "${KWWidgets_EXAMPLES_DIR}/Tcl/${PROJECT_NAME}/Widgets/*.tcl")
+  install_files(
+    "${KWWidgets_INSTALL_DATA_DIR}/Examples/Tcl/${PROJECT_NAME}/Widgets"
+    FILES ${TCL_FILES})
+  file(GLOB TCL_FILES 
+    "${KWWidgets_EXAMPLES_DIR}/Tcl/${PROJECT_NAME}/Widgets/VTK/*.tcl")
+  install_files(
+    "${KWWidgets_INSTALL_DATA_DIR}/Examples/Tcl/${PROJECT_NAME}/Widgets/VTK"
+    FILES ${TCL_FILES})
+  file(GLOB PYTHON_FILES 
+    "${KWWidgets_EXAMPLES_DIR}/Python/${PROJECT_NAME}/Widgets/*.py")
+  install_files(
+    "${KWWidgets_INSTALL_DATA_DIR}/Examples/Python/${PROJECT_NAME}/Widgets"
+    FILES ${PYTHON_FILES})
+  file(GLOB PYTHON_FILES 
+    "${KWWidgets_EXAMPLES_DIR}/Python/${PROJECT_NAME}/Widgets/VTK/*.py")
+  install_files(
+    "${KWWidgets_INSTALL_DATA_DIR}/Examples/Python/${PROJECT_NAME}/Widgets/VTK"
+    FILES ${PYTHON_FILES})
+endif(NOT KWWidgets_SOURCE_DIR AND KWWidgets_EXAMPLES_DIR)
+
+# If we are not building from the KWWidgets directory, install the common
+# data as well.
+
+if(NOT KWWidgets_SOURCE_DIR AND KWWidgets_EXAMPLES_DIR)
+  file(GLOB VTP_FILES "${KWWidgets_EXAMPLES_DIR}/Data/*.vtp")
+  install_files(
+    "${KWWidgets_INSTALL_DATA_DIR}/Examples/Data" FILES ${VTP_FILES})
+  file(GLOB VTI_FILES "${KWWidgets_EXAMPLES_DIR}/Data/*.vti")
+  install_files(
+    "${KWWidgets_INSTALL_DATA_DIR}/Examples/Data" FILES ${VTI_FILES})
+  install_files(
+    "${KWWidgets_INSTALL_DATA_DIR}/Examples/Resources" 
+    FILES "${KWWidgets_EXAMPLES_DIR}/Resources/KWWidgetsSplashScreen.png")
+endif(NOT KWWidgets_SOURCE_DIR AND KWWidgets_EXAMPLES_DIR)
 
 # Register this example as a test. Our executable supports a --test
 # configuration option so that it can be run non-interactively as a test.
