@@ -157,6 +157,12 @@ public:
     IconWarning                   = 170,
     IconWarningMini               = 171,
     IconWindowLevel               = 172,
+
+    IconNuvola48x48ActionsHistory        = 5000,
+    IconNuvola48x48AppsDownloadManager   = 5300,
+    IconNuvola48x48DevicesMouse          = 5600,
+    IconNuvola48x48FilesystemsFolderBlue = 5900,
+
     LastIcon
   };
   //ETX

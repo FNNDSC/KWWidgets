@@ -24,10 +24,11 @@
 #include "vtkPointData.h"
 
 #include "Resources/vtkKWIconResources.h"
+#include "Resources/vtkKWNuvolaIconResources.h"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.51 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.52 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -1162,6 +1163,42 @@ void vtkKWIcon::SetImage(int image)
         image_testtube_width, image_testtube_height,
         image_testtube_pixel_size, 
         image_testtube_length);
+      break;
+
+    case vtkKWIcon::IconNuvola48x48ActionsHistory:
+      this->SetImage(
+        image_Nuvola_48x48_actions_history, 
+        image_Nuvola_48x48_actions_history_width, 
+        image_Nuvola_48x48_actions_history_height,
+        image_Nuvola_48x48_actions_history_pixel_size, 
+        image_Nuvola_48x48_actions_history_length);
+      break;
+
+    case vtkKWIcon::IconNuvola48x48AppsDownloadManager:
+      this->SetImage(
+        image_Nuvola_48x48_apps_download_manager, 
+        image_Nuvola_48x48_apps_download_manager_width, 
+        image_Nuvola_48x48_apps_download_manager_height,
+        image_Nuvola_48x48_apps_download_manager_pixel_size, 
+        image_Nuvola_48x48_apps_download_manager_length);
+      break;
+
+    case vtkKWIcon::IconNuvola48x48DevicesMouse:
+      this->SetImage(
+        image_Nuvola_48x48_devices_mouse, 
+        image_Nuvola_48x48_devices_mouse_width, 
+        image_Nuvola_48x48_devices_mouse_height,
+        image_Nuvola_48x48_devices_mouse_pixel_size, 
+        image_Nuvola_48x48_devices_mouse_length);
+      break;
+
+    case IconNuvola48x48FilesystemsFolderBlue:
+      this->SetImage(
+        image_Nuvola_48x48_filesystems_folder_blue, 
+        image_Nuvola_48x48_filesystems_folder_blue_width, 
+        image_Nuvola_48x48_filesystems_folder_blue_height,
+        image_Nuvola_48x48_filesystems_folder_blue_pixel_size, 
+        image_Nuvola_48x48_filesystems_folder_blue_length);
       break;
     }
 }

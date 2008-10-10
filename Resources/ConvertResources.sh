@@ -1,5 +1,4 @@
-KWConvertImageToHeader --zlib --base64 \
-    vtkKWWindowLayoutResources.h \
+KWConvertImageToHeader --zlib --base64 vtkKWWindowLayoutResources.h \
     KWWindowLayout1x1.png \
     KWWindowLayout1x2.png \
     KWWindowLayout2x1.png \
@@ -8,8 +7,7 @@ KWConvertImageToHeader --zlib --base64 \
     KWWindowLayout3x2.png \
     KWWindowLayout3x3.png 
 
-KWConvertImageToHeader --zlib --base64 \
-    vtkKWIconResources.h \
+KWConvertImageToHeader --zlib --base64 vtkKWIconResources.h \
     angle_tool.png \
     bidimensional_tool.png \
     bounding_box.png \
@@ -128,3 +126,8 @@ KWConvertImageToHeader --zlib --base64 \
     warning_mini.png \
     window_level.png
 
+KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWNuvolaIconResources.h \
+    Nuvola/48x48/actions/history.png \
+    Nuvola/48x48/apps/download_manager.png \
+    Nuvola/48x48/devices/mouse.png \
+    Nuvola/48x48/filesystems/folder_blue.png
