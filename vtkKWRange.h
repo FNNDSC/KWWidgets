@@ -168,6 +168,16 @@ public:
   virtual void SetSlider1Color(double r, double g, double b);
   virtual void SetSlider1Color(double rgb[3])
     { this->SetSlider1Color(rgb[0], rgb[1], rgb[2]); };
+
+  // Description:
+  // Set/Get the (sub) slider scale interaction color. Used when interaction
+  // is performed using the sliders.
+  // IF set to -1, -1, -1: a shade of the widget background color will
+  // be used at runtime.
+  vtkGetVector3Macro(SliderInteractionColor, double);
+  virtual void SetSliderInteractionColor(double r, double g, double b);
+  virtual void SetSliderInteractionColor(double rgb[3])
+    { this->SetSliderInteractionColor(rgb[0], rgb[1], rgb[2]); };
   
   // Description:
   // Set/Get the color of the second slider. 
@@ -350,7 +360,8 @@ public:
   virtual void EnlargeRangeCallback();
   virtual void ShrinkRangeCallback();
   virtual void EntriesUpdateCallback(int i);
-  virtual void StartInteractionCallback(int x, int y);
+  virtual void StartRangeInteractionCallback(int x, int y);
+  virtual void StartSliderInteractionCallback(int slider_idx, int x, int y);
   virtual void EndInteractionCallback();
   virtual void SliderMotionCallback(
     int slider_idx, int x, int y, int shift, int ctrl);
@@ -382,6 +393,7 @@ protected:
   double RangeInteractionColor[3];
   double Slider1Color[3];
   double Slider2Color[3];
+  double SliderInteractionColor[3];
   int   EntriesVisibility;
   int   Entry1Position;
   int   Entry2Position;
@@ -427,6 +439,21 @@ protected:
   // Description:
   // Pack the widget
   virtual void Pack();
+
+  // Description:
+  // Get type of interaction
+  //BTX
+  enum
+  {
+    RangeInteraction,
+    Slider1Interaction,
+    Slider2Interaction
+  };
+
+  // Description:
+  // Start Interactions with the input interaction type
+  // (RangeInteraction, Slider1Interaction, Slider2Interaction)
+  virtual void StartInteraction(int inter_type, int x, int y);
 
   // Description:
   // Get element colors (and shades)

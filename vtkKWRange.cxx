@@ -26,7 +26,7 @@
 #include <vtksys/ios/sstream>
 
 vtkStandardNewMacro( vtkKWRange );
-vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.72 $");
+vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.73 $");
 
 #define VTK_KW_RANGE_MIN_SLIDER_SIZE        2
 #define VTK_KW_RANGE_MIN_THICKNESS          (2*VTK_KW_RANGE_MIN_SLIDER_SIZE+1)
@@ -102,6 +102,10 @@ vtkKWRange::vtkKWRange()
   this->Slider2Color[0]      = -1; // will used a shade of -bg at runtime
   this->Slider2Color[1]      = -1;
   this->Slider2Color[2]      = -1;
+
+  this->SliderInteractionColor[0] = this->RangeInteractionColor[0];
+  this->SliderInteractionColor[1] = this->RangeInteractionColor[1];
+  this->SliderInteractionColor[2] = this->RangeInteractionColor[2];
 
   this->Command             = NULL;
   this->StartCommand        = NULL;
@@ -502,7 +506,7 @@ void vtkKWRange::Bind()
 
     tk_cmd << canv << " bind " <<  VTK_KW_RANGE_RANGE_TAG 
            << " <ButtonPress-1> {" << this->GetTclName() 
-           << " StartInteractionCallback %%x %%y}" << endl;
+           << " StartRangeInteractionCallback %%x %%y}" << endl;
 
     tk_cmd << canv << " bind " <<  VTK_KW_RANGE_RANGE_TAG 
            << " <ButtonRelease-1> {" << this->GetTclName() 
@@ -530,9 +534,15 @@ void vtkKWRange::Bind()
 
     // Sliders
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDERS_TAG 
+    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER1_TAG 
            << " <ButtonPress-1> {" << this->GetTclName() 
-           << " StartInteractionCallback %%x %%y}" << endl;
+           << " StartSliderInteractionCallback " 
+           << vtkKWRange::SliderIndex0 << " %%x %%y}" << endl;
+
+    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER2_TAG 
+           << " <ButtonPress-1> {" << this->GetTclName() 
+           << " StartSliderInteractionCallback " 
+           << vtkKWRange::SliderIndex1 << " %%x %%y}" << endl;
 
     tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDERS_TAG 
            << " <ButtonRelease-1> {" << this->GetTclName() 
@@ -1212,6 +1222,28 @@ void vtkKWRange::SetSlider2Color(double r, double g, double b)
 }
 
 //----------------------------------------------------------------------------
+void vtkKWRange::SetSliderInteractionColor(double r, double g, double b)
+{
+  if ((r == this->SliderInteractionColor[0] &&
+       g == this->SliderInteractionColor[1] &&
+       b == this->SliderInteractionColor[2]) ||
+      r > 1.0 ||
+      g > 1.0 ||
+      b > 1.0)
+    {
+    return;
+    }
+
+  this->SliderInteractionColor[0] = r;
+  this->SliderInteractionColor[1] = g;
+  this->SliderInteractionColor[2] = b;
+
+  this->Modified();
+
+  this->UpdateColors();
+}
+
+//----------------------------------------------------------------------------
 void vtkKWRange::GetColorShade(int type, 
                                double rgb[3], 
                                double &r, double &g, double &b)
@@ -1319,8 +1351,9 @@ void vtkKWRange::GetSliderColor(
   double *rgb, slider_rgb[3];
   if (type == vtkKWRange::BackgroundColor)
     {
-    rgb = (slider_idx == vtkKWRange::SliderIndex0 ? 
+    double* tmprgb = (slider_idx == vtkKWRange::SliderIndex0 ? 
            this->Slider1Color : this->Slider2Color);
+    rgb = (this->InInteraction ? this->SliderInteractionColor : tmprgb);
     }
   else
     {
@@ -2237,7 +2270,26 @@ void vtkKWRange::ShrinkRangeCallback()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWRange::StartInteractionCallback(int x, int y)
+void vtkKWRange::StartRangeInteractionCallback(int x, int y)
+{
+  this->StartInteraction(vtkKWRange::RangeInteraction, x, y);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRange::StartSliderInteractionCallback(int slider_idx,int x, int y)
+{
+  if(slider_idx == vtkKWRange::SliderIndex0)
+    {
+    this->StartInteraction(vtkKWRange::Slider1Interaction, x, y);
+    }
+  else
+    {
+    this->StartInteraction(vtkKWRange::Slider2Interaction, x, y);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWRange::StartInteraction( int inter_type, int x, int y)
 {
   if (this->InInteraction)
     {
@@ -2259,7 +2311,19 @@ void vtkKWRange::StartInteractionCallback(int x, int y)
   this->StartInteractionRange[0] = this->RangeAdjusted[0];
   this->StartInteractionRange[1] = this->RangeAdjusted[1];
 
-  this->UpdateRangeColors();
+  if(inter_type == vtkKWRange::Slider1Interaction)
+    {
+    this->UpdateSliderColors(vtkKWRange::SliderIndex0);
+    }
+  else if(inter_type == vtkKWRange::Slider2Interaction)
+    {
+    this->UpdateSliderColors(vtkKWRange::SliderIndex1);
+    }
+  else
+    {
+    this->UpdateRangeColors();
+    }
+
   this->InvokeStartCommand(this->Range[0], this->Range[1]);
 }
 
@@ -2273,6 +2337,8 @@ void vtkKWRange::EndInteractionCallback()
 
   this->InInteraction = 0;
   this->UpdateRangeColors();
+  this->UpdateSliderColors(vtkKWRange::SliderIndex0);
+  this->UpdateSliderColors(vtkKWRange::SliderIndex1);
   this->InvokeEndCommand(this->Range[0], this->Range[1]);
 }
 
@@ -2556,6 +2622,10 @@ void vtkKWRange::PrintSelf(ostream& os, vtkIndent indent)
      << this->Slider2Color[0] << ", " 
      << this->Slider2Color[1] << ", " 
      << this->Slider2Color[2] << ")" << endl;
+  os << indent << "SliderInteractionColor: ("
+     << this->SliderInteractionColor[0] << ", " 
+     << this->SliderInteractionColor[1] << ", " 
+     << this->SliderInteractionColor[2] << ")" << endl;
   os << indent << "EntriesVisibility: " 
      << (this->EntriesVisibility ? "On" : "Off") << endl;
   os << indent << "Entry1Position: " << this->Entry1Position << endl;
