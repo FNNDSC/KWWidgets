@@ -19,10 +19,10 @@
 #include "vtkKWMenu.h"
 
 #include <vtksys/stl/string>
-#include <vtksys/stl/list>
+#include <vtksys/stl/vector>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWMostRecentFilesManager, "$Revision: 1.19 $");
+vtkCxxRevisionMacro(vtkKWMostRecentFilesManager, "$Revision: 1.20 $");
 vtkStandardNewMacro(vtkKWMostRecentFilesManager );
 
 #define VTK_KW_MRF_REGISTRY_FILENAME_KEYNAME_PATTERN "File%02d"
@@ -51,8 +51,8 @@ public:
       { return (filename && !strcmp(filename, this->FileName.c_str())); }
   };
 
-  typedef vtksys_stl::list<FileEntry*> FileEntriesContainer;
-  typedef vtksys_stl::list<FileEntry*>::iterator FileEntriesContainerIterator;
+  typedef vtksys_stl::vector<FileEntry*> FileEntriesContainer;
+  typedef vtksys_stl::vector<FileEntry*>::iterator FileEntriesContainerIterator;
 
   FileEntriesContainer MostRecentFileEntries;
 };
@@ -148,7 +148,59 @@ void vtkKWMostRecentFilesManager::AddFileInternal(
     entry->Label = label;
     }
 
-  this->Internals->MostRecentFileEntries.push_front(entry);
+  this->Internals->MostRecentFileEntries.insert(
+    this->Internals->MostRecentFileEntries.begin(), entry);
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMostRecentFilesManager::GetNumberOfFiles()
+{
+  return 
+    this->Internals ? (int)this->Internals->MostRecentFileEntries.size() : 0;
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWMostRecentFilesManager::GetNthFileName(int idx)
+{
+  if (!this->Internals || idx < 0 || idx >= this->GetNumberOfFiles())
+    {
+    return NULL;
+    }
+
+  return this->Internals->MostRecentFileEntries[idx]->FileName.c_str();
+}
+
+//----------------------------------------------------------------------------
+vtkObject* vtkKWMostRecentFilesManager::GetNthTargetObject(int idx)
+{
+  if (!this->Internals || idx < 0 || idx >= this->GetNumberOfFiles())
+    {
+    return NULL;
+    }
+
+  return this->Internals->MostRecentFileEntries[idx]->TargetObject;
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWMostRecentFilesManager::GetNthTargetCommand(int idx)
+{
+  if (!this->Internals || idx < 0 || idx >= this->GetNumberOfFiles())
+    {
+    return NULL;
+    }
+
+  return this->Internals->MostRecentFileEntries[idx]->TargetCommand.c_str();
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWMostRecentFilesManager::GetNthLabel(int idx)
+{
+  if (!this->Internals || idx < 0 || idx >= this->GetNumberOfFiles())
+    {
+    return NULL;
+    }
+
+  return this->Internals->MostRecentFileEntries[idx]->Label.c_str();
 }
 
 //----------------------------------------------------------------------------
@@ -434,6 +486,8 @@ void vtkKWMostRecentFilesManager::UpdateMenu()
 { 
   this->PopulateMenu(
     this->Menu, this->MaximumNumberOfFilesInMenu);
+
+  this->InvokeEvent(vtkKWMostRecentFilesManager::MenuHasChangedEvent, NULL);
 }
 
 //----------------------------------------------------------------------------

@@ -61,6 +61,14 @@ public:
     const char *label = NULL);
   
   // Description:
+  // Query the files
+  virtual int GetNumberOfFiles();
+  virtual const char* GetNthFileName(int idx);
+  virtual vtkObject* GetNthTargetObject(int idx);
+  virtual const char* GetNthTargetCommand(int idx);
+  virtual const char* GetNthLabel(int idx);
+
+  // Description:
   // Set/Get the default target object and command.
   // Each most recent file is associated to a target object and a target 
   // command: when a most recent file is invoked (either programmatically or
@@ -151,6 +159,15 @@ public:
   // You do not need to call this method on GetMenu(), the
   // internal menu is updated automatically.
   virtual void PopulateMenu(vtkKWMenu*, int max_nb);
+
+  // Description:
+  // Event list
+  //BTX
+  enum
+  {
+    MenuHasChangedEvent = 24000
+  };
+  //ETX
 
 protected:
   vtkKWMostRecentFilesManager();
