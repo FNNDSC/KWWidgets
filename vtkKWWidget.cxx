@@ -22,13 +22,15 @@
 #include "vtkKWIcon.h"
 #include "vtkKWOptionDataBase.h"
 
+#include "vtkKWWidgetsConfigure.h" // for KWWidgets_USE_TKDND
+
 #include <vtksys/stl/vector>
 #include <vtksys/stl/algorithm>
 #include <vtksys/SystemTools.hxx>
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.155 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.156 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetInternals
@@ -838,8 +840,16 @@ void vtkKWWidget::SetDropFileBinding(vtkObject *object, const char *method)
     {
     char *command = NULL;
     this->SetObjectMethodCommand(&command, object, method);
-    this->Script("dnd bindtarget %s Files <Drop> {%s %%D}",
-                 this->GetWidgetName(), command);
+    if (command && *command)
+      {
+      this->Script("dnd bindtarget %s Files <Drop> {%s %%D}",
+                   this->GetWidgetName(), command);
+      }
+    else
+      {
+      this->Script("dnd bindtarget %s Files <Drop> {}",
+                   this->GetWidgetName());
+      }
     delete [] command;
     }
 #endif
