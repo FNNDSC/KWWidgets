@@ -234,6 +234,7 @@ set(KWWidgets_SRCS
   vtkKWSpinButtons.cxx
   vtkKWSplashScreen.cxx
   vtkKWSplitFrame.cxx
+  vtkKWStartupPageWidget.cxx
   vtkKWStateMachine.cxx
   vtkKWStateMachineCluster.cxx
   vtkKWStateMachineDOTWriter.cxx
@@ -318,16 +319,16 @@ endif(TKTREECTRL_SRCS)
 # Abstract/pure virtual classes
 
 set_source_files_properties(
+  vtkKWClipboardHelper.cxx
   vtkKWMaterialPropertyWidget.cxx
   vtkKWParameterValueFunctionEditor.cxx
   vtkKWParameterValueFunctionInterface.cxx
   vtkKWParameterValueHermiteFunctionEditor.cxx
+  vtkKWRegistryHelper.cxx
   vtkKWStateMachineWriter.cxx
   vtkKWUserInterfaceManager.cxx
   vtkKWWidgetSet.cxx
   vtkKWWidgetWithScrollbars.cxx
-  vtkKWClipboardHelper.cxx
-  vtkKWRegistryHelper.cxx
   ${KWWidgets_UTILS_SRCS}
   ABSTRACT
   )
@@ -816,6 +817,7 @@ endif(NOT KWWidgets_INSTALL_NO_LIBRARIES)
 set(KWWidgets_EXAMPLES_DIR ${KWWidgets_SOURCE_DIR}/Examples)
 
 option(KWWidgets_BUILD_EXAMPLES "Build KWWidgets examples." ${BUILD_EXAMPLES})
+mark_as_advanced(KWWidgets_BUILD_EXAMPLES)
 
 set(KWWidgets_NEED_TO_BUILD_EXAMPLES ${KWWidgets_BUILD_EXAMPLES})
 
@@ -829,7 +831,10 @@ set(default_val 1)
 if(DEFINED KWWidgets_BUILD_TESTING_DEFAULT)
   set(default_val ${KWWidgets_BUILD_TESTING_DEFAULT})
 endif(DEFINED KWWidgets_BUILD_TESTING_DEFAULT)
-option(KWWidgets_BUILD_TESTING "Enable testing in KWWidgets." ${default_val})
+option(KWWidgets_BUILD_TESTING 
+  "Enable testing in KWWidgets (if BUILD_TESTING is ON as well)." 
+  ${default_val})
+mark_as_advanced(KWWidgets_BUILD_TESTING)
 if(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
   enable_testing()
   #SET(BUILDNAME "${PROJECT_NAME}-${BUILDNAME}")
