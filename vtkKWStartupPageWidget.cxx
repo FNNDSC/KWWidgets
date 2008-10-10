@@ -50,7 +50,7 @@ public:
   char HintColor[20];
   char HintShadowColor[20];
 
-  vtkKWStartupPageWidgetInternals::vtkKWStartupPageWidgetInternals() 
+  vtkKWStartupPageWidgetInternals() 
     {
       this->LastRedrawSize[0] = 0;
       this->LastRedrawSize[1] = 0;
