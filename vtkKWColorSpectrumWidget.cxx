@@ -26,7 +26,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorSpectrumWidget );
-vtkCxxRevisionMacro(vtkKWColorSpectrumWidget, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWColorSpectrumWidget, "$Revision: 1.5 $");
 
 #define VTK_KW_COLOR_SPECTRUM_WIDGET_FIXED_FONT "fixed"
 #define VTK_KW_COLOR_SPECTRUM_WIDGET_FIXED_FONT_85 "TkDefaultFont"
@@ -117,7 +117,7 @@ void vtkKWColorSpectrumWidget::CreateWidget()
   
   this->Superclass::CreateWidget();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
   
   double frame_rgb[3], frame_hsv[3];
   this->GetBackgroundColor(&frame_rgb[0], &frame_rgb[1], &frame_rgb[2]);
@@ -218,9 +218,7 @@ void vtkKWColorSpectrumWidget::CreateWidget()
     this->FixedAxisRadioButtonSet->GetWidget(this->GetFixedAxis())->Select();
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
   
   this->Pack();
 
@@ -240,7 +238,7 @@ void vtkKWColorSpectrumWidget::Pack()
   
   this->UnpackChildren();
   
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
   
   if (this->FixedAxisSelectorVisibility)
     {
@@ -260,9 +258,7 @@ void vtkKWColorSpectrumWidget::Pack()
   tk_cmd << "pack " << this->ColorCanvas->GetWidgetName() 
          << " -side left -anchor nw -expand n -fill both" << endl;
   
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -820,7 +816,7 @@ void vtkKWColorSpectrumWidget::UpdateColorCursor()
   const int size = VTK_KW_COLOR_SPECTRUM_WIDGET_CANVAS_SIZE;
   double radius = 5.0;
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
   
   tk_cmd << this->ColorCanvas->GetWidgetName() 
          << " coords " << VTK_KW_COLOR_SPECTRUM_WIDGET_CURSOR_TAG
@@ -836,9 +832,7 @@ void vtkKWColorSpectrumWidget::UpdateColorCursor()
          << (this->InternalColorHSV[2] > 0.5 ? "#000000" : "#c9c9c9")
          << endl;
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------

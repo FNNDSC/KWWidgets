@@ -42,7 +42,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.15 $");
 
 //----------------------------------------------------------------------------
 class vtkKWColorPickerWidgetInternals
@@ -233,7 +233,7 @@ void vtkKWColorPickerWidget::CreateWidget()
 
   this->Superclass::CreateWidget();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
   int i, page_id;
 
   vtkKWIcon *icon = vtkKWIcon::New();
@@ -804,9 +804,7 @@ void vtkKWColorPickerWidget::CreateWidget()
 
   icon->Delete();
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 
   // Update
 
@@ -967,7 +965,7 @@ void vtkKWColorPickerWidget::Pack()
 
   this->UnpackChildren();
 
-  ostrstream tk_cmd;
+  vtksys_ios::ostringstream tk_cmd;
 
   tk_cmd << "pack " << this->SlidersFrame->GetWidgetName()
          << " -padx 2 -pady 2 -side left -anchor nw -expand n -fill y" 
@@ -983,9 +981,7 @@ void vtkKWColorPickerWidget::Pack()
            << endl;
     }
 
-  tk_cmd << ends;
-  this->Script(tk_cmd.str());
-  tk_cmd.rdbuf()->freeze(0);
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
