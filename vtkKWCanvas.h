@@ -121,6 +121,29 @@ public:
   virtual void SetReliefToGroove();
 
   // Description:
+  // Set/add/remove a binding to all items matching a tag in the canvas widget; 
+  // that command is invoked whenever the 'event' is triggered on the tag.
+  // SetBinding will replace any old bindings, whereas AddBinding will
+  // add the binding to the list of bindings already defined for that event.
+  // RemoveBinding can remove a specific binding or all bindings for an event.
+  // The 'object' argument is the object that will have the method called on
+  // it. The 'method' argument is the name of the method to be called and any
+  // arguments in string form. If the object is NULL, the method is still
+  // evaluated as a simple command. 
+  virtual void SetCanvasBinding(
+    const char *tag, const char *event, vtkObject *object, const char *method);
+  virtual void SetCanvasBinding(
+    const char *tag, const char *event, const char *command);
+  virtual const char* GetCanvasBinding(const char *tag, const char *event);
+  virtual void AddCanvasBinding(
+    const char *tag, const char *event, vtkObject *object, const char *method);
+  virtual void AddCanvasBinding(
+    const char *tag, const char *event, const char *command);
+  virtual void RemoveCanvasBinding(const char *tag, const char *event);
+  virtual void RemoveCanvasBinding(
+    const char *tag, const char *event, vtkObject *object, const char *method);
+
+  // Description:
   // Update the "enable" state of the object and its internal parts.
   // Depending on different Ivars (this->Enabled, the application's 
   // Limited Edition Mode, etc.), the "enable" state of the object is updated

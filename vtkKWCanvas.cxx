@@ -38,12 +38,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkKWOptions.h"
 #include "vtkColorTransferFunction.h"
 
+#include <vtksys/SystemTools.hxx>
 #include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCanvas );
-vtkCxxRevisionMacro(vtkKWCanvas, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWCanvas, "$Revision: 1.15 $");
 
 //----------------------------------------------------------------------------
 void vtkKWCanvas::CreateWidget()
@@ -291,6 +292,91 @@ int vtkKWCanvas::AddVerticalRGBGradient(double r1, double g1, double b1,
   int res = this->AddVerticalGradient(ctf, x1, y1, x2, y2, tag);
   ctf->Delete();
   return res;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWCanvas::SetCanvasBinding(
+  const char *tag, const char *event, vtkObject *object, const char *method)
+{
+  if (this->IsCreated())
+    {
+    char *command = NULL;
+    this->SetObjectMethodCommand(&command, object, method);
+    this->Script("%s bind %s %s {%s}", 
+                 this->GetWidgetName(), tag, event, command);
+    delete [] command;
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWCanvas::SetCanvasBinding(
+  const char *tag, const char *event, const char *command)
+{
+  this->SetCanvasBinding(tag, event, NULL, command);
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWCanvas::GetCanvasBinding(const char *tag, const char *event)
+{
+  if (this->IsCreated())
+    {
+    return this->Script("%s bind %s %s", this->GetWidgetName(), tag, event);
+    }
+  return NULL;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWCanvas::AddCanvasBinding(
+  const char *tag, const char *event, vtkObject *object, const char *method)
+{
+  if (this->IsCreated())
+    {
+    char *command = NULL;
+    this->SetObjectMethodCommand(&command, object, method);
+    this->Script("%s bind %s %s {+%s}", 
+                 this->GetWidgetName(), tag, event, command);
+    delete [] command;
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWCanvas::AddCanvasBinding(
+  const char *tag, const char *event, const char *command)
+{
+  this->AddCanvasBinding(tag, event, NULL, command);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWCanvas::RemoveCanvasBinding(
+  const char *tag, const char *event, vtkObject *object, const char *method)
+{
+  if (this->IsCreated())
+    {
+    char *command = NULL;
+    this->SetObjectMethodCommand(&command, object, method);
+
+    // Retrieve the bindings, remove the command, re-assign
+
+    vtksys_stl::string bindings(
+      this->Script("%s bind %s %s", this->GetWidgetName(), tag, event));
+
+    vtksys::SystemTools::ReplaceString(bindings, command, "");
+  
+    this->Script(
+      "%s bind %s %s {%s}", 
+      this->GetWidgetName(), tag, event, bindings.c_str());
+    delete [] command;
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWCanvas::RemoveCanvasBinding(const char *tag, const char *event)
+{
+  if (this->IsCreated())
+    {
+    this->Script("%s bind %s %s {}", 
+                 this->GetWidgetName(), tag, event);
+    }
 }
 
 //----------------------------------------------------------------------------
