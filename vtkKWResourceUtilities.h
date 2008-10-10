@@ -110,19 +110,26 @@ public:
   // buffer. The expected size of the decoded buffer can be found using
   // the _decoded_length field (which should match
   // width * height * pixel_size for images)
+  // If ConvertImageToHeaderOptionAppend is specified, the header file
+  // is not overwritten, but contents is appened to it.
+  // If ConvertImageToHeaderOptionUsePathInName is specified, the full path
+  // to the file is used to generate the var name in the header.
   //BTX
   enum
   {
     ConvertImageToHeaderOptionZlib   = 1,
     ConvertImageToHeaderOptionBase64 = 2,
-    ConvertImageToHeaderOptionUpdate = 4
+    ConvertImageToHeaderOptionUpdate = 4,
+    ConvertImageToHeaderOptionAppend = 8,
+    ConvertImageToHeaderOptionUsePathInName = 16
   };
   //ETX
   static int ConvertImageToHeader(
     const char *header_filename,
     const char **filenames,
     int nb_files,
-    int options);
+    int options = 0,
+    const char *var_prefix = NULL);
 
   // Description:
   // Encode a buffer that using zlib and/or base64.

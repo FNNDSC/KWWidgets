@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWResourceUtilities);
-vtkCxxRevisionMacro(vtkKWResourceUtilities, "$Revision: 1.20 $");
+vtkCxxRevisionMacro(vtkKWResourceUtilities, "$Revision: 1.21 $");
 
 //----------------------------------------------------------------------------
 int vtkKWResourceUtilities::ReadImage(
@@ -341,7 +341,8 @@ int vtkKWResourceUtilities::ConvertImageToHeader(
   const char *header_filename,
   const char **filenames,
   int nb_files,
-  int options)
+  int options,
+  const char *var_prefix)
 {
   // Check parameters
 
@@ -359,6 +360,10 @@ int vtkKWResourceUtilities::ConvertImageToHeader(
     options & vtkKWResourceUtilities::ConvertImageToHeaderOptionZlib;
   int opt_base64 = 
     options & vtkKWResourceUtilities::ConvertImageToHeaderOptionBase64;
+  int opt_append = 
+    options & ConvertImageToHeaderOptionAppend;
+  int opt_use_path_in_name = 
+    options & ConvertImageToHeaderOptionUsePathInName;
 
   // Update only, bail out if the header is more recent than all the files
 
@@ -385,7 +390,12 @@ int vtkKWResourceUtilities::ConvertImageToHeader(
 
   // Open header file
 
-  ofstream out(header_filename, ios::out);
+  int open_mode = ios::out;
+  if (opt_append)
+    {
+    open_mode  |= ios::app;
+    }
+  ofstream out(header_filename, open_mode);
   if (out.fail())
     {
     vtkGenericWarningMacro("Unable to open header file " << header_filename);
@@ -505,28 +515,31 @@ int vtkKWResourceUtilities::ConvertImageToHeader(
    
     // Output the file in the header
 
-    vtksys_stl::string filename_base = 
+    vtksys_stl::string filename_name = 
       vtksys::SystemTools::GetFilenameName(filename);
+    vtksys_stl::string filename_name_wext = 
+      vtksys::SystemTools::GetFilenameWithoutExtension(filename_name);
+    vtksys_stl::string filename_path = 
+      vtksys::SystemTools::GetFilenamePath(filename);
     vtksys_stl::string prefix;
-    
-    if (file_is_image)
+
+    prefix += (file_is_image ? "image_" : "file_");
+    if (var_prefix)
       {
-      prefix = "image_";
-      prefix += 
-        vtksys::SystemTools::GetFilenameWithoutExtension(filename_base);
+      prefix += var_prefix;
       }
-    else
+    if (opt_use_path_in_name)
       {
-      prefix = "file_";
-      vtksys_stl::string filename_base_clean(filename_base);
-      vtksys::SystemTools::ReplaceString(filename_base_clean, ".", "_");
-      vtksys::SystemTools::ReplaceString(filename_base_clean, "-", "_");
-      prefix += filename_base_clean;
+      prefix += filename_path;
+      prefix += '/';
       }
+    prefix += (file_is_image ? filename_name_wext : filename_name);
+
+    prefix = vtksys::SystemTools::MakeCindentifier(prefix.c_str());
     
     out << "/* " << endl
         << " * Resource generated for file:" << endl
-        << " *    " << filename_base.c_str();
+        << " *    " << filename_name.c_str();
 
     if (opt_base64 || opt_zlib)
       {

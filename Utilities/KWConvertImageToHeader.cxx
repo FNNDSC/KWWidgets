@@ -39,6 +39,9 @@ int main(int argc, char **argv)
   int option_update = 0;
   int option_zlib = 0;
   int option_base64 = 0;
+  int option_append = 0;
+  int option_use_path_in_name = 0;
+  vtksys_stl::string var_prefix;
 
   args.Initialize(argc, argv);
   args.SetUnknownArgumentCallback(unknown_argument_handler);
@@ -57,6 +60,21 @@ int main(int argc, char **argv)
     "--base64", vtksys::CommandLineArguments::NO_ARGUMENT, 
     &option_base64, 
     "Convert the image buffer to base64.");
+
+  args.AddArgument(
+    "--append", vtksys::CommandLineArguments::NO_ARGUMENT, 
+    &option_append, 
+    "Append to the header.");
+
+  args.AddArgument(
+    "--use_path_in_name", vtksys::CommandLineArguments::NO_ARGUMENT, 
+    &option_use_path_in_name, 
+    "Use the full path to generate variable names.");
+
+  args.AddArgument(
+    "--var_prefix", vtksys::CommandLineArguments::SPACE_ARGUMENT, 
+    &var_prefix, 
+    "Prefix each variable with a specific string.");
 
   args.Parse();
 
@@ -82,12 +100,17 @@ int main(int argc, char **argv)
       vtkKWResourceUtilities::ConvertImageToHeaderOptionZlib;
     option_base64 *=
       vtkKWResourceUtilities::ConvertImageToHeaderOptionBase64;
+    option_append *=
+      vtkKWResourceUtilities::ConvertImageToHeaderOptionAppend;
+    option_use_path_in_name *=
+      vtkKWResourceUtilities::ConvertImageToHeaderOptionUsePathInName;
    
     cout << "- " << rem_argv[1] << endl;
 
     vtkKWResourceUtilities::ConvertImageToHeader(
       rem_argv[1], (const char **)&rem_argv[2], rem_argc - 2, 
-      option_update | option_zlib | option_base64);
+      option_update | option_zlib | option_base64 | option_append | option_use_path_in_name, 
+      var_prefix.c_str());
     }
 
   delete [] rem_argv;
