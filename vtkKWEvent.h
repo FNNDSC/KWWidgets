@@ -172,6 +172,7 @@ public:
     TransferFunctionsChangingEvent,
     UserInterfaceVisibilityChangedEvent,
     ViewAnnotationChangedEvent,
+    ViewTextLabelChangedEvent,
     ViewSelectedEvent,
     VolumeBackgroundColorChangedEvent,
     VolumeBlendModeChangedEvent,
