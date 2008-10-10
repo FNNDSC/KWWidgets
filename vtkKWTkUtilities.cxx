@@ -46,7 +46,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.98 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.99 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -1320,9 +1320,9 @@ int vtkKWTkUtilities::GetRealActualFont(Tcl_Interp *interp,
 
 //----------------------------------------------------------------------------
 int vtkKWTkUtilities::ChangeFontWeight(Tcl_Interp *interp,
-                                      const char *font, 
-                                      char *new_font, 
-                                      int weight)
+                                       const char *font, 
+                                       int weight,
+                                       char *new_font)
 {
   int res;
 
@@ -1385,7 +1385,7 @@ int vtkKWTkUtilities::ChangeFontWeightToBold(Tcl_Interp *interp,
                                              const char *font, 
                                              char *new_font)
 {
-  return vtkKWTkUtilities::ChangeFontWeight(interp, font, new_font, 1);
+  return vtkKWTkUtilities::ChangeFontWeight(interp, font, 1, new_font);
 }
 
 //----------------------------------------------------------------------------
@@ -1393,7 +1393,7 @@ int vtkKWTkUtilities::ChangeFontWeightToNormal(Tcl_Interp *interp,
                                                const char *font, 
                                                char *new_font)
 {
-  return vtkKWTkUtilities::ChangeFontWeight(interp, font, new_font, 0);
+  return vtkKWTkUtilities::ChangeFontWeight(interp, font, 0, new_font);
 }
 
 //----------------------------------------------------------------------------
@@ -1419,7 +1419,7 @@ int vtkKWTkUtilities::ChangeFontWeight(Tcl_Interp *interp,
 
   // Change the font weight
 
-  if (!vtkKWTkUtilities::ChangeFontWeight(interp, font, new_font, weight))
+  if (!vtkKWTkUtilities::ChangeFontWeight(interp, font, weight, new_font))
     {
     return 0;
     }
@@ -1482,8 +1482,8 @@ int vtkKWTkUtilities::ChangeFontWeightToNormal(vtkKWWidget *widget)
 //----------------------------------------------------------------------------
 int vtkKWTkUtilities::ChangeFontSlant(Tcl_Interp *interp,
                                       const char *font, 
-                                      char *new_font, 
-                                      int slant)
+                                      int slant,
+                                      char *new_font)
 {
   int res;
 
@@ -1545,7 +1545,7 @@ int vtkKWTkUtilities::ChangeFontSlantToItalic(Tcl_Interp *interp,
                                               const char *font, 
                                               char *new_font)
 {
-  return vtkKWTkUtilities::ChangeFontSlant(interp, font, new_font, 1);
+  return vtkKWTkUtilities::ChangeFontSlant(interp, font, 1, new_font);
 }
 
 //----------------------------------------------------------------------------
@@ -1553,7 +1553,7 @@ int vtkKWTkUtilities::ChangeFontSlantToRoman(Tcl_Interp *interp,
                                              const char *font, 
                                              char *new_font)
 {
-  return vtkKWTkUtilities::ChangeFontSlant(interp, font, new_font, 0);
+  return vtkKWTkUtilities::ChangeFontSlant(interp, font, 0, new_font);
 }
 
 //----------------------------------------------------------------------------
@@ -1579,7 +1579,7 @@ int vtkKWTkUtilities::ChangeFontSlant(Tcl_Interp *interp,
 
   // Change the font slant
 
-  if (!vtkKWTkUtilities::ChangeFontSlant(interp, font, new_font, slant))
+  if (!vtkKWTkUtilities::ChangeFontSlant(interp, font, slant, new_font))
     {
     return 0;
     }
@@ -1637,6 +1637,97 @@ int vtkKWTkUtilities::ChangeFontSlantToRoman(vtkKWWidget *widget)
   return vtkKWTkUtilities::ChangeFontSlantToRoman(
     widget->GetApplication()->GetMainInterp(),
     widget->GetWidgetName());
+}
+
+//----------------------------------------------------------------------------
+int vtkKWTkUtilities::ChangeFontSize(Tcl_Interp *interp,
+                                     const char *font, 
+                                     int new_size,
+                                     char *new_font)
+{
+  int res;
+
+  // Update the -size parameter
+
+  char real_font[1024];
+  if (!vtkKWTkUtilities::GetRealActualFont(interp, font, real_font))
+    {
+    vtkGenericWarningMacro(<< "Unable to get real actual font from font! ("
+                           << font << ")");
+    return 0;
+    }
+
+  char script[1024];
+  sprintf(script, 
+          "unset -nocomplain __tmp__; array set __tmp__ \"%s\" ; set __tmp__(-size) %d; array get __tmp__",
+          real_font, new_size);
+  res = Tcl_GlobalEval(interp, script);
+  if (res != TCL_OK)
+    {
+    vtkGenericWarningMacro(<< "Unable to replace -size attribute! ("
+                           << Tcl_GetStringResult(interp) << ")");
+    return 0;
+    }
+  strcpy(new_font, Tcl_GetStringResult(interp));
+  
+  return 1;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWTkUtilities::ChangeFontSize(Tcl_Interp *interp,
+                                     const char *widget,
+                                     int new_size)
+{
+  char font[1024], new_font[1024];
+  
+  int res;
+
+  // Get the font
+
+  vtksys_ios::ostringstream getfont;
+  getfont << widget << " cget -font";
+  res = Tcl_GlobalEval(interp, getfont.str().c_str());
+  if (res != TCL_OK)
+    {
+    vtkGenericWarningMacro(<< "Unable to getfont!");
+    return 0;
+    }
+  strcpy(font, Tcl_GetStringResult(interp));
+
+  // Change the font size
+
+  if (!vtkKWTkUtilities::ChangeFontSize(interp, font, new_size, new_font))
+    {
+    return 0;
+    }
+
+  // Set the font
+
+  vtksys_ios::ostringstream setfont;
+  setfont << widget << " configure -font \"" << new_font << "\"";
+  res = Tcl_GlobalEval(interp, setfont.str().c_str());
+  if (res != TCL_OK)
+    {
+    vtkGenericWarningMacro(<< "Unable to replace font ! ("
+                           << Tcl_GetStringResult(interp) << ")");
+    return 0;
+    }
+  
+  return 1;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWTkUtilities::ChangeFontSize(vtkKWWidget *widget, int new_size)
+{
+  if (!widget || !widget->IsCreated())
+    {
+    return 0;
+    }
+  
+  return vtkKWTkUtilities::ChangeFontSize(
+    widget->GetApplication()->GetMainInterp(),
+    widget->GetWidgetName(), 
+    new_size);
 }
 
 //----------------------------------------------------------------------------
@@ -3024,6 +3115,13 @@ void vtkKWTkUtilities::ProcessPendingEvents(Tcl_Interp *interp)
       vtkGenericWarningMacro(
         << "Unable to process pending events: " <<Tcl_GetStringResult(interp));
       }
+    
+#ifdef _WIN32
+    MSG msg;
+    // Putting this PeekMessage here stops Windows from considering
+    // the application as non-responsive
+    PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+#endif
     }
 }
 
@@ -3046,6 +3144,13 @@ void vtkKWTkUtilities::ProcessIdleTasks(Tcl_Interp *interp)
       vtkGenericWarningMacro(
         << "Unable to process pending events: " <<Tcl_GetStringResult(interp));
       }
+    
+#ifdef _WIN32
+    MSG msg;
+    // Putting this PeekMessage here stops Windows from considering
+    // the application as non-responsive
+    PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+#endif
     }
 }
 

@@ -337,6 +337,22 @@ public:
   static int ChangeFontSlantToRoman(vtkKWWidget *widget);
 
   // Description:
+  // Change the size attribute of a Tk font specification given by 'font'.
+  // The new font specification is copied to 'new_font'. 
+  // It is up to the caller to allocate enough space in 'new_font'.
+  // Return 1 on success, 0 otherwise.
+  static int ChangeFontSize(
+    Tcl_Interp *interp, const char *font, int new_size, char *new_font);
+
+  // Description:
+  // Change the size attribute of a 'widget' -font option.
+  // A convenience method is provided to query a vtkKWWidget directly.
+  // Return 1 on success, 0 otherwise.
+  static int ChangeFontSize(
+    Tcl_Interp *interp, const char *widget, int new_size);
+  static int ChangeFontSize(vtkKWWidget *widget, int new_size);
+
+  // Description:
   // Get the real actual font (i.e. its list of attributes) given a font, 
   // font name, or incomplete font specification.
   // It is up to the caller to allocate enough space in 'real_font'.
@@ -677,13 +693,15 @@ protected:
   //BTX  
   //ETX
 
-  static int ChangeFontWeight(Tcl_Interp *interp, const char *widget, int);
-  static int ChangeFontWeight(Tcl_Interp *interp, 
-                              const char *font, char *new_font, int);
-  static int ChangeFontSlant(Tcl_Interp *interp, const char *widget, int);
-  static int ChangeFontSlant(Tcl_Interp *interp, 
-                             const char *font, char *new_font, int);
-
+  static int ChangeFontWeight(
+    Tcl_Interp *interp, const char *widget, int bold);
+  static int ChangeFontWeight(
+    Tcl_Interp *interp, const char *font, int bold, char *new_font);
+  static int ChangeFontSlant(
+    Tcl_Interp *interp, const char *widget, int italic);
+  static int ChangeFontSlant(
+    Tcl_Interp *interp, const char *font, int italic, char *new_font);
+  
   static const char* EvaluateStringFromArgsInternal(
     Tcl_Interp *interp, vtkObject *obj, const char *format, 
     va_list var_args1, va_list var_args2);
