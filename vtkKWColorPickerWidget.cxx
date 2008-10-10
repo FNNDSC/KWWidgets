@@ -33,6 +33,7 @@
 #include "vtkKWNotebook.h"
 #include "vtkKWRadioButton.h"
 
+#include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 
 #define VTK_KW_COLOR_PICKER_WIDGET_SPECTRUM_TAG 0
@@ -42,7 +43,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.15 $");
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.16 $");
 
 //----------------------------------------------------------------------------
 class vtkKWColorPickerWidgetInternals
