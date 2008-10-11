@@ -491,9 +491,9 @@ void vtkKWStartupPageWidget::Redraw()
   this->Internals->LastRedrawSize[1] = canv_height;
 
   int center_x = canv_width / 2;
-  int x = 0.10 * canv_width;
-  int y = 0.10 * canv_height;
-  int interspace = 0.15 * canv_height;
+  int x = (int)(0.10 * canv_width);
+  int y = (int)(0.10 * canv_height);
+  int interspace = (int)(0.15 * canv_height);
 
   vtksys_ios::ostringstream tk_cmd;
 
@@ -665,7 +665,7 @@ void vtkKWStartupPageWidget::AddSectionToCanvas(
     {
     tk_cmd << canv << " coords " << tag << "icon_id " 
            << x << " " << y - 4 << endl;
-    x += (0.5 * icon->GetWidth()) + 20;
+    x += (int)(0.5 * icon->GetWidth()) + 20;
     }
 
   tk_cmd << canv << " coords " << tag << "text_id " 
