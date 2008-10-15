@@ -51,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.111 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.112 $");
 
 //----------------------------------------------------------------------------
 class vtkKWNotebookInternals
@@ -334,7 +334,7 @@ void vtkKWNotebook::CreateWidget()
   // Create our own balloon help manager
 
   this->TabBalloonHelpManager->SetApplication(this->GetApplication());
-  this->TabBalloonHelpManager->SetDelay(10);
+  this->TabBalloonHelpManager->SetDelay(400);
 
   vtksys_ios::ostringstream cmd;
 
