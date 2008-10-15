@@ -24,13 +24,19 @@
 #include "vtkMath.h"
 #include "vtkObjectFactory.h"
 
+#include <vtksys/SystemTools.hxx>
 #include <vtksys/ios/sstream>
 #include <vtksys/stl/string>
 
 vtkCxxRevisionMacro(vtkKWStartupPageWidget, "1.21");
 vtkStandardNewMacro(vtkKWStartupPageWidget);
 
-#define VTK_KW_SPW_OPEN "opentag"
+#define VTK_KW_SPW_OPEN_TAG        "open_section"
+#define VTK_KW_SPW_DOUBLE_TAG      "double_section"
+#define VTK_KW_SPW_DROP_TAG        "drop_section"
+#define VTK_KW_SPW_MRF_TAG         "mrf_section"
+#define VTK_KW_SPW_MRF_PATTERN_TAG "mrf_item_%d"
+#define VTK_KW_SPW_GRADIENT_TAG    "gradient"
 
 //----------------------------------------------------------------------------
 class vtkKWStartupPageWidgetInternals
@@ -40,10 +46,13 @@ public:
 
   int LastRedrawSize[2];
 
+  vtksys_stl::string BaseFont;
+
   char TextFont[1024];
   char TextColor[20];
   char SelectedTextColor[20];
   char TextShadowColor[20];
+
   char MostRecentFilesFont[1024];
 
   char HintFont[1024];
@@ -87,10 +96,13 @@ vtkKWStartupPageWidget::vtkKWStartupPageWidget()
   this->SupportMostRecentFiles = 1;
   this->SupportOpen            = 1;
 
+  this->MaximumNumberOfMostRecentFiles = 5;
+
   this->OpenIcon            = NULL;
   this->DoubleClickIcon     = NULL;
   this->DropIcon            = NULL;
   this->MostRecentFilesIcon = NULL;
+  this->MostRecentFileIcon = NULL;
 
   this->OpenCommand            = NULL;
   this->DropCommand            = NULL;
@@ -158,6 +170,12 @@ vtkKWStartupPageWidget::~vtkKWStartupPageWidget()
     this->MostRecentFilesIcon->Delete();
     this->MostRecentFilesIcon = NULL;
     }
+
+  if (this->MostRecentFileIcon)
+    {
+    this->MostRecentFileIcon->Delete();
+    this->MostRecentFileIcon = NULL;
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -182,11 +200,16 @@ void vtkKWStartupPageWidget::CreateWidget()
   this->StartupPageCanvas->SetHeight(0);
   this->StartupPageCanvas->SetWidth(0);
   this->StartupPageCanvas->SetBorderWidth(0);
+  this->StartupPageCanvas->SetBackgroundColor(this->GradientColor2);
 
   this->Script("pack %s -fill both -expand 1", 
                this->StartupPageCanvas->GetWidgetName());
 
   // Update
+
+  this->AddCallbackCommandObservers();
+
+  this->SetDropFileBinding(NULL, this->DropCommand);
 
   this->UpdateInternalCanvasBindings();
   this->UpdateInternalCanvasColors();
@@ -233,15 +256,11 @@ void vtkKWStartupPageWidget::RemoveCallbackCommandObservers()
 //----------------------------------------------------------------------------
 void vtkKWStartupPageWidget::UpdateInternalCanvasBindings()
 {
-  this->StartupPageCanvas->AddCanvasBinding(
-    "open", "<ButtonPress-1>", this, "OpenCallback");
-
-  this->SetDropFileBinding(NULL, this->DropCommand);
-
-  this->StartupPageCanvas->AddBinding(
+  this->StartupPageCanvas->SetBinding(
     "<Double-1>", this, "DoubleClickCallback");
 
-  this->AddCallbackCommandObservers();
+  this->StartupPageCanvas->SetBinding(
+    "<Configure>", this, "ConfigureCallback");
 }
 
 //----------------------------------------------------------------------------
@@ -249,24 +268,33 @@ void vtkKWStartupPageWidget::UpdateInternalCanvasFonts()
 {
   Tcl_Interp *interp = this->GetApplication()->GetMainInterp();
 
-  int tcl_major = 0, tcl_minor = 0, tcl_patch_level = 0;
-  Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
+  // This is very clumsy but I don't know how to get the default font
+  // that is used for labels...
 
-  const char *base_font = (tcl_major < 8 || (tcl_major == 8 && tcl_minor < 5)) 
-    ? "fixed" : "TkDefaultFont";
+  if (!this->Internals->BaseFont.size() && this->IsCreated())
+    {
+    vtkKWLabel *temp = vtkKWLabel::New();
+    temp->SetParent(this);
+    temp->Create();
+    this->Internals->BaseFont = temp->GetFont();
+    temp->Delete();
+    }
 
   char base_font_bold[1024];
   vtkKWTkUtilities::ChangeFontWeightToBold(
-    interp, base_font, base_font_bold);
+    interp, this->Internals->BaseFont.c_str(), base_font_bold);
   
   vtkKWTkUtilities::ChangeFontSize(
-    interp, base_font_bold, 14, this->Internals->TextFont);
+    interp, base_font_bold, 14, 
+    this->Internals->TextFont);
   
   vtkKWTkUtilities::ChangeFontSize(
-    interp, base_font, 10, this->Internals->MostRecentFilesFont);
+    interp, this->Internals->BaseFont.c_str(), 10, 
+    this->Internals->MostRecentFilesFont);
 
   vtkKWTkUtilities::ChangeFontSize(
-    interp, base_font, 8, this->Internals->HintFont);
+    interp, this->Internals->BaseFont.c_str(), 8, 
+    this->Internals->HintFont);
 }
 
 //----------------------------------------------------------------------------
@@ -342,6 +370,29 @@ void vtkKWStartupPageWidget::UpdateInternalCanvasIcons()
     this->MostRecentFilesIcon->SetImage(
       vtkKWIcon::IconNuvola48x48ActionsHistory);
     }
+
+  if (!this->MostRecentFileIcon)
+    {
+    this->MostRecentFileIcon = vtkKWIcon::New();
+    this->MostRecentFileIcon->SetImage(
+      vtkKWIcon::IconNuvola22x22FilesystemsFolderBlue);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWStartupPageWidget::SetSupportOpen(int arg)
+{
+  if (this->SupportOpen == arg)
+    {
+    return;
+    }
+
+  this->SupportOpen = arg;
+
+  this->Modified();
+
+  this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_OPEN_TAG);
+  this->Redraw();
 }
 
 //----------------------------------------------------------------------------
@@ -354,6 +405,9 @@ void vtkKWStartupPageWidget::SetOpenIcon(vtkKWIcon *arg)
       this->OpenIcon = vtkKWIcon::New();
       }
     this->OpenIcon->SetImage(arg);
+
+    this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_OPEN_TAG);
+    this->Redraw();
     }
 }
 
@@ -367,7 +421,26 @@ void vtkKWStartupPageWidget::SetOpenIconToPredefinedIcon(int arg)
       this->OpenIcon = vtkKWIcon::New();
       }
     this->OpenIcon->SetImage(arg);
+
+    this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_OPEN_TAG);
+    this->Redraw();
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWStartupPageWidget::SetSupportDoubleClick(int arg)
+{
+  if (this->SupportDoubleClick == arg)
+    {
+    return;
+    }
+
+  this->SupportDoubleClick = arg;
+
+  this->Modified();
+
+  this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_DOUBLE_TAG);
+  this->Redraw();
 }
 
 //----------------------------------------------------------------------------
@@ -380,6 +453,9 @@ void vtkKWStartupPageWidget::SetDoubleClickIcon(vtkKWIcon *arg)
       this->DoubleClickIcon = vtkKWIcon::New();
       }
     this->DoubleClickIcon->SetImage(arg);
+
+    this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_DOUBLE_TAG);
+    this->Redraw();
     }
 }
 
@@ -393,7 +469,26 @@ void vtkKWStartupPageWidget::SetDoubleClickIconToPredefinedIcon(int arg)
       this->DoubleClickIcon = vtkKWIcon::New();
       }
     this->DoubleClickIcon->SetImage(arg);
+
+    this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_DOUBLE_TAG);
+    this->Redraw();
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWStartupPageWidget::SetSupportDrop(int arg)
+{
+  if (this->SupportDrop == arg)
+    {
+    return;
+    }
+
+  this->SupportDrop = arg;
+
+  this->Modified();
+
+  this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_DROP_TAG);
+  this->Redraw();
 }
 
 //----------------------------------------------------------------------------
@@ -406,6 +501,9 @@ void vtkKWStartupPageWidget::SetDropIcon(vtkKWIcon *arg)
       this->DropIcon = vtkKWIcon::New();
       }
     this->DropIcon->SetImage(arg);
+
+    this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_DROP_TAG);
+    this->Redraw();
     }
 }
 
@@ -419,7 +517,26 @@ void vtkKWStartupPageWidget::SetDropIconToPredefinedIcon(int arg)
       this->DropIcon = vtkKWIcon::New();
       }
     this->DropIcon->SetImage(arg);
+
+    this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_DROP_TAG);
+    this->Redraw();
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWStartupPageWidget::SetSupportMostRecentFiles(int arg)
+{
+  if (this->SupportMostRecentFiles == arg)
+    {
+    return;
+    }
+
+  this->SupportMostRecentFiles = arg;
+
+  this->Modified();
+
+  this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_MRF_TAG);
+  this->Redraw();
 }
 
 //----------------------------------------------------------------------------
@@ -432,6 +549,9 @@ void vtkKWStartupPageWidget::SetMostRecentFilesIcon(vtkKWIcon *arg)
       this->MostRecentFilesIcon = vtkKWIcon::New();
       }
     this->MostRecentFilesIcon->SetImage(arg);
+
+    this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_MRF_TAG);
+    this->Redraw();
     }
 }
 
@@ -445,6 +565,41 @@ void vtkKWStartupPageWidget::SetMostRecentFilesIconToPredefinedIcon(int arg)
       this->MostRecentFilesIcon = vtkKWIcon::New();
       }
     this->MostRecentFilesIcon->SetImage(arg);
+
+    this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_MRF_TAG);
+    this->Redraw();
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWStartupPageWidget::SetMostRecentFileIcon(vtkKWIcon *arg)
+{
+  if (arg)
+    {
+    if (!this->MostRecentFileIcon)
+      {
+      this->MostRecentFileIcon = vtkKWIcon::New();
+      }
+    this->MostRecentFileIcon->SetImage(arg);
+
+    this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_MRF_TAG);
+    this->Redraw();
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWStartupPageWidget::SetMostRecentFileIconToPredefinedIcon(int arg)
+{
+  if (arg)
+    {
+    if (!this->MostRecentFileIcon)
+      {
+      this->MostRecentFileIcon = vtkKWIcon::New();
+      }
+    this->MostRecentFileIcon->SetImage(arg);
+
+    this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_MRF_TAG);
+    this->Redraw();
     }
 }
 
@@ -461,6 +616,24 @@ void vtkKWStartupPageWidget::SetMostRecentFilesManager(
   this->Modified();
 
   this->AddCallbackCommandObservers();
+
+  this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_MRF_TAG);
+  this->Redraw();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWStartupPageWidget::SetMaximumNumberOfMostRecentFiles(int _arg)
+{
+  if (this->MaximumNumberOfMostRecentFiles == _arg || _arg < 0)
+    {
+    return;
+    }
+
+  this->MaximumNumberOfMostRecentFiles = _arg;
+  this->Modified();
+
+  this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_MRF_TAG);
+  this->Redraw();
 }
 
 //----------------------------------------------------------------------------
@@ -478,22 +651,30 @@ void vtkKWStartupPageWidget::Redraw()
     return;
     }
 
-  // Too small or same size ?
+  // Too small
 
-  if (canv_width <= 5 || canv_height <= 5 ||
-      (this->Internals->LastRedrawSize[0] == canv_width &&
-       this->Internals->LastRedrawSize[1] == canv_height))
+  if (canv_width <= 5 || canv_height <= 5)
+    {
+    return;
+    }
+
+  // Same size?
+
+#if 0
+  if (this->Internals->LastRedrawSize[0] == canv_width &&
+      this->Internals->LastRedrawSize[1] == canv_height)
     {
     return;
     }
 
   this->Internals->LastRedrawSize[0] = canv_width;
   this->Internals->LastRedrawSize[1] = canv_height;
+#endif
 
   int center_x = canv_width / 2;
   int x = (int)(0.10 * canv_width);
   int y = (int)(0.10 * canv_height);
-  int interspace = (int)(0.15 * canv_height);
+  int interspace = (int)(0.12 * canv_height);
 
   vtksys_ios::ostringstream tk_cmd;
 
@@ -501,16 +682,15 @@ void vtkKWStartupPageWidget::Redraw()
 
   // Gradient
 
-  this->CanvasDeleteTag(canv, "gradient");
-
-  this->StartupPageCanvas->AddHorizontalRGBGradient(
-    this->GradientColor1[0], this->GradientColor1[1], this->GradientColor1[2], 
-    this->GradientColor2[0], this->GradientColor2[1], this->GradientColor2[2], 
-    0, 0, canv_width - 1, canv_height - 1, "gradient");
-
-  this->StartupPageCanvas->SetBackgroundColor(this->GradientColor2);
-    
-  tk_cmd << canv << " lower gradient all" << endl;
+  if (!this->StartupPageCanvas->HasTag(VTK_KW_SPW_GRADIENT_TAG))
+    {
+    this->StartupPageCanvas->AddHorizontalRGBGradient(
+      this->GradientColor1[0],this->GradientColor1[1],this->GradientColor1[2], 
+      this->GradientColor2[0],this->GradientColor2[1],this->GradientColor2[2], 
+      0, 0, canv_width - 1, canv_height - 1, 
+      VTK_KW_SPW_GRADIENT_TAG);
+    tk_cmd << canv << " lower " << VTK_KW_SPW_GRADIENT_TAG << " all" << endl;
+    }
 
   // Open file
 
@@ -524,7 +704,8 @@ void vtkKWStartupPageWidget::Redraw()
       this->Internals->TextFont,
       ks_("...by clicking on this button or by using the \"File -> Open File\" menu."), 
       this->Internals->HintFont,
-      "open");
+      this, "OpenCallback",
+      VTK_KW_SPW_OPEN_TAG);
     y += interspace;
     }
 
@@ -540,7 +721,8 @@ void vtkKWStartupPageWidget::Redraw()
       this->Internals->TextFont,
       ks_("...anywhere in this area to open a file."), 
       this->Internals->HintFont,
-      "doubleclick");
+      NULL, NULL,
+      VTK_KW_SPW_DOUBLE_TAG);
     y += interspace;
     }
 
@@ -556,7 +738,8 @@ void vtkKWStartupPageWidget::Redraw()
       this->Internals->TextFont,
       ks_("...any file in this area to open it."), 
       this->Internals->HintFont,
-      "drop");
+      NULL, NULL,
+      VTK_KW_SPW_DROP_TAG);
     y += interspace;
     }
 
@@ -577,17 +760,81 @@ void vtkKWStartupPageWidget::AddMostRecentFilesSectionToCanvas(
   ostream &tk_cmd, 
   int x, int y)
 {
-  this->AddSectionToCanvas(
-      tk_cmd, 
-      x, y, 
-      this->MostRecentFilesIcon,
-      ks_("Startup Web Page|Open Recent File"), 
-      this->Internals->TextFont,
-      ks_("...by selecting a file below  or by using the \"File -> Open Recent File\" menu."), 
-      this->Internals->HintFont,
-      "recent");
-  
-  
+  if (this->MostRecentFilesManager)
+    {
+    int nb_files = this->MostRecentFilesManager->GetNumberOfFiles();
+    if (nb_files > this->MaximumNumberOfMostRecentFiles)
+      {
+      nb_files = this->MaximumNumberOfMostRecentFiles;
+      }
+
+    if (nb_files)
+      {
+      this->AddSectionToCanvas(
+        tk_cmd, 
+        x, y, 
+        this->MostRecentFilesIcon,
+        ks_("Startup Web Page|Open Recent File"), 
+        this->Internals->TextFont,
+        ks_("...by selecting a file below  or by using the \"File -> Open Recent File\" menu."), 
+        this->Internals->HintFont,
+        NULL, NULL,
+        VTK_KW_SPW_MRF_TAG);
+      x += this->GetHorizontalIncrementFromIcon(this->MostRecentFilesIcon) + 20;
+      y += 50;
+      }
+    
+    char tag[100];
+    int i;
+    for (i = 0; i < nb_files; i++)
+      {
+      const char *filename = this->MostRecentFilesManager->GetNthFileName(i);
+      const char *label = this->MostRecentFilesManager->GetNthLabel(i);
+      vtkObject *target_object = 
+        this->MostRecentFilesManager->GetNthTargetObject(i);
+      if (!target_object)
+        {
+        target_object = 
+          this->MostRecentFilesManager->GetDefaultTargetObject();
+        }
+      const char *target_command = 
+        this->MostRecentFilesManager->GetNthTargetCommand(i);
+      if (!target_command || !*target_command)
+        {
+        target_command = 
+          this->MostRecentFilesManager->GetDefaultTargetCommand();
+        }
+
+      vtksys_stl::string filename_name;
+      if (!label || !*label)
+        {
+        filename_name = vtksys::SystemTools::GetFilenameName(filename);
+        label = filename_name.c_str();
+        }
+      
+      vtksys_stl::string filename_path(
+        vtksys::SystemTools::CropString(
+          vtksys::SystemTools::GetFilenamePath(filename), 60));
+      
+      vtksys_stl::string cmd(target_command);
+      cmd += " {";
+      cmd += filename;
+      cmd += '}';
+
+      sprintf(tag, VTK_KW_SPW_MRF_PATTERN_TAG, i);
+      this->AddSectionToCanvas(
+        tk_cmd, 
+        x, y, 
+        this->MostRecentFileIcon,
+        label, 
+        this->Internals->MostRecentFilesFont,
+        filename_path.c_str(), 
+        this->Internals->HintFont,
+        target_object, cmd.c_str(),
+        tag, VTK_KW_SPW_MRF_TAG);
+      y += 40;
+      }
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -597,85 +844,117 @@ void vtkKWStartupPageWidget::AddSectionToCanvas(
   vtkKWIcon *icon,
   const char *text, const char *text_font, 
   const char *hint, const char *hint_font,
-  const char *tag)
+  vtkObject *object, const char *method,
+  const char *tag, const char *extra_tag)
 {
   const char *canv = this->StartupPageCanvas->GetWidgetName();
 
-  // Open file
-
-  if (!this->CanvasHasTag(canv, tag))
+  const char *tag_prefix = tag;
+  vtksys_stl::string tags(tag);
+  if (extra_tag)
     {
-    tk_cmd << canv << " create text 0 0 -anchor sw"
-           << " -fill " << this->Internals->TextShadowColor
-           << " -text {" << text << "}"
-           << " -font {" << text_font << "}"
-           << " -tags {" << tag << "textshadow_id " << tag << "}" 
-           << endl;
-    tk_cmd << canv << " create text 0 0 -anchor sw"
-           << " -fill " << this->Internals->TextColor
-           << " -text {" << text << "}"
-           << " -font {" << text_font << "}"
-           << " -tags {" << tag << "text_id " << tag << "}" 
-           << endl;
-    tk_cmd << canv << " create text 0 0 -anchor nw"
-           << " -fill " << this->Internals->HintShadowColor
-           << " -text {" << hint << "}"
-           << " -font {" << hint_font << "}"
-           << " -tags {" << tag << "hintshadow_id " << tag << "}" 
-           << endl;
-    tk_cmd << canv << " create text 0 0 -anchor nw"
-           << " -fill " << this->Internals->HintColor
-           << " -text {" << hint << "}"
-           << " -font {" << hint_font << "}"
-           << " -tags {" << tag << "hint_id " << tag << "}" 
-           << endl;
+    tags += ' ';
+    tags += extra_tag;
+    }
 
-    if (icon)
+  // Text
+
+  int has_tag = this->StartupPageCanvas->HasTag(tag);
+
+  if (!has_tag || !this->StartupPageCanvas->HasTag("text"))
+    {
+    tk_cmd 
+      << canv << " create text 0 0 -anchor sw"
+      << " -fill " << this->Internals->TextShadowColor
+      << " -text {" << text << "}"
+      << " -font {" << text_font << "}"
+      << " -tags {" << tag_prefix << "textshadow text " << tags.c_str()<<"}" 
+      << endl;
+    tk_cmd 
+      << canv << " create text 0 0 -anchor sw"
+      << " -fill " << this->Internals->TextColor
+      << " -text {" << text << "}"
+      << " -font {" << text_font << "}"
+      << " -tags {" << tag_prefix << "text text " << tags.c_str() << "}" 
+      << endl;
+    tk_cmd 
+      << canv << " create text 0 0 -anchor nw"
+      << " -fill " << this->Internals->HintShadowColor
+      << " -text {" << hint << "}"
+      << " -font {" << hint_font << "}"
+      << " -tags {" << tag_prefix << "hintshadow text " << tags.c_str()<<"}" 
+      << endl;
+    tk_cmd 
+      << canv << " create text 0 0 -anchor nw"
+      << " -fill " << this->Internals->HintColor
+      << " -text {" << hint << "}"
+      << " -font {" << hint_font << "}"
+      << " -tags {" << tag_prefix << "hint text " << tags.c_str() << "}" 
+      << endl;
+    }
+
+  // Icon
+
+  if (icon && (!has_tag || !this->StartupPageCanvas->HasTag("icon")))
+    {
+    vtksys_stl::string img_name(canv);
+    img_name += tag_prefix;
+    img_name += "icon";
+    if (vtkKWTkUtilities::UpdatePhotoFromIcon(
+          this->GetApplication(), img_name.c_str(), icon))
       {
-      vtksys_stl::string img_name(canv);
-      img_name += tag;
-      img_name += "icon";
-      if (vtkKWTkUtilities::UpdatePhotoFromIcon(
-            this->GetApplication(), img_name.c_str(), icon))
-        {
-        tk_cmd << canv << " create image 0 0 -anchor center"
-               << " -image " << img_name.c_str()
-               << " -tags {" << tag << "icon_id " << tag << "}" 
-               << endl;
-        }
+      tk_cmd 
+        << canv << " create image 0 0 -anchor center"
+        << " -image " << img_name.c_str()
+        << " -tags {" << tag_prefix << "icon icon " << tags.c_str() << "}" 
+        << endl;
       }
+    }
 
-    // Bindings
+  // Bindings
 
+  if (method && !has_tag)
+    {
     vtksys_stl::string command("HighlightSectionCallback ");
-    command += tag;
-
+    command += tag_prefix;
+    
     vtksys_stl::string highlight_command(command);
     highlight_command += " 1";
-    this->StartupPageCanvas->AddCanvasBinding(
-      tag, "<Enter>", this, highlight_command.c_str());
-
+    this->StartupPageCanvas->SetCanvasBinding(
+        tag_prefix, "<Enter>", this, highlight_command.c_str());
+    
     vtksys_stl::string no_highlight_command(command);
     no_highlight_command += " 0";
-    this->StartupPageCanvas->AddCanvasBinding(
-      tag, "<Leave>", this, no_highlight_command.c_str());
+    this->StartupPageCanvas->SetCanvasBinding(
+      tag_prefix, "<Leave>", this, no_highlight_command.c_str());
+    
+    this->StartupPageCanvas->SetCanvasBinding(
+      tag_prefix, "<ButtonPress-1>", object, method);
     }
+
+  // Move items
 
   if (icon)
     {
-    tk_cmd << canv << " coords " << tag << "icon_id " 
+    tk_cmd << canv << " coords " << tag_prefix << "icon " 
            << x << " " << y - 4 << endl;
-    x += (int)(0.5 * icon->GetWidth()) + 20;
+    x += this->GetHorizontalIncrementFromIcon(icon);
     }
 
-  tk_cmd << canv << " coords " << tag << "text_id " 
+  tk_cmd << canv << " coords " << tag_prefix << "text " 
          << x << " " << y << endl
-         << canv << " coords " << tag << "textshadow_id " 
+         << canv << " coords " << tag_prefix << "textshadow " 
          << x + 2 << " " << y + 2 << endl
-         << canv << " coords " << tag << "hint_id " 
+         << canv << " coords " << tag_prefix << "hint " 
          << x << " " << y << endl
-         << canv << " coords " << tag << "hintshadow_id " 
+         << canv << " coords " << tag_prefix << "hintshadow " 
          << x + 2 << " " << y + 2 << endl;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWStartupPageWidget::GetHorizontalIncrementFromIcon(vtkKWIcon *icon)
+{
+  return icon ? ((int)(1.0 * icon->GetWidth()) + 4) : 0;
 }
 
 //----------------------------------------------------------------------------
@@ -686,7 +965,7 @@ void vtkKWStartupPageWidget::HighlightSectionCallback(
   vtksys_stl::string command(canv);
   command += " itemconfigure ";
   command += tag;
-  command += "text_id -fill ";
+  command += "text -fill ";
   command += 
     (flag ? this->Internals->SelectedTextColor : this->Internals->TextColor);
   this->Script(command.c_str());
@@ -714,6 +993,7 @@ void vtkKWStartupPageWidget::RedrawCallback()
     return;
     }
 
+  this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_GRADIENT_TAG);
   this->Redraw();
   this->Internals->ScheduleRedrawTimerId = "";
 }
@@ -740,12 +1020,6 @@ void vtkKWStartupPageWidget::Bind()
     {
     return;
     }
-
-  if (this->StartupPageCanvas && this->StartupPageCanvas->IsAlive())
-    {
-    this->StartupPageCanvas->SetBinding(
-      "<Configure>", this, "ConfigureCallback");
-    }
 }
 
 //----------------------------------------------------------------------------
@@ -755,76 +1029,11 @@ void vtkKWStartupPageWidget::UnBind()
     {
     return;
     }
-
-  if (this->StartupPageCanvas && this->StartupPageCanvas->IsAlive())
-    {
-    this->StartupPageCanvas->RemoveBinding("<Configure>");
-    }
 }
 
 //----------------------------------------------------------------------------
 void vtkKWStartupPageWidget::ConfigureCallback()
 {
-  this->ScheduleRedraw();
-}
-
-//----------------------------------------------------------------------------
-void vtkKWStartupPageWidget::SetSupportOpen(int arg)
-{
-  if (this->SupportOpen == arg)
-    {
-    return;
-    }
-
-  this->SupportOpen = arg;
-
-  this->Modified();
-
-  this->ScheduleRedraw();
-}
-
-//----------------------------------------------------------------------------
-void vtkKWStartupPageWidget::SetSupportDoubleClick(int arg)
-{
-  if (this->SupportDoubleClick == arg)
-    {
-    return;
-    }
-
-  this->SupportDoubleClick = arg;
-
-  this->Modified();
-
-  this->ScheduleRedraw();
-}
-
-//----------------------------------------------------------------------------
-void vtkKWStartupPageWidget::SetSupportDrop(int arg)
-{
-  if (this->SupportDrop == arg)
-    {
-    return;
-    }
-
-  this->SupportDrop = arg;
-
-  this->Modified();
-
-  this->ScheduleRedraw();
-}
-
-//----------------------------------------------------------------------------
-void vtkKWStartupPageWidget::SetSupportMostRecentFiles(int arg)
-{
-  if (this->SupportMostRecentFiles == arg)
-    {
-    return;
-    }
-
-  this->SupportMostRecentFiles = arg;
-
-  this->Modified();
-
   this->ScheduleRedraw();
 }
 
@@ -848,8 +1057,8 @@ void vtkKWStartupPageWidget::SetGradientColor1(
 
   this->Modified();
 
-  this->UpdateInternalCanvasColors();
-  this->ScheduleRedraw();
+  this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_GRADIENT_TAG);
+  this->Redraw();
 }
 
 //----------------------------------------------------------------------------
@@ -872,8 +1081,9 @@ void vtkKWStartupPageWidget::SetGradientColor2(
 
   this->Modified();
 
-  this->UpdateInternalCanvasColors();
-  this->ScheduleRedraw();
+  this->StartupPageCanvas->SetBackgroundColor(this->GradientColor2);
+  this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_GRADIENT_TAG);
+  this->Redraw();
 }
 
 //----------------------------------------------------------------------------
@@ -897,7 +1107,8 @@ void vtkKWStartupPageWidget::SetTextColor(
   this->Modified();
 
   this->UpdateInternalCanvasColors();
-  this->ScheduleRedraw();
+  this->StartupPageCanvas->DeleteTag("text");
+  this->Redraw();
 }
 
 //----------------------------------------------------------------------------
@@ -921,7 +1132,8 @@ void vtkKWStartupPageWidget::SetSelectedTextColor(
   this->Modified();
 
   this->UpdateInternalCanvasColors();
-  this->ScheduleRedraw();
+  this->StartupPageCanvas->DeleteTag("text");
+  this->Redraw();
 }
 
 //----------------------------------------------------------------------------
@@ -945,7 +1157,8 @@ void vtkKWStartupPageWidget::SetHintColor(
   this->Modified();
 
   this->UpdateInternalCanvasColors();
-  this->ScheduleRedraw();
+  this->StartupPageCanvas->DeleteTag("text");
+  this->Redraw();
 }
 
 //----------------------------------------------------------------------------
@@ -1007,28 +1220,6 @@ void vtkKWStartupPageWidget::UpdateEnableState()
 }
 
 //----------------------------------------------------------------------------
-int vtkKWStartupPageWidget::CanvasHasTag(const char *canvas, const char *tag)
-{
-  if (!this->IsCreated() || !canvas || !tag || !*tag)
-    {
-    return 0;
-    }
-  
-  return atoi(this->Script("llength [%s find withtag %s]", canvas, tag));
-}
-
-//----------------------------------------------------------------------------
-void vtkKWStartupPageWidget::CanvasDeleteTag(const char *canvas, const char *tag)
-{
-  if (!this->IsCreated() || !canvas || !tag || !*tag)
-    {
-    return;
-    }
-  
-  this->Script("%s delete %s", canvas, tag);
-}
-
-//----------------------------------------------------------------------------
 void vtkKWStartupPageWidget::ProcessCallbackCommandEvents(vtkObject *caller,
                                                           unsigned long event,
                                                           void *calldata)
@@ -1038,6 +1229,8 @@ void vtkKWStartupPageWidget::ProcessCallbackCommandEvents(vtkObject *caller,
     switch (event)
       {
       case vtkKWMostRecentFilesManager::MenuHasChangedEvent:
+        this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_MRF_TAG);
+        this->Redraw();
         break;
       }
     }
@@ -1057,6 +1250,8 @@ void vtkKWStartupPageWidget::PrintSelf(
   os << indent << "SupportDrop: "<< this->SupportDrop << endl;
   os << indent << "SupportMostRecentFiles: "
      << this->SupportMostRecentFiles << endl;
+  os << indent << "MaximumNumberOfMostRecentFiles: " 
+     << this->MaximumNumberOfMostRecentFiles << endl;
   os << indent << "GradientColor1: (" 
      << this->GradientColor1[0] << ", "
      << this->GradientColor1[1] << ", "

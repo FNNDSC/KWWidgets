@@ -130,9 +130,24 @@ public:
   virtual void SetMostRecentFilesIconToPredefinedIcon(int icon_index);
 
   // Description:
+  // Set/Get the Most Recent File icon (i.e. the icon used for a single
+  // most recent file, not the section itself) using an icon, or the index to 
+  // a predefined icon found in vtkKWIcon.
+  // Note that the Set method does *not* keep a reference to the icon
+  // passed as parameter: it copies the whole icon contents internally.
+  vtkGetObjectMacro(MostRecentFileIcon, vtkKWIcon);
+  virtual void SetMostRecentFileIcon(vtkKWIcon*);
+  virtual void SetMostRecentFileIconToPredefinedIcon(int icon_index);
+
+  // Description:
   // Set/Get the most recent files manager this page should listen to.
   vtkGetObjectMacro(MostRecentFilesManager, vtkKWMostRecentFilesManager);
   virtual void SetMostRecentFilesManager(vtkKWMostRecentFilesManager *mgr);
+
+  // Description:
+  // Set/Get the maximum number of most recent files to display.
+  vtkGetMacro(MaximumNumberOfMostRecentFiles, int);
+  virtual void SetMaximumNumberOfMostRecentFiles(int);
 
   // Description:
   // Specifies commands to associate with the widget. 
@@ -219,10 +234,13 @@ protected:
   int    SupportDrop;
   int    SupportMostRecentFiles;
 
+  int    MaximumNumberOfMostRecentFiles;
+
   vtkKWIcon *OpenIcon;
   vtkKWIcon *DoubleClickIcon;
   vtkKWIcon *DropIcon;
   vtkKWIcon *MostRecentFilesIcon;
+  vtkKWIcon *MostRecentFileIcon;
 
   // Recent files manager
 
@@ -249,11 +267,6 @@ protected:
   virtual void ScheduleRedraw();
 
   // Description:
-  // Look for a tag in a canvas. 
-  virtual int CanvasHasTag(const char *canvas, const char *tag);
-  virtual void CanvasDeleteTag(const char *canvas, const char *tag);
-
-  // Description:
   // Update bindings, fonts, colors, icons
   virtual void UpdateInternalCanvasBindings();
   virtual void UpdateInternalCanvasColors();
@@ -268,7 +281,9 @@ protected:
     vtkKWIcon *icon,
     const char *text, const char *text_font, 
     const char *hint, const char *hint_font, 
-    const char *tag);
+    vtkObject *object, const char *method,
+    const char *tag, const char *extra_tag = NULL);
+
   virtual void AddMostRecentFilesSectionToCanvas(
     ostream &tk_cmd, 
     int x, int y);
@@ -289,6 +304,10 @@ protected:
   // should call the superclass too.
   virtual void ProcessCallbackCommandEvents(
     vtkObject *caller, unsigned long event, void *calldata);
+
+  // Description:
+  // Helpers
+  virtual int GetHorizontalIncrementFromIcon(vtkKWIcon *icon);
   
 private:
   vtkKWStartupPageWidget(const vtkKWStartupPageWidget&); // Not implemented
