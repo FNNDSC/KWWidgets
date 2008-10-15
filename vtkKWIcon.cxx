@@ -22,13 +22,14 @@
 #include "vtkImagePermute.h"
 #include "vtkUnsignedCharArray.h"
 #include "vtkPointData.h"
+#include "vtkMath.h"
 
 #include "Resources/vtkKWIconResources.h"
 #include "Resources/vtkKWNuvolaIconResources.h"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.53 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.54 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -1289,6 +1290,37 @@ void vtkKWIcon::Fade(double factor)
   while (data_ptr < data_ptr_end)
     {
     *data_ptr = (unsigned char)((double)(*data_ptr) * factor);
+    data_ptr += this->PixelSize;
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWIcon::SetHue(double hue)
+{
+  if (!this->Data || 
+      this->Width == 0 || this->Height == 0 || 
+      this->PixelSize < 3)
+    {
+    return;
+    }
+
+  unsigned long data_length = this->Width * this->Height * this->PixelSize;
+  unsigned char *data_ptr = this->Data;
+  const unsigned char *data_ptr_end = this->Data + data_length;
+
+  double h, s, v, r, g, b;
+
+  while (data_ptr < data_ptr_end)
+    {
+    r = (double)data_ptr[0] / 255.0;
+    g = (double)data_ptr[1] / 255.0;
+    b = (double)data_ptr[2] / 255.0;
+    vtkMath::RGBToHSV(r, g, b, &h, &s, &v);
+    h = hue;
+    vtkMath::HSVToRGB(h, s, v, &r, &g, &b);
+    data_ptr[0] = (int)(r * 255.0);
+    data_ptr[1] = (int)(g * 255.0);
+    data_ptr[2] = (int)(b * 255.0);
     data_ptr += this->PixelSize;
     }
 }

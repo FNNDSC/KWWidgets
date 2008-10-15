@@ -250,6 +250,10 @@ public:
   virtual void Fade(double factor);
 
   // Description:
+  // Change the hue to a new hue.
+  virtual void SetHue(double hue);
+
+  // Description:
   // Flatten the image against a color.
   // If the icon has an alpha channel, this blends the image against
   // a 'r', 'g', 'b' background and discards the alpha channel.
