@@ -206,10 +206,6 @@ protected:
   // Get Value given coordinates in Value image
   virtual void GetValueFromCoordinate(int y, double &value);
 
-  // Description:
-  // Look for a tag in a canvas. 
-  virtual int CanvasHasTag(const char *canvas, const char *tag);
-
 private:
   vtkKWHSVColorSelector(const vtkKWHSVColorSelector&); // Not implemented
   void operator=(const vtkKWHSVColorSelector&); // Not implemented

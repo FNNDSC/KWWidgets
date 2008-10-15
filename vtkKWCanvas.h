@@ -85,6 +85,14 @@ public:
                                      const char *tag);
 
   // Description:
+  // Query if the canvas has a tag
+  virtual int HasTag(const char *tag);
+
+  // Description:
+  // Delete a tag in the canvas
+  virtual void DeleteTag(const char *tag);
+
+  // Description:
   // Set/Get the background color of the widget.
   virtual void GetBackgroundColor(double *r, double *g, double *b);
   virtual double* GetBackgroundColor();

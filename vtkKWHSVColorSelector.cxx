@@ -24,7 +24,7 @@
 
 #include <vtksys/ios/sstream>
 
-vtkCxxRevisionMacro(vtkKWHSVColorSelector, "$Revision: 1.23 $");
+vtkCxxRevisionMacro(vtkKWHSVColorSelector, "$Revision: 1.24 $");
 vtkStandardNewMacro(vtkKWHSVColorSelector);
 
 #define VTK_KW_HSV_SEL_POINT_RADIUS_MIN     2
@@ -522,17 +522,6 @@ void vtkKWHSVColorSelector::SetBalloonHelpString(
 }
 
 //----------------------------------------------------------------------------
-int vtkKWHSVColorSelector::CanvasHasTag(const char *canvas, const char *tag)
-{
-  if (!this->IsCreated() || !canvas || !tag || !*tag)
-    {
-    return 0;
-    }
-  
-  return atoi(this->Script("llength [%s find withtag %s]", canvas, tag));
-}
-
-//----------------------------------------------------------------------------
 void vtkKWHSVColorSelector::Redraw()
 {
   this->RedrawHueSatWheelCanvas();
@@ -557,7 +546,7 @@ void vtkKWHSVColorSelector::RedrawHueSatWheelCanvas()
   img_name << this->HueSatWheelCanvas->GetWidgetName() 
            << "." << VTK_KW_HSV_SEL_IMAGE_TAG;
 
-  if (!this->CanvasHasTag(canv, VTK_KW_HSV_SEL_IMAGE_TAG))
+  if (!this->HueSatWheelCanvas->HasTag(VTK_KW_HSV_SEL_IMAGE_TAG))
     {
     vtksys_ios::ostringstream img_name_d;
     img_name_d << this->HueSatWheelCanvas->GetWidgetName()
@@ -746,7 +735,7 @@ void vtkKWHSVColorSelector::UpdateHueSatWheelSelection()
 
   const char *canv = this->HueSatWheelCanvas->GetWidgetName();
 
-  int has_tag = this->CanvasHasTag(canv, VTK_KW_HSV_SEL_SELECTION_TAG);
+  int has_tag = this->HueSatWheelCanvas->HasTag(VTK_KW_HSV_SEL_SELECTION_TAG);
 
   // Remove the cursor, or update its coordinates given the selection
 
@@ -800,7 +789,7 @@ void vtkKWHSVColorSelector::RedrawValueBoxCanvas()
   img_name << this->ValueBoxCanvas->GetWidgetName() 
            << "." << VTK_KW_HSV_SEL_IMAGE_TAG;
 
-  if (!this->CanvasHasTag(canv, VTK_KW_HSV_SEL_IMAGE_TAG))
+  if (!this->ValueBoxCanvas->HasTag(VTK_KW_HSV_SEL_IMAGE_TAG))
     {
     vtksys_ios::ostringstream img_name_d;
     img_name_d << this->ValueBoxCanvas->GetWidgetName() 
@@ -961,7 +950,7 @@ void vtkKWHSVColorSelector::UpdateValueBoxSelection()
 
   const char *canv = this->ValueBoxCanvas->GetWidgetName();
 
-  int has_tag = this->CanvasHasTag(canv, VTK_KW_HSV_SEL_SELECTION_TAG);
+  int has_tag = this->ValueBoxCanvas->HasTag(VTK_KW_HSV_SEL_SELECTION_TAG);
 
   // Delete the cursor or update its coordinates given the selection
 

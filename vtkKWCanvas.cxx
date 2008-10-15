@@ -44,7 +44,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCanvas );
-vtkCxxRevisionMacro(vtkKWCanvas, "$Revision: 1.15 $");
+vtkCxxRevisionMacro(vtkKWCanvas, "$Revision: 1.16 $");
 
 //----------------------------------------------------------------------------
 void vtkKWCanvas::CreateWidget()
@@ -377,6 +377,29 @@ void vtkKWCanvas::RemoveCanvasBinding(const char *tag, const char *event)
     this->Script("%s bind %s %s {}", 
                  this->GetWidgetName(), tag, event);
     }
+}
+
+//----------------------------------------------------------------------------
+int vtkKWCanvas::HasTag(const char *tag)
+{
+  if (!this->IsCreated() || !tag || !*tag)
+    {
+    return 0;
+    }
+  
+  return atoi(this->Script("llength [%s find withtag %s]", 
+                           this->GetWidgetName(), tag));
+}
+
+//----------------------------------------------------------------------------
+void vtkKWCanvas::DeleteTag(const char *tag)
+{
+  if (!this->IsCreated() || !tag || !*tag)
+    {
+    return;
+    }
+  
+  this->Script("%s delete %s", this->GetWidgetName(), tag);
 }
 
 //----------------------------------------------------------------------------
