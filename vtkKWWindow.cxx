@@ -36,7 +36,7 @@
 #include <vtksys/SystemTools.hxx>
 #include <vtksys/ios/sstream> 
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.292 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.293 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindow );
@@ -641,6 +641,7 @@ vtkKWUserInterfaceManager* vtkKWWindow::GetMainUserInterfaceManager()
     this->MainUserInterfaceManager = vtkKWUserInterfaceManagerNotebook::New();
     this->MainUserInterfaceManager->SetNotebook(this->GetMainNotebook());
     this->MainUserInterfaceManager->EnableDragAndDropOn();
+    this->GetMainNotebook()->ShowIconsOn();
     }
 
   if (!this->MainUserInterfaceManager->IsCreated() && this->IsCreated())
