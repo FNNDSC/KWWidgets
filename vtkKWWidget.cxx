@@ -30,7 +30,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.156 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.157 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetInternals
@@ -484,7 +484,8 @@ int vtkKWWidget::HasFocus()
 //----------------------------------------------------------------------------
 void vtkKWWidget::SetBalloonHelpString(const char *str)
 {
-  if (this->BalloonHelpString == NULL && str == NULL)
+  if (this->BalloonHelpString == str ||
+      (this->BalloonHelpString == NULL && str == NULL))
     {
     return;
     }
