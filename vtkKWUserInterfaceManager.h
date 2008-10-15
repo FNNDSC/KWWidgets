@@ -111,8 +111,11 @@ public:
                          const char *title) = 0;
 
   // Description:
-  // Set a page's title
-  virtual void SetPageTitle(int id, const char *new_title) = 0;
+  // Set a page's title, balloon help and icon.
+  virtual void SetPageTitle(int id, const char *title) = 0;
+  virtual void SetPageBalloonHelpString(int id, const char *str) = 0;
+  virtual void SetPageIcon(int id, vtkKWIcon *icon) = 0;
+  virtual void SetPageIconToPredefinedIcon(int id, int icon_index) = 0;
 
   // Description:
   // Retrieve the widget corresponding to a given page reserved by the manager.

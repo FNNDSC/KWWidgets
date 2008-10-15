@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceManagerNotebook);
-vtkCxxRevisionMacro(vtkKWUserInterfaceManagerNotebook, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManagerNotebook, "$Revision: 1.12 $");
 
 //----------------------------------------------------------------------------
 class vtkKWUserInterfaceManagerNotebookInternals
@@ -226,7 +226,7 @@ int vtkKWUserInterfaceManagerNotebook::RemovePage(
 
 //----------------------------------------------------------------------------
 void vtkKWUserInterfaceManagerNotebook::SetPageTitle(
-  int id, const char *new_title)
+  int id, const char *str)
 {
   if (!this->IsCreated())
     {
@@ -234,7 +234,46 @@ void vtkKWUserInterfaceManagerNotebook::SetPageTitle(
     return;
     }
 
-  this->Notebook->SetPageTitle(id, new_title);
+  this->Notebook->SetPageTitle(id, str);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWUserInterfaceManagerNotebook::SetPageBalloonHelpString(
+  int id, const char *str)
+{
+  if (!this->IsCreated())
+    {
+    vtkErrorMacro("Can not set a page's balloon help string if the manager has not been created.");
+    return;
+    }
+
+  this->Notebook->SetPageBalloonHelpString(id, str);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWUserInterfaceManagerNotebook::SetPageIcon(
+  int id, vtkKWIcon *icon)
+{
+  if (!this->IsCreated())
+    {
+    vtkErrorMacro("Can not set a page's icon if the manager has not been created.");
+    return;
+    }
+
+  this->Notebook->SetPageIcon(id, icon);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWUserInterfaceManagerNotebook::SetPageIconToPredefinedIcon(
+  int id, int icon_index)
+{
+  if (!this->IsCreated())
+    {
+    vtkErrorMacro("Can not set a page's icon if the manager has not been created.");
+    return;
+    }
+
+  this->Notebook->SetPageIconToPredefinedIcon(id, icon_index);
 }
 
 //----------------------------------------------------------------------------

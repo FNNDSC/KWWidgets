@@ -99,8 +99,11 @@ public:
   virtual int RemovePage(const char *title);
 
   // Description:
-  // Set a page's title
-  virtual void SetPageTitle(int id, const char *new_title);
+  // Set a page's title, balloon help and icon.
+  virtual void SetPageTitle(int id, const char *title);
+  virtual void SetPageBalloonHelpString(int id, const char *str);
+  virtual void SetPageIcon(int id, vtkKWIcon *icon);
+  virtual void SetPageIconToPredefinedIcon(int id, int icon_index);
 
   // Description:
   // Retrieve the widget corresponding to a given page added to the panel.

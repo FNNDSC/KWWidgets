@@ -37,7 +37,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceManagerDialog);
-vtkCxxRevisionMacro(vtkKWUserInterfaceManagerDialog, "$Revision: 1.22 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManagerDialog, "$Revision: 1.23 $");
 
 //----------------------------------------------------------------------------
 class vtkKWUserInterfaceManagerDialogInternals
@@ -289,15 +289,61 @@ int vtkKWUserInterfaceManagerDialog::RemovePage(
 
 //----------------------------------------------------------------------------
 void vtkKWUserInterfaceManagerDialog::SetPageTitle(
-  int id, const char *new_title)
+  int id, const char *title)
 {
   if (!this->IsCreated())
     {
-    vtkErrorMacro("Can not set a page's title if the manager has not been created.");
+    vtkErrorMacro(
+      "Can not set a page's title if the manager has not been created.");
     return;
     }
 
-  this->Notebook->SetPageTitle(id, new_title);
+  this->Notebook->SetPageTitle(id, title);
+
+  this->PopulateTree();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWUserInterfaceManagerDialog::SetPageBalloonHelpString(
+  int id, const char *str)
+{
+  if (!this->IsCreated())
+    {
+    vtkErrorMacro("Can not set a page's balloon help string if the manager has not been created.");
+    return;
+    }
+
+  this->Notebook->SetPageBalloonHelpString(id, str);
+
+  this->PopulateTree();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWUserInterfaceManagerDialog::SetPageIcon(
+  int id, vtkKWIcon *icon)
+{
+  if (!this->IsCreated())
+    {
+    vtkErrorMacro("Can not set a page's icon if the manager has not been created.");
+    return;
+    }
+
+  this->Notebook->SetPageIcon(id, icon);
+
+  this->PopulateTree();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWUserInterfaceManagerDialog::SetPageIconToPredefinedIcon(
+  int id, int icon_index)
+{
+  if (!this->IsCreated())
+    {
+    vtkErrorMacro("Can not set a page's icon if the manager has not been created.");
+    return;
+    }
+
+  this->Notebook->SetPageIconToPredefinedIcon(id, icon_index);
 
   this->PopulateTree();
 }

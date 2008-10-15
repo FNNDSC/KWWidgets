@@ -19,7 +19,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfacePanel);
-vtkCxxRevisionMacro(vtkKWUserInterfacePanel, "$Revision: 1.18 $");
+vtkCxxRevisionMacro(vtkKWUserInterfacePanel, "$Revision: 1.19 $");
 
 //----------------------------------------------------------------------------
 vtkKWUserInterfacePanel::vtkKWUserInterfacePanel()
@@ -141,7 +141,7 @@ int vtkKWUserInterfacePanel::RemovePage(const char *title)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWUserInterfacePanel::SetPageTitle(int id, const char *new_title)
+void vtkKWUserInterfacePanel::SetPageTitle(int id, const char *title)
 {
   if (this->UserInterfaceManager == NULL)
     {
@@ -150,7 +150,47 @@ void vtkKWUserInterfacePanel::SetPageTitle(int id, const char *new_title)
     return;
     }
 
-  this->UserInterfaceManager->SetPageTitle(id, new_title);
+  this->UserInterfaceManager->SetPageTitle(id, title);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWUserInterfacePanel::SetPageBalloonHelpString(int id, const char *str)
+{
+  if (this->UserInterfaceManager == NULL)
+    {
+    vtkErrorMacro("The UserInterfaceManager manager needs to be set before "
+                  "a page can be set a new balloon help string.");
+    return;
+    }
+
+  this->UserInterfaceManager->SetPageBalloonHelpString(id, str);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWUserInterfacePanel::SetPageIcon(int id, vtkKWIcon *icon)
+{
+  if (this->UserInterfaceManager == NULL)
+    {
+    vtkErrorMacro("The UserInterfaceManager manager needs to be set before "
+                  "a page can be set a new icon.");
+    return;
+    }
+
+  this->UserInterfaceManager->SetPageIcon(id, icon);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWUserInterfacePanel::SetPageIconToPredefinedIcon(
+  int id, int icon_index)
+{
+  if (this->UserInterfaceManager == NULL)
+    {
+    vtkErrorMacro("The UserInterfaceManager manager needs to be set before "
+                  "a page can be set a new icon.");
+    return;
+    }
+
+  this->UserInterfaceManager->SetPageIconToPredefinedIcon(id, icon_index);
 }
 
 //----------------------------------------------------------------------------
