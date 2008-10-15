@@ -103,7 +103,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.339 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.340 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1768,6 +1768,8 @@ void vtkKWApplication::AddAboutCopyrights(ostream &os)
 #ifdef KWWidgets_USE_INTERNATIONALIZATION
   os << "GNU gettext runtime library (LGPL)" << endl;
 #endif
+
+  os << "Nuvola Icon Theme - Copyright (c)  2003-2004  David Vignoni" << endl;
 }
 
 //----------------------------------------------------------------------------

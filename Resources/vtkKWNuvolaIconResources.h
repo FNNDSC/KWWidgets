@@ -1,5 +1,182 @@
 /* 
  * Resource generated for file:
+ *    help.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Nuvola_22x22_actions_help_width          = 22;
+static const unsigned int  image_Nuvola_22x22_actions_help_height         = 22;
+static const unsigned int  image_Nuvola_22x22_actions_help_pixel_size     = 4;
+static const unsigned long image_Nuvola_22x22_actions_help_length         = 1524;
+static const unsigned long image_Nuvola_22x22_actions_help_decoded_length = 1936;
+
+static const unsigned char image_Nuvola_22x22_actions_help[] = 
+  "eNrV1YlPVFcUBvADoZQZyyCtoKjYolCJCCoUU9BBxaqDRYECKtQNRLuZVJtSKyCtYJGtIJ"
+  "tIIQiK1LAUF1YR7ECHUqxVYEBU9rEwSoZFllFZvt6ZSUoD9A/wJTd5ebn55Tv3nNwHgPAK"
+  "LpplQrTyLNGqRCLLc0QW7N00dpPm+2mXFrsVSCx9KsdWeVdOGDkXPuFYpV6nRZE7yDBSjd"
+  "6OJpofSaQXSqS1cbq7PH7SNYtbxOVnZDmdrB87nT+MZBGQWAlElQLfX5nAoeQh8I80gmeV"
+  "Xk7zQi3/dWeHzeAmqFyzuJVLdhZ1/lgix/UmILVqAn4Z3fBNbsUXCS04GC/BV+n9OJwmh9"
+  "uZ5zAUFA+SXoij0tU5NXNeszgDI/fCzpTfJ3BVDCSUyRF4/iGq6qRok/Sis6sf2WUdcAsS"
+  "wzNSgh3h3XAIH4fBxqJh0j1l9X8uxzY9I6xQjrx64MIfwLHz7ejtH8KLFy/xSZQYwRebgY"
+  "lxiGqlsPetx9bAFmw43gHr43JwlqbUEC9Yc5prGmst8Ls3erURSGd5E38dw9cpbRgaGkYz"
+  "y+oZ3gzHoFYUV3dB8XiFi2Fz9AFWH66HxZEeLHAVg7SDPKa6Gu+lnN2dNIC0aiBZ+BLRxX"
+  "J8e0mGwwmPcCD6IXziuyEIbEXmTYnS9U16gGUH62F+sA6L99bD6MAjaC6MKZnqznfME9tH"
+  "v4BNyCDiS+U4fWUQAZf78WWqDPtjpXD4rg0OAQ142NnPtr+Exw8NMN5XB+O9tdB2FELf8z"
+  "Z0LDJkU12TXTd6+RHPQR5SWAf2wC+zD8cuyOCTIMXO0CZcuCFBe5fCHIWw9ilM9v+FJXtq"
+  "wdteCVp/DbNdRdC1zsFU19i9pM82dBj08d+gXR3QP9QOQfBjOIdI8E1qmzLj8MgIckVSrP"
+  "j0LvTda6C1tRxknw+y+wU85wroWGVPc+dtzm1ad3qAuZ0gz1aQ+wPQRw3guNTCO7YZfc/k"
+  "WPb5Hag7VEBdcAu0qURlbrgKWpsNHedKcN9N75vqaponpWw42Q2OF3N3MNO9EeRaC9pSA8"
+  "HJ+6hs6AMJhKAPbrJVDNpYwOpnpl0O1PhZmO30GzTejLo1bc4MI/gW3tXjS489AbmIVabL"
+  "HZBDNRyC7uNMQTcW7K1m+Yr+Y+aCbDPx+uYCaPPZd7UT3tPchZHENf8pjx/YBe09TaDtt0"
+  "EfVkPH4088fvqMbRlASmk3aE3+pLnmZ6ivvQwdpypozIkRE/lzZ3JpbqjRvPW5Pav9u8Dd"
+  "eZedQQU0t4lwpUaGoZFhfHauBWSTp6xdkVNhajuLoGWaMUrkZ0cUQDO6BhFEb4Xw5/JzZC"
+  "uOtkCfzaf6lnK8tu0WDPdVgdYpepSlPE9F7YqcKtN/t8Kc0TU8o3L1wxT3khlnSWLZOy5C"
+  "LPaqgx47i1lsTnlOQmXfdVmPeHZF0NCLucdy2hOdIJUbNN3lLJ9057A7j3dKjd4IdtOcH3"
+  "ONZ35RymZ+nM3nBHdpuoz1vZxZh5jFJbVAmnS3vJL/NMX6Bx1oj9o=";
+
+/* 
+ * Resource generated for file:
+ *    messagebox_info.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Nuvola_22x22_actions_messagebox_info_width          = 22;
+static const unsigned int  image_Nuvola_22x22_actions_messagebox_info_height         = 22;
+static const unsigned int  image_Nuvola_22x22_actions_messagebox_info_pixel_size     = 4;
+static const unsigned long image_Nuvola_22x22_actions_messagebox_info_length         = 1512;
+static const unsigned long image_Nuvola_22x22_actions_messagebox_info_decoded_length = 1936;
+
+static const unsigned char image_Nuvola_22x22_actions_messagebox_info[] = 
+  "eNrV1HtQ1FUUB/Czgu4uqAhhGg9Fs1JTJkJgQBtwlYdam4qQjyZAY8ZR0bQQUViSllVeK/"
+  "IwUzHd0NRAeaZhGaCimIbIS2BBF8wFd2FBQRZW+HaV+Ic16l9/M2d+M3d+v8+ce+45FwDh"
+  "FQyy/24g7A4SzU5h72+J3kkIoBlJhXz7IypTF5l2nJNMy7M9pCYb6TWy2LOBJsWNIKs4Io"
+  "t4ogmxL2JYd2aiHc1MvjvNO6f/09gaiNI1EOd2ISyjCxuOaOARWgtrj0yQZYyCJkYv+F/u"
+  "rOQVXIej3f4JtThZ2o9zFUDybz34Ok2BHan3EHqiHTvPaLH+eC/mbpWD91aKjswlQcO6ti"
+  "n2fIejPdtkSuTVAqduAkkXe5CS1Qjloyd40NyB3cflWJv4EH4Jf2FlUhdctjeDNyXpGZlG"
+  "uZN5tL5rd9Dw+d79EuT4mZlpJf04XPQMuzM6kHVVicHn2IUmLI+6jxUSBRaF1WBh5GNMXy"
+  "sHx1SspHESnp47I9HveT1PlwE/sjwPFeiQcKEb4nOdCE5txC9/tCC7uBlrouuwTKzA4vB6"
+  "uH1VA4eNFbAN7sLY99NBRhGhL3EL3UW1kDHz2BUd9l3QQpLZiR1pbfDfr8Si8Dq4bq+GZ7"
+  "gcH0Y0wC24Fg6bqjBr3W1MC6yH1bISjDCOrBjqjnY8onKP1cB5jxbS808hzevC5lQVgg/L"
+  "kX9ThfxbKlwuV0Mka4Dj5mo4BjHz83LYrCnF6I8KYLnqBkaNj38y1H1t3g9ad7ZMn6nxbv"
+  "AjhJzQIESmhv+++/j+YjPQr2WfaZF6/iGmryuHbWAFpqz5E/zFl0CCHLzuex1ci8Teoa6Z"
+  "y3GtILodhgHNoE8UMFt7D56RTRBKmrAyRg51WwfQ9wQHch7AcnUp3vApwUiPfND8bHDmZ8"
+  "J8+VVwJ+zXc43fO9QqiGqB0TolaFUDyLcGtLwS/KVl8NhVDU3HY+Y+Rnz6fXBcfwUtOM/y"
+  "zAW5ZWKEWwbMhEUwNInpHOpypkqvOW+thNWWFpA3M32qmHsHtPAGXLaVM5flq2tH9Jl7IO"
+  "fcf8ws0NzTGLUwGyaCfHAMRDV6/TApdoO1+1k4RbaB413JzDLQ0lvMLcZc5ra1a4AeDfae"
+  "YntxYp4rm+MPWG85p2GMsBC8N48yJFSs59pIDTnWcYo5m9h5bGkELSkBCa+zf3+H08bbzG"
+  "1FX7dqwJ19GjTvJ+bLwPPMwxgBq4uBqJU44eP03MlSdi/FuPLfPqCz/6IGVuvrWK4FmBZw"
+  "E2eva9Cv64Suuw1N6qfw3l0OcjwBrkcuxnoVwsAkpo/l6kMckf4cT5IOxHhJEH9qsm5mwC"
+  "1MDqyG3ZfVCEyuh29UJXzEd+AfVwWvyLswFl7GmPn5g6aESETP419dS3afmkZ5kalEaT7n"
+  "JCw+LsJYYTGMllwB17MQhoJL4DrnvagnOyc1M1cPmv/pmu8lMokyIm54CMdYXM5lc8SzSO"
+  "rlTkzsHcl6iWMQUU208xuiXWZEYTSc+6rE337Kk60=";
+
+/* 
+ * Resource generated for file:
+ *    designer.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Nuvola_22x22_apps_designer_width          = 22;
+static const unsigned int  image_Nuvola_22x22_apps_designer_height         = 22;
+static const unsigned int  image_Nuvola_22x22_apps_designer_pixel_size     = 4;
+static const unsigned long image_Nuvola_22x22_apps_designer_length         = 1428;
+static const unsigned long image_Nuvola_22x22_apps_designer_decoded_length = 1936;
+
+static const unsigned char image_Nuvola_22x22_apps_designer[] = 
+  "eNqdlGtMk2cUxw+zhYLUKM5RLpH7zQFSaOmN0hK5lstaqISCLUWkUC6FFYGCRpBhSwbJ5D"
+  "a2sJARCRKyMFhEE7c49cuYCku2ZCwqy5aRQMIXYjYCEXd2SpSwhW3Uk/yT9z3n//6e5znn"
+  "zSMSiUEiSYCMjByIieGCUCgGkUgCYrEc0tNzgMcT0bMMpNKkHYlECZCYmBylztNfKy6qWi"
+  "ouqF7NfUf7WVj4iVo2m20GAHeRw1w5yOUpsdqi6p9z89Sot2ai9dtSLGssxuTETPTzC3hA"
+  "3ID9ceXksfNS7Wswz+rrJvN1Z1DUGoQxmYGo+UiIaWUClCukmJ6q/pHFcovYD1ckkoFMlk"
+  "pnTwMeX+JpMV/5laviovdMDHpfCkcABqZaItB0U4Ep8twNL6/jBfvlCoUyyiWHVxjNYxOj"
+  "N54HiEMQOrzQZSwO32oLRV/JYYzJ90FljnbLx8ff+H9cLjeeJOCoVJr28fEvVtfXt3BxcR"
+  "kNJUaESEBo56DvrTgMrDmMJ09GY6Wx5Zmr68F/3a9QKN3up0yWorHZeuafPl3G5eU1HB4e"
+  "f5Gn1v42Nvr5Rm1VHQYnhmCYKhTV+lzstA5iXJz0Ds0tfC8ulxtLuSRJff2FmXv35nFu7j"
+  "HabL2bfH7Cd05Ob7xH3/FUubprCwu/4OzdORz7ZBK7bEObPJ70PtWSSU67uVFRUcDnx4fq"
+  "dIbBkZGpzenpr9FkanoWHBzxFXlNpOgDBxgssTidMTAwemd9/Tm2t1/9w8vL/1Mmk3WW6m"
+  "/bmSSwcwUCIaSkZLCzs3ObOzsHVnp6RlCjKVk5doxznSw6kj+8DKlUAVrtu8r5+Z+2Hj5c"
+  "wKCgE7co7Qf/CD6f76JQ5BRWV5//vr7+0p+nTimeuLuze6iURjryyufs7AIBAeGgUpUyrd"
+  "bBqaWlNSwtrV2hUj7sEQpF9vWiotLNuDjBA2dn5xZKxZJcd3sYDCakpeVDSUkDFBaaeLdv"
+  "z/4+PX0XPTw4w1T22Ivr6cnR0V7K6DHsVW92h5ubO61dCOfOtYBGUwPNzV0fPnr0BLOyCh"
+  "7b2wKvGdHRQqiqage9vgF0unrviYkvV/v7R7dYrIMd9va8DtO+T73+PBiNrVBWdhGamrot"
+  "MzOzKBAkffNy9g4F3RsQGRlPrAtQU9MBFRWtYDBcfHNoaGrBYnl/g/pt3Ktn/xVMJhNOny"
+  "6HhoYPts9fWXkZystbobGxWzsychNDQqKmyebrCNPFhQVqdTmYzV109ss7qqhoY/T2Ttw3"
+  "GJrWyKZ0jOlK8zbRPq+CyWQjdW6rpsYKFkuPvLt79AWHc/xjsrId4RYW1kFb2zDNpo84/T"
+  "uid0Zf3+QNpVK7SDahI8yjRz3prJegtta2PafdMpmuBJrNth8OHTrS6uh/RXcb9dUAWVln"
+  "SNq/SakscfX29peQLcgR5l+Nuavm";
+
+/* 
+ * Resource generated for file:
+ *    folder_blue.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Nuvola_22x22_filesystems_folder_blue_width          = 22;
+static const unsigned int  image_Nuvola_22x22_filesystems_folder_blue_height         = 22;
+static const unsigned int  image_Nuvola_22x22_filesystems_folder_blue_pixel_size     = 4;
+static const unsigned long image_Nuvola_22x22_filesystems_folder_blue_length         = 2000;
+static const unsigned long image_Nuvola_22x22_filesystems_folder_blue_decoded_length = 1936;
+
+static const unsigned char image_Nuvola_22x22_filesystems_folder_blue[] = 
+  "eNqVlWdQlFcUhg+CBZViV4INIRZAQxFEnShKVZCio2LiKOqIDVAiFixBJtSoqNiotsRgDI"
+  "qh6EoRWSxUHaWIuAKuDUQFhF1ky5uzkPyI8Uc8M+/Mt/e757nvOed+s+SVS7RQQH2+y6Ex"
+  "P5SR44KF5OxoR05OjuTo6ED29nbqERGRyWlp6fX+/v6xtra2C+3tHcbp64+ktWvXkYWFBZ"
+  "mbm5ObmxuZmZnRsmXLSUtLi+hf3HtkvvIQuTrb07x588jZ2ZlcXV1NKiurZOBQKBQQi8Xg"
+  "M0RBQXuS/fw2bzAxMTFl8X5nMjU1/Sx33NYyGrTmBhnbuJCrixPZ2dmRj4/PdqlUis9FQ0"
+  "Mj8vJuNh06dOS6t/eqXTNmzLR0d/fU0tTU/A93yOosGjDGmuznziKuuefJk7FZ+B/R2tqG"
+  "kpIy+YkT8fmGhkZzP+WO8OHffUaRo+008vTwMCouLn6NLwhuFZyc5qfQ0hwilwwd8hSMHb"
+  "qxyEZnhcCaNL/q8Y31HArc4rtU8qFZ+XcGZHIZ3rd1oP6NBOXidgirm5Fa2oSWNhnkcnnX"
+  "rpqapzAwGJfQz7vg+wXRjwp8z9c/PpDd1O7z28sPpD9vE+kt6b1pX+y53IdN+L2wEUevP0"
+  "fIlWfYc1mMkLSXiLreiOPCZqxIFOF0ehlkUkkX9/z5i1INDQ2f6WHV1efKgdhS4HgxsP82"
+  "MCe8XOIWWfx458XaztiCZlwoa8PVKglyaj4i96kMeXUK5NYBt14CwdeasC0mEy1v3+ED+9"
+  "6wwVdERJbmu++Vpj4C0iqBTFb+E6D6PfCwUYaqhk48bQEq3gBlr4DCF4DwGZD9FEivBq48"
+  "BnZdb8W6qAw0vHiNJ6KXsLKySmfuoCn+eSn1zYCoESjn80vEwG2WoKIFRWIZipl193n3Wn"
+  "49kMPMzBrgMnv45QHwU74cS0IyUVvzDILMbIVWbw1/oh402isluuiZEpXMLOS8ApUfkRzX"
+  "KlpRwmt3xd1reXXdPjO5HlV95x8CJ7lvB4qA+cHZKCupQGjEsXYaueiw2iDLkQOm+m8ScE"
+  "0P2Fe+SNnlJ62yA9nVEhTx2i1m3mRmFq9ncN2XqoBf2WcCz+NIYTfXJbQAf6ZkYuV+AYYE"
+  "iKCmPXFLD7PdrvEFbUpV/VmPlchQ9e1BK4R1cmTXdntL5rmeuQcklgHxpd0+Y5j5M884/A"
+  "6wOKYcYZFxmB1aiMHLLr4jUvOkaXGWP/4hbrvDPUivVCKNOTH5HxCd345w7l2YkHNvdd+T"
+  "aGYcYh1kRRVwb28Ce/OB9Rca4OUXBeMdd9HHwq+U52ZAxiGG647efy7kWq+UK+F/WQHTg3"
+  "JYH5fC82wz1qe0YMdVCUJudCK8QIFIPiOcmSF5QFAO3wfmOkQ8wQT3UBhuvgn1YdYJzO1L"
+  "+j5DFwffeHiHZ775ghx6gZ34OkwOk8OAeawSMxJkcExqxyI+wzu5BRsvtSIgQ4pAgRLbme"
+  "11rhlzd1VhkMcZ6C+/8FFNvf8qUsW4kJ52AYJc1f2dGNgBvS0fMT5YBuNIBaYcUcIyFrBJ"
+  "Ar49BdieksE+SQKnxGa4nX4P58R3cI0QYeeVFgxfLcRA2+BaJlp1cYcuocnLkuJ4lNBdLo"
+  "G+rxQG29nzvk5MipDDNFoJs2Pd/KlxgFUCYBnPtcQpMHlvLfZltCKI+20SUAH1EbNTVd9E"
+  "F1fThIbYBO30Oa2AztIODFvdjpG+HRizTQbDPXJMCOWc/cCUGMDsBLr41omAwb42zP6xFl"
+  "6n2HN0HfTnJypITXsrE9W6uDqWRLo2hqMWp4omBAJDvMFcYOxWwGgX92Z3ByYFvYWRfw1G"
+  "ewuVeotSpEMdD7/qY7zufq9R7tlqg2clk+aEI6SuHaDqKv0TujZEWhZEA20d9DxSxXqLhb"
+  "KBDmff6c6MEvef4leuaeCR1XPY9NPU1yCcemj7EfXy4qzZrPGs4SpnrF70aWjoEvVkqfN/"
+  "krq2FT+v4W2e/GYWy5g1jNWPpU5fEH8BI2hr3Q==";
+
+/* 
+ * Resource generated for file:
+ *    camera.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Nuvola_22x22_devices_camera_width          = 22;
+static const unsigned int  image_Nuvola_22x22_devices_camera_height         = 22;
+static const unsigned int  image_Nuvola_22x22_devices_camera_pixel_size     = 4;
+static const unsigned long image_Nuvola_22x22_devices_camera_length         = 1552;
+static const unsigned long image_Nuvola_22x22_devices_camera_decoded_length = 1936;
+
+static const unsigned char image_Nuvola_22x22_devices_camera[] = 
+  "eNrtlWtMU2cYx7FF7kwYWbIPfNsHEuMHExdRq8niYpYFJMsuiUtmqi4RULcPW2KWmXFxOE"
+  "epDBdZZlHHHUpLKfd7uRVoSwsF2nIpl3JpuRRpD1DKWtb/np4tZlO370t2kifvOe/l9/7f"
+  "//O8OQAC8H8EHDlyKTou7uOThw9/cjop6Zuc5OTvJi9fzpw+evR9UWws7+1jxz49GR+fzD"
+  "t16gbv+PFkXnx8Cu/EiVT6vsbj8a5Re52N02c+4509+8WZuLh3YjmcwICLF7NKamp6tmpr"
+  "ldtisQJlZa0UbSgvV6C0tGu3UtzrfCyqZn4UPmJKStoYsbiLKStrZ4qKWhlxZR8jk/YxdT"
+  "VKRl5N79XandRUQQ+XG/JGXl7Fps/nhtu9g+npBXR3j6KzUw+l0gSdbgHqfiMufPkQb11/"
+  "gkqxFFnfpkEsroDNasOAZgwTi5tQL/2K6tFNNHbOIVfYhNDQ6EsCQdGqw7GB1dU14kygrm"
+  "4Acnk/Ghu16OgwQi5pwJsXshGT8DPa2jqQlPguBIIc+J/JOSvk/WY8ajGhWLEEiXwK6WlS"
+  "L3FTBILCFadzA2tr6xgenkRDwyDLbm0dgVSqgEqtx/joOAb7eojkg5NxYm/Pjf19HxyOba"
+  "zZ1qFSqqHsNkPZt4W0NIknLCz6Kuklrv1v3Pp6FbVq4ndgZmYFDONm9TmdTiwsWDA3N4eN"
+  "jafY2nLTOgbz81bSoSL/1pGeLv0H7gCFBlVV7ejt1cJsXsH6uhOLi8tQqXToUmihUAyht2"
+  "8QFssC+effy47BQT15Z0ZGhoy4r17NySlecTie16um3DTR3DHKpZXWbsBgMKGpuQ/nziUg"
+  "MfEDtLQqMTSkg81mJ712jIyYKC/DyMyUs3qFwhe5tbWDqKlpJ31G1geLZRnL1lV89XU6Ag"
+  "IC2Pg++wcYTVPkySKN22lfM3E1pLeG1SsUlryEq6KctbJcs9lGHqxgZnYeooJCREREIioq"
+  "GmUVUuiG9aR1ieWOjU1CJtOQ3lqWe+9eyUt80KCyshn9/XrWB7+/hnEDtLpRlJVLIJbIoR"
+  "xQ0/gArXOw/up0Bsqz4V+5/lqQyXqpfvsxO7vKrnU4GJhMRtJlIMYInUVF/U/ZvFksa+jp"
+  "0VBNLBJX5gkPj7mam1v6Atdfv83NOkgkzTAaZ2G3b2FnZw9e72/Y2d6m+mLofnqo7lx0Fo"
+  "a8nUJLi5bYm8StZrl5eeWrz9evn9vSMszWW319B5aXbfB4vPD58OzxevdpLzebt+5uLfR6"
+  "5k/uH3rv36/a8Hp3aX83eblMtTlG5x+lORN01nlqJ6lPQ+wVYnmfcT0eD3sfNJppWK2gcd"
+  "B8N7KyGnzETU1ISHmSn1+6IxKJd7Ozf3HduvUTG2lpIldGxmPXnTvFrtu3C103b+ZRf44r"
+  "N7eA4iG9C13p6QWu/Pwml0jU7nrwoMl1926t+/z5zxe53OAPOZzg1ziciI8CAyOuHDwYyQ"
+  "8K8scrf4lIfnDwIX5ISDSfwwnnHzgQTBHC53Ij+GFhMdR/iJ3nb0NDo65wuUHvUX2//l/7"
+  "D/0OuLxxfw==";
+
+/* 
+ * Resource generated for file:
  *    history.png (zlib, base64) (image file)
  */
 static const unsigned int  image_Nuvola_48x48_actions_history_width          = 48;

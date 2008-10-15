@@ -28,7 +28,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.52 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.53 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -391,6 +391,22 @@ void vtkKWIcon::SetImage(int image)
         image_document_volume_property_height,
         image_document_volume_property_pixel_size, 
         image_document_volume_property_length);
+      break;
+
+    case vtkKWIcon::IconEditContrast:
+      this->SetImage(
+        image_edit_contrast, 
+        image_edit_contrast_width, image_edit_contrast_height,
+        image_edit_contrast_pixel_size, 
+        image_edit_contrast_length);
+      break;
+
+    case vtkKWIcon::IconEditVolumeProperties:
+      this->SetImage(
+        image_edit_volume_properties, 
+        image_edit_volume_properties_width, image_edit_volume_properties_height,
+        image_edit_volume_properties_pixel_size, 
+        image_edit_volume_properties_length);
       break;
 
     case vtkKWIcon::IconEmpty16x16:
@@ -1163,6 +1179,51 @@ void vtkKWIcon::SetImage(int image)
         image_testtube_width, image_testtube_height,
         image_testtube_pixel_size, 
         image_testtube_length);
+      break;
+
+    case IconNuvola22x22ActionsHelp:
+      this->SetImage(
+        image_Nuvola_22x22_actions_help, 
+        image_Nuvola_22x22_actions_help_width, 
+        image_Nuvola_22x22_actions_help_height,
+        image_Nuvola_22x22_actions_help_pixel_size, 
+        image_Nuvola_22x22_actions_help_length);
+      break;
+
+    case IconNuvola22x22ActionsMessageBoxInfo:
+      this->SetImage(
+        image_Nuvola_22x22_actions_messagebox_info, 
+        image_Nuvola_22x22_actions_messagebox_info_width, 
+        image_Nuvola_22x22_actions_messagebox_info_height,
+        image_Nuvola_22x22_actions_messagebox_info_pixel_size, 
+        image_Nuvola_22x22_actions_messagebox_info_length);
+      break;
+
+    case IconNuvola22x22AppsDesigner:
+      this->SetImage(
+        image_Nuvola_22x22_apps_designer, 
+        image_Nuvola_22x22_apps_designer_width, 
+        image_Nuvola_22x22_apps_designer_height,
+        image_Nuvola_22x22_apps_designer_pixel_size, 
+        image_Nuvola_22x22_apps_designer_length);
+      break;
+
+    case IconNuvola22x22DevicesCamera:
+      this->SetImage(
+        image_Nuvola_22x22_devices_camera, 
+        image_Nuvola_22x22_devices_camera_width, 
+        image_Nuvola_22x22_devices_camera_height,
+        image_Nuvola_22x22_devices_camera_pixel_size, 
+        image_Nuvola_22x22_devices_camera_length);
+      break;
+
+    case IconNuvola22x22FilesystemsFolderBlue:
+      this->SetImage(
+        image_Nuvola_22x22_filesystems_folder_blue, 
+        image_Nuvola_22x22_filesystems_folder_blue_width, 
+        image_Nuvola_22x22_filesystems_folder_blue_height,
+        image_Nuvola_22x22_filesystems_folder_blue_pixel_size, 
+        image_Nuvola_22x22_filesystems_folder_blue_length);
       break;
 
     case vtkKWIcon::IconNuvola48x48ActionsHistory:
