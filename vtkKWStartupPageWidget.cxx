@@ -49,15 +49,15 @@ public:
   vtksys_stl::string BaseFont;
 
   char TextFont[1024];
-  char TextColor[20];
-  char SelectedTextColor[20];
-  char TextShadowColor[20];
+  char HexTextColor[20];
+  char HexSelectedTextColor[20];
+  char HexTextShadowColor[20];
 
   char MostRecentFilesFont[1024];
 
   char HintFont[1024];
-  char HintColor[20];
-  char HintShadowColor[20];
+  char HexHintColor[20];
+  char HexHintShadowColor[20];
 
   vtkKWStartupPageWidgetInternals() 
     {
@@ -87,9 +87,9 @@ vtkKWStartupPageWidget::vtkKWStartupPageWidget()
   this->SelectedTextColor[1] = 249.0 / 255.0;
   this->SelectedTextColor[2] =  85.0 / 255.0;
 
-  this->HintColor[0]         = 120.0 / 255.0;
-  this->HintColor[1]         = 120.0 / 255.0;
-  this->HintColor[2]         = 120.0 / 255.0;
+  this->HintColor[0]         = 140.0 / 255.0;
+  this->HintColor[1]         = 140.0 / 255.0;
+  this->HintColor[2]         = 140.0 / 255.0;
 
   this->TextSize           = 14;
   this->MostRecentFileSize = 10;
@@ -104,13 +104,14 @@ vtkKWStartupPageWidget::vtkKWStartupPageWidget()
   this->SupportMostRecentFiles = 1;
   this->SupportOpen            = 1;
 
+  this->AddShadowToHint = 1;
   this->MaximumNumberOfMostRecentFiles = 5;
 
   this->OpenIcon            = NULL;
   this->DoubleClickIcon     = NULL;
   this->DropIcon            = NULL;
   this->MostRecentFilesIcon = NULL;
-  this->MostRecentFileIcon = NULL;
+  this->MostRecentFileIcon  = NULL;
 
   this->OpenCommand            = NULL;
   this->DropCommand            = NULL;
@@ -312,12 +313,12 @@ void vtkKWStartupPageWidget::UpdateInternalCanvasColors()
 
   // Text
 
-  sprintf(this->Internals->TextColor, "#%02x%02x%02x", 
+  sprintf(this->Internals->HexTextColor, "#%02x%02x%02x", 
           (int)(this->TextColor[0] * 255.0),
           (int)(this->TextColor[1] * 255.0),
           (int)(this->TextColor[2] * 255.0));
 
-  sprintf(this->Internals->SelectedTextColor, "#%02x%02x%02x", 
+  sprintf(this->Internals->HexSelectedTextColor, "#%02x%02x%02x", 
           (int)(this->SelectedTextColor[0] * 255.0),
           (int)(this->SelectedTextColor[1] * 255.0),
           (int)(this->SelectedTextColor[2] * 255.0));
@@ -326,14 +327,14 @@ void vtkKWStartupPageWidget::UpdateInternalCanvasColors()
     (this->TextColor[0] + this->TextColor[1] + this->TextColor[2]) / 3.0;
   shadow = average > 0.5 ? 0.0 : 1.0;
 
-  sprintf(this->Internals->TextShadowColor, "#%02x%02x%02x", 
+  sprintf(this->Internals->HexTextShadowColor, "#%02x%02x%02x", 
           (int)(shadow * 255.0),
           (int)(shadow * 255.0),
           (int)(shadow * 255.0));
 
   // Hint
 
-  sprintf(this->Internals->HintColor, "#%02x%02x%02x", 
+  sprintf(this->Internals->HexHintColor, "#%02x%02x%02x", 
           (int)(this->HintColor[0] * 255.0),
           (int)(this->HintColor[1] * 255.0),
           (int)(this->HintColor[2] * 255.0));
@@ -342,7 +343,7 @@ void vtkKWStartupPageWidget::UpdateInternalCanvasColors()
     (this->HintColor[0] + this->HintColor[1] + this->HintColor[2]) / 3.0;
   shadow = average > 0.3 ? 0.0 : 1.0;
 
-  sprintf(this->Internals->HintShadowColor, "#%02x%02x%02x", 
+  sprintf(this->Internals->HexHintShadowColor, "#%02x%02x%02x", 
           (int)(shadow * 255.0),
           (int)(shadow * 255.0),
           (int)(shadow * 255.0));
@@ -857,7 +858,6 @@ void vtkKWStartupPageWidget::AddSectionToCanvas(
 {
   const char *canv = this->StartupPageCanvas->GetWidgetName();
 
-  const char *tag_prefix = tag;
   vtksys_stl::string tags(tag);
   if (extra_tag)
     {
@@ -873,31 +873,34 @@ void vtkKWStartupPageWidget::AddSectionToCanvas(
     {
     tk_cmd 
       << canv << " create text 0 0 -anchor sw"
-      << " -fill " << this->Internals->TextShadowColor
+      << " -fill " << this->Internals->HexTextShadowColor
       << " -text {" << text << "}"
       << " -font {" << text_font << "}"
-      << " -tags {" << tag_prefix << "textshadow text " << tags.c_str()<<"}" 
+      << " -tags {" << tag << "textshadow text " << tags.c_str()<<"}" 
       << endl;
     tk_cmd 
       << canv << " create text 0 0 -anchor sw"
-      << " -fill " << this->Internals->TextColor
+      << " -fill " << this->Internals->HexTextColor
       << " -text {" << text << "}"
       << " -font {" << text_font << "}"
-      << " -tags {" << tag_prefix << "text text " << tags.c_str() << "}" 
+      << " -tags {" << tag << "text text " << tags.c_str() << "}" 
       << endl;
+    if (this->AddShadowToHint)
+      {
+      tk_cmd 
+        << canv << " create text 0 0 -anchor nw"
+        << " -fill " << this->Internals->HexHintShadowColor
+        << " -text {" << hint << "}"
+        << " -font {" << hint_font << "}"
+        << " -tags {" << tag << "hintshadow text " << tags.c_str()<<"}" 
+        << endl;
+      }
     tk_cmd 
       << canv << " create text 0 0 -anchor nw"
-      << " -fill " << this->Internals->HintShadowColor
+      << " -fill " << this->Internals->HexHintColor
       << " -text {" << hint << "}"
       << " -font {" << hint_font << "}"
-      << " -tags {" << tag_prefix << "hintshadow text " << tags.c_str()<<"}" 
-      << endl;
-    tk_cmd 
-      << canv << " create text 0 0 -anchor nw"
-      << " -fill " << this->Internals->HintColor
-      << " -text {" << hint << "}"
-      << " -font {" << hint_font << "}"
-      << " -tags {" << tag_prefix << "hint text " << tags.c_str() << "}" 
+      << " -tags {" << tag << "hint text " << tags.c_str() << "}" 
       << endl;
     }
 
@@ -906,7 +909,7 @@ void vtkKWStartupPageWidget::AddSectionToCanvas(
   if (icon && (!has_tag || !this->StartupPageCanvas->HasTag("icon")))
     {
     vtksys_stl::string img_name(canv);
-    img_name += tag_prefix;
+    img_name += tag;
     img_name += "icon";
     if (vtkKWTkUtilities::UpdatePhotoFromIcon(
           this->GetApplication(), img_name.c_str(), icon))
@@ -914,8 +917,23 @@ void vtkKWStartupPageWidget::AddSectionToCanvas(
       tk_cmd 
         << canv << " create image 0 0 -anchor center"
         << " -image " << img_name.c_str()
-        << " -tags {" << tag_prefix << "icon icon " << tags.c_str() << "}" 
+        << " -tags {" << tag << "icon icon " << tags.c_str() << "}" 
         << endl;
+      }
+
+    // Create highlight icon, if needed
+
+    if (method)
+      {
+      double hsv[3];
+      vtkMath::RGBToHSV(this->SelectedTextColor, hsv);
+      vtkKWIcon *hue_icon = vtkKWIcon::New();
+      hue_icon->SetImage(icon);
+      hue_icon->SetHue(hsv[0]);
+      img_name += "highlight";
+      vtkKWTkUtilities::UpdatePhotoFromIcon(
+        this->GetApplication(), img_name.c_str(), hue_icon);
+      hue_icon->Delete();
       }
     }
 
@@ -924,39 +942,42 @@ void vtkKWStartupPageWidget::AddSectionToCanvas(
   if (method && !has_tag)
     {
     vtksys_stl::string command("HighlightSectionCallback ");
-    command += tag_prefix;
+    command += tag;
     
     vtksys_stl::string highlight_command(command);
     highlight_command += " 1";
     this->StartupPageCanvas->SetCanvasBinding(
-        tag_prefix, "<Enter>", this, highlight_command.c_str());
+        tag, "<Enter>", this, highlight_command.c_str());
     
     vtksys_stl::string no_highlight_command(command);
     no_highlight_command += " 0";
     this->StartupPageCanvas->SetCanvasBinding(
-      tag_prefix, "<Leave>", this, no_highlight_command.c_str());
+      tag, "<Leave>", this, no_highlight_command.c_str());
     
     this->StartupPageCanvas->SetCanvasBinding(
-      tag_prefix, "<ButtonPress-1>", object, method);
+      tag, "<ButtonPress-1>", object, method);
     }
 
   // Move items
 
   if (icon)
     {
-    tk_cmd << canv << " coords " << tag_prefix << "icon " 
+    tk_cmd << canv << " coords " << tag << "icon " 
            << x << " " << y - 4 << endl;
     x += this->GetHorizontalIncrementFromIcon(icon);
     }
 
-  tk_cmd << canv << " coords " << tag_prefix << "text " 
+  tk_cmd << canv << " coords " << tag << "text " 
          << x << " " << y << endl
-         << canv << " coords " << tag_prefix << "textshadow " 
+         << canv << " coords " << tag << "textshadow " 
          << x + 2 << " " << y + 2 << endl
-         << canv << " coords " << tag_prefix << "hint " 
-         << x << " " << y << endl
-         << canv << " coords " << tag_prefix << "hintshadow " 
-         << x + 2 << " " << y + 2 << endl;
+         << canv << " coords " << tag << "hint " 
+         << x << " " << y << endl;
+  if (this->AddShadowToHint)
+    {
+    tk_cmd << canv << " coords " << tag << "hintshadow " 
+           << x + 2 << " " << y + 2 << endl;
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -970,13 +991,16 @@ void vtkKWStartupPageWidget::HighlightSectionCallback(
   const char *tag, int flag)
 {
   const char *canv = this->StartupPageCanvas->GetWidgetName();
-  vtksys_stl::string command(canv);
-  command += " itemconfigure ";
-  command += tag;
-  command += "text -fill ";
-  command += 
-    (flag ? this->Internals->SelectedTextColor : this->Internals->TextColor);
-  this->Script(command.c_str());
+
+  vtksys_ios::ostringstream tk_cmd;
+
+  tk_cmd << canv << " itemconfigure " << tag << "text -fill "
+         << (flag ? this->Internals->HexSelectedTextColor : this->Internals->HexTextColor) << endl;
+  
+  tk_cmd << canv << " itemconfigure " << tag << "icon -image "
+         << canv << tag << (flag ? "iconhighlight" : "icon") << endl;
+
+  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -1158,6 +1182,7 @@ void vtkKWStartupPageWidget::SetSelectedTextColor(
 
   this->UpdateInternalCanvasColors();
   this->StartupPageCanvas->DeleteTag("text");
+  this->StartupPageCanvas->DeleteTag("icon");
   this->Redraw();
 }
 
@@ -1199,6 +1224,22 @@ void vtkKWStartupPageWidget::SetHintSize(int arg)
   this->Modified();
 
   this->UpdateInternalCanvasFonts();
+  this->StartupPageCanvas->DeleteTag("text");
+  this->Redraw();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWStartupPageWidget::SetAddShadowToHint(int arg)
+{
+  if (this->AddShadowToHint == arg)
+    {
+    return;
+    }
+
+  this->AddShadowToHint = arg;
+
+  this->Modified();
+
   this->StartupPageCanvas->DeleteTag("text");
   this->Redraw();
 }
@@ -1307,8 +1348,8 @@ void vtkKWStartupPageWidget::PrintSelf(
      << (this->SupportOpen ? "On" : "Off") << endl;
   os << indent << "SupportDoubleClick: "<< this->SupportDoubleClick << endl;
   os << indent << "SupportDrop: "<< this->SupportDrop << endl;
-  os << indent << "SupportMostRecentFiles: "
-     << this->SupportMostRecentFiles << endl;
+  os << indent << "AddShadowToHint: "
+     << this->AddShadowToHint << endl;
   os << indent << "MaximumNumberOfMostRecentFiles: " 
      << this->MaximumNumberOfMostRecentFiles << endl;
   os << indent << "GradientColor1: (" 

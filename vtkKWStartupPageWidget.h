@@ -80,6 +80,12 @@ public:
   virtual void SetHintSize(int);
 
   // Description:
+  // Set/Get if the hints should have a shadow.
+  virtual void SetAddShadowToHint(int);
+  vtkGetMacro(AddShadowToHint, int);
+  vtkBooleanMacro(AddShadowToHint, int);
+  
+  // Description:
   // Set/Get if the Open section is supported/shown.
   virtual void SetSupportOpen(int);
   vtkGetMacro(SupportOpen, int);
@@ -254,6 +260,7 @@ protected:
   int    SupportMostRecentFiles;
 
   int    MaximumNumberOfMostRecentFiles;
+  int    AddShadowToHint;
 
   vtkKWIcon *OpenIcon;
   vtkKWIcon *DoubleClickIcon;
