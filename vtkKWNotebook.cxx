@@ -18,6 +18,7 @@
 #include "vtkKWFrame.h"
 #include "vtkKWIcon.h"
 #include "vtkKWInternationalization.h"
+#include "vtkKWBalloonHelpManager.h"
 #include "vtkKWLabel.h"
 #include "vtkKWMenu.h"
 #include "vtkKWTkUtilities.h"
@@ -50,7 +51,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.110 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.111 $");
 
 //----------------------------------------------------------------------------
 class vtkKWNotebookInternals
@@ -64,6 +65,17 @@ public:
   PagesContainer Pages;
   PagesContainer MostRecentPages;
 };
+
+//----------------------------------------------------------------------------
+vtkKWNotebook::Page::Page()
+{
+  this->Title = NULL;
+  this->Frame = NULL;
+  this->TabFrame = NULL;
+  this->Label = NULL;
+  this->ImageLabel = NULL;
+  this->Icon = NULL;
+}
 
 //----------------------------------------------------------------------------
 void vtkKWNotebook::Page::Delete()
@@ -88,12 +100,14 @@ void vtkKWNotebook::Page::Delete()
 
   if (this->Label)
     {
+    this->Label->SetBalloonHelpManager(NULL);
     this->Label->Delete();
     this->Label = NULL;
     }
 
   if (this->ImageLabel)
     {
+    this->ImageLabel->SetBalloonHelpManager(NULL);
     this->ImageLabel->Delete();
     this->ImageLabel = NULL;
     }
@@ -237,6 +251,8 @@ vtkKWNotebook::vtkKWNotebook()
   this->PinnedPageTabOutlineColor[1] = 1.0;
   this->PinnedPageTabOutlineColor[2] = 0.76;
 
+  this->TabBalloonHelpManager = vtkKWBalloonHelpManager::New();
+
   // Internal structs
 
   this->Internals = new vtkKWNotebookInternals;
@@ -253,25 +269,31 @@ vtkKWNotebook::~vtkKWNotebook()
   if (this->Body)
     {
     this->Body->Delete();
-    this->Body = 0;
+    this->Body = NULL;
     }
 
   if (this->Mask)
     {
     this->Mask->Delete();
-    this->Mask = 0;
+    this->Mask = NULL;
     }
 
   if (this->TabsFrame)
     {
     this->TabsFrame->Delete();
-    this->TabsFrame = 0;
+    this->TabsFrame = NULL;
     }
 
   if (this->TabPopupMenu)
     {
     this->TabPopupMenu->Delete();
-    this->TabPopupMenu = 0;
+    this->TabPopupMenu = NULL;
+    }
+
+  if (this->TabBalloonHelpManager)
+    {
+    this->TabBalloonHelpManager->Delete();
+    this->TabBalloonHelpManager = NULL;
     }
 
   // Delete all pages
@@ -308,6 +330,11 @@ void vtkKWNotebook::CreateWidget()
   // Call the superclass to create the whole widget
 
   this->Superclass::CreateWidget();
+
+  // Create our own balloon help manager
+
+  this->TabBalloonHelpManager->SetApplication(this->GetApplication());
+  this->TabBalloonHelpManager->SetDelay(10);
 
   vtksys_ios::ostringstream cmd;
 
@@ -792,8 +819,6 @@ int vtkKWNotebook::AddPage(const char *title,
     return -1;
     }
 
-  vtksys_ios::ostringstream cmd;
-
   // Create a new page, insert it in the container
   
   vtkKWNotebook::Page *page = new vtkKWNotebook::Page;
@@ -805,100 +830,12 @@ int vtkKWNotebook::AddPage(const char *title,
   page->Id = this->IdCounter++;
   page->Pinned = 0;
   page->Tag = tag;
-
-  // Create the page frame (this is where user-defined widgets will be packed)
-
-  if (this->UseFrameWithScrollbars)
-    {
-    page->Frame = vtkKWFrameWithScrollbar::New();
-    }
-  else
-    {
-    page->Frame = vtkKWFrame::New();
-    }
-  page->Frame->SetParent(this->Body);
-  page->Frame->Create();
-  if (this->UseFrameWithScrollbars)
-    {
-    vtkKWFrameWithScrollbar::SafeDownCast(
-      page->Frame)->SetBackgroundColor(this->GetBackgroundColor());
-    vtkKWFrameWithScrollbar::SafeDownCast(
-      page->Frame)->HorizontalScrollbarVisibilityOff();
-    }
-  else
-    {
-    vtkKWFrame::SafeDownCast(page->Frame)->SetBackgroundColor(
-      this->GetBackgroundColor());
-    }
-
-  // Store the page title for fast page retrieval on title
-
-  page->Title = NULL;
-  if (title)
-    {
-    page->Title = new char [strlen(title) + 1];
-    strcpy(page->Title, title);
-    }
-
-  // Create the "tab" part of the page
-
-  page->TabFrame = vtkKWFrame::New();
-  page->TabFrame->SetParent(this->TabsFrame);
-  page->TabFrame->Create();
-  page->TabFrame->SetReliefToRaised();
-  page->TabFrame->SetBorderWidth(VTK_KW_NB_TAB_BD);
-
-  // Create the label that holds the page title
-
-  page->Label = vtkKWLabel::New();
-  page->Label->SetParent(page->TabFrame);
-  page->Label->Create();
-  page->Label->SetHighlightThickness(0);
-  if (page->Title)
-    {
-    page->Label->SetText(page->Title);
-    }
-  if (balloon)
-    {
-    page->Label->SetBalloonHelpString(balloon);
-    }
-
-  cmd << "pack " << page->Label->GetWidgetName() 
-      << " -side left -fill both -expand y -anchor c" << endl;
-
-  // Create the icon if any. We want to keep both the icon and the image label
-  // since the icon is required to recreate the label when its background
-  // color changes
-
-  page->ImageLabel = 0;
-  page->Icon = 0;
-
-  if (icon && icon->GetData())
-    {
-    page->Icon = vtkKWIcon::New();
-    page->Icon->SetImage(icon);
-
-    page->ImageLabel = vtkKWLabel::New();
-    page->ImageLabel->SetParent(page->TabFrame);
-    page->ImageLabel->Create();
-    page->ImageLabel->SetImageToIcon(page->Icon);
-    if (balloon)
-      {
-      page->ImageLabel->SetBalloonHelpString(balloon);
-      }
-
-    if (this->ShowIcons)
-      {
-      cmd << "pack " << page->ImageLabel->GetWidgetName() 
-          << " -side left -fill both -anchor c "
-          << " -before " << page->Label->GetWidgetName() << endl;
-      }
-    }
-
-  this->Script(cmd.str().c_str());
-
   page->Enabled = 1;
-  page->UpdateEnableState();
+  page->Visibility = 0;
+
+  // Build the page
+
+  this->BuildPage(page, title, balloon, icon);
 
   // Show the page. Set Visibility to Off first. If this page can really
   // be shown, Visibility will be set to On automatically.
@@ -906,14 +843,178 @@ int vtkKWNotebook::AddPage(const char *title,
   // shown (which should be controled by the user, not the way developpers
   // have added pages).
 
-  page->Visibility = 0;
-  
   if (!this->ShowOnlyMostRecentPages)
     {
     this->ShowPage(page);
     }
 
   return page->Id;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWNotebook::BuildPage(vtkKWNotebook::Page *page,
+                              const char *title, 
+                              const char *balloon, 
+                              vtkKWIcon *icon)
+{
+  vtksys_ios::ostringstream cmd;
+
+  // Create the page frame (this is where user-defined widgets will be packed)
+
+  if (!page->Frame)
+    {
+    if (this->UseFrameWithScrollbars)
+      {
+      page->Frame = vtkKWFrameWithScrollbar::New();
+      }
+    else
+      {
+      page->Frame = vtkKWFrame::New();
+      }
+    }
+  if (!page->Frame->IsCreated())
+    {
+    page->Frame->SetParent(this->Body);
+    page->Frame->Create();
+    if (this->UseFrameWithScrollbars)
+      {
+      vtkKWFrameWithScrollbar::SafeDownCast(
+        page->Frame)->SetBackgroundColor(this->GetBackgroundColor());
+      vtkKWFrameWithScrollbar::SafeDownCast(
+        page->Frame)->HorizontalScrollbarVisibilityOff();
+      }
+    else
+      {
+      vtkKWFrame::SafeDownCast(page->Frame)->SetBackgroundColor(
+        this->GetBackgroundColor());
+      }
+    }
+  
+  // Store the page title for fast page retrieval on title
+
+  if (title)
+    {
+    if (title != page->Title)
+      {
+      if (page->Title)
+        {
+        delete [] page->Title;
+        }
+      page->Title = new char [strlen(title) + 1];
+      strcpy(page->Title, title);
+      }
+    }
+  else
+    {
+    if (page->Title)
+      {
+      delete [] page->Title;
+      page->Title = NULL;
+      }
+    }
+  
+  // Create the "tab" part of the page
+
+  if (!page->TabFrame)
+    {
+    page->TabFrame = vtkKWFrame::New();
+    }
+  if (!page->TabFrame->IsCreated())
+    {
+    page->TabFrame->SetParent(this->TabsFrame);
+    page->TabFrame->Create();
+    page->TabFrame->SetReliefToRaised();
+    page->TabFrame->SetBorderWidth(VTK_KW_NB_TAB_BD);
+    }
+
+  // Create the label that holds the page title
+
+  if (!page->Label)
+    {
+    page->Label = vtkKWLabel::New();
+    }
+  if (!page->Label->IsCreated())
+    {
+    page->Label->SetParent(page->TabFrame);
+    page->Label->SetBalloonHelpManager(this->TabBalloonHelpManager);
+    page->Label->Create();
+    page->Label->SetHighlightThickness(0);
+    }
+  if (page->Title)
+    {
+    cmd << "pack " << page->Label->GetWidgetName() 
+        << " -side left -fill both -expand y -anchor c" << endl;
+    }
+  else
+    {
+    cmd << "pack forget " << page->Label->GetWidgetName() << endl;
+    }
+  page->Label->SetText(page->Title);
+  page->Label->SetBalloonHelpString(balloon);
+
+  // Create the icon if any. We want to keep both the icon and the image label
+  // since the icon is required to recreate the label when its background
+  // color changes
+
+  if (icon && icon->GetData())
+    {
+    if (icon != page->Icon)
+      {
+      if (!page->Icon)
+        {
+        page->Icon = vtkKWIcon::New();
+        }
+      page->Icon->SetImage(icon);
+    
+      if (!page->ImageLabel)
+        {
+        page->ImageLabel = vtkKWLabel::New();
+        }
+      if (!page->ImageLabel->IsCreated())
+        {
+        page->ImageLabel->SetParent(page->TabFrame);
+        page->ImageLabel->SetBalloonHelpManager(this->TabBalloonHelpManager);
+        page->ImageLabel->Create();
+        }
+      page->ImageLabel->SetImageToIcon(page->Icon);
+      }
+    if (this->ShowIcons)
+      {
+      cmd << "pack " << page->ImageLabel->GetWidgetName() 
+          << " -side left -fill both -anchor c ";
+      if (page->Title)
+        {
+        cmd << " -before " << page->Label->GetWidgetName();
+        }
+      cmd << endl;
+      }
+    else
+      {
+      cmd << "pack forget " << page->ImageLabel->GetWidgetName() << endl;
+      }
+    }
+  else
+    {
+    if (page->Icon)
+      {
+      page->Icon->Delete();
+      page->Icon = NULL;
+      }
+    if (page->ImageLabel)
+      {
+      cmd << "pack forget " << page->ImageLabel->GetWidgetName() << endl;
+      }
+    }
+
+  if (page->ImageLabel)
+    {
+    page->ImageLabel->SetBalloonHelpString(balloon);
+    }
+
+  this->Script(cmd.str().c_str());
+
+  page->UpdateEnableState();
+  this->UpdatePageTabAspect(page);
 }
 
 //----------------------------------------------------------------------------
@@ -1284,38 +1385,6 @@ int vtkKWNotebook::GetPageTag(vtkKWNotebook::Page *page)
 }
 
 //----------------------------------------------------------------------------
-const char* vtkKWNotebook::GetPageTitle(int id)
-{
-  return this->GetPageTitle(this->GetPage(id));
-}
-
-//----------------------------------------------------------------------------
-void vtkKWNotebook::SetPageTitle(int id, const char *new_title)
-{
-  vtkKWNotebook::Page *page = this->GetPage(id);
-  if (page)
-    {
-    if (page->Title)
-      {
-      delete [] page->Title;
-      }
-    if (new_title)
-      {
-      page->Title = new char [strlen(new_title) + 1];
-      strcpy(page->Title, new_title);
-      }
-    else
-      {
-      page->Title = NULL;
-      }
-    if (page->Label)
-      {
-      page->Label->SetText(page->Title ? page->Title : "");
-      }
-    }
-}
-
-//----------------------------------------------------------------------------
 const char* vtkKWNotebook::GetPageTitle(vtkKWNotebook::Page *page)
 {
   if (page == NULL || !this->IsCreated())
@@ -1325,6 +1394,107 @@ const char* vtkKWNotebook::GetPageTitle(vtkKWNotebook::Page *page)
     }
 
   return page->Title;
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWNotebook::GetPageTitle(int id)
+{
+  return this->GetPageTitle(this->GetPage(id));
+}
+
+//----------------------------------------------------------------------------
+void vtkKWNotebook::SetPageTitle(int id, const char *title)
+{
+  vtkKWNotebook::Page *page = this->GetPage(id);
+  if (page)
+    {
+    this->BuildPage(
+      page, 
+      title, this->GetPageBalloonHelpString(page), this->GetPageIcon(page));
+    }
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWNotebook::GetPageBalloonHelpString(vtkKWNotebook::Page *page)
+{
+  if (page == NULL || !this->IsCreated())
+    {
+    vtkErrorMacro("Can not query page balloon help string.");
+    return NULL;
+    }
+
+  if (page->Label)
+    {
+    return page->Label->GetBalloonHelpString();
+    }
+  if (page->ImageLabel)
+    {
+    return page->ImageLabel->GetBalloonHelpString();
+    }
+
+  return NULL;
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWNotebook::GetPageBalloonHelpString(int id)
+{
+  return this->GetPageBalloonHelpString(this->GetPage(id));
+}
+
+//----------------------------------------------------------------------------
+void vtkKWNotebook::SetPageBalloonHelpString(int id, const char *str)
+{
+  vtkKWNotebook::Page *page = this->GetPage(id);
+  if (page)
+    {
+    if (page->Label)
+      {
+      page->Label->SetBalloonHelpString(str);
+      }
+    if (page->ImageLabel)
+      {
+      page->ImageLabel->SetBalloonHelpString(str);
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
+vtkKWIcon* vtkKWNotebook::GetPageIcon(vtkKWNotebook::Page *page)
+{
+  if (page == NULL || !this->IsCreated())
+    {
+    vtkErrorMacro("Can not query page icon.");
+    return NULL;
+    }
+
+  return page->Icon;
+}
+
+//----------------------------------------------------------------------------
+vtkKWIcon* vtkKWNotebook::GetPageIcon(int id)
+{
+  return this->GetPageIcon(this->GetPage(id));
+}
+
+//----------------------------------------------------------------------------
+void vtkKWNotebook::SetPageIcon(int id, vtkKWIcon *icon)
+{
+  vtkKWNotebook::Page *page = this->GetPage(id);
+  if (page)
+    {
+    this->BuildPage(
+      page, 
+      this->GetPageTitle(page), this->GetPageBalloonHelpString(page), icon);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWNotebook::SetPageIconToPredefinedIcon(int id, int icon_index)
+{
+  vtkKWIcon *icon = vtkKWIcon::New();
+  icon->SetImage(icon_index);
+  this->SetPageIcon(id, icon);
+  icon->Delete();
 }
 
 //----------------------------------------------------------------------------

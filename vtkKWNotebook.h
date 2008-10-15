@@ -26,6 +26,7 @@ class vtkKWIcon;
 class vtkKWLabel;
 class vtkKWMenu;
 class vtkKWNotebookInternals;
+class vtkKWBalloonHelpManager;
 
 class KWWidgets_EXPORT vtkKWNotebook : public vtkKWCompositeWidget
 {
@@ -35,12 +36,14 @@ public:
   void PrintSelf(ostream& os, vtkIndent indent);
   
   // Description:
-  // Add a new page to the notebook. By setting balloon string, the page will
-  // display a balloon help. An optional icon can also be specified and will 
-  // be displayed on the left side of the tab label (all icons can be hidden
-  // later on using the SetShowIcons() method). Finally, an optional tag
-  // can be provided and will be associated to the page (see SetPageTag()) ; 
-  // this/ tag will default to 0 otherwise.
+  // Add a new page to the notebook. 
+  // By setting balloon string, the page will display a balloon help (tooltip).
+  // An optional icon can also be specified and will be displayed on the left
+  // side of the tab label (all icons can be hidden later on using the
+  // SetShowIcons() method). No reference is kept to the icon object, its
+  // contents is copied locally.
+  // An optional integer tag can be provided and will be associated to the 
+  // page (see SetPageTag()); this/ tag will default to 0 otherwise.
   // Return a unique positive ID corresponding to that page, or < 0 on error.
   int AddPage(const char *title, const char* balloon, vtkKWIcon *icon,int tag);
   int AddPage(const char *title, const char* balloon, vtkKWIcon *icon);
@@ -56,7 +59,19 @@ public:
   // Description:
   // Set/Get a page's title
   const char* GetPageTitle(int id);
-  void SetPageTitle(int id, const char *new_title);
+  virtual void SetPageTitle(int id, const char *title);
+
+  // Description:
+  // Set/Get a page's balloon help string
+  const char* GetPageBalloonHelpString(int id);
+  virtual void SetPageBalloonHelpString(int id, const char *str);
+
+  // Description:
+  // Set/Get a page's icon. No reference is kept to the icon object, its
+  // contents is copied locally.
+  vtkKWIcon* GetPageIcon(int id);
+  virtual void SetPageIcon(int id, vtkKWIcon *icon);
+  virtual void SetPageIconToPredefinedIcon(int id, int icon_index);
 
   // Description:
   // Return the number of pages in the notebook.
@@ -405,6 +420,7 @@ protected:
   class Page
   {
   public:
+    Page();
     void Delete();
     void UpdateEnableState();
     void Bind();
@@ -464,7 +480,10 @@ protected:
   int  GetPageTag(Page*);
   int  GetPagePinned(Page*);
   const char* GetPageTitle(Page*);
+  const char* GetPageBalloonHelpString(Page*);
+  vtkKWIcon* GetPageIcon(Page*);
   void SetPageEnabled(Page*, int flag);
+  void BuildPage(Page*,const char *title,const char* balloon,vtkKWIcon *icon);
 
   int AddToMostRecentPages(Page*);
   int RemoveFromMostRecentPages(Page*);
@@ -505,6 +524,8 @@ protected:
   // Bind/Unbind events.
   virtual void Bind();
   virtual void UnBind();
+
+  vtkKWBalloonHelpManager *TabBalloonHelpManager;
 
 private:
   vtkKWNotebook(const vtkKWNotebook&); // Not implemented
