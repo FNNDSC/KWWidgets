@@ -91,6 +91,10 @@ vtkKWStartupPageWidget::vtkKWStartupPageWidget()
   this->HintColor[1]         = 120.0 / 255.0;
   this->HintColor[2]         = 120.0 / 255.0;
 
+  this->TextSize           = 14;
+  this->HintSize           = 9;
+  this->MostRecentFileSize = 10;
+
   this->SupportDoubleClick     = 1;
   this->SupportDrop            = 1;
   this->SupportMostRecentFiles = 1;
@@ -285,15 +289,15 @@ void vtkKWStartupPageWidget::UpdateInternalCanvasFonts()
     interp, this->Internals->BaseFont.c_str(), base_font_bold);
   
   vtkKWTkUtilities::ChangeFontSize(
-    interp, base_font_bold, 14, 
+    interp, base_font_bold, this->TextSize, 
     this->Internals->TextFont);
   
   vtkKWTkUtilities::ChangeFontSize(
-    interp, this->Internals->BaseFont.c_str(), 10, 
+    interp, this->Internals->BaseFont.c_str(), this->MostRecentFileSize, 
     this->Internals->MostRecentFilesFont);
 
   vtkKWTkUtilities::ChangeFontSize(
-    interp, this->Internals->BaseFont.c_str(), 8, 
+    interp, this->Internals->BaseFont.c_str(), this->HintSize, 
     this->Internals->HintFont);
 }
 
@@ -1112,6 +1116,23 @@ void vtkKWStartupPageWidget::SetTextColor(
 }
 
 //----------------------------------------------------------------------------
+void vtkKWStartupPageWidget::SetTextSize(int arg)
+{
+  if (arg == this->TextSize)
+    {
+    return;
+    }
+
+  this->TextSize = arg;
+
+  this->Modified();
+
+  this->UpdateInternalCanvasFonts();
+  this->StartupPageCanvas->DeleteTag("text");
+  this->Redraw();
+}
+
+//----------------------------------------------------------------------------
 void vtkKWStartupPageWidget::SetSelectedTextColor(
   double r, double g, double b)
 {
@@ -1157,6 +1178,40 @@ void vtkKWStartupPageWidget::SetHintColor(
   this->Modified();
 
   this->UpdateInternalCanvasColors();
+  this->StartupPageCanvas->DeleteTag("text");
+  this->Redraw();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWStartupPageWidget::SetHintSize(int arg)
+{
+  if (arg == this->HintSize)
+    {
+    return;
+    }
+
+  this->HintSize = arg;
+
+  this->Modified();
+
+  this->UpdateInternalCanvasFonts();
+  this->StartupPageCanvas->DeleteTag("text");
+  this->Redraw();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWStartupPageWidget::SetMostRecentFileSize(int arg)
+{
+  if (arg == this->MostRecentFileSize)
+    {
+    return;
+    }
+
+  this->MostRecentFileSize = arg;
+
+  this->Modified();
+
+  this->UpdateInternalCanvasFonts();
   this->StartupPageCanvas->DeleteTag("text");
   this->Redraw();
 }
@@ -1260,6 +1315,9 @@ void vtkKWStartupPageWidget::PrintSelf(
      << this->GradientColor2[0] << ", "
      << this->GradientColor2[1] << ", "
      << this->GradientColor2[2] << ") " << endl;
+  os << indent << "TextSize: " << this->TextSize << endl;
+  os << indent << "HintSize: " << this->HintSize << endl;
+  os << indent << "MostRecentFileSize: " << this->MostRecentFileSize << endl;
   os << indent << "TextColor: (" 
      << this->TextColor[0] << ", "
      << this->TextColor[1] << ", "

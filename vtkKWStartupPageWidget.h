@@ -56,6 +56,11 @@ public:
     { this->SetTextColor(rgb[0], rgb[1], rgb[2]); };
 
   // Description:
+  // Set/Get the text size
+  vtkGetMacro(TextSize, int);
+  virtual void SetTextSize(int);
+
+  // Description:
   // Set/Get the text color (in RGB space) when it is selected (hovered on)
   vtkGetVector3Macro(SelectedTextColor, double);
   virtual void SetSelectedTextColor(double r, double g, double b);
@@ -68,6 +73,11 @@ public:
   virtual void SetHintColor(double r, double g, double b);
   virtual void SetHintColor(double rgb[3])
     { this->SetHintColor(rgb[0], rgb[1], rgb[2]); };
+
+  // Description:
+  // Set/Get the hint size
+  vtkGetMacro(HintSize, int);
+  virtual void SetHintSize(int);
 
   // Description:
   // Set/Get if the Open section is supported/shown.
@@ -138,6 +148,11 @@ public:
   vtkGetObjectMacro(MostRecentFileIcon, vtkKWIcon);
   virtual void SetMostRecentFileIcon(vtkKWIcon*);
   virtual void SetMostRecentFileIconToPredefinedIcon(int icon_index);
+
+  // Description:
+  // Set/Get the text size of recent file items
+  vtkGetMacro(MostRecentFileSize, int);
+  virtual void SetMostRecentFileSize(int);
 
   // Description:
   // Set/Get the most recent files manager this page should listen to.
@@ -228,6 +243,10 @@ protected:
   double TextColor[3];
   double SelectedTextColor[3];
   double HintColor[3];
+
+  int TextSize;
+  int HintSize;
+  int MostRecentFileSize;
 
   int    SupportOpen;
   int    SupportDoubleClick;
