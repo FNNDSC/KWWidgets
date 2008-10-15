@@ -92,8 +92,12 @@ vtkKWStartupPageWidget::vtkKWStartupPageWidget()
   this->HintColor[2]         = 120.0 / 255.0;
 
   this->TextSize           = 14;
-  this->HintSize           = 9;
   this->MostRecentFileSize = 10;
+#ifdef _WIN32
+  this->HintSize           = 9;
+#else
+  this->HintSize           = 10;
+#endif
 
   this->SupportDoubleClick     = 1;
   this->SupportDrop            = 1;
