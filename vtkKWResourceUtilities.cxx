@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWResourceUtilities);
-vtkCxxRevisionMacro(vtkKWResourceUtilities, "$Revision: 1.23 $");
+vtkCxxRevisionMacro(vtkKWResourceUtilities, "$Revision: 1.24 $");
 
 //----------------------------------------------------------------------------
 int vtkKWResourceUtilities::ReadImage(
@@ -390,7 +390,7 @@ int vtkKWResourceUtilities::ConvertImageToHeader(
 
   // Open header file
 
-  ofstream out(header_filename, ios::out | (opt_append ? ios::app : 0));
+  ofstream out(header_filename, ios::out | (opt_append ? ios::app : ios::out));
   if (out.fail())
     {
     vtkGenericWarningMacro("Unable to open header file " << header_filename);
