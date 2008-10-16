@@ -480,6 +480,12 @@ public:
   // Optionally provide a master window this dialog should be the slave of.
   virtual void DisplayTclInteractor(vtkKWTopLevel *master);
   virtual vtkKWTclInteractor* GetTclInteractor();
+
+  // Description:
+  // Add system information to a stream.
+  // Will be used to report system info in the About dialog, or the Feedback
+  // email...
+  virtual void AddSystemInformation(ostream &);
   
   // Description:
   // Some constants

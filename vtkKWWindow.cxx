@@ -36,7 +36,7 @@
 #include <vtksys/SystemTools.hxx>
 #include <vtksys/ios/sstream> 
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.294 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.295 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindow );
@@ -96,7 +96,7 @@ vtkKWWindow::vtkKWWindow()
       ks_("Menu|Window|&Tcl Interactor"));
   this->LogDialogMenuLabel = 
     vtksys::SystemTools::DuplicateString(
-      ks_("Menu|Window|&Log Window"));
+      ks_("Menu|Window|&Error Log"));
 
   this->DefaultViewPanelName = 
     vtksys::SystemTools::DuplicateString("View");

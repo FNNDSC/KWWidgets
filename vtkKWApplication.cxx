@@ -103,7 +103,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.341 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.342 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1688,8 +1688,26 @@ void vtkKWApplication::ConfigureAboutDialog()
   vtksys_ios::ostringstream str;
   this->AddAboutText(str);
   str << endl;
+  this->AddSystemInformation(str);
+  str << endl;
   this->AddAboutCopyrights(str);
+
   this->AboutRuntimeInfo->GetWidget()->SetText( str.str().c_str() );
+}
+
+//----------------------------------------------------------------------------
+void vtkKWApplication::AddSystemInformation(ostream &os)
+{
+  // OS and CPU
+
+  vtksys_stl::string ver = 
+    vtksys::SystemTools::GetOperatingSystemNameAndVersion();
+  os << k_("Operating System") << ": " << ver.c_str() << endl;
+#if defined(_WIN32) && !defined(__CYGWIN__)
+  SYSTEM_INFO siSysInfo;
+  GetSystemInfo(&siSysInfo); 
+  os << k_("CPU(s)") << ": " << siSysInfo.dwNumberOfProcessors << endl;
+#endif
 }
 
 //----------------------------------------------------------------------------
@@ -2333,18 +2351,7 @@ void vtkKWApplication::AddEmailFeedbackBody(ostream &os)
     os << " "  << this->GetReleaseName();
     }
   os << ")" << endl;
-
-  vtksys_stl::string ver = 
-    vtksys::SystemTools::GetOperatingSystemNameAndVersion();
-  os << ver.c_str();
-
-#if defined(_WIN32) && !defined(__CYGWIN__)
-  SYSTEM_INFO siSysInfo;
-  GetSystemInfo(&siSysInfo); 
-  os << ", " << siSysInfo.dwNumberOfProcessors << " CPU(s)";
-#endif
-  
-  os << endl;
+  this->AddSystemInformation(os);
 }
 
 //----------------------------------------------------------------------------
@@ -2680,7 +2687,6 @@ void vtkKWApplication::EmailFeedback()
 
   vtksys_ios::ostringstream email_subject;
   this->AddEmailFeedbackSubject(email_subject);
-  email_subject;
 
   vtksys_ios::ostringstream message;
   this->AddEmailFeedbackBody(message);
