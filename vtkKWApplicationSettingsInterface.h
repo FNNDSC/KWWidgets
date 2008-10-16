@@ -63,7 +63,8 @@ public:
 
   // Description:
   // Callbacks. Internal, do not use.
-  virtual void ConfirmExitCallback(int state);
+  virtual void PromptBeforeExitCallback(int state);
+  virtual void SendErrorLogBeforeExitCallback(int state);
   virtual void SaveUserInterfaceGeometryCallback(int state);
   virtual void SplashScreenVisibilityCallback(int state);
   virtual void BalloonHelpVisibilityCallback(int state);
@@ -83,7 +84,8 @@ protected:
 
   vtkKWFrameWithLabel *InterfaceSettingsFrame;
 
-  vtkKWCheckButton  *ConfirmExitCheckButton;
+  vtkKWCheckButton  *PromptBeforeExitCheckButton;
+  vtkKWCheckButton  *SendErrorLogBeforeExitCheckButton;
   vtkKWCheckButton  *SaveUserInterfaceGeometryCheckButton;
   vtkKWCheckButton  *SplashScreenVisibilityCheckButton;
   vtkKWCheckButton  *BalloonHelpVisibilityCheckButton;

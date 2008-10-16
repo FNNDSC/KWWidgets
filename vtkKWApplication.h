@@ -75,7 +75,7 @@ public:
 
   // Description:
   // Set/Get if a confirmation dialog should be displayed before the
-  // application is exited.
+  // application exits.
   vtkSetMacro(PromptBeforeExit, int);
   vtkGetMacro(PromptBeforeExit, int);
   vtkBooleanMacro(PromptBeforeExit, int);
@@ -89,6 +89,12 @@ public:
   // Description:
   // Get when application is exiting (set to 1 as soon as Exit() is called).
   vtkGetMacro(InExit, int);
+
+  // Description:
+  // Set/Get if the error log should be sent.emailed before application exits.
+  vtkSetMacro(SendErrorLogBeforeExit, int);
+  vtkGetMacro(SendErrorLogBeforeExit, int);
+  vtkBooleanMacro(SendErrorLogBeforeExit, int);
 
   // Description:
   // Add, remove (i.e. close), or retrieve a window to/from this application.
@@ -491,6 +497,7 @@ public:
   // Some constants
   //BTX
   static const char *ExitDialogName;
+  static const char *SendErrorLogDialogName;
   static const char *BalloonHelpVisibilityRegKey;
   static const char *SaveUserInterfaceGeometryRegKey;
   static const char *SplashScreenVisibilityRegKey;
@@ -546,6 +553,11 @@ protected:
   int InExit;
   int ExitAfterLoadScript;
   int PromptBeforeExit;
+  int SendErrorLogBeforeExit;
+
+  // Description:
+  // Send the error log (prompt first).
+  virtual int SendErrorLog();
 
   // Description:
   // Number of dialog that are up. See Un/RegisterDialogUp().

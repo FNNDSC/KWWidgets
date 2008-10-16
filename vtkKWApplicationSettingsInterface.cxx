@@ -40,7 +40,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWApplicationSettingsInterface);
-vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.62 $");
+vtkCxxRevisionMacro(vtkKWApplicationSettingsInterface, "$Revision: 1.63 $");
 
 //----------------------------------------------------------------------------
 vtkKWApplicationSettingsInterface::vtkKWApplicationSettingsInterface()
@@ -48,32 +48,33 @@ vtkKWApplicationSettingsInterface::vtkKWApplicationSettingsInterface()
   this->SetName(
     ks_("Application Settings Panel|Title|Application Settings"));
 
-  this->Window = 0;
+  this->Window = NULL;
 
   // Interface settings
 
-  this->InterfaceSettingsFrame = 0;
-  this->ConfirmExitCheckButton = 0;
-  this->SaveUserInterfaceGeometryCheckButton = 0;
-  this->SplashScreenVisibilityCheckButton = 0;
-  this->BalloonHelpVisibilityCheckButton = 0;
-  this->ViewPanelPositionOptionMenu = 0;
+  this->InterfaceSettingsFrame               = NULL;
+  this->PromptBeforeExitCheckButton          = NULL;
+  this->SendErrorLogBeforeExitCheckButton    = NULL;
+  this->SaveUserInterfaceGeometryCheckButton = NULL;
+  this->SplashScreenVisibilityCheckButton    = NULL;
+  this->BalloonHelpVisibilityCheckButton     = NULL;
+  this->ViewPanelPositionOptionMenu          = NULL;
 
   // Interface customization
 
-  this->InterfaceCustomizationFrame = 0;
-  this->ResetDragAndDropButton = 0;
+  this->InterfaceCustomizationFrame = NULL;
+  this->ResetDragAndDropButton      = NULL;
 
   // Toolbar settings
 
-  this->ToolbarSettingsFrame = 0;
-  this->FlatToolbarsCheckButton = 0;
-  this->FlatToolbarWidgetsCheckButton = 0;
+  this->ToolbarSettingsFrame          = NULL;
+  this->FlatToolbarsCheckButton       = NULL;
+  this->FlatToolbarWidgetsCheckButton = NULL;
 
   // Print settings
 
-  this->PrintSettingsFrame = 0;
-  this->DPIOptionMenu = 0;
+  this->PrintSettingsFrame = NULL;
+  this->DPIOptionMenu      = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -89,10 +90,16 @@ vtkKWApplicationSettingsInterface::~vtkKWApplicationSettingsInterface()
     this->InterfaceSettingsFrame = NULL;
     }
 
-  if (this->ConfirmExitCheckButton)
+  if (this->PromptBeforeExitCheckButton)
     {
-    this->ConfirmExitCheckButton->Delete();
-    this->ConfirmExitCheckButton = NULL;
+    this->PromptBeforeExitCheckButton->Delete();
+    this->PromptBeforeExitCheckButton = NULL;
+    }
+
+  if (this->SendErrorLogBeforeExitCheckButton)
+    {
+    this->SendErrorLogBeforeExitCheckButton->Delete();
+    this->SendErrorLogBeforeExitCheckButton = NULL;
     }
 
   if (this->SaveUserInterfaceGeometryCheckButton)
@@ -225,22 +232,43 @@ void vtkKWApplicationSettingsInterface::Create()
   frame = this->InterfaceSettingsFrame->GetFrame();
 
   // --------------------------------------------------------------
-  // Interface settings : Confirm on exit ?
+  // Interface settings : Prompt before exit ?
 
-  if (!this->ConfirmExitCheckButton)
+  if (!this->PromptBeforeExitCheckButton)
     {
-    this->ConfirmExitCheckButton = vtkKWCheckButton::New();
+    this->PromptBeforeExitCheckButton = vtkKWCheckButton::New();
     }
 
-  this->ConfirmExitCheckButton->SetParent(frame);
-  this->ConfirmExitCheckButton->Create();
-  this->ConfirmExitCheckButton->SetText(
+  this->PromptBeforeExitCheckButton->SetParent(frame);
+  this->PromptBeforeExitCheckButton->Create();
+  this->PromptBeforeExitCheckButton->SetText(
     ks_("Application Settings|Confirm on exit"));
-  this->ConfirmExitCheckButton->SetCommand(this, "ConfirmExitCallback");
-  this->ConfirmExitCheckButton->SetBalloonHelpString(
+  this->PromptBeforeExitCheckButton->SetCommand(this, "PromptBeforeExitCallback");
+  this->PromptBeforeExitCheckButton->SetBalloonHelpString(
     k_("A confirmation dialog will be presented to the user on exit."));
 
-  tk_cmd << "pack " << this->ConfirmExitCheckButton->GetWidgetName()
+  tk_cmd << "pack " << this->PromptBeforeExitCheckButton->GetWidgetName()
+         << "  -side top -anchor w -expand no -fill none" << endl;
+
+  // --------------------------------------------------------------
+  // Interface settings : Send error log on exit ?
+
+  if (!this->SendErrorLogBeforeExitCheckButton)
+    {
+    this->SendErrorLogBeforeExitCheckButton = vtkKWCheckButton::New();
+    }
+
+  this->SendErrorLogBeforeExitCheckButton->SetParent(frame);
+  this->SendErrorLogBeforeExitCheckButton->Create();
+  this->SendErrorLogBeforeExitCheckButton->SetText(
+    ks_("Application Settings|Confirm send error log on exit"));
+  this->SendErrorLogBeforeExitCheckButton->SetCommand(
+    this, "SendErrorLogBeforeExitCallback");
+  this->SendErrorLogBeforeExitCheckButton->SetBalloonHelpString(
+    k_("A confirmation dialog will prompt the user to send the error log "
+       "on exit."));
+
+  tk_cmd << "pack " << this->SendErrorLogBeforeExitCheckButton->GetWidgetName()
          << "  -side top -anchor w -expand no -fill none" << endl;
 
   // --------------------------------------------------------------
@@ -254,7 +282,7 @@ void vtkKWApplicationSettingsInterface::Create()
   this->SaveUserInterfaceGeometryCheckButton->SetParent(frame);
   this->SaveUserInterfaceGeometryCheckButton->Create();
   this->SaveUserInterfaceGeometryCheckButton->SetText(
-    ks_("Application Settings|Save user interface geometry on exit"));
+    ks_("Application Settings|Save user interface size and position on exit"));
   this->SaveUserInterfaceGeometryCheckButton->SetCommand(
     this, "SaveUserInterfaceGeometryCallback");
   this->SaveUserInterfaceGeometryCheckButton->SetBalloonHelpString(
@@ -500,13 +528,22 @@ void vtkKWApplicationSettingsInterface::Update()
     return;
     }
 
-  // Interface settings : Confirm on exit ?
+  // Interface settings : Prompt before exit ?
 
-  if (this->ConfirmExitCheckButton)
+  if (this->PromptBeforeExitCheckButton)
     {
-    this->ConfirmExitCheckButton->SetSelectedState(
+    this->PromptBeforeExitCheckButton->SetSelectedState(
       vtkKWMessageDialog::RestoreMessageDialogResponseFromRegistry(
         this->GetApplication(), vtkKWApplication::ExitDialogName) ? 0 : 1);
+    }
+
+  // Interface settings : Prompt before exit ?
+
+  if (this->SendErrorLogBeforeExitCheckButton)
+    {
+    this->SendErrorLogBeforeExitCheckButton->SetSelectedState(
+      vtkKWMessageDialog::RestoreMessageDialogResponseFromRegistry(
+        this->GetApplication(), vtkKWApplication::SendErrorLogDialogName)?0:1);
     }
 
   // Interface settings : Save application geometry on exit ?
@@ -636,12 +673,22 @@ void vtkKWApplicationSettingsInterface::Update()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWApplicationSettingsInterface::ConfirmExitCallback(int state)
+void vtkKWApplicationSettingsInterface::PromptBeforeExitCallback(int state)
 {
   vtkKWMessageDialog::SaveMessageDialogResponseToRegistry(
     this->GetApplication(),
     vtkKWApplication::ExitDialogName, 
     state ? 0 : 1);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWApplicationSettingsInterface::SendErrorLogBeforeExitCallback(
+  int state)
+{
+  vtkKWMessageDialog::SaveMessageDialogResponseToRegistry(
+    this->GetApplication(),
+    vtkKWApplication::SendErrorLogDialogName, 
+    state ? 0 : -1);
 }
 
 //----------------------------------------------------------------------------
@@ -765,9 +812,14 @@ void vtkKWApplicationSettingsInterface::UpdateEnableState()
     this->InterfaceSettingsFrame->SetEnabled(this->GetEnabled());
     }
 
-  if (this->ConfirmExitCheckButton)
+  if (this->PromptBeforeExitCheckButton)
     {
-    this->ConfirmExitCheckButton->SetEnabled(this->GetEnabled());
+    this->PromptBeforeExitCheckButton->SetEnabled(this->GetEnabled());
+    }
+
+  if (this->SendErrorLogBeforeExitCheckButton)
+    {
+    this->SendErrorLogBeforeExitCheckButton->SetEnabled(this->GetEnabled());
     }
 
   if (this->SaveUserInterfaceGeometryCheckButton)

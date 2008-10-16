@@ -66,6 +66,8 @@
 #include "vtkKWWidgetsConfigure.h"
 #include "vtkKWWidgetsBuildConfigure.h"
 
+#include "Resources/vtkKWMiscResources.h"
+
 #include "vtkToolkits.h"
 
 static Tcl_Interp *Et_Interp = 0;
@@ -96,6 +98,7 @@ static Tcl_Interp *Et_Interp = 0;
 #endif // __APPLE__
 
 const char *vtkKWApplication::ExitDialogName = "ExitApplication";
+const char *vtkKWApplication::SendErrorLogDialogName = "SendErrorLog";
 const char *vtkKWApplication::BalloonHelpVisibilityRegKey = "ShowBalloonHelp";
 const char *vtkKWApplication::SaveUserInterfaceGeometryRegKey = "SaveUserInterfaceGeometry";
 const char *vtkKWApplication::SplashScreenVisibilityRegKey = "ShowSplashScreen";
@@ -103,7 +106,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.344 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.345 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -262,6 +265,7 @@ vtkKWApplication::vtkKWApplication()
   this->ExitStatus                = 0;
   this->ExitAfterLoadScript       = 0;
   this->PromptBeforeExit          = 1;
+  this->SendErrorLogBeforeExit    = 0;
   this->DialogUp                  = 0;
   this->SaveUserInterfaceGeometry = 1;
   this->RegistryHelper            = NULL;
@@ -591,6 +595,13 @@ int vtkKWApplication::Exit()
   if (this->InExit)
     {
     return 0;
+    }
+
+  // Send error log
+
+  if (this->SendErrorLogBeforeExit)
+    {
+    this->SendErrorLog();
     }
 
   // If a dialog is still up, complain and bail
@@ -1488,6 +1499,7 @@ int vtkKWApplication::DisplayExitDialog(vtkKWTopLevel *master)
     vtkKWMessageDialog::YesDefault);
   dialog->SetDialogName(vtkKWApplication::ExitDialogName);
   dialog->Create();
+  dialog->SetIcon();
 
   char buffer[500];
 
@@ -1795,6 +1807,61 @@ void vtkKWApplication::AddAboutCopyrights(ostream &os)
 }
 
 //----------------------------------------------------------------------------
+int vtkKWApplication::SendErrorLog()
+{
+  int prompt = (vtkKWMessageDialog::RestoreMessageDialogResponseFromRegistry(
+                  this, vtkKWApplication::SendErrorLogDialogName) == 0);
+  if (!prompt || 
+      !this->CanEmailFeedback() || 
+      !this->CreateLogDialog() ||
+      !this->LogDialog->GetLogWidget()->GetNumberOfRecords())
+    {
+    return 0;
+    }
+
+  this->DisplayLogDialog(NULL);
+  
+  vtkKWIcon *icon = vtkKWIcon::New();
+  icon->SetImage(image_ErrorLogMenuEntry,
+                 image_ErrorLogMenuEntry_width,
+                 image_ErrorLogMenuEntry_height,
+                 image_ErrorLogMenuEntry_pixel_size,
+                 image_ErrorLogMenuEntry_length,
+                 image_ErrorLogMenuEntry_decoded_length);
+
+  vtkKWMessageDialog *dialog = vtkKWMessageDialog::New();
+  dialog->SetApplication(this);
+  dialog->SetStyleToOkCancel();
+  dialog->SetMasterWindow(this->GetNthWindow(0));
+  dialog->SetOptions(
+    vtkKWMessageDialog::RememberNo |
+    vtkKWMessageDialog::Beep | 
+    vtkKWMessageDialog::CustomIcon |
+    vtkKWMessageDialog::NoDefault);
+  dialog->SetDialogName(vtkKWApplication::SendErrorLogDialogName);
+  dialog->SetTitle(k_("Send Error Log?"));
+  dialog->SetText(k_("Some errors were raised during your session. These errors did not cause any data loss, but by keeping us informed you can help us to improve our product.\n\nYou can send us this error log now. You can also review and send the error log in the future by accessing the \"Window\" menu or by clicking on the error icon located at the bottom right corner of the window."));
+  dialog->SetOKButtonText(k_("Send Log"));
+  dialog->SetCancelButtonText(k_("Do Not Send Log"));
+  dialog->Create();
+  dialog->GetIcon()->SetImageToIcon(icon);
+  dialog->SetIcon();
+
+  int ret = dialog->Invoke();
+  dialog->Delete();
+  icon->Delete();
+
+  this->LogDialog->Withdraw();
+
+  if (ret)
+    {
+    this->LogDialog->GetLogWidget()->EmailRecords(this->EmailFeedbackAddress);
+    }
+
+  return ret;
+}
+
+//----------------------------------------------------------------------------
 vtkKWSplashScreen *vtkKWApplication::GetSplashScreen()
 {
   if (!this->SplashScreen)
@@ -2047,7 +2114,7 @@ void vtkKWApplication::SetLimitedEditionMode(int v)
 
   for (int i = 0; i < this->GetNumberOfWindows(); i++)
     {
-    this->GetNthWindow(i)->UpdateEnableState();
+    this->GetNthWindow(i)->Update();
     }
 
   this->Modified();
@@ -3146,6 +3213,7 @@ void vtkKWApplication::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "SupportSplashScreen: " << (this->SupportSplashScreen ? "on":"off") << endl;
   os << indent << "SplashScreenVisibility: " << (this->SplashScreenVisibility ? "on":"off") << endl;
   os << indent << "PromptBeforeExit: " << (this->GetPromptBeforeExit() ? "on":"off") << endl;
+  os << indent << "SendErrorLogBeforeExit: " << (this->GetSendErrorLogBeforeExit() ? "on":"off") << endl;
   os << indent << "InstallationDirectory: " 
      << (this->GetInstallationDirectory() ? this->GetInstallationDirectory() : "None") << endl;
   os << indent << "UserDataDirectory: " 
