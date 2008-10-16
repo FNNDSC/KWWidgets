@@ -29,7 +29,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMessageDialog );
-vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.96 $");
+vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.97 $");
 
 //----------------------------------------------------------------------------
 vtkKWMessageDialog::vtkKWMessageDialog()
@@ -426,15 +426,18 @@ void vtkKWMessageDialog::SetIcon()
 {
   if (this->Options & vtkKWMessageDialog::ErrorIcon)
     {
-    this->Icon->SetImageToPredefinedIcon(vtkKWIcon::IconError);
+    this->Icon->SetImageToPredefinedIcon(
+      vtkKWIcon::IconNuvola48x48ActionsMessageBoxCritical);
     }
   else if (this->Options & vtkKWMessageDialog::QuestionIcon)
     {
-    this->Icon->SetImageToPredefinedIcon(vtkKWIcon::IconQuestion);
+    this->Icon->SetImageToPredefinedIcon(
+      vtkKWIcon::IconNuvola48x48ActionsMessageBoxInfo);
     }
   else if (this->Options & vtkKWMessageDialog::WarningIcon)
     {
-    this->Icon->SetImageToPredefinedIcon(vtkKWIcon::IconWarning);
+    this->Icon->SetImageToPredefinedIcon(
+      vtkKWIcon::IconNuvola48x48ActionsMessageBoxWarning);
     }
   else if (!(this->Options & vtkKWMessageDialog::CustomIcon))
     {

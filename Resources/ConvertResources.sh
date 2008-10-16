@@ -162,6 +162,9 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWNuvolaIconResourc
     Nuvola/22x22/apps/designer.png \
     Nuvola/22x22/filesystems/folder_blue.png \
     Nuvola/22x22/devices/camera.png \
+    Nuvola/48x48/actions/messagebox_critical.png \
+    Nuvola/48x48/actions/messagebox_info.png \
+    Nuvola/48x48/actions/messagebox_warning.png \
     Nuvola/48x48/actions/history.png \
     Nuvola/48x48/apps/download_manager.png \
     Nuvola/48x48/devices/mouse.png \
@@ -174,3 +177,6 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWCrystalProjectIco
     CrystalProject/16x16/actions/jabber_online.png \
     CrystalProject/16x16/actions/rotate.png \
     CrystalProject/16x16/apps/cookie.png
+
+KWConvertImageToHeader --zlib --base64 vtkKWMiscResources.h \
+    ErrorLogMenuEntry.png

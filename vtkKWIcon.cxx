@@ -30,7 +30,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.55 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.56 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -1541,6 +1541,33 @@ void vtkKWIcon::SetImage(int image)
       break;
 
       // -------------------------------------------------------------------
+
+    case IconNuvola48x48ActionsMessageBoxCritical:
+      this->SetImage(
+        image_Nuvola_48x48_actions_messagebox_critical, 
+        image_Nuvola_48x48_actions_messagebox_critical_width, 
+        image_Nuvola_48x48_actions_messagebox_critical_height,
+        image_Nuvola_48x48_actions_messagebox_critical_pixel_size, 
+        image_Nuvola_48x48_actions_messagebox_critical_length);
+      break;
+
+    case IconNuvola48x48ActionsMessageBoxInfo:
+      this->SetImage(
+        image_Nuvola_48x48_actions_messagebox_info, 
+        image_Nuvola_48x48_actions_messagebox_info_width, 
+        image_Nuvola_48x48_actions_messagebox_info_height,
+        image_Nuvola_48x48_actions_messagebox_info_pixel_size, 
+        image_Nuvola_48x48_actions_messagebox_info_length);
+      break;
+
+    case IconNuvola48x48ActionsMessageBoxWarning:
+      this->SetImage(
+        image_Nuvola_48x48_actions_messagebox_warning, 
+        image_Nuvola_48x48_actions_messagebox_warning_width, 
+        image_Nuvola_48x48_actions_messagebox_warning_height,
+        image_Nuvola_48x48_actions_messagebox_warning_pixel_size, 
+        image_Nuvola_48x48_actions_messagebox_warning_length);
+      break;
 
     case vtkKWIcon::IconNuvola48x48ActionsHistory:
       this->SetImage(
