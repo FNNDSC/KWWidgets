@@ -26,10 +26,11 @@
 
 #include "Resources/vtkKWIconResources.h"
 #include "Resources/vtkKWNuvolaIconResources.h"
+#include "Resources/vtkKWCrystalProjectIconResources.h"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.54 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.55 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -1182,6 +1183,318 @@ void vtkKWIcon::SetImage(int image)
         image_testtube_length);
       break;
 
+      // -------------------------------------------------------------------
+
+    case IconCrystalProject16x16Actions14LayerDeletelayer:
+      this->SetImage(
+        image_CrystalProject_16x16_actions_14_layer_deletelayer, 
+        image_CrystalProject_16x16_actions_14_layer_deletelayer_width, 
+        image_CrystalProject_16x16_actions_14_layer_deletelayer_height,
+        image_CrystalProject_16x16_actions_14_layer_deletelayer_pixel_size, 
+        image_CrystalProject_16x16_actions_14_layer_deletelayer_length);
+      break;
+
+    case IconCrystalProject16x16Actions14LayerNovisible:
+      this->SetImage(
+        image_CrystalProject_16x16_actions_14_layer_novisible, 
+        image_CrystalProject_16x16_actions_14_layer_novisible_width, 
+        image_CrystalProject_16x16_actions_14_layer_novisible_height,
+        image_CrystalProject_16x16_actions_14_layer_novisible_pixel_size, 
+        image_CrystalProject_16x16_actions_14_layer_novisible_length);
+      break;
+
+    case IconCrystalProject16x16Actions14LayerVisible:
+      this->SetImage(
+        image_CrystalProject_16x16_actions_14_layer_visible, 
+        image_CrystalProject_16x16_actions_14_layer_visible_width, 
+        image_CrystalProject_16x16_actions_14_layer_visible_height,
+        image_CrystalProject_16x16_actions_14_layer_visible_pixel_size, 
+        image_CrystalProject_16x16_actions_14_layer_visible_length);
+      break;
+
+    case IconCrystalProject16x16ActionsJabberOnline:
+      this->SetImage(
+        image_CrystalProject_16x16_actions_jabber_online, 
+        image_CrystalProject_16x16_actions_jabber_online_width, 
+        image_CrystalProject_16x16_actions_jabber_online_height,
+        image_CrystalProject_16x16_actions_jabber_online_pixel_size, 
+        image_CrystalProject_16x16_actions_jabber_online_length);
+      break;
+
+    case IconCrystalProject16x16ActionsRotate:
+      this->SetImage(
+        image_CrystalProject_16x16_actions_rotate, 
+        image_CrystalProject_16x16_actions_rotate_width, 
+        image_CrystalProject_16x16_actions_rotate_height,
+        image_CrystalProject_16x16_actions_rotate_pixel_size, 
+        image_CrystalProject_16x16_actions_rotate_length);
+      break;
+
+    case IconCrystalProject16x16AppsCookie:
+      this->SetImage(
+        image_CrystalProject_16x16_apps_cookie, 
+        image_CrystalProject_16x16_apps_cookie_width, 
+        image_CrystalProject_16x16_apps_cookie_height,
+        image_CrystalProject_16x16_apps_cookie_pixel_size, 
+        image_CrystalProject_16x16_apps_cookie_length);
+      break;
+
+      // -------------------------------------------------------------------
+
+    case IconNuvola16x16ActionsConfigure:
+      this->SetImage(
+        image_Nuvola_16x16_actions_configure, 
+        image_Nuvola_16x16_actions_configure_width, 
+        image_Nuvola_16x16_actions_configure_height,
+        image_Nuvola_16x16_actions_configure_pixel_size, 
+        image_Nuvola_16x16_actions_configure_length);
+      break;
+
+    case IconNuvola16x16ActionsDecrypted:
+      this->SetImage(
+        image_Nuvola_16x16_actions_decrypted, 
+        image_Nuvola_16x16_actions_decrypted_width, 
+        image_Nuvola_16x16_actions_decrypted_height,
+        image_Nuvola_16x16_actions_decrypted_pixel_size, 
+        image_Nuvola_16x16_actions_decrypted_length);
+      break;
+
+    case IconNuvola16x16ActionsEncrypted:
+      this->SetImage(
+        image_Nuvola_16x16_actions_encrypted, 
+        image_Nuvola_16x16_actions_encrypted_width, 
+        image_Nuvola_16x16_actions_encrypted_height,
+        image_Nuvola_16x16_actions_encrypted_pixel_size, 
+        image_Nuvola_16x16_actions_encrypted_length);
+      break;
+
+    case IconNuvola16x16ActionsExit:
+      this->SetImage(
+        image_Nuvola_16x16_actions_exit, 
+        image_Nuvola_16x16_actions_exit_width, 
+        image_Nuvola_16x16_actions_exit_height,
+        image_Nuvola_16x16_actions_exit_pixel_size, 
+        image_Nuvola_16x16_actions_exit_length);
+      break;
+
+    case IconNuvola16x16ActionsFileClose:
+      this->SetImage(
+        image_Nuvola_16x16_actions_fileclose, 
+        image_Nuvola_16x16_actions_fileclose_width, 
+        image_Nuvola_16x16_actions_fileclose_height,
+        image_Nuvola_16x16_actions_fileclose_pixel_size, 
+        image_Nuvola_16x16_actions_fileclose_length);
+      break;
+
+    case IconNuvola16x16ActionsFileOpen:
+      this->SetImage(
+        image_Nuvola_16x16_actions_fileopen, 
+        image_Nuvola_16x16_actions_fileopen_width, 
+        image_Nuvola_16x16_actions_fileopen_height,
+        image_Nuvola_16x16_actions_fileopen_pixel_size, 
+        image_Nuvola_16x16_actions_fileopen_length);
+      break;
+
+    case IconNuvola16x16ActionsFilePrint:
+      this->SetImage(
+        image_Nuvola_16x16_actions_fileprint, 
+        image_Nuvola_16x16_actions_fileprint_width, 
+        image_Nuvola_16x16_actions_fileprint_height,
+        image_Nuvola_16x16_actions_fileprint_pixel_size, 
+        image_Nuvola_16x16_actions_fileprint_length);
+      break;
+
+    case IconNuvola16x16ActionsFileSave:
+      this->SetImage(
+        image_Nuvola_16x16_actions_filesave, 
+        image_Nuvola_16x16_actions_filesave_width, 
+        image_Nuvola_16x16_actions_filesave_height,
+        image_Nuvola_16x16_actions_filesave_pixel_size, 
+        image_Nuvola_16x16_actions_filesave_length);
+      break;
+
+    case IconNuvola16x16ActionsHelp:
+      this->SetImage(
+        image_Nuvola_16x16_actions_help, 
+        image_Nuvola_16x16_actions_help_width, 
+        image_Nuvola_16x16_actions_help_height,
+        image_Nuvola_16x16_actions_help_pixel_size, 
+        image_Nuvola_16x16_actions_help_length);
+      break;
+
+    case IconNuvola16x16ActionsMailGeneric:
+      this->SetImage(
+        image_Nuvola_16x16_actions_mail_generic, 
+        image_Nuvola_16x16_actions_mail_generic_width, 
+        image_Nuvola_16x16_actions_mail_generic_height,
+        image_Nuvola_16x16_actions_mail_generic_pixel_size, 
+        image_Nuvola_16x16_actions_mail_generic_length);
+      break;
+
+    case IconNuvola16x16ActionsMessage:
+      this->SetImage(
+        image_Nuvola_16x16_actions_message, 
+        image_Nuvola_16x16_actions_message_width, 
+        image_Nuvola_16x16_actions_message_height,
+        image_Nuvola_16x16_actions_message_pixel_size, 
+        image_Nuvola_16x16_actions_message_length);
+      break;
+
+    case IconNuvola16x16ActionsMessageBoxCritical:
+      this->SetImage(
+        image_Nuvola_16x16_actions_messagebox_critical, 
+        image_Nuvola_16x16_actions_messagebox_critical_width, 
+        image_Nuvola_16x16_actions_messagebox_critical_height,
+        image_Nuvola_16x16_actions_messagebox_critical_pixel_size, 
+        image_Nuvola_16x16_actions_messagebox_critical_length);
+      break;
+
+    case IconNuvola16x16ActionsMessageBoxInfo:
+      this->SetImage(
+        image_Nuvola_16x16_actions_messagebox_info, 
+        image_Nuvola_16x16_actions_messagebox_info_width, 
+        image_Nuvola_16x16_actions_messagebox_info_height,
+        image_Nuvola_16x16_actions_messagebox_info_pixel_size, 
+        image_Nuvola_16x16_actions_messagebox_info_length);
+      break;
+
+    case IconNuvola16x16ActionsMessageBoxWarning:
+      this->SetImage(
+        image_Nuvola_16x16_actions_messagebox_warning, 
+        image_Nuvola_16x16_actions_messagebox_warning_width, 
+        image_Nuvola_16x16_actions_messagebox_warning_height,
+        image_Nuvola_16x16_actions_messagebox_warning_pixel_size, 
+        image_Nuvola_16x16_actions_messagebox_warning_length);
+      break;
+
+    case IconNuvola16x16ActionsNo:
+      this->SetImage(
+        image_Nuvola_16x16_actions_no, 
+        image_Nuvola_16x16_actions_no_width, 
+        image_Nuvola_16x16_actions_no_height,
+        image_Nuvola_16x16_actions_no_pixel_size, 
+        image_Nuvola_16x16_actions_no_length);
+      break;
+
+    case IconNuvola16x16ActionsRotate:
+      this->SetImage(
+        image_Nuvola_16x16_actions_rotate, 
+        image_Nuvola_16x16_actions_rotate_width, 
+        image_Nuvola_16x16_actions_rotate_height,
+        image_Nuvola_16x16_actions_rotate_pixel_size, 
+        image_Nuvola_16x16_actions_rotate_length);
+      break;
+
+    case IconNuvola16x16ActionsStop:
+      this->SetImage(
+        image_Nuvola_16x16_actions_stop, 
+        image_Nuvola_16x16_actions_stop_width, 
+        image_Nuvola_16x16_actions_stop_height,
+        image_Nuvola_16x16_actions_stop_pixel_size, 
+        image_Nuvola_16x16_actions_stop_length);
+      break;
+
+    case IconNuvola16x16ActionsThumbnail:
+      this->SetImage(
+        image_Nuvola_16x16_actions_thumbnail, 
+        image_Nuvola_16x16_actions_thumbnail_width, 
+        image_Nuvola_16x16_actions_thumbnail_height,
+        image_Nuvola_16x16_actions_thumbnail_pixel_size, 
+        image_Nuvola_16x16_actions_thumbnail_length);
+      break;
+
+    case IconNuvola16x16ActionsViewMag:
+      this->SetImage(
+        image_Nuvola_16x16_actions_viewmag, 
+        image_Nuvola_16x16_actions_viewmag_width, 
+        image_Nuvola_16x16_actions_viewmag_height,
+        image_Nuvola_16x16_actions_viewmag_pixel_size, 
+        image_Nuvola_16x16_actions_viewmag_length);
+      break;
+
+    case IconNuvola16x16ActionsViewFullScreen:
+      this->SetImage(
+        image_Nuvola_16x16_actions_view_fullscreen, 
+        image_Nuvola_16x16_actions_view_fullscreen_width, 
+        image_Nuvola_16x16_actions_view_fullscreen_height,
+        image_Nuvola_16x16_actions_view_fullscreen_pixel_size, 
+        image_Nuvola_16x16_actions_view_fullscreen_length);
+      break;
+
+    case IconNuvola16x16AppsArk:
+      this->SetImage(
+        image_Nuvola_16x16_apps_ark, 
+        image_Nuvola_16x16_apps_ark_width, 
+        image_Nuvola_16x16_apps_ark_height,
+        image_Nuvola_16x16_apps_ark_pixel_size, 
+        image_Nuvola_16x16_apps_ark_length);
+      break;
+
+    case IconNuvola16x16AppsBug:
+      this->SetImage(
+        image_Nuvola_16x16_apps_bug, 
+        image_Nuvola_16x16_apps_bug_width, 
+        image_Nuvola_16x16_apps_bug_height,
+        image_Nuvola_16x16_apps_bug_pixel_size, 
+        image_Nuvola_16x16_apps_bug_length);
+      break;
+
+    case IconNuvola16x16AppsEmail:
+      this->SetImage(
+        image_Nuvola_16x16_apps_email, 
+        image_Nuvola_16x16_apps_email_width, 
+        image_Nuvola_16x16_apps_email_height,
+        image_Nuvola_16x16_apps_email_pixel_size, 
+        image_Nuvola_16x16_apps_email_length);
+      break;
+
+    case IconNuvola16x16AppsError:
+      this->SetImage(
+        image_Nuvola_16x16_apps_error, 
+        image_Nuvola_16x16_apps_error_width, 
+        image_Nuvola_16x16_apps_error_height,
+        image_Nuvola_16x16_apps_error_pixel_size, 
+        image_Nuvola_16x16_apps_error_length);
+      break;
+
+    case IconNuvola16x16AppsKeyboard:
+      this->SetImage(
+        image_Nuvola_16x16_apps_keyboard, 
+        image_Nuvola_16x16_apps_keyboard_width, 
+        image_Nuvola_16x16_apps_keyboard_height,
+        image_Nuvola_16x16_apps_keyboard_pixel_size, 
+        image_Nuvola_16x16_apps_keyboard_length);
+      break;
+
+    case IconNuvola16x16DevicesCamera:
+      this->SetImage(
+        image_Nuvola_16x16_devices_camera, 
+        image_Nuvola_16x16_devices_camera_width, 
+        image_Nuvola_16x16_devices_camera_height,
+        image_Nuvola_16x16_devices_camera_pixel_size, 
+        image_Nuvola_16x16_devices_camera_length);
+      break;
+
+    case IconNuvola16x16FilesystemsTrashcanEmpty:
+      this->SetImage(
+        image_Nuvola_16x16_filesystems_trashcan_empty, 
+        image_Nuvola_16x16_filesystems_trashcan_empty_width, 
+        image_Nuvola_16x16_filesystems_trashcan_empty_height,
+        image_Nuvola_16x16_filesystems_trashcan_empty_pixel_size, 
+        image_Nuvola_16x16_filesystems_trashcan_empty_length);
+      break;
+
+    case IconNuvola16x16FilesystemsTrashcanFull:
+      this->SetImage(
+        image_Nuvola_16x16_filesystems_trashcan_full, 
+        image_Nuvola_16x16_filesystems_trashcan_full_width, 
+        image_Nuvola_16x16_filesystems_trashcan_full_height,
+        image_Nuvola_16x16_filesystems_trashcan_full_pixel_size, 
+        image_Nuvola_16x16_filesystems_trashcan_full_length);
+      break;
+
+      // -------------------------------------------------------------------
+
     case IconNuvola22x22ActionsHelp:
       this->SetImage(
         image_Nuvola_22x22_actions_help, 
@@ -1226,6 +1539,8 @@ void vtkKWIcon::SetImage(int image)
         image_Nuvola_22x22_filesystems_folder_blue_pixel_size, 
         image_Nuvola_22x22_filesystems_folder_blue_length);
       break;
+
+      // -------------------------------------------------------------------
 
     case vtkKWIcon::IconNuvola48x48ActionsHistory:
       this->SetImage(

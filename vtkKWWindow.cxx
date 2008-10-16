@@ -36,7 +36,7 @@
 #include <vtksys/SystemTools.hxx>
 #include <vtksys/ios/sstream> 
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.293 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.294 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindow );
@@ -307,6 +307,12 @@ void vtkKWWindow::PopulateWindowMenu()
   menu->SetItemAccelerator(
     idx, this->GetMainPanelVisibilityKeyAccelerator());
   menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
+  if (show_icons)
+    {
+    menu->SetItemImageToPredefinedIcon(
+      idx, vtkKWIcon::IconNuvola16x16ActionsViewFullScreen);
+    menu->SetItemCompoundModeToLeft(idx);
+    }
 
   idx = menu->AddCommand(this->GetHideSecondaryPanelMenuLabel(), 
                          this, "SecondaryPanelVisibilityCallback");
@@ -330,7 +336,8 @@ void vtkKWWindow::PopulateWindowMenu()
     menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
     if (show_icons)
       {
-      menu->SetItemImageToPredefinedIcon(idx, vtkKWIcon::IconErrorRedMini);
+      menu->SetItemImageToPredefinedIcon(
+        idx, vtkKWIcon::IconNuvola16x16ActionsNo);
       menu->SetItemCompoundModeToLeft(idx);
       }
 
@@ -344,7 +351,8 @@ void vtkKWWindow::PopulateWindowMenu()
     menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
     if (show_icons)
       {
-      menu->SetItemImageToPredefinedIcon(idx, vtkKWIcon::IconBugMini);
+      menu->SetItemImageToPredefinedIcon(
+        idx, vtkKWIcon::IconNuvola16x16AppsBug);
       menu->SetItemCompoundModeToLeft(idx);
       }
     }
@@ -355,19 +363,29 @@ void vtkKWWindow::PopulateViewMenu()
 {
   this->Superclass::PopulateViewMenu();
 
-  // Menu : View : Application Settings
+  int tcl_major, tcl_minor, tcl_patch_level;
+  Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
+  int show_icons = (tcl_major > 8 || (tcl_major == 8 && tcl_minor >= 5));
 
   int idx;
   vtkKWMenu *menu = this->GetViewMenu();
   vtksys_stl::string cmd;
 
+  // Menu : View : Application Settings
+
   idx = this->GetViewMenuInsertPosition();
   cmd = "ShowApplicationSettingsUserInterface {";
   cmd += this->GetApplicationSettingsInterface()->GetName();
   cmd += "}";
-  menu->InsertCommand(
+  idx = menu->InsertCommand(
     idx, this->GetApplicationSettingsInterface()->GetName(), 
     this, cmd.c_str());
+  if (show_icons)
+    {
+    menu->SetItemImageToPredefinedIcon(
+      idx, vtkKWIcon::IconNuvola16x16ActionsConfigure);
+    menu->SetItemCompoundModeToLeft(idx);
+    }
 }
 
 //----------------------------------------------------------------------------

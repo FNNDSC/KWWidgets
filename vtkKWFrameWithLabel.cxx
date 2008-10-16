@@ -27,7 +27,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFrameWithLabel );
-vtkCxxRevisionMacro(vtkKWFrameWithLabel, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWFrameWithLabel, "$Revision: 1.12 $");
 
 int vtkKWFrameWithLabel::DefaultLabelCase = vtkKWFrameWithLabel::LabelCaseUppercaseFirst;
 int vtkKWFrameWithLabel::DefaultLabelFontWeight = vtkKWFrameWithLabel::LabelFontWeightBold;
@@ -146,7 +146,7 @@ void vtkKWFrameWithLabel::CreateWidget()
   this->GetLabel()->SetBinding("<Double-1>", this, "LabelDoubleClickCallback");
 
   label = this->GetLabelIcon();
-  label->SetImageToPredefinedIcon(vtkKWIcon::IconLock);
+  label->SetImageToPredefinedIcon(vtkKWIcon::IconNuvola16x16ActionsEncrypted);
   label->SetBorderWidth(0);
   label->SetPadX(0);
   label->SetPadY(0);

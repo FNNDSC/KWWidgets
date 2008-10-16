@@ -34,7 +34,7 @@
 
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.62 $");
+vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.63 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindowBase );
@@ -414,8 +414,13 @@ void vtkKWWindowBase::CreateWidget()
 //----------------------------------------------------------------------------
 void vtkKWWindowBase::PopulateFileMenu()
 {
+  int tcl_major, tcl_minor, tcl_patch_level;
+  Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
+  int show_icons = (tcl_major > 8 || (tcl_major == 8 && tcl_minor >= 5));
+
   vtkKWApplication *app = this->GetApplication();
   vtkKWMenu *menu = this->GetFileMenu();
+  int idx;
 
   if (this->SupportPrint)
     {
@@ -424,8 +429,21 @@ void vtkKWWindowBase::PopulateFileMenu()
     menu->AddSeparator();
     }
 
-  menu->AddCommand(this->GetFileCloseMenuLabel(), this, "Close");
-  menu->AddCommand(this->GetFileExitMenuLabel(), app, "Exit");
+  idx = menu->AddCommand(this->GetFileCloseMenuLabel(), this, "Close");
+  if (show_icons)
+    {
+    menu->SetItemImageToPredefinedIcon(
+      idx, vtkKWIcon::IconNuvola16x16ActionsFileClose);
+    menu->SetItemCompoundModeToLeft(idx);
+    }
+
+  idx = menu->AddCommand(this->GetFileExitMenuLabel(), app, "Exit");
+  if (show_icons)
+    {
+    menu->SetItemImageToPredefinedIcon(
+      idx, vtkKWIcon::IconNuvola16x16ActionsExit);
+    menu->SetItemCompoundModeToLeft(idx);
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -462,6 +480,12 @@ void vtkKWWindowBase::PopulateHelpMenu()
     idx = menu->AddCommand(this->GetHelpTopicsMenuLabel(), app, cmd.c_str());
     menu->SetItemAccelerator(idx, "F1");
     menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
+    if (show_icons)
+      {
+      menu->SetItemImageToPredefinedIcon(
+        idx, vtkKWIcon::IconNuvola16x16ActionsHelp);
+      menu->SetItemCompoundModeToLeft(idx);
+      }
     }
 
   if (app->HasCheckForUpdates())
@@ -477,11 +501,6 @@ void vtkKWWindowBase::PopulateHelpMenu()
   cmd = "DisplayAboutDialog ";
   cmd += this->GetTclName();
   idx = menu->AddCommand(buffer, this->GetApplication(), cmd.c_str());
-  if (show_icons)
-    {
-    menu->SetItemImageToPredefinedIcon(idx, vtkKWIcon::IconInfoMini);
-    menu->SetItemCompoundModeToLeft(idx);
-    }
 }
 
 //----------------------------------------------------------------------------
@@ -1151,11 +1170,11 @@ void vtkKWWindowBase::SetErrorIcon(int s)
     {
     case vtkKWWindowBase::ErrorIconRed:
       this->TrayImageError->SetImageToPredefinedIcon(
-        vtkKWIcon::IconErrorRedMini);
+        vtkKWIcon::IconNuvola16x16ActionsNo);
       break;
     case vtkKWWindowBase::ErrorIconBlack:
       this->TrayImageError->SetImageToPredefinedIcon(
-        vtkKWIcon::IconErrorMini);
+        vtkKWIcon::IconNuvola16x16ActionsFileClose);
       break;
     default:
       this->TrayImageError->SetImageToPredefinedIcon(

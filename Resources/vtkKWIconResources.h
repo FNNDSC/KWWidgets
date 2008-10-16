@@ -1227,12 +1227,18 @@ static const unsigned char image_orientation_cube_annotation[] =
 static const unsigned int  image_pan_hand_width          = 16;
 static const unsigned int  image_pan_hand_height         = 16;
 static const unsigned int  image_pan_hand_pixel_size     = 4;
-static const unsigned long image_pan_hand_length         = 128;
+static const unsigned long image_pan_hand_length         = 536;
 static const unsigned long image_pan_hand_decoded_length = 1024;
 
 static const unsigned char image_pan_hand[] = 
-  "eNq9k9sKACAIQ/v/n14FPoTNpgUJXYSddbEANARtxOyAgybS2whLoLyYfs3d/JlnPoLZvL"
-  "1Hlmd7YffGQp1T8d7L67P8evbKmlEdqx4vfOYN3fCF+sl/9Ivv5mwIIw==";
+  "eNqNk83LAVEUxt8/ykLyD/hM9hZSahZjY2OFLLAwk0IpC9mqsbOxmqE0CyvZWCjJBgtp5J"
+  "tH5/QSGR+3TvfM9Pyee+6ZMwD+8CZyuRzy+TzwQfMYsiyjWq2yvl6v047FYoFyuYxGowHy"
+  "e8dKksT6/X4PRVGQTCb5+Xw+QxAEzofDIcLhsKnH7TxaqqoiGo3eeZ/Px7lhGPD7/cwXCo"
+  "UXn36/z7rL5XLT4Xg8wul0cr5cLuH1etHpdDAYDBAIBJ48Wq3WvYZKpcL7breDw+HgOubz"
+  "OTweDzabDWazGdxuN/N0v0gkwnmv12NuMplwHaSl/lEdo9EI2WwW6/Ua0+kULpcL8Xic9a"
+  "SzWq3IZDL3e59OJxwOB4zHY66Dzux2u1itVmg2m1xXKpViLS3yTCQSzJGegnzNIp1O43FO"
+  "6N0v3C3sdvtT74rFIrbb7VeOolQqwWKxPPG1Wo379Av//z1fZigWi0HX9Y8szTj1+d0ci6"
+  "IITdNM2Xa7DZvN9vV/Ig/SmvGhUOgrHwwGf+av6ElAfg==";
 
 /* 
  * Resource generated for file:

@@ -129,6 +129,34 @@ KWConvertImageToHeader --zlib --base64 vtkKWIconResources.h \
     window_level.png
 
 KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWNuvolaIconResources.h \
+    Nuvola/16x16/actions/configure.png \
+    Nuvola/16x16/actions/decrypted.png \
+    Nuvola/16x16/actions/encrypted.png \
+    Nuvola/16x16/actions/exit.png \
+    Nuvola/16x16/actions/fileclose.png \
+    Nuvola/16x16/actions/fileopen.png \
+    Nuvola/16x16/actions/fileprint.png \
+    Nuvola/16x16/actions/filesave.png \
+    Nuvola/16x16/actions/help.png \
+    Nuvola/16x16/actions/mail_generic.png \
+    Nuvola/16x16/actions/message.png \
+    Nuvola/16x16/actions/messagebox_critical.png \
+    Nuvola/16x16/actions/messagebox_info.png \
+    Nuvola/16x16/actions/messagebox_warning.png \
+    Nuvola/16x16/actions/no.png \
+    Nuvola/16x16/actions/rotate.png \
+    Nuvola/16x16/actions/stop.png \
+    Nuvola/16x16/actions/thumbnail.png \
+    Nuvola/16x16/actions/viewmag.png \
+    Nuvola/16x16/actions/view_fullscreen.png \
+    Nuvola/16x16/apps/ark.png \
+    Nuvola/16x16/apps/bug.png \
+    Nuvola/16x16/apps/email.png \
+    Nuvola/16x16/apps/error.png \
+    Nuvola/16x16/apps/keyboard.png \
+    Nuvola/16x16/devices/camera.png \
+    Nuvola/16x16/filesystems/trashcan_empty.png \
+    Nuvola/16x16/filesystems/trashcan_full.png \
     Nuvola/22x22/actions/help.png \
     Nuvola/22x22/actions/messagebox_info.png \
     Nuvola/22x22/apps/designer.png \
@@ -138,3 +166,11 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWNuvolaIconResourc
     Nuvola/48x48/apps/download_manager.png \
     Nuvola/48x48/devices/mouse.png \
     Nuvola/48x48/filesystems/folder_blue.png
+
+KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWCrystalProjectIconResources.h \
+    CrystalProject/16x16/actions/14_layer_deletelayer.png \
+    CrystalProject/16x16/actions/14_layer_novisible.png \
+    CrystalProject/16x16/actions/14_layer_visible.png \
+    CrystalProject/16x16/actions/jabber_online.png \
+    CrystalProject/16x16/actions/rotate.png \
+    CrystalProject/16x16/apps/cookie.png

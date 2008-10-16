@@ -70,8 +70,9 @@ public:
   vtkGetMacro(MaximumNumberOfRecords, int);
   
   // Description:
-  // Write all record and to a text file.
+  // Write all record to a stream or text file.
   // Return 1 on success, 0 otherwise
+  virtual int WriteRecordsToStream(ostream& os);
   virtual int WriteRecordsToFile(const char *filename);
   
   // Description:

@@ -42,7 +42,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLogWidget );
-vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.12 $");
 
 vtkIdType vtkKWLogWidget::IdCounter = 1;
 
@@ -147,7 +147,7 @@ void vtkKWLogWidget::CreateWidget()
   this->Internals->WarningImage = 
     this->RecordList->GetWidget()->GetWidgetName();
   this->Internals->WarningImage.append("_warning");
-  icon->SetImage(vtkKWIcon::IconWarningMini);
+  icon->SetImage(vtkKWIcon::IconNuvola16x16ActionsMessageBoxWarning);
   if (!vtkKWTkUtilities::UpdatePhoto(
         this->GetApplication(),
         this->Internals->WarningImage.c_str(),
@@ -164,7 +164,7 @@ void vtkKWLogWidget::CreateWidget()
   this->Internals->ErrorImage = 
     this->RecordList->GetWidget()->GetWidgetName();
   this->Internals->ErrorImage.append("_error");
-  icon->SetImage(vtkKWIcon::IconErrorRedMini);
+  icon->SetImage(vtkKWIcon::IconNuvola16x16ActionsNo);
   if (!vtkKWTkUtilities::UpdatePhoto(
         this->GetApplication(),
         this->Internals->ErrorImage.c_str(),
@@ -181,7 +181,7 @@ void vtkKWLogWidget::CreateWidget()
   this->Internals->InformationImage = 
     this->RecordList->GetWidget()->GetWidgetName();
   this->Internals->InformationImage.append("_info");
-  icon->SetImage(vtkKWIcon::IconInfoMini);
+  icon->SetImage(vtkKWIcon::IconNuvola16x16ActionsMessageBoxInfo);
   if (!vtkKWTkUtilities::UpdatePhoto(
         this->GetApplication(),
         this->Internals->InformationImage.c_str(),
@@ -198,7 +198,7 @@ void vtkKWLogWidget::CreateWidget()
   this->Internals->DebugImage = 
     this->RecordList->GetWidget()->GetWidgetName();
   this->Internals->DebugImage.append("_debug");
-  icon->SetImage(vtkKWIcon::IconBugMini);
+  icon->SetImage(vtkKWIcon::IconNuvola16x16AppsBug);
   if (!vtkKWTkUtilities::UpdatePhoto(
         this->GetApplication(),
         this->Internals->DebugImage.c_str(),
@@ -244,7 +244,8 @@ void vtkKWLogWidget::CreateRecordList()
     }
   this->SaveButton->SetParent(this->Toolbar->GetFrame());
   this->SaveButton->Create();
-  this->SaveButton->SetImageToPredefinedIcon(vtkKWIcon::IconFloppy);
+  this->SaveButton->SetImageToPredefinedIcon(
+    vtkKWIcon::IconNuvola16x16ActionsFileSave);
   this->SaveButton->SetBalloonHelpString("Write records to a text file");
   this->SaveButton->SetCommand(this, "WriteRecordsToFileCallback");
   this->SaveButton->GetLoadSaveDialog()->SaveDialogOn();
@@ -276,7 +277,8 @@ void vtkKWLogWidget::CreateRecordList()
     }
   this->RemoveAllButton->SetParent(this->Toolbar->GetFrame());
   this->RemoveAllButton->Create();
-  this->RemoveAllButton->SetImageToPredefinedIcon(vtkKWIcon::IconTrashcan);
+  this->RemoveAllButton->SetImageToPredefinedIcon(
+    vtkKWIcon::IconCrystalProject16x16Actions14LayerDeletelayer);
   this->RemoveAllButton->SetBalloonHelpString("Clear all records");
   this->RemoveAllButton->SetCommand(this, "RemoveAllRecordsCallback");
   this->Toolbar->AddWidget(this->RemoveAllButton);
@@ -452,14 +454,32 @@ void vtkKWLogWidget::WriteRecordsToFileCallback()
 }
 
 //----------------------------------------------------------------------------
-int vtkKWLogWidget::WriteRecordsToFile(const char* filename)
+int vtkKWLogWidget::WriteRecordsToStream(ostream& os)
 {
-  if (!this->RecordList || 
-      !this->RecordList->IsCreated())
+  if (!this->RecordList || !this->RecordList->IsCreated())
     {
     return 0;
     }
 
+  // Write all records
+
+  vtkKWMultiColumnList *record_list = this->RecordList->GetWidget();
+  int numrows = record_list->GetNumberOfRows();
+
+  for (int i = 0; i < numrows; i++)
+    {
+    os << "Type: " << record_list->GetCellText(i, 1) << endl;
+    os << "Time: " << this->GetFormatTimeStringCallback(
+      record_list->GetCellText(i, 2)) << endl;
+    os << "Description: " << this->GetRecordDescription(
+      record_list->GetCellTextAsInt(i, 0)) << endl << endl;
+    }
+    
+  return 1;         
+}
+//----------------------------------------------------------------------------
+int vtkKWLogWidget::WriteRecordsToFile(const char* filename)
+{
   // Make sure the user specified a filename
 
   if (!filename || !(*filename))
@@ -476,25 +496,15 @@ int vtkKWLogWidget::WriteRecordsToFile(const char* filename)
     vtkWarningMacro(<< "Unable to open file to write: " << filename);
     return 0;
     }
- 
+  
   // Write all records
 
-  vtkKWMultiColumnList *record_list = this->RecordList->GetWidget();
-  int numrows = record_list->GetNumberOfRows();
-
-  for (int i = 0; i < numrows; i++)
-    {
-    fout << "Type: " << record_list->GetCellText(i, 1) << endl;
-    fout << "Time: " << this->GetFormatTimeStringCallback(
-      record_list->GetCellText(i, 2)) << endl;
-    fout << "Description: " << this->GetRecordDescription(
-      record_list->GetCellTextAsInt(i, 0)) << endl << endl;
-    }
-  
+  int res = this->WriteRecordsToStream(fout);
   fout.close();
     
-  return 1;         
+  return res;
 }
+
 //----------------------------------------------------------------------------
 // Some  buggy versions of gcc complain about the use of %c: warning: `%c'
 // yields only last 2 digits of year in some locales.  Of course  program-
@@ -624,7 +634,7 @@ void vtkKWLogWidget::RemoveInternalRecord(int record_id)
 int vtkKWLogWidget::AddRecord(
   const char* description, int type)
 {
-  if (!this->IsCreated())
+  if (!this->IsCreated() || !this->RecordList)
     {
     return 0;
     }
