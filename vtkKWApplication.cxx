@@ -106,7 +106,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.346 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.347 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1710,14 +1710,6 @@ void vtkKWApplication::ConfigureAboutDialog()
 //----------------------------------------------------------------------------
 void vtkKWApplication::AddSystemInformation(ostream &os)
 {
-  // OS and CPU
-
-  vtksys_stl::string ver = 
-    vtksys::SystemTools::GetOperatingSystemNameAndVersion();
-  if (ver.size())
-    {
-    os << k_("Operating System") << ": " << ver.c_str() << endl;
-    }
 }
 
 //----------------------------------------------------------------------------
