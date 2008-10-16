@@ -356,6 +356,13 @@ public:
     const char *extra_error_msg = NULL);
 
   // Description:
+  // Add email feedback body and subject to output stream.
+  // Override this function in subclasses (and/or call the superclass) to
+  // add more information.
+  virtual void AddEmailFeedbackBody(ostream &);
+  virtual void AddEmailFeedbackSubject(ostream &);
+
+  // Description:
   // Display the on-line help for this application.
   // Optionally provide a master window this dialog should be the slave of.
   virtual void DisplayHelpDialog(vtkKWTopLevel *master);
@@ -505,12 +512,6 @@ protected:
   // User data directory
   char *UserDataDirectory;
 
-  // Description:
-  // Add email feedback body and subject to output stream.
-  // Override this function in subclasses (and/or call the superclass) to
-  // add more information.
-  virtual void AddEmailFeedbackBody(ostream &);
-  virtual void AddEmailFeedbackSubject(ostream &);
   char *EmailFeedbackAddress;
 
   // Description:

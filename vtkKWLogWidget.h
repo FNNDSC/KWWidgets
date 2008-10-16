@@ -76,6 +76,10 @@ public:
   virtual int WriteRecordsToFile(const char *filename);
   
   // Description:
+  // Email records.
+  virtual int EmailRecords(const char *recipient);
+
+  // Description:
   // Callback, do NOT use. 
   // When the time column is displayed, convert 
   // the cell text (time value in seconds) to ctime format.
@@ -92,6 +96,7 @@ public:
   // Remove selected or all records from the table.
   virtual void RemoveSelectedRecordsCallback();
   virtual void RemoveAllRecordsCallback();
+  virtual void EmailRecordsCallback();
 
   // Description:
   // Callback, do NOT use. 
@@ -181,9 +186,10 @@ protected:
   vtkKWLogWidgetInternals *Internals;
   vtkKWMultiColumnListWithScrollbars *RecordList;
   vtkKWToolbar *Toolbar;
+  vtkKWLoadSaveButton *SaveButton;
   vtkKWPushButton *RemoveSelectedButton;
   vtkKWPushButton *RemoveAllButton;
-  vtkKWLoadSaveButton *SaveButton;
+  vtkKWPushButton *EmailButton;
   vtkKWFrameWithLabel *DescriptionFrame;
   vtkKWTextWithScrollbars *DescriptionText;
 

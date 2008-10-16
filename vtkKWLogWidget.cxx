@@ -14,22 +14,23 @@
 
 #include "vtkKWLogWidget.h"
 
+#include "vtkKWApplication.h"
 #include "vtkKWEvent.h"
+#include "vtkKWFrameWithLabel.h"
 #include "vtkKWIcon.h"
-#include "vtkKWMessage.h"
-#include "vtkObjectFactory.h"
-#include "vtkKWMultiColumnList.h"
-#include "vtkKWMultiColumnListWithScrollbars.h"
 #include "vtkKWInternationalization.h"
-#include "vtkKWMessageDialog.h"
-#include "vtkKWToolbar.h"
-#include "vtkKWPushButton.h"
 #include "vtkKWLoadSaveButton.h"
 #include "vtkKWLoadSaveDialog.h"
-#include "vtkKWTkUtilities.h"
-#include "vtkKWTextWithScrollbars.h"
-#include "vtkKWFrameWithLabel.h"
+#include "vtkKWMessage.h"
+#include "vtkKWMessageDialog.h"
+#include "vtkKWMultiColumnList.h"
+#include "vtkKWMultiColumnListWithScrollbars.h"
+#include "vtkKWPushButton.h"
 #include "vtkKWText.h"
+#include "vtkKWTextWithScrollbars.h"
+#include "vtkKWTkUtilities.h"
+#include "vtkKWToolbar.h"
+#include "vtkObjectFactory.h"
 
 #include <vtksys/SystemTools.hxx>
 #include <vtksys/ios/sstream>
@@ -42,7 +43,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLogWidget );
-vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.13 $");
 
 vtkIdType vtkKWLogWidget::IdCounter = 1;
 
@@ -82,6 +83,7 @@ vtkKWLogWidget::vtkKWLogWidget()
   this->SaveButton             = NULL;
   this->RemoveSelectedButton   = NULL;
   this->RemoveAllButton        = NULL;
+  this->EmailButton        = NULL;
   this->DescriptionFrame       = NULL;
   this->DescriptionText        = NULL;
   
@@ -110,6 +112,10 @@ vtkKWLogWidget::~vtkKWLogWidget()
   if (this->RemoveAllButton)
     {
     this->RemoveAllButton->Delete();
+    }
+  if (this->EmailButton)
+    {
+    this->EmailButton->Delete();
     }
   if (this->DescriptionFrame)
     {
@@ -286,6 +292,23 @@ void vtkKWLogWidget::CreateRecordList()
   this->Script("pack %s -side top -anchor nw -padx 0 -pady 0",
                this->Toolbar->GetWidgetName());
   
+  // Email Button
+
+  if (!this->EmailButton)
+    {
+    this->EmailButton = vtkKWPushButton::New();
+    }
+  this->EmailButton->SetParent(this->Toolbar->GetFrame());
+  this->EmailButton->Create();
+  this->EmailButton->SetImageToPredefinedIcon(
+    vtkKWIcon::IconNuvola16x16AppsEmail);
+  this->EmailButton->SetBalloonHelpString("Email all records");
+  this->EmailButton->SetCommand(this, "EmailRecordsCallback");
+  this->Toolbar->AddWidget(this->EmailButton);
+
+  this->Script("pack %s -side top -anchor nw -padx 0 -pady 0",
+               this->Toolbar->GetWidgetName());
+  
   // Setup multicolumn list
 
   if (!this->RecordList)
@@ -454,6 +477,12 @@ void vtkKWLogWidget::WriteRecordsToFileCallback()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWLogWidget::EmailRecordsCallback()
+{
+  this->EmailRecords(this->GetApplication()->GetEmailFeedbackAddress());
+}
+
+//----------------------------------------------------------------------------
 int vtkKWLogWidget::WriteRecordsToStream(ostream& os)
 {
   if (!this->RecordList || !this->RecordList->IsCreated())
@@ -477,6 +506,7 @@ int vtkKWLogWidget::WriteRecordsToStream(ostream& os)
     
   return 1;         
 }
+
 //----------------------------------------------------------------------------
 int vtkKWLogWidget::WriteRecordsToFile(const char* filename)
 {
@@ -503,6 +533,26 @@ int vtkKWLogWidget::WriteRecordsToFile(const char* filename)
   fout.close();
     
   return res;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWLogWidget::EmailRecords(const char *recipient)
+{
+  vtksys_ios::ostringstream email_subject;
+  this->GetApplication()->AddEmailFeedbackSubject(email_subject);
+
+  vtksys_ios::ostringstream message;
+  this->GetApplication()->AddEmailFeedbackBody(message);
+  message << endl;
+
+  this->WriteRecordsToStream(message);
+
+  return this->GetApplication()->SendEmail(
+    recipient,
+    email_subject.str().c_str(),
+    message.str().c_str(),
+    NULL,
+    NULL);
 }
 
 //----------------------------------------------------------------------------
@@ -765,6 +815,7 @@ void vtkKWLogWidget::Update()
       {
       this->SaveButton->SetEnabled(0);
       this->RemoveAllButton->SetEnabled(0);
+      this->EmailButton->SetEnabled(0);
       }
     if (this->RecordList->GetWidget()->
         GetNumberOfSelectedRows() == 0)
@@ -846,6 +897,7 @@ void vtkKWLogWidget::UpdateEnableState()
   this->PropagateEnableState(this->SaveButton);
   this->PropagateEnableState(this->RemoveSelectedButton);
   this->PropagateEnableState(this->RemoveAllButton);
+  this->PropagateEnableState(this->EmailButton);
 }
 
 //----------------------------------------------------------------------------
