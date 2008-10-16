@@ -36,7 +36,7 @@
 #include <vtksys/SystemTools.hxx>
 #include <vtksys/ios/sstream> 
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.295 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.296 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindow );
@@ -320,27 +320,27 @@ void vtkKWWindow::PopulateWindowMenu()
     idx, this->GetSecondaryPanelVisibilityKeyAccelerator());
   menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
 
+  menu->AddSeparator();
+  
+  cmd = "DisplayLogDialog {";
+  cmd += this->GetTclName();
+  cmd += "}";
+  idx = menu->AddCommand(
+    this->GetLogDialogMenuLabel(), 
+    this->GetApplication(), cmd.c_str());
+  menu->SetItemHelpString(
+    idx, k_("Display the log window"));
+  menu->SetItemAccelerator(idx, "Ctrl+Alt+E");
+  menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
+  if (show_icons)
+    {
+    menu->SetItemImageToPredefinedIcon(
+      idx, vtkKWIcon::IconNuvola16x16ActionsNo);
+    menu->SetItemCompoundModeToLeft(idx);
+    }
+  
   if (!this->GetApplication()->GetReleaseMode())
     {
-    menu->AddSeparator();
-    
-    cmd = "DisplayLogDialog {";
-    cmd += this->GetTclName();
-    cmd += "}";
-    idx = menu->AddCommand(
-      this->GetLogDialogMenuLabel(), 
-      this->GetApplication(), cmd.c_str());
-    menu->SetItemHelpString(
-      idx, k_("Display the log window"));
-    menu->SetItemAccelerator(idx, "Ctrl+Alt+E");
-    menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
-    if (show_icons)
-      {
-      menu->SetItemImageToPredefinedIcon(
-        idx, vtkKWIcon::IconNuvola16x16ActionsNo);
-      menu->SetItemCompoundModeToLeft(idx);
-      }
-
     menu->AddSeparator();
     
     idx = menu->AddCommand(
@@ -380,6 +380,8 @@ void vtkKWWindow::PopulateViewMenu()
   idx = menu->InsertCommand(
     idx, this->GetApplicationSettingsInterface()->GetName(), 
     this, cmd.c_str());
+  menu->SetItemAccelerator(idx, "F2");
+  menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
   if (show_icons)
     {
     menu->SetItemImageToPredefinedIcon(
