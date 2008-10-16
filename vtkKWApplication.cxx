@@ -103,7 +103,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.343 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.344 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -2340,9 +2340,13 @@ int vtkKWApplication::CanEmailFeedback()
   int has_mapi = g_hMAPI ? 1 : 0;
   ::FreeLibrary(g_hMAPI);
   return (has_mapi && this->EmailFeedbackAddress) ? 1 : 0;
-#else
-  return 0;
 #endif
+
+#if defined(__APPLE__) && MAC_OS_X_VERSION_MAX_ALLOWED >= 1040
+  return 1;
+#endif
+
+  return 0;
 }
 
 //----------------------------------------------------------------------------
