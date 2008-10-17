@@ -26,7 +26,7 @@
 #include <vtksys/ios/sstream>
 
 vtkStandardNewMacro( vtkKWRange );
-vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.73 $");
+vtkCxxRevisionMacro(vtkKWRange, "$Revision: 1.74 $");
 
 #define VTK_KW_RANGE_MIN_SLIDER_SIZE        2
 #define VTK_KW_RANGE_MIN_THICKNESS          (2*VTK_KW_RANGE_MIN_SLIDER_SIZE+1)
@@ -494,102 +494,88 @@ void vtkKWRange::Bind()
     return;
     }
 
-  vtksys_ios::ostringstream tk_cmd;
-
   // Canvas
 
   if (this->Canvas && this->Canvas->IsCreated())
     {
-    const char *canv = this->Canvas->GetWidgetName();
+    vtksys_stl::string command;
 
     // Range
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_RANGE_TAG 
-           << " <ButtonPress-1> {" << this->GetTclName() 
-           << " StartRangeInteractionCallback %%x %%y}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_RANGE_TAG, 
+      "<ButtonPress-1>", this, "StartRangeInteractionCallback %x %y");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_RANGE_TAG 
-           << " <ButtonRelease-1> {" << this->GetTclName() 
-           << " EndInteractionCallback}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_RANGE_TAG, 
+      "<ButtonRelease-1>", this, "EndInteractionCallback");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_RANGE_TAG 
-           << " <Double-1> {" << this->GetTclName() 
-           << " MaximizeRangeCallback}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_RANGE_TAG, 
+      "<Double-1>", this, "MaximizeRangeCallback");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_RANGE_TAG
-           << " <B1-Motion> {" << this->GetTclName() 
-           << " RangeMotionCallback %%x %%y 0 0}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_RANGE_TAG, 
+      "<B1-Motion>", this, "RangeMotionCallback %x %y 0 0");
+    
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_RANGE_TAG, 
+      "<Shift-B1-Motion>", this, "RangeMotionCallback %x %y 1 0");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_RANGE_TAG
-           << " <Shift-B1-Motion> {" << this->GetTclName() 
-           << " RangeMotionCallback %%x %%y 1 0}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_RANGE_TAG, 
+      "<Control-B1-Motion>", this, "RangeMotionCallback %x %y 0 1");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_RANGE_TAG
-           << " <Control-B1-Motion> {" << this->GetTclName() 
-           << " RangeMotionCallback %%x %%y 0 1}" << endl;
-
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_RANGE_TAG
-           << " <Shift-Control-B1-Motion> {" << this->GetTclName() 
-           << " RangeMotionCallback %%x %%y 1 1}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_RANGE_TAG, 
+      "<Shift-Control-B1-Motion>", this, "RangeMotionCallback %x %y 1 1");
 
     // Sliders
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER1_TAG 
-           << " <ButtonPress-1> {" << this->GetTclName() 
-           << " StartSliderInteractionCallback " 
-           << vtkKWRange::SliderIndex0 << " %%x %%y}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_SLIDER1_TAG, 
+      "<ButtonPress-1>", this, "StartSliderInteractionCallback 0 %x %y");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER2_TAG 
-           << " <ButtonPress-1> {" << this->GetTclName() 
-           << " StartSliderInteractionCallback " 
-           << vtkKWRange::SliderIndex1 << " %%x %%y}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_SLIDER2_TAG, 
+      "<ButtonPress-1>", this, "StartSliderInteractionCallback 1 %x %y");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDERS_TAG 
-           << " <ButtonRelease-1> {" << this->GetTclName() 
-           << " EndInteractionCallback}" << endl;
-    
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER1_TAG 
-           << " <B1-Motion> {" << this->GetTclName() 
-           << " SliderMotionCallback " 
-           << vtkKWRange::SliderIndex0 << " %%x %%y 0 0}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_SLIDERS_TAG, 
+      "<ButtonRelease-1>", this, "EndInteractionCallback");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER1_TAG 
-           << " <Shift-B1-Motion> {" << this->GetTclName() 
-           << " SliderMotionCallback " 
-           << vtkKWRange::SliderIndex0 << " %%x %%y 1 0}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_SLIDER1_TAG, 
+      "<B1-Motion>", this, "SliderMotionCallback 0 %x %y 0 0");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER1_TAG 
-           << " <Control-B1-Motion> {" << this->GetTclName() 
-           << " SliderMotionCallback " 
-           << vtkKWRange::SliderIndex0 << " %%x %%y 0 1}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_SLIDER1_TAG, 
+      "<Shift-B1-Motion>", this, "SliderMotionCallback 0 %x %y 1 0");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER1_TAG 
-           << " <Shift-Control-B1-Motion> {" << this->GetTclName() 
-           << " SliderMotionCallback " 
-           << vtkKWRange::SliderIndex0 << " %%x %%y 1 1}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_SLIDER1_TAG, 
+      "<Control-B1-Motion>", this, "SliderMotionCallback 0 %x %y 0 1");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER2_TAG 
-           << " <B1-Motion> {" << this->GetTclName() 
-           << " SliderMotionCallback " 
-           << vtkKWRange::SliderIndex1 << " %%x %%y 0 0}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_SLIDER1_TAG, 
+      "<Shift-Control-B1-Motion>", this, "SliderMotionCallback 0 %x %y 1 1");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER2_TAG 
-           << " <Shift-B1-Motion> {" << this->GetTclName() 
-           << " SliderMotionCallback " 
-           << vtkKWRange::SliderIndex1 << " %%x %%y 1 0}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_SLIDER2_TAG, 
+      "<B1-Motion>", this, "SliderMotionCallback 1 %x %y 0 0");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER2_TAG 
-           << " <Control-B1-Motion> {" << this->GetTclName() 
-           << " SliderMotionCallback " 
-           << vtkKWRange::SliderIndex1 << " %%x %%y 0 1}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_SLIDER2_TAG, 
+      "<Shift-B1-Motion>", this, "SliderMotionCallback 1 %x %y 1 0");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER2_TAG 
-           << " <Shift-Control-B1-Motion> {" << this->GetTclName() 
-           << " SliderMotionCallback " 
-           << vtkKWRange::SliderIndex1 << " %%x %%y 1 1}" << endl;
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_SLIDER2_TAG, 
+      "<Control-B1-Motion>", this, "SliderMotionCallback 1 %x %y 0 1");
+
+    this->Canvas->SetCanvasBinding(
+      VTK_KW_RANGE_SLIDER2_TAG, 
+      "<Shift-Control-B1-Motion>", this, "SliderMotionCallback 1 %x %y 1 1");
     }
-
-  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -600,28 +586,22 @@ void vtkKWRange::UnBind()
     return;
     }
 
-  vtksys_ios::ostringstream tk_cmd;
-
   // Canvas
 
   if (this->Canvas && this->Canvas->IsCreated())
     {
-    const char *canv = this->Canvas->GetWidgetName();
+    this->Canvas->RemoveCanvasBinding(
+      VTK_KW_RANGE_SLIDERS_TAG, "<ButtonPress-1>");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDERS_TAG 
-           << " <ButtonPress-1> {}" << endl;
-    
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDERS_TAG 
-           << " <ButtonRelease-1> {}" << endl;
+    this->Canvas->RemoveCanvasBinding(
+      VTK_KW_RANGE_SLIDERS_TAG, "<ButtonRelease-1>");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER1_TAG 
-           << " <B1-Motion> {}" << endl;
+    this->Canvas->RemoveCanvasBinding(
+      VTK_KW_RANGE_SLIDER1_TAG, "<B1-Motion>");
 
-    tk_cmd << canv << " bind " <<  VTK_KW_RANGE_SLIDER2_TAG 
-           << " <B1-Motion> {}" << endl;
+    this->Canvas->RemoveCanvasBinding(
+      VTK_KW_RANGE_SLIDER2_TAG, "<B1-Motion>");
     }
-  
-  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------

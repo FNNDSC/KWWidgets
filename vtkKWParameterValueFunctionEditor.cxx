@@ -41,7 +41,7 @@
 #include <vtksys/stl/algorithm>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.111 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.112 $");
 
 //----------------------------------------------------------------------------
 #define VTK_KW_PVFE_POINT_RADIUS_MIN         2
@@ -1708,7 +1708,7 @@ void vtkKWParameterValueFunctionEditor::CreateGuidelineValueCanvas()
 //----------------------------------------------------------------------------
 void vtkKWParameterValueFunctionEditor::Update()
 {
-  this->UpdateEnableState();
+  //this->UpdateEnableState(); // costs a lot to bind/unbind
 
   this->UpdateRangeLabel();
 
@@ -2072,14 +2072,12 @@ void vtkKWParameterValueFunctionEditor::Bind()
 
   this->UnBind();
 
-  vtksys_ios::ostringstream tk_cmd;
-
   // Canvas
+
+  vtksys_stl::string cmd;
 
   if (this->Canvas && this->Canvas->IsAlive())
     {
-    const char *canv = this->Canvas->GetWidgetName();
-
     // Mouse motion
 
     this->Canvas->SetBinding(
@@ -2088,99 +2086,88 @@ void vtkKWParameterValueFunctionEditor::Bind()
     this->Canvas->SetBinding(
       "<Shift-Any-ButtonPress>", this, "StartInteractionCallback %x %y 1");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTag
-           << " <B1-Motion> {" << this->GetTclName() 
-           << " MovePointCallback %%x %%y 0}" << endl;
+    this->Canvas->SetCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTag,
+      "<B1-Motion>", this, "MovePointCallback %x %y 0");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTextTag
-           << " <B1-Motion> {" << this->GetTclName() 
-           << " MovePointCallback %%x %%y 0}" << endl;
+    this->Canvas->SetCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTextTag,
+      "<B1-Motion>", this, "MovePointCallback %x %y 0");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTag
-           << " <Shift-B1-Motion> {" << this->GetTclName() 
-           << " MovePointCallback %%x %%y 1}" << endl;
+    this->Canvas->SetCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTag,
+      "<Shift-B1-Motion>", this, "MovePointCallback %x %y 1");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTextTag
-           << " <Shift-B1-Motion> {" << this->GetTclName() 
-           << " MovePointCallback %%x %%y 1}" << endl;
+    this->Canvas->SetCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTextTag,
+      "<Shift-B1-Motion>", this, "MovePointCallback %x %y 1");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTag 
-           << " <ButtonRelease-1> {" << this->GetTclName() 
-           << " EndInteractionCallback %%x %%y}" << endl;
+    this->Canvas->SetCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTag,
+      "<ButtonRelease-1>", this, "EndInteractionCallback %x %y");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTextTag 
-           << " <ButtonRelease-1> {" << this->GetTclName() 
-           << " EndInteractionCallback %%x %%y}" << endl;
+    this->Canvas->SetCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTextTag,
+      "<ButtonRelease-1>", this, "EndInteractionCallback %x %y");
 
     // Double click on point
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTag
-           << " <Double-1> {" << this->GetTclName() 
-           << " DoubleClickOnPointCallback %%x %%y}" << endl;
+    this->Canvas->SetCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTag,
+      "<Double-1>", this, "DoubleClickOnPointCallback %x %y");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTextTag
-           << " <Double-1> {" << this->GetTclName() 
-           << " DoubleClickOnPointCallback %%x %%y}" << endl;
+    this->Canvas->SetCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTextTag,
+      "<Double-1>", this, "DoubleClickOnPointCallback %x %y");
 
     // Parameter Cursor
 
     if (this->ParameterCursorInteractionStyle & 
         vtkKWParameterValueFunctionEditor::ParameterCursorInteractionStyleDragWithLeftButton)
       {
-      tk_cmd << canv << " bind " 
-             << vtkKWParameterValueFunctionEditor::ParameterCursorTag
-             << " <ButtonPress-1> {" << this->GetTclName() 
-             << " ParameterCursorStartInteractionCallback %%x}" << endl;
-      tk_cmd << canv << " bind " 
-             << vtkKWParameterValueFunctionEditor::ParameterCursorTag
-             << " <ButtonRelease-1> {" << this->GetTclName() 
-             << " ParameterCursorEndInteractionCallback}" << endl;
-      tk_cmd << canv << " bind " 
-             << vtkKWParameterValueFunctionEditor::ParameterCursorTag
-             << " <B1-Motion> {" << this->GetTclName() 
-             << " ParameterCursorMoveCallback %%x}" << endl;
+      this->Canvas->SetCanvasBinding(
+        vtkKWParameterValueFunctionEditor::ParameterCursorTag,
+        "<ButtonPress-1>", this, "ParameterCursorStartInteractionCallback %x");
+      this->Canvas->SetCanvasBinding(
+        vtkKWParameterValueFunctionEditor::ParameterCursorTag,
+        "<ButtonRelease-1>", this, "ParameterCursorEndInteractionCallback");
+      this->Canvas->SetCanvasBinding(
+        vtkKWParameterValueFunctionEditor::ParameterCursorTag,
+        "<B1-Motion>", this, "ParameterCursorMoveCallback %x");
       }
 
     if (this->ParameterCursorInteractionStyle & 
         vtkKWParameterValueFunctionEditor::ParameterCursorInteractionStyleSetWithControlLeftButton)
       {
-      tk_cmd << "bind " << canv
-             << " <Control-ButtonPress-1> {" 
-             << this->GetTclName() 
-             << " ParameterCursorStartInteractionCallback %%x ; " 
-             << this->GetTclName() 
-             << " ParameterCursorMoveCallback %%x}" << endl;
-      tk_cmd << "bind " << canv
-             << " <Control-ButtonRelease-1> {" << this->GetTclName() 
-             << " ParameterCursorEndInteractionCallback}" << endl;
-      tk_cmd << "bind " << canv
-             << " <Control-B1-Motion> {" << this->GetTclName() 
-             << " ParameterCursorMoveCallback %%x}" << endl;
+      cmd = this->GetTclName();
+      cmd += " ParameterCursorStartInteractionCallback %x ; ";
+      cmd += this->GetTclName();
+      cmd += " ParameterCursorMoveCallback %x";
+      this->Canvas->SetBinding(
+        "<Control-ButtonPress-1>", NULL, cmd.c_str());
+
+      this->Canvas->SetBinding(
+        "<Control-ButtonRelease-1>", 
+        this, "ParameterCursorEndInteractionCallback");
+      this->Canvas->SetBinding(
+        "<Control-B1-Motion>", 
+        this, "ParameterCursorMoveCallback %x");
       }
 
     if (this->ParameterCursorInteractionStyle & 
         vtkKWParameterValueFunctionEditor::ParameterCursorInteractionStyleSetWithRighButton)
       {
-      tk_cmd << "bind " << canv
-             << " <ButtonPress-3> {"
-             << this->GetTclName() 
-             << " ParameterCursorStartInteractionCallback %%x ; " 
-             << this->GetTclName() 
-             << " ParameterCursorMoveCallback %%x}" << endl;
-      tk_cmd << "bind " << canv
-             << " <ButtonRelease-3> {" << this->GetTclName() 
-             << " ParameterCursorEndInteractionCallback}" << endl;
-      tk_cmd << "bind " << canv
-             << " <B3-Motion> {" << this->GetTclName() 
-             << " ParameterCursorMoveCallback %%x}" << endl;
+      cmd = this->GetTclName();
+      cmd += " ParameterCursorStartInteractionCallback %x ; ";
+      cmd += this->GetTclName();
+      cmd += " ParameterCursorMoveCallback %x";
+      this->Canvas->SetBinding(
+        "<ButtonPress-3>", NULL, cmd.c_str());
+
+      this->Canvas->SetBinding(
+        "<ButtonRelease-3>", this, "ParameterCursorEndInteractionCallback");
+      this->Canvas->SetBinding(
+        "<B3-Motion>", this, "ParameterCursorMoveCallback %x");
       }
 
     // Key bindings
@@ -2201,47 +2188,22 @@ void vtkKWParameterValueFunctionEditor::Bind()
       {
       if (to_focus[i] && to_focus[i]->IsCreated())
         {
-        tk_cmd << "bind " <<  to_focus[i]->GetWidgetName()
-               << " <Button> {+" << this->Canvas->GetTclName() 
-               << " Focus}" << endl;
+        to_focus[i]->AddBinding("<Button>", this->Canvas, "Focus");
         }
       }
 
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-n> {" << this->GetTclName() 
-           << " SelectNextPoint}" << endl;
+    this->Canvas->SetBinding("<KeyPress-n>", this, "SelectNextPoint");
+    this->Canvas->SetBinding("<KeyPress-Next>", this, "SelectNextPoint");
 
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-Next> {" << this->GetTclName() 
-           << " SelectNextPoint}" << endl;
+    this->Canvas->SetBinding("<KeyPress-p>", this, "SelectPreviousPoint");
+    this->Canvas->SetBinding("<KeyPress-Prior>", this, "SelectPreviousPoint");
 
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-p> {" << this->GetTclName() 
-           << " SelectPreviousPoint}" << endl;
+    this->Canvas->SetBinding("<KeyPress-Home>", this, "SelectFirstPoint");
+    this->Canvas->SetBinding("<KeyPress-End>", this, "SelectLastPoint");
 
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-Prior> {" << this->GetTclName() 
-           << " SelectPreviousPoint}" << endl;
-
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-Home> {" << this->GetTclName() 
-           << " SelectFirstPoint}" << endl;
-
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-End> {" << this->GetTclName() 
-           << " SelectLastPoint}" << endl;
-
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-x> {" << this->GetTclName() 
-           << " RemoveSelectedPoint}" << endl;
-
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-Delete> {" << this->GetTclName() 
-           << " RemoveSelectedPoint}" << endl;
-
+    this->Canvas->SetBinding("<KeyPress-x>", this, "RemoveSelectedPoint");
+    this->Canvas->SetBinding("<KeyPress-Delete>", this, "RemoveSelectedPoint");
     }
-
-  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -2264,98 +2226,62 @@ void vtkKWParameterValueFunctionEditor::UnBind()
 
     this->Canvas->RemoveBinding("<Any-ButtonPress>");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTag 
-           << " <B1-Motion> {}" << endl;
+    this->Canvas->RemoveCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTag, "<B1-Motion>");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTextTag 
-           << " <B1-Motion> {}" << endl;
+    this->Canvas->RemoveCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTextTag, "<B1-Motion>");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTag 
-           << " <Shift-B1-Motion> {}" << endl;
+    this->Canvas->RemoveCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTag, "<Shift-B1-Motion>");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTextTag 
-           << " <Shift-B1-Motion> {}" << endl;
+    this->Canvas->RemoveCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTextTag, "<Shift-B1-Motion>");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTag 
-           << " <ButtonRelease-1> {}" << endl;
+    this->Canvas->RemoveCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTag, "<ButtonRelease-1>");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTextTag 
-           << " <ButtonRelease-1> {}" << endl;
+    this->Canvas->RemoveCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTextTag, "<ButtonRelease-1>");
 
     // Double click on point
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTag
-           << " <Double-1> {}" << endl;
+    this->Canvas->RemoveCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTag, "<Double-1>");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::PointTextTag
-           << " <Double-1> {}" << endl;
-
+    this->Canvas->RemoveCanvasBinding(
+      vtkKWParameterValueFunctionEditor::PointTextTag, "<Double-1>");
 
     // Parameter Cursor
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::ParameterCursorTag
-           << " <ButtonPress-1> {}"  << endl;
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::ParameterCursorTag
-           << " <ButtonRelease-1> {}" << endl;
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueFunctionEditor::ParameterCursorTag
-           << " <B1-Motion> {}" << endl;
+    this->Canvas->RemoveCanvasBinding(
+      vtkKWParameterValueFunctionEditor::ParameterCursorTag,
+      "<ButtonPress-1>");
+    this->Canvas->RemoveCanvasBinding(
+      vtkKWParameterValueFunctionEditor::ParameterCursorTag,
+      "<ButtonRelease-1>");
+    this->Canvas->RemoveCanvasBinding(
+      vtkKWParameterValueFunctionEditor::ParameterCursorTag, "<B1-Motion>");
 
-    tk_cmd << "bind " << canv 
-           << " <Control-ButtonPress-1> {}" << endl;
-    tk_cmd << "bind " << canv
-           << " <Control-ButtonRelease-1> {}" << endl;
-    tk_cmd << "bind " << canv
-           << " <Control-B1-Motion> {}" << endl;
-
-    tk_cmd << "bind " << canv
-           << " <ButtonPress-3> {}" << endl;
-    tk_cmd << "bind " << canv
-           << " <ButtonRelease-3> {}" << endl;
-    tk_cmd << "bind " << canv
-           << " <B3-Motion> {}" << endl;
+    this->Canvas->RemoveBinding("<Control-ButtonPress-1>");
+    this->Canvas->RemoveBinding("<Control-ButtonRelease-1>");
+    this->Canvas->RemoveBinding("<Control-B1-Motion>");
+    this->Canvas->RemoveBinding("<ButtonPress-3>");
+    this->Canvas->RemoveBinding("<ButtonRelease-3>");
+    this->Canvas->RemoveBinding("<B3-Motion>");
 
     // Key bindings
 
-    tk_cmd << "bind " <<  canv
-           << " <Enter> {}" << endl;
-
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-n> {}"<< endl;
-
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-Next> {}" << endl;
-
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-p> {}" << endl;
-
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-Prior> {}" << endl;
-
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-Home> {}" << endl;
-
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-End> {}" << endl;
-
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-x> {}" << endl;
-
-    tk_cmd << "bind " <<  canv
-           << " <KeyPress-Delete> {}" << endl;
+    //this->Canvas->RemoveBinding("<Enter>");
+    this->Canvas->RemoveBinding("<KeyPress-n>");
+    this->Canvas->RemoveBinding("<KeyPress-Next>");
+    this->Canvas->RemoveBinding("<KeyPress-p>");
+    this->Canvas->RemoveBinding("<KeyPress-Prior>");
+    this->Canvas->RemoveBinding("<KeyPress-Home>");
+    this->Canvas->RemoveBinding("<KeyPress-End>");
+    this->Canvas->RemoveBinding("<KeyPress-x>");
+    this->Canvas->RemoveBinding("<KeyPress-Delete>");
     }
-
-  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------

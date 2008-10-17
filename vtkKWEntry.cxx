@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry);
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.98 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.99 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
@@ -74,8 +74,9 @@ void vtkKWEntry::CreateWidget()
 
   // Design choice: we assume a keypress is meant for this widget only
 
-  this->Script(
-    "bind Entry <KeyPress> {::tk::CancelRepeat ; ::tk::EntryInsert %%W %%A; break}");
+  this->SetGenericBinding(
+    "Entry", 
+    "<KeyPress>", NULL, "::tk::CancelRepeat ; ::tk::EntryInsert %W %A; break");
 
   this->Configure();
 }

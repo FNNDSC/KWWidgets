@@ -40,7 +40,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.98 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.99 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -275,11 +275,16 @@ void vtkKWMultiColumnList::AddInteractionBindings()
     return;
     }
 
-  this->Script("bind [%s bodytag] <<Button3>> [list %s RightClickCallback %%W %%x %%y %%X %%Y]",
-               this->GetWidgetName(), this->GetTclName());
- 
-  this->Script("bind [%s bodytag] <Delete> [list %s KeyPressDeleteCallback]",
-               this->GetWidgetName(), this->GetTclName());
+  vtksys_stl::string bodytag(
+    this->Script("%s bodytag", this->GetWidgetName()));
+
+  this->SetGenericBinding(
+    bodytag.c_str(), 
+    "<<Button3>>", this, "RightClickCallback %W %x %y %X %Y");
+
+  this->SetGenericBinding(
+    bodytag.c_str(), 
+    "<Delete>", this, "KeyPressDeleteCallback");
 }
 
 //----------------------------------------------------------------------------
@@ -290,9 +295,11 @@ void vtkKWMultiColumnList::RemoveInteractionBindings()
     return;
     }
 
-  this->Script("bind [%s bodytag] <<Button3>> {}", this->GetWidgetName());
- 
-  this->Script("bind [%s bodytag] <Delete> {}", this->GetWidgetName());
+  vtksys_stl::string bodytag(
+    this->Script("%s bodytag", this->GetWidgetName()));
+
+  this->RemoveGenericBinding(bodytag.c_str(), "<<Button3>>");
+  this->RemoveGenericBinding(bodytag.c_str(), "<Delete>");
 }
 
 //----------------------------------------------------------------------------
@@ -302,11 +309,9 @@ void vtkKWMultiColumnList::SetBinding(const char *event,
   this->Superclass::SetBinding(event, object, method);
   if (this->IsCreated())
     {
-    char *command = NULL;
-    this->SetObjectMethodCommand(&command, object, method);
-    this->Script("bind [%s bodytag] %s {%s}", 
-                 this->GetWidgetName(), event, command);
-    delete [] command;
+    vtksys_stl::string bodytag(
+      this->Script("%s bodytag", this->GetWidgetName()));
+    this->SetGenericBinding(bodytag.c_str(), event, object, method);
     }
 }
 
@@ -323,11 +328,9 @@ void vtkKWMultiColumnList::AddBinding(const char *event,
   this->Superclass::AddBinding(event, object, method);
   if (this->IsCreated())
     {
-    char *command = NULL;
-    this->SetObjectMethodCommand(&command, object, method);
-    this->Script("bind [%s bodytag] %s {+%s}", 
-                 this->GetWidgetName(), event, command);
-    delete [] command;
+    vtksys_stl::string bodytag(
+      this->Script("%s bodytag", this->GetWidgetName()));
+    this->AddGenericBinding(bodytag.c_str(), event, object, method);
     }
 }
 
@@ -344,21 +347,9 @@ void vtkKWMultiColumnList::RemoveBinding(const char *event,
   this->Superclass::RemoveBinding(event, object, method);
   if (this->IsAlive())
     {
-    char *command = NULL;
-    this->SetObjectMethodCommand(&command, object, method);
-
-    // Retrieve the bindings, remove the command, re-assign
-
-    vtksys_stl::string bindings(
-      this->Script("bind [%s bodytag] %s", 
-                   this->GetWidgetName(), event));
-
-    vtksys::SystemTools::ReplaceString(bindings, command, "");
-  
-    this->Script(
-      "bind [%s bodytag] %s {%s}", 
-      this->GetWidgetName(), event, bindings.c_str());
-    delete [] command;
+    vtksys_stl::string bodytag(
+      this->Script("%s bodytag", this->GetWidgetName()));
+    this->RemoveGenericBinding(bodytag.c_str(), event, object, method);
     }
 }
 
@@ -3971,10 +3962,15 @@ void vtkKWMultiColumnList::CellWindowCommandToComboBoxCreateCallback(
   // cell/row if we click in the entry. Remove its default bindings manually
   // and add ours
 
-  vtksys_stl::string entryw(child->GetWidgetName());
-  entryw += ".e";        // see BWidget's ComboBox implementation
-  this->Script("bind %s <Button-1> {}", entryw.c_str());
-  this->AddBindingsToWidgetName(entryw.c_str());
+  vtkKWWidget *entryw = vtkKWWidget::New();
+  entryw->SetParent(child);
+  vtksys_stl::string name(child->GetWidgetName());
+  name += ".e";        // see BWidget's ComboBox implementation
+  entryw->SetWidgetName(name.c_str());
+  entryw->Create();
+  entryw->RemoveBinding("<Button-1>");
+  this->AddBindingsToWidgetName(entryw->GetWidgetName());
+  entryw->Delete();
 }
 
 //---------------------------------------------------------------------------

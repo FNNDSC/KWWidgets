@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTree );
-vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.44 $");
+vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.45 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTreeInternals
@@ -63,7 +63,21 @@ public:
 
   double SelectionBackgroundColorTemp[3];
   double SelectionForegroundColorTemp[3];
-  
+
+  vtkKWWidget *TreeCanvas;
+
+  vtkKWTreeInternals()
+    {
+      this->TreeCanvas = NULL;
+    }
+
+  ~vtkKWTreeInternals()
+    {
+      if (this->TreeCanvas)
+        {
+        this->TreeCanvas->Delete();
+        }
+    }
 };
 
 //----------------------------------------------------------------------------
@@ -114,6 +128,17 @@ void vtkKWTree::CreateWidget()
     return;
     }
 
+  // Store the internal canvas as a vtkKWWidget, for convenience
+
+  this->Internals->TreeCanvas = vtkKWWidget::New();
+  this->Internals->TreeCanvas->SetParent(this);
+  vtksys_stl::string name(this->GetWidgetName());
+  name += ".c";
+  this->Internals->TreeCanvas->SetWidgetName(name.c_str());
+  this->Internals->TreeCanvas->Create();
+
+  // Bindings
+
   this->SetBinding("<<TreeSelect>>", this, "SelectionCallback");
   this->SetBindText("<ButtonPress-3>", this, "RightClickOnNodeCallback");
   
@@ -122,7 +147,7 @@ void vtkKWTree::CreateWidget()
   this->SetConfigurationOption("-dropcmd", command);
   delete [] command;
 
-  // Bind some extra hotkeys 
+  // Key shortcuts
 
   this->SetBinding("<Next>", this, "KeyNavigationCallback Next");
   this->SetBinding("<Prior>", this, "KeyNavigationCallback Prior");
@@ -134,15 +159,12 @@ void vtkKWTree::CreateWidget()
 
 //----------------------------------------------------------------------------
 void vtkKWTree::SetBinding(const char *event, 
-                             vtkObject *object, const char *method)
+                           vtkObject *object, const char *method)
 {
   this->Superclass::SetBinding(event, object, method);
   if (this->IsCreated())
     {
-    char *command = NULL;
-    this->SetObjectMethodCommand(&command, object, method);
-    this->Script("bind %s.c %s {%s}", this->GetWidgetName(), event, command);
-    delete [] command;
+    this->Internals->TreeCanvas->SetBinding(event, object, method);
     }
 }
 
@@ -159,11 +181,7 @@ void vtkKWTree::AddBinding(const char *event,
   this->Superclass::AddBinding(event, object, method);
   if (this->IsCreated())
     {
-    char *command = NULL;
-    this->SetObjectMethodCommand(&command, object, method);
-    this->Script("bind %s.c %s {+%s}", this->GetWidgetName(), 
-      event, command);
-    delete [] command;
+    this->Internals->TreeCanvas->AddBinding(event, object, method);
     }
 }
 
@@ -180,19 +198,7 @@ void vtkKWTree::RemoveBinding(const char *event,
   this->Superclass::RemoveBinding(event, object, method);
   if (this->IsCreated())
     {
-    char *command = NULL;
-    this->SetObjectMethodCommand(&command, object, method);
-
-    // Retrieve the bindings, remove the command, re-assign
-
-    vtksys_stl::string bindings(
-      this->Script("bind %s.c %s", this->GetWidgetName(), event));
-
-    vtksys::SystemTools::ReplaceString(bindings, command, "");
-  
-    this->Script("bind %s.c %s {%s}", this->GetWidgetName(), 
-      event, bindings.c_str());
-    delete [] command;
+    this->Internals->TreeCanvas->RemoveBinding(event, object, method);
     }
 }
 
@@ -200,6 +206,10 @@ void vtkKWTree::RemoveBinding(const char *event,
 void vtkKWTree::RemoveBinding(const char *event)
 {
   this->Superclass::RemoveBinding(event);
+  if (this->IsCreated())
+    {
+    this->Internals->TreeCanvas->RemoveBinding(event);
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -229,7 +239,7 @@ void vtkKWTree::Focus()
 
   if (this->IsCreated())
     {
-    this->Script("focus %s.c", this->GetWidgetName());
+    this->Internals->TreeCanvas->Focus();
     }
 }
 
@@ -238,10 +248,7 @@ int vtkKWTree::HasFocus()
 {
   if (this->IsCreated())
     {
-    vtksys_stl::string infocus(this->Script("focus"));
-    vtksys_stl::string shouldfocus(this->GetWidgetName());
-    shouldfocus += ".c";
-    return infocus.length() && !strcmp(infocus.c_str(), shouldfocus.c_str());
+    return this->Internals->TreeCanvas->HasFocus();
     }
   return 0;
 }
@@ -1378,9 +1385,8 @@ void vtkKWTree::DropOverNodeCallback(
 
   // Check that we are really dragging from our own widget
 
-  vtksys_stl::string expect_dragsourcepath(this->GetWidgetName());
-  expect_dragsourcepath += ".c";
-  if (!dragsourcepath || strcmp(dragsourcepath, expect_dragsourcepath.c_str()))
+  if (!dragsourcepath || 
+      strcmp(dragsourcepath, this->Internals->TreeCanvas->GetWidgetName()))
     {
     return;
     }

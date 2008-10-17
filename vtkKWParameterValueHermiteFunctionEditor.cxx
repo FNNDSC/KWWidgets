@@ -24,7 +24,7 @@
 
 #include <ctype.h>
 
-vtkCxxRevisionMacro(vtkKWParameterValueHermiteFunctionEditor, "$Revision: 1.30 $");
+vtkCxxRevisionMacro(vtkKWParameterValueHermiteFunctionEditor, "$Revision: 1.31 $");
 
 const char *vtkKWParameterValueHermiteFunctionEditor::MidPointTag = "midpoint_tag";
 const char *vtkKWParameterValueHermiteFunctionEditor::MidPointGuidelineTag = "midpoint_guideline_tag";
@@ -1533,31 +1533,22 @@ void vtkKWParameterValueHermiteFunctionEditor::Bind()
     return;
     }
 
-  vtksys_ios::ostringstream tk_cmd;
-
   // Canvas
 
   if (this->Canvas && this->Canvas->IsAlive())
     {
-    const char *canv = this->Canvas->GetWidgetName();
+    this->Canvas->AddCanvasBinding(
+      vtkKWParameterValueHermiteFunctionEditor::MidPointTag,
+      "<B1-Motion>", this, "MoveMidPointCallback %x %y 1");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueHermiteFunctionEditor::MidPointTag
-           << " <B1-Motion> {" << this->GetTclName() 
-           << " MoveMidPointCallback %%x %%y 1}" << endl;
+    this->Canvas->AddCanvasBinding(
+      vtkKWParameterValueHermiteFunctionEditor::MidPointTag,
+      "<B3-Motion>", this, "MoveMidPointCallback %x %y 3");
      
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueHermiteFunctionEditor::MidPointTag
-           << " <B3-Motion> {" << this->GetTclName() 
-           << " MoveMidPointCallback %%x %%y 3}" << endl;
-
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueHermiteFunctionEditor::MidPointTag 
-           << " <Any-ButtonRelease> {" << this->GetTclName() 
-           << " EndMidPointInteractionCallback %%x %%y}" << endl;
+    this->Canvas->AddCanvasBinding(
+      vtkKWParameterValueHermiteFunctionEditor::MidPointTag,
+      "<Any-ButtonRelease>", this, "EndMidPointInteractionCallback %x %y");
     }
-
-  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------
@@ -1576,22 +1567,18 @@ void vtkKWParameterValueHermiteFunctionEditor::UnBind()
 
   if (this->Canvas && this->Canvas->IsAlive())
     {
-    const char *canv = this->Canvas->GetWidgetName();
+    this->Canvas->RemoveCanvasBinding(
+      vtkKWParameterValueHermiteFunctionEditor::MidPointTag,
+      "<B1-Motion>");
 
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueHermiteFunctionEditor::MidPointTag 
-           << " <B1-Motion> {}" << endl;
-
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueHermiteFunctionEditor::MidPointTag 
-           << " <B3-Motion> {}" << endl;
-
-    tk_cmd << canv << " bind " 
-           << vtkKWParameterValueHermiteFunctionEditor::MidPointTag 
-           << " <Any-ButtonRelease> {}" << endl;
+    this->Canvas->RemoveCanvasBinding(
+      vtkKWParameterValueHermiteFunctionEditor::MidPointTag,
+      "<B3-Motion>");
+     
+    this->Canvas->RemoveCanvasBinding(
+      vtkKWParameterValueHermiteFunctionEditor::MidPointTag,
+      "<Any-ButtonRelease>");
     }
-  
-  this->Script(tk_cmd.str().c_str());
 }
 
 //----------------------------------------------------------------------------

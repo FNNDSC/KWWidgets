@@ -293,6 +293,24 @@ protected:
   static int CreateSpecificTkWidget(
     vtkKWWidget *obj, const char *type, const char *args = NULL);
 
+  // Description:
+  // Set/add/remove a binding to a target, i.e. the command that is invoked
+  // whenever the 'event' is triggered on the target.
+  // The target here could be a tag, a widget name, etc. It is NOT, by 
+  // default, the widget this method was called on. This method technically
+  // should be static, but we need a pointer to the application, etc.
+  virtual void SetGenericBinding(
+    const char *target, const char *event, 
+    vtkObject *object, const char *method);
+  virtual void AddGenericBinding(
+    const char *target, const char *event, 
+    vtkObject *object, const char *method);
+  virtual void RemoveGenericBinding(
+    const char *target, const char *event);
+  virtual void RemoveGenericBinding(
+    const char *target, const char *event, 
+    vtkObject *object, const char *method);
+
 private:
   
   // Description:

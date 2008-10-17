@@ -26,7 +26,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPopupButton);
-vtkCxxRevisionMacro(vtkKWPopupButton, "$Revision: 1.31 $");
+vtkCxxRevisionMacro(vtkKWPopupButton, "$Revision: 1.32 $");
 
 //----------------------------------------------------------------------------
 vtkKWPopupButton::vtkKWPopupButton()
@@ -249,8 +249,6 @@ void vtkKWPopupButton::UpdateEnableState()
   this->PropagateEnableState(this->PopupTopLevel);
   this->PropagateEnableState(this->PopupFrame);
   this->PropagateEnableState(this->PopupCloseButton);
-
-  // Now given the state, bind or unbind
 
   if (this->IsCreated())
     {

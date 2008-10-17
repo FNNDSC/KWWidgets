@@ -36,7 +36,7 @@ const char *vtkKWText::TagFgDarkGreen = "_fg_dark_green_tag_";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWText);
-vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.60 $");
+vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.61 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTextInternals
@@ -333,8 +333,9 @@ void vtkKWText::CreateWidget()
 
   // Design choice: we assume a keypress is meant for this widget only
 
-  this->Script(
-    "bind Text <KeyPress> {::tk::TextInsert %%W %%A; break}");
+  this->SetGenericBinding(
+    "Text", 
+    "<KeyPress>", NULL, "::tk::TextInsert %W %A; break");
 }
 
 //----------------------------------------------------------------------------

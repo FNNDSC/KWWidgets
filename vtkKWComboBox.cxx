@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWComboBox);
-vtkCxxRevisionMacro(vtkKWComboBox, "$Revision: 1.21 $");
+vtkCxxRevisionMacro(vtkKWComboBox, "$Revision: 1.22 $");
 
 //----------------------------------------------------------------------------
 vtkKWComboBox::vtkKWComboBox()
@@ -53,9 +53,9 @@ void vtkKWComboBox::CreateWidget()
 
   // Design choice: we assume a keypress is meant for this widget only
 
-  this->Script(
-    "bind BwEntry <KeyPress> {::tk::CancelRepeat ; ::tk::EntryInsert %%W %%A; break}");
-
+  this->SetGenericBinding(
+    "BwEntry", 
+    "<KeyPress>", NULL, "::tk::CancelRepeat ; ::tk::EntryInsert %W %A; break");
 
   this->Configure();
 }

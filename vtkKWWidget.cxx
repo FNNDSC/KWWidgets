@@ -30,7 +30,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.157 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.158 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetInternals
@@ -755,15 +755,23 @@ int vtkKWWidget::IsGrabbed()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWWidget::SetGenericBinding(
+  const char *target, const char *event, 
+  vtkObject *object, const char *method)
+{
+  char *command = NULL;
+  this->SetObjectMethodCommand(&command, object, method);
+  this->Script("bind %s %s {%s}", target, event, command);
+  delete [] command;
+}
+
+//----------------------------------------------------------------------------
 void vtkKWWidget::SetBinding(const char *event, 
                              vtkObject *object, const char *method)
 {
   if (this->IsCreated())
     {
-    char *command = NULL;
-    this->SetObjectMethodCommand(&command, object, method);
-    this->Script("bind %s %s {%s}", this->GetWidgetName(), event, command);
-    delete [] command;
+    this->SetGenericBinding(this->GetWidgetName(), event, object, method);
     }
 }
 
@@ -784,15 +792,23 @@ const char* vtkKWWidget::GetBinding(const char *event)
 }
 
 //----------------------------------------------------------------------------
+void vtkKWWidget::AddGenericBinding(
+  const char *target, const char *event, 
+  vtkObject *object, const char *method)
+{
+  char *command = NULL;
+  this->SetObjectMethodCommand(&command, object, method);
+  this->Script("bind %s %s {+%s}", target, event, command);
+  delete [] command;
+}
+
+//----------------------------------------------------------------------------
 void vtkKWWidget::AddBinding(const char *event, 
                              vtkObject *object, const char *method)
 {
   if (this->IsCreated())
     {
-    char *command = NULL;
-    this->SetObjectMethodCommand(&command, object, method);
-    this->Script("bind %s %s {+%s}", this->GetWidgetName(), event, command);
-    delete [] command;
+    this->AddGenericBinding(this->GetWidgetName(), event, object, method);
     }
 }
 
@@ -800,6 +816,25 @@ void vtkKWWidget::AddBinding(const char *event,
 void vtkKWWidget::AddBinding(const char *event, const char *command)
 {
   this->AddBinding(event, NULL, command);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWidget::RemoveGenericBinding(
+  const char *target, const char *event, 
+  vtkObject *object, const char *method)
+{
+  if (this->IsCreated())
+    {
+    char *command = NULL;
+    this->SetObjectMethodCommand(&command, object, method);
+    
+    // Retrieve the bindings, remove the command, re-assign
+
+    vtksys_stl::string bindings(this->Script("bind %s %s", target, event));
+    vtksys::SystemTools::ReplaceString(bindings, command, "");
+    this->Script("bind %s %s {%s}", target, event, bindings.c_str());
+    delete [] command;
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -814,13 +849,24 @@ void vtkKWWidget::RemoveBinding(const char *event,
     // Retrieve the bindings, remove the command, re-assign
 
     vtksys_stl::string bindings(
-      this->Script("if { [info command %s] != {} } {bind %s %s}", this->GetWidgetName(), this->GetWidgetName(), event));
+      this->Script("if { [info command %s] != {} } {bind %s %s}", 
+                   this->GetWidgetName(), this->GetWidgetName(), event));
 
     vtksys::SystemTools::ReplaceString(bindings, command, "");
 
     this->Script(
-      "if { [info command %s] != {} } {bind %s %s {%s}}", this->GetWidgetName(), this->GetWidgetName(), event, bindings.c_str());
+      "if { [info command %s] != {} } {bind %s %s {%s}}", 
+      this->GetWidgetName(), this->GetWidgetName(), event, bindings.c_str());
     delete [] command;
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWidget::RemoveGenericBinding(const char *target, const char *event)
+{
+  if (this->IsCreated())
+    {
+    this->Script("bind %s %s {}", target, event);
     }
 }
 
@@ -829,7 +875,8 @@ void vtkKWWidget::RemoveBinding(const char *event)
 {
   if (this->IsCreated())
     {
-    this->Script("if { [info command %s] != {} } {bind %s %s {}}", this->GetWidgetName(), this->GetWidgetName(), event);
+    this->Script("if { [info command %s] != {} } {bind %s %s {}}", 
+                 this->GetWidgetName(), this->GetWidgetName(), event);
     }
 }
 
