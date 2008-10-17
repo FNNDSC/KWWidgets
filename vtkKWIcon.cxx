@@ -30,7 +30,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.56 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.57 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -1412,6 +1412,15 @@ void vtkKWIcon::SetImage(int image)
         image_Nuvola_16x16_actions_viewmag_length);
       break;
 
+    case IconNuvola16x16ActionsViewBottom:
+      this->SetImage(
+        image_Nuvola_16x16_actions_view_bottom, 
+        image_Nuvola_16x16_actions_view_bottom_width, 
+        image_Nuvola_16x16_actions_view_bottom_height,
+        image_Nuvola_16x16_actions_view_bottom_pixel_size, 
+        image_Nuvola_16x16_actions_view_bottom_length);
+      break;
+
     case IconNuvola16x16ActionsViewFullScreen:
       this->SetImage(
         image_Nuvola_16x16_actions_view_fullscreen, 
@@ -1419,6 +1428,15 @@ void vtkKWIcon::SetImage(int image)
         image_Nuvola_16x16_actions_view_fullscreen_height,
         image_Nuvola_16x16_actions_view_fullscreen_pixel_size, 
         image_Nuvola_16x16_actions_view_fullscreen_length);
+      break;
+
+    case IconNuvola16x16ActionsViewRight:
+      this->SetImage(
+        image_Nuvola_16x16_actions_view_right, 
+        image_Nuvola_16x16_actions_view_right_width, 
+        image_Nuvola_16x16_actions_view_right_height,
+        image_Nuvola_16x16_actions_view_right_pixel_size, 
+        image_Nuvola_16x16_actions_view_right_length);
       break;
 
     case IconNuvola16x16AppsArk:
@@ -1511,6 +1529,15 @@ void vtkKWIcon::SetImage(int image)
         image_Nuvola_22x22_actions_messagebox_info_height,
         image_Nuvola_22x22_actions_messagebox_info_pixel_size, 
         image_Nuvola_22x22_actions_messagebox_info_length);
+      break;
+
+    case IconNuvola22x22ActionsMisc:
+      this->SetImage(
+        image_Nuvola_22x22_actions_misc, 
+        image_Nuvola_22x22_actions_misc_width, 
+        image_Nuvola_22x22_actions_misc_height,
+        image_Nuvola_22x22_actions_misc_pixel_size, 
+        image_Nuvola_22x22_actions_misc_length);
       break;
 
     case IconNuvola22x22AppsDesigner:

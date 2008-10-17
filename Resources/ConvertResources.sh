@@ -148,7 +148,9 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWNuvolaIconResourc
     Nuvola/16x16/actions/stop.png \
     Nuvola/16x16/actions/thumbnail.png \
     Nuvola/16x16/actions/viewmag.png \
+    Nuvola/16x16/actions/view_bottom.png \
     Nuvola/16x16/actions/view_fullscreen.png \
+    Nuvola/16x16/actions/view_right.png \
     Nuvola/16x16/apps/ark.png \
     Nuvola/16x16/apps/bug.png \
     Nuvola/16x16/apps/email.png \
@@ -159,6 +161,7 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWNuvolaIconResourc
     Nuvola/16x16/filesystems/trashcan_full.png \
     Nuvola/22x22/actions/help.png \
     Nuvola/22x22/actions/messagebox_info.png \
+    Nuvola/22x22/actions/misc.png \
     Nuvola/22x22/apps/designer.png \
     Nuvola/22x22/filesystems/folder_blue.png \
     Nuvola/22x22/devices/camera.png \

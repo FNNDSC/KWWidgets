@@ -36,7 +36,7 @@
 #include <vtksys/SystemTools.hxx>
 #include <vtksys/ios/sstream> 
 
-vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.296 $");
+vtkCxxRevisionMacro(vtkKWWindow, "$Revision: 1.297 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindow );
@@ -310,7 +310,7 @@ void vtkKWWindow::PopulateWindowMenu()
   if (show_icons)
     {
     menu->SetItemImageToPredefinedIcon(
-      idx, vtkKWIcon::IconNuvola16x16ActionsViewFullScreen);
+      idx, vtkKWIcon::IconNuvola16x16ActionsViewRight);
     menu->SetItemCompoundModeToLeft(idx);
     }
 
@@ -319,6 +319,12 @@ void vtkKWWindow::PopulateWindowMenu()
   menu->SetItemAccelerator(
     idx, this->GetSecondaryPanelVisibilityKeyAccelerator());
   menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
+  if (show_icons)
+    {
+    menu->SetItemImageToPredefinedIcon(
+      idx, vtkKWIcon::IconNuvola16x16ActionsViewBottom);
+    menu->SetItemCompoundModeToLeft(idx);
+    }
 
   menu->AddSeparator();
   

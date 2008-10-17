@@ -179,7 +179,9 @@ public:
     IconNuvola16x16ActionsStop               = 1015,
     IconNuvola16x16ActionsThumbnail          = 1016,
     IconNuvola16x16ActionsViewMag            = 1017,
-    IconNuvola16x16ActionsViewFullScreen     = 1018,
+    IconNuvola16x16ActionsViewBottom         = 1018,
+    IconNuvola16x16ActionsViewFullScreen     = 1020,
+    IconNuvola16x16ActionsViewRight          = 1021,
     IconNuvola16x16AppsArk                   = 1300,
     IconNuvola16x16AppsBug                   = 1301,
     IconNuvola16x16AppsEmail                 = 1302,
@@ -191,6 +193,7 @@ public:
 
     IconNuvola22x22ActionsHelp               = 3000,
     IconNuvola22x22ActionsMessageBoxInfo     = 3001,
+    IconNuvola22x22ActionsMisc               = 3002,
     IconNuvola22x22AppsDesigner              = 3300,
     IconNuvola22x22DevicesCamera             = 3600,
     IconNuvola22x22FilesystemsFolderBlue     = 3900,
