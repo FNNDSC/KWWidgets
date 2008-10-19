@@ -37,6 +37,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "vtkKWApplication.h"
 #include "vtkKWOptions.h"
+#include "vtkKWInternationalization.h"
 #include "vtkObjectFactory.h"
 #include "vtkKWTkUtilities.h"
 #include "vtkKWIcon.h"
@@ -50,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTree );
-vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.45 $");
+vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.46 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTreeInternals
@@ -149,10 +150,23 @@ void vtkKWTree::CreateWidget()
 
   // Key shortcuts
 
-  this->SetBinding("<Next>", this, "KeyNavigationCallback Next");
-  this->SetBinding("<Prior>", this, "KeyNavigationCallback Prior");
-  this->SetBinding("<Home>", this, "KeyNavigationCallback Home");
-  this->SetBinding("<End>", this, "KeyNavigationCallback End");
+  const char *context = k_("Tree Widget");
+
+  this->SetKeyBinding(
+    "<Next>", this, "KeyNavigationCallback Next",
+    context, ks_("Tree Widget|Go to next item"));
+
+  this->SetKeyBinding(
+    "<Prior>", this, "KeyNavigationCallback Prior",
+    context, ks_("Tree Widget|Go to previous item"));
+
+  this->SetKeyBinding(
+    "<Home>", this, "KeyNavigationCallback Home",
+    context, ks_("Tree Widget|Go to first item"));
+
+  this->SetKeyBinding(
+    "<End>", this, "KeyNavigationCallback End",
+    context, ks_("Tree Widget|Go to last item"));
 
   this->UpdateDragAndDrop();
 }

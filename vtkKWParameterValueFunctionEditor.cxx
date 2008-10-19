@@ -41,7 +41,7 @@
 #include <vtksys/stl/algorithm>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.112 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.113 $");
 
 //----------------------------------------------------------------------------
 #define VTK_KW_PVFE_POINT_RADIUS_MIN         2
@@ -2192,17 +2192,39 @@ void vtkKWParameterValueFunctionEditor::Bind()
         }
       }
 
-    this->Canvas->SetBinding("<KeyPress-n>", this, "SelectNextPoint");
-    this->Canvas->SetBinding("<KeyPress-Next>", this, "SelectNextPoint");
+    const char *context = k_("Transfer Function Editor");
 
-    this->Canvas->SetBinding("<KeyPress-p>", this, "SelectPreviousPoint");
-    this->Canvas->SetBinding("<KeyPress-Prior>", this, "SelectPreviousPoint");
+    this->Canvas->SetKeyBinding(
+      "<KeyPress-n>", this, "SelectNextPoint",
+      context, ks_("Transfer Function Editor|Select next point"));
 
-    this->Canvas->SetBinding("<KeyPress-Home>", this, "SelectFirstPoint");
-    this->Canvas->SetBinding("<KeyPress-End>", this, "SelectLastPoint");
+    this->Canvas->SetKeyBinding(
+      "<KeyPress-Next>", this, "SelectNextPoint",
+      context, ks_("Transfer Function Editor|Select next point"));
 
-    this->Canvas->SetBinding("<KeyPress-x>", this, "RemoveSelectedPoint");
-    this->Canvas->SetBinding("<KeyPress-Delete>", this, "RemoveSelectedPoint");
+    this->Canvas->SetKeyBinding(
+      "<KeyPress-p>", this, "SelectPreviousPoint",
+      context, ks_("Transfer Function Editor|Select previous point"));
+
+    this->Canvas->SetKeyBinding(
+      "<KeyPress-Prior>", this, "SelectPreviousPoint",
+      context, ks_("Transfer Function Editor|Select previous point"));
+
+    this->Canvas->SetKeyBinding(
+      "<KeyPress-Home>", this, "SelectFirstPoint",
+      context, ks_("Transfer Function Editor|Select first point"));
+
+    this->Canvas->SetKeyBinding(
+      "<KeyPress-End>", this, "SelectLastPoint",
+      context, ks_("Transfer Function Editor|Select last point"));
+
+    this->Canvas->SetKeyBinding(
+      "<KeyPress-x>", this, "RemoveSelectedPoint",
+      context, ks_("Transfer Function Editor|Delete selected point"));
+
+    this->Canvas->SetKeyBinding(
+      "<KeyPress-Delete>", this, "RemoveSelectedPoint",
+      context, ks_("Transfer Function Editor|Delete selected point"));
     }
 }
 

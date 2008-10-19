@@ -62,7 +62,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.76 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.77 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -1770,6 +1770,8 @@ void vtkKWPresetSelector::SetApplyPresetOnSelection(int arg)
       this->PresetList->GetWidget()->SetSelectionModeToBrowse();
       }
     }
+
+  this->UpdatePresetButtons(); // visibility of the apply preset button
 }
 
 //----------------------------------------------------------------------------

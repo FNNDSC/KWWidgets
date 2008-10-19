@@ -24,7 +24,7 @@
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTopLevel );
-vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.34 $");
+vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.35 $");
 
 //----------------------------------------------------------------------------
 vtkKWTopLevel::vtkKWTopLevel()
@@ -100,17 +100,25 @@ void vtkKWTopLevel::CreateWidget()
 
   this->PostCreate();
 
-  // Menu : Window : Tcl Interactor
+  // Tcl Interactor
+
+  const char *context = k_("Main Window");
 
   if (!this->GetApplication()->GetReleaseMode())
     {
-    this->SetBinding("<Control-t>", this, "DisplayTclInteractor");
+    this->SetKeyBinding(
+      "<Control-t>", this, "DisplayTclInteractor",
+      context, ks_("Main Window|Display Tcl interactor"));
     }
+
+  // Error log
 
   cmd = "DisplayLogDialog {";
   cmd += this->GetTclName();
   cmd += "}";
-  this->SetBinding("<Control-Alt-e>", this->GetApplication(), cmd.c_str());
+  this->SetKeyBinding(
+    "<Control-Alt-e>", this->GetApplication(), cmd.c_str(),
+    context, ks_("Main Window|Display error log"));
 }
 
 //----------------------------------------------------------------------------

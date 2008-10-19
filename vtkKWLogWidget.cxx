@@ -43,7 +43,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLogWidget );
-vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.14 $");
 
 vtkIdType vtkKWLogWidget::IdCounter = 1;
 
@@ -270,7 +270,8 @@ void vtkKWLogWidget::CreateRecordList()
   this->RemoveSelectedButton->Create();
   this->RemoveSelectedButton->SetImageToPredefinedIcon(
     vtkKWIcon::IconFileDelete);
-  this->RemoveSelectedButton->SetBalloonHelpString("Remove selected records");
+  this->RemoveSelectedButton->SetBalloonHelpString(
+    "Remove selected records (or press the <Delete> key)");
   this->RemoveSelectedButton->SetCommand(
     this, "RemoveSelectedRecordsCallback");
   this->Toolbar->AddWidget(this->RemoveSelectedButton);

@@ -30,7 +30,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.158 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.159 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetInternals
@@ -653,8 +653,9 @@ int vtkKWWidget::IsMapped()
 //----------------------------------------------------------------------------
 int vtkKWWidget::IsPacked()
 {
-  return this->IsCreated() && !this->GetApplication()->EvaluateBooleanExpression(
-    "catch {pack info %s}", this->GetWidgetName());
+  return this->IsCreated() && 
+    !this->GetApplication()->EvaluateBooleanExpression(
+      "catch {pack info %s}", this->GetWidgetName());
 }
 
 //----------------------------------------------------------------------------
@@ -677,12 +678,68 @@ void vtkKWWidget::Unpack()
 }
 
 //----------------------------------------------------------------------------
+int vtkKWWidget::IsGridded()
+{
+  return this->IsCreated() && 
+    !this->GetApplication()->EvaluateBooleanExpression(
+      "catch {grid info %s}", this->GetWidgetName());
+}
+
+//----------------------------------------------------------------------------
+int vtkKWWidget::GetNumberOfGriddedChildren()
+{
+  if (!this->IsCreated())
+    {
+    return 0;
+    }
+  return atoi(this->Script("llength [grid slaves %s]", this->GetWidgetName()));
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWidget::Ungrid()
+{
+  if (this->IsCreated())
+    {
+    this->Script("catch {eval grid forget %s}", this->GetWidgetName());
+    }
+}
+
+//----------------------------------------------------------------------------
+int vtkKWWidget::IsPlaced()
+{
+  return this->IsCreated() && 
+    !this->GetApplication()->EvaluateBooleanExpression(
+      "catch {place info %s}", this->GetWidgetName());
+}
+
+//----------------------------------------------------------------------------
+int vtkKWWidget::GetNumberOfPlacedChildren()
+{
+  if (!this->IsCreated())
+    {
+    return 0;
+    }
+  return atoi(this->Script("llength [place slaves %s]", this->GetWidgetName()));
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWidget::Unplace()
+{
+  if (this->IsCreated())
+    {
+    this->Script("catch {eval place forget %s}", this->GetWidgetName());
+    }
+}
+
+//----------------------------------------------------------------------------
 void vtkKWWidget::UnpackSiblings()
 {
   if (this->GetParent() && this->GetParent()->IsCreated())
     {
     this->GetParent()->Script("catch {eval pack forget [pack slaves %s]} \n "
-                              "catch {eval grid forget [grid slaves %s]}",
+                              "catch {eval grid forget [grid slaves %s]} \n "
+                              "catch {eval place forget [place slaves %s]}",
+                              this->GetParent()->GetWidgetName(),
                               this->GetParent()->GetWidgetName(),
                               this->GetParent()->GetWidgetName());
     }
@@ -694,8 +751,11 @@ void vtkKWWidget::UnpackChildren()
   if (this->IsCreated())
     {
     this->Script("catch {eval pack forget [pack slaves %s]} \n "
-                 "catch {eval grid forget [grid slaves %s]}",
-                 this->GetWidgetName(),this->GetWidgetName());
+                 "catch {eval grid forget [grid slaves %s]} \n "
+                 "catch {eval place forget [place slaves %s]}",
+                 this->GetWidgetName(),
+                 this->GetWidgetName(),
+                 this->GetWidgetName());
     }
 }
 
@@ -779,6 +839,16 @@ void vtkKWWidget::SetBinding(const char *event,
 void vtkKWWidget::SetBinding(const char *event, const char *command)
 {
   this->SetBinding(event, NULL, command);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWidget::SetKeyBinding(const char *event, 
+                                vtkObject *object, const char *method,
+                                const char *context, const char *description)
+{
+  this->SetBinding(event, object, method);
+  (void)context;
+  (void)description;
 }
 
 //----------------------------------------------------------------------------

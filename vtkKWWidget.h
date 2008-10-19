@@ -131,6 +131,27 @@ public:
     const char *event, vtkObject *object, const char *method);
 
   // Description:
+  // A convenience method to add a key binding. This method does call
+  // SetBinding under the hood (which can still be used to add key bindings)
+  // but use the 'context' and 'description' to register that specific binding
+  // to an application-wide key binding (keyboard shortcut) manager. That
+  // manager can in turn be queried to create a list of key bindings and
+  // present it to the user (in the Help menu for example). Use this method
+  // only for important key binding that you want the user to be reminded 
+  // of. Simple bindings like <Return> on a button to allow the user
+  // to "press" said button by hitting <Return>, should probably not be set
+  // with this method, but with the usual SetBinding.
+  // 'context' is a string in plain English (or preferably localized) that
+  // explains in which context this key binding is valid. For example: 
+  // "Any 2D View", or "Any Main Window". It usually is a simple/short
+  // description of the class setting the binding. 
+  // 'description' is a string in plain English (or preferably localized) that
+  // explains what that binding does. For example: "Reset the camera".
+  virtual void SetKeyBinding(
+    const char *event, vtkObject *object, const char *method,
+    const char *context, const char *description);
+
+  // Description:
   // Set a drop-file binding to a widget, i.e. the command that is invoked
   // whenever a file is dropped on the widget.
   // The following parameters are also passed to the command:
@@ -145,13 +166,32 @@ public:
   vtkKWTopLevel* GetParentTopLevel();
 
   // Description:
-  // Query if widget is packed
+  // Query if widget is pack'ed, i.e. if the widget has been layout using 
+  // the 'pack' geometry manager. 
+  // Get number of packed children, unpack (remove from layout).
   virtual int IsPacked();
   virtual int GetNumberOfPackedChildren();
+  virtual void Unpack();
+
+  // Description:
+  // Query if widget is grid'ed, i.e. if the widget has been layout using 
+  // the 'grid' geometry manager. 
+  // Get number of grid'ed children, ungrid (remove from layout).
+  virtual int IsGridded();
+  virtual int GetNumberOfGriddedChildren();
+  virtual void Ungrid();
+
+  // Description:
+  // Query if widget is place'ed, i.e. if the widget has been layout using 
+  // the 'place' geometry manager. 
+  // Get number of placed children, unplace (remove from layout).
+  virtual int IsPlaced();
+  virtual int GetNumberOfPlacedChildren();
+  virtual void Unplace();
 
   // Description:
   // Unpack widget, unpack siblings (slave's of parent widget), unpack children
-  virtual void Unpack();
+  // This will both unpack and ungrid and unplace, for convenience.
   virtual void UnpackSiblings();
   virtual void UnpackChildren();
   

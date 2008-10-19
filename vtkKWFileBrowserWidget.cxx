@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserWidget );
-vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.17 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserWidget, "$Revision: 1.18 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserWidgetInternals
@@ -636,9 +636,6 @@ void vtkKWFileBrowserWidget::AddFavoriteDirectoryCallback()
     ks_("File Browser|Dialog|Enter a name for this favorite"));
   
   dlg->GetOKButton()->Focus();
-  dlg->GetEntry()->GetWidget()->SetBinding("<Return>", dlg, "OK");
-  dlg->GetOKButton()->SetBinding("<Return>", dlg, "OK");
-  dlg->GetCancelButton()->SetBinding("<Return>", dlg, "Cancel");
   
   int ok = dlg->Invoke();
   vtksys_stl::string favoritename = dlg->GetEntry()->GetWidget()->GetValue();

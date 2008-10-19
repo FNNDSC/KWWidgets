@@ -56,7 +56,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.25 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.26 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -811,10 +811,6 @@ void vtkKWFavoriteDirectoriesFrame::RenameFavoriteDirectoryCallback(
   dlg->SetText(
     ks_("Favorite Directories|Dialog|Enter a new favorite name:"));
   
-  dlg->GetEntry()->GetWidget()->SetBinding("<Return>", dlg, "OK");
-  dlg->GetOKButton()->SetBinding("<Return>", dlg, "OK");
-  dlg->GetCancelButton()->SetBinding("<Return>", dlg, "Cancel");
-
   int ok = dlg->Invoke();
   vtksys_stl::string newname = dlg->GetEntry()->GetWidget()->GetValue();
   dlg->Delete();

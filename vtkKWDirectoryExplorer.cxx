@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.42 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.43 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -1720,10 +1720,6 @@ void vtkKWDirectoryExplorer::CreateNewFolderCallback()
   dlg->SetText(
     ks_("Directory Explorer|Dialog|Enter a name for this new folder"));
   
-  dlg->GetEntry()->GetWidget()->SetBinding("<Return>", dlg, "OK");
-  dlg->GetOKButton()->SetBinding("<Return>", dlg, "OK");
-  dlg->GetCancelButton()->SetBinding("<Return>", dlg, "Cancel");
-
   int ok = dlg->Invoke();
   vtksys_stl::string foldername = dlg->GetEntry()->GetWidget()->GetValue();
   dlg->Delete();
@@ -2090,10 +2086,6 @@ int vtkKWDirectoryExplorer::RenameCallback()
     dlg->SetText(
       ks_("Directory Explorer|Dialog|Enter a new directory name:"));
     
-    dlg->GetEntry()->GetWidget()->SetBinding("<Return>", dlg, "OK");
-    dlg->GetOKButton()->SetBinding("<Return>", dlg, "OK");
-    dlg->GetCancelButton()->SetBinding("<Return>", dlg, "Cancel");
-
     int ok = dlg->Invoke();
     vtksys_stl::string newname = dlg->GetEntry()->GetWidget()->GetValue();
     dlg->Delete();
