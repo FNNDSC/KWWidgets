@@ -1127,6 +1127,152 @@ static const unsigned char image_minus[] =
 
 /* 
  * Resource generated for file:
+ *    small_counter_blue_1.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_small_counter_blue_1_width          = 11;
+static const unsigned int  image_small_counter_blue_1_height         = 13;
+static const unsigned int  image_small_counter_blue_1_pixel_size     = 4;
+static const unsigned long image_small_counter_blue_1_length         = 108;
+static const unsigned long image_small_counter_blue_1_decoded_length = 572;
+
+static const unsigned char image_small_counter_blue_1[] = 
+  "eNr7//8/Q1nVmv+E8H+ouoaWTf+3br+EE4PkYXpAbEIYl9pbt18QpRYE3r37QrS5Q0ktMi"
+  "DGXFzh6+5d+p+YOAapA8UziCaEQeoA1RmIJw==";
+
+/* 
+ * Resource generated for file:
+ *    small_counter_blue_2.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_small_counter_blue_2_width          = 11;
+static const unsigned int  image_small_counter_blue_2_height         = 13;
+static const unsigned int  image_small_counter_blue_2_pixel_size     = 4;
+static const unsigned long image_small_counter_blue_2_length         = 144;
+static const unsigned long image_small_counter_blue_2_decoded_length = 572;
+
+static const unsigned char image_small_counter_blue_2[] = 
+  "eNr7//8/Q1nVmv+E8H+ouoaWTf+3br+EE4PkYXpAbEIYXe2mLRf+w8Dxk3fxqkXG7959IV"
+  "rtrdsviFI7d8ERotyATR02tbjUYVMLUocMQHqJ8Rs2c929S/8TE8cgdaB4BtGEMEgdAL3e"
+  "ikU=";
+
+/* 
+ * Resource generated for file:
+ *    small_counter_blue_3.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_small_counter_blue_3_width          = 11;
+static const unsigned int  image_small_counter_blue_3_height         = 13;
+static const unsigned int  image_small_counter_blue_3_pixel_size     = 4;
+static const unsigned long image_small_counter_blue_3_length         = 144;
+static const unsigned long image_small_counter_blue_3_decoded_length = 572;
+
+static const unsigned char image_small_counter_blue_3[] = 
+  "eNr7//8/Q1nVmv+E8H+ouoaWTf+3br+EE4PkYXpAbEIYXe2mLRf+w8Dxk3fxqkXGt26/IF"
+  "rtu3dfCKqdu+AI2A0g9xBrLsi9IH3EuhefWpBZ5IQDtvB19y79T0wcg9SB4hlEE8IgdQB7"
+  "+Yqq";
+
+/* 
+ * Resource generated for file:
+ *    small_counter_blue_4.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_small_counter_blue_4_width          = 11;
+static const unsigned int  image_small_counter_blue_4_height         = 13;
+static const unsigned int  image_small_counter_blue_4_pixel_size     = 4;
+static const unsigned long image_small_counter_blue_4_length         = 132;
+static const unsigned long image_small_counter_blue_4_decoded_length = 572;
+
+static const unsigned char image_small_counter_blue_4[] = 
+  "eNr7//8/Q1nVmv+E8H+ouoaWTf+3br+EE4PkYXpAbEIYl9q5C478v3X7BVFq3737QpRakD"
+  "pizEWWJ6QWZCYyOH7yLkH3EmMuuWqxha+7d+l/YuIYpA4UzyCaEAapAwBwkItj";
+
+/* 
+ * Resource generated for file:
+ *    small_counter_blue_5.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_small_counter_blue_5_width          = 11;
+static const unsigned int  image_small_counter_blue_5_height         = 13;
+static const unsigned int  image_small_counter_blue_5_pixel_size     = 4;
+static const unsigned long image_small_counter_blue_5_length         = 144;
+static const unsigned long image_small_counter_blue_5_decoded_length = 572;
+
+static const unsigned char image_small_counter_blue_5[] = 
+  "eNr7//8/Q1nVmv+E8H+ouoaWTf+3br+EE4PkYXpAbEIYXe3cBUf+IwMQH5/aTVsuEG0uKW"
+  "ph4NbtF3jVIuPjJ+/idS8yBpmLTy3ILBgAsYl1Aza/uXuX/icmjkHqQPEMoglhkDoA7hqM"
+  "kw==";
+
+/* 
+ * Resource generated for file:
+ *    small_counter_blue_6.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_small_counter_blue_6_width          = 11;
+static const unsigned int  image_small_counter_blue_6_height         = 13;
+static const unsigned int  image_small_counter_blue_6_pixel_size     = 4;
+static const unsigned long image_small_counter_blue_6_length         = 156;
+static const unsigned long image_small_counter_blue_6_decoded_length = 572;
+
+static const unsigned char image_small_counter_blue_6[] = 
+  "eNr7//8/Q1nVmv+E8H+ouoaWTf+3br+EE4PkYXpAbEIYm9pNWy6A7Pv/7t0XvGrnLjiCoQ"
+  "aX2uMn74LVE6P21u0X/2GAkBtAapHdDcK41CLLE1ILwiC7QQDZDnLC19279D8xcQxSB4pn"
+  "EE0Ig9QBAJKbjag=";
+
+/* 
+ * Resource generated for file:
+ *    small_counter_blue_7.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_small_counter_blue_7_width          = 11;
+static const unsigned int  image_small_counter_blue_7_height         = 13;
+static const unsigned int  image_small_counter_blue_7_pixel_size     = 4;
+static const unsigned long image_small_counter_blue_7_length         = 140;
+static const unsigned long image_small_counter_blue_7_decoded_length = 572;
+
+static const unsigned char image_small_counter_blue_7[] = 
+  "eNr7//8/Q1nVmv+E8H+ouoaWTf+3br+EE4PkYXpAbEIYXe3xk3f/I4NNWy7gVIuMQfrmLj"
+  "hClNpbt1/gdQMuM/GpRTcTl1psZuJSi81McsLX3bv0PzFxDFIHimcQTQiD1AEALp+HaQ==";
+
+/* 
+ * Resource generated for file:
+ *    small_counter_blue_8.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_small_counter_blue_8_width          = 11;
+static const unsigned int  image_small_counter_blue_8_height         = 13;
+static const unsigned int  image_small_counter_blue_8_pixel_size     = 4;
+static const unsigned long image_small_counter_blue_8_length         = 140;
+static const unsigned long image_small_counter_blue_8_decoded_length = 572;
+
+static const unsigned char image_small_counter_blue_8[] = 
+  "eNr7//8/Q1nVmv+E8H+ouoaWTf+3br+EE4PkYXpAbEIYm1oYuHX7BV61x0/e/T93wREMNj"
+  "a1m7ZcAKuBqSXWDYTUIrsRpBZkDz61xLqXlHAgFL7u3qX/iYljkDpQPINoQhikDgCebo8V";
+
+/* 
+ * Resource generated for file:
+ *    small_counter_blue_9.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_small_counter_blue_9_width          = 11;
+static const unsigned int  image_small_counter_blue_9_height         = 13;
+static const unsigned int  image_small_counter_blue_9_pixel_size     = 4;
+static const unsigned long image_small_counter_blue_9_length         = 152;
+static const unsigned long image_small_counter_blue_9_decoded_length = 572;
+
+static const unsigned char image_small_counter_blue_9[] = 
+  "eNr7//8/Q1nVmv+E8H+ouoaWTf+3br+EE4PkYXpAbEIYm1oYOH7yLl61t26/+D93wREwG6"
+  "QWxiakdtOWC2CMSy1IHTLApxYZE3IDMn737gtevyG7gZgwwxe+7t6l/4mJY5A6UDyDaEIY"
+  "pA4AITmN4g==";
+
+/* 
+ * Resource generated for file:
+ *    small_counter_blue_9plus.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_small_counter_blue_9plus_width          = 11;
+static const unsigned int  image_small_counter_blue_9plus_height         = 13;
+static const unsigned int  image_small_counter_blue_9plus_pixel_size     = 4;
+static const unsigned long image_small_counter_blue_9plus_length         = 164;
+static const unsigned long image_small_counter_blue_9plus_decoded_length = 572;
+
+static const unsigned char image_small_counter_blue_9plus[] = 
+  "eNr7//8/Q1nVmv+E8H+ouoaWTf+3br+EE4PkYXpAbFz4+Mm7WNXCAEweRMP4yGpv3X7xf+"
+  "6CI3A1yGx0c5HVbtpyAYyR3YKsFqQOGeBTi+4fmB2E1L579wVDDJcbsIUdMeGLrNbdu/Q/"
+  "MXEMUgeKZxBNCIPUAQD62pIF";
+
+/* 
+ * Resource generated for file:
  *    move.png (zlib, base64) (image file)
  */
 static const unsigned int  image_move_width          = 9;

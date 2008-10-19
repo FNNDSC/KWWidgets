@@ -71,6 +71,16 @@ KWConvertImageToHeader --zlib --base64 vtkKWIconResources.h \
     lock.png \
     mag_glass.png \
     minus.png \
+    small_counter_blue_1.png \
+    small_counter_blue_2.png \
+    small_counter_blue_3.png \
+    small_counter_blue_4.png \
+    small_counter_blue_5.png \
+    small_counter_blue_6.png \
+    small_counter_blue_7.png \
+    small_counter_blue_8.png \
+    small_counter_blue_9.png \
+    small_counter_blue_9plus.png \
     move.png \
     move_h.png \
     move_v.png \
