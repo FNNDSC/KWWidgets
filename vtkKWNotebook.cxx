@@ -25,6 +25,7 @@
 #include "vtkMath.h"
 #include "vtkObjectFactory.h"
 #include "vtkKWFrameWithScrollbar.h"
+#include "vtkKWSmallCounterLabel.h"
 
 #include <vtksys/ios/sstream>
 #include <vtksys/stl/list>
@@ -51,7 +52,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.112 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.113 $");
 
 //----------------------------------------------------------------------------
 class vtkKWNotebookInternals
@@ -75,6 +76,7 @@ vtkKWNotebook::Page::Page()
   this->Label = NULL;
   this->ImageLabel = NULL;
   this->Icon = NULL;
+  this->SmallCounterLabel = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -117,6 +119,13 @@ void vtkKWNotebook::Page::Delete()
     this->Icon->Delete();
     this->Icon = NULL;
     }
+
+  if (this->SmallCounterLabel)
+    {
+    this->SmallCounterLabel->SetBalloonHelpManager(NULL);
+    this->SmallCounterLabel->Delete();
+    this->SmallCounterLabel = NULL;
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -155,6 +164,11 @@ void vtkKWNotebook::Page::UpdateEnableState()
     {
     this->ImageLabel->SetEnabled(state);
     }
+
+  if (this->SmallCounterLabel)
+    {
+    this->SmallCounterLabel->SetEnabled(state);
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -187,6 +201,12 @@ void vtkKWNotebook::Page::Bind()
     sprintf(callback, "RaiseCallback %d", this->Id);
     this->ImageLabel->SetBinding("<Button-1>", nb, callback);
     }
+
+  if (this->SmallCounterLabel)
+    {
+    sprintf(callback, "RaiseCallback %d", this->Id);
+    this->SmallCounterLabel->SetBinding("<Button-1>", nb, callback);
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -210,6 +230,11 @@ void vtkKWNotebook::Page::UnBind()
   if (this->ImageLabel)
     {
     this->ImageLabel->RemoveBinding("<Button-1>");
+    }
+
+  if (this->SmallCounterLabel)
+    {
+    this->SmallCounterLabel->RemoveBinding("<Button-1>");
     }
 }
 
@@ -1011,6 +1036,9 @@ void vtkKWNotebook::BuildPage(vtkKWNotebook::Page *page,
     page->ImageLabel->SetBalloonHelpString(balloon);
     }
 
+  // Create the small counter
+  // Not created unless explicitly specified
+  
   this->Script(cmd.str().c_str());
 
   page->UpdateEnableState();
@@ -1431,6 +1459,10 @@ const char* vtkKWNotebook::GetPageBalloonHelpString(vtkKWNotebook::Page *page)
     {
     return page->ImageLabel->GetBalloonHelpString();
     }
+  if (page->SmallCounterLabel)
+    {
+    return page->SmallCounterLabel->GetBalloonHelpString();
+    }
 
   return NULL;
 }
@@ -1454,6 +1486,10 @@ void vtkKWNotebook::SetPageBalloonHelpString(int id, const char *str)
     if (page->ImageLabel)
       {
       page->ImageLabel->SetBalloonHelpString(str);
+      }
+    if (page->SmallCounterLabel)
+      {
+      page->SmallCounterLabel->SetBalloonHelpString(str);
       }
     }
 }
@@ -1495,6 +1531,39 @@ void vtkKWNotebook::SetPageIconToPredefinedIcon(int id, int icon_index)
   icon->SetImage(icon_index);
   this->SetPageIcon(id, icon);
   icon->Delete();
+}
+
+//----------------------------------------------------------------------------
+int vtkKWNotebook::GetPageSmallCounterValue(int id)
+{
+  vtkKWNotebook::Page *page = this->GetPage(id);
+  if (page && page->SmallCounterLabel)
+    {
+    return page->SmallCounterLabel->GetValue();
+    }
+  return 0;
+
+}
+
+//----------------------------------------------------------------------------
+void vtkKWNotebook::SetPageSmallCounterValue(int id, int v)
+{
+  vtkKWNotebook::Page *page = this->GetPage(id);
+  if (page)
+    {
+    if (!page->SmallCounterLabel)
+      {
+      page->SmallCounterLabel = vtkKWSmallCounterLabel::New();
+      page->SmallCounterLabel->SetParent(page->TabFrame);
+      page->SmallCounterLabel->SetBalloonHelpManager(
+        this->TabBalloonHelpManager);
+      page->SmallCounterLabel->SetBalloonHelpString(
+        this->GetPageBalloonHelpString(page));
+      page->SmallCounterLabel->Create();
+      page->UpdateEnableState();
+      }
+    page->SmallCounterLabel->SetValue(v);
+    }
 }
 
 //----------------------------------------------------------------------------

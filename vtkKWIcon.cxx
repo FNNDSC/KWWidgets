@@ -30,7 +30,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.57 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.58 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -609,6 +609,86 @@ void vtkKWIcon::SetImage(int image)
         image_minus_width, image_minus_height,
         image_minus_pixel_size, 
         image_minus_length);
+      break;      
+
+    case vtkKWIcon::IconSmallCounterBlue1:
+      this->SetImage(
+        image_small_counter_blue_1, 
+        image_small_counter_blue_1_width, image_small_counter_blue_1_height,
+        image_small_counter_blue_1_pixel_size, 
+        image_small_counter_blue_1_length);
+      break;      
+
+    case vtkKWIcon::IconSmallCounterBlue2:
+      this->SetImage(
+        image_small_counter_blue_2, 
+        image_small_counter_blue_2_width, image_small_counter_blue_2_height,
+        image_small_counter_blue_2_pixel_size, 
+        image_small_counter_blue_2_length);
+      break;      
+
+    case vtkKWIcon::IconSmallCounterBlue3:
+      this->SetImage(
+        image_small_counter_blue_3, 
+        image_small_counter_blue_3_width, image_small_counter_blue_3_height,
+        image_small_counter_blue_3_pixel_size, 
+        image_small_counter_blue_3_length);
+      break;      
+
+    case vtkKWIcon::IconSmallCounterBlue4:
+      this->SetImage(
+        image_small_counter_blue_4, 
+        image_small_counter_blue_4_width, image_small_counter_blue_4_height,
+        image_small_counter_blue_4_pixel_size, 
+        image_small_counter_blue_4_length);
+      break;      
+
+    case vtkKWIcon::IconSmallCounterBlue5:
+      this->SetImage(
+        image_small_counter_blue_5, 
+        image_small_counter_blue_5_width, image_small_counter_blue_5_height,
+        image_small_counter_blue_5_pixel_size, 
+        image_small_counter_blue_5_length);
+      break;      
+
+    case vtkKWIcon::IconSmallCounterBlue6:
+      this->SetImage(
+        image_small_counter_blue_6, 
+        image_small_counter_blue_6_width, image_small_counter_blue_6_height,
+        image_small_counter_blue_6_pixel_size, 
+        image_small_counter_blue_6_length);
+      break;      
+
+    case vtkKWIcon::IconSmallCounterBlue7:
+      this->SetImage(
+        image_small_counter_blue_7, 
+        image_small_counter_blue_7_width, image_small_counter_blue_7_height,
+        image_small_counter_blue_7_pixel_size, 
+        image_small_counter_blue_7_length);
+      break;      
+
+    case vtkKWIcon::IconSmallCounterBlue8:
+      this->SetImage(
+        image_small_counter_blue_8, 
+        image_small_counter_blue_8_width, image_small_counter_blue_8_height,
+        image_small_counter_blue_8_pixel_size, 
+        image_small_counter_blue_8_length);
+      break;      
+
+    case vtkKWIcon::IconSmallCounterBlue9:
+      this->SetImage(
+        image_small_counter_blue_9, 
+        image_small_counter_blue_9_width, image_small_counter_blue_9_height,
+        image_small_counter_blue_9_pixel_size, 
+        image_small_counter_blue_9_length);
+      break;      
+
+    case vtkKWIcon::IconSmallCounterBlue9Plus:
+      this->SetImage(
+        image_small_counter_blue_9plus, 
+        image_small_counter_blue_9plus_width, image_small_counter_blue_9plus_height,
+        image_small_counter_blue_9plus_pixel_size, 
+        image_small_counter_blue_9plus_length);
       break;      
 
     case vtkKWIcon::IconMove:

@@ -230,6 +230,7 @@ set(KWWidgets_SRCS
   vtkKWScrollbar.cxx
   vtkKWSeparator.cxx
   vtkKWSimpleEntryDialog.cxx
+  vtkKWSmallCounterLabel.cxx
   vtkKWSpinBox.cxx
   vtkKWSpinButtons.cxx
   vtkKWSplashScreen.cxx

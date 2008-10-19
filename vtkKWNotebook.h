@@ -24,6 +24,7 @@
 class vtkKWFrame;
 class vtkKWIcon;
 class vtkKWLabel;
+class vtkKWSmallCounterLabel;
 class vtkKWMenu;
 class vtkKWNotebookInternals;
 class vtkKWBalloonHelpManager;
@@ -72,6 +73,17 @@ public:
   vtkKWIcon* GetPageIcon(int id);
   virtual void SetPageIcon(int id, vtkKWIcon *icon);
   virtual void SetPageIconToPredefinedIcon(int id, int icon_index);
+
+  // Description:
+  // Set/Get a page's small counter. This is a small icon representing
+  // a counter on top of the page tab. Set it to 0 (default) to hide the
+  // icon, 1 to 9 to reflect that value. Any value over 9 will be
+  // represented as 9+. Since only one page is visible at any one time
+  // in a notebook, such counter can be used for example to reflect
+  // a change that was made to another tab that is not currently 
+  // visible (the counter would be the number of changes for example).
+  int GetPageSmallCounterValue(int id);
+  virtual void SetPageSmallCounterValue(int id, int v);
 
   // Description:
   // Return the number of pages in the notebook.
@@ -437,6 +449,7 @@ protected:
     vtkKWLabel      *Label;
     vtkKWLabel      *ImageLabel;
     vtkKWIcon       *Icon;
+    vtkKWSmallCounterLabel *SmallCounterLabel;
   };
 
   // PIMPL Encapsulation for STL containers
