@@ -39,7 +39,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.44 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.45 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -922,32 +922,6 @@ int vtkKWFileBrowserDialog::FileOK()
 
   if (this->FileNameText->GetValue() && *(this->FileNameText->GetValue()))
     {
-    
-    // Allow user to input a full path directly in the filename box
-
-    vtksys_stl::string UserInputName = this->FileNameText->GetValue(); 
-    if (vtksys::SystemTools::FileExists(UserInputName.c_str()))
-      {
-      // "!vtksys::SystemTools::FileIsDirectory(dirname)" does not
-      // recognize "C:" or "C:/", so using vtkDirectory to check
-      vtkDirectory *dir = vtkDirectory::New();
-      int result = dir->Open(UserInputName.c_str());
-      dir->Delete();
-      if (result)
-        {
-        this->FileBrowserWidget->OpenDirectory(UserInputName.c_str());
-        return 0;
-        }
-      else if (this->SaveDialog && !this->ConfirmOverwrite(UserInputName.c_str()))
-        {
-        return 0;
-        }
-
-      this->FileNames->InsertNextValue(
-        KWFileBrowser_GetUnixPath(UserInputName.c_str()));
-      return 1;
-      }
-
     char * realname = vtksys::SystemTools::RemoveChars(
       this->FileNameText->GetValue(), "\r\n\t");
     if (!realname || !*(realname))
@@ -957,24 +931,54 @@ int vtkKWFileBrowserDialog::FileOK()
       }
 
     // Here we check if the filename box is in the multiple selection mode
+
     if(this->GetMultipleSelection() && this->OpenMultipleFileNames(realname))
       {
       return 1;
       }
+    
+    // Allow user to input a full or relative path directly in the filename box
 
-    vtksys_stl::string fullname = 
-      this->FileBrowserWidget->GetFileListTable()->GetParentDirectory();
-    if (strcmp(fullname.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY) != 0)
+    vtksys_stl::string fullname;
+    if (vtksys::SystemTools::FileIsFullPath(realname))
       {
-      fullname.append(KWFileBrowser_PATH_SEPARATOR);
+      fullname = realname;
       }
-    fullname.append(realname);
+    else
+      {
+      fullname = 
+        this->FileBrowserWidget->GetFileListTable()->GetParentDirectory();
+      if (strcmp(fullname.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY) != 0)
+        {
+        fullname.append(KWFileBrowser_PATH_SEPARATOR);
+        }
+      fullname = fullname.append(realname);
+      }
 
-    // Append DefaultExtension if it is set
+    fullname = vtksys::SystemTools::CollapseFullPath(fullname.c_str());
+
+    // If this is a directory, open the node
+    // "vtksys::SystemTools::FileIsDirectory(fullname)" does not
+    // recognize "C:" or "C:/", so using vtkDirectory to check
+
+    if (vtksys::SystemTools::FileExists(fullname.c_str()))
+      {
+      vtkDirectory *dir = vtkDirectory::New();
+      int result = dir->Open(fullname.c_str());
+      dir->Delete();
+      if (result)
+        {
+        this->FileBrowserWidget->OpenDirectory(fullname.c_str());
+        return 0;
+        }
+      }
+
+    // Append DefaultExtension if it is set, and if the input filename
+    // has no extension 
 
     if (this->DefaultExtension &&
-        (this->SaveDialog ||
-         !vtksys::SystemTools::FileExists(fullname.c_str())))
+        (!vtksys::SystemTools::FileExists(fullname.c_str()) 
+        || this->SaveDialog ))
       {
       vtksys_stl::string ext = 
         vtksys::SystemTools::GetFilenameExtension(fullname.c_str());
@@ -1003,23 +1007,13 @@ int vtkKWFileBrowserDialog::FileOK()
         }
       }
 
+    // If the file already exists, confirm for Save, or OK
+
     if (vtksys::SystemTools::FileExists(fullname.c_str()))
       {
-      // If this is a directory, open the node
-      if (vtksys::SystemTools::FileIsDirectory(fullname.c_str()))
+      if (this->SaveDialog && !this->ConfirmOverwrite(fullname.c_str()))
         {
-        this->FileBrowserWidget->OpenDirectory(fullname.c_str());
         return 0;
-        }
-
-      // If this is a file, OK
-
-      if (this->SaveDialog)
-        {
-        if (!this->ConfirmOverwrite(fullname.c_str()))
-          {
-          return 0;
-          }
         }
 
       this->FileNames->InsertNextValue(
