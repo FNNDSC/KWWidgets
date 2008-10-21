@@ -66,7 +66,7 @@ int vtkKWSetApplicationIconCmdInternal(Tcl_Interp *interp,
     return error;
     }
 
-  sscanf(interp->result, "0x%x", (int*)&winHandle);
+  sscanf(Tcl_GetStringResult(interp), "0x%x", (int*)&winHandle);
 
   // If the app name is empty, try to find the current application name
 
@@ -92,7 +92,7 @@ int vtkKWSetApplicationIconCmdInternal(Tcl_Interp *interp,
                   (LPTSTR)&lpMsgBuf,
                   0,
                   NULL);
-    sprintf(interp->result, "%s", (LPCTSTR)lpMsgBuf);
+    Tcl_SetResult(interp, (char*)((LPCTSTR)lpMsgBuf), TCL_VOLATILE);
     LocalFree(lpMsgBuf);
     return TCL_ERROR;
     }
@@ -128,7 +128,7 @@ int vtkKWSetApplicationIconCmdInternal(Tcl_Interp *interp,
                   (LPTSTR)&lpMsgBuf,
                   0,
                   NULL);
-    sprintf(interp->result, "%s", (LPCTSTR)lpMsgBuf);
+    Tcl_SetResult(interp, (char*)((LPCTSTR)lpMsgBuf), TCL_VOLATILE);
     LocalFree(lpMsgBuf);
     return TCL_ERROR;
     }
@@ -161,7 +161,7 @@ int vtkKWSetApplicationSmallIcon(Tcl_Interp *interp,
 int vtkKWSetApplicationIconCmd(ClientData clientdata, 
                                Tcl_Interp *interp, 
                                int argc, 
-#if (TCL_MAJOR_VERSION == 8) && (TCL_MINOR_VERSION >= 4 && TCL_RELEASE_LEVEL >= TCL_FINAL_RELEASE)
+#if (TCL_MAJOR_VERSION == 8) && (TCL_MINOR_VERSION >= 4)
                                CONST84
 #endif
                                char *argv[])
@@ -177,8 +177,10 @@ int vtkKWSetApplicationIconCmd(ClientData clientdata,
 
   if (argc < 3)
     {
-    interp->result = 
-      "Usage: vtkKWSetApplicationIcon app_name icon_res_id [small|big]";
+    Tcl_SetResult(
+      interp, 
+      "Usage: vtkKWSetApplicationIcon app_name icon_res_id [small|big]",
+      TCL_VOLATILE);
     return TCL_ERROR;
     }
 
@@ -201,8 +203,10 @@ int vtkKWSetApplicationIconCmd(ClientData clientdata,
       }
     else if (strcmp(argv[3], "big"))
       {
-      sprintf(interp->result, "Error: %s (expecting 'big' or 'small')", 
-              argv[3]);
+      Tcl_SetResult(
+        interp, 
+        "Error: expecting 'big' or 'small'",
+        TCL_VOLATILE);
       return TCL_ERROR;
       }
     }
