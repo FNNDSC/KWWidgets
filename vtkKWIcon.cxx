@@ -27,10 +27,11 @@
 #include "Resources/vtkKWIconResources.h"
 #include "Resources/vtkKWNuvolaIconResources.h"
 #include "Resources/vtkKWCrystalProjectIconResources.h"
+#include "Resources/vtkKWSilkIconResources.h"
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.58 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.59 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -1710,6 +1711,360 @@ void vtkKWIcon::SetImage(int image)
         image_Nuvola_48x48_filesystems_folder_blue_height,
         image_Nuvola_48x48_filesystems_folder_blue_pixel_size, 
         image_Nuvola_48x48_filesystems_folder_blue_length);
+      break;
+
+      // -------------------------------------------------------------------
+
+    case IconSilkApplicationXpTerminal:
+      this->SetImage(
+        image_Silk_application_xp_terminal, 
+        image_Silk_application_xp_terminal_width, image_Silk_application_xp_terminal_height,
+        image_Silk_application_xp_terminal_pixel_size, 
+        image_Silk_application_xp_terminal_length);
+      break;
+
+    case IconSilkArrowRefresh:
+      this->SetImage(
+        image_Silk_arrow_refresh, 
+        image_Silk_arrow_refresh_width, image_Silk_arrow_refresh_height,
+        image_Silk_arrow_refresh_pixel_size, 
+        image_Silk_arrow_refresh_length);
+      break;
+
+    case IconSilkAttach:
+      this->SetImage(
+        image_Silk_attach, 
+        image_Silk_attach_width, image_Silk_attach_height,
+        image_Silk_attach_pixel_size, 
+        image_Silk_attach_length);
+      break;
+
+    case IconSilkBinClosed:
+      this->SetImage(
+        image_Silk_bin_closed, 
+        image_Silk_bin_closed_width, image_Silk_bin_closed_height,
+        image_Silk_bin_closed_pixel_size, 
+        image_Silk_bin_closed_length);
+      break;
+
+    case IconSilkBug:
+      this->SetImage(
+        image_Silk_bug, 
+        image_Silk_bug_width, image_Silk_bug_height,
+        image_Silk_bug_pixel_size, 
+        image_Silk_bug_length);
+      break;
+
+    case IconSilkCamera:
+      this->SetImage(
+        image_Silk_camera, 
+        image_Silk_camera_width, image_Silk_camera_height,
+        image_Silk_camera_pixel_size, 
+        image_Silk_camera_length);
+      break;
+
+    case IconSilkChartCurve:
+      this->SetImage(
+        image_Silk_chart_curve, 
+        image_Silk_chart_curve_width, image_Silk_chart_curve_height,
+        image_Silk_chart_curve_pixel_size, 
+        image_Silk_chart_curve_length);
+      break;
+
+    case IconSilkChartLine:
+      this->SetImage(
+        image_Silk_chart_line, 
+        image_Silk_chart_line_width, image_Silk_chart_line_height,
+        image_Silk_chart_line_pixel_size, 
+        image_Silk_chart_line_length);
+      break;
+
+    case IconSilkChartOrganisation:
+      this->SetImage(
+        image_Silk_chart_organisation, 
+        image_Silk_chart_organisation_width, image_Silk_chart_organisation_height,
+        image_Silk_chart_organisation_pixel_size, 
+        image_Silk_chart_organisation_length);
+      break;
+
+    case IconSilkChartPie:
+      this->SetImage(
+        image_Silk_chart_pie, 
+        image_Silk_chart_pie_width, image_Silk_chart_pie_height,
+        image_Silk_chart_pie_pixel_size, 
+        image_Silk_chart_pie_length);
+      break;
+
+    case IconSilkClock:
+      this->SetImage(
+        image_Silk_clock, 
+        image_Silk_clock_width, image_Silk_clock_height,
+        image_Silk_clock_pixel_size, 
+        image_Silk_clock_length);
+      break;
+
+    case IconSilkCog:
+      this->SetImage(
+        image_Silk_cog, 
+        image_Silk_cog_width, image_Silk_cog_height,
+        image_Silk_cog_pixel_size, 
+        image_Silk_cog_length);
+      break;
+
+    case IconSilkColorSwatch:
+      this->SetImage(
+        image_Silk_color_swatch, 
+        image_Silk_color_swatch_width, image_Silk_color_swatch_height,
+        image_Silk_color_swatch_pixel_size, 
+        image_Silk_color_swatch_length);
+      break;
+
+    case IconSilkColorWheel:
+      this->SetImage(
+        image_Silk_color_wheel, 
+        image_Silk_color_wheel_width, image_Silk_color_wheel_height,
+        image_Silk_color_wheel_pixel_size, 
+        image_Silk_color_wheel_length);
+      break;
+
+    case IconSilkCompress:
+      this->SetImage(
+        image_Silk_compress, 
+        image_Silk_compress_width, image_Silk_compress_height,
+        image_Silk_compress_pixel_size, 
+        image_Silk_compress_length);
+      break;
+
+    case IconSilkDate:
+      this->SetImage(
+        image_Silk_date, 
+        image_Silk_date_width, image_Silk_date_height,
+        image_Silk_date_pixel_size, 
+        image_Silk_date_length);
+      break;
+
+    case IconSilkDisk:
+      this->SetImage(
+        image_Silk_disk, 
+        image_Silk_disk_width, image_Silk_disk_height,
+        image_Silk_disk_pixel_size, 
+        image_Silk_disk_length);
+      break;
+
+    case IconSilkDoorIn:
+      this->SetImage(
+        image_Silk_door_in, 
+        image_Silk_door_in_width, image_Silk_door_in_height,
+        image_Silk_door_in_pixel_size, 
+        image_Silk_door_in_length);
+      break;
+
+    case IconSilkDoorOut:
+      this->SetImage(
+        image_Silk_door_out, 
+        image_Silk_door_out_width, image_Silk_door_out_height,
+        image_Silk_door_out_pixel_size, 
+        image_Silk_door_out_length);
+      break;
+
+    case IconSilkEmail:
+      this->SetImage(
+        image_Silk_email, 
+        image_Silk_email_width, image_Silk_email_height,
+        image_Silk_email_pixel_size, 
+        image_Silk_email_length);
+      break;
+
+    case IconSilkExclamation:
+      this->SetImage(
+        image_Silk_exclamation, 
+        image_Silk_exclamation_width, image_Silk_exclamation_height,
+        image_Silk_exclamation_pixel_size, 
+        image_Silk_exclamation_length);
+      break;
+
+    case IconSilkEye:
+      this->SetImage(
+        image_Silk_eye, 
+        image_Silk_eye_width, image_Silk_eye_height,
+        image_Silk_eye_pixel_size, 
+        image_Silk_eye_length);
+      break;
+
+    case IconSilkFilm:
+      this->SetImage(
+        image_Silk_film, 
+        image_Silk_film_width, image_Silk_film_height,
+        image_Silk_film_pixel_size, 
+        image_Silk_film_length);
+      break;
+
+    case IconSilkHelp:
+      this->SetImage(
+        image_Silk_help, 
+        image_Silk_help_width, image_Silk_help_height,
+        image_Silk_help_pixel_size, 
+        image_Silk_help_length);
+      break;
+
+    case IconSilkHourglass:
+      this->SetImage(
+        image_Silk_hourglass, 
+        image_Silk_hourglass_width, image_Silk_hourglass_height,
+        image_Silk_hourglass_pixel_size, 
+        image_Silk_hourglass_length);
+      break;
+
+    case IconSilkInformation:
+      this->SetImage(
+        image_Silk_information, 
+        image_Silk_information_width, image_Silk_information_height,
+        image_Silk_information_pixel_size, 
+        image_Silk_information_length);
+      break;
+
+    case IconSilkKey:
+      this->SetImage(
+        image_Silk_key, 
+        image_Silk_key_width, image_Silk_key_height,
+        image_Silk_key_pixel_size, 
+        image_Silk_key_length);
+      break;
+
+    case IconSilkLink:
+      this->SetImage(
+        image_Silk_link, 
+        image_Silk_link_width, image_Silk_link_height,
+        image_Silk_link_pixel_size, 
+        image_Silk_link_length);
+      break;
+
+    case IconSilkLock:
+      this->SetImage(
+        image_Silk_lock, 
+        image_Silk_lock_width, image_Silk_lock_height,
+        image_Silk_lock_pixel_size, 
+        image_Silk_lock_length);
+      break;
+
+    case IconSilkMagnifier:
+      this->SetImage(
+        image_Silk_magnifier, 
+        image_Silk_magnifier_width, image_Silk_magnifier_height,
+        image_Silk_magnifier_pixel_size, 
+        image_Silk_magnifier_length);
+      break;
+
+    case IconSilkPaintbrush:
+      this->SetImage(
+        image_Silk_paintbrush, 
+        image_Silk_paintbrush_width, image_Silk_paintbrush_height,
+        image_Silk_paintbrush_pixel_size, 
+        image_Silk_paintbrush_length);
+      break;
+
+    case IconSilkPaintCan:
+      this->SetImage(
+        image_Silk_paintcan, 
+        image_Silk_paintcan_width, image_Silk_paintcan_height,
+        image_Silk_paintcan_pixel_size, 
+        image_Silk_paintcan_length);
+      break;
+
+    case IconSilkPill:
+      this->SetImage(
+        image_Silk_pill, 
+        image_Silk_pill_width, image_Silk_pill_height,
+        image_Silk_pill_pixel_size, 
+        image_Silk_pill_length);
+      break;
+
+    case IconSilkPlugin:
+      this->SetImage(
+        image_Silk_plugin, 
+        image_Silk_plugin_width, image_Silk_plugin_height,
+        image_Silk_plugin_pixel_size, 
+        image_Silk_plugin_length);
+      break;
+
+    case IconSilkStar:
+      this->SetImage(
+        image_Silk_star, 
+        image_Silk_star_width, image_Silk_star_height,
+        image_Silk_star_pixel_size, 
+        image_Silk_star_length);
+      break;
+
+    case IconSilkStop:
+      this->SetImage(
+        image_Silk_stop, 
+        image_Silk_stop_width, image_Silk_stop_height,
+        image_Silk_stop_pixel_size, 
+        image_Silk_stop_length);
+      break;
+
+    case IconSilkThumbDown:
+      this->SetImage(
+        image_Silk_thumb_down, 
+        image_Silk_thumb_down_width, image_Silk_thumb_down_height,
+        image_Silk_thumb_down_pixel_size, 
+        image_Silk_thumb_down_length);
+      break;
+
+    case IconSilkThumbUp:
+      this->SetImage(
+        image_Silk_thumb_up, 
+        image_Silk_thumb_up_width, image_Silk_thumb_up_height,
+        image_Silk_thumb_up_pixel_size, 
+        image_Silk_thumb_up_length);
+      break;
+
+    case IconSilkTick:
+      this->SetImage(
+        image_Silk_tick, 
+        image_Silk_tick_width, image_Silk_tick_height,
+        image_Silk_tick_pixel_size, 
+        image_Silk_tick_length);
+      break;
+
+    case IconSilkTime:
+      this->SetImage(
+        image_Silk_time, 
+        image_Silk_time_width, image_Silk_time_height,
+        image_Silk_time_pixel_size, 
+        image_Silk_time_length);
+      break;
+
+    case IconSilkWrench:
+      this->SetImage(
+        image_Silk_wrench, 
+        image_Silk_wrench_width, image_Silk_wrench_height,
+        image_Silk_wrench_pixel_size, 
+        image_Silk_wrench_length);
+      break;
+
+    case IconSilkZoom:
+      this->SetImage(
+        image_Silk_zoom, 
+        image_Silk_zoom_width, image_Silk_zoom_height,
+        image_Silk_zoom_pixel_size, 
+        image_Silk_zoom_length);
+      break;
+
+    case IconSilkZoomIn:
+      this->SetImage(
+        image_Silk_zoom_in, 
+        image_Silk_zoom_in_width, image_Silk_zoom_in_height,
+        image_Silk_zoom_in_pixel_size, 
+        image_Silk_zoom_in_length);
+      break;
+
+    case IconSilkZoomOut:
+      this->SetImage(
+        image_Silk_zoom_out, 
+        image_Silk_zoom_out_width, image_Silk_zoom_out_height,
+        image_Silk_zoom_out_pixel_size, 
+        image_Silk_zoom_out_length);
       break;
     }
 }

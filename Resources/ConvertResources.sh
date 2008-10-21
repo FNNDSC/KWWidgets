@@ -191,5 +191,51 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWCrystalProjectIco
     CrystalProject/16x16/actions/rotate.png \
     CrystalProject/16x16/apps/cookie.png
 
+KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWSilkIconResources.h \
+    Silk/application_xp_terminal.png \
+    Silk/arrow_refresh.png \
+    Silk/attach.png \
+    Silk/bin_closed.png \
+    Silk/bug.png \
+    Silk/camera.png \
+    Silk/chart_curve.png \
+    Silk/chart_line.png \
+    Silk/chart_organisation.png \
+    Silk/chart_pie.png \
+    Silk/clock.png \
+    Silk/cog.png \
+    Silk/color_swatch.png \
+    Silk/color_wheel.png \
+    Silk/compress.png \
+    Silk/date.png \
+    Silk/disk.png \
+    Silk/door_in.png \
+    Silk/door_out.png \
+    Silk/email.png \
+    Silk/exclamation.png \
+    Silk/eye.png \
+    Silk/film.png \
+    Silk/help.png \
+    Silk/hourglass.png \
+    Silk/information.png \
+    Silk/key.png \
+    Silk/link.png \
+    Silk/lock.png \
+    Silk/magnifier.png \
+    Silk/paintbrush.png \
+    Silk/paintcan.png \
+    Silk/pill.png \
+    Silk/plugin.png \
+    Silk/star.png \
+    Silk/stop.png \
+    Silk/thumb_down.png \
+    Silk/thumb_up.png \
+    Silk/tick.png \
+    Silk/time.png \
+    Silk/wrench.png \
+    Silk/zoom.png \
+    Silk/zoom_in.png \
+    Silk/zoom_out.png
+
 KWConvertImageToHeader --zlib --base64 vtkKWMiscResources.h \
     ErrorLogMenuEntry.png
