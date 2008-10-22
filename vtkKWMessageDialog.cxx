@@ -29,7 +29,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMessageDialog );
-vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.97 $");
+vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.98 $");
 
 //----------------------------------------------------------------------------
 vtkKWMessageDialog::vtkKWMessageDialog()
@@ -114,13 +114,6 @@ void vtkKWMessageDialog::CreateWidget()
   this->Message->SetParent(this->MessageDialogFrame);
   this->Message->Create();
   this->Message->SetWidth(300);
-  if ( this->DialogText )
-    {
-    this->Message->SetText(this->DialogText);
-    }
-
-  this->Script("pack %s -side top -fill x -padx 20 -pady 5",
-               this->Message->GetWidgetName());
 
   this->CheckButton->SetParent(this->MessageDialogFrame);
   this->CheckButton->Create();
@@ -194,6 +187,7 @@ void vtkKWMessageDialog::CreateWidget()
     "<Return>", this, "Cancel");
 
   this->UpdateButtons();
+  this->UpdateMessage();
 
   // Icon
   
@@ -292,6 +286,28 @@ void vtkKWMessageDialog::UpdateButtons()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWMessageDialog::UpdateMessage()
+{
+  if (this->Message)
+    {
+    this->Message->SetText(this->DialogText);
+    if (this->IsCreated())
+      {
+      if (this->DialogText && *this->DialogText)
+        {
+        this->Script("pack %s -side top -fill x -padx 20 -pady 5 -after %s",
+                     this->Message->GetWidgetName(),
+                     this->TopFrame->GetWidgetName());
+        }
+      else
+        {
+        this->Script("pack forget %s", this->Message->GetWidgetName());
+        }
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
 void vtkKWMessageDialog::SetStyle(int arg)
 {
   if (this->Style == arg)
@@ -309,10 +325,7 @@ void vtkKWMessageDialog::SetStyle(int arg)
 void vtkKWMessageDialog::SetText(const char *txt)
 {
   this->SetDialogText(txt);
-  if (this->Message)
-    {
-    this->Message->SetText(this->DialogText);
-    }
+  this->UpdateMessage();
 }
 
 //----------------------------------------------------------------------------

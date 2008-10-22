@@ -238,8 +238,9 @@ protected:
   char* OtherButtonText;
 
   // Description:
-  // Update the buttons
+  // Update the buttons or message
   virtual void UpdateButtons();
+  virtual void UpdateMessage();
 
 
 private:
