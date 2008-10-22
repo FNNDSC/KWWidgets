@@ -54,7 +54,7 @@
 #define VTK_KW_VPW_TESTING 0
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.51 $");
+vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.52 $");
 vtkStandardNewMacro(vtkKWVolumePropertyWidget);
 
 //----------------------------------------------------------------------------
@@ -1170,10 +1170,11 @@ void vtkKWVolumePropertyWidget::Update()
       {
       this->ScalarColorFunctionEditor->SetEnabled(0);
       }
+    // Try to avoid the shuffling and reshuffling of UI.
     if (this->ScalarColorFunctionEditor->IsCreated())
       {
-      tk_cmd << "grid " << (rgb_out ? "remove" : "") << " " 
-             << this->ScalarColorFunctionEditor->GetWidgetName() << endl;
+      //      tk_cmd << "grid " << (rgb_out ? "remove" : "") << " " 
+      //             << this->ScalarColorFunctionEditor->GetWidgetName() << endl;
       }
     }
 
