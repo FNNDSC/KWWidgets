@@ -47,6 +47,10 @@ protected:
 
   vtkKWEntryWithLabel *Entry;
 
+  // Description:
+  // Pack.
+  virtual void Pack();
+
 private:
   vtkKWSimpleEntryDialog(const vtkKWSimpleEntryDialog&); // Not implemented
   void operator=(const vtkKWSimpleEntryDialog&); // Not implemented

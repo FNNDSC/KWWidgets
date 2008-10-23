@@ -240,8 +240,12 @@ protected:
   // Description:
   // Update the buttons or message
   virtual void UpdateButtons();
+  virtual void PackButtons();
   virtual void UpdateMessage();
 
+  // Description:
+  // Pack
+  virtual void Pack();
 
 private:
   vtkKWMessageDialog(const vtkKWMessageDialog&); // Not implemented

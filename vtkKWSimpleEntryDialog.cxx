@@ -24,7 +24,7 @@
 //----------------------------------------------------------------------------
 
 vtkStandardNewMacro( vtkKWSimpleEntryDialog );
-vtkCxxRevisionMacro(vtkKWSimpleEntryDialog, "$Revision: 1.15 $");
+vtkCxxRevisionMacro(vtkKWSimpleEntryDialog, "$Revision: 1.16 $");
 
 //----------------------------------------------------------------------------
 vtkKWSimpleEntryDialog::vtkKWSimpleEntryDialog()
@@ -58,9 +58,6 @@ void vtkKWSimpleEntryDialog::CreateWidget()
   this->Entry->SetParent(this->MessageDialogFrame);
   this->Entry->Create();
 
-  this->Script("pack %s -side top -after %s -padx 4 -fill x -expand yes", 
-               this->Entry->GetWidgetName(), this->Message->GetWidgetName());
-
   this->Entry->SetBinding("<Return>", this, "OK");
   this->Entry->GetWidget()->SetBinding("<Return>", this, "OK");
   this->Entry->SetBinding("<Escape>", this, "Cancel");
@@ -68,6 +65,21 @@ void vtkKWSimpleEntryDialog::CreateWidget()
 
   this->GetOKButton()->SetBinding("<Return>", this, "OK");
   this->GetCancelButton()->SetBinding("<Return>", this, "Cancel");
+
+  this->Pack();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSimpleEntryDialog::Pack()
+{
+  this->Superclass::Pack();
+
+  if (this->Entry && this->Entry->IsCreated())
+    {
+    this->Script("pack %s -side top -before %s -padx 4 -fill x -expand yes", 
+                 this->Entry->GetWidgetName(), 
+                 this->BottomFrame->GetWidgetName());
+    }
 }
 
 //----------------------------------------------------------------------------
