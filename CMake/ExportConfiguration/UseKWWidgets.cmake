@@ -47,4 +47,11 @@ if(NOT KWWidgets_USE_FILE_INCLUDED)
     endif(VTK_FOUND)
   endif(NOT KWWidgets_NO_USE_VTK)
 
+  # Use IncrTcl.
+  if(KWWidgets_USE_INCR_TCL)
+    if(NOT INCR_TCL_LIBRARY AND NOT INCR_TK_LIBRARY)
+      include("${KWWidgets_CMAKE_DIR}/FindIncrTCL.cmake")
+    endif(NOT INCR_TCL_LIBRARY AND NOT INCR_TK_LIBRARY)
+  endif(KWWidgets_USE_INCR_TCL)
+
 endif(NOT KWWidgets_USE_FILE_INCLUDED)
