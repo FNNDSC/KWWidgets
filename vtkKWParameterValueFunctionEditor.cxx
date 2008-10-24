@@ -41,7 +41,7 @@
 #include <vtksys/stl/algorithm>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.113 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.114 $");
 
 //----------------------------------------------------------------------------
 #define VTK_KW_PVFE_POINT_RADIUS_MIN         2
@@ -6635,6 +6635,18 @@ void vtkKWParameterValueFunctionEditor::RedrawHistogram()
       p_v_range[0] != p_v_range[1])
     {
     // Main histogram
+
+#if 1
+    double hist_max_occ = this->Histogram 
+      ? this->Histogram->GetMaximumOccurence() : 0.0;
+    double secondary_hist_max_occ = this->SecondaryHistogram 
+      ? this->SecondaryHistogram->GetMaximumOccurence() : 0.0;
+    double max_occ = 
+      hist_max_occ > secondary_hist_max_occ ? hist_max_occ:secondary_hist_max_occ;
+
+    this->HistogramImageDescriptor->DefaultMaximumOccurence = max_occ;
+    this->SecondaryHistogramImageDescriptor->DefaultMaximumOccurence = max_occ;
+#endif
 
     unsigned long hist_image_mtime = 0;
     if (this->Histogram)
