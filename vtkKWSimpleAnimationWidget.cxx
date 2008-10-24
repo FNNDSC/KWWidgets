@@ -77,7 +77,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSimpleAnimationWidget);
-vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.33 $");
+vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.34 $");
 
 //----------------------------------------------------------------------------
 vtkKWSimpleAnimationWidget::vtkKWSimpleAnimationWidget()
@@ -306,7 +306,7 @@ void vtkKWSimpleAnimationWidget::CreateWidget()
   this->HelpLabel->SetParent(this);
   this->HelpLabel->Create();
   this->HelpLabel->GetLabel()->SetImageToPredefinedIcon(
-    vtkKWIcon::IconHelpBubble);
+    vtkKWIcon::IconSilkHelp);
   this->HelpLabel->ExpandWidgetOn();
   this->HelpLabel->GetWidget()->AdjustWrapLengthToWidthOn();
   this->HelpLabel->GetWidget()->SetText(

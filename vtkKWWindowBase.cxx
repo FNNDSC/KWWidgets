@@ -34,7 +34,7 @@
 
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.63 $");
+vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.64 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindowBase );
@@ -441,7 +441,7 @@ void vtkKWWindowBase::PopulateFileMenu()
   if (show_icons)
     {
     menu->SetItemImageToPredefinedIcon(
-      idx, vtkKWIcon::IconNuvola16x16ActionsExit);
+      idx, vtkKWIcon::IconSilkDoorOut); // IconNuvola16x16ActionsExit);
     menu->SetItemCompoundModeToLeft(idx);
     }
 }
@@ -483,7 +483,7 @@ void vtkKWWindowBase::PopulateHelpMenu()
     if (show_icons)
       {
       menu->SetItemImageToPredefinedIcon(
-        idx, vtkKWIcon::IconNuvola16x16ActionsHelp);
+        idx, vtkKWIcon::IconSilkHelp);
       menu->SetItemCompoundModeToLeft(idx);
       }
     }

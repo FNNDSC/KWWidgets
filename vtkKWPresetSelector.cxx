@@ -62,7 +62,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.77 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.78 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -551,7 +551,7 @@ void vtkKWPresetSelector::CreateWidget()
   this->HelpLabel->Create();
   this->HelpLabel->ExpandWidgetOn();
   this->HelpLabel->GetLabel()->SetImageToPredefinedIcon(
-    vtkKWIcon::IconHelpBubble);
+    vtkKWIcon::IconSilkHelp);
 
   vtkKWLabel *msg = this->HelpLabel->GetWidget();
   msg->SetJustificationToLeft();

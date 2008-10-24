@@ -43,7 +43,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.17 $");
 
 //----------------------------------------------------------------------------
 class vtkKWColorPickerWidgetInternals
@@ -302,7 +302,7 @@ void vtkKWColorPickerWidget::CreateWidget()
   // --------------------------------------------------------------
   // Basic Colors
 
-  icon->SetImage(vtkKWIcon::IconColorSquares);
+  icon->SetImage(vtkKWIcon::IconSilkColorSwatch);
 
   page_id = this->Notebook->AddPage(
     NULL, "Basic Colors", icon, VTK_KW_COLOR_PICKER_WIDGET_BASIC_COLORS_TAG);
@@ -460,7 +460,7 @@ void vtkKWColorPickerWidget::CreateWidget()
   this->InfoLabel->LabelVisibilityOff();
   this->InfoLabel->ExpandWidgetOn();
   this->InfoLabel->GetLabel()->SetImageToPredefinedIcon(
-    vtkKWIcon::IconHelpBubble);
+    vtkKWIcon::IconSilkHelp);
 
   label = this->InfoLabel->GetWidget();
   label->AdjustWrapLengthToWidthOn();

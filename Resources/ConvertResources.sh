@@ -139,8 +139,12 @@ KWConvertImageToHeader --zlib --base64 vtkKWIconResources.h \
     window_level.png
 
 KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWNuvolaIconResources.h \
+    Nuvola/16x16/actions/colorpicker.png \
     Nuvola/16x16/actions/configure.png \
     Nuvola/16x16/actions/decrypted.png \
+    Nuvola/16x16/actions/editcopy.png \
+    Nuvola/16x16/actions/editcut.png \
+    Nuvola/16x16/actions/editpaste.png \
     Nuvola/16x16/actions/encrypted.png \
     Nuvola/16x16/actions/exit.png \
     Nuvola/16x16/actions/fileclose.png \
@@ -148,6 +152,8 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWNuvolaIconResourc
     Nuvola/16x16/actions/fileprint.png \
     Nuvola/16x16/actions/filesave.png \
     Nuvola/16x16/actions/help.png \
+    Nuvola/16x16/actions/history.png \
+    Nuvola/16x16/actions/kalarm.png \
     Nuvola/16x16/actions/mail_generic.png \
     Nuvola/16x16/actions/message.png \
     Nuvola/16x16/actions/messagebox_critical.png \
@@ -157,15 +163,19 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWNuvolaIconResourc
     Nuvola/16x16/actions/rotate.png \
     Nuvola/16x16/actions/stop.png \
     Nuvola/16x16/actions/thumbnail.png \
-    Nuvola/16x16/actions/viewmag.png \
     Nuvola/16x16/actions/view_bottom.png \
     Nuvola/16x16/actions/view_fullscreen.png \
+    Nuvola/16x16/actions/view_left_right.png \
     Nuvola/16x16/actions/view_right.png \
+    Nuvola/16x16/actions/view_top_bottom.png \
+    Nuvola/16x16/actions/viewmag.png \
+    Nuvola/16x16/actions/window_new.png \
     Nuvola/16x16/apps/ark.png \
     Nuvola/16x16/apps/bug.png \
     Nuvola/16x16/apps/email.png \
     Nuvola/16x16/apps/error.png \
     Nuvola/16x16/apps/keyboard.png \
+    Nuvola/16x16/apps/ktimer.png \
     Nuvola/16x16/devices/camera.png \
     Nuvola/16x16/filesystems/trashcan_empty.png \
     Nuvola/16x16/filesystems/trashcan_full.png \
@@ -192,12 +202,15 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWCrystalProjectIco
     CrystalProject/16x16/apps/cookie.png
 
 KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWSilkIconResources.h \
+    Silk/accept.png \
+    Silk/add.png \
     Silk/application_xp_terminal.png \
     Silk/arrow_refresh.png \
     Silk/attach.png \
     Silk/bin_closed.png \
     Silk/bug.png \
     Silk/camera.png \
+    Silk/cancel.png \
     Silk/chart_curve.png \
     Silk/chart_line.png \
     Silk/chart_organisation.png \
@@ -207,7 +220,10 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWSilkIconResources
     Silk/color_swatch.png \
     Silk/color_wheel.png \
     Silk/compress.png \
+    Silk/cross.png \
+    Silk/cut.png \
     Silk/date.png \
+    Silk/delete.png \
     Silk/disk.png \
     Silk/door_in.png \
     Silk/door_out.png \
@@ -224,10 +240,16 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWSilkIconResources
     Silk/magnifier.png \
     Silk/paintbrush.png \
     Silk/paintcan.png \
+    Silk/paste_plain.png \
     Silk/pill.png \
     Silk/plugin.png \
     Silk/star.png \
     Silk/stop.png \
+    Silk/telephone.png \
+    Silk/text_allcaps.png \
+    Silk/text_bold.png \
+    Silk/text_italic.png \
+    Silk/text_underline.png \
     Silk/thumb_down.png \
     Silk/thumb_up.png \
     Silk/tick.png \

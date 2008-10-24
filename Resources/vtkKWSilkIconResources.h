@@ -1,5 +1,54 @@
 /* 
  * Resource generated for file:
+ *    accept.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Silk_accept_width          = 16;
+static const unsigned int  image_Silk_accept_height         = 16;
+static const unsigned int  image_Silk_accept_pixel_size     = 4;
+static const unsigned long image_Silk_accept_length         = 884;
+static const unsigned long image_Silk_accept_decoded_length = 1024;
+
+static const unsigned char image_Silk_accept[] = 
+  "eNqt0+tLU3EYB/D+jp1txzaQQEYUIkgItVdBIrFpNhTzsixNd/dKZzOGzbQoI+dljJTSMk"
+  "utNufUpk5tbk0pE5cdJcTcmy5UG0YX+/Y7g4mB9MoffOH34nye5+Gc5wDYhz1Mof+oOG/m"
+  "CJPjTWUznx2KyEYlEZk7iZW5kpgMxwHx/2y+L02u8KaEDV4F7oSs6F/pjqVrqQWl7pOQ9t"
+  "FhaS8t382SnvKsieTojXkTXGsDsL+5CfN8VSzc3bnWj6bZahy2C6IpdsE/NXK9qaIsT/IG"
+  "Z7nnaoPlqAyUQjd7HgaSCpIa/wU43j3ElelKSKz8DcktvijuFZ5ko2Y8O9aXs5zT+M5CNV"
+  "ME1XQhtNNF8KwPwehTw0lq5PUeR+J1vjHuM0clbFeoBbZQMyr9JVA/VxJXAPUUibcAE+/d"
+  "4E44uo72V02wzzchoYHPxv0JR+Lm49V7qAvqoPcVkzkGsfR5AZrJIoyvD8fs761faH95Fc"
+  "bJEvSHuiA0UZtxL31Ebw6s9MAU0KAuoMfXH19i5tP3D9vWOtcArTsHjOccBkKdENbu8L00"
+  "e3uhGR2L12CYUsLir0H057eY3fqzBeuLyyh3ZUNHfGuwHh0+C+hqanv+tLtCo3IwHY7VB6"
+  "iZVELrOYP6mQosf1xE+1wjyoZOQeU8DYMrF463PciwHQNdRW2/vxSbQHSQfBOLV4cn7H1U"
+  "jeVDP5ILzbACaicXzubg6XI3TMMlEGp5G7SWEu3cgaRmvjyhkYqaPeVwkhptQQuYsWJcHF"
+  "GijczvIJZxFUNQxosSu+sO7m/ky2kzFZZ1StERsKDvtQ19CzZYfWakt6ZBqOKFac3uNh76"
+  "El9MGymGrqVYoZ4XEWp4EdKPJWHoMkqMPf5f/wISU6zl";
+
+/* 
+ * Resource generated for file:
+ *    add.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Silk_add_width          = 16;
+static const unsigned int  image_Silk_add_height         = 16;
+static const unsigned int  image_Silk_add_pixel_size     = 4;
+static const unsigned long image_Silk_add_length         = 808;
+static const unsigned long image_Silk_add_decoded_length = 1024;
+
+static const unsigned char image_Silk_add[] = 
+  "eNqt0+1PkmEUBvD+FvhSm1usnFnTTU1XbtZ0lGHo1CmakgihU4gHJEEEVBYpwnypVjAFFk"
+  "vexBcWOjMHaikt9YHpWrBaW1vB/Hr10AbTLf3kvV0ff+c+99m5AZzDGUY730Hv9wkIhYdH"
+  "9jhbE5K3zYmuNw2k0FZH8Kaq6adbIVM1K4i/3hhGML6M8M9NbPxYw2zUAZmvDS1mVpzz8g"
+  "7zZMtPzkccOPgTweI3D8zkGF7sGuDYN2Pl+ztolkSonSxPssfKjtXQzAlplI1596yI/N7B"
+  "xI4ez9b7MRRSwBDWYiSswdBWL7wHDhA+LiqNN2MVw8W0tKesdHRViS+/tqj7RjC8rYH6gw"
+  "zpo1wXQbLMhXS1He59O+5NlqDsaYE07XvdbaQnaqf6tGAgKEffmgSiRV7Gt9rZ6Fqog3Cu"
+  "GqZPWuhXenBjKI9Me+lMy6H/qwejn7WUFeOkw5+tgjTQAmt4AkXa3MO0Fzs4h87oNDSbBO"
+  "ShzlM94W+GLTyO/P7sjO+015PGkAaGbTXE77ngBxrAsd095lJ55GNjNKTEoP8xrioZmf75"
+  "0zXSBzYmXFErRIFGCPy1/9571PPcLHR4q+Has+C6LhfZT7Iy8+NaqmhNrypjhK8VM+RUZl"
+  "Yp1+5OJWXZcO6a8dB6P2VjDNkF2tEdqH9ewawZv5XsdjXCTdUwhlQgFpogmWuEMdgHF2W5"
+  "Vhay5VlJyv53B1mmUibTUBIvNxVCt0TA8tEAy6YBan83igZzUjZ+kk3ntr6QXqrLJ4oHrp"
+  "EF6pxEnupS4oriInlZnkUwZOfpOOP/+hfbS8sf";
+
+/* 
+ * Resource generated for file:
  *    application_xp_terminal.png (zlib, base64) (image file)
  */
 static const unsigned int  image_Silk_application_xp_terminal_width          = 16;
@@ -129,6 +178,27 @@ static const unsigned char image_Silk_camera[] =
   "wWBAzIr03dzcjN1uR6fTSS9ixmSO09PTUquWcSgUYmFhgd7eXvlO2n0xo4yPj2O1Wunr66"
   "OqqkrT4hU+fgstD62trY8tLS2yV2NjI/X19VRXVz9WVlY+VFRUPJSXl/9HWVmZhvdP/ff+"
   "AguPnVk=";
+
+/* 
+ * Resource generated for file:
+ *    cancel.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Silk_cancel_width          = 16;
+static const unsigned int  image_Silk_cancel_height         = 16;
+static const unsigned int  image_Silk_cancel_pixel_size     = 4;
+static const unsigned long image_Silk_cancel_length         = 616;
+static const unsigned long image_Silk_cancel_decoded_length = 1024;
+
+static const unsigned char image_Silk_cancel[] = 
+  "eNqtk1tLG1EURudVFBQtsVSk0qtplYQk0hijhcQyMQmtTS+GWin2Qi//0wcv4N8oZgZJwm"
+  "TuZ/WcScdOsLUvPizmZdbe8+29B9C4TjTNkBATjmL8x+3w+AF8fw/fdhFf3yG+tBGf3iL2"
+  "XxM8vIOvab0r3R97oFcRhQIilyPMZgmXlwnKRYK9F3j3b2Ord//l7rbh9BTRahFmMoRLSw"
+  "SNBuLkBL9Zw9/Zwr07j5WsobKq75V9lUu/D6ZJ0GwS1OtgyNi9HuLoCC/zCO9lhb5yEn6U"
+  "NZ8n3N6O3LhGhHJlDW9jA2d2Fvf5U7oJX81WfN75k1V+b+xFSNddX8dJpbBnZnAa5cv+xz"
+  "fDrOk0Qa024qvebqmEPT3NYHISp1a85IcfWgSLiwS6fpFXPZVLt4s4O8OWO7HGx3GerXCe"
+  "8H3ly934T3KI4+Nhz04Hd20NZ3U1coWsER4cMJi/iV3Nj/iuvCu1V79dx9crhIeHkauyDq"
+  "amsNVcpWuvZLE3C/TmbmBq2s/kDcibMNRevVebuOl7F1mtiQmssTGsuVTUt/sXN0behGEt"
+  "3MJtlnG2Sjh6McpqVwvYldyVboycq6FmG3P+G3OIyTX/r78AW5y4gw==";
 
 /* 
  * Resource generated for file:
@@ -338,6 +408,52 @@ static const unsigned char image_Silk_compress[] =
 
 /* 
  * Resource generated for file:
+ *    cross.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Silk_cross_width          = 16;
+static const unsigned int  image_Silk_cross_height         = 16;
+static const unsigned int  image_Silk_cross_pixel_size     = 4;
+static const unsigned long image_Silk_cross_length         = 708;
+static const unsigned long image_Silk_cross_decoded_length = 1024;
+
+static const unsigned char image_Silk_cross[] = 
+  "eNqVU/1PUlEYbm1tZ/0NFeVqLm9Oc32ZAl4VIaZpm/ItCJdETUDgDoYSq36orb+kv0uzMr"
+  "6M5F64nMvji1vMEmj+8GxnO+d53vd9nvcAuIJLoL4mXe95L2cMBKEnNxASVO9qvOZwm7py"
+  "M7topbPQ48kLGnV/UKgHw2hsbOH3q+Uv1YXF+/9ykX+PFkFPyGhubnc01NU1gWqjGY0DuT"
+  "za52OrPV6etlw9e5NKs1ZC1lu7b4FPn6Fnc20+GkFJUH0BgWpD244BdK8Ggjiee8HL4uy1"
+  "8/3psQTjb2JclzPAh4/gqTTqoTCoNrStKJDdOztXLDbizrBu/jQjm6whrfNmdIdmeQfs5Y"
+  "mXAzJZqD4/KrNWXp6aZn3z8QeZ4lnVkaVZvH7A5QXkNCozc3rJLLL/5au4fe2MAMoBDjew"
+  "7AR2kjSzDYXxSaEv1+UVFI8PWjgCJGXipYAYzULeqStOlI1m/Bgd66pRc3oExe2FJq0DlJ"
+  "/i8oB84sVJk36ysARENlB7uYTCoyc4HBz6S4P2SaDa0EKvqWYCCvVNPvHihIkVno6zo7HH"
+  "vGqxAiEJJzY7joZHcHB7oKNB+yTWHC5oQQnKigvkEy8+N3a8+j48yr4NPeC/zCIU+zx+jj"
+  "zE/k2DeL4H2iexOr+IkmlKJ58u+Hx4b5B9HbjLu3H/oGQ0i4VnEz0zOjDcYfs3bom45J/t"
+  "h1NpfKTH";
+
+/* 
+ * Resource generated for file:
+ *    cut.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Silk_cut_width          = 16;
+static const unsigned int  image_Silk_cut_height         = 16;
+static const unsigned int  image_Silk_cut_pixel_size     = 4;
+static const unsigned long image_Silk_cut_length         = 716;
+static const unsigned long image_Silk_cut_decoded_length = 1024;
+
+static const unsigned char image_Silk_cut[] = 
+  "eNr7//8/w38cWDVrppZd9fJ5komTWP/jUYcL21Uvy2xfd/qJSOwETmRx8YRJTMTod65bmT"
+  "d3z9UfQPv5YWJK6TN0fVrXbSVGv3vj6pJ1J+79l02ZKgfiSyRMVp+87eKT9Om7txGj36dl"
+  "bfWBK8/+y6VOUxGK6ZedufPynek7Lj8UjZsoQYz+gPb1Lefuvf2vkDY9uX/zudOHrz3/o5"
+  "A2zZrY8Avp2tR5+dHH/32bz3+78/Lrf/OyRTnE6OO1jQOHb2T/tu67QH1bzj76nzhl5wJC"
+  "+oRc0qSMMueudqrbeEknY96S9Ol7zl548OF//MRtRwWDG1nw6nVOkwDqu52w6s7/kHkXPq"
+  "dufvV/5q4b/x++/vE/vHPdHl7LcEd8+o2y5qyJW3rtr5RvgZ2Ed55/wton/2fvvfN/6dn3"
+  "/9O3v/8fu+zGf1nPtBRc+r269n1yrFsBjlejvGnT0zY8/1+y6NS/9I1P/+vGTTno27vjsn"
+  "XB+i/cBp4c2PS7NG19HrXk2gvHpnVH07a9+W+Wt/yGec6a14FTj3wGyauHlZU5VGz/L2QR"
+  "JI1Nv1xweVjg9ONvopbd+GeWs+w0l2mghGnGiofhCy7+4tRylDPL6ptjX7rlD6+xrwAuP4"
+  "i4pkuIeWQpwPj6cfOPJW96/t9/0v6nSavv/jdKWnSDlPzHY+jFbpi44Lp92bbvJqlLHvAY"
+  "eYugqwEAtA2e1w==";
+
+/* 
+ * Resource generated for file:
  *    date.png (zlib, base64) (image file)
  */
 static const unsigned int  image_Silk_date_width          = 16;
@@ -357,6 +473,30 @@ static const unsigned char image_Silk_date[] =
   "len8+HYrGIVquFRqOBer0+ldek8Rzb6/WKu1NVFYqiIJ1Oi5re4jl3v98vWOZ4z3A4FHOu"
   "UXu/zBMzfMmzOHfOt1KpiJjM5vN5cY7JZHLCc31U0y/28fIcOT7XXK1WkUqlRFxufI+cv8"
   "Y7HA4EAgGEQqFXFaa3H6F/wHfBjMZbrdYw/Vu8RzabjZPRPQMoeMhA";
+
+/* 
+ * Resource generated for file:
+ *    delete.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Silk_delete_width          = 16;
+static const unsigned int  image_Silk_delete_height         = 16;
+static const unsigned int  image_Silk_delete_pixel_size     = 4;
+static const unsigned long image_Silk_delete_length         = 792;
+static const unsigned long image_Silk_delete_decoded_length = 1024;
+
+static const unsigned char image_Silk_delete[] = 
+  "eNqt091PUnEYB/D+Frho5eZab2uu2WqrmagghwgERD1keoRGa6bJOMw028rRkOZFU0vtVS"
+  "tvMo0ZK7Vsqb0yLY+VSpyCFYHn8JruG9JwudQrf9v37vd5fr89ex4Am7CBmTMYhLNUhfkT"
+  "VcZM60huSlfMfSQ1zASpMrtKFML1rFtvIL5QFPvTbkV0yInY+zHERofBP+jCnLEUbwsJ9p"
+  "VGQqxlZ8opfv5eFxanPyDuuI94pw3x1ov4facFCyMOeE1GjKly+JeKrBU1ZvV6QcJ6uFud"
+  "WGRciF85j4DNgqC1BtHLFsSaaEQbTyP68DbcJ0iMHD3oeSbfL0j5hKV9dWYsuMaT70XsNP"
+  "wXKhGu168Id4ZEtOc63ogzMSjLpFP+M3WcCfXcQLy7FYHGKvzQylbNfBUJ3loLr6UaT4gM"
+  "JuWZcl049qgHcbsFgXNGrHW8ylz4qUIEW5vhFO8Op/wUqQ1HutsRbTAifLZsXe8rVSPY0o"
+  "wByfZlP1miZvyNtYjYaHCnNMl7q0YlRqDOhDlTJRyi9OX/u4oUNCMXIdzdgYBODn+p9D/L"
+  "KnLAFkgR6ryKYclO9GdvXe7fO61M8LqY8LgrihG6257slU8t+euUeWDlCSuXgO9ow0SRbM"
+  "l6ekVbBP/OwHhBLjGqPMzPHFMjdLMdvxpoeEkVvmmU8NebwV9rw6QmH33ZaXzCrjqDLxSH"
+  "iOdHDrBj0r34XlMJf9OlZL5Wn8TT3B1Lll3LpjIk2ycclGSYncQe5nH+Lm5AtI3rz0tn+n"
+  "LSzL1Zm4XY4H39A64kzrk=";
 
 /* 
  * Resource generated for file:
@@ -740,6 +880,30 @@ static const unsigned char image_Silk_paintcan[] =
 
 /* 
  * Resource generated for file:
+ *    paste_plain.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Silk_paste_plain_width          = 16;
+static const unsigned int  image_Silk_paste_plain_height         = 16;
+static const unsigned int  image_Silk_paste_plain_pixel_size     = 4;
+static const unsigned long image_Silk_paste_plain_length         = 796;
+static const unsigned long image_Silk_paste_plain_decoded_length = 1024;
+
+static const unsigned char image_Silk_paste_plain[] = 
+  "eNp9k91rklEcx6O/pIuuuuiim67bxNyjzaVooiHscYautRbDgohewFKehTE222LtRdRWWw"
+  "yab0TEoIsiYtnai9t0L9XwBea7oAnt23mOTVx76uIDB873c36/w+8cAEdAGDYcO0GAADn8"
+  "yQhB9k8RZvmsx3Iae9kgitG7FH7t6j65f46XoBTwt6O+a3s7c7exNdqKX5kAcksWCr/eHJ"
+  "Fi29+NLd+VnyRbFPCxM3cHm7NmrI8wiA2JEHvcTGhCzNmEqPMMVsbOk/0u2oeg//YWNmaM"
+  "iE2zWH+ux9rkxQNExhVYdbP/9H+8uYnoVDvWvFpEJpQ0/zf/87+/vk7rrHo01F8eU+JFXz"
+  "tc9g64bB2YeGDAuM2MeyYGnZ2dnMlk4oxGI8eyrIH3v4V6EXFfqLmjbQg/UeDloAWVSgWF"
+  "QuEQ+XwepVKpqtfrrby/HeihPa48bcPScCvmnXJM9ffSXCgUQjAYrBMIBCiZTKaq1WqpT2"
+  "aDZeIuEndhUIpP/TJMOnqon0qlKMlksk4ikUA6na6q1Wrqb766jMWhc/g6IMWXRxJ8fMjA"
+  "23eV+o01/X5/Hd5XKpXUj82YsTDAUPdznxgf7Gfhtnchl8sdqNkI78vl8po/bULYUXPnbc"
+  "14bxXBdd9E/caa+/h8PurLZDLefxfx8u/GiLVnHWSGLBbGWXgcFmSz2UN14/E4ZXd3t9rS"
+  "0sL7DCHc+OechuOw92pQLpdpD0IUi8WqWCy2Cv1JMtejOp3uhkaj4VQqFadQKDhyV470yz"
+  "EMw0kkEo64nEgkuvQbMJfMIQ==";
+
+/* 
+ * Resource generated for file:
  *    pill.png (zlib, base64) (image file)
  */
 static const unsigned int  image_Silk_pill_width          = 16;
@@ -832,6 +996,94 @@ static const unsigned char image_Silk_stop[] =
   "ylJdmtu0Jkq3dg/GhcrO1szrTH1ChmFvkTdois2/gRHYLnYDDfMyR8qS/nbcqRSXNocOxa"
   "OzgiiYix5WTaPE1i7xo0+GpK8FSr+Falwq1VLVnMWzYq/nc/wxF7Y8Zkhy3j8VGuMdkhx4"
   "gk3DEaFeYaCtttsYQGJ1m2bgpaz3v9CRbS3U0=";
+
+/* 
+ * Resource generated for file:
+ *    telephone.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Silk_telephone_width          = 16;
+static const unsigned int  image_Silk_telephone_height         = 16;
+static const unsigned int  image_Silk_telephone_pixel_size     = 4;
+static const unsigned long image_Silk_telephone_length         = 1016;
+static const unsigned long image_Silk_telephone_decoded_length = 1024;
+
+static const unsigned char image_Silk_telephone[] = 
+  "eNqlk91PkwcUh91/4N3uFi9MvPDOS5NJTDSZm0EZqOCoBPwoKEpFULAiBUrHR2nFEr5r24"
+  "2PAKUWWmktlL61lIKyQlMBESXiFIL6IpEYTQx9rCRdFr30JL/k5CTPOTk5vwNs4TuUoLRv"
+  "Pd8ohOR/jYpyU0CUG/1igWFEzG/2iBd0LjFLc0c8qbKIqcWdYvJlo3jkQoN46LRWjDt8Pb"
+  "xtR+qPsmbvv13+Be4/WdvU2PzbTfnnVvHNiggzb3CHX+EKreAILmGfeMnt8ecUNTn5+YBs"
+  "tbp3guHJRdrcjzC6pjlfc4d24SkyrQPj4DStA2HOVdmos4VJvtJBfsMQuXUuGq0Bfk+vRG"
+  "2ZYCj4jC5hjpt9YU5WDtDifs6J8n5OlFn5Q2EhpdiKxvaEhAIzGWUWSgwe6ix+EjOqUPw9"
+  "SqnBjVI/RHm0PhxaovfBG7rHX9EZWKHdv4Lp3jJ64SU9I/NklnSQnq9DkqPhlyQFBwo6Uy"
+  "/WdLxQtvYtN9v/iXhn36Izj1JYZ+PSDSs56l6yK3uQqnowBxZR94xtZCmapg5nlge37/w1"
+  "NXaHszW2DtPgQ8afrvNoZYOvo9EWwuh+THWXj+S8evv/b5hUav2pSO/54Jxaxvd4nRdr3/"
+  "Jm3wIFtwK03p1BouhejbFxuZ0//CYz3m8fnsEZeo1v/j3vPka+4X3Tr5FqBzF6F5G3ONm1"
+  "+4o81uNSk3djILiMwbuEMLfOp6/GRyIRggtrpKn6qbEvoDTPEHfwz6kYf07nQe+a5appgg"
+  "bXM4pMY+Q13UNWL5BV6+aU2olE2cexa91Io3lu7QB74wsfxnipJuoHxzR5+jFyGkfIrveR"
+  "eVPgjNZDRvUgaRV3kagcpJTaSSnp57LOwf6k4o8xPq3CjtYySW3fJJqoH9XmB1R1jaNq91"
+  "PeNkKJyUvxLYHr+uHo7kNc1Nq+zP+P35NcMXsk18Dxq92bHj2a30aSzERidgsJmc0kSBuI"
+  "z9ARn17LwTQt+xLL2LlLouY7f/eLPgOpG+jD";
+
+/* 
+ * Resource generated for file:
+ *    text_allcaps.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Silk_text_allcaps_width          = 16;
+static const unsigned int  image_Silk_text_allcaps_height         = 16;
+static const unsigned int  image_Silk_text_allcaps_pixel_size     = 2;
+static const unsigned long image_Silk_text_allcaps_length         = 228;
+static const unsigned long image_Silk_text_allcaps_decoded_length = 512;
+
+static const unsigned char image_Silk_text_allcaps[] = 
+  "eNr7z/B/gGH5ASCcUH6geEHuhrRv8Q/CJ/gdcN1gs8DogWYAWP5CuUG5Q8H/3Ib/DPGvw6"
+  "f8Z3A9YHPgP4Nmg0IDWB6oqtgh638akBee5qfwn8HmgNEBkIxEAMyOXIeU//ENMJ7RAc0D"
+  "qG5Ic4j7Hw6X1zyggCYf7xD23w8ur3BAAk0+3MH/vytcXuKCIJq83wKgmzcYOYBlCwQPcB"
+  "1gKfjPMBggACJv+gM=";
+
+/* 
+ * Resource generated for file:
+ *    text_bold.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Silk_text_bold_width          = 16;
+static const unsigned int  image_Silk_text_bold_height         = 16;
+static const unsigned int  image_Silk_text_bold_pixel_size     = 2;
+static const unsigned long image_Silk_text_bold_length         = 252;
+static const unsigned long image_Silk_text_bold_decoded_length = 512;
+
+static const unsigned char image_Silk_text_bold[] = 
+  "eNr7z/CfDrA8ofx8yf+C99n1qesT3kfODxZAV1Fcn/k/az+IFTE/5L/XeXT53PrU/8lgef"
+  "96v/+O/9Hl0+vj/0cD5X0F3O67/beYjy6fUB/5P/i+T73reZf/ZvsxXRhRH/zfCyxuMt/i"
+  "v9p5eTQX+tf7/ncEy2sLqP3X/S9egCrvVg+0FWquzH/N/wL1qPK29Q7/9cG+ki5Q+c//nk"
+  "sBWdYmwWS97n61/fL9kv3C+3n7ORX+M9AHAgDJrfx6";
+
+/* 
+ * Resource generated for file:
+ *    text_italic.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Silk_text_italic_width          = 16;
+static const unsigned int  image_Silk_text_italic_height         = 16;
+static const unsigned int  image_Silk_text_italic_pixel_size     = 2;
+static const unsigned long image_Silk_text_italic_length         = 140;
+static const unsigned long image_Silk_text_italic_decoded_length = 512;
+
+static const unsigned char image_Silk_text_italic[] = 
+  "eNr7z/CfjjC7IfVDwv/ID8EHcKmIexD5PzABl2yMQfh//w+4zQ+ZEPTfbQFueZ8Hnv9tA3"
+  "DJehm4/rfBY7rjBJf/RnhMt3hg8V8Lp+lmDqb/Nf7jkjVp0D2gdkD+gOSG/3SNEQCFu/87";
+
+/* 
+ * Resource generated for file:
+ *    text_underline.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Silk_text_underline_width          = 16;
+static const unsigned int  image_Silk_text_underline_height         = 16;
+static const unsigned int  image_Silk_text_underline_pixel_size     = 2;
+static const unsigned long image_Silk_text_underline_length         = 208;
+static const unsigned long image_Silk_text_underline_decoded_length = 512;
+
+static const unsigned char image_Silk_text_underline[] = 
+  "eNr7z/CfCrA8ofx9+f/SfggvcX30/5ACNBX7S/7D2JECwefRTSjen/cfwfPajy6fuz8DSd"
+  "4RQz59fyKSvAWGfML+SCR5fQz5iP2BSPJqGPL+/d7/HQMgbBUHuX50eTcF+/cW5w0V/jMo"
+  "O8icF1PADCMzBf35GvsV90v3ixiQHsLa/1X+y/0X/y/0n+c/+3/m//8ZqAMBS279bg==";
 
 /* 
  * Resource generated for file:

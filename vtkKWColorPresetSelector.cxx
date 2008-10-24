@@ -40,7 +40,7 @@ const char *vtkKWColorPresetSelector::ColorColumnName = "Color";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWColorPresetSelector);
-vtkCxxRevisionMacro(vtkKWColorPresetSelector, "$Revision: 1.34 $");
+vtkCxxRevisionMacro(vtkKWColorPresetSelector, "$Revision: 1.35 $");
 
 //----------------------------------------------------------------------------
 vtkKWColorPresetSelector::vtkKWColorPresetSelector()
@@ -200,7 +200,6 @@ void vtkKWColorPresetSelector::CreateColumns()
   list->SetColumnResizable(col, 0);
   list->SetColumnStretchable(col, 0);
   list->SetColumnEditable(col, 0);
-  //list->SetColumnLabelImageToPredefinedIcon(col, vtkKWIcon::IconColorSquares);
   list->SetColumnLabelImageToPredefinedIcon(col, vtkKWIcon::IconEmpty16x16);
   list->SetColumnFormatCommandToEmptyOutput(col);
 }

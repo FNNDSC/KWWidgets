@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.59 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.60 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -1520,6 +1520,87 @@ void vtkKWIcon::SetImage(int image)
         image_Nuvola_16x16_actions_view_right_length);
       break;
 
+    case IconNuvola16x16ActionsColorPicker:
+      this->SetImage(
+        image_Nuvola_16x16_actions_colorpicker, 
+        image_Nuvola_16x16_actions_colorpicker_width, 
+        image_Nuvola_16x16_actions_colorpicker_height,
+        image_Nuvola_16x16_actions_colorpicker_pixel_size, 
+        image_Nuvola_16x16_actions_colorpicker_length);
+      break;
+
+    case IconNuvola16x16ActionsEditCopy:
+      this->SetImage(
+        image_Nuvola_16x16_actions_editcopy, 
+        image_Nuvola_16x16_actions_editcopy_width, 
+        image_Nuvola_16x16_actions_editcopy_height,
+        image_Nuvola_16x16_actions_editcopy_pixel_size, 
+        image_Nuvola_16x16_actions_editcopy_length);
+      break;
+
+    case IconNuvola16x16ActionsEditCut:
+      this->SetImage(
+        image_Nuvola_16x16_actions_editcut, 
+        image_Nuvola_16x16_actions_editcut_width, 
+        image_Nuvola_16x16_actions_editcut_height,
+        image_Nuvola_16x16_actions_editcut_pixel_size, 
+        image_Nuvola_16x16_actions_editcut_length);
+      break;
+
+    case IconNuvola16x16ActionsEditPaste:
+      this->SetImage(
+        image_Nuvola_16x16_actions_editpaste, 
+        image_Nuvola_16x16_actions_editpaste_width, 
+        image_Nuvola_16x16_actions_editpaste_height,
+        image_Nuvola_16x16_actions_editpaste_pixel_size, 
+        image_Nuvola_16x16_actions_editpaste_length);
+      break;
+
+    case IconNuvola16x16ActionsHistory:
+      this->SetImage(
+        image_Nuvola_16x16_actions_history, 
+        image_Nuvola_16x16_actions_history_width, 
+        image_Nuvola_16x16_actions_history_height,
+        image_Nuvola_16x16_actions_history_pixel_size, 
+        image_Nuvola_16x16_actions_history_length);
+      break;
+
+    case IconNuvola16x16ActionsKAlarm:
+      this->SetImage(
+        image_Nuvola_16x16_actions_kalarm, 
+        image_Nuvola_16x16_actions_kalarm_width, 
+        image_Nuvola_16x16_actions_kalarm_height,
+        image_Nuvola_16x16_actions_kalarm_pixel_size, 
+        image_Nuvola_16x16_actions_kalarm_length);
+      break;
+
+    case IconNuvola16x16ActionsViewLeftRight:
+      this->SetImage(
+        image_Nuvola_16x16_actions_view_left_right, 
+        image_Nuvola_16x16_actions_view_left_right_width, 
+        image_Nuvola_16x16_actions_view_left_right_height,
+        image_Nuvola_16x16_actions_view_left_right_pixel_size, 
+        image_Nuvola_16x16_actions_view_left_right_length);
+      break;
+
+    case IconNuvola16x16ActionsViewTopBottom:
+      this->SetImage(
+        image_Nuvola_16x16_actions_view_top_bottom, 
+        image_Nuvola_16x16_actions_view_top_bottom_width, 
+        image_Nuvola_16x16_actions_view_top_bottom_height,
+        image_Nuvola_16x16_actions_view_top_bottom_pixel_size, 
+        image_Nuvola_16x16_actions_view_top_bottom_length);
+      break;
+
+    case IconNuvola16x16ActionsWindowNew:
+      this->SetImage(
+        image_Nuvola_16x16_actions_window_new, 
+        image_Nuvola_16x16_actions_window_new_width, 
+        image_Nuvola_16x16_actions_window_new_height,
+        image_Nuvola_16x16_actions_window_new_pixel_size, 
+        image_Nuvola_16x16_actions_window_new_length);
+      break;
+
     case IconNuvola16x16AppsArk:
       this->SetImage(
         image_Nuvola_16x16_apps_ark, 
@@ -1563,6 +1644,15 @@ void vtkKWIcon::SetImage(int image)
         image_Nuvola_16x16_apps_keyboard_height,
         image_Nuvola_16x16_apps_keyboard_pixel_size, 
         image_Nuvola_16x16_apps_keyboard_length);
+      break;
+
+    case IconNuvola16x16AppsKTimer:
+      this->SetImage(
+        image_Nuvola_16x16_apps_ktimer, 
+        image_Nuvola_16x16_apps_ktimer_width, 
+        image_Nuvola_16x16_apps_ktimer_height,
+        image_Nuvola_16x16_apps_ktimer_pixel_size, 
+        image_Nuvola_16x16_apps_ktimer_length);
       break;
 
     case IconNuvola16x16DevicesCamera:
@@ -2066,6 +2156,103 @@ void vtkKWIcon::SetImage(int image)
         image_Silk_zoom_out_pixel_size, 
         image_Silk_zoom_out_length);
       break;
+
+    case IconSilkAccept:
+      this->SetImage(
+        image_Silk_accept, 
+        image_Silk_accept_width, image_Silk_accept_height,
+        image_Silk_accept_pixel_size, 
+        image_Silk_accept_length);
+      break;
+
+    case IconSilkAdd:
+      this->SetImage(
+        image_Silk_add, 
+        image_Silk_add_width, image_Silk_add_height,
+        image_Silk_add_pixel_size, 
+        image_Silk_add_length);
+      break;
+
+    case IconSilkCancel:
+      this->SetImage(
+        image_Silk_cancel, 
+        image_Silk_cancel_width, image_Silk_cancel_height,
+        image_Silk_cancel_pixel_size, 
+        image_Silk_cancel_length);
+      break;
+
+    case IconSilkCross:
+      this->SetImage(
+        image_Silk_cross, 
+        image_Silk_cross_width, image_Silk_cross_height,
+        image_Silk_cross_pixel_size, 
+        image_Silk_cross_length);
+      break;
+
+    case IconSilkCut:
+      this->SetImage(
+        image_Silk_cut, 
+        image_Silk_cut_width, image_Silk_cut_height,
+        image_Silk_cut_pixel_size, 
+        image_Silk_cut_length);
+      break;
+
+    case IconSilkDelete:
+      this->SetImage(
+        image_Silk_delete, 
+        image_Silk_delete_width, image_Silk_delete_height,
+        image_Silk_delete_pixel_size, 
+        image_Silk_delete_length);
+      break;
+
+    case IconSilkPastePlain:
+      this->SetImage(
+        image_Silk_paste_plain, 
+        image_Silk_paste_plain_width, image_Silk_paste_plain_height,
+        image_Silk_paste_plain_pixel_size, 
+        image_Silk_paste_plain_length);
+      break;
+
+    case IconSilkTelephone:
+      this->SetImage(
+        image_Silk_telephone, 
+        image_Silk_telephone_width, image_Silk_telephone_height,
+        image_Silk_telephone_pixel_size, 
+        image_Silk_telephone_length);
+      break;
+
+    case IconSilkTextAllCaps:
+      this->SetImage(
+        image_Silk_text_allcaps, 
+        image_Silk_text_allcaps_width, image_Silk_text_allcaps_height,
+        image_Silk_text_allcaps_pixel_size, 
+        image_Silk_text_allcaps_length);
+      break;
+
+    case IconSilkTextBold:
+      this->SetImage(
+        image_Silk_text_bold, 
+        image_Silk_text_bold_width, image_Silk_text_bold_height,
+        image_Silk_text_bold_pixel_size, 
+        image_Silk_text_bold_length);
+      break;
+
+    case IconSilkTextItalic:
+      this->SetImage(
+        image_Silk_text_italic, 
+        image_Silk_text_italic_width, image_Silk_text_italic_height,
+        image_Silk_text_italic_pixel_size, 
+        image_Silk_text_italic_length);
+      break;
+
+    case IconSilkTextUnderline:
+      this->SetImage(
+        image_Silk_text_underline, 
+        image_Silk_text_underline_width, image_Silk_text_underline_height,
+        image_Silk_text_underline_pixel_size, 
+        image_Silk_text_underline_length);
+      break;
+
     }
 }
 
