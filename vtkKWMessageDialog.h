@@ -94,7 +94,8 @@ public:
     Beep            = 0x00400,
     PackVertically  = 0x00800,
     InvokeAtPointer = 0x01000,
-    CustomIcon      = 0x02000
+    CustomIcon      = 0x02000,
+    Resizable       = 0x04000
   };
   //ETX
   vtkSetMacro(Options, int);

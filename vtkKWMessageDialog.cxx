@@ -28,8 +28,8 @@
 #include <vtksys/stl/string>
 
 //----------------------------------------------------------------------------
-vtkStandardNewMacro(vtkKWMessageDialog);
-vtkCxxRevisionMacro(vtkKWMessageDialog, "$Revision: 1.99 $");
+vtkStandardNewMacro( vtkKWMessageDialog );
+vtkCxxRevisionMacro(vtkKWMessageDialog, "1.93");
 
 //----------------------------------------------------------------------------
 vtkKWMessageDialog::vtkKWMessageDialog()
@@ -215,17 +215,23 @@ void vtkKWMessageDialog::Pack()
 
   this->MessageDialogFrame->UnpackChildren();
 
-  this->Script("pack %s -side top -fill both -expand true",
-               this->TopFrame->GetWidgetName());
+  if (this->TopFrame->GetNumberOfChildren())
+    {
+    this->Script("pack %s -side top -fill both -expand t",
+                 this->TopFrame->GetWidgetName());
+    }
 
   if (this->Message && this->DialogText && *this->DialogText)
     {
-    this->Script("pack %s -side top -fill x -padx 20 -pady 5",
+    this->Script("pack %s -side top -fill x -padx 20 -pady 5 -expand t",
                  this->Message->GetWidgetName());
     }
 
-  this->Script("pack %s -side top -fill both -expand true",
-               this->BottomFrame->GetWidgetName());
+  if (this->BottomFrame->GetNumberOfChildren())
+    {
+    this->Script("pack %s -side top -fill both -expand true",
+                 this->BottomFrame->GetWidgetName());
+    }
 
   if (this->CheckButton && this->GetDialogName())
     {
@@ -235,7 +241,7 @@ void vtkKWMessageDialog::Pack()
                  this->CheckButton->GetWidgetName());
     }
 
-  this->Script("pack %s -side top -fill x -pady 2 -expand y",
+  this->Script("pack %s -side bottom -fill x -pady 2 -expand f",
                this->ButtonFrame->GetWidgetName());
 
   this->PackButtons();
@@ -429,7 +435,14 @@ int vtkKWMessageDialog::PreInvoke()
     this->SetDisplayPositionToPointer();
     }
 
-  this->SetResizable(0, 0);
+  if (!(this->Options & vtkKWMessageDialog::Resizable))
+    {
+    this->SetResizable(0, 0);
+    }
+
+  // Make sure we pack correctly depending on the frame's children
+
+  this->Pack(); 
 
   return this->Superclass::PreInvoke();
 }
