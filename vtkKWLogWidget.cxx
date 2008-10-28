@@ -43,7 +43,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLogWidget );
-vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWLogWidget, "$Revision: 1.15 $");
 
 vtkIdType vtkKWLogWidget::IdCounter = 1;
 
@@ -255,7 +255,8 @@ void vtkKWLogWidget::CreateRecordList()
   this->SaveButton->SetBalloonHelpString("Write records to a text file");
   this->SaveButton->SetCommand(this, "WriteRecordsToFileCallback");
   this->SaveButton->GetLoadSaveDialog()->SaveDialogOn();
-  this->SaveButton->GetLoadSaveDialog()->SetFileTypes("{ {Text} {*.*} }");
+  this->SaveButton->GetLoadSaveDialog()->SetDefaultExtension(".txt");
+  this->SaveButton->GetLoadSaveDialog()->SetFileTypes("{ {Text} {*.txt} }");
   this->SaveButton->GetLoadSaveDialog()->RetrieveLastPathFromRegistry(
     "OpenPath");
   this->Toolbar->AddWidget(this->SaveButton);
