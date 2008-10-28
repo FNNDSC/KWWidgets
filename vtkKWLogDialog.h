@@ -31,17 +31,17 @@
 #ifndef __vtkKWLogDialog_h
 #define __vtkKWLogDialog_h
 
-#include "vtkKWTopLevel.h"
+#include "vtkKWMessageDialog.h"
 
 class vtkKWApplication;
 class vtkKWLogWidget;
 class vtkKWPushButton;
 
-class KWWidgets_EXPORT vtkKWLogDialog : public vtkKWTopLevel
+class KWWidgets_EXPORT vtkKWLogDialog : public vtkKWMessageDialog
 {
 public:
   static vtkKWLogDialog* New();
-  vtkTypeRevisionMacro(vtkKWLogDialog,vtkKWTopLevel);
+  vtkTypeRevisionMacro(vtkKWLogDialog,vtkKWMessageDialog);
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
@@ -59,7 +59,6 @@ protected:
   // Description:
   // Member variables
   vtkKWLogWidget* LogWidget;
-  vtkKWPushButton* CloseButton;
 
 private:
   vtkKWLogDialog(const vtkKWLogDialog&); // Not implemented

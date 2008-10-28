@@ -22,13 +22,15 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLogDialog );
-vtkCxxRevisionMacro(vtkKWLogDialog, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWLogDialog, "$Revision: 1.4 $");
 
 //----------------------------------------------------------------------------
 vtkKWLogDialog::vtkKWLogDialog()
 {
   this->LogWidget = vtkKWLogWidget::New();
-  this->CloseButton = NULL;
+
+  this->Options = 
+    vtkKWMessageDialog::YesDefault | vtkKWMessageDialog::Resizable;
 }
 
 //----------------------------------------------------------------------------
@@ -37,10 +39,6 @@ vtkKWLogDialog::~vtkKWLogDialog()
   if (this->LogWidget)
     {
     this->LogWidget->Delete();  
-    }
-  if (this->CloseButton)
-    {
-    this->CloseButton->Delete();
     }
 }
 
@@ -59,9 +57,9 @@ void vtkKWLogDialog::CreateWidget()
 
   this->Superclass::CreateWidget();
 
-  this->SetResizable(1, 1);
   this->SetMinimumSize(400, 450);
   this->SetSize(650, 550);
+
   vtksys_stl::string title;
   if (this->GetApplication()->GetName())
     {
@@ -77,28 +75,10 @@ void vtkKWLogDialog::CreateWidget()
     {
     this->LogWidget = vtkKWLogWidget::New();
     }
-  this->LogWidget->SetParent(this);
+  this->LogWidget->SetParent(this->GetBottomFrame());
   this->LogWidget->Create();
-  this->Script("pack %s -anchor nw -fill both -expand true",
+  this->Script("pack %s -anchor nw -fill both -expand true -padx 2 -pady 2",
                this->LogWidget->GetWidgetName());
-  
-  // Close button
-
-  if (!this->CloseButton)
-    {
-    this->CloseButton = vtkKWPushButton::New();
-    }
-  this->CloseButton->SetParent(this);
-  this->CloseButton->Create();
-  this->CloseButton->SetWidth(20);
-  this->CloseButton->SetText("Close");
-  this->CloseButton->SetCommand(this, "Withdraw");
-
-  this->Script("pack %s -anchor center -pady 2 -expand n",
-               this->CloseButton->GetWidgetName());
-
-  this->AddBinding("<Return>", this, "Withdraw");
-  this->AddBinding("<Escape>", this, "Withdraw");
 }
 
 //----------------------------------------------------------------------------
