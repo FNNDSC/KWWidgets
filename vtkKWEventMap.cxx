@@ -16,7 +16,7 @@
 
 #include "vtksys/stl/string"
 
-vtkCxxRevisionMacro(vtkKWEventMap, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWEventMap, "$Revision: 1.4 $");
 vtkStandardNewMacro(vtkKWEventMap);
 
 //----------------------------------------------------------------------------
@@ -47,6 +47,8 @@ void vtkKWEventMap::RemoveAllMouseEvents()
     for (int i = 0; i < this->NumberOfMouseEvents; i++)
       {
       delete [] this->MouseEvents[i].Action;
+      delete [] this->MouseEvents[i].Context;
+      delete [] this->MouseEvents[i].Description;
       }
     delete [] this->MouseEvents;
     this->MouseEvents = NULL;
@@ -62,6 +64,8 @@ void vtkKWEventMap::RemoveAllKeyEvents()
     for (int i = 0; i < this->NumberOfKeyEvents; i++)
       {
       delete [] this->KeyEvents[i].Action;
+      delete [] this->KeyEvents[i].Context;
+      delete [] this->KeyEvents[i].Description;
       }
     delete [] this->KeyEvents;
     this->KeyEvents = NULL;
@@ -78,6 +82,8 @@ void vtkKWEventMap::RemoveAllKeySymEvents()
       {
       delete [] this->KeySymEvents[i].KeySym;
       delete [] this->KeySymEvents[i].Action;
+      delete [] this->KeySymEvents[i].Context;
+      delete [] this->KeySymEvents[i].Description;
       }
     delete [] this->KeySymEvents;
     this->KeySymEvents = NULL;
@@ -86,16 +92,25 @@ void vtkKWEventMap::RemoveAllKeySymEvents()
 }
 
 //----------------------------------------------------------------------------
-void vtkKWEventMap::AddMouseEvent(struct MouseEvent *me)
+void vtkKWEventMap::AddMouseEvent(vtkKWEventMap::MouseEvent *me)
 {
   if (me)
     {
-    this->AddMouseEvent(me->Button, me->Modifier, me->Action);
+    this->AddMouseEvent(me->Button, me->Modifier, me->Action, 
+                        me->Context, me->Description);
     }
 }
 
 //----------------------------------------------------------------------------
 void vtkKWEventMap::AddMouseEvent(int button, int modifier, const char *action)
+{
+  this->AddMouseEvent(button, modifier, action, NULL, NULL);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWEventMap::AddMouseEvent(
+  int button, int modifier, const char *action, 
+  const char *context, const char *description)
 {
   if ( ! action)
     {
@@ -119,6 +134,28 @@ void vtkKWEventMap::AddMouseEvent(int button, int modifier, const char *action)
     events[i].Action = new char[strlen(this->MouseEvents[i].Action) + 1];
     strcpy(events[i].Action, this->MouseEvents[i].Action);
     delete [] this->MouseEvents[i].Action;
+    if (this->MouseEvents[i].Context)
+      {
+      events[i].Context = 
+        new char[strlen(this->MouseEvents[i].Context) + 1];
+      strcpy(events[i].Context, this->MouseEvents[i].Context);
+      delete [] this->MouseEvents[i].Context;
+      }
+    else
+      {
+      events[i].Context = NULL;
+      }
+    if (this->MouseEvents[i].Description)
+      {
+      events[i].Description = 
+        new char[strlen(this->MouseEvents[i].Description) + 1];
+      strcpy(events[i].Description, this->MouseEvents[i].Description);
+      delete [] this->MouseEvents[i].Description;
+      }
+    else
+      {
+      events[i].Description = NULL;
+      }
     }
 
   if (this->MouseEvents)
@@ -136,6 +173,28 @@ void vtkKWEventMap::AddMouseEvent(int button, int modifier, const char *action)
     this->MouseEvents[i].Action = new char[strlen(events[i].Action) + 1];
     strcpy(this->MouseEvents[i].Action, events[i].Action);
     delete [] events[i].Action;
+    if (events[i].Context)
+      {
+      this->MouseEvents[i].Context = 
+        new char[strlen(events[i].Context) + 1];
+      strcpy(this->MouseEvents[i].Context, events[i].Context);
+      delete [] events[i].Context;
+      }
+    else
+      {
+      this->MouseEvents[i].Context = NULL;
+      }
+    if (events[i].Description)
+      {
+      this->MouseEvents[i].Description = 
+        new char[strlen(events[i].Description) + 1];
+      strcpy(this->MouseEvents[i].Description, events[i].Description);
+      delete [] events[i].Description;
+      }
+    else
+      {
+      this->MouseEvents[i].Description = NULL;
+      }
     }
   delete [] events;
   
@@ -143,21 +202,48 @@ void vtkKWEventMap::AddMouseEvent(int button, int modifier, const char *action)
   this->MouseEvents[i].Modifier = modifier;
   this->MouseEvents[i].Action = new char[strlen(action) + 1];
   strcpy(this->MouseEvents[i].Action, action);
+  if (context)
+    {
+    this->MouseEvents[i].Context = new char[strlen(context) + 1];
+    strcpy(this->MouseEvents[i].Context, context);
+    }
+  else
+    {
+    this->MouseEvents[i].Context = NULL;
+    }
+  if (description)
+    {
+    this->MouseEvents[i].Description = new char[strlen(description) + 1];
+    strcpy(this->MouseEvents[i].Description, description);
+    }
+  else
+    {
+    this->MouseEvents[i].Description = NULL;
+    }
   
   this->NumberOfMouseEvents++;
 }
 
 //----------------------------------------------------------------------------
-void vtkKWEventMap::AddKeyEvent(struct KeyEvent *me)
+void vtkKWEventMap::AddKeyEvent(vtkKWEventMap::KeyEvent *me)
 {
   if (me)
     {
-    this->AddKeyEvent(me->Key, me->Modifier, me->Action);
+    this->AddKeyEvent(me->Key, me->Modifier, me->Action, 
+                      me->Context, me->Description);
     }
 }
 
 //----------------------------------------------------------------------------
 void vtkKWEventMap::AddKeyEvent(char key, int modifier, const char *action)
+{
+  this->AddKeyEvent(key, modifier, action, NULL, NULL);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWEventMap::AddKeyEvent(
+  char key, int modifier, const char *action, 
+  const char *context, const char *description)
 {
   if ( ! action)
     {
@@ -181,6 +267,28 @@ void vtkKWEventMap::AddKeyEvent(char key, int modifier, const char *action)
     events[i].Action = new char[strlen(this->KeyEvents[i].Action) + 1];
     strcpy(events[i].Action, this->KeyEvents[i].Action);
     delete [] this->KeyEvents[i].Action;
+    if (this->KeyEvents[i].Context)
+      {
+      events[i].Context = 
+        new char[strlen(this->KeyEvents[i].Context) + 1];
+      strcpy(events[i].Context, this->KeyEvents[i].Context);
+      delete [] this->KeyEvents[i].Context;
+      }
+    else
+      {
+      events[i].Context = NULL;
+      }
+    if (this->KeyEvents[i].Description)
+      {
+      events[i].Description = 
+        new char[strlen(this->KeyEvents[i].Description) + 1];
+      strcpy(events[i].Description, this->KeyEvents[i].Description);
+      delete [] this->KeyEvents[i].Description;
+      }
+    else
+      {
+      events[i].Description = NULL;
+      }
     }
 
   if (this->KeyEvents)
@@ -198,6 +306,28 @@ void vtkKWEventMap::AddKeyEvent(char key, int modifier, const char *action)
     this->KeyEvents[i].Action = new char[strlen(events[i].Action) + 1];
     strcpy(this->KeyEvents[i].Action, events[i].Action);
     delete [] events[i].Action;
+    if (events[i].Context)
+      {
+      this->KeyEvents[i].Context = 
+        new char[strlen(events[i].Context) + 1];
+      strcpy(this->KeyEvents[i].Context, events[i].Context);
+      delete [] events[i].Context;
+      }
+    else
+      {
+      this->KeyEvents[i].Context = NULL;
+      }
+    if (events[i].Description)
+      {
+      this->KeyEvents[i].Description = 
+        new char[strlen(events[i].Description) + 1];
+      strcpy(this->KeyEvents[i].Description, events[i].Description);
+      delete [] events[i].Description;
+      }
+    else
+      {
+      this->KeyEvents[i].Description = NULL;
+      }
     }
   delete [] events;
   
@@ -205,21 +335,48 @@ void vtkKWEventMap::AddKeyEvent(char key, int modifier, const char *action)
   this->KeyEvents[i].Modifier = modifier;
   this->KeyEvents[i].Action = new char[strlen(action) + 1];
   strcpy(this->KeyEvents[i].Action, action);
+  if (context)
+    {
+    this->KeyEvents[i].Context = new char[strlen(context) + 1];
+    strcpy(this->KeyEvents[i].Context, context);
+    }
+  else
+    {
+    this->KeyEvents[i].Context = NULL;
+    }
+  if (description)
+    {
+    this->KeyEvents[i].Description = new char[strlen(description) + 1];
+    strcpy(this->KeyEvents[i].Description, description);
+    }
+  else
+    {
+    this->KeyEvents[i].Description = NULL;
+    }
   
   this->NumberOfKeyEvents++;
 }
 
 //----------------------------------------------------------------------------
-void vtkKWEventMap::AddKeySymEvent(struct KeySymEvent *me)
+void vtkKWEventMap::AddKeySymEvent(vtkKWEventMap::KeySymEvent *me)
 {
   if (me)
     {
-    this->AddKeySymEvent(me->KeySym, me->Modifier, me->Action);
+    this->AddKeySymEvent(me->KeySym, me->Modifier, me->Action, 
+                         me->Context, me->Description);
     }
 }
 
 //----------------------------------------------------------------------------
 void vtkKWEventMap::AddKeySymEvent(const char *keySym, int modifier, const char *action)
+{
+  this->AddKeySymEvent(keySym, modifier, action, NULL, NULL);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWEventMap::AddKeySymEvent(
+  const char *keySym, int modifier, const char *action, 
+  const char *context, const char *description)
 {
   if ( ! keySym)
     {
@@ -250,6 +407,28 @@ void vtkKWEventMap::AddKeySymEvent(const char *keySym, int modifier, const char 
     events[i].Action = new char[strlen(this->KeySymEvents[i].Action) + 1];
     strcpy(events[i].Action, this->KeySymEvents[i].Action);
     delete [] this->KeySymEvents[i].Action;
+    if (this->KeySymEvents[i].Context)
+      {
+      events[i].Context = 
+        new char[strlen(this->KeySymEvents[i].Context) + 1];
+      strcpy(events[i].Context, this->KeySymEvents[i].Context);
+      delete [] this->KeySymEvents[i].Context;
+      }
+    else
+      {
+      events[i].Context = NULL;
+      }
+    if (this->KeySymEvents[i].Description)
+      {
+      events[i].Description = 
+        new char[strlen(this->KeySymEvents[i].Description) + 1];
+      strcpy(events[i].Description, this->KeySymEvents[i].Description);
+      delete [] this->KeySymEvents[i].Description;
+      }
+    else
+      {
+      events[i].Description = NULL;
+      }
     }
 
   if (this->KeySymEvents)
@@ -269,6 +448,28 @@ void vtkKWEventMap::AddKeySymEvent(const char *keySym, int modifier, const char 
     this->KeySymEvents[i].Action = new char[strlen(events[i].Action) + 1];
     strcpy(this->KeySymEvents[i].Action, events[i].Action);
     delete [] events[i].Action;
+    if (events[i].Context)
+      {
+      this->KeySymEvents[i].Context = 
+        new char[strlen(events[i].Context) + 1];
+      strcpy(this->KeySymEvents[i].Context, events[i].Context);
+      delete [] events[i].Context;
+      }
+    else
+      {
+      this->KeySymEvents[i].Context = NULL;
+      }
+    if (events[i].Description)
+      {
+      this->KeySymEvents[i].Description = 
+        new char[strlen(events[i].Description) + 1];
+      strcpy(this->KeySymEvents[i].Description, events[i].Description);
+      delete [] events[i].Description;
+      }
+    else
+      {
+      this->KeySymEvents[i].Description = NULL;
+      }
     }
   delete [] events;
 
@@ -277,21 +478,48 @@ void vtkKWEventMap::AddKeySymEvent(const char *keySym, int modifier, const char 
   this->KeySymEvents[i].Modifier = modifier;
   this->KeySymEvents[i].Action = new char[strlen(action) + 1];
   strcpy(this->KeySymEvents[i].Action, action);
+  if (context)
+    {
+    this->KeySymEvents[i].Context = new char[strlen(context) + 1];
+    strcpy(this->KeySymEvents[i].Context, context);
+    }
+  else
+    {
+    this->KeySymEvents[i].Context = NULL;
+    }
+  if (description)
+    {
+    this->KeySymEvents[i].Description = new char[strlen(description) + 1];
+    strcpy(this->KeySymEvents[i].Description, description);
+    }
+  else
+    {
+    this->KeySymEvents[i].Description = NULL;
+    }
   
   this->NumberOfKeySymEvents++;
 }
 
 //----------------------------------------------------------------------------
-void vtkKWEventMap::SetMouseEvent(struct MouseEvent *me)
+void vtkKWEventMap::SetMouseEvent(vtkKWEventMap::MouseEvent *me)
 {
   if (me)
     {
-    this->SetMouseEvent(me->Button, me->Modifier, me->Action);
+    this->SetMouseEvent(me->Button, me->Modifier, me->Action, 
+                        me->Context, me->Description);
     }
 }
 
 //----------------------------------------------------------------------------
 void vtkKWEventMap::SetMouseEvent(int button, int modifier, const char *action)
+{
+  this->SetMouseEvent(button, modifier, action, NULL, NULL);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWEventMap::SetMouseEvent(
+  int button, int modifier, const char *action, 
+  const char *context, const char *description)
 {
   int i;
 
@@ -309,6 +537,26 @@ void vtkKWEventMap::SetMouseEvent(int button, int modifier, const char *action)
       delete [] this->MouseEvents[i].Action;
       this->MouseEvents[i].Action = new char[strlen(action)+1];
       strcpy(this->MouseEvents[i].Action, action);
+      delete [] this->MouseEvents[i].Context;
+      if (context)
+        {
+        this->MouseEvents[i].Context = new char[strlen(context)+1];
+        strcpy(this->MouseEvents[i].Context, context);
+        }
+      else
+        {
+        this->MouseEvents[i].Context = NULL;
+        }
+      delete [] this->MouseEvents[i].Description;
+      if (description)
+        {
+        this->MouseEvents[i].Description = new char[strlen(description)+1];
+        strcpy(this->MouseEvents[i].Description, description);
+        }
+      else
+        {
+        this->MouseEvents[i].Description = NULL;
+        }
       break;
       }
     }
@@ -316,6 +564,14 @@ void vtkKWEventMap::SetMouseEvent(int button, int modifier, const char *action)
 
 //----------------------------------------------------------------------------
 void vtkKWEventMap::SetKeyEvent(char key, int modifier, const char *action)
+{
+  this->SetKeyEvent(key, modifier, action, NULL, NULL);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWEventMap::SetKeyEvent(
+  char key, int modifier, const char *action, 
+  const char *context, const char *description)
 {
   int i;
 
@@ -333,6 +589,26 @@ void vtkKWEventMap::SetKeyEvent(char key, int modifier, const char *action)
       delete [] this->KeyEvents[i].Action;
       this->KeyEvents[i].Action = new char[strlen(action)+1];
       strcpy(this->KeyEvents[i].Action, action);
+      delete [] this->KeyEvents[i].Context;
+      if (context)
+        {
+        this->KeyEvents[i].Context = new char[strlen(context)+1];
+        strcpy(this->KeyEvents[i].Context, context);
+        }
+      else
+        {
+        this->KeyEvents[i].Context = NULL;
+        }
+      delete [] this->KeyEvents[i].Description;
+      if (description)
+        {
+        this->KeyEvents[i].Description = new char[strlen(description)+1];
+        strcpy(this->KeyEvents[i].Description, description);
+        }
+      else
+        {
+        this->KeyEvents[i].Description = NULL;
+        }
       break;
       }
     }
@@ -340,6 +616,14 @@ void vtkKWEventMap::SetKeyEvent(char key, int modifier, const char *action)
 
 //----------------------------------------------------------------------------
 void vtkKWEventMap::SetKeySymEvent(const char *keySym, int modifier, const char *action)
+{
+  this->SetKeySymEvent(keySym, modifier, action, NULL, NULL);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWEventMap::SetKeySymEvent(
+  const char *keySym, int modifier, const char *action, 
+  const char *context, const char *description)
 {
   int i;
 
@@ -357,13 +641,33 @@ void vtkKWEventMap::SetKeySymEvent(const char *keySym, int modifier, const char 
       delete [] this->KeySymEvents[i].Action;
       this->KeySymEvents[i].Action = new char[strlen(action)+1];
       strcpy(this->KeySymEvents[i].Action, action);
+      delete [] this->KeySymEvents[i].Context;
+      if (context)
+        {
+        this->KeySymEvents[i].Context = new char[strlen(context)+1];
+        strcpy(this->KeySymEvents[i].Context, context);
+        }
+      else
+        {
+        this->KeySymEvents[i].Context = NULL;
+        }
+      delete [] this->KeySymEvents[i].Description;
+      if (description)
+        {
+        this->KeySymEvents[i].Description = new char[strlen(description)+1];
+        strcpy(this->KeySymEvents[i].Description, description);
+        }
+      else
+        {
+        this->KeySymEvents[i].Description = NULL;
+        }
       break;
       }
     }
 }
 
 //----------------------------------------------------------------------------
-void vtkKWEventMap::RemoveMouseEvent(struct MouseEvent *me)
+void vtkKWEventMap::RemoveMouseEvent(vtkKWEventMap::MouseEvent *me)
 {
   if (me)
     {
@@ -406,6 +710,26 @@ void vtkKWEventMap::RemoveMouseEvent(int button, int modifier, const char *actio
       events[i].Modifier = this->MouseEvents[i].Modifier;
       events[i].Action = new char[strlen(this->MouseEvents[i].Action) + 1];
       strcpy(events[i].Action, this->MouseEvents[i].Action);
+      if (this->MouseEvents[i].Context)
+        {
+        events[i].Context = 
+          new char[strlen(this->MouseEvents[i].Context) + 1];
+        strcpy(events[i].Context, this->MouseEvents[i].Context);
+        }
+      else
+        {
+        events[i].Context = NULL;
+        }
+      if (this->MouseEvents[i].Description)
+        {
+        events[i].Description = 
+          new char[strlen(this->MouseEvents[i].Description) + 1];
+        strcpy(events[i].Description, this->MouseEvents[i].Description);
+        }
+      else
+        {
+        events[i].Description = NULL;
+        }
       }
     }
 
@@ -418,6 +742,8 @@ void vtkKWEventMap::RemoveMouseEvent(int button, int modifier, const char *actio
     for (i = 0; i < this->NumberOfMouseEvents; i++)
       {
       delete [] this->MouseEvents[i].Action;
+      delete [] this->MouseEvents[i].Context;
+      delete [] this->MouseEvents[i].Description;
       }
     delete [] this->MouseEvents;
     this->MouseEvents = NULL;
@@ -439,6 +765,26 @@ void vtkKWEventMap::RemoveMouseEvent(int button, int modifier, const char *actio
         this->MouseEvents[count].Action = new char[strlen(events[i].Action)+1];
         strcpy(this->MouseEvents[count].Action, events[i].Action);
         delete [] events[i].Action;
+        if (events[i].Context)
+          {
+          this->MouseEvents[count].Context = new char[strlen(events[i].Context)+1];
+          strcpy(this->MouseEvents[count].Context, events[i].Context);
+          delete [] events[i].Context;
+          }
+        else
+          {
+          this->MouseEvents[count].Context = NULL;
+          }
+        if (events[i].Description)
+          {
+          this->MouseEvents[count].Description = new char[strlen(events[i].Description)+1];
+          strcpy(this->MouseEvents[count].Description, events[i].Description);
+          delete [] events[i].Description;
+          }
+        else
+          {
+          this->MouseEvents[count].Description = NULL;
+          }
         count++;
         }
       }
@@ -483,6 +829,26 @@ void vtkKWEventMap::RemoveKeyEvent(char key, int modifier, const char *action)
       events[i].Modifier = this->KeyEvents[i].Modifier;
       events[i].Action = new char[strlen(this->KeyEvents[i].Action) + 1];
       strcpy(events[i].Action, this->KeyEvents[i].Action);
+      if (this->KeyEvents[i].Context)
+        {
+        events[i].Context = 
+          new char[strlen(this->KeyEvents[i].Context) + 1];
+        strcpy(events[i].Context, this->KeyEvents[i].Context);
+        }
+      else
+        {
+        events[i].Context = NULL;
+        }
+      if (this->KeyEvents[i].Description)
+        {
+        events[i].Description = 
+          new char[strlen(this->KeyEvents[i].Description) + 1];
+        strcpy(events[i].Description, this->KeyEvents[i].Description);
+        }
+      else
+        {
+        events[i].Description = NULL;
+        }
       }
     }
 
@@ -495,6 +861,8 @@ void vtkKWEventMap::RemoveKeyEvent(char key, int modifier, const char *action)
     for (i = 0; i < this->NumberOfKeyEvents; i++)
       {
       delete [] this->KeyEvents[i].Action;
+      delete [] this->KeyEvents[i].Context;
+      delete [] this->KeyEvents[i].Description;
       }
     delete [] this->KeyEvents;
     this->KeyEvents = NULL;
@@ -516,6 +884,26 @@ void vtkKWEventMap::RemoveKeyEvent(char key, int modifier, const char *action)
         this->KeyEvents[count].Action = new char[strlen(events[i].Action)+1];
         strcpy(this->KeyEvents[count].Action, events[i].Action);
         delete [] events[i].Action;
+        if (events[i].Context)
+          {
+          this->KeyEvents[count].Context = new char[strlen(events[i].Context)+1];
+          strcpy(this->KeyEvents[count].Context, events[i].Context);
+          delete [] events[i].Context;
+          }
+        else
+          {
+          this->KeyEvents[count].Context = NULL;
+          }
+        if (events[i].Description)
+          {
+          this->KeyEvents[count].Description = new char[strlen(events[i].Description)+1];
+          strcpy(this->KeyEvents[count].Description, events[i].Description);
+          delete [] events[i].Description;
+          }
+        else
+          {
+          this->KeyEvents[count].Description = NULL;
+          }
         count++;
         }
       }
@@ -567,6 +955,26 @@ void vtkKWEventMap::RemoveKeySymEvent(const char *keySym, int modifier, const ch
       events[i].Modifier = this->KeySymEvents[i].Modifier;
       events[i].Action = new char[strlen(this->KeySymEvents[i].Action) + 1];
       strcpy(events[i].Action, this->KeySymEvents[i].Action);
+      if (this->KeySymEvents[i].Context)
+        {
+        events[i].Context = 
+          new char[strlen(this->KeySymEvents[i].Context) + 1];
+        strcpy(events[i].Context, this->KeySymEvents[i].Context);
+        }
+      else
+        {
+        events[i].Context = NULL;
+        }
+      if (this->KeySymEvents[i].Description)
+        {
+        events[i].Description = 
+          new char[strlen(this->KeySymEvents[i].Description) + 1];
+        strcpy(events[i].Description, this->KeySymEvents[i].Description);
+        }
+      else
+        {
+        events[i].Description = NULL;
+        }
       }
     }
 
@@ -581,6 +989,8 @@ void vtkKWEventMap::RemoveKeySymEvent(const char *keySym, int modifier, const ch
       {
       delete [] this->KeySymEvents[i].KeySym;
       delete [] this->KeySymEvents[i].Action;
+      delete [] this->KeySymEvents[i].Context;
+      delete [] this->KeySymEvents[i].Description;
       }
     delete [] this->KeySymEvents;
     this->KeySymEvents = NULL;
@@ -606,6 +1016,26 @@ void vtkKWEventMap::RemoveKeySymEvent(const char *keySym, int modifier, const ch
           new char[strlen(events[i].Action)+1];
         strcpy(this->KeySymEvents[count].Action, events[i].Action);
         delete [] events[i].Action;
+        if (events[i].Context)
+          {
+          this->KeySymEvents[count].Context = new char[strlen(events[i].Context)+1];
+          strcpy(this->KeySymEvents[count].Context, events[i].Context);
+          delete [] events[i].Context;
+          }
+        else
+          {
+          this->KeySymEvents[count].Context = NULL;
+          }
+        if (events[i].Description)
+          {
+          this->KeySymEvents[count].Description = new char[strlen(events[i].Description)+1];
+          strcpy(this->KeySymEvents[count].Description, events[i].Description);
+          delete [] events[i].Description;
+          }
+        else
+          {
+          this->KeySymEvents[count].Description = NULL;
+          }
         count++;
         }
       }
@@ -673,7 +1103,7 @@ const char* vtkKWEventMap::FindKeySymAction(const char *keySym, int modifier)
 }
 
 //----------------------------------------------------------------------------
-struct vtkKWEventMap::MouseEvent* vtkKWEventMap::GetMouseEvent(int index)
+vtkKWEventMap::MouseEvent* vtkKWEventMap::GetMouseEvent(int index)
 {
   if (index < 0 || index >= this->NumberOfMouseEvents)
     {
@@ -684,7 +1114,7 @@ struct vtkKWEventMap::MouseEvent* vtkKWEventMap::GetMouseEvent(int index)
 }
 
 //----------------------------------------------------------------------------
-struct vtkKWEventMap::KeyEvent* vtkKWEventMap::GetKeyEvent(int index)
+vtkKWEventMap::KeyEvent* vtkKWEventMap::GetKeyEvent(int index)
 {
   if (index < 0 || index >= this->NumberOfKeyEvents)
     {
@@ -695,7 +1125,7 @@ struct vtkKWEventMap::KeyEvent* vtkKWEventMap::GetKeyEvent(int index)
 }
 
 //----------------------------------------------------------------------------
-struct vtkKWEventMap::KeySymEvent* vtkKWEventMap::GetKeySymEvent(int index)
+vtkKWEventMap::KeySymEvent* vtkKWEventMap::GetKeySymEvent(int index)
 {
   if (index < 0 || index >= this->NumberOfKeySymEvents)
     {
@@ -771,6 +1201,14 @@ void vtkKWEventMap::PrintSelf(ostream& os, vtkIndent indent)
         {
         os << " : " << this->MouseEvents[i].Action;
         }
+      if (this->MouseEvents[i].Context)
+        {
+        os << " (" << this->MouseEvents[i].Context << ")";
+        }
+      if (this->MouseEvents[i].Description)
+        {
+        os << " (" << this->MouseEvents[i].Description << ")";
+        }
       os << endl;
       }
     }
@@ -794,6 +1232,10 @@ void vtkKWEventMap::PrintSelf(ostream& os, vtkIndent indent)
       if (this->KeyEvents[i].Action)
         {
         os << " : " << this->KeyEvents[i].Action;
+        }
+      if (this->KeyEvents[i].Description)
+        {
+        os << " (" << this->KeyEvents[i].Description << ")";
         }
       os << endl;
       }
@@ -821,6 +1263,10 @@ void vtkKWEventMap::PrintSelf(ostream& os, vtkIndent indent)
       if (this->KeySymEvents[i].Action)
         {
         os << " : " << this->KeySymEvents[i].Action;
+        }
+      if (this->KeySymEvents[i].Description)
+        {
+        os << " (" << this->KeySymEvents[i].Description << ")";
         }
       os << endl;
       }

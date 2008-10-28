@@ -47,36 +47,46 @@ public:
   {
     NoModifier      = 0,
     ShiftModifier   = 1,
-    ControlModifier = 2
+    ControlModifier = 2,
+    ControlShiftModifier = 3
   };
   //ETX
 
 
   //BTX
   // @cond nested_class
-  struct MouseEvent
+  class MouseEvent
   {
+  public:
     int Button;
     int Modifier;
     char *Action;
+    char *Context;
+    char *Description;
   };
   // @endcond
   
   // @cond nested_class
-  struct KeyEvent
+  class KeyEvent
   {
+  public:
     char Key;
     int Modifier;
     char *Action;
+    char *Context;
+    char *Description;
   };
   // @endcond
   
   // @cond nested_class
-  struct KeySymEvent
+  class KeySymEvent
   {
+  public:
     char *KeySym;
     int Modifier;
     char *Action;
+    char *Context;
+    char *Description;
   };
   // @endcond
   //ETX
@@ -87,30 +97,34 @@ public:
   // Add a unique action with a specific mouse button and modifier key to
   // the list of mouse events.
   //BTX
-  void AddMouseEvent(struct MouseEvent *me);
+  void AddMouseEvent(vtkKWEventMap::MouseEvent *me);
   //ETX
-  void AddMouseEvent(int button, int modifier, const char *action);
+  void AddMouseEvent(int button, int modifier, const char *action); 
+  void AddMouseEvent(int button, int modifier, const char *action, 
+                     const char *context, const char *description);
 
   // Description:
   // Change the action to associate with a specific mouse button and modifier
   // key.  A mouse event with this button and modifier must have already have
   // been added.
   //BTX
-  void SetMouseEvent(struct MouseEvent *me);
+  void SetMouseEvent(vtkKWEventMap::MouseEvent *me);
   //ETX
   void SetMouseEvent(int button, int modifier, const char *action);
+  void SetMouseEvent(int button, int modifier, const char *action,
+                     const char *context, const char *description);
 
   // Description:
   // Get the mouse event at the specified index.
   //BTX
-  struct MouseEvent* GetMouseEvent(int index);
+  vtkKWEventMap::MouseEvent* GetMouseEvent(int index);
   //ETX
   
   // Description:
   // Remove the action associated with this mouse button and modifier key from
   // the list of mouse events (or all actions if action is NULL).
   //BTX
-  void RemoveMouseEvent(struct MouseEvent *me);
+  void RemoveMouseEvent(vtkKWEventMap::MouseEvent *me);
   //ETX
   void RemoveMouseEvent(int button, int modifier, const char *action = NULL);
   void RemoveAllMouseEvents();
@@ -130,19 +144,23 @@ public:
   // Add a unique action with a specific key and modifier key to
   // the list of key events.
   //BTX
-  void AddKeyEvent(struct KeyEvent *me);
+  void AddKeyEvent(vtkKWEventMap::KeyEvent *me);
   //ETX
   void AddKeyEvent(char key, int modifier, const char *action);
+  void AddKeyEvent(char key, int modifier, const char *action,
+                   const char *context, const char *description);
   
   // Description:
   // Change the action to associate with a specific key and modifier key.
   // A key event with this key and modifier must have already been added.
   void SetKeyEvent(char key, int modifier, const char *action);
+  void SetKeyEvent(char key, int modifier, const char *action,
+                   const char *context, const char *description);
   
   // Description:
   // Get the key event at the specified index.
   //BTX
-  struct KeyEvent* GetKeyEvent(int index);
+  vtkKWEventMap::KeyEvent* GetKeyEvent(int index);
   //ETX
   
   // Description:
@@ -165,19 +183,23 @@ public:
   // Description:
   // Add a unique action with a specific keysym to the list of keysym events.
   //BTX
-  void AddKeySymEvent(struct KeySymEvent *me);
+  void AddKeySymEvent(vtkKWEventMap::KeySymEvent *me);
   //ETX
   void AddKeySymEvent(const char *keySym, int modifier, const char *action);
+  void AddKeySymEvent(const char *keySym, int modifier, const char *action,
+                      const char *context, const char *description);
   
   // Description:
   // Change the action to associate with a specific keysym.  A keysym event
   // with this keysym must have already been added.
   void SetKeySymEvent(const char *keySym, int modifier, const char *action);
+  void SetKeySymEvent(const char *keySym, int modifier, const char *action,
+                      const char *context, const char *description);
   
   // Description:
   // Get the keysym event at the specified index.
   //BTX
-  struct KeySymEvent* GetKeySymEvent(int index);
+  vtkKWEventMap::KeySymEvent* GetKeySymEvent(int index);
   //ETX
   
   // Description:
