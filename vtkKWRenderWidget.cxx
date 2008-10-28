@@ -47,7 +47,7 @@
 #include <vtksys/stl/map>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.169 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.170 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -2519,11 +2519,9 @@ void vtkKWRenderWidget::ProcessCallbackCommandEvents(vtkObject *caller,
             cptr = "hand2";
             break;
           }
-        vtkKWTopLevel *toplevel = this->GetParentTopLevel();
-        if (toplevel && cptr)
+        if (cptr)
           {
-          //cout << "vtkKWRenderWidget::...: [" << cptr << "]" << endl;
-          toplevel->SetConfigurationOption("-cursor", cptr);
+          vtkKWTkUtilities::SetTopLevelMouseCursor(this, cptr);
           }
         break;
       }
