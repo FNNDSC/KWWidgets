@@ -192,6 +192,8 @@ set(KWWidgets_SRCS
   vtkKWHSVColorSelector.cxx
   vtkKWIcon.cxx
   vtkKWInternationalization.cxx
+  vtkKWKeyBindingsManager.cxx
+  vtkKWKeyBindingsWidget.cxx
   vtkKWLabel.cxx
   vtkKWLanguage.cxx
   vtkKWListBox.cxx

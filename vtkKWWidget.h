@@ -29,6 +29,7 @@ class vtkKWTopLevel;
 class vtkKWDragAndDropTargetSet;
 class vtkKWWidgetInternals;
 class vtkKWBalloonHelpManager;
+class vtkKWKeyBindingsManager;
 class vtkKWIcon;
 
 class KWWidgets_EXPORT vtkKWWidget : public vtkKWObject
@@ -134,13 +135,13 @@ public:
   // A convenience method to add a key binding. This method does call
   // SetBinding under the hood (which can still be used to add key bindings)
   // but use the 'context' and 'description' to register that specific binding
-  // to an application-wide key binding (keyboard shortcut) manager. That
+  // to an application-wide key bindings (keyboard shortcuts) manager. That
   // manager can in turn be queried to create a list of key bindings and
   // present it to the user (in the Help menu for example). Use this method
-  // only for important key binding that you want the user to be reminded 
+  // only for important key bindings that you want the user to be reminded 
   // of. Simple bindings like <Return> on a button to allow the user
-  // to "press" said button by hitting <Return>, should probably not be set
-  // with this method, but with the usual SetBinding.
+  // to "press" said button by hitting <Return, should probably not be set
+  // with this method, but with the usual SetBinding method.
   // 'context' is a string in plain English (or preferably localized) that
   // explains in which context this key binding is valid. For example: 
   // "Any 2D View", or "Any Main Window". It usually is a simple/short
@@ -150,6 +151,15 @@ public:
   virtual void SetKeyBinding(
     const char *event, vtkObject *object, const char *method,
     const char *context, const char *description);
+  virtual void RemoveKeyBinding(const char *event);
+  virtual void RemoveKeyBinding(
+    const char *event, vtkObject *object, const char *method);
+
+  // Description:
+  // A convenience method that will return the key bindings manager associated
+  // to the application this widget belongs to. There is no key bindings
+  // internal ivar, this method returns the *application-wide* manager.
+  virtual vtkKWKeyBindingsManager* GetKeyBindingsManager();
 
   // Description:
   // Set a drop-file binding to a widget, i.e. the command that is invoked

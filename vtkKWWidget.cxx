@@ -14,13 +14,15 @@
 
 #include "vtkKWWidget.h"
 
-#include "vtkKWApplication.h"
-#include "vtkKWTopLevel.h"
-#include "vtkKWDragAndDropTargetSet.h"
-#include "vtkKWBalloonHelpManager.h"
 #include "vtkObjectFactory.h"
+
+#include "vtkKWApplication.h"
+#include "vtkKWBalloonHelpManager.h"
+#include "vtkKWDragAndDropTargetSet.h"
 #include "vtkKWIcon.h"
+#include "vtkKWKeyBindingsManager.h"
 #include "vtkKWOptionDataBase.h"
+#include "vtkKWWindowBase.h"
 
 #include "vtkKWWidgetsConfigure.h" // for KWWidgets_USE_TKDND
 
@@ -30,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.159 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.160 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetInternals
@@ -588,7 +590,7 @@ void vtkKWWidget::AddBalloonHelpBindings()
 vtkKWTopLevel* vtkKWWidget::GetParentTopLevel()
 {
   vtkKWTopLevel* toplevel = NULL;
-  vtkKWWidget* widget = this->GetParent();
+  vtkKWWidget* widget = this;
   while (widget)
     {
     toplevel = vtkKWTopLevel::SafeDownCast(widget);
@@ -842,16 +844,6 @@ void vtkKWWidget::SetBinding(const char *event, const char *command)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWWidget::SetKeyBinding(const char *event, 
-                                vtkObject *object, const char *method,
-                                const char *context, const char *description)
-{
-  this->SetBinding(event, object, method);
-  (void)context;
-  (void)description;
-}
-
-//----------------------------------------------------------------------------
 const char* vtkKWWidget::GetBinding(const char *event)
 {
   if (this->IsCreated())
@@ -893,7 +885,7 @@ void vtkKWWidget::RemoveGenericBinding(
   const char *target, const char *event, 
   vtkObject *object, const char *method)
 {
-  if (this->IsCreated())
+  if (target && event && this->IsCreated())
     {
     char *command = NULL;
     this->SetObjectMethodCommand(&command, object, method);
@@ -911,7 +903,7 @@ void vtkKWWidget::RemoveGenericBinding(
 void vtkKWWidget::RemoveBinding(const char *event,
                                 vtkObject *object, const char *method)
 {
-  if (this->IsCreated())
+  if (event && this->IsCreated())
     {
     char *command = NULL;
     this->SetObjectMethodCommand(&command, object, method);
@@ -934,7 +926,7 @@ void vtkKWWidget::RemoveBinding(const char *event,
 //----------------------------------------------------------------------------
 void vtkKWWidget::RemoveGenericBinding(const char *target, const char *event)
 {
-  if (this->IsCreated())
+  if (target && event && this->IsCreated())
     {
     this->Script("bind %s %s {}", target, event);
     }
@@ -943,10 +935,69 @@ void vtkKWWidget::RemoveGenericBinding(const char *target, const char *event)
 //----------------------------------------------------------------------------
 void vtkKWWidget::RemoveBinding(const char *event)
 {
-  if (this->IsCreated())
+  if (event && this->IsCreated())
     {
     this->Script("if { [info command %s] != {} } {bind %s %s {}}", 
                  this->GetWidgetName(), this->GetWidgetName(), event);
+    }
+}
+
+//----------------------------------------------------------------------------
+vtkKWKeyBindingsManager* vtkKWWidget::GetKeyBindingsManager()
+{
+  vtkKWTopLevel *top = this->GetParentTopLevel();
+  if (top)
+    {
+    vtkKWWindowBase *win = vtkKWWindowBase::SafeDownCast(top);
+    if (!win && top->GetMasterWindow())
+      {
+      win = vtkKWWindowBase::SafeDownCast(
+        top->GetMasterWindow()->GetParentTopLevel());
+      }
+    if (win)
+      {
+      return  win->GetKeyBindingsManager();
+      }
+    }
+  return NULL;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWidget::SetKeyBinding(const char *event, 
+                                vtkObject *object, const char *method,
+                                const char *context, const char *description)
+{
+  this->SetBinding(event, object, method);
+
+  vtkKWKeyBindingsManager *mgr = this->GetKeyBindingsManager();
+  if (mgr)
+    {
+    mgr->SetKeyBinding(this, event, object, method, context, description);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWidget::RemoveKeyBinding(const char *event)
+{
+  this->RemoveBinding(event);
+  
+  vtkKWKeyBindingsManager *mgr = this->GetKeyBindingsManager();
+  if (mgr)
+    {
+    mgr->RemoveKeyBinding(this, event);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWidget::RemoveKeyBinding(const char *event, 
+                                   vtkObject *object, const char *method)
+{
+  this->RemoveBinding(event, object, method);
+
+  vtkKWKeyBindingsManager *mgr = this->GetKeyBindingsManager();
+  if (mgr)
+    {
+    mgr->RemoveKeyBinding(this, event, object, method);
     }
 }
 

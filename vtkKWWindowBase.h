@@ -25,6 +25,7 @@ class vtkKWFrame;
 class vtkKWLabel;
 class vtkKWMenu;
 class vtkKWMostRecentFilesManager;
+class vtkKWKeyBindingsManager;
 class vtkKWProgressGauge;
 class vtkKWSeparator;
 class vtkKWToolbar;
@@ -241,6 +242,10 @@ public:
   vtkBooleanMacro(SupportPrint, int);
 
   // Description:
+  // Get the key bindings manager.
+  vtkGetObjectMacro(KeyBindingsManager, vtkKWKeyBindingsManager);
+
+  // Description:
   // Get title of window.
   // Override the superclass to use app name if the title was not set
   virtual char* GetTitle();
@@ -285,6 +290,7 @@ public:
   vtkGetStringMacro(HelpMenuLabel);
   vtkGetStringMacro(HelpAboutMenuLabel);
   vtkGetStringMacro(HelpTopicsMenuLabel);
+  vtkGetStringMacro(HelpKeyBindingsMenuLabel);
   vtkGetStringMacro(HelpCheckForUpdatesMenuLabel);
   vtkGetStringMacro(ToolbarsVisibilityMenuLabel);
   vtkGetStringMacro(WindowGeometryRegKey);
@@ -324,6 +330,7 @@ public:
   virtual void PrintSettingsCallback() {};
   virtual void ToolbarVisibilityChangedCallback(vtkKWToolbar*);
   virtual void NumberOfToolbarsChangedCallback();
+  virtual void DisplayKeyBindingsCallback();
 
 protected:
   vtkKWWindowBase();
@@ -347,6 +354,10 @@ protected:
   // Description:
   // Recent files manager
   vtkKWMostRecentFilesManager *MostRecentFilesManager;
+
+  // Description:
+  // Key bindings manager
+  vtkKWKeyBindingsManager *KeyBindingsManager;
 
   // Description:
   // Save/Restore window geometry
@@ -413,6 +424,7 @@ protected:
   vtkSetStringMacro(WindowMenuLabel);
   vtkSetStringMacro(HelpMenuLabel);
   vtkSetStringMacro(HelpTopicsMenuLabel);
+  vtkSetStringMacro(HelpKeyBindingsMenuLabel);
   vtkSetStringMacro(HelpAboutMenuLabel);
   vtkSetStringMacro(HelpCheckForUpdatesMenuLabel);
   vtkSetStringMacro(ToolbarsVisibilityMenuLabel);
@@ -440,6 +452,7 @@ private:
   char *WindowMenuLabel;
   char *HelpMenuLabel;
   char *HelpTopicsMenuLabel;
+  char *HelpKeyBindingsMenuLabel;
   char *HelpAboutMenuLabel;
   char *HelpCheckForUpdatesMenuLabel;
   char *ToolbarsVisibilityMenuLabel;

@@ -33,7 +33,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.127 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.128 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMenuInternals
@@ -1558,7 +1558,11 @@ void vtkKWMenu::SetBindingForItemAccelerator(int index, vtkKWWidget *widget)
       if (command && *command)
         {
         vtksys_stl::string command_safe(command);
-        widget->SetBinding(keybinding, command_safe.c_str());
+        const char *label = this->GetItemLabel(index);
+        vtksys_stl::string label_safe(label ? label : "");
+        widget->SetKeyBinding(
+          keybinding, NULL, command_safe.c_str(), 
+          widget->GetClassName(), label_safe.c_str());
         }
       }
     delete [] keybinding;
@@ -1575,7 +1579,7 @@ void vtkKWMenu::RemoveBindingForItemAccelerator(int index, vtkKWWidget *widget)
     this->ConvertItemAcceleratorToKeyBinding(accelerator, &keybinding);
     if (keybinding && *keybinding)
       {
-      widget->RemoveBinding(keybinding);
+      widget->RemoveKeyBinding(keybinding);
       }
     delete [] keybinding;
     }

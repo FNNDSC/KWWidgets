@@ -25,6 +25,8 @@
 #include "vtkKWMenu.h"
 #include "vtkKWMessageDialog.h"
 #include "vtkKWMostRecentFilesManager.h"
+#include "vtkKWKeyBindingsManager.h"
+#include "vtkKWKeyBindingsWidget.h"
 #include "vtkKWProgressGauge.h"
 #include "vtkKWSeparator.h"
 #include "vtkKWTkUtilities.h"
@@ -34,7 +36,7 @@
 
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.64 $");
+vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.65 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindowBase );
@@ -87,6 +89,8 @@ vtkKWWindowBase::vtkKWWindowBase()
 
   this->MostRecentFilesManager = vtkKWMostRecentFilesManager::New();
 
+  this->KeyBindingsManager = vtkKWKeyBindingsManager::New();
+
   this->SetWindowClass("KitwareWidget");
 
   this->ScriptExtension       = NULL;
@@ -117,6 +121,8 @@ vtkKWWindowBase::vtkKWWindowBase()
     vtksys::SystemTools::DuplicateString(ks_("Menu|&Help"));
   this->HelpTopicsMenuLabel = 
     vtksys::SystemTools::DuplicateString(ks_("Menu|Help|Help &Topics"));
+  this->HelpKeyBindingsMenuLabel = 
+    vtksys::SystemTools::DuplicateString(ks_("Menu|Help|&Keyboard Shortcuts"));
   this->HelpAboutMenuLabel = 
     vtksys::SystemTools::DuplicateString(ks_("Menu|Help|&About %s"));
   this->HelpCheckForUpdatesMenuLabel = 
@@ -243,6 +249,12 @@ vtkKWWindowBase::~vtkKWWindowBase()
     this->MostRecentFilesManager = NULL;
     }
 
+  if (this->KeyBindingsManager)
+    {
+    this->KeyBindingsManager->Delete();
+    this->KeyBindingsManager = NULL;
+    }
+
   this->SetScriptExtension(NULL);
   this->SetScriptType(NULL);
 
@@ -258,6 +270,7 @@ vtkKWWindowBase::~vtkKWWindowBase()
   this->SetWindowMenuLabel(NULL);
   this->SetHelpMenuLabel(NULL);
   this->SetHelpTopicsMenuLabel(NULL);
+  this->SetHelpKeyBindingsMenuLabel(NULL);
   this->SetHelpAboutMenuLabel(NULL);
   this->SetHelpCheckForUpdatesMenuLabel(NULL);
   this->SetToolbarsVisibilityMenuLabel(NULL);
@@ -319,6 +332,8 @@ void vtkKWWindowBase::CreateWidget()
   this->SetIconName(app->GetPrettyName());
 
   this->MostRecentFilesManager->SetApplication(app);
+
+  this->KeyBindingsManager->SetApplication(app);
 
   // Menubar separator
 
@@ -484,6 +499,18 @@ void vtkKWWindowBase::PopulateHelpMenu()
       {
       menu->SetItemImageToPredefinedIcon(
         idx, vtkKWIcon::IconSilkHelp);
+      menu->SetItemCompoundModeToLeft(idx);
+      }
+    }
+
+  if (this->KeyBindingsManager)
+    {
+    idx = menu->AddCommand(
+      this->GetHelpKeyBindingsMenuLabel(), this, "DisplayKeyBindingsCallback");
+    if (show_icons)
+      {
+      menu->SetItemImageToPredefinedIcon(
+        idx, vtkKWIcon::IconNuvola16x16AppsKeyboard);
       menu->SetItemCompoundModeToLeft(idx);
       }
     }
@@ -1102,6 +1129,30 @@ void vtkKWWindowBase::ToolbarVisibilityChangedCallback(vtkKWToolbar*)
     }
 
   this->UpdateToolbarState();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWindowBase::DisplayKeyBindingsCallback()
+{
+  vtkKWMessageDialog *dialog = vtkKWMessageDialog::New();
+  dialog->SetStyleToMessage();
+  dialog->SetMasterWindow(this);
+  dialog->SetOptions(
+    vtkKWMessageDialog::YesDefault | vtkKWMessageDialog::Resizable);
+  dialog->Create();
+  dialog->SetTitle(ks_("Help|Keyboard Shortcuts"));
+
+  vtkKWKeyBindingsWidget *kbw = vtkKWKeyBindingsWidget::New();
+  kbw->SetParent(dialog->GetBottomFrame());
+  kbw->SetKeyBindingsManager(this->KeyBindingsManager);
+  kbw->Create();
+  kbw->Update();
+  this->Script("pack %s -padx 2 -pady 2 -side top -fill both -expand t", 
+               kbw->GetWidgetName());
+  
+  dialog->Invoke();
+  kbw->Delete();
+  dialog->Delete();
 }
 
 //----------------------------------------------------------------------------
