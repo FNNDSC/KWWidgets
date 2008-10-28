@@ -18,13 +18,12 @@
 #include "vtkObjectFactory.h"
 #include "vtkKWTkUtilities.h"
 #include "vtkKWMenu.h"
-#include "vtkKWInternationalization.h"
 
 #include <vtksys/stl/string>
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTopLevel );
-vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.35 $");
+vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.36 $");
 
 //----------------------------------------------------------------------------
 vtkKWTopLevel::vtkKWTopLevel()
@@ -69,7 +68,6 @@ vtkKWApplication* vtkKWTopLevel::GetApplication()
 void vtkKWTopLevel::CreateWidget()
 {
   vtksys_stl::string opts;
-  vtksys_stl::string cmd;
 
   if (this->GetWindowClass())
     {
@@ -99,26 +97,6 @@ void vtkKWTopLevel::CreateWidget()
     }
 
   this->PostCreate();
-
-  // Tcl Interactor
-
-  const char *context = k_("Main Window");
-
-  if (!this->GetApplication()->GetReleaseMode())
-    {
-    this->SetKeyBinding(
-      "<Control-t>", this, "DisplayTclInteractor",
-      context, ks_("Main Window|Display Tcl interactor"));
-    }
-
-  // Error log
-
-  cmd = "DisplayLogDialog {";
-  cmd += this->GetTclName();
-  cmd += "}";
-  this->SetKeyBinding(
-    "<Control-Alt-e>", this->GetApplication(), cmd.c_str(),
-    context, ks_("Main Window|Display error log"));
 }
 
 //----------------------------------------------------------------------------

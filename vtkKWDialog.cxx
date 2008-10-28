@@ -13,14 +13,18 @@
 =========================================================================*/
 #include "vtkKWDialog.h"
 
+#include "vtkObjectFactory.h"
+
 #include "vtkKWApplication.h"
 #include "vtkKWTkUtilities.h"
 #include "vtkKWFrame.h"
-#include "vtkObjectFactory.h"
+#include "vtkKWInternationalization.h"
+
+#include <vtksys/stl/string>
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDialog );
-vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.59 $");
+vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.60 $");
 
 //----------------------------------------------------------------------------
 vtkKWDialog::vtkKWDialog()
@@ -132,6 +136,28 @@ void vtkKWDialog::CreateWidget()
   this->Superclass::CreateWidget();
 
   this->SetDeleteWindowProtocolCommand(this, "Cancel");
+
+
+  // Tcl Interactor
+
+  const char *context = k_("Dialog");
+
+  if (!this->GetApplication()->GetReleaseMode())
+    {
+    this->SetKeyBinding(
+      "<Control-t>", this, "DisplayTclInteractor",
+      context, ks_("Main Window|Display Tcl interactor"));
+    }
+
+  // Error log
+
+  vtksys_stl::string cmd;
+  cmd = "DisplayLogDialog {";
+  cmd += this->GetTclName();
+  cmd += "}";
+  this->SetKeyBinding(
+    "<Control-Alt-e>", this->GetApplication(), cmd.c_str(),
+    context, ks_("Main Window|Display error log"));
 }
 
 //----------------------------------------------------------------------------
