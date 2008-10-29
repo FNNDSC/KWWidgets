@@ -530,7 +530,6 @@ const char* vtkKWKeyBindingsManager::GetPrettyBinding(const char *binding)
 
   vtksys_stl::string &pretty = 
     this->Internals->BindingToPrettyBinding[binding];
-  pretty.clear();
   pretty.append(begin, end);
 
   // Replace Prior with Page Up and Next with Page Down
@@ -597,7 +596,6 @@ const char* vtkKWKeyBindingsManager::GetPrettyContext(const char *context)
 
   vtksys_stl::string &pretty = 
     this->Internals->ContextToPrettyContext[context];
-  pretty.clear();
   pretty.append(begin, end);
 
   // Add space between capitalized words
