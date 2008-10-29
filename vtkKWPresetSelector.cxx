@@ -62,7 +62,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.78 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.79 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -3882,15 +3882,12 @@ int vtkKWPresetSelector::UpdatePresetRow(int id)
     vtkKWIcon *thumbnail = this->GetPresetThumbnail(id);
     vtkKWIcon *screenshot = this->GetPresetScreenshot(id);
   
-    if (thumbnail || screenshot)
+    list->SetCellWindowCommand(
+      row, image_col_index, this, "PresetCellThumbnailCallback");
+    list->SetCellWindowDestroyCommandToRemoveChild(row, image_col_index);
+    if (this->GetThumbnailColumnVisibility())
       {
-      list->SetCellWindowCommand(
-        row, image_col_index, this, "PresetCellThumbnailCallback");
-      list->SetCellWindowDestroyCommandToRemoveChild(row, image_col_index);
-      if (this->GetThumbnailColumnVisibility())
-        {
-        list->RefreshCellWithWindowCommand(row, image_col_index);
-        }
+      list->RefreshCellWithWindowCommand(row, image_col_index);
       }
 
     list->SetCellTextAsDouble(
@@ -3970,6 +3967,10 @@ void vtkKWPresetSelector::PresetCellThumbnailCallback(
       mgr->SetDelay(10);
       mgr->Delete();
       child->SetBalloonHelpIcon(screenshot);
+      }
+    else
+      {
+      child->SetBalloonHelpIcon(NULL);
       }
 
     child->Create();
