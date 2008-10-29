@@ -106,7 +106,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.349 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.350 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -215,6 +215,7 @@ public:
 
   vtksys_stl::string VersionNameTemp;
   vtksys_stl::string LimitedEditionModeNameTemp;
+  vtksys_stl::string RegistryVersionNameTemp;
 
   // For ::PutEnv
 
@@ -255,6 +256,7 @@ vtkKWApplication::vtkKWApplication()
   this->ReleaseName               = NULL;
   this->PrettyName                = NULL;
   this->ReleaseMode               = 0;
+  this->RegistryVersionName       = NULL;
   this->LimitedEditionMode        = 0;
   this->LimitedEditionModeName    = NULL;
   this->HelpDialogStartingPage    = NULL;
@@ -378,6 +380,7 @@ vtkKWApplication::~vtkKWApplication()
   this->SetVersionName(NULL);
   this->SetReleaseName(NULL);
   this->SetPrettyName(NULL);
+  this->SetRegistryVersionName(NULL);
   this->SetInstallationDirectory(NULL);
   this->SetUserDataDirectory(NULL);
   this->SetEmailFeedbackAddress(NULL);
@@ -1862,16 +1865,6 @@ vtkKWSplashScreen *vtkKWApplication::GetSplashScreen()
 }
 
 //----------------------------------------------------------------------------
-vtkKWRegistryHelper *vtkKWApplication::GetRegistryHelper()
-{
-  if (!this->RegistryHelper)
-    {
-    this->RegistryHelper = vtkKWRegistryHelper::New();
-    }
-  return this->RegistryHelper;
-}
-
-//----------------------------------------------------------------------------
 vtkKWOptionDataBase *vtkKWApplication::GetOptionDataBase()
 {
   if (!this->OptionDataBase)
@@ -1893,6 +1886,33 @@ vtkKWBalloonHelpManager *vtkKWApplication::GetBalloonHelpManager()
 }
 
 //----------------------------------------------------------------------------
+vtkKWRegistryHelper *vtkKWApplication::GetRegistryHelper()
+{
+  if (!this->RegistryHelper)
+    {
+    this->RegistryHelper = vtkKWRegistryHelper::New();
+    }
+  return this->RegistryHelper;
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWApplication::GetRegistryVersionName()
+{
+  if (this->RegistryVersionName)
+    {
+    return this->RegistryVersionName;
+    }
+  if (this->Name)
+    {
+    char versionname_buffer[1024];
+    sprintf(versionname_buffer, "%s%d", this->Name, this->MajorVersion);
+    this->Internals->RegistryVersionNameTemp = versionname_buffer;
+    return this->Internals->RegistryVersionNameTemp.c_str();
+    }
+  return NULL;
+}
+
+//----------------------------------------------------------------------------
 int vtkKWApplication::SetRegistryValue(int level, 
                                        const char* subkey, 
                                        const char* key, 
@@ -1906,7 +1926,7 @@ int vtkKWApplication::SetRegistryValue(int level,
   int res = 0;
   char buffer[vtkKWRegistryHelper::RegistryKeyNameSizeMax];
   char value[vtkKWRegistryHelper::RegistryKeyValueSizeMax];
-  sprintf(buffer, "%s\\%s", this->GetVersionName(), subkey);
+  sprintf(buffer, "%s\\%s", this->GetRegistryVersionName(), subkey);
   va_list var_args;
   va_start(var_args, format);
   vsprintf(value, format, var_args);
@@ -1932,7 +1952,7 @@ int vtkKWApplication::GetRegistryValue(int level,
   int res = 0;
   char buff[vtkKWRegistryHelper::RegistryKeyValueSizeMax];
   char buffer[vtkKWRegistryHelper::RegistryKeyNameSizeMax];
-  sprintf(buffer, "%s\\%s", this->GetVersionName(), subkey);
+  sprintf(buffer, "%s\\%s", this->GetRegistryVersionName(), subkey);
 
   vtkKWRegistryHelper *reg = this->GetRegistryHelper();
   reg->SetTopLevel(this->GetName());
@@ -1959,7 +1979,7 @@ int vtkKWApplication::DeleteRegistryValue(int level,
     }
   int res = 0;
   char buffer[vtkKWRegistryHelper::RegistryKeyNameSizeMax];
-  sprintf(buffer, "%s\\%s", this->GetVersionName(), subkey);
+  sprintf(buffer, "%s\\%s", this->GetRegistryVersionName(), subkey);
   vtkKWRegistryHelper *reg = this->GetRegistryHelper();
   reg->SetTopLevel(this->GetName());
   res = reg->DeleteValue(buffer, key);
@@ -2893,7 +2913,7 @@ void vtkKWApplication::FindInstallationDirectory()
   else
     {
     char setup_key[vtkKWRegistryHelper::RegistryKeyNameSizeMax];
-    sprintf(setup_key, "%s\\Setup", this->GetVersionName());
+    sprintf(setup_key, "%s\\Setup", this->GetRegistryVersionName());
     vtkKWRegistryHelper *reg = this->GetRegistryHelper();
     reg->SetTopLevel(this->GetName());
     char installed_path[vtkKWRegistryHelper::RegistryKeyValueSizeMax];
@@ -3168,6 +3188,8 @@ void vtkKWApplication::PrintSelf(ostream& os, vtkIndent indent)
      << (this->ReleaseName ? this->ReleaseName : "(None)") << endl;
   os << indent << "VersionName: " 
      << (this->VersionName ? this->VersionName : "(None)") << endl;
+  os << indent << "RegistryVersionName: " 
+     << (this->RegistryVersionName ? this->RegistryVersionName : "(None)") << endl;
   os << indent << "PrettyName: " 
      << this->GetPrettyName() << endl;
   os << indent << "EmailFeedbackAddress: "

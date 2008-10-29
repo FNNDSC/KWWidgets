@@ -128,8 +128,6 @@ public:
   // Description:
   // Set/Get the application version name - this usually is the application 
   // name postfixed with the version number (major/minor).
-  // It is typically used as the master key to store registry settings
-  // (ex: VolView 3.0, ParaView1.1, etc.)
   // If it has not been set, it will use the value of Name and append
   // the major/minor version.
   vtkSetStringMacro(VersionName);
@@ -237,6 +235,16 @@ public:
   //BTX
   vtkKWRegistryHelper *GetRegistryHelper();
   //ETX
+
+  // Description:
+  // Set/Get the registry application version name - this usually is the
+  // application name postfixed with the *major* version number. The minor
+  // version is not used so that application settings are maintained
+  // between minor version changes.
+  // It is typically used as the master key to store registry settings
+  // (ex: VolView 3, ParaView1, etc.)
+  vtkSetStringMacro(RegistryVersionName);
+  virtual const char* GetRegistryVersionName();
 
   // Description:
   // Set/Get the current registry level. 
@@ -681,6 +689,7 @@ private:
   int MinorVersion;
   char *PrettyName;
   vtkSetStringMacro(PrettyName);
+  char *RegistryVersionName;
 
   // Description:
   // Limited edition mode, name of the application when in limited edition mode
