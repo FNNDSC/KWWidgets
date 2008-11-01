@@ -18,13 +18,14 @@
 #include "vtkKWMessage.h"
 #include "vtkKWEntryWithLabel.h"
 #include "vtkKWPushButton.h"
+#include "vtkKWCheckButton.h"
 
 #include "vtkObjectFactory.h"
 
 //----------------------------------------------------------------------------
 
 vtkStandardNewMacro( vtkKWSimpleEntryDialog );
-vtkCxxRevisionMacro(vtkKWSimpleEntryDialog, "$Revision: 1.16 $");
+vtkCxxRevisionMacro(vtkKWSimpleEntryDialog, "$Revision: 1.17 $");
 
 //----------------------------------------------------------------------------
 vtkKWSimpleEntryDialog::vtkKWSimpleEntryDialog()
@@ -76,9 +77,19 @@ void vtkKWSimpleEntryDialog::Pack()
 
   if (this->Entry && this->Entry->IsCreated())
     {
-    this->Script("pack %s -side top -before %s -padx 4 -fill x -expand yes", 
+    vtkKWWidget *before = NULL;
+    if (this->BottomFrame->IsPacked())
+      {
+      before = this->BottomFrame;
+      }
+    else if (this->CheckButton->IsPacked())
+      {
+      before = this->CheckButton;
+      }
+    this->Script("pack %s -side top %s %s -padx 4 -fill x -expand yes", 
                  this->Entry->GetWidgetName(), 
-                 this->BottomFrame->GetWidgetName());
+                 (before ? "-before" : ""),
+                 (before ? before->GetWidgetName() : ""));
     }
 }
 

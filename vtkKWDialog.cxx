@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDialog );
-vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.60 $");
+vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.61 $");
 
 //----------------------------------------------------------------------------
 vtkKWDialog::vtkKWDialog()
@@ -48,9 +48,10 @@ int vtkKWDialog::PreInvoke()
       {
       master_top->Display();
       }
-    this->GetApplication()->RegisterDialogUp(this);
     this->Display();
     }
+
+  this->GetApplication()->RegisterDialogUp(this);
 
   if (this->Beep)
     {
@@ -65,9 +66,15 @@ void vtkKWDialog::PostInvoke()
 {
   if (this->IsMapped())
     {
-    this->Withdraw();
-    this->GetApplication()->UnRegisterDialogUp(this);
+    // OK(), Cancel() should take care of that, but who knows, if another
+    // button was user-created and forgot to Withdraw(), or simply the
+    // dialog was closed programmatically by a subclass by setting
+    // this->Done and breaking the event-loop in Invoke()
+
+    this->Withdraw(); 
     }
+
+  this->GetApplication()->UnRegisterDialogUp(this);
 }
 
 //----------------------------------------------------------------------------
@@ -112,12 +119,14 @@ void vtkKWDialog::Display()
 void vtkKWDialog::Cancel()
 {
   this->Done = vtkKWDialog::StatusCanceled;  
+  this->Withdraw();
 }
 
 //----------------------------------------------------------------------------
 void vtkKWDialog::OK()
 {
   this->Done = vtkKWDialog::StatusOK;  
+  this->Withdraw();
 }
 
 //----------------------------------------------------------------------------

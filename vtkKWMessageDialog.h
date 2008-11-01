@@ -186,6 +186,10 @@ public:
     vtkKWApplication *app, const char *dialogname, int response);
 
   // Description:
+  // Display the dialog. 
+  virtual void Display();
+
+  // Description:
   // Dialog can be also used by performing individual steps of Invoke. These
   // steps are initialize: PreInvoke(), finalize: PostInvoke(), and check if
   // user responded IsUserDoneWithDialog(). Use this method only if you

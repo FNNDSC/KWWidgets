@@ -385,29 +385,12 @@ int vtkKWMessageDialog::GetTextWidth()
 }
 
 //----------------------------------------------------------------------------
-int vtkKWMessageDialog::PreInvoke()
+void vtkKWMessageDialog::Display()
 {
-  this->InvokeEvent(vtkKWEvent::MessageDialogInvokeEvent, this->DialogText);
+  // Make sure we pack correctly depending on the frame's children
 
-  // Check if the user specified a default answer for this one, stored
-  // in the registry
+  this->Pack(); 
 
-  if (this->DialogName)
-    {
-    int res = this->RestoreMessageDialogResponseFromRegistry(
-      this->GetApplication(), this->DialogName);
-    if (res == 1) 
-      {
-      this->Done = vtkKWDialog::StatusOK;
-      return 1;
-      }
-    if (res == -1)
-      {
-      this->Done = vtkKWDialog::StatusCanceled;
-      return 1;
-      }
-    }
-  
   if (this->Options & vtkKWMessageDialog::NoDefault ||
       this->Options & vtkKWMessageDialog::CancelDefault)
     {
@@ -440,9 +423,34 @@ int vtkKWMessageDialog::PreInvoke()
     this->SetResizable(0, 0);
     }
 
-  // Make sure we pack correctly depending on the frame's children
+  // Display
 
-  this->Pack(); 
+  this->Superclass::Display();
+}
+
+//----------------------------------------------------------------------------
+int vtkKWMessageDialog::PreInvoke()
+{
+  this->InvokeEvent(vtkKWEvent::MessageDialogInvokeEvent, this->DialogText);
+
+  // Check if the user specified a default answer for this one, stored
+  // in the registry
+
+  if (this->DialogName)
+    {
+    int res = this->RestoreMessageDialogResponseFromRegistry(
+      this->GetApplication(), this->DialogName);
+    if (res == 1) 
+      {
+      this->Done = vtkKWDialog::StatusOK;
+      return 1;
+      }
+    if (res == -1)
+      {
+      this->Done = vtkKWDialog::StatusCanceled;
+      return 1;
+      }
+    }
 
   return this->Superclass::PreInvoke();
 }
@@ -601,6 +609,7 @@ int vtkKWMessageDialog::GetRememberMessage()
 void vtkKWMessageDialog::Other()
 {
   this->Done = vtkKWMessageDialog::StatusOther;
+  this->Withdraw();
 }
 
 //----------------------------------------------------------------------------
