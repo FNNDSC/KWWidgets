@@ -29,13 +29,13 @@ const char *vtkKWVolumePropertyPresetSelector::ModalityColumnName  = "Modality";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWVolumePropertyPresetSelector);
-vtkCxxRevisionMacro(vtkKWVolumePropertyPresetSelector, "$Revision: 1.11 $");
+vtkCxxRevisionMacro(vtkKWVolumePropertyPresetSelector, "$Revision: 1.12 $");
 
 //----------------------------------------------------------------------------
 vtkKWVolumePropertyPresetSelector::vtkKWVolumePropertyPresetSelector()
 {
   this->SetPresetButtonsBaseIconToPredefinedIcon(
-    vtkKWIcon::IconNuvola16x16ActionsLedRed);
+    vtkKWIcon::IconNuvola16x16ActionsLedLightBlue);
 }
 
 //----------------------------------------------------------------------------
