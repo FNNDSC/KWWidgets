@@ -154,6 +154,14 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWNuvolaIconResourc
     Nuvola/16x16/actions/help.png \
     Nuvola/16x16/actions/history.png \
     Nuvola/16x16/actions/kalarm.png \
+    Nuvola/16x16/actions/ledblue.png \
+    Nuvola/16x16/actions/ledgreen.png \
+    Nuvola/16x16/actions/ledlightblue.png \
+    Nuvola/16x16/actions/ledlightgreen.png \
+    Nuvola/16x16/actions/ledorange.png \
+    Nuvola/16x16/actions/ledpurple.png \
+    Nuvola/16x16/actions/ledred.png \
+    Nuvola/16x16/actions/ledyellow.png \
     Nuvola/16x16/actions/mail_generic.png \
     Nuvola/16x16/actions/message.png \
     Nuvola/16x16/actions/messagebox_critical.png \

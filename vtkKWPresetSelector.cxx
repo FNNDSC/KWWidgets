@@ -62,7 +62,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.79 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.80 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -337,12 +337,7 @@ vtkKWPresetSelector::vtkKWPresetSelector()
   this->Toolbar = NULL;
 
   this->PresetButtonsBaseIcon = NULL;
-  vtkKWIcon *icon = vtkKWIcon::New();
-  icon->SetImage(vtkKWIcon::IconDocument);
-  icon->TrimTop();
-  icon->TrimRight();
-  this->SetPresetButtonsBaseIcon(icon);
-  icon->Delete();
+  this->SetPresetButtonsBaseIconToPredefinedIcon(vtkKWIcon::IconDocument);
 }
 
 //----------------------------------------------------------------------------
@@ -614,6 +609,18 @@ void vtkKWPresetSelector::SetPresetButtonsBaseIcon(vtkKWIcon *icon)
 
   this->SetPresetButtonsIcons();
   this->SetToolbarPresetButtonsIcons();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWPresetSelector::SetPresetButtonsBaseIconToPredefinedIcon(
+  int icon_index)
+{
+  vtkKWIcon *icon = vtkKWIcon::New();
+  icon->SetImage(icon_index);
+  icon->TrimTop();
+  icon->TrimRight();
+  this->SetPresetButtonsBaseIcon(icon);
+  icon->Delete();
 }
 
 //----------------------------------------------------------------------------

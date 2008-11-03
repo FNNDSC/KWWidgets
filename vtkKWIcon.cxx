@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.60 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.61 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -1572,6 +1572,78 @@ void vtkKWIcon::SetImage(int image)
         image_Nuvola_16x16_actions_kalarm_height,
         image_Nuvola_16x16_actions_kalarm_pixel_size, 
         image_Nuvola_16x16_actions_kalarm_length);
+      break;
+
+    case IconNuvola16x16ActionsLedBlue:
+      this->SetImage(
+        image_Nuvola_16x16_actions_ledblue, 
+        image_Nuvola_16x16_actions_ledblue_width, 
+        image_Nuvola_16x16_actions_ledblue_height,
+        image_Nuvola_16x16_actions_ledblue_pixel_size, 
+        image_Nuvola_16x16_actions_ledblue_length);
+      break;
+
+    case IconNuvola16x16ActionsLedGreen:
+      this->SetImage(
+        image_Nuvola_16x16_actions_ledgreen, 
+        image_Nuvola_16x16_actions_ledgreen_width, 
+        image_Nuvola_16x16_actions_ledgreen_height,
+        image_Nuvola_16x16_actions_ledgreen_pixel_size, 
+        image_Nuvola_16x16_actions_ledgreen_length);
+      break;
+
+    case IconNuvola16x16ActionsLedLightBlue:
+      this->SetImage(
+        image_Nuvola_16x16_actions_ledlightblue, 
+        image_Nuvola_16x16_actions_ledlightblue_width, 
+        image_Nuvola_16x16_actions_ledlightblue_height,
+        image_Nuvola_16x16_actions_ledlightblue_pixel_size, 
+        image_Nuvola_16x16_actions_ledlightblue_length);
+      break;
+
+    case IconNuvola16x16ActionsLedLightGreen:
+      this->SetImage(
+        image_Nuvola_16x16_actions_ledlightgreen, 
+        image_Nuvola_16x16_actions_ledlightgreen_width, 
+        image_Nuvola_16x16_actions_ledlightgreen_height,
+        image_Nuvola_16x16_actions_ledlightgreen_pixel_size, 
+        image_Nuvola_16x16_actions_ledlightgreen_length);
+      break;
+
+    case IconNuvola16x16ActionsLedOrange:
+      this->SetImage(
+        image_Nuvola_16x16_actions_ledorange, 
+        image_Nuvola_16x16_actions_ledorange_width, 
+        image_Nuvola_16x16_actions_ledorange_height,
+        image_Nuvola_16x16_actions_ledorange_pixel_size, 
+        image_Nuvola_16x16_actions_ledorange_length);
+      break;
+
+    case IconNuvola16x16ActionsLedPurple:
+      this->SetImage(
+        image_Nuvola_16x16_actions_ledpurple, 
+        image_Nuvola_16x16_actions_ledpurple_width, 
+        image_Nuvola_16x16_actions_ledpurple_height,
+        image_Nuvola_16x16_actions_ledpurple_pixel_size, 
+        image_Nuvola_16x16_actions_ledpurple_length);
+      break;
+
+    case IconNuvola16x16ActionsLedRed:
+      this->SetImage(
+        image_Nuvola_16x16_actions_ledred, 
+        image_Nuvola_16x16_actions_ledred_width, 
+        image_Nuvola_16x16_actions_ledred_height,
+        image_Nuvola_16x16_actions_ledred_pixel_size, 
+        image_Nuvola_16x16_actions_ledred_length);
+      break;
+
+    case IconNuvola16x16ActionsLedYellow:
+      this->SetImage(
+        image_Nuvola_16x16_actions_ledyellow, 
+        image_Nuvola_16x16_actions_ledyellow_width, 
+        image_Nuvola_16x16_actions_ledyellow_height,
+        image_Nuvola_16x16_actions_ledyellow_pixel_size, 
+        image_Nuvola_16x16_actions_ledyellow_length);
       break;
 
     case IconNuvola16x16ActionsViewLeftRight:

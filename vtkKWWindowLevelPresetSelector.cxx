@@ -34,17 +34,13 @@ const char *vtkKWWindowLevelPresetSelector::ModalityColumnName  = "Modality";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindowLevelPresetSelector);
-vtkCxxRevisionMacro(vtkKWWindowLevelPresetSelector, "$Revision: 1.19 $");
+vtkCxxRevisionMacro(vtkKWWindowLevelPresetSelector, "$Revision: 1.20 $");
 
 //----------------------------------------------------------------------------
 vtkKWWindowLevelPresetSelector::vtkKWWindowLevelPresetSelector()
 {
-  vtkKWIcon *icon = vtkKWIcon::New();
-  icon->SetImage(vtkKWIcon::IconDocumentWindowLevel);
-  icon->TrimTop();
-  icon->TrimRight();
-  this->SetPresetButtonsBaseIcon(icon);
-  icon->Delete();
+  this->SetPresetButtonsBaseIconToPredefinedIcon(
+    vtkKWIcon::IconContrast);
 }
 
 //----------------------------------------------------------------------------

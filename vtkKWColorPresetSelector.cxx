@@ -40,7 +40,7 @@ const char *vtkKWColorPresetSelector::ColorColumnName = "Color";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWColorPresetSelector);
-vtkCxxRevisionMacro(vtkKWColorPresetSelector, "$Revision: 1.35 $");
+vtkCxxRevisionMacro(vtkKWColorPresetSelector, "$Revision: 1.36 $");
 
 //----------------------------------------------------------------------------
 vtkKWColorPresetSelector::vtkKWColorPresetSelector()
@@ -158,12 +158,8 @@ void vtkKWColorPresetSelector::CreateWidget()
     return;
     }
 
-  vtkKWIcon *icon = vtkKWIcon::New();
-  icon->SetImage(vtkKWIcon::IconDocumentRGBColor);
-  icon->TrimTop();
-  icon->TrimRight();
-  this->SetPresetButtonsBaseIcon(icon);
-  icon->Delete();
+  this->SetPresetButtonsBaseIconToPredefinedIcon(
+    vtkKWIcon::IconDocumentRGBColor);
 
   // Call the superclass to create the whole widget
 

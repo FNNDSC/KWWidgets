@@ -385,6 +385,7 @@ public:
   // "Add Preset" button.
   vtkGetObjectMacro(PresetButtonsBaseIcon, vtkKWIcon);
   virtual void SetPresetButtonsBaseIcon(vtkKWIcon *icon);
+  virtual void SetPresetButtonsBaseIconToPredefinedIcon(int icon_index);
 
   // Description:
   // Set/Get the visibility of the select spin buttons.
