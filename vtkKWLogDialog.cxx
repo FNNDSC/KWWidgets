@@ -22,7 +22,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLogDialog );
-vtkCxxRevisionMacro(vtkKWLogDialog, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWLogDialog, "$Revision: 1.5 $");
 
 //----------------------------------------------------------------------------
 vtkKWLogDialog::vtkKWLogDialog()
@@ -31,6 +31,7 @@ vtkKWLogDialog::vtkKWLogDialog()
 
   this->Options = 
     vtkKWMessageDialog::YesDefault | vtkKWMessageDialog::Resizable;
+  this->Modal = 0;
 }
 
 //----------------------------------------------------------------------------
