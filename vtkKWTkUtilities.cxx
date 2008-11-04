@@ -46,7 +46,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.99 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.100 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -492,83 +492,6 @@ int vtkKWTkUtilities::QueryUserForColor(
 
   Tcl_Interp *interp = app->GetMainInterp(); 
 
-#if 0
-  app->RegisterDialogUp(NULL);
-
-  vtksys_stl::string cmd("tk_chooseColor");
-  if (dialog_parent)
-    {
-    cmd += " -parent {";
-    cmd += dialog_parent->GetWidgetName();
-    cmd += "}";
-    }
-  if (dialog_title)
-    {
-    cmd += " -title {";
-    cmd += dialog_title;
-    cmd += "}";
-    }
-  
-  if (in_r >= 0.0 && in_r <= 1.0 && 
-      in_g >= 0.0 && in_g <= 1.0 && 
-      in_b >= 0.0 && in_b <= 1.0)
-    {
-    char color_hex[8];
-    sprintf(color_hex, "#%02x%02x%02x", 
-            (int)(in_r * 255.5), (int)(in_g * 255.5), (int)(in_b * 255.5));
-    cmd += " -initialcolor {";
-    cmd += color_hex;
-    cmd += "}";
-    }
-
-  if (Tcl_GlobalEval(interp, cmd.c_str()) != TCL_OK)
-    {
-    vtkGenericWarningMacro(
-      << "Unable to query color: " << Tcl_GetStringResult(interp));
-    return 0;
-    }
-
-  const char *result = Tcl_GetStringResult(interp);
-
-  app->UnRegisterDialogUp(NULL);
-
-  if (strlen(result) > 6)
-    {
-    char tmp[3];
-    int r, g, b;
-    tmp[2] = '\0';
-    tmp[0] = result[1];
-    tmp[1] = result[2];
-    if (sscanf(tmp, "%x", &r) == 1)
-      {
-      tmp[0] = result[3];
-      tmp[1] = result[4];
-      if (sscanf(tmp, "%x", &g) == 1)
-        {
-        tmp[0] = result[5];
-        tmp[1] = result[6];
-        if (sscanf(tmp, "%x", &b) == 1)
-          {
-          if (out_r)
-            {
-            *out_r = (double)r / 255.0;
-            }
-          if (out_g)
-            {
-            *out_g = (double)g / 255.0;
-            }
-          if (out_b)
-            {
-            *out_b = (double)b / 255.0;
-            }
-          return 1;
-          }
-        }
-      }
-    }
-
-  return 0;
-#else
   vtkKWColorPickerDialog *dlg = app->GetColorPickerDialog();
   if (!dlg)
     {
@@ -604,7 +527,6 @@ int vtkKWTkUtilities::QueryUserForColor(
     }
 
   return ok;
-#endif
 }
 
 //----------------------------------------------------------------------------
