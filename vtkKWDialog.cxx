@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDialog );
-vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.61 $");
+vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.62 $");
 
 //----------------------------------------------------------------------------
 vtkKWDialog::vtkKWDialog()
@@ -51,8 +51,6 @@ int vtkKWDialog::PreInvoke()
     this->Display();
     }
 
-  this->GetApplication()->RegisterDialogUp(this);
-
   if (this->Beep)
     {
     vtkKWTkUtilities::Bell(this->GetApplication());
@@ -73,8 +71,6 @@ void vtkKWDialog::PostInvoke()
 
     this->Withdraw(); 
     }
-
-  this->GetApplication()->UnRegisterDialogUp(this);
 }
 
 //----------------------------------------------------------------------------
@@ -96,12 +92,16 @@ int vtkKWDialog::Invoke()
     return 0;
     }
 
+  this->GetApplication()->RegisterDialogUp(this);
+
   // Wait for the end
 
   while (!this->IsUserDoneWithDialog())
     {
     Tcl_DoOneEvent(0);    
     }
+
+  this->GetApplication()->UnRegisterDialogUp(this);
 
   this->PostInvoke();
 
