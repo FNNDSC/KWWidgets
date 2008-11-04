@@ -106,7 +106,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.350 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.351 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -3111,7 +3111,7 @@ void vtkKWApplication::DisplayLogDialog(vtkKWTopLevel* master)
   if (this->CreateLogDialog())
     {
     this->LogDialog->SetMasterWindow(master ? master : this->GetNthWindow(0));
-    this->LogDialog->Invoke();
+    this->LogDialog->Display();
     }
 }
 
