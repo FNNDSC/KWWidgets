@@ -680,13 +680,15 @@ public:
   virtual void PresetLocateCallback();
   virtual void PresetLocateCallback(int id);
   virtual void PresetSelectionCallback();
-  virtual void PresetSelectionChangedCallback() {};
+  virtual void PresetSelectionChangedCallback();
   virtual void PresetRightClickCallback(int row, int col, int x, int y);
   virtual int  PresetLoadCallback();
   virtual void UpdatePresetRowCallback(int id);
   virtual void UpdatePresetRowsCallback();
   virtual void ColumnSortedCallback();
   virtual void RowMovedCallback();
+  virtual void SchedulePresetSelectionCallback();
+  virtual void SchedulePresetSelectionChangedCallback();
 
 protected:
   vtkKWPresetSelector();

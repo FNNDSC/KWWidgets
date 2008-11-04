@@ -62,7 +62,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.80 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.81 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -130,6 +130,8 @@ public:
   ScheduleUpdatePresetRowTimerPoolType ScheduleUpdatePresetRowTimerPool;
 
   vtksys_stl::string ScheduleUpdatePresetRowsTimerId;
+  vtksys_stl::string SchedulePresetSelectionCallbackTimerId;
+  vtksys_stl::string SchedulePresetSelectionChangedCallbackTimerId;
 
   // User slot name for the default fields
 
@@ -479,8 +481,10 @@ void vtkKWPresetSelector::CreateWidget()
     {
     list->SetSelectionModeToBrowse();
     }
-  list->SetSelectionCommand(this, "PresetSelectionCallback");
-  list->SetSelectionChangedCommand(this, "PresetSelectionChangedCallback");
+  list->SetSelectionCommand(
+    this, "SchedulePresetSelectionCallback");
+  list->SetSelectionChangedCommand(
+    this, "SchedulePresetSelectionChangedCallback");
   list->SetPotentialCellColorsChangedCommand(
     list, "ScheduleRefreshColorsOfAllCellsWithWindowCommand");
   list->ColumnSeparatorsVisibilityOn();
@@ -4330,15 +4334,54 @@ int vtkKWPresetSelector::PresetLoadCallback()
   return this->InvokePresetLoadCommand();
 }
 
+//----------------------------------------------------------------------------
+void vtkKWPresetSelector::SchedulePresetSelectionCallback()
+{
+  // Already scheduled
+
+  if (this->Internals->SchedulePresetSelectionCallbackTimerId.size())
+    {
+    return;
+    }
+
+  this->Internals->SchedulePresetSelectionCallbackTimerId =
+    this->Script(
+      "after idle {catch {%s PresetSelectionCallback}}", this->GetTclName());
+}
+
 //---------------------------------------------------------------------------
 void vtkKWPresetSelector::PresetSelectionCallback()
 {
+  this->Internals->SchedulePresetSelectionCallbackTimerId = "";
+
   this->Update(); // this enable/disable the remove button if no selection
 
   if (this->ApplyPresetOnSelection)
     {
     this->PresetApplyCallback();
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWPresetSelector::SchedulePresetSelectionChangedCallback()
+{
+  // Already scheduled
+
+  if (this->Internals->SchedulePresetSelectionChangedCallbackTimerId.size())
+    {
+    return;
+    }
+
+  this->Internals->SchedulePresetSelectionChangedCallbackTimerId =
+    this->Script(
+      "after idle {catch {%s PresetSelectionChangedCallback}}", 
+      this->GetTclName());
+}
+
+//---------------------------------------------------------------------------
+void vtkKWPresetSelector::PresetSelectionChangedCallback()
+{
+  this->Internals->SchedulePresetSelectionChangedCallbackTimerId = "";
 }
 
 //---------------------------------------------------------------------------
