@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.160 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.161 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetInternals
@@ -648,7 +648,7 @@ int vtkKWWidget::IsAlive()
 int vtkKWWidget::IsMapped()
 {
   return this->GetApplication()->EvaluateBooleanExpression(
-    "expr [winfo exists %s] && [winfo ismapped %s]", 
+    "expr {[winfo exists %s] && [winfo ismapped %s]}", 
     this->GetWidgetName(), this->GetWidgetName());
 }
 
