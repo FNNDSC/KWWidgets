@@ -100,7 +100,11 @@ vtkKWStartupPageWidget::vtkKWStartupPageWidget()
 #endif
 
   this->SupportDoubleClick     = 1;
+#ifdef _WIN32
   this->SupportDrop            = 1;
+#else
+  this->SupportDrop            = 0;
+#endif
   this->SupportMostRecentFiles = 1;
   this->SupportOpen            = 1;
 
