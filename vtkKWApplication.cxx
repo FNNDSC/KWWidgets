@@ -106,7 +106,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.351 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.352 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1501,8 +1501,6 @@ int vtkKWApplication::DisplayExitDialog(vtkKWTopLevel *master)
     vtkKWMessageDialog::Beep | 
     vtkKWMessageDialog::YesDefault);
   dialog->SetDialogName(vtkKWApplication::ExitDialogName);
-  dialog->Create();
-  dialog->SetIcon();
 
   char buffer[500];
 
@@ -1834,9 +1832,7 @@ int vtkKWApplication::SendErrorLog()
   dialog->SetText(k_("Some errors were raised during your session. These errors did not cause any data loss, but by keeping us informed you can help us to improve our product.\n\nYou can send us this error log now. You can also review and send the error log in the future by accessing the \"Window\" menu or by clicking on the error icon located at the bottom right corner of the window."));
   dialog->SetOKButtonText(k_("Send Log"));
   dialog->SetCancelButtonText(k_("Do Not Send Log"));
-  dialog->Create();
   dialog->GetIcon()->SetImageToIcon(icon);
-  dialog->SetIcon();
 
   int ret = dialog->Invoke();
   dialog->Delete();
@@ -2656,7 +2652,6 @@ void vtkKWApplication::CreateEmailMessageDialog(
   dlg->SetOptions(vtkKWMessageDialog::ErrorIcon);
   dlg->SetTitle(ks_("Email Feedback Dialog|Title|Send Email Error!"));
   dlg->Create();
-  dlg->SetIcon();
 
   vtkKWSeparator *sep = vtkKWSeparator::New();
   sep->SetParent(dlg->GetBottomFrame());

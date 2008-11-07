@@ -36,7 +36,7 @@
 
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.65 $");
+vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.66 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindowBase );
@@ -751,7 +751,6 @@ int vtkKWWindowBase::DisplayCloseDialog()
     vtkKWMessageDialog::QuestionIcon | 
     vtkKWMessageDialog::Beep | 
     vtkKWMessageDialog::YesDefault);
-  dialog->Create();
   dialog->SetText(k_("Are you sure you want to close this window?"));
   dialog->SetTitle(this->GetFileCloseMenuLabel());
   int ret = dialog->Invoke();
@@ -1139,8 +1138,8 @@ void vtkKWWindowBase::DisplayKeyBindingsCallback()
   dialog->SetMasterWindow(this);
   dialog->SetOptions(
     vtkKWMessageDialog::YesDefault | vtkKWMessageDialog::Resizable);
-  dialog->Create();
   dialog->SetTitle(ks_("Help|Keyboard Shortcuts"));
+  dialog->Create();
 
   vtkKWKeyBindingsWidget *kbw = vtkKWKeyBindingsWidget::New();
   kbw->SetParent(dialog->GetBottomFrame());

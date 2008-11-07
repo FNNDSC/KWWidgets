@@ -105,6 +105,11 @@ void vtkKWMessageDialog::CreateWidget()
   this->Script("pack %s -side right -fill both -expand true -pady 0",
                this->MessageDialogFrame->GetWidgetName());
 
+  if (this->Options & vtkKWMessageDialog::Beep)
+    {
+    this->BeepOn();
+    }
+
   // Top
 
   this->TopFrame->SetParent(this->MessageDialogFrame);
@@ -194,6 +199,8 @@ void vtkKWMessageDialog::CreateWidget()
 
   this->Script("pack %s -side left -fill y", this->Icon->GetWidgetName());
   this->Script("pack forget %s", this->Icon->GetWidgetName());
+
+  this->SetIcon();
 
   // Pack
 
@@ -355,6 +362,31 @@ void vtkKWMessageDialog::SetStyle(int arg)
 
   this->UpdateButtons();
   this->PackButtons();
+}
+
+void vtkKWMessageDialog::SetStyleToMessage() 
+{ 
+  this->SetStyle(vtkKWMessageDialog::StyleMessage); 
+}
+
+void vtkKWMessageDialog::SetStyleToYesNo() 
+{ 
+  this->SetStyle(vtkKWMessageDialog::StyleYesNo); 
+}
+
+void vtkKWMessageDialog::SetStyleToOkCancel() 
+{ 
+  this->SetStyle(vtkKWMessageDialog::StyleOkCancel); 
+}
+
+void vtkKWMessageDialog::SetStyleToOkOtherCancel() 
+{ 
+  this->SetStyle(vtkKWMessageDialog::StyleOkOtherCancel); 
+}
+
+void vtkKWMessageDialog::SetStyleToCancel() 
+{ 
+  this->SetStyle(vtkKWMessageDialog::StyleCancel); 
 }
 
 //----------------------------------------------------------------------------
@@ -534,11 +566,8 @@ void vtkKWMessageDialog::PopupMessage(vtkKWApplication *app,
   dlg2->SetMasterWindow(win);
   dlg2->SetOptions(
     options | vtkKWMessageDialog::Beep | vtkKWMessageDialog::YesDefault);
-  dlg2->Create();
-  dlg2->SetText(message);
   dlg2->SetTitle(title);
-  dlg2->SetIcon();
-  dlg2->BeepOn();
+  dlg2->SetText(message);
   dlg2->Invoke();
   dlg2->Delete();
 }
@@ -557,11 +586,8 @@ int vtkKWMessageDialog::PopupYesNo(vtkKWApplication *app,
   dlg2->SetOptions(
     options | vtkKWMessageDialog::Beep | vtkKWMessageDialog::YesDefault);
   dlg2->SetDialogName(name);
-  dlg2->Create();
-  dlg2->SetText(message);
   dlg2->SetTitle(title);
-  dlg2->SetIcon();
-  dlg2->BeepOn();
+  dlg2->SetText(message);
   int ret = dlg2->Invoke();
   dlg2->Delete();
   return ret;
@@ -589,10 +615,8 @@ int vtkKWMessageDialog::PopupOkCancel(vtkKWApplication *app,
   dlg2->SetOptions(
     options | vtkKWMessageDialog::Beep | vtkKWMessageDialog::YesDefault);
   dlg2->SetMasterWindow(win);
-  dlg2->Create();
-  dlg2->SetText(message);
   dlg2->SetTitle(title);
-  dlg2->SetIcon();
+  dlg2->SetText(message);
   int ret = dlg2->Invoke();
   dlg2->Delete();
   return ret;

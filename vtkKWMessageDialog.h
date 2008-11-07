@@ -35,8 +35,11 @@ public:
   void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
-  // Set the text of the message (and the width of a line, in pixels)
+  // Set the text of the message
   virtual void SetText(const char *);
+
+  // Description:
+  // Set/Get the width of the message, in pixels)
   virtual void SetTextWidth(int);
   virtual int GetTextWidth();
 
@@ -66,16 +69,11 @@ public:
   //ETX
   virtual void SetStyle(int);
   vtkGetMacro(Style,int);
-  void SetStyleToMessage() 
-    { this->SetStyle(vtkKWMessageDialog::StyleMessage); };
-  void SetStyleToYesNo() 
-    { this->SetStyle(vtkKWMessageDialog::StyleYesNo); };
-  void SetStyleToOkCancel() 
-    { this->SetStyle(vtkKWMessageDialog::StyleOkCancel); };
-  void SetStyleToOkOtherCancel() 
-    { this->SetStyle(vtkKWMessageDialog::StyleOkOtherCancel); };
-  void SetStyleToCancel() 
-    { this->SetStyle(vtkKWMessageDialog::StyleCancel); };
+  void SetStyleToMessage();
+  void SetStyleToYesNo();
+  void SetStyleToOkCancel();
+  void SetStyleToOkOtherCancel();
+  void SetStyleToCancel();
 
   // Description:
   // Set different options for the dialog.
@@ -152,10 +150,6 @@ public:
   vtkGetObjectMacro(Icon, vtkKWLabel);
 
   // Description:
-  // Set the icon on the message dialog.
-  virtual void SetIcon();
-
-  // Description:
   // Accessor for OK and cancel button
   vtkGetObjectMacro(OKButton, vtkKWPushButton);
   vtkGetObjectMacro(CancelButton, vtkKWPushButton);
@@ -187,6 +181,7 @@ public:
 
   // Description:
   // Display the dialog. 
+  // Override the superclass to set up keybindings and options
   virtual void Display();
 
   // Description:
@@ -195,12 +190,18 @@ public:
   // user responded IsUserDoneWithDialog(). Use this method only if you
   // want to bypass the event loop used in Invoke() by creating your own
   // and checking for IsUserDoneWithDialog().
+  // Override the superclass to handle DialogName
   virtual int PreInvoke();
   virtual void PostInvoke();
 
   // Description::
   // Callback. Close this Dialog (for the third button)
   virtual void Other();
+
+  // Description:
+  // Set the icon on the message dialog.
+  // Legacy. Do not call anymore. Is called automatically by Create().
+  virtual void SetIcon();
 
 protected:
   vtkKWMessageDialog();

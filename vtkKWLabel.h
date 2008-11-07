@@ -271,6 +271,7 @@ protected:
 private:
   char* Text;
   int AdjustWrapLengthToWidth;
+  vtkKWIcon *Icon;
 
   vtkKWLabel(const vtkKWLabel&); // Not implemented
   void operator=(const vtkKWLabel&); // Not implemented

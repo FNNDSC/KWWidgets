@@ -20,13 +20,14 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabel );
-vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.54 $");
+vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.55 $");
 
 //----------------------------------------------------------------------------
 vtkKWLabel::vtkKWLabel()
 {
   this->Text                    = NULL;
   this->AdjustWrapLengthToWidth = 0;
+  this->Icon                    = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -36,6 +37,11 @@ vtkKWLabel::~vtkKWLabel()
     { 
     delete [] this->Text; 
     this->Text = NULL;
+    }
+  if (this->Icon) 
+    { 
+    this->Icon->Delete(); 
+    this->Icon = NULL;
     }
 }
 
@@ -107,6 +113,17 @@ void vtkKWLabel::CreateWidget()
   // Set bindings (if any)
   
   this->UpdateBindings();
+
+  // Icon
+
+  if (this->Icon)
+    {
+    this->SetImageToPixels(
+      this->Icon->GetData(), 
+      this->Icon->GetWidth(), 
+      this->Icon->GetHeight(), 
+      this->Icon->GetPixelSize());
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -473,24 +490,49 @@ int vtkKWLabel::GetAnchor()
 //----------------------------------------------------------------------------
 void vtkKWLabel::SetImageToPredefinedIcon(int icon_index)
 {
-  vtkKWIcon *icon = vtkKWIcon::New();
-  icon->SetImage(icon_index);
-  this->SetImageToIcon(icon);
-  icon->Delete();
+  if (!this->Icon)
+    {
+    this->Icon = vtkKWIcon::New();
+    }
+  this->Icon->SetImage(icon_index);
+  this->SetImageToIcon(this->Icon);
 }
 
 //----------------------------------------------------------------------------
 void vtkKWLabel::SetImageToIcon(vtkKWIcon* icon)
 {
-  if (icon)
+  if (this->IsCreated())
     {
-    this->SetImageToPixels(
-      icon->GetData(), 
-      icon->GetWidth(), icon->GetHeight(), icon->GetPixelSize());
+    if (icon)
+      {
+      this->SetImageToPixels(
+        icon->GetData(), 
+        icon->GetWidth(), 
+        icon->GetHeight(), 
+        icon->GetPixelSize());
+      }
+    else
+      {
+      this->SetConfigurationOption("-image", "");
+      }
     }
   else
     {
-    this->SetConfigurationOption("-image", "");
+    if (icon)
+      {
+      if (!this->Icon)
+        {
+        this->Icon = vtkKWIcon::New();
+        }
+      this->Icon->SetImage(icon);
+      }
+    else
+      {
+      if (this->Icon)
+        {
+        this->Icon->SetImage(NULL);
+        }
+      }
     }
 }
 

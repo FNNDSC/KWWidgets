@@ -24,14 +24,13 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDialog );
-vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.62 $");
+vtkCxxRevisionMacro(vtkKWDialog, "$Revision: 1.63 $");
 
 //----------------------------------------------------------------------------
 vtkKWDialog::vtkKWDialog()
 {
   this->Done = vtkKWDialog::StatusCanceled;
   this->Beep = 0;
-  this->BeepType = 0;
   this->Modal = 1;
 }
 
@@ -39,6 +38,11 @@ vtkKWDialog::vtkKWDialog()
 int vtkKWDialog::PreInvoke()
 {
   this->Done = vtkKWDialog::StatusActive;
+
+  if (!this->IsCreated())
+    {
+    this->Create();
+    }
 
   if (!this->IsMapped())
     {
@@ -82,11 +86,6 @@ int vtkKWDialog::IsUserDoneWithDialog()
 //----------------------------------------------------------------------------
 int vtkKWDialog::Invoke()
 {
-  if (!this->IsCreated())
-    {
-    return 0;
-    }
-
   if (!this->PreInvoke())
     {
     return 0;
@@ -111,6 +110,11 @@ int vtkKWDialog::Invoke()
 //----------------------------------------------------------------------------
 void vtkKWDialog::Display()
 {
+  if (!this->IsCreated())
+    {
+    this->Create();
+    }
+
   this->Done = vtkKWDialog::StatusActive;
   this->Superclass::Display();
 }
@@ -174,6 +178,5 @@ void vtkKWDialog::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
   os << indent << "Beep: " << this->GetBeep() << endl;
-  os << indent << "BeepType: " << this->GetBeepType() << endl;
 }
 

@@ -78,7 +78,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.88 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.89 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -2487,12 +2487,10 @@ int vtkKWSelectionFrameLayoutManager::SaveScreenshotAllWidgetsToFile(
     dialog->SetMasterWindow(this->GetParentTopLevel());
     dialog->SetOptions(
       vtkKWMessageDialog::YesDefault|vtkKWMessageDialog::CustomIcon);
-    dialog->Create();
     dialog->SetTitle(
       ks_("Selection Frame Manager|Dialog|Title|Save Screenshot - Success!"));
     dialog->SetText(k_("Screenshot saved, continue."));
     dialog->GetIcon()->SetImageToIcon(icon);
-    dialog->SetIcon();
     dialog->Invoke();
     dialog->Delete();
 
@@ -2556,12 +2554,10 @@ int vtkKWSelectionFrameLayoutManager::CopyScreenshotAllWidgetsToClipboard()
   dialog->SetMasterWindow(this->GetParentTopLevel());
   dialog->SetOptions(
     vtkKWMessageDialog::YesDefault|vtkKWMessageDialog::CustomIcon);
-  dialog->Create();
   dialog->SetTitle(
     ks_("Selection Frame Manager|Dialog|Title|Copy Screenshot - Success!"));
   dialog->SetText(k_("Screenshot completed, continue."));
   dialog->GetIcon()->SetImageToIcon(icon);
-  dialog->SetIcon();
   dialog->Invoke();
   dialog->Delete();
 

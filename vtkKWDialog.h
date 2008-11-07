@@ -32,6 +32,8 @@ public:
   // Description:
   // Invoke the dialog, display it and enter an event loop until the user
   // confirms or cancels the dialog.
+  // Create() will be called automatically by PreInvoke() if the dialog
+  // has not been Create'd() yet.
   // Note that a dialog is a modal toplevel by default.
   // This method returns 0 if the dialog was killed or 
   // canceled, 1 otherwise. The status can be further refined
@@ -40,6 +42,8 @@ public:
 
   // Description:
   // Display the dialog. 
+  // Create() will be called automatically if the dialog
+  // has not been Create'd() yet.
   // Note that a dialog is a modal toplevel by default.
   virtual void Display();
 
@@ -64,11 +68,6 @@ public:
   vtkSetClampMacro(Beep, int, 0, 1);
   vtkBooleanMacro(Beep, int);
   vtkGetMacro(Beep, int);
-
-  // Description:
-  // Sets the beep type
-  vtkSetMacro(BeepType, int);
-  vtkGetMacro(BeepType, int);
 
   // Description:
   // Callback. Cancel the action and close this dialog
@@ -98,7 +97,6 @@ protected:
 
   int Done;
   int Beep;
-  int BeepType;
 
 private:
   vtkKWDialog(const vtkKWDialog&); // Not implemented

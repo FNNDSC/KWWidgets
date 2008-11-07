@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.61 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.62 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -45,7 +45,7 @@ vtkKWIcon::vtkKWIcon()
 //----------------------------------------------------------------------------
 vtkKWIcon::~vtkKWIcon()
 {
-  this->SetData(0, 0, 0, 0);
+  this->SetData(NULL, 0, 0, 0);
 }
 
 //----------------------------------------------------------------------------
@@ -57,15 +57,17 @@ void vtkKWIcon::DeepCopy(vtkKWIcon* icon)
 //----------------------------------------------------------------------------
 void vtkKWIcon::SetImage(vtkKWIcon* icon)
 {
-  if (!icon)
+  if (icon)
     {
-    vtkErrorMacro("No icon specified");
-    return;
+    this->SetData(icon->GetData(), 
+                  icon->GetWidth(), 
+                  icon->GetHeight(), 
+                  icon->GetPixelSize());
     }
-
-  this->SetData(icon->GetData(), 
-                icon->GetWidth(), icon->GetHeight(), 
-                icon->GetPixelSize());
+  else
+    {
+    this->SetData(NULL, 0, 0, 0);
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -73,7 +75,7 @@ void vtkKWIcon::SetImage(vtkImageData* image)
 {
   if (!image)
     {
-    vtkErrorMacro("No image specified");
+    this->SetData(NULL, 0, 0, 0);
     return;
     }
 
@@ -128,10 +130,21 @@ void vtkKWIcon::SetImage(vtkImageData* image)
 
 //----------------------------------------------------------------------------
 void vtkKWIcon::SetImage(const unsigned char *data, 
-                         int width, int height, int pixel_size, 
+                         int width, 
+                         int height, 
+                         int pixel_size, 
                          unsigned long buffer_length,
                          int options)
 {
+  if (this->Data == data &&
+      this->Width == width &&
+      this->Height == height &&
+      this->PixelSize == pixel_size &&
+      !options)
+    {
+    return;
+    }
+
   unsigned long nb_of_raw_bytes = width * height * pixel_size;
   if (!buffer_length)
     {
@@ -170,6 +183,15 @@ void vtkKWIcon::SetData(const unsigned char *data,
                         int pixel_size,
                         int options)
 {
+  if (this->Data == data &&
+      this->Width == width &&
+      this->Height == height &&
+      this->PixelSize == pixel_size &&
+      !options)
+    {
+    return;
+    }
+
   unsigned long stride = width * pixel_size;
   unsigned long buffer_length = stride * height;
   if (data && buffer_length > 0)
@@ -210,7 +232,7 @@ void vtkKWIcon::SetData(const unsigned char *data,
 //----------------------------------------------------------------------------
 void vtkKWIcon::SetImage(int image)
 {
-  this->SetData(0, 0, 0, 0);
+  this->SetData(NULL, 0, 0, 0);
 
   if (image == vtkKWIcon::IconNoIcon)
     {
