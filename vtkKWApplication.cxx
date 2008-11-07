@@ -106,7 +106,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.352 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.353 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -283,7 +283,7 @@ vtkKWApplication::vtkKWApplication()
   this->SplashScreenVisibility    = 1;
   this->PrintTargetDPI            = 100.0;
   this->Theme                     = NULL;
-  this->LogDialog                 = vtkKWLogDialog::New();
+  this->LogDialog                 = NULL;
   this->TclInteractor             = NULL;
   this->ColorPickerDialog             = NULL;
 
@@ -1802,7 +1802,7 @@ int vtkKWApplication::SendErrorLog()
                   this, vtkKWApplication::SendErrorLogDialogName) == 0);
   if (!prompt || 
       !this->CanEmailFeedback() || 
-      !this->CreateLogDialog() ||
+      !this->LogDialog ||
       !this->LogDialog->GetLogWidget()->GetNumberOfRecords())
     {
     return 0;
@@ -1838,11 +1838,12 @@ int vtkKWApplication::SendErrorLog()
   dialog->Delete();
   icon->Delete();
 
-  this->LogDialog->Withdraw();
+  this->GetLogDialog()->Withdraw();
 
   if (ret)
     {
-    this->LogDialog->GetLogWidget()->EmailRecords(this->EmailFeedbackAddress);
+    this->GetLogDialog()->GetLogWidget()->EmailRecords(
+      this->EmailFeedbackAddress);
     }
 
   return ret;
@@ -3024,7 +3025,7 @@ void vtkKWApplication::WarningMessage(const char* message)
   this->InvokeEvent(vtkKWEvent::WarningMessageEvent, (void*)message);
   if (this->CreateLogDialog())
     {
-    this->LogDialog->GetLogWidget()->AddWarningRecord(message);
+    this->GetLogDialog()->GetLogWidget()->AddWarningRecord(message);
     }
 #ifdef _WIN32
   ::OutputDebugString(message);
@@ -3038,7 +3039,7 @@ void vtkKWApplication::ErrorMessage(const char* message)
   this->InvokeEvent(vtkKWEvent::ErrorMessageEvent, (void*)message);
   if (this->CreateLogDialog())
     {
-    this->LogDialog->GetLogWidget()->AddErrorRecord(message);
+    this->GetLogDialog()->GetLogWidget()->AddErrorRecord(message);
     }
 #ifdef _WIN32
   ::OutputDebugString(message);
@@ -3052,7 +3053,7 @@ void vtkKWApplication::InformationMessage(const char* message)
   this->InvokeEvent(vtkKWEvent::InformationMessageEvent, (void*)message);
   if (this->CreateLogDialog())
     {
-    this->LogDialog->GetLogWidget()->AddInformationRecord(message);
+    this->GetLogDialog()->GetLogWidget()->AddInformationRecord(message);
     }
 #ifdef _WIN32
   ::OutputDebugString(message);
@@ -3066,7 +3067,7 @@ void vtkKWApplication::DebugMessage(const char* message)
   this->InvokeEvent(vtkKWEvent::DebugMessageEvent, (void*)message);
   if (this->CreateLogDialog())
     {
-    this->LogDialog->GetLogWidget()->AddDebugRecord(message);
+    this->GetLogDialog()->GetLogWidget()->AddDebugRecord(message);
     }
 #ifdef _WIN32
   ::OutputDebugString(message);
@@ -3077,25 +3078,24 @@ void vtkKWApplication::DebugMessage(const char* message)
 //----------------------------------------------------------------------------
 vtkKWLogDialog* vtkKWApplication::GetLogDialog()
 {
-  this->CreateLogDialog();
+  if (!this->InExit && !this->LogDialog)
+    {
+    this->LogDialog = vtkKWLogDialog::New();
+    }
   return this->LogDialog;
 }
 
 //----------------------------------------------------------------------------
 int vtkKWApplication::CreateLogDialog()
 {
-  if (!this->InExit && !this->LogDialog)
+  if (this->GetLogDialog())
     {
-    this->LogDialog = vtkKWLogDialog::New();
-    }
-  if (this->LogDialog)
-    {
-    if (!this->LogDialog->IsCreated())
+    if (!this->GetLogDialog()->IsCreated())
       {
-      this->LogDialog->SetApplication(this);
-      this->LogDialog->Create();
+      this->GetLogDialog()->SetApplication(this);
+      this->GetLogDialog()->Create();
       }
-    return this->LogDialog->IsCreated();
+    return this->GetLogDialog()->IsCreated();
     }
   return 0;
 }
@@ -3105,8 +3105,9 @@ void vtkKWApplication::DisplayLogDialog(vtkKWTopLevel* master)
 {
   if (this->CreateLogDialog())
     {
-    this->LogDialog->SetMasterWindow(master ? master : this->GetNthWindow(0));
-    this->LogDialog->Display();
+    this->GetLogDialog()->SetMasterWindow(
+      master ? master : this->GetNthWindow(0));
+    this->GetLogDialog()->Display();
     }
 }
 
