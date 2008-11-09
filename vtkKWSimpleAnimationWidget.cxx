@@ -78,7 +78,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSimpleAnimationWidget);
-vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.36 $");
+vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.37 $");
 
 //----------------------------------------------------------------------------
 vtkKWSimpleAnimationWidget::vtkKWSimpleAnimationWidget()
@@ -690,6 +690,7 @@ void vtkKWSimpleAnimationWidget::CreateAnimationCallback()
   combobox->AddValueAsInt(1280);
   combobox->AddValueAsInt(1680);
   combobox->AddValueAsInt(2048);
+  combobox->AddValueAsInt(2560);
   combobox->AddValueAsInt(4096);
   combobox->AddValueAsInt(4520);
     
@@ -712,6 +713,7 @@ void vtkKWSimpleAnimationWidget::CreateAnimationCallback()
   combobox->AddValueAsInt(800);
   combobox->AddValueAsInt(1024);
   combobox->AddValueAsInt(1080);
+  combobox->AddValueAsInt(1440);
   combobox->AddValueAsInt(2160);
   combobox->AddValueAsInt(2540);
 
