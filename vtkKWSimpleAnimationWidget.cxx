@@ -74,11 +74,15 @@
 #define VTK_VV_ANIMATION_SCALE_ROLL_ID         5
 #define VTK_VV_ANIMATION_SCALE_ZOOM_ID         6
 
+#define VTK_VV_ANIMATION_SCALE_AZIMUTH_START_ID   7
+#define VTK_VV_ANIMATION_SCALE_ELEVATION_START_ID 8
+#define VTK_VV_ANIMATION_SCALE_ROLL_START_ID      9
+
 #define VTK_VV_ANIMATION_SCALE_NB_FRAMES       500
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSimpleAnimationWidget);
-vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.38 $");
+vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.39 $");
 
 //----------------------------------------------------------------------------
 vtkKWSimpleAnimationWidget::vtkKWSimpleAnimationWidget()
