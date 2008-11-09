@@ -77,12 +77,13 @@
 #define VTK_VV_ANIMATION_SCALE_AZIMUTH_START_ID   7
 #define VTK_VV_ANIMATION_SCALE_ELEVATION_START_ID 8
 #define VTK_VV_ANIMATION_SCALE_ROLL_START_ID      9
+#define VTK_VV_ANIMATION_SCALE_ZOOM_START_ID      10
 
 #define VTK_VV_ANIMATION_SCALE_NB_FRAMES       500
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSimpleAnimationWidget);
-vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.39 $");
+vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.40 $");
 
 //----------------------------------------------------------------------------
 vtkKWSimpleAnimationWidget::vtkKWSimpleAnimationWidget()
@@ -258,12 +259,19 @@ void vtkKWSimpleAnimationWidget::CreateWidget()
 
   // 3D animation : Zoom scale
 
+  scale = this->Parameters->AddWidget(VTK_VV_ANIMATION_SCALE_ZOOM_START_ID);
+  scale->SetResolution(0.01);
+  scale->SetRange(scale->GetResolution(), 10.0);
+  scale->SetValue(1.0);
+  scale->SetLabelText(ks_("Animation|Zoom start:"));
+  scale->SetBalloonHelpString(k_("Set the start of the zoom"));
+
   scale = this->Parameters->AddWidget(VTK_VV_ANIMATION_SCALE_ZOOM_ID);
   scale->SetResolution(0.01);
   scale->SetRange(scale->GetResolution(), 10.0);
   scale->SetValue(1.0);
   scale->SetLabelText(ks_("Animation|Zoom factor:"));
-  scale->SetBalloonHelpString(k_("Set the total zoom factor"));
+  scale->SetBalloonHelpString(k_("Set the total zoom factor, from the start"));
 
   // 2D animation : Starting slice scale
 
@@ -418,6 +426,8 @@ void vtkKWSimpleAnimationWidget::Update()
       VTK_VV_ANIMATION_SCALE_ROLL_START_ID, is_cam);
     this->Parameters->SetWidgetVisibility(
       VTK_VV_ANIMATION_SCALE_ROLL_ID, is_cam);
+    this->Parameters->SetWidgetVisibility(
+      VTK_VV_ANIMATION_SCALE_ZOOM_START_ID, is_cam);
     this->Parameters->SetWidgetVisibility(
       VTK_VV_ANIMATION_SCALE_ZOOM_ID, is_cam);
 
@@ -1020,8 +1030,14 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
     this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ROLL_ID);
   double roll_per_frame = scale->GetValue() / (double)num_frames;
 
-  scale = this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ZOOM_ID);
-  double zoom = pow(scale->GetValue(), (double)1.0 / (double)num_frames);
+  scale = 
+    this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ZOOM_START_ID);
+  double zoom_start = scale->GetValue();
+  cam->Zoom(zoom_start);
+  
+  scale = 
+    this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ZOOM_ID);
+  double zoom_per_frame = pow(scale->GetValue(), (double)1.0 / (double)num_frames);
 
   // Perform the animation
 
@@ -1057,7 +1073,7 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
       cam->Azimuth(azimuth_per_frame);
       cam->Elevation(elev_per_frame);
       cam->Roll(roll_per_frame);
-      cam->Zoom(zoom);
+      cam->Zoom(zoom_per_frame);
       }
 
     if (movie_writer)
