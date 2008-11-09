@@ -78,7 +78,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSimpleAnimationWidget);
-vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.37 $");
+vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.38 $");
 
 //----------------------------------------------------------------------------
 vtkKWSimpleAnimationWidget::vtkKWSimpleAnimationWidget()
@@ -193,29 +193,56 @@ void vtkKWSimpleAnimationWidget::CreateWidget()
   scale->SetBalloonHelpString(
     k_("Specify the number of frames for this animation"));
 
-  // 3D animation : Azimuth scale
-
   double rotate_max = 720.0;
   double res = 10.0;
 
-  scale = this->Parameters->AddWidget(VTK_VV_ANIMATION_SCALE_AZIMUTH_ID);
+  // 3D animation : Azimuth scale
+
+  scale = 
+    this->Parameters->AddWidget(VTK_VV_ANIMATION_SCALE_AZIMUTH_START_ID);
+  scale->SetResolution(res);
+  scale->SetRange(-rotate_max, rotate_max);
+  scale->SetValue(0.0);
+  scale->SetLabelText(ks_("Animation|X start:"));
+  scale->SetBalloonHelpString(
+    k_("Set the start of the rotation in X (in degrees)"));
+
+  scale = 
+    this->Parameters->AddWidget(VTK_VV_ANIMATION_SCALE_AZIMUTH_ID);
   scale->SetResolution(res);
   scale->SetRange(-rotate_max, rotate_max);
   scale->SetValue(0.0);
   scale->SetLabelText(ks_("Animation|X rotation:"));
   scale->SetBalloonHelpString(
-    k_("Set the total amount of rotation in X (in degrees)"));
+    k_("Set the total amount of rotation in X, from the start (in degrees)"));
 
   // 3D animation : Elevation scale
 
-  scale = this->Parameters->AddWidget(VTK_VV_ANIMATION_SCALE_ELEVATION_ID);
+  scale = 
+    this->Parameters->AddWidget(VTK_VV_ANIMATION_SCALE_ELEVATION_START_ID);
+  scale->SetResolution(res);
+  scale->SetRange(-rotate_max, rotate_max);
+  scale->SetLabelText(ks_("Animation|Y start:"));
+  scale->SetBalloonHelpString(
+    k_("Set the start of the rotation in Y (in degrees)"));
+  
+  scale = 
+    this->Parameters->AddWidget(VTK_VV_ANIMATION_SCALE_ELEVATION_ID);
   scale->SetResolution(res);
   scale->SetRange(-rotate_max, rotate_max);
   scale->SetLabelText(ks_("Animation|Y rotation:"));
   scale->SetBalloonHelpString(
-    k_("Set the total amount of rotation in Y (in degrees)"));
+    k_("Set the total amount of rotation in Y, from the start (in degrees)"));
   
   // 3D animation : Roll scale
+
+  scale = this->Parameters->AddWidget(VTK_VV_ANIMATION_SCALE_ROLL_START_ID);
+  scale->SetResolution(res);
+  scale->SetRange(-rotate_max, rotate_max);
+  scale->SetValue(0.0);
+  scale->SetLabelText(ks_("Animation|Z start:"));
+  scale->SetBalloonHelpString(
+    k_("Set the start of the rotation in Z (in degrees)"));
 
   scale = this->Parameters->AddWidget(VTK_VV_ANIMATION_SCALE_ROLL_ID);
   scale->SetResolution(res);
@@ -223,7 +250,7 @@ void vtkKWSimpleAnimationWidget::CreateWidget()
   scale->SetValue(0.0);
   scale->SetLabelText(ks_("Animation|Z Rotation:"));
   scale->SetBalloonHelpString(
-    k_("Set the total amount of rotation in Z (in degrees)"));
+    k_("Set the total amount of rotation in Z, from the start (in degrees)"));
 
   // 3D animation : Zoom scale
 
@@ -376,9 +403,15 @@ void vtkKWSimpleAnimationWidget::Update()
     // Show or hide the rotation + zoom parameters
 
     this->Parameters->SetWidgetVisibility(
+      VTK_VV_ANIMATION_SCALE_AZIMUTH_START_ID, is_cam);
+    this->Parameters->SetWidgetVisibility(
       VTK_VV_ANIMATION_SCALE_AZIMUTH_ID, is_cam);
     this->Parameters->SetWidgetVisibility(
+      VTK_VV_ANIMATION_SCALE_ELEVATION_START_ID, is_cam);
+    this->Parameters->SetWidgetVisibility(
       VTK_VV_ANIMATION_SCALE_ELEVATION_ID, is_cam);
+    this->Parameters->SetWidgetVisibility(
+      VTK_VV_ANIMATION_SCALE_ROLL_START_ID, is_cam);
     this->Parameters->SetWidgetVisibility(
       VTK_VV_ANIMATION_SCALE_ROLL_ID, is_cam);
     this->Parameters->SetWidgetVisibility(
@@ -952,17 +985,36 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
 
   vtkKWScaleWithEntry *scale;
 
-  scale = this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_NB_OF_FRAMES_ID);
+  scale = 
+    this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_NB_OF_FRAMES_ID);
   int num_frames = (int)scale->GetValue();
   
-  scale = this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_AZIMUTH_ID);
-  double azimuth = scale->GetValue() / (double)num_frames;
+  scale = 
+    this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_AZIMUTH_START_ID);
+  double azimuth_start = scale->GetValue();
+  cam->Azimuth(azimuth_start);
 
-  scale = this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ELEVATION_ID);
-  double elev = scale->GetValue() / (double)num_frames;
+  scale = 
+    this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_AZIMUTH_ID);
+  double azimuth_per_frame = scale->GetValue() / (double)num_frames;
 
-  scale = this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ROLL_ID);
-  double roll = scale->GetValue() / (double)num_frames;
+  scale = 
+    this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ELEVATION_START_ID);
+  double elev_start = scale->GetValue();
+  cam->Elevation(elev_start);
+
+  scale = 
+    this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ELEVATION_ID);
+  double elev_per_frame = scale->GetValue() / (double)num_frames;
+
+  scale = 
+    this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ROLL_START_ID);
+  double roll_start = scale->GetValue();
+  cam->Roll(roll_start);
+
+  scale = 
+    this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ROLL_ID);
+  double roll_per_frame = scale->GetValue() / (double)num_frames;
 
   scale = this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ZOOM_ID);
   double zoom = pow(scale->GetValue(), (double)1.0 / (double)num_frames);
@@ -982,10 +1034,6 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
         }
       // process pending events... necessary for being able to interrupt
       this->GetApplication()->ProcessPendingEvents();
-      cam->Azimuth(azimuth);
-      cam->Elevation(elev);
-      cam->Roll(roll);
-      cam->Zoom(zoom);
       cam->OrthogonalizeViewUp();
       this->RenderWidget->Render();
       if (w2i)
@@ -1002,6 +1050,10 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
           image_writer->Write();
           }
         }
+      cam->Azimuth(azimuth_per_frame);
+      cam->Elevation(elev_per_frame);
+      cam->Roll(roll_per_frame);
+      cam->Zoom(zoom);
       }
 
     if (movie_writer)
