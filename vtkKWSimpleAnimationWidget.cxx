@@ -78,7 +78,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSimpleAnimationWidget);
-vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.35 $");
+vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.36 $");
 
 //----------------------------------------------------------------------------
 vtkKWSimpleAnimationWidget::vtkKWSimpleAnimationWidget()
@@ -1015,7 +1015,7 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
     {
     this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationDone;
     }
-  if (movie_writer->GetError())
+  if (movie_writer && movie_writer->GetError())
     {
     this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationFailed;
     }
@@ -1276,7 +1276,7 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
     {
     this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationDone;
     }
-  if (movie_writer->GetError())
+  if (movie_writer && movie_writer->GetError())
     {
     this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationFailed;
     }
