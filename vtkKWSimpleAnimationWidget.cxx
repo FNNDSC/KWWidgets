@@ -40,6 +40,7 @@
 #include "vtkImageWriter.h"
 #include "vtkJPEGWriter.h"
 #include "vtkTIFFWriter.h"
+#include "vtkPNGWriter.h"
 #include "vtkKWWidgetsBuildConfigure.h" // VTK_USE_VIDEO_FOR_WINDOWS
 #include "vtkGenericMovieWriter.h"
 
@@ -77,7 +78,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSimpleAnimationWidget);
-vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.34 $");
+vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.35 $");
 
 //----------------------------------------------------------------------------
 vtkKWSimpleAnimationWidget::vtkKWSimpleAnimationWidget()
@@ -551,7 +552,7 @@ void vtkKWSimpleAnimationWidget::CreateAnimationCallback()
 
   int res;
   vtksys_stl::string filename;
-  vtksys_stl::string filetypes("{{JPEG} {.jpg}} {{TIFF} {.tif}}");
+  vtksys_stl::string filetypes("{{JPEG} {.jpg}} {{TIFF} {.tif}} {{PNG} {.png}}");
   vtksys_stl::string defaultExtension(".jpg");
 
   vtkKWLoadSaveDialog *save_dialog = vtkKWLoadSaveDialog::New();
@@ -683,10 +684,14 @@ void vtkKWSimpleAnimationWidget::CreateAnimationCallback()
     combobox->AddValueAsInt(key_w);
     }
   combobox->AddValueAsInt(640);
+  combobox->AddValueAsInt(720);
   combobox->AddValueAsInt(800);
   combobox->AddValueAsInt(1024);
   combobox->AddValueAsInt(1280);
   combobox->AddValueAsInt(1680);
+  combobox->AddValueAsInt(2048);
+  combobox->AddValueAsInt(4096);
+  combobox->AddValueAsInt(4520);
     
   vtkKWComboBoxWithLabel *height_combobox = vtkKWComboBoxWithLabel::New();
   height_combobox->SetParent(frame);
@@ -700,11 +705,15 @@ void vtkKWSimpleAnimationWidget::CreateAnimationCallback()
     {
     combobox->AddValueAsInt(key_h);
     }
+  combobox->AddValueAsInt(480);
   combobox->AddValueAsInt(600);
+  combobox->AddValueAsInt(720);
   combobox->AddValueAsInt(768);
   combobox->AddValueAsInt(800);
   combobox->AddValueAsInt(1024);
-  combobox->AddValueAsInt(1050);
+  combobox->AddValueAsInt(1080);
+  combobox->AddValueAsInt(2160);
+  combobox->AddValueAsInt(2540);
 
   this->Script("pack %s %s -side left -fill both -expand t",
                width_combobox->GetWidgetName(), 
@@ -872,6 +881,11 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
       else if (!strcmp(ext, ".avi"))
         {
         movie_writer = vtkAVIWriter::New();
+        vtkAVIWriter *avi_writer = vtkAVIWriter::SafeDownCast(movie_writer);
+        if (avi_writer)
+          {
+          avi_writer->SetPromptCompressionOptions(1);
+          }
         }
 #else
 #ifdef VTK_USE_FFMPEG_ENCODER
@@ -884,6 +898,10 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
       else if (!strcmp(ext, ".tif"))
         {
         image_writer = vtkTIFFWriter::New();
+        }
+      else if (!strcmp(ext, ".png"))
+        {
+        image_writer = vtkPNGWriter::New();
         }
       }
 
@@ -958,7 +976,7 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
       {
       if (win)
         {
-        win->GetProgressGauge()->SetValue((int)(100.0 * i / num_frames));
+        win->GetProgressGauge()->SetNthValue(1, (int)(100.0 * i / num_frames));
         }
       // process pending events... necessary for being able to interrupt
       this->GetApplication()->ProcessPendingEvents();
@@ -997,6 +1015,10 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
     {
     this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationDone;
     }
+  if (movie_writer->GetError())
+    {
+    this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationFailed;
+    }
 
   if (win)
     {
@@ -1010,8 +1032,12 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
       {
       end_msg += ks_("Progress|Done");
       }
+    else if (this->AnimationStatus == vtkKWSimpleAnimationWidget::AnimationFailed)
+      {
+      end_msg += ks_("Progress|Failed");
+      }
     win->SetStatusText(end_msg.c_str());
-    win->GetProgressGauge()->SetValue(0);
+    win->GetProgressGauge()->SetNthValue(1, 0.0);
     }
   
 
@@ -1118,6 +1144,11 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
       else if (!strcmp(ext, ".avi"))
         {
         movie_writer = vtkAVIWriter::New();
+        vtkAVIWriter *avi_writer = vtkAVIWriter::SafeDownCast(movie_writer);
+        if (avi_writer)
+          {
+          avi_writer->SetPromptCompressionOptions(1);
+          }
         }
 #else
 #ifdef VTK_USE_FFMPEG_ENCODER
@@ -1130,6 +1161,10 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
       else if (!strcmp(ext, ".tif"))
         {
         image_writer = vtkTIFFWriter::New();
+        }
+      else if (!strcmp(ext, ".png"))
+        {
+        image_writer = vtkPNGWriter::New();
         }
       }
 
@@ -1202,7 +1237,7 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
       {
       if (win)
         {
-        win->GetProgressGauge()->SetValue((int)(100.0 * i / num_frames));
+        win->GetProgressGauge()->SetNthValue(1, (int)(100.0 * i / num_frames));
         }
       // process pending events... necessary for being able to interrupt
       this->GetApplication()->ProcessPendingEvents();
@@ -1241,6 +1276,10 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
     {
     this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationDone;
     }
+  if (movie_writer->GetError())
+    {
+    this->AnimationStatus = vtkKWSimpleAnimationWidget::AnimationFailed;
+    }
 
   if (win)
     {
@@ -1254,8 +1293,12 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
       {
       end_msg += ks_("Progress|Done");
       }
+    else if (this->AnimationStatus == vtkKWSimpleAnimationWidget::AnimationFailed)
+      {
+      end_msg += ks_("Progress|Failed");
+      }
     win->SetStatusText(end_msg.c_str());
-    win->GetProgressGauge()->SetValue(0);
+    win->GetProgressGauge()->SetNthValue(1, 0.0);
     }
   
   // Restore camera state
