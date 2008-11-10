@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabel );
-vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.55 $");
+vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.56 $");
 
 //----------------------------------------------------------------------------
 vtkKWLabel::vtkKWLabel()
@@ -530,7 +530,7 @@ void vtkKWLabel::SetImageToIcon(vtkKWIcon* icon)
       {
       if (this->Icon)
         {
-        this->Icon->SetImage(NULL);
+        this->Icon->SetImage((vtkKWIcon*)NULL);
         }
       }
     }
