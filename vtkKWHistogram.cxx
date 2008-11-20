@@ -33,7 +33,7 @@
 //----------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWHistogram);
-vtkCxxRevisionMacro(vtkKWHistogram, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWHistogram, "$Revision: 1.14 $");
 
 //----------------------------------------------------------------------------
 vtkKWHistogram::vtkKWHistogram()
@@ -266,6 +266,7 @@ void vtkKWHistogram::EstimateHistogramRangeAndNumberOfBins(
   switch (scalars->GetDataType())
     {
     case VTK_CHAR:
+    case VTK_SIGNED_CHAR:
     case VTK_UNSIGNED_CHAR:
       range[0] = scalars->GetDataTypeMin();
       range[1] = scalars->GetDataTypeMax() + 1.0;
@@ -436,6 +437,16 @@ void vtkKWHistogram::UpdateHistogram(vtkDataArray *scalars,
       case VTK_CHAR:
       {
       typedef char type;
+      type *data = static_cast<type *>
+        (scalars->GetVoidPointer(start_tuple * nb_of_components)) + comp;
+      vtkKWHistogramBuildIntOrFloat(
+        data, inc_tuple, nb_of_components, this);
+      }
+      break;
+
+      case VTK_SIGNED_CHAR:
+      {
+      typedef signed char type;
       type *data = static_cast<type *>
         (scalars->GetVoidPointer(start_tuple * nb_of_components)) + comp;
       vtkKWHistogramBuildIntOrFloat(
