@@ -298,6 +298,7 @@ if(KWWidgets_BUILD_VTK_WIDGETS)
     vtkKWSimpleAnimationWidget.cxx
     vtkKWSurfaceMaterialPropertyWidget.cxx
     vtkKWTextPropertyEditor.cxx
+    vtkKWVolumePropertyHelper.cxx
     vtkKWVolumeMaterialPropertyWidget.cxx
     vtkKWVolumePropertyPresetSelector.cxx
     vtkKWVolumePropertyWidget.cxx
