@@ -22,6 +22,7 @@
 #include "vtkKWPushButtonWithMenu.h"
 #include "vtkKWLabel.h"
 #include "vtkKWMenuButton.h"
+#include "vtkKWSeparator.h"
 #include "vtkKWWidgetWithLabel.h"
 
 #include <vtksys/stl/list>
@@ -36,7 +37,7 @@ const char *vtkKWToolbar::WidgetsAspectRegKey = "ToolbarFlatButtons";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWToolbar );
-vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.76 $");
+vtkCxxRevisionMacro(vtkKWToolbar, "$Revision: 1.77 $");
 
 //----------------------------------------------------------------------------
 class vtkKWToolbarInternals
@@ -72,6 +73,12 @@ vtkKWToolbar::vtkKWToolbar()
 
   this->WidgetsPadX = 1;
   this->WidgetsPadY = 1;
+
+  this->WidgetsInternalPadX = 1;
+  this->WidgetsInternalPadY = 1;
+
+  this->WidgetsFlatAdditionalInternalPadX = 0;
+  this->WidgetsFlatAdditionalInternalPadY = 0;
 
   // This widget is used to keep track of default options
 
@@ -234,6 +241,28 @@ void vtkKWToolbar::InsertWidget(vtkKWWidget *location, vtkKWWidget *widget)
   this->PropagateEnableState(widget);
 
   this->UpdateWidgets();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWToolbar::AddSeparator()
+{
+  vtkKWSeparator *sep = vtkKWSeparator::New();
+  sep->SetOrientationToVertical();
+  sep->SetParent(this->GetFrame());
+  sep->Create();
+  this->AddWidget(sep);
+  sep->Delete();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWToolbar::InsertSeparator(vtkKWWidget* location)
+{
+  vtkKWSeparator *sep = vtkKWSeparator::New();
+  sep->SetOrientationToVertical();
+  sep->SetParent(this->GetFrame());
+  sep->Create();
+  this->InsertWidget(location, sep);
+  sep->Delete();
 }
 
 //----------------------------------------------------------------------------
@@ -686,10 +715,12 @@ void vtkKWToolbar::ConstrainWidgetsLayout()
     {
     int reqw = 0;
     vtkKWTkUtilities::GetWidgetRequestedSize((*it).Widget, &reqw, NULL);
-    totReqWidth += this->WidgetsPadX + reqw;
+    totReqWidth += this->WidgetsPadX + this->WidgetsInternalPadX + reqw;
     if (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat)
       {
-      totReqWidth += this->WidgetsFlatAdditionalPadX;
+      totReqWidth += 
+        this->WidgetsFlatAdditionalPadX + 
+        this->WidgetsFlatAdditionalInternalPadX;
       }
     }
 
@@ -719,8 +750,20 @@ void vtkKWToolbar::ConstrainWidgetsLayout()
                 << " -pady "
                 << (this->WidgetsPadY + 
                     (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
-                     this->WidgetsFlatAdditionalPadY : 0))
-                << endl;
+                     this->WidgetsFlatAdditionalPadY : 0));
+        if (!vtkKWSeparator::SafeDownCast((*it).Widget))
+          {
+          grid_tk << " -ipadx " 
+                  << (this->WidgetsInternalPadX + 
+                      (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
+                       this->WidgetsFlatAdditionalInternalPadX : 0))
+                  << " -ipady "
+                  << (this->WidgetsInternalPadY + 
+                      (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
+                       this->WidgetsFlatAdditionalInternalPadY : 0));
+          }
+
+        grid_tk << endl;
         num++;
         if (num == numPerRow) 
           { 
@@ -764,21 +807,83 @@ void vtkKWToolbar::UpdateWidgetsLayout()
     return;
     }
 
-  vtksys_ios::ostringstream grid_tk, grid_forget_tk;
-  grid_tk << "grid "; 
-  grid_forget_tk << "grid forget "; 
-
-  vtkKWToolbarInternals::WidgetsContainerIterator it = 
+  vtkKWToolbarInternals::WidgetsContainerIterator it;
+  vtkKWToolbarInternals::WidgetsContainerIterator begin = 
     this->Internals->Widgets.begin();
   vtkKWToolbarInternals::WidgetsContainerIterator end = 
     this->Internals->Widgets.end();
+
+  // Factorize the  separators
+
+  vtkKWToolbarInternals::WidgetsContainerIterator previous_sep_it = end;
+  vtkKWToolbarInternals::WidgetsContainerIterator previous_widget_it = end;
+  for (it = begin; it != end; ++it)
+    {
+    vtkKWSeparator *sep = vtkKWSeparator::SafeDownCast((*it).Widget);
+    if (sep)
+      {
+      if (previous_widget_it == end)
+        {
+        (*it).Visibility = 0; // no widgets before sep
+        }
+      else
+        {
+        previous_sep_it = it;
+        previous_widget_it = end;
+        }
+      }
+    else
+      {
+      if ((*it).Visibility)
+        {
+        previous_widget_it = it;
+        if (previous_sep_it != end)
+          {
+          (*previous_sep_it).Visibility = 1; // show the separator
+          previous_sep_it = end;
+          }
+        }
+      }
+    }
+  if (previous_sep_it != end)
+    {
+    (*previous_sep_it).Visibility = 0; // orphan at the end
+    }
+
+  // Pack
+
+  vtksys_ios::ostringstream grid_tk, grid_forget_tk;
+  grid_forget_tk << "grid forget "; 
+
   size_t nb_in_grid = 0;
-  for (; it != end; ++it)
+  for (it = begin; it != end; ++it)
     {
     if ((*it).Visibility)
       {
+      grid_tk << "grid " << (*it).Widget->GetWidgetName() 
+              << " -sticky news -row 0 -column " << nb_in_grid
+              << " -in " << this->GetFrame()->GetWidgetName()
+              << " -padx " 
+              << (this->WidgetsPadX + 
+                  (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
+                   this->WidgetsFlatAdditionalPadX : 0))
+              << " -pady "
+              << (this->WidgetsPadY + 
+                  (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
+                   this->WidgetsFlatAdditionalPadY : 0));
+      if (!vtkKWSeparator::SafeDownCast((*it).Widget))
+        {
+        grid_tk << " -ipadx " 
+                << (this->WidgetsInternalPadX + 
+                    (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
+                     this->WidgetsFlatAdditionalInternalPadX : 0))
+                << " -ipady "
+                << (this->WidgetsInternalPadY + 
+                    (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
+                     this->WidgetsFlatAdditionalInternalPadY : 0));
+        }
+      grid_tk << endl;
       ++nb_in_grid;
-      grid_tk << " " << (*it).Widget->GetWidgetName();
       }
     else
       {
@@ -788,20 +893,8 @@ void vtkKWToolbar::UpdateWidgetsLayout()
 
   if (nb_in_grid)
     {
-    grid_tk << " -sticky news -row 0 "
-            << " -in " << this->GetFrame()->GetWidgetName()
-            << " -padx " 
-            << (this->WidgetsPadX + 
-                (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
-                 this->WidgetsFlatAdditionalPadX : 0))
-            << " -pady "
-            << (this->WidgetsPadY + 
-                (this->WidgetsAspect == vtkKWToolbar::WidgetsAspectFlat ? 
-                 this->WidgetsFlatAdditionalPadY : 0))
-            << endl;
     this->Script(grid_tk.str().c_str());
     }
-
   if (nb_in_grid != this->Internals->Widgets.size())
     {
     this->Script(grid_forget_tk.str().c_str());
@@ -835,7 +928,7 @@ void vtkKWToolbar::SetWidgetsPadX(int arg)
 //----------------------------------------------------------------------------
 void vtkKWToolbar::SetWidgetsPadY(int arg)
 {
-  if (arg == this->WidgetsPadX)
+  if (arg == this->WidgetsPadY)
     {
     return;
     }
@@ -863,12 +956,68 @@ void vtkKWToolbar::SetWidgetsFlatAdditionalPadX(int arg)
 //----------------------------------------------------------------------------
 void vtkKWToolbar::SetWidgetsFlatAdditionalPadY(int arg)
 {
-  if (arg == this->WidgetsFlatAdditionalPadX)
+  if (arg == this->WidgetsFlatAdditionalPadY)
     {
     return;
     }
 
   this->WidgetsFlatAdditionalPadY = arg;
+  this->Modified();
+
+  this->UpdateWidgetsLayout();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWToolbar::SetWidgetsInternalPadX(int arg)
+{
+  if (arg == this->WidgetsInternalPadX)
+    {
+    return;
+    }
+
+  this->WidgetsInternalPadX = arg;
+  this->Modified();
+
+  this->UpdateWidgetsLayout();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWToolbar::SetWidgetsInternalPadY(int arg)
+{
+  if (arg == this->WidgetsInternalPadY)
+    {
+    return;
+    }
+
+  this->WidgetsInternalPadY = arg;
+  this->Modified();
+
+  this->UpdateWidgetsLayout();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWToolbar::SetWidgetsFlatAdditionalInternalPadX(int arg)
+{
+  if (arg == this->WidgetsFlatAdditionalInternalPadX)
+    {
+    return;
+    }
+
+  this->WidgetsFlatAdditionalInternalPadX = arg;
+  this->Modified();
+
+  this->UpdateWidgetsLayout();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWToolbar::SetWidgetsFlatAdditionalInternalPadY(int arg)
+{
+  if (arg == this->WidgetsFlatAdditionalInternalPadY)
+    {
+    return;
+    }
+
+  this->WidgetsFlatAdditionalInternalPadY = arg;
   this->Modified();
 
   this->UpdateWidgetsLayout();
@@ -1081,6 +1230,10 @@ void vtkKWToolbar::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "WidgetsPadY: " << this->WidgetsPadY << endl;
   os << indent << "WidgetsFlatAdditionalPadX: " << this->WidgetsFlatAdditionalPadX << endl;
   os << indent << "WidgetsFlatAdditionalPadY: " << this->WidgetsFlatAdditionalPadY << endl;
+  os << indent << "WidgetsInternalPadX: " << this->WidgetsInternalPadX << endl;
+  os << indent << "WidgetsInternalPadY: " << this->WidgetsInternalPadY << endl;
+  os << indent << "WidgetsFlatAdditionalInternalPadX: " << this->WidgetsFlatAdditionalInternalPadX << endl;
+  os << indent << "WidgetsFlatAdditionalInternalPadY: " << this->WidgetsFlatAdditionalInternalPadY << endl;
   os << indent << "Name: " << (this->Name ? this->Name : "None") << endl;
 }
 

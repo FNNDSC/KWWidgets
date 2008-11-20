@@ -57,6 +57,12 @@ public:
   virtual void InsertWidget(vtkKWWidget* location, vtkKWWidget* widget);
 
   // Description:
+  // Add a separator to the toolbar, insert a separator before 'location' (or at
+  // beginning of list if 'location' is not found)
+  virtual void AddSeparator();
+  virtual void InsertSeparator(vtkKWWidget* location);
+
+  // Description:
   // Query widgets
   virtual int HasWidget(vtkKWWidget* widget);
   virtual int GetNumberOfWidgets();
@@ -162,12 +168,28 @@ public:
   vtkGetMacro(WidgetsPadY, int);
 
   // Description:
+  // Set/Get the padding that will be applied inside each widget.
+  // (default to 0 on Windows, 1 otherwise).
+  virtual void SetWidgetsInternalPadX(int);
+  vtkGetMacro(WidgetsInternalPadX, int);
+  virtual void SetWidgetsInternalPadY(int);
+  vtkGetMacro(WidgetsInternalPadY, int);
+
+  // Description:
   // Set/Get the additional internal padding that will be applied around 
   // each widget when WidgetsAspect is On (default to 1).
   virtual void SetWidgetsFlatAdditionalPadX(int);
   vtkGetMacro(WidgetsFlatAdditionalPadX, int);
   virtual void SetWidgetsFlatAdditionalPadY(int);
   vtkGetMacro(WidgetsFlatAdditionalPadY, int);
+
+  // Description:
+  // Set/Get the additional internal padding that will be applied inside
+  // each widget when WidgetsAspect is On (default to 1).
+  virtual void SetWidgetsFlatAdditionalInternalPadX(int);
+  vtkGetMacro(WidgetsFlatAdditionalInternalPadX, int);
+  virtual void SetWidgetsFlatAdditionalInternalPadY(int);
+  vtkGetMacro(WidgetsFlatAdditionalInternalPadY, int);
 
   // Description:
   // Schedule the widget to resize itself, or resize it right away
@@ -220,6 +242,11 @@ protected:
   int WidgetsPadY;
   int WidgetsFlatAdditionalPadX;
   int WidgetsFlatAdditionalPadY;
+
+  int WidgetsInternalPadX;
+  int WidgetsInternalPadY;
+  int WidgetsFlatAdditionalInternalPadX;
+  int WidgetsFlatAdditionalInternalPadY;
 
   int ToolbarAspect;
   int WidgetsAspect;
