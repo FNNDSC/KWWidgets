@@ -37,6 +37,8 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include "vtkKWPresetSelector.h"
 
+class vtkKWWindowLevelPresetSelectorInternals;
+
 class KWWidgets_EXPORT vtkKWWindowLevelPresetSelector : public vtkKWPresetSelector
 {
 public:
@@ -53,20 +55,22 @@ public:
   virtual int SetPresetLevel(int id, double level);
 
   // Description:
-  // Set/Get the modality for a given preset.
-  // The modality field is not displayed as a column by default, but this
-  // can be changed using the SetModalityColumnVisibility() method.
+  // Set/Get the type for a given preset.
+  // The type column can be used, for example, to put the medical modality
+  // a specific presets applies to (say, CT, MR)
+  // The type field is not displayed as a column by default, but this
+  // can be changed using the SetTypeColumnVisibility() method.
   // This column can not be edited.
   // Return 1 on success, 0 otherwise
-  virtual int SetPresetModality(int id, const char *modality);
-  virtual const char* GetPresetModality(int id);
+  virtual int SetPresetType(int id, const char *type);
+  virtual const char* GetPresetType(int id);
 
   // Description:
-  // Set/Get the visibility of the modality column. Hidden by default.
+  // Set/Get the visibility of the type column. Hidden by default.
   // No effect if called before Create().
-  virtual void SetModalityColumnVisibility(int);
-  virtual int GetModalityColumnVisibility();
-  vtkBooleanMacro(ModalityColumnVisibility, int);
+  virtual void SetTypeColumnVisibility(int);
+  virtual int GetTypeColumnVisibility();
+  vtkBooleanMacro(TypeColumnVisibility, int);
 
   // Description:
   // Query if the pool has a given window/level preset in a group
@@ -74,11 +78,25 @@ public:
     const char *group, double window, double level);
 
   // Description:
+  // Most (if not all) of the information associated to a preset (say group, 
+  // comment, filename, creation time, thumbnail and screenshot) is stored
+  // under the hood as user slots using the corresponding API (i.e. 
+  // Set/GetPresetUserSlotAs...()). Since each slot requires a unique name,
+  // the following methods are provided to retrieve the slot name for
+  // the preset fields. This can be useful to avoid collision between
+  // the default slots and your own user slots. Note that the default slot
+  // names can be changed too, but doing so will not transfer the value
+  // stored at the old slot name to the new slot name (it is up to you to do
+  // so, if needed).
+  virtual void SetPresetTypeSlotName(const char *);
+  virtual const char* GetPresetTypeSlotName();
+
+  // Description:
   // Some constants
   //BTX
   static const char *WindowColumnName;
   static const char *LevelColumnName;
-  static const char *ModalityColumnName;
+  static const char *TypeColumnName;
   //ETX
 
   // Description:
@@ -100,7 +118,7 @@ public:
 
 protected:
   vtkKWWindowLevelPresetSelector();
-  ~vtkKWWindowLevelPresetSelector() {};
+  ~vtkKWWindowLevelPresetSelector();
 
   // Description:
   // Create the columns.
@@ -123,7 +141,12 @@ protected:
   // Get the index of a given column
   virtual int GetWindowColumnIndex();
   virtual int GetLevelColumnIndex();
-  virtual int GetModalityColumnIndex();
+  virtual int GetTypeColumnIndex();
+
+  // PIMPL Encapsulation for STL containers
+  //BTX
+  vtkKWWindowLevelPresetSelectorInternals *Internals;
+  //ETX
 
 private:
 

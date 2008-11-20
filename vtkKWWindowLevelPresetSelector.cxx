@@ -28,19 +28,43 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "vtkKWInternationalization.h"
 #include "vtkKWIcon.h"
 
+#include <vtksys/stl/string>
+
 const char *vtkKWWindowLevelPresetSelector::WindowColumnName = "Window";
 const char *vtkKWWindowLevelPresetSelector::LevelColumnName  = "Level";
-const char *vtkKWWindowLevelPresetSelector::ModalityColumnName  = "Modality";
+const char *vtkKWWindowLevelPresetSelector::TypeColumnName  = "Type";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindowLevelPresetSelector);
-vtkCxxRevisionMacro(vtkKWWindowLevelPresetSelector, "$Revision: 1.20 $");
+vtkCxxRevisionMacro(vtkKWWindowLevelPresetSelector, "1.17");
+
+//----------------------------------------------------------------------------
+class vtkKWWindowLevelPresetSelectorInternals
+{
+public:
+  
+  // User slot name for the default fields
+  
+  vtksys_stl::string TypeSlotName;
+};
 
 //----------------------------------------------------------------------------
 vtkKWWindowLevelPresetSelector::vtkKWWindowLevelPresetSelector()
 {
-  this->SetPresetButtonsBaseIconToPredefinedIcon(
-    vtkKWIcon::IconContrast);
+  this->Internals = new vtkKWWindowLevelPresetSelectorInternals;
+  this->Internals->TypeSlotName = "DefaultTypeSlot";
+
+  this->FilterButtonVisibility = 1;
+  this->SetFilterButtonSlotName(this->GetPresetTypeSlotName());
+
+  this->SetPresetButtonsBaseIconToPredefinedIcon(vtkKWIcon::IconContrast);
+}
+
+//----------------------------------------------------------------------------
+vtkKWWindowLevelPresetSelector::~vtkKWWindowLevelPresetSelector()
+{
+  delete this->Internals;
+  this->Internals = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -70,16 +94,39 @@ double vtkKWWindowLevelPresetSelector::GetPresetLevel(int id)
 }
 
 //----------------------------------------------------------------------------
-int vtkKWWindowLevelPresetSelector::SetPresetModality(
+int vtkKWWindowLevelPresetSelector::SetPresetType(
   int id, const char *val)
 {
-  return this->SetPresetUserSlotAsString(id, "Modality", val);
+  return this->SetPresetUserSlotAsString(
+    id, this->GetPresetTypeSlotName(), val);
 }
 
 //----------------------------------------------------------------------------
-const char* vtkKWWindowLevelPresetSelector::GetPresetModality(int id)
+const char* vtkKWWindowLevelPresetSelector::GetPresetType(int id)
 {
-  return this->GetPresetUserSlotAsString(id, "Modality");
+  return this->GetPresetUserSlotAsString(
+    id, this->GetPresetTypeSlotName());
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWindowLevelPresetSelector::SetPresetTypeSlotName(const char *name)
+{
+  if (name && *name && 
+      this->Internals && this->Internals->TypeSlotName.compare(name))
+    {
+    this->Internals->TypeSlotName = name;
+    this->ScheduleUpdatePresetRows();
+    }
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWWindowLevelPresetSelector::GetPresetTypeSlotName()
+{
+  if (this->Internals)
+    {
+    return this->Internals->TypeSlotName.c_str();
+    }
+  return NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -91,12 +138,12 @@ void vtkKWWindowLevelPresetSelector::CreateColumns()
 
   int col;
 
-  // Modality
+  // Type
 
   col = list->InsertColumn(
     this->GetCommentColumnIndex(), 
-    ks_("Window/Level Preset Selector|Column|Modality"));
-  list->SetColumnName(col, vtkKWWindowLevelPresetSelector::ModalityColumnName);
+    ks_("Window/Level Preset Selector|Column|Type"));
+  list->SetColumnName(col, vtkKWWindowLevelPresetSelector::TypeColumnName);
   list->SetColumnResizable(col, 1);
   list->SetColumnStretchable(col, 0);
   list->SetColumnEditable(col, 0);
@@ -142,30 +189,30 @@ int vtkKWWindowLevelPresetSelector::GetLevelColumnIndex()
 }
 
 //----------------------------------------------------------------------------
-int vtkKWWindowLevelPresetSelector::GetModalityColumnIndex()
+int vtkKWWindowLevelPresetSelector::GetTypeColumnIndex()
 {
   return this->PresetList ? 
     this->PresetList->GetWidget()->GetColumnIndexWithName(
-      vtkKWWindowLevelPresetSelector::ModalityColumnName) : -1;
+      vtkKWWindowLevelPresetSelector::TypeColumnName) : -1;
 }
 
 //----------------------------------------------------------------------------
-void vtkKWWindowLevelPresetSelector::SetModalityColumnVisibility(int arg)
+void vtkKWWindowLevelPresetSelector::SetTypeColumnVisibility(int arg)
 {
   if (this->PresetList)
     {
     this->PresetList->GetWidget()->SetColumnVisibility(
-      this->GetModalityColumnIndex(), arg);
+      this->GetTypeColumnIndex(), arg);
     }
 }
 
 //----------------------------------------------------------------------------
-int vtkKWWindowLevelPresetSelector::GetModalityColumnVisibility()
+int vtkKWWindowLevelPresetSelector::GetTypeColumnVisibility()
 {
   if (this->PresetList)
     {
     return this->PresetList->GetWidget()->GetColumnVisibility(
-      this->GetModalityColumnIndex());
+      this->GetTypeColumnIndex());
     }
   return 0;
 }
@@ -187,7 +234,7 @@ int vtkKWWindowLevelPresetSelector::UpdatePresetRow(int id)
   vtkKWMultiColumnList *list = this->PresetList->GetWidget();
 
   list->SetCellText(
-    row, this->GetModalityColumnIndex(), this->GetPresetModality(id));
+    row, this->GetTypeColumnIndex(), this->GetPresetType(id));
   
   list->SetCellTextAsFormattedDouble(
     row, this->GetWindowColumnIndex(), this->GetPresetWindow(id), 5);

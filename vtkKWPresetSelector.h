@@ -284,18 +284,27 @@ public:
   // Set/Get the preset filter constraints.
   // The preset filter is a set of constraints that a preset has to match
   // to be visible in the preset list. 
-  // At the moment, constraints are expressed as string values or 
+  // Only string and int slots are supported at the moment.
+  // At the moment, constraints are expressed as string values (default) or 
   // regular expressions that have to match specific user slots. An 
   // unlimited number of constraints can be added. 
   // For example, if 'slot_name' is 'Modality', and 'value' is
   // 'CT', then only those presets which have a 'Modality' user slot with
   // a string value of 'CT' will be displayed.
-  // Use a NULL value for to remove the constraint on a specific slot.
+  // Note that the constraint type can be changed from regular expression
+  // to plain character-for-character string comparison using either
+  // SetPresetFilterUserSlotConstraintToRegularExpression or
+  // SetPresetFilterUserSlotConstraintToString; however the constraint needs to
+  // exist for that slot name for this change to be made. When one constraint
+  // is added, its default type is String, not RegularExpression.
+  // Use a NULL value for to remove the constraint on a specific slot or
+  // call DeletePresetFilterUserSlotConstraint
   virtual void ClearPresetFilter();
   virtual void SetPresetFilterUserSlotConstraint(
     const char *slot_name, const char *value);
   virtual const char* GetPresetFilterUserSlotConstraint(
     const char *slot_name);
+  virtual void DeletePresetFilterUserSlotConstraint(const char *slot_name);
   virtual void SetPresetFilterUserSlotConstraintToRegularExpression(
     const char *slot_name);
   virtual void SetPresetFilterUserSlotConstraintToString(
@@ -445,6 +454,19 @@ public:
   vtkGetMacro(RemoveMenuEntryVisibility,int);
   vtkSetMacro(RemoveMenuEntryVisibility,int);
   vtkBooleanMacro(RemoveMenuEntryVisibility,int);
+
+  // Description:
+  // Set/Get the visibility of the filter button.
+  // If visible, clicking on this button will bring the a popup menu 
+  // presenting all the unique values that were collected in the
+  // FilterButtonSlotName slot for all presets.
+  // Each one can be turn on and off, which will update the 
+  // PresetFilterUserSlotConstraint automatically for that slot.
+  virtual void SetFilterButtonVisibility(int);
+  vtkGetMacro(FilterButtonVisibility,int);
+  vtkBooleanMacro(FilterButtonVisibility,int);
+  vtkSetStringMacro(FilterButtonSlotName);
+  vtkGetStringMacro(FilterButtonSlotName);
 
   // Description:
   // Set/Get the visibility of the help message.
@@ -601,6 +623,18 @@ public:
   virtual void SetPresetLoadCommand(vtkObject *object, const char *method);
 
   // Description:
+  // Specifies a command to associate with the widget. This command is 
+  // typically invoked when the preset filtering has changed, i.e. a filter
+  // constraint has been added/removed (see, ClearPresetFilter or
+  // SetPresetFilterUserSlotConstraint).
+  // The 'object' argument is the object that will have the method called on
+  // it. The 'method' argument is the name of the method to be called and any
+  // arguments in string form. If the object is NULL, the method is still
+  // evaluated as a simple command. 
+  virtual void SetPresetFilteringHasChangedCommand(
+    vtkObject *object, const char *method);
+
+  // Description:
   // Refresh the interface.
   virtual void Update();
 
@@ -683,12 +717,19 @@ public:
   virtual void PresetSelectionChangedCallback();
   virtual void PresetRightClickCallback(int row, int col, int x, int y);
   virtual int  PresetLoadCallback();
+  virtual void PresetFilterCallback();
+  virtual void PresetFilterApplyCallback(const char *regexp);
   virtual void UpdatePresetRowCallback(int id);
   virtual void UpdatePresetRowsCallback();
   virtual void ColumnSortedCallback();
   virtual void RowMovedCallback();
   virtual void SchedulePresetSelectionCallback();
   virtual void SchedulePresetSelectionChangedCallback();
+
+  // Description:
+  // Access to the internal multicolumn list.
+  // This is temporary, this internal widget may change.
+  vtkGetObjectMacro(PresetList, vtkKWMultiColumnListWithScrollbars);
 
 protected:
   vtkKWPresetSelector();
@@ -706,48 +747,26 @@ protected:
   virtual void CreateColumns();
 
   // Description:
-  // Create the preset buttons.
-  // Subclasses should override this method to add their own preset buttons
-  // (do not forget to call the superclass first).
-  virtual void CreatePresetButtons();
-
-  // Description:
-  // Update the preset buttons state/visibility.
-  virtual void UpdatePresetButtons();
-
-  // Description:
-  // Set the preset buttons icons.
-  // Subclasses should override this method to set their own icons
-  // (do not forget to call the superclass first).
-  virtual void SetPresetButtonsIcons();
-
-  // Description:
-  // Set the preset buttons balloon help strings
-  // Subclass can override this method to change the help strings
-  // associated to the buttons.
-  virtual void SetPresetButtonsHelpStrings();
-
-  // Description:
   // Create the preset buttons in the toolbar.
   // Subclasses should override this method to add their own toolbar buttons
   // (do not forget to call the superclass first).
-  virtual void CreateToolbarPresetButtons();
+  virtual void CreateToolbarPresetButtons(vtkKWToolbar*, int use_separators);
 
   // Description:
   // Update the toolbar preset buttons state/visibility.
-  virtual void UpdateToolbarPresetButtons();
+  virtual void UpdateToolbarPresetButtons(vtkKWToolbar*);
 
   // Description:
   // Set the toolbar preset buttons icons.
   // Subclasses should override this method to set their own icons
   // (do not forget to call the superclass first).
-  virtual void SetToolbarPresetButtonsIcons();
+  virtual void SetToolbarPresetButtonsIcons(vtkKWToolbar*);
 
   // Description:
   // Set the toolbar preset buttons balloon help strings
   // Subclass can override this method to change the help strings
   // associated to the buttons.
-  virtual void SetToolbarPresetButtonsHelpStrings();
+  virtual void SetToolbarPresetButtonsHelpStrings(vtkKWToolbar*);
 
   // Description:
   // Configure a new preset.
@@ -785,8 +804,12 @@ protected:
 
   vtkKWMultiColumnListWithScrollbars *PresetList;
   vtkKWFrame                         *PresetControlFrame;
-  vtkKWPushButtonSet                 *PresetButtons;
+  vtkKWToolbar                       *PresetButtons;
+  vtkKWToolbar                       *Toolbar;
   vtkKWLabelWithLabel                *HelpLabel;
+  vtkKWMenu                          *ContextMenu;
+  vtkKWIcon                          *PresetButtonsBaseIcon;
+ 
 
   int ApplyPresetOnSelection;
   int SelectSpinButtonsVisibility;
@@ -797,6 +820,7 @@ protected:
   int RemoveButtonVisibility;
   int RemoveMenuEntryVisibility;
   int HelpLabelVisibility;
+  int FilterButtonVisibility;
 
   int ThumbnailSize;
   int ScreenshotSize;
@@ -804,6 +828,7 @@ protected:
   int MaximumNumberOfPresets;
 
   char *EmailBody;
+  char *FilterButtonSlotName;
 
   // Description:
   // Called when the number of presets has changed.
@@ -816,11 +841,16 @@ protected:
   virtual void NumberOfPresetsHasChanged();
 
   // Description:
-  // Called when preset filtering *may* have changed, i.e. a filter
+  // Called when preset filtering has changed, i.e. a filter
   // constraint has been added/removed (see, ClearPresetFilter or
-  // SetPresetFilterUserSlotConstraint), or the value of a slot has changed
-  // and that slot was filtered, therefore possibly making the preset
-  // filtered or not-filtered.
+  // SetPresetFilterUserSlotConstraint).
+  virtual void PresetFilteringHasChanged();
+
+  // Description:
+  // Called when preset filtering *may* have changed, the value of a slot has
+  // changed and that slot was filtered (i.e. had a constraint put on it
+  // using SetPresetFilterUserSlotConstraint), therefore it is possible that
+  // preset maybe pass or not pass the filter anymore (IsPresetFiltered).
   virtual void PresetFilteringMayHaveChanged();
 
   // PIMPL Encapsulation for STL containers
@@ -855,6 +885,9 @@ protected:
   char *PresetLoadCommand;
   virtual int InvokePresetLoadCommand();
 
+  char *PresetFilteringHasChangedCommand;
+  virtual void InvokePresetFilteringHasChangedCommand();
+
   // Description:
   // Get the index of a given column.
   virtual int GetIdColumnIndex();
@@ -872,10 +905,6 @@ protected:
   // preset buttons.
   virtual void PopulatePresetContextMenu(vtkKWMenu *menu, int id);
 
-  // Context menu
-
-  vtkKWMenu *ContextMenu;
-
   // Description:
   // Some constants
   //BTX
@@ -888,10 +917,11 @@ protected:
   static int LocateButtonId;
   static int EmailButtonId;
   static int LoadButtonId;
+  static int FilterButtonId;
   //ETX
 
   // Description:
-  // Access to the button label in the toolbar (for retrieval purposes)
+  // Access to the button label
   virtual const char* GetSelectPreviousButtonLabel();
   virtual const char* GetSelectNextButtonLabel();
   virtual const char* GetAddButtonLabel();
@@ -901,6 +931,7 @@ protected:
   virtual const char* GetLocateButtonLabel();
   virtual const char* GetEmailButtonLabel();
   virtual const char* GetLoadButtonLabel();
+  virtual const char* GetFilterButtonLabel();
   
   // Description:
   // Delete all presets, i.e. deallocate all presets and remove them
@@ -913,9 +944,6 @@ protected:
   // Return the number of selected presets with filename
   virtual int GetNumberOfSelectedPresetsWithFileName();
 
-  vtkKWToolbar *Toolbar;
-  vtkKWIcon *PresetButtonsBaseIcon;
-  
   // Description:
   // Manage the preset Id to row index cache.
   virtual void SetPresetIdToRowIndexCacheEntry(int id, int row_index);
