@@ -54,7 +54,7 @@
 #define VTK_KW_VPW_TESTING 0
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.52 $");
+vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.53 $");
 vtkStandardNewMacro(vtkKWVolumePropertyWidget);
 
 //----------------------------------------------------------------------------
@@ -1044,7 +1044,7 @@ void vtkKWVolumePropertyWidget::Update()
       }
     else
       {
-      this->ScalarOpacityFunctionEditor->SetPiecewiseFunction(0);
+      this->ScalarOpacityFunctionEditor->SetPiecewiseFunction(NULL);
       }
 
     if (this->HistogramSet)
@@ -1141,7 +1141,7 @@ void vtkKWVolumePropertyWidget::Update()
       }
     else
       {
-      this->ScalarColorFunctionEditor->SetColorTransferFunction(0);
+      this->ScalarColorFunctionEditor->SetColorTransferFunction(NULL);
       }
 
     if (!no_rgb && this->HistogramSet)
@@ -1326,7 +1326,7 @@ void vtkKWVolumePropertyWidget::Update()
       }
     else
       {
-      this->GradientOpacityFunctionEditor->SetPiecewiseFunction(0);
+      this->GradientOpacityFunctionEditor->SetPiecewiseFunction(NULL);
       }
 
     if (this->HistogramSet)
@@ -1669,6 +1669,11 @@ void vtkKWVolumePropertyWidget::SetScalarOpacityUnitDistanceVisibility(int arg)
     }
 
   this->ScalarOpacityUnitDistanceVisibility = arg;
+
+  if (this->ScalarOpacityUnitDistanceVisibility)
+    {
+    this->ScalarOpacityFunctionEditor->UserFrameVisibilityOn();
+    }
 
   this->Modified();
 
