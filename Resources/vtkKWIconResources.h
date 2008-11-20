@@ -1575,6 +1575,20 @@ static const unsigned char image_preset_update[] =
 
 /* 
  * Resource generated for file:
+ *    preset_filter.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_preset_filter_width          = 16;
+static const unsigned int  image_preset_filter_height         = 16;
+static const unsigned int  image_preset_filter_pixel_size     = 4;
+static const unsigned long image_preset_filter_length         = 88;
+static const unsigned long image_preset_filter_decoded_length = 1024;
+
+static const unsigned char image_preset_filter[] = 
+  "eNr7//8/w/9RPGAYCP4TwoT0/393EicGyUdHhuynlX58ZhCjF5cZpOhFN4McvYNFPwyTox"
+  "+EQfpgmBj1AL8Mzfk=";
+
+/* 
+ * Resource generated for file:
  *    question.png (zlib, base64) (image file)
  */
 static const unsigned int  image_question_width          = 32;

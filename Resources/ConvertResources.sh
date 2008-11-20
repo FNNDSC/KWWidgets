@@ -101,6 +101,7 @@ KWConvertImageToHeader --zlib --base64 vtkKWIconResources.h \
     preset_next.png \
     preset_previous.png \
     preset_update.png \
+    preset_filter.png \
     question.png \
     reload.png \
     reset_camera.png \
