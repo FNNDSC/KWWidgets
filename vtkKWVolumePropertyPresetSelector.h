@@ -28,6 +28,7 @@
 #include "vtkKWPresetSelector.h"
 
 class vtkVolumeProperty;
+class vtkKWVolumePropertyPresetSelectorInternals;
 
 class KWWidgets_EXPORT vtkKWVolumePropertyPresetSelector : public vtkKWPresetSelector
 {
@@ -46,37 +47,109 @@ public:
   virtual vtkVolumeProperty* GetPresetVolumeProperty(int id);
 
   // Description:
-  // Set/Get the modality for a given preset.
-  // This is just a convenience field, that can be useful if the presets
-  // are used on medical data.
-  // The modality field is not displayed as a column by default, but this
-  // can be changed using the SetModalityColumnVisibility() method.
+  // Set/Get the type for a given preset.
+  // The type column can be used, for example, to put the medical modality
+  // a specific presets applies to (say, CT, MR)
+  // The type field is not displayed as a column by default, but this
+  // can be changed using the SetTypeColumnVisibility() method.
   // This column can not be edited.
   // Return 1 on success, 0 otherwise
-  virtual int SetPresetModality(int id, const char *modality);
-  virtual const char* GetPresetModality(int id);
+  virtual int SetPresetType(int id, const char *type);
+  virtual const char* GetPresetType(int id);
 
   // Description:
-  // Set/Get the visibility of the modality column. Hidden by default.
+  // Set/Get if the volume property is designed with independent components
+  // in mind.
+  // IMPORTANT: this slot is a convenience slot that reflect the value
+  // of the vtkVolumeProperty's own IndependentComponents ivar. Each time
+  // the volume property preset is set (see SetPresetVolumeProperty), this
+  // slot is updated automatically, and vice-versa.
+  // It is provided for filtering purposes (i.e. so that you can use
+  // this slot in a preset filter constraint, and only show the presets
+  // that are relevant to your data, if it has independent components or not).
+  // Return 1 on success, 0 otherwise
+  virtual int GetPresetIndependentComponents(int id);
+  virtual int SetPresetIndependentComponents(int id, int flag);
+
+  // Description:
+  // Set/Get if the volume property is designed with a specific blend mode
+  // in mind. Valid constants are the ones found in vtkVolumeMapper, i.e.
+  //   vtkVolumeMapper::COMPOSITE_BLEND, 
+  //   vtkVolumeMapper::MAXIMUM_INTENSITY_BLEND,
+  //   vtkVolumeMapper::MINIMUM_INTENSITY_BLEND.
+  // Return 1 on success, 0 otherwise
+  virtual int GetPresetBlendMode(int id);
+  virtual int SetPresetBlendMode(int id, int flag);
+  virtual int HasPresetBlendMode(int id);
+
+  // Description:
+  // Set/Get if the normalized scalar values in the volume property are to 
+  // be interpreted relative to an histogram of the scalars.
+  // Return 1 on success, 0 otherwise
+  virtual int GetPresetHistogramFlag(int id);
+  virtual int SetPresetHistogramFlag(int id, int flag);
+
+  // Description:
+  // Query if the preset range falls inside a given range
+  // (the preset range is computed by checking the largest scalar range among
+  // the volume property transfer functions for component 0).
+  // Return 1 on success (or HistogramFlag is On), 0 on error
+  virtual int IsPresetRangeInsideRange(int id, double range[2]);
+
+  // Description:
+  // Set/Get the visibility of the type column. Hidden by default.
   // No effect if called before Create().
-  virtual void SetModalityColumnVisibility(int);
-  virtual int GetModalityColumnVisibility();
-  vtkBooleanMacro(ModalityColumnVisibility, int);
+  virtual void SetTypeColumnVisibility(int);
+  virtual int GetTypeColumnVisibility();
+  vtkBooleanMacro(TypeColumnVisibility, int);
+
+  // Description:
+  // Add default normalized presets.
+  // The type parameter will be used to call SetPresetType on each new preset.
+  virtual void AddDefaultNormalizedPresets(const char *type);
+
+  // Description:
+  // Add a preset filter constraint on the preset group field.
+  virtual void SetPresetFilterRangeConstraint(double range[2]);
+  virtual double* GetPresetFilterRangeConstraint();
+  virtual void DeletePresetFilterRangeConstraint();
+
+  // Description:
+  // Query if a given preset matches the current preset filter constraints.
+  // Return 1 if match or if no filter was defined, 0 otherwise
+  // Override (augment) the superclass to handle range constraint (see
+  // SetPresetFilterRangeConstraint).
+  virtual int IsPresetFiltered(int id);
+
+  // Description:
+  // Most (if not all) of the information associated to a preset (say group, 
+  // comment, filename, creation time, thumbnail and screenshot) is stored
+  // under the hood as user slots using the corresponding API (i.e. 
+  // Set/GetPresetUserSlotAs...()). Since each slot requires a unique name,
+  // the following methods are provided to retrieve the slot name for
+  // the preset fields. This can be useful to avoid collision between
+  // the default slots and your own user slots. Note that the default slot
+  // names can be changed too, but doing so will not transfer the value
+  // stored at the old slot name to the new slot name (it is up to you to do
+  // so, if needed).
+  virtual void SetPresetTypeSlotName(const char *);
+  virtual const char* GetPresetTypeSlotName();
+  virtual void SetPresetIndependentComponentsSlotName(const char *);
+  virtual const char* GetPresetIndependentComponentsSlotName();
+  virtual void SetPresetHistogramFlagSlotName(const char *);
+  virtual const char* GetPresetHistogramFlagSlotName();
+  virtual void SetPresetBlendModeSlotName(const char *);
+  virtual const char* GetPresetBlendModeSlotName();
 
   // Description:
   // Some constants
   //BTX
-  static const char *ModalityColumnName;
+  static const char *TypeColumnName;
   //ETX
-
-  // Description:
-  // Deep copy contents of volume property 'source' into 'target'
-  static void DeepCopyVolumeProperty(
-    vtkVolumeProperty *target, vtkVolumeProperty *source);
 
 protected:
   vtkKWVolumePropertyPresetSelector();
-  ~vtkKWVolumePropertyPresetSelector() {};
+  ~vtkKWVolumePropertyPresetSelector();
 
   // Description:
   // Create the columns.
@@ -97,7 +170,16 @@ protected:
 
   // Description:
   // Get the index of a given column.
-  virtual int GetModalityColumnIndex();
+  virtual int GetTypeColumnIndex();
+
+  // Description:
+  // Update the toolbar preset buttons state/visibility.
+  virtual void UpdateToolbarPresetButtons(vtkKWToolbar*);
+
+  // PIMPL Encapsulation for STL containers
+  //BTX
+  vtkKWVolumePropertyPresetSelectorInternals *Internals;
+  //ETX
 
 private:
 
