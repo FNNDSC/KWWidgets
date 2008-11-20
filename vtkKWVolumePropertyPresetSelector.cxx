@@ -70,7 +70,7 @@ vtkKWVolumePropertyPresetSelector::vtkKWVolumePropertyPresetSelector()
     "DefaultBlendModeSlot";
   this->Internals->HasRangeConstraint = 0;
 
-  this->FilterButtonVisibility = 1;
+  this->FilterButtonVisibility = 0; // not 1 since the Type column is hidden;
   this->SetFilterButtonSlotName(this->GetPresetTypeSlotName());
 
   this->SetPresetButtonsBaseIconToPredefinedIcon(

@@ -54,7 +54,7 @@ vtkKWWindowLevelPresetSelector::vtkKWWindowLevelPresetSelector()
   this->Internals = new vtkKWWindowLevelPresetSelectorInternals;
   this->Internals->TypeSlotName = "DefaultTypeSlot";
 
-  this->FilterButtonVisibility = 1;
+  this->FilterButtonVisibility = 0; // not 1 since the Type column is hidden;
   this->SetFilterButtonSlotName(this->GetPresetTypeSlotName());
 
   this->SetPresetButtonsBaseIconToPredefinedIcon(vtkKWIcon::IconContrast);

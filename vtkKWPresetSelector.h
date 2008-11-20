@@ -456,7 +456,7 @@ public:
   vtkBooleanMacro(RemoveMenuEntryVisibility,int);
 
   // Description:
-  // Set/Get the visibility of the filter button.
+  // Set/Get the visibility of the filter button (hidden by default).
   // If visible, clicking on this button will bring the a popup menu 
   // presenting all the unique values that were collected in the
   // FilterButtonSlotName slot for all presets.

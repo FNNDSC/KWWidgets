@@ -53,7 +53,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.82 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.83 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -897,6 +897,8 @@ void vtkKWPresetSelector::UpdateToolbarPresetButtons(vtkKWToolbar *toolbar)
     {
     toolbar->SetWidgetVisibility(
       toolbar_pb, this->FilterButtonVisibility ? 1 : 0);
+    toolbar_pb->SetEnabled(
+      this->FilterButtonSlotName ? toolbar->GetEnabled() : 0);
     }
 }
 
