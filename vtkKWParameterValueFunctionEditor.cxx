@@ -41,7 +41,7 @@
 #include <vtksys/stl/algorithm>
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.114 $");
+vtkCxxRevisionMacro(vtkKWParameterValueFunctionEditor, "$Revision: 1.115 $");
 
 //----------------------------------------------------------------------------
 #define VTK_KW_PVFE_POINT_RADIUS_MIN         2
@@ -4814,7 +4814,7 @@ void vtkKWParameterValueFunctionEditor::SetHistogram(vtkKWHistogram *arg)
     this->LastHistogramBuildTime = 0;
     }
 
-  if (this->Histogram && 
+  if (!this->Histogram ||
       this->Histogram->GetMTime() > this->LastHistogramBuildTime)
     {
     this->UpdateHistogramLogModeOptionMenu();
