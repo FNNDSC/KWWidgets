@@ -1150,6 +1150,7 @@ public:
   // Description:
   // Set/Get the one of several styles for manipulating the selection. 
   // Valid constants can be found in vtkKWOptions::SelectionModeType.
+  // Default is browse.
   virtual void SetSelectionMode(int);
   virtual int GetSelectionMode();
   virtual void SetSelectionModeToSingle();
