@@ -52,6 +52,11 @@ public:
   virtual void SetRenderWidget(vtkKWRenderWidget*);
 
   // Description:
+  // Set the number of frames and maximum number of frames
+  virtual void SetMaximumNumberOfFrames(int max);
+  virtual void SetNumberOfFrames(int val);
+
+  // Description:
   // Set/Get the animation type.
   // If set to 'camera', the widget will display controls to rotate the
   // camera only the 3-axes.
@@ -67,23 +72,15 @@ public:
   //ETX
   virtual void SetAnimationType(int);
   vtkGetMacro(AnimationType, int);
-  virtual void SetAnimationTypeToCamera()
-    { this->SetAnimationType(
-      vtkKWSimpleAnimationWidget::AnimationTypeCamera); };
-  virtual void SetAnimationTypeToSlice()
-    { this->SetAnimationType(
-      vtkKWSimpleAnimationWidget::AnimationTypeSlice); };
+  virtual void SetAnimationTypeToCamera();
+  virtual void SetAnimationTypeToSlice();
 
   // Description:
   // Set the slice range (i.e. the indices of the first and last slices
-  // available in the animation).
+  // available in the animation, when the animation type is Slice).
   virtual void SetSliceRange(int min, int max);
   virtual void SetSliceRange(const int range[2]) 
     { this->SetSliceRange(range[0], range[1]); };
-
-  // Description:
-  // Set the maximum number of frames
-  virtual void SetMaximumNumberOfFrames(int max);
 
   // Description:
   // Set the command to invoke to set the slice value on an external
@@ -123,6 +120,26 @@ public:
     vtkObject *object, const char *method);
 
   // Description:
+  // Set the X start and total rotation.
+  virtual void SetXStart(double val);
+  virtual void SetXRotation(double val);
+
+  // Description:
+  // Set the Y start and total rotation.
+  virtual void SetYStart(double val);
+  virtual void SetYRotation(double val);
+
+  // Description:
+  // Set the Z start and total rotation.
+  virtual void SetZStart(double val);
+  virtual void SetZRotation(double val);
+
+  // Description:
+  // Set the zoom start and factor.
+  virtual void SetZoomStart(double val);
+  virtual void SetZoomFactor(double val);
+
+  // Description:
   // Set a command to be invoked after the camera animation has been
   // created/previewed.
   // This command is optional.
@@ -132,6 +149,18 @@ public:
   // evaluated as a simple command. 
   virtual void SetCameraPostAnimationCommand(
     vtkObject *object, const char *method);
+
+  // Description:
+  // Preview and create camera animation
+  virtual void PreviewCameraAnimation();
+  virtual void CreateCameraAnimation(
+    const char *filename, int width, int height, int fps, const char *fourcc);
+  
+  // Description:
+  // Preview and create slice animation
+  virtual void PreviewSliceAnimation();
+  virtual void CreateSliceAnimation(
+    const char *filename, int width, int height, int fps, const char *fourcc);
 
   // Description:
   // Update the whole UI depending on the value of the Ivars
@@ -195,20 +224,8 @@ protected:
   virtual void InvokeCameraPostAnimationCommand();
   
   // Description:
-  // Preview and create camera animation
-  virtual void PreviewCameraAnimation();
-  virtual void CreateCameraAnimation(
-    const char *file_root, const char *ext, int width, int height);
-  virtual void PerformCameraAnimation(
-    const char *file_root, const char *ext, int width, int height);
-  
-  // Description:
-  // Preview and create slice animation
-  virtual void PreviewSliceAnimation();
-  virtual void CreateSliceAnimation(
-    const char *file_root, const char *ext, int width, int height);
-  virtual void PerformSliceAnimation(
-    const char *file_root, const char *ext, int width, int height);
+  // Fix animation size
+  virtual void FixAnimationSize(const char *filename, int *width, int *height);
 
   // Description:
   // Enable/disable animation buttons

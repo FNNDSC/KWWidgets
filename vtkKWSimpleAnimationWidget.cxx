@@ -83,7 +83,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSimpleAnimationWidget);
-vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.40 $");
+vtkCxxRevisionMacro(vtkKWSimpleAnimationWidget, "$Revision: 1.41 $");
 
 //----------------------------------------------------------------------------
 vtkKWSimpleAnimationWidget::vtkKWSimpleAnimationWidget()
@@ -390,6 +390,18 @@ void vtkKWSimpleAnimationWidget::SetAnimationType(int val)
   this->Update();
 }
 
+void vtkKWSimpleAnimationWidget::SetAnimationTypeToCamera()
+{ 
+  this->SetAnimationType(
+    vtkKWSimpleAnimationWidget::AnimationTypeCamera); 
+}
+ 
+void vtkKWSimpleAnimationWidget::SetAnimationTypeToSlice()
+{ 
+  this->SetAnimationType(
+    vtkKWSimpleAnimationWidget::AnimationTypeSlice); 
+}
+
 //----------------------------------------------------------------------------
 void vtkKWSimpleAnimationWidget::Update()
 {
@@ -459,6 +471,28 @@ void vtkKWSimpleAnimationWidget::Update()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWSimpleAnimationWidget::SetMaximumNumberOfFrames(int max)
+{
+  vtkKWScaleWithEntry *scale_nb_of_frames = 
+    this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_NB_OF_FRAMES_ID);
+  if (scale_nb_of_frames)
+    {
+    scale_nb_of_frames->SetRange(scale_nb_of_frames->GetRangeMin(), max);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSimpleAnimationWidget::SetNumberOfFrames(int val)
+{
+  vtkKWScaleWithEntry *scale_nb_of_frames = 
+    this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_NB_OF_FRAMES_ID);
+  if (scale_nb_of_frames)
+    {
+    scale_nb_of_frames->SetValue(val);
+    }
+}
+
+//----------------------------------------------------------------------------
 void vtkKWSimpleAnimationWidget::SetSliceRange(int min, int max)
 {
   vtkKWScaleWithEntry *scale_start = 
@@ -487,13 +521,114 @@ void vtkKWSimpleAnimationWidget::SetSliceRange(int min, int max)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWSimpleAnimationWidget::SetMaximumNumberOfFrames(int max)
+void vtkKWSimpleAnimationWidget::SetXStart(double val)
 {
-  vtkKWScaleWithEntry *scale_nb_of_frames = 
-    this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_NB_OF_FRAMES_ID);
-  if (scale_nb_of_frames)
+  if (this->Parameters)
     {
-    scale_nb_of_frames->SetRange(scale_nb_of_frames->GetRangeMin(), max);
+    vtkKWScaleWithEntry *scale = 
+      this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_AZIMUTH_START_ID);
+    if (scale)
+      {
+      scale->SetValue(val);
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSimpleAnimationWidget::SetXRotation(double val)
+{
+  if (this->Parameters)
+    {
+    vtkKWScaleWithEntry *scale = 
+      this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_AZIMUTH_ID);
+    if (scale)
+      {
+      scale->SetValue(val);
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSimpleAnimationWidget::SetYStart(double val)
+{
+  if (this->Parameters)
+    {
+    vtkKWScaleWithEntry *scale = 
+      this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ELEVATION_START_ID);
+    if (scale)
+      {
+      scale->SetValue(val);
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSimpleAnimationWidget::SetYRotation(double val)
+{
+  if (this->Parameters)
+    {
+    vtkKWScaleWithEntry *scale = 
+      this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ELEVATION_ID);
+    if (scale)
+      {
+      scale->SetValue(val);
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSimpleAnimationWidget::SetZStart(double val)
+{
+  if (this->Parameters)
+    {
+    vtkKWScaleWithEntry *scale = 
+      this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ROLL_START_ID);
+    if (scale)
+      {
+      scale->SetValue(val);
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSimpleAnimationWidget::SetZRotation(double val)
+{
+  if (this->Parameters)
+    {
+    vtkKWScaleWithEntry *scale = 
+      this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ROLL_ID);
+    if (scale)
+      {
+      scale->SetValue(val);
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSimpleAnimationWidget::SetZoomStart(double val)
+{
+  if (this->Parameters)
+    {
+    vtkKWScaleWithEntry *scale = 
+      this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ZOOM_START_ID);
+    if (scale)
+      {
+      scale->SetValue(val);
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWSimpleAnimationWidget::SetZoomFactor(double val)
+{
+  if (this->Parameters)
+    {
+    vtkKWScaleWithEntry *scale = 
+      this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ZOOM_ID);
+    if (scale)
+      {
+      scale->SetValue(val);
+      }
     }
 }
 
@@ -637,18 +772,18 @@ void vtkKWSimpleAnimationWidget::CreateAnimationCallback()
 
   // Split into root and extension.
 
-  vtksys_stl::string ext = 
+  vtksys_stl::string filename_ext = 
     vtksys::SystemTools::GetFilenameLastExtension(filename.c_str());
 
   vtksys_stl::string filename_path = 
     vtksys::SystemTools::GetFilenamePath(filename.c_str());
 
-  vtksys_stl::string file_root(filename_path);
-  file_root += '/';
-  file_root +=
+  vtksys_stl::string filename_root(filename_path);
+  filename_root += '/';
+  filename_root +=
     vtksys::SystemTools::GetFilenameWithoutLastExtension(filename.c_str());
 
-  if (!ext.size())
+  if (!filename_ext.size())
     {
     vtkErrorMacro(<< "Could not find extension in " << filename.c_str());
     return;
@@ -662,11 +797,16 @@ void vtkKWSimpleAnimationWidget::CreateAnimationCallback()
   // Is this a video format
 
   int is_mpeg = 
-    (!strcmp(ext.c_str(), ".mpg") || !strcmp(ext.c_str(), ".mpeg") ||
-     !strcmp(ext.c_str(), ".MPG") || !strcmp(ext.c_str(), ".MPEG") ||
-     !strcmp(ext.c_str(), ".MP2") || !strcmp(ext.c_str(), ".mp2"));
+    (!strcmp(filename_ext.c_str(), ".mpg") || 
+     !strcmp(filename_ext.c_str(), ".mpeg") ||
+     !strcmp(filename_ext.c_str(), ".MPG") || 
+     !strcmp(filename_ext.c_str(), ".MPEG") ||
+     !strcmp(filename_ext.c_str(), ".MP2") || 
+     !strcmp(filename_ext.c_str(), ".mp2"));
+
   int is_avi = 
-    (!strcmp(ext.c_str(), ".avi") || !strcmp(ext.c_str(), ".AVI"));
+    (!strcmp(filename_ext.c_str(), ".avi") || 
+     !strcmp(filename_ext.c_str(), ".AVI"));
 
   // Prompt for the size of the movie
     
@@ -788,39 +928,6 @@ void vtkKWSimpleAnimationWidget::CreateAnimationCallback()
   app->SetRegistryValue(
     2, "RunTime", "SimpleAnimationSize", "%dx%d", width, height);
 
-  // Fix the size
-
-  if (is_mpeg)
-    {
-    if ((width % 32) > 0)
-      {
-      width -= width % 32;
-      }
-    if ((height % 8) > 0)
-      {
-      height -= height % 8;
-      }
-    if (width > 1920)
-      {
-      width = 1920;
-      }
-    if (height > 1080)
-      {
-      height = 1080;
-      }      
-    }
-  else if (is_avi)
-    {
-    if ((width % 4) > 0)
-      {
-      width -= width % 4;
-      }
-    if ((height % 4) > 0)
-      {
-      height -= height % 4;
-      }
-    }
-  
   // Disable buttons but preview
 
   this->DisableButtonsButCancel();
@@ -830,12 +937,14 @@ void vtkKWSimpleAnimationWidget::CreateAnimationCallback()
   if (this->AnimationType == 
       vtkKWSimpleAnimationWidget::AnimationTypeCamera)
     {
-    this->CreateCameraAnimation(file_root.c_str(), ext.c_str(), width, height);
+    this->CreateCameraAnimation(
+      filename.c_str(), width, height, 15, NULL);
     }
   else if (this->AnimationType == 
            vtkKWSimpleAnimationWidget::AnimationTypeSlice)
     {
-    this->CreateSliceAnimation(file_root.c_str(), ext.c_str(), width, height);
+    this->CreateSliceAnimation(
+      filename.c_str(), width, height, 15, NULL);
     }
 
   if (this->AnimationStatus == vtkKWSimpleAnimationWidget::AnimationDone)
@@ -867,23 +976,72 @@ void vtkKWSimpleAnimationWidget::CancelAnimationCallback()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWSimpleAnimationWidget::FixAnimationSize(
+  const char *filename, int *width, int *height)
+{
+  if (!filename)
+    {
+    return;
+    }
+
+  vtksys_stl::string filename_ext = 
+    vtksys::SystemTools::GetFilenameLastExtension(filename);
+
+  int is_mpeg = 
+    (!strcmp(filename_ext.c_str(), ".mpg") || 
+     !strcmp(filename_ext.c_str(), ".mpeg") ||
+     !strcmp(filename_ext.c_str(), ".MPG") || 
+     !strcmp(filename_ext.c_str(), ".MPEG") ||
+     !strcmp(filename_ext.c_str(), ".MP2") || 
+     !strcmp(filename_ext.c_str(), ".mp2"));
+
+  int is_avi = 
+    (!strcmp(filename_ext.c_str(), ".avi") || 
+     !strcmp(filename_ext.c_str(), ".AVI"));
+
+  if (is_mpeg)
+    {
+    if ((*width % 32) > 0)
+      {
+      *width -= *width % 32;
+      }
+    if ((*height % 8) > 0)
+      {
+      *height -= *height % 8;
+      }
+    if (*width > 1920)
+      {
+      *width = 1920;
+      }
+    if (*height > 1080)
+      {
+      *height = 1080;
+      }      
+    }
+  else if (is_avi)
+    {
+    if ((*width % 4) > 0)
+      {
+      *width -= *width % 4;
+      }
+    if ((*height % 4) > 0)
+      {
+      *height -= *height % 4;
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
 void vtkKWSimpleAnimationWidget::PreviewCameraAnimation()
 {
-  this->PerformCameraAnimation(NULL, NULL, -1, -1);
+  this->CreateCameraAnimation(NULL, 0, 0, 0, NULL);
 }
 
 //----------------------------------------------------------------------------
-void vtkKWSimpleAnimationWidget::CreateCameraAnimation(const char *file_root,
-                                                       const char *ext,
-                                                       int width, int height)
-{
-  this->PerformCameraAnimation(file_root, ext, width, height);
-}
-
-//----------------------------------------------------------------------------
-void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
-                                                        const char *ext,
-                                                        int width, int height)
+void vtkKWSimpleAnimationWidget::CreateCameraAnimation(
+  const char *filename,
+  int width, int height,
+  int fps, const char *fourcc)
 {
   if (!this->IsCreated() || !this->RenderWidget)
     {
@@ -891,16 +1049,33 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
     return;
     }
 
-  int previewing = !file_root;
+  int previewing = !filename;
+
   vtkKWWindowBase *win = vtkKWWindowBase::SafeDownCast(
     this->GetParentTopLevel());
+
+  this->FixAnimationSize(filename, &width, &height);
+
+  vtksys_stl::string filename_ext;
+  vtksys_stl::string filename_path;
+  vtksys_stl::string filename_root;
+
+  if (filename)
+    { 
+    filename_ext = vtksys::SystemTools::GetFilenameLastExtension(filename);
+    filename_path = vtksys::SystemTools::GetFilenamePath(filename);
+    filename_root = filename_path;
+    filename_root += '/';
+    filename_root += 
+      vtksys::SystemTools::GetFilenameWithoutLastExtension(filename);
+    }
 
   int old_render_mode = 0, old_size[2];
 
   vtkWindowToImageFilter *w2i = NULL;
   vtkGenericMovieWriter *movie_writer = NULL;
-  vtkImageWriter *image_writer = 0;
-  char *image_filename = 0;
+  vtkImageWriter *image_writer = NULL;
+  char *image_filename = NULL;
 
   if (previewing)
     {
@@ -914,41 +1089,43 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
     }
   else
     {
-    if (ext)
+    if (filename_ext.size())
       {
-      if (!strcmp(ext, ".jpg"))
+      if (!strcmp(filename_ext.c_str(), ".jpg"))
         {
         image_writer = vtkJPEGWriter::New();
         }
 #ifdef VTK_USE_MPEG2_ENCODER
-      else if (!strcmp(ext, ".mpg"))
+      else if (!strcmp(filename_ext.c_str(), ".mpg"))
         {
         movie_writer = vtkMPEG2Writer::New();
         }
 #endif
 #ifdef VTK_USE_VIDEO_FOR_WINDOWS
-      else if (!strcmp(ext, ".avi"))
+      else if (!strcmp(filename_ext.c_str(), ".avi"))
         {
         movie_writer = vtkAVIWriter::New();
         vtkAVIWriter *avi_writer = vtkAVIWriter::SafeDownCast(movie_writer);
         if (avi_writer)
           {
-          avi_writer->SetPromptCompressionOptions(1);
+          avi_writer->SetPromptCompressionOptions(fourcc ? 0 : 1);
+          // DIB, LAGS, MJPG
+          avi_writer->SetCompressorFourCC(fourcc ? fourcc : "DIB");
           }
         }
 #else
 #ifdef VTK_USE_FFMPEG_ENCODER
-      else if (!strcmp(ext, ".avi"))
+      else if (!strcmp(filename_ext.c_str(), ".avi"))
         {
         movie_writer = vtkFFMPEGWriter::New();
         }
 #endif
 #endif
-      else if (!strcmp(ext, ".tif"))
+      else if (!strcmp(filename_ext.c_str(), ".tif"))
         {
         image_writer = vtkTIFFWriter::New();
         }
-      else if (!strcmp(ext, ".png"))
+      else if (!strcmp(filename_ext.c_str(), ".png"))
         {
         image_writer = vtkPNGWriter::New();
         }
@@ -973,15 +1150,17 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
     if(movie_writer)
       {
       movie_writer->SetInput(w2i->GetOutput());
-      vtksys_stl::string filename(file_root);
-      filename += ext;
+      vtksys_stl::string filename(filename_root);
+      filename += filename_ext;
       movie_writer->SetFileName(filename.c_str());
       movie_writer->Start();
       }
     else if(image_writer)
       {
       image_writer->SetInput(w2i->GetOutput());
-      image_filename = new char[strlen(file_root) + strlen(ext) + 25];
+      image_filename = 
+        new char[strlen(filename_root.c_str()) + 
+                 strlen(filename_ext.c_str()) + 25];
       }
     }
 
@@ -1037,7 +1216,7 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
   
   scale = 
     this->Parameters->GetWidget(VTK_VV_ANIMATION_SCALE_ZOOM_ID);
-  double zoom_per_frame = pow(scale->GetValue(), (double)1.0 / (double)num_frames);
+  double zoom_per_frame =pow(scale->GetValue(),(double)1.0/(double)num_frames);
 
   // Perform the animation
 
@@ -1065,7 +1244,8 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
           }
         else if(image_writer)
           {
-          sprintf(image_filename, "%s.%04d%s", file_root, i, ext);
+          sprintf(image_filename, 
+                  "%s.%04d%s", filename_root.c_str(), i, filename_ext.c_str());
           image_writer->SetFileName(image_filename);
           image_writer->Write();
           }
@@ -1158,21 +1338,14 @@ void vtkKWSimpleAnimationWidget::PerformCameraAnimation(const char *file_root,
 //----------------------------------------------------------------------------
 void vtkKWSimpleAnimationWidget::PreviewSliceAnimation()
 {
-  this->PerformSliceAnimation( NULL, NULL, -1, -1);
+  this->CreateSliceAnimation( NULL, 0, 0, 0, NULL);
 }
 
 //----------------------------------------------------------------------------
-void vtkKWSimpleAnimationWidget::CreateSliceAnimation(const char *file_root,
-                                                      const char *ext,
-                                                      int width, int height)
-{
-  this->PerformSliceAnimation(file_root, ext, width, height);
-}
-
-//----------------------------------------------------------------------------
-void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
-                                                       const char *ext,
-                                                       int width, int height)
+void vtkKWSimpleAnimationWidget::CreateSliceAnimation(
+  const char *filename,
+  int width, int height,
+  int fps, const char *fourcc)
 {
   if (!this->IsCreated() || !this->RenderWidget)
     {
@@ -1180,17 +1353,33 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
     return;
     }
 
-  int previewing = !file_root;
+  int previewing = !filename;
   vtkKWWindowBase *win = vtkKWWindowBase::SafeDownCast(
     this->GetParentTopLevel());
   
+  this->FixAnimationSize(filename, &width, &height);
+
+  vtksys_stl::string filename_ext;
+  vtksys_stl::string filename_path;
+  vtksys_stl::string filename_root;
+
+  if (filename)
+    { 
+    filename_ext = vtksys::SystemTools::GetFilenameLastExtension(filename);
+    filename_path = vtksys::SystemTools::GetFilenamePath(filename);
+    filename_root = filename_path;
+    filename_root += '/';
+    filename_root += 
+      vtksys::SystemTools::GetFilenameWithoutLastExtension(filename);
+    }
+
   int slice = this->InvokeSliceGetCommand();
   int old_size[2];
 
   vtkWindowToImageFilter *w2i = NULL;
-  vtkGenericMovieWriter *movie_writer = 0;
-  vtkImageWriter *image_writer = 0;
-  char *image_filename = 0;
+  vtkGenericMovieWriter *movie_writer = NULL;
+  vtkImageWriter *image_writer = NULL;
+  char *image_filename = NULL;
 
   if (previewing)
     {
@@ -1202,41 +1391,43 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
     }
   else
     {
-    if (ext)
+    if (filename_ext.size())
       {
-      if (!strcmp(ext, ".jpg"))
+      if (!strcmp(filename_ext.c_str(), ".jpg"))
         {
         image_writer = vtkJPEGWriter::New();
         }
 #ifdef VTK_USE_MPEG2_ENCODER
-      else if (!strcmp(ext, ".mpg"))
+      else if (!strcmp(filename_ext.c_str(), ".mpg"))
         {
         movie_writer = vtkMPEG2Writer::New();
         }
 #endif
 #ifdef VTK_USE_VIDEO_FOR_WINDOWS 
-      else if (!strcmp(ext, ".avi"))
+      else if (!strcmp(filename_ext.c_str(), ".avi"))
         {
         movie_writer = vtkAVIWriter::New();
         vtkAVIWriter *avi_writer = vtkAVIWriter::SafeDownCast(movie_writer);
         if (avi_writer)
           {
-          avi_writer->SetPromptCompressionOptions(1);
+          avi_writer->SetPromptCompressionOptions(fourcc ? 0 : 1);
+          // DIB, LAGS, MJPG
+          avi_writer->SetCompressorFourCC(fourcc ? fourcc : "DIB");
           }
         }
 #else
 #ifdef VTK_USE_FFMPEG_ENCODER
-      else if (!strcmp(ext, ".avi"))
+      else if (!strcmp(filename_ext.c_str(), ".avi"))
         {
         movie_writer = vtkFFMPEGWriter::New();
         }
 #endif
 #endif
-      else if (!strcmp(ext, ".tif"))
+      else if (!strcmp(filename_ext.c_str(), ".tif"))
         {
         image_writer = vtkTIFFWriter::New();
         }
-      else if (!strcmp(ext, ".png"))
+      else if (!strcmp(filename_ext.c_str(), ".png"))
         {
         image_writer = vtkPNGWriter::New();
         }
@@ -1262,15 +1453,17 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
     if(movie_writer)
       {
       movie_writer->SetInput(w2i->GetOutput());
-      vtksys_stl::string filename(file_root);
-      filename += ext;
+      vtksys_stl::string filename(filename_root);
+      filename += filename_ext;
       movie_writer->SetFileName(filename.c_str());
       movie_writer->Start();
       }
     else if(image_writer)
       {
       image_writer->SetInput(w2i->GetOutput());
-      image_filename = new char[strlen(file_root) + strlen(ext) + 25];
+      image_filename = 
+        new char[strlen(filename_root.c_str()) + 
+                 strlen(filename_ext.c_str()) + 25];
       }
     }
 
@@ -1330,7 +1523,8 @@ void vtkKWSimpleAnimationWidget::PerformSliceAnimation(const char *file_root,
           }
         else if(image_writer)
           {
-          sprintf(image_filename, "%s.%04d%s", file_root, i, ext);
+          sprintf(image_filename, 
+                  "%s.%04d%s", filename_root.c_str(), i, filename_ext.c_str());
           image_writer->SetFileName(image_filename);
           image_writer->Write();
           }
