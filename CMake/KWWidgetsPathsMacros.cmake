@@ -485,6 +485,23 @@ macro(KWWidgets_GENERATE_SETUP_PATHS_FOR_ONE_CONFIGURATION_TYPE
     endif(gettext_path)
   endif(KWWidgets_USE_INTERNATIONALIZATION)
 
+  # MySQL
+
+  if(VTK_USE_MYSQL)
+    if(NOT MYSQL_INCLUDE_DIRECTORIES AND NOT MYSQL_LIBRARY)
+      include("${VTK_CMAKE_DIR}/FindMySQL.cmake")
+    endif(NOT MYSQL_INCLUDE_DIRECTORIES AND NOT MYSQL_LIBRARY)
+    if(MYSQL_LIBRARY)
+      get_filename_component(path "${MYSQL_LIBRARY}" PATH)
+      if(path)
+        set(bin_path "${path}/../../bin")
+        if(EXISTS "${bin_path}")
+          set(KWWidgets_PATH_ENV ${KWWidgets_PATH_ENV} "${bin_path}")
+        endif(EXISTS "${bin_path}")
+      endif(path)
+    endif(MYSQL_LIBRARY)
+  endif(VTK_USE_MYSQL)
+
   # [incr Tcl]
 
   if(KWWidgets_USE_INCR_TCL)
@@ -782,7 +799,8 @@ macro(KWWidgets_GENERATE_SETUP_PATHS_FOR_ONE_CONFIGURATION_TYPE
       if("${basename}" MATCHES ".*Setup.*")
         set(exe "${CMAKE_CFG_INTDIR}/${basename}.exe")
         if(EXECUTABLE_OUTPUT_PATH)
-          set(exe "${EXECUTABLE_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/${basename}.exe")
+          set(exe 
+            "${EXECUTABLE_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/${basename}.exe")
         endif(EXECUTABLE_OUTPUT_PATH)
 
         # Solve the "things named like *Setup prompt for admin privileges
