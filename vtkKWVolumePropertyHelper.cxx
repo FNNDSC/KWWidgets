@@ -35,7 +35,7 @@ MAINTENANCE, SUPPORT, UPDATE, ENHANCEMENTS, OR MODIFICATIONS.
 
 //---------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWVolumePropertyHelper);
-vtkCxxRevisionMacro(vtkKWVolumePropertyHelper, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWVolumePropertyHelper, "$Revision: 1.2 $");
 
 //----------------------------------------------------------------------------
 void vtkKWVolumePropertyHelper::ApplyScalarOpacityPreset(
@@ -527,8 +527,13 @@ void vtkKWVolumePropertyHelper::ConvertNormalizedRange(
   vtkKWVolumePropertyHelper::CopyVolumeProperty(
     target_prop, 
     normalized_prop, 
-    vtkKWVolumePropertyHelper::CopySkipOpacityUnitDistance
+    (vtkKWVolumePropertyHelper::CopySkipOpacityUnitDistance |
+     vtkKWVolumePropertyHelper::CopySkipIndependentComponents)
     );
+  
+  // independent_component should be the same as target_prop's 
+  // IndependentComponents, but just in case...
+  target_prop->SetIndependentComponents(independent_component);
 
   int nb_components = scalars->GetNumberOfComponents();
   int comp;
@@ -544,13 +549,20 @@ void vtkKWVolumePropertyHelper::ConvertNormalizedRange(
 
     double range[2];
     scalars->GetRange(range, scalar_field);
+    int collapsed_range = (range[0] == range[1] ? 1 : 0);
+    if (collapsed_range) // avoid collapsed transfer functions
+      {
+      vtkMath::GetAdjustedScalarRange(scalars, scalar_field, range);
+      }
     double range_delta = range[1] - range[0];
 
     vtkKWHistogram *hist = NULL;
     char hist_name[1024];
     double exclude_value;
     double total_occ;
-    if (histogram_set && histogram_set->ComputeHistogramName(
+    if (!collapsed_range && 
+        histogram_set && 
+        histogram_set->ComputeHistogramName(
           scalars->GetName(), scalar_field, NULL, hist_name))
       {
       hist = histogram_set->GetHistogramWithName(hist_name);
@@ -636,13 +648,19 @@ void vtkKWVolumePropertyHelper::ConvertNormalizedRange(
 
     double range[2];
     scalars->GetRange(range, scalar_field);
+    int collapsed_range = (range[0] == range[1] ? 1 : 0);
+    if (collapsed_range) // avoid collapsed transfer functions
+      {
+      vtkMath::GetAdjustedScalarRange(scalars, scalar_field, range);
+      }
     double range_delta = range[1] - range[0];
 
     vtkKWHistogram *hist = NULL;
     char hist_name[1024];
     double exclude_value;
     double total_occ;
-    if (histogram_set && histogram_set->ComputeHistogramName(
+    if (!collapsed_range && 
+        histogram_set && histogram_set->ComputeHistogramName(
           scalars->GetName(), scalar_field, NULL, hist_name))
       {
       hist = histogram_set->GetHistogramWithName(hist_name);

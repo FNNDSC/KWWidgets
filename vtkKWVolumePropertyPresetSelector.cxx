@@ -26,6 +26,7 @@
 #include "vtkKWToolbar.h"
 #include "vtkKWPushButton.h"
 #include "vtkKWPushButtonSet.h"
+#include "vtkKWMenu.h"
 #include "vtkVolumeMapper.h"
 
 #include <vtksys/stl/string>
@@ -470,7 +471,7 @@ void vtkKWVolumePropertyPresetSelector::UpdateToolbarPresetButtons(vtkKWToolbar 
 
   vtkKWPushButton *toolbar_pb;
 
-  // Update
+  // Update preset
 
   toolbar_pb = vtkKWPushButton::SafeDownCast(
     toolbar->GetWidget(this->GetUpdateButtonLabel()));
@@ -478,6 +479,27 @@ void vtkKWVolumePropertyPresetSelector::UpdateToolbarPresetButtons(vtkKWToolbar 
     {
     toolbar_pb->SetEnabled(
       toolbar_pb->GetEnabled() && !selection_is_histogram_preset);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWVolumePropertyPresetSelector::PopulatePresetContextMenu(
+  vtkKWMenu *menu, int id)
+{
+  this->Superclass::PopulatePresetContextMenu(menu, id);
+
+  if (!this->HasPreset(id))
+    {
+    return;
+    }
+
+  int is_histogram_preset = this->GetPresetHistogramFlag(id);
+
+  // Update preset
+  
+  if (is_histogram_preset)
+    {
+    menu->DeleteItem(menu->GetIndexOfItem(this->GetUpdateButtonLabel()));
     }
 }
 

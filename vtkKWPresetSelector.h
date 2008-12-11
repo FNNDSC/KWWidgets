@@ -928,6 +928,7 @@ protected:
   virtual const char* GetApplyButtonLabel();
   virtual const char* GetUpdateButtonLabel();
   virtual const char* GetRemoveButtonLabel();
+  virtual const char* GetRemoveAllButtonLabel();
   virtual const char* GetLocateButtonLabel();
   virtual const char* GetEmailButtonLabel();
   virtual const char* GetLoadButtonLabel();

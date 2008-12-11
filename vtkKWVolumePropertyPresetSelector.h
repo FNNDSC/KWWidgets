@@ -176,6 +176,12 @@ protected:
   // Update the toolbar preset buttons state/visibility.
   virtual void UpdateToolbarPresetButtons(vtkKWToolbar*);
 
+  // Description:
+  // Populate the pop-up context menu that is displayed when right-clicking
+  // on a give preset. It should replicate the commands available through the
+  // preset buttons.
+  virtual void PopulatePresetContextMenu(vtkKWMenu *menu, int id);
+
   // PIMPL Encapsulation for STL containers
   //BTX
   vtkKWVolumePropertyPresetSelectorInternals *Internals;

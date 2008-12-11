@@ -53,7 +53,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.83 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.84 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -157,6 +157,7 @@ public:
   vtksys_stl::string ApplyButtonLabel;
   vtksys_stl::string UpdateButtonLabel;
   vtksys_stl::string RemoveButtonLabel;
+  vtksys_stl::string RemoveAllButtonLabel;
   vtksys_stl::string LocateButtonLabel;
   vtksys_stl::string EmailButtonLabel;
   vtksys_stl::string LoadButtonLabel;
@@ -286,6 +287,9 @@ vtkKWPresetSelector::vtkKWPresetSelector()
 
   this->Internals->RemoveButtonLabel = 
     ks_("Preset Selector|Button|Remove");
+
+  this->Internals->RemoveAllButtonLabel = 
+    ks_("Preset Selector|Button|Remove All");
 
   this->Internals->LocateButtonLabel = 
     ks_("Preset Selector|Button|Locate");
@@ -1235,7 +1239,7 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
   if (this->PresetApplyCommand)
     {
     sprintf(command, "PresetApplyCallback %d", id);
-    index = menu->AddCommand("Apply", this, command);
+    index = menu->AddCommand(this->GetApplyButtonLabel(), this, command);
     if (show_icons)
       {
       toolbar_pb = vtkKWPushButton::SafeDownCast(
@@ -1250,7 +1254,7 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
   if (this->PresetUpdateCommand)
     {
     sprintf(command, "PresetUpdateCallback %d", id);
-    index = menu->AddCommand("Update", this, command);
+    index = menu->AddCommand(this->GetUpdateButtonLabel(), this, command);
     if (show_icons)
       {
       toolbar_pb = vtkKWPushButton::SafeDownCast(
@@ -1265,7 +1269,7 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
   if (this->RemoveMenuEntryVisibility)
     {
     sprintf(command, "PresetRemoveCallback %d", id);
-    index = menu->AddCommand("Remove", this, command);
+    index = menu->AddCommand(this->GetRemoveButtonLabel(), this, command);
     if (show_icons)
       {
       toolbar_pb = vtkKWPushButton::SafeDownCast(
@@ -1274,7 +1278,8 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
       menu->SetItemCompoundModeToLeft(index);
       }
 
-    index = menu->AddCommand("Remove All", this, "PresetRemoveAllCallback");
+    index = menu->AddCommand(
+      this->GetRemoveAllButtonLabel(), this, "PresetRemoveAllCallback");
     }
 
   // Locate preset
@@ -1282,7 +1287,7 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
   if (has_file && this->LocateMenuEntryVisibility)
     {
     sprintf(command, "PresetLocateCallback %d", id);
-    index = menu->AddCommand("Locate", this, command);
+    index = menu->AddCommand(this->GetLocateButtonLabel(), this, command);
     if (show_icons)
       {
       toolbar_pb = vtkKWPushButton::SafeDownCast(
@@ -1297,7 +1302,7 @@ void vtkKWPresetSelector::PopulatePresetContextMenu(vtkKWMenu *menu, int id)
   if (has_file && this->EmailMenuEntryVisibility)
     {
     sprintf(command, "PresetEmailCallback %d", id);
-    index = menu->AddCommand("Email", this, command);
+    index = menu->AddCommand(this->GetEmailButtonLabel(), this, command);
     if (show_icons)
       {
       toolbar_pb = vtkKWPushButton::SafeDownCast(
@@ -4531,6 +4536,12 @@ const char* vtkKWPresetSelector::GetUpdateButtonLabel()
 const char* vtkKWPresetSelector::GetRemoveButtonLabel()
 {
   return this->Internals->RemoveButtonLabel.c_str();
+}
+
+//---------------------------------------------------------------------------
+const char* vtkKWPresetSelector::GetRemoveAllButtonLabel()
+{
+  return this->Internals->RemoveAllButtonLabel.c_str();
 }
 
 //---------------------------------------------------------------------------
