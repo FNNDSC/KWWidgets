@@ -78,7 +78,7 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWSelectionFrameLayoutManager);
-vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.89 $");
+vtkCxxRevisionMacro(vtkKWSelectionFrameLayoutManager, "$Revision: 1.90 $");
 
 //----------------------------------------------------------------------------
 class vtkKWSelectionFrameLayoutManagerInternals
@@ -131,6 +131,8 @@ vtkKWSelectionFrameLayoutManager::vtkKWSelectionFrameLayoutManager()
   this->DoubleClickOnLayoutFrameCommand = NULL;
 
   this->ReorganizeWidgetPositionsAutomatically = 1;
+
+  this->UseAlphaChannelInScreenshot = 0;
 
   this->LayoutFrame = vtkKWFrame::New();
 }
@@ -2220,6 +2222,14 @@ int vtkKWSelectionFrameLayoutManager::AppendWidgetsToImageData(
           {
           int idx = j * this->Resolution[0] + i;
           w2i_filters[idx] = vtkWindowToImageFilter::New();
+          if (this->UseAlphaChannelInScreenshot)
+            {
+            w2i_filters[idx]->SetInputBufferTypeToRGBA();
+            }
+          else
+            {
+            w2i_filters[idx]->SetInputBufferTypeToRGB();
+            }
           int offscreen = rwwidget->GetOffScreenRendering();
           if (direct)
             {
@@ -2823,4 +2833,5 @@ void vtkKWSelectionFrameLayoutManager::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "ResolutionEntriesMenu: " << this->ResolutionEntriesMenu << endl;
   os << indent << "ResolutionEntriesToolbar: " << this->ResolutionEntriesToolbar << endl;
   os << indent << "ReorganizeWidgetPositionsAutomatically: " << this->ReorganizeWidgetPositionsAutomatically << endl;
+  os << indent << "UseAlphaChannelInScreenshot: " << this->UseAlphaChannelInScreenshot << endl;
 }

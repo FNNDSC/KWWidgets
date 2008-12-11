@@ -247,6 +247,13 @@ public:
   virtual int AppendSelectedWidgetToImageDataFast(vtkImageData *image);
 
   // Description:
+  // Use the alpha channel in screenshots (which will save a transparent
+  // image).
+  vtkBooleanMacro(UseAlphaChannelInScreenshot, int);
+  vtkGetMacro(UseAlphaChannelInScreenshot, int);
+  vtkSetMacro(UseAlphaChannelInScreenshot, int);
+
+  // Description:
   // Print all widgets or the selected one.
   // If no DPI is provided, the DPI settings of the Window ivar is used.
   // Return 1 on success, 0 otherwise
@@ -367,6 +374,7 @@ protected:
   int MaximumResolution[2];
   int Origin[2];
   int ReorganizeWidgetPositionsAutomatically;
+  int UseAlphaChannelInScreenshot;
 
   vtkKWMenu    *ResolutionEntriesMenu;
   vtkKWToolbar *ResolutionEntriesToolbar;

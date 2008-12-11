@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.63 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.64 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -118,7 +118,8 @@ void vtkKWIcon::SetImage(vtkImageData* image)
 
   int *input_dims = input->GetDimensions();
   this->SetData((const unsigned char*)input->GetScalarPointer(),
-                input_dims[0], input_dims[1], 3, 
+                input_dims[0], input_dims[1], 
+                image->GetNumberOfScalarComponents(), 
                 vtkKWIcon::ImageOptionFlipVertical);
 
   clip->Delete();
