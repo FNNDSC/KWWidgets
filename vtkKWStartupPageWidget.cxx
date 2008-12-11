@@ -269,8 +269,14 @@ void vtkKWStartupPageWidget::RemoveCallbackCommandObservers()
 //----------------------------------------------------------------------------
 void vtkKWStartupPageWidget::UpdateInternalCanvasBindings()
 {
-  this->StartupPageCanvas->SetBinding(
-    "<Double-1>", this, "DoubleClickCallback");
+  this->StartupPageCanvas->SetCanvasBinding(
+    VTK_KW_SPW_GRADIENT_TAG, "<Double-1>", this, "DoubleClickCallback");
+
+  this->StartupPageCanvas->SetCanvasBinding(
+    VTK_KW_SPW_DOUBLE_TAG, "<Double-1>", this, "DoubleClickCallback");
+
+  this->StartupPageCanvas->SetCanvasBinding(
+    VTK_KW_SPW_DROP_TAG, "<Double-1>", this, "DoubleClickCallback");
 
   this->StartupPageCanvas->SetBinding(
     "<Configure>", this, "ConfigureCallback");
@@ -889,6 +895,10 @@ void vtkKWStartupPageWidget::AddSectionToCanvas(
       << " -font {" << text_font << "}"
       << " -tags {" << tag << "text text " << tags.c_str() << "}" 
       << endl;
+    }
+
+  if (!has_tag || !this->StartupPageCanvas->HasTag("hint"))
+    {
     if (this->AddShadowToHint)
       {
       tk_cmd 
@@ -896,7 +906,7 @@ void vtkKWStartupPageWidget::AddSectionToCanvas(
         << " -fill " << this->Internals->HexHintShadowColor
         << " -text {" << hint << "}"
         << " -font {" << hint_font << "}"
-        << " -tags {" << tag << "hintshadow text " << tags.c_str()<<"}" 
+        << " -tags {" << tag << "hintshadow hint " << tags.c_str()<<"}" 
         << endl;
       }
     tk_cmd 
@@ -904,7 +914,7 @@ void vtkKWStartupPageWidget::AddSectionToCanvas(
       << " -fill " << this->Internals->HexHintColor
       << " -text {" << hint << "}"
       << " -font {" << hint_font << "}"
-      << " -tags {" << tag << "hint text " << tags.c_str() << "}" 
+      << " -tags {" << tag << "hint hint " << tags.c_str() << "}" 
       << endl;
     }
 
@@ -1211,7 +1221,7 @@ void vtkKWStartupPageWidget::SetHintColor(
   this->Modified();
 
   this->UpdateInternalCanvasColors();
-  this->StartupPageCanvas->DeleteTag("text");
+  this->StartupPageCanvas->DeleteTag("hint");
   this->Redraw();
 }
 
@@ -1228,7 +1238,7 @@ void vtkKWStartupPageWidget::SetHintSize(int arg)
   this->Modified();
 
   this->UpdateInternalCanvasFonts();
-  this->StartupPageCanvas->DeleteTag("text");
+  this->StartupPageCanvas->DeleteTag("hint");
   this->Redraw();
 }
 
@@ -1244,7 +1254,7 @@ void vtkKWStartupPageWidget::SetAddShadowToHint(int arg)
 
   this->Modified();
 
-  this->StartupPageCanvas->DeleteTag("text");
+  this->StartupPageCanvas->DeleteTag("hint");
   this->Redraw();
 }
 
@@ -1261,7 +1271,7 @@ void vtkKWStartupPageWidget::SetMostRecentFileSize(int arg)
   this->Modified();
 
   this->UpdateInternalCanvasFonts();
-  this->StartupPageCanvas->DeleteTag("text");
+  this->StartupPageCanvas->DeleteTag(VTK_KW_SPW_MRF_TAG);
   this->Redraw();
 }
 
