@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWSplashScreen );
-vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.41 $");
+vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.42 $");
 
 //----------------------------------------------------------------------------
 vtkKWSplashScreen::vtkKWSplashScreen()
@@ -32,7 +32,7 @@ vtkKWSplashScreen::vtkKWSplashScreen()
   this->Canvas = vtkKWCanvas::New();
 
   this->ImageName = NULL;
-  this->ProgressMessageVerticalOffset = -10;
+  this->ProgressMessageVerticalOffset = -14;
   this->DisplayPosition = vtkKWTopLevel::DisplayPositionScreenCenter;
   this->HideDecoration  = 1;
   this->Discard = 0;
@@ -84,7 +84,7 @@ void vtkKWSplashScreen::CreateWidget()
 
   // Insert the text
 
-  this->Script("%s create text 0 0 -tags msg -anchor c", 
+  this->Script("%s create text 0 0 -tags msg -fill #666666 -anchor c", 
                this->Canvas->GetWidgetName());
 
   this->UpdateImageInCanvas();
@@ -128,13 +128,12 @@ void vtkKWSplashScreen::UpdateProgressMessagePosition()
     {
     int width = this->Canvas->GetWidth();
     int height = this->Canvas->GetHeight();
-    
+    double x = (double)width * 0.5;
+    double y = (this->ProgressMessageVerticalOffset < 0 
+                ? height + ProgressMessageVerticalOffset 
+                : ProgressMessageVerticalOffset);
     this->Script("%s coords msg %lf %d", 
-                 this->Canvas->GetWidgetName(), 
-                 (double)width * 0.5, 
-                 (this->ProgressMessageVerticalOffset < 0 
-                  ? height + ProgressMessageVerticalOffset 
-                  : ProgressMessageVerticalOffset));
+                 this->Canvas->GetWidgetName(), x, (int)y);
     }
 }
 
