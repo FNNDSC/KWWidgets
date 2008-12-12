@@ -25,6 +25,7 @@
 #include "vtkKWClipboardHelper.h"
 
 #include "vtkDebugLeaks.h"
+#include "vtkImageCast.h"
 #include "vtkImageData.h"
 #include "vtkObjectFactory.h"
 
@@ -106,13 +107,34 @@ int vtkKWClipboardHelper::CopyImageToClipboard(vtkImageData* iData)
     {
     return 0;
     }
+
+  int scalarType = iData->GetScalarType();
+  unsigned char *ptr = NULL;
+  if(scalarType == VTK_UNSIGNED_CHAR)
+    {
+    ptr = (unsigned char *)(iData->GetScalarPointer());
+    }
+  else
+    {
+    vtkImageCast* cast = vtkImageCast::New();
+    cast->SetInput(iData);
+    cast->SetOutputScalarTypeToUnsignedChar();
+    cast->Update();
+    ptr = (unsigned char *)(cast->GetOutput()->GetScalarPointer());
+    cast->Delete();
+    }
+    
+  if(ptr == NULL)
+    {
+    return 0;
+    }
  
-  unsigned char *ptr = (unsigned char *)(iData->GetScalarPointer());
   extent = iData->GetWholeExtent();
   int size[2];
   size[0] = extent[1] - extent[0] + 1;
   size[1] = extent[3] - extent[2] + 1;
-
+  int numComponents = iData->GetNumberOfScalarComponents();
+   
   // Save to clipboard
 
 #ifdef _WIN32
@@ -122,7 +144,6 @@ int vtkKWClipboardHelper::CopyImageToClipboard(vtkImageData* iData)
   if (::OpenClipboard(NULL))
     {
     int data_width = ((size[0] * 3 + 3) / 4) * 4;
-    int src_width = size[0] * 3;
   
     EmptyClipboard();
 
@@ -143,7 +164,8 @@ int vtkKWClipboardHelper::CopyImageToClipboard(vtkImageData* iData)
     // Copy the data to the clipboard
 
     unsigned char *dest = (unsigned char *)lpbi + lpbi->biSize;
-
+    int diffWidth = data_width - size[0]*3;
+    
     int i,j;
     for (i = 0; i < size[1]; i++)
       {
@@ -152,9 +174,9 @@ int vtkKWClipboardHelper::CopyImageToClipboard(vtkImageData* iData)
         *dest++ = ptr[2];
         *dest++ = ptr[1];
         *dest++ = *ptr;
-        ptr += 3;
+        ptr += numComponents;
         }
-      dest = dest + (data_width - src_width);
+      dest = dest + diffWidth;
       }
     
     SetClipboardData (CF_DIB, hDIB);
@@ -177,7 +199,7 @@ int vtkKWClipboardHelper::CopyImageToClipboard(vtkImageData* iData)
 
   int i, j;
   unsigned char* ptrOrig = ptr;
-  int origBPR = 3*size[0];
+  int origBPR = numComponents*size[0];
   for(i=size[1]-1;i>=0;i--)
     {
     ptr = ptrOrig + i*origBPR; 
@@ -186,8 +208,8 @@ int vtkKWClipboardHelper::CopyImageToClipboard(vtkImageData* iData)
       *newDest++ = *ptr;
       *newDest++ = ptr[1];
       *newDest++ = ptr[2];
-      *newDest++ = 1;
-      ptr += 3;
+      *newDest++ = (numComponents==4) ? ptr[3] : 1;
+      ptr += numComponents;
       }
     }
 
