@@ -887,3 +887,17 @@ subdirs(CMake/ExportConfiguration)
 if(KWWidgets_NEED_TO_BUILD_EXAMPLES)
   subdirs(Examples)
 endif(KWWidgets_NEED_TO_BUILD_EXAMPLES)
+
+# --------------------------------------------------------------------------
+# Testing with Squish
+
+if(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
+  option(KWWidgets_TEST_WITH_Squish "Test KWWidgets With Squish" OFF)
+  mark_as_advanced(KWWidgets_TEST_WITH_Squish)
+  if(KWWidgets_TEST_WITH_Squish)
+    find_package(Squish)  
+    if(NOT SQUISH_FOUND)                                                            
+      MESSAGE("Warning: Squish not found, can't add Squish Tk GUI tests")           
+    endif(NOT SQUISH_FOUND)
+  endif(KWWidgets_TEST_WITH_Squish)
+endif(BUILD_TESTING AND KWWidgets_BUILD_TESTING)

@@ -1,0 +1,5 @@
+<!DOCTYPE VerificationPoint>
+<VerificationPoint type="ObjectProperties" >
+ <Description></Description>
+ <Verification property="getvalue" valueType="Value" type="char" object=":KWWidgetsTourExample.vtkKWWindow1.vtkKWFrame3.vtkKWSplitFrame0.vtkKWFrame2.vtkKWSplitFrame0.vtkKWFrame2.vtkKWNotebook0.vtkKWFrame1.vtkKWFrame15.vtkKWSpinBoxWithLabel2.vtkKWSpinBox1" ><![CDATA[30]]></Verification>
+</VerificationPoint>

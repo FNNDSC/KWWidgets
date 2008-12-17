@@ -1,0 +1,5 @@
+<!DOCTYPE VerificationPoint>
+<VerificationPoint type="ObjectProperties" >
+ <Description></Description>
+ <Verification property="getvalue" valueType="Value" type="char" object=":KWCallbacksExample.vtkKWWindow0.vtkKWFrame3.vtkKWSplitFrame0.vtkKWFrame2.vtkKWSplitFrame0.vtkKWFrame2.vtkKWNotebook0.vtkKWFrame1.vtkKWFrame0.vtkKWMyWidget0.vtkKWScale0" ><![CDATA[32.0]]></Verification>
+</VerificationPoint>

@@ -1,0 +1,5 @@
+<!DOCTYPE VerificationPoint>
+<VerificationPoint type="ObjectProperties" >
+ <Description></Description>
+ <Verification property="getvalue" valueType="Value" type="char" object=":KWMedicalImageViewerExample.vtkKWMyWindow0.vtkKWFrame3.vtkKWSplitFrame0.vtkKWFrame2.vtkKWSplitFrame0.vtkKWFrame2.vtkKWScale1" ><![CDATA[13]]></Verification>
+</VerificationPoint>

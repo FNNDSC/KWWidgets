@@ -99,6 +99,64 @@ macro(KWWidgets_ADD_TEST_FROM_EXAMPLE
 endmacro(KWWidgets_ADD_TEST_FROM_EXAMPLE)
 
 # ---------------------------------------------------------------------------
+# KWWidgets_ADD_Squish_TEST
+
+macro(KWWidgets_ADD_Squish_TEST 
+    test_name
+    squish_AUT_full_path
+    squish_test_case_path
+    aut_env
+    aut_init_script
+    )
+
+  set(kwwSquishShellScript "${KWWidgets_CMAKE_DIR}/SquishRunTestCase.sh")
+
+  # Can only handle "Tk"
+  set(squish_script_wraper "Tk")
+
+  ADD_TEST(${test_name}
+    ${CMAKE_COMMAND} -V -VV --test
+    "-Dsquish_aut:STRING=${squish_AUT_full_path}"
+    "-Dsquish_server_executable:STRING=${SQUISH_SERVER_EXECUTABLE}"
+    "-Dsquish_client_executable:STRING=${SQUISH_CLIENT_EXECUTABLE}"
+    "-Dsquish_libqtdir:STRING=${QT_LIBRARY_DIR}"
+    "-Dsquish_test_case:STRING=${squish_test_case_path}"
+    "-Dsquish_env_vars:STRING=${autEnv}"
+    "-Dsquish_wrapper:STRING=${squish_script_wraper}"
+    "-Dsquish_aut_script:STRING=${aut_init_script}"
+    "-Dsquish_shell_script:STRING=${kwwSquishShellScript}"
+    -P "${KWWidgets_CMAKE_DIR}/KWWidgetsSquishTestScript.cmake"
+    ${ARGN})
+
+endmacro(KWWidgets_ADD_Squish_TEST)
+
+# ---------------------------------------------------------------------------
+# KWWidgets_ADD_Squish_TEST_FROM_C_EXAMPLE
+# Add specific distribution-related C test
+
+macro(KWWidgets_ADD_Squish_TEST_FROM_C_EXAMPLE 
+    test_name
+    squish_AUT_name
+    squish_test_case_path
+    )
+
+  # Try to find the full path to the test executable
+
+  kwwidgets_get_full_path_to_executable(${squish_AUT_name} exe_path)
+  
+  KWWidgets_ADD_Squish_TEST("${test_name}"
+    "${exe_path}"
+    "${squish_test_case_path}"
+    "${kwwENV}"
+    "${EXECUTABLE_OUTPUT_PATH}/KWWidgetsSetupPaths.sh"
+    )
+
+  SET_TESTS_PROPERTIES(${test_name}
+    PROPERTIES FAIL_REGULAR_EXPRESSION "FAILED;ERROR;FATAL")
+
+endmacro(KWWidgets_ADD_Squish_TEST_FROM_C_EXAMPLE)
+
+# ---------------------------------------------------------------------------
 # KWWidgets_ADD_TEST_FROM_C_EXAMPLE
 # Add specific distribution-related C test
 
@@ -130,6 +188,7 @@ macro(KWWidgets_ADD_TEST_FROM_C_EXAMPLE
   endif(KWWidgets_SOURCE_DIR)
 
 endmacro(KWWidgets_ADD_TEST_FROM_C_EXAMPLE)
+
 
 # ---------------------------------------------------------------------------
 # KWWidgets_ADD_TEST_FROM_TCL_EXAMPLE
@@ -281,3 +340,4 @@ macro(KWWidgets_ADD_OUT_OF_SOURCE_TEST
   endif(VTK_WRAP_TCL)
 
 endmacro(KWWidgets_ADD_OUT_OF_SOURCE_TEST)
+
