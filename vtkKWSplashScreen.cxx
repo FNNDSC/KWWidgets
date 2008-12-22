@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWSplashScreen );
-vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.42 $");
+vtkCxxRevisionMacro(vtkKWSplashScreen, "$Revision: 1.43 $");
 
 //----------------------------------------------------------------------------
 vtkKWSplashScreen::vtkKWSplashScreen()
@@ -32,7 +32,7 @@ vtkKWSplashScreen::vtkKWSplashScreen()
   this->Canvas = vtkKWCanvas::New();
 
   this->ImageName = NULL;
-  this->ProgressMessageVerticalOffset = -14;
+  this->ProgressMessageVerticalOffset = -12;
   this->DisplayPosition = vtkKWTopLevel::DisplayPositionScreenCenter;
   this->HideDecoration  = 1;
   this->Discard = 0;
