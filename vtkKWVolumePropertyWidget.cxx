@@ -54,7 +54,7 @@
 #define VTK_KW_VPW_TESTING 0
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.53 $");
+vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.54 $");
 vtkStandardNewMacro(vtkKWVolumePropertyWidget);
 
 //----------------------------------------------------------------------------
@@ -357,7 +357,7 @@ void vtkKWVolumePropertyWidget::CreateWidget()
   this->MaterialPropertyWidget->Create();
   this->MaterialPropertyWidget->GetPopupButton()->SetLabelWidth(label_width);
   this->MaterialPropertyWidget->GetComponentSelectionWidget()
-    ->AllowComponentSelectionOff();
+    ->AllowComponentSelectionOn();
   this->MaterialPropertyWidget->SetPropertyChangedCommand(
     this, "MaterialPropertyChangedCallback");
   this->MaterialPropertyWidget->SetPropertyChangingCommand(

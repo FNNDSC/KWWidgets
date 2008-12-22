@@ -30,7 +30,7 @@
 //----------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWVolumeMaterialPropertyWidget);
-vtkCxxRevisionMacro(vtkKWVolumeMaterialPropertyWidget, "$Revision: 1.24 $");
+vtkCxxRevisionMacro(vtkKWVolumeMaterialPropertyWidget, "$Revision: 1.25 $");
 
 //----------------------------------------------------------------------------
 vtkKWVolumeMaterialPropertyWidget::vtkKWVolumeMaterialPropertyWidget()
@@ -209,7 +209,7 @@ void vtkKWVolumeMaterialPropertyWidget::Update()
     this->ComponentSelectionWidget->SetSelectedComponent(
       this->SelectedComponent);
     this->ComponentSelectionWidget->SetEnabled(
-      this->VolumeProperty ? 0 : this->GetEnabled());
+      !this->VolumeProperty ? 0 : this->GetEnabled());
     }
 
   // Shading ?
