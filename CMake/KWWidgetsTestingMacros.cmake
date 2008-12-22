@@ -112,7 +112,7 @@ macro(KWWidgets_ADD_Squish_TEST
   set(kwwSquishShellScript "${KWWidgets_CMAKE_DIR}/SquishRunTestCase.sh")
 
   # Can only handle "Tk"
-  set(squish_script_wraper "Tk")
+  set(squish_script_wrapper "Tk")
 
   ADD_TEST(${test_name}
     ${CMAKE_COMMAND} -V -VV --test
@@ -121,8 +121,8 @@ macro(KWWidgets_ADD_Squish_TEST
     "-Dsquish_client_executable:STRING=${SQUISH_CLIENT_EXECUTABLE}"
     "-Dsquish_libqtdir:STRING=${QT_LIBRARY_DIR}"
     "-Dsquish_test_case:STRING=${squish_test_case_path}"
-    "-Dsquish_env_vars:STRING=${autEnv}"
-    "-Dsquish_wrapper:STRING=${squish_script_wraper}"
+    "-Dsquish_env_vars:STRING=${aut_env}"
+    "-Dsquish_wrapper:STRING=${squish_script_wrapper}"
     "-Dsquish_aut_script:STRING=${aut_init_script}"
     "-Dsquish_shell_script:STRING=${kwwSquishShellScript}"
     -P "${KWWidgets_CMAKE_DIR}/KWWidgetsSquishTestScript.cmake"
