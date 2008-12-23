@@ -107,6 +107,7 @@ macro(KWWidgets_ADD_Squish_TEST
     squish_test_case_path
     aut_env
     aut_init_script
+    aut_args
     )
 
   set(kwwSquishShellScript "${KWWidgets_CMAKE_DIR}/SquishRunTestCase.sh")
@@ -125,6 +126,7 @@ macro(KWWidgets_ADD_Squish_TEST
     "-Dsquish_wrapper:STRING=${squish_script_wrapper}"
     "-Dsquish_aut_script:STRING=${aut_init_script}"
     "-Dsquish_shell_script:STRING=${kwwSquishShellScript}"
+    "-Dsquish_aut_args:STRING=${aut_args}"
     -P "${KWWidgets_CMAKE_DIR}/KWWidgetsSquishTestScript.cmake"
     ${ARGN})
 
@@ -149,6 +151,7 @@ macro(KWWidgets_ADD_Squish_TEST_FROM_C_EXAMPLE
     "${squish_test_case_path}"
     "${kwwENV}"
     "${EXECUTABLE_OUTPUT_PATH}/KWWidgetsSetupPaths.sh"
+    ""
     )
 
   SET_TESTS_PROPERTIES(${test_name}

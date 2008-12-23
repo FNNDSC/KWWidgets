@@ -13,6 +13,7 @@ cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 
 # print out the variable that we are using
 message(STATUS "squish_aut='${squish_aut}'")
+message(STATUS "squish_aut_args='${squish_aut_args}'")
 
 message(STATUS "squish_server_executable='${squish_server_executable}'")
 message(STATUS "squish_client_executable='${squish_client_executable}'")
@@ -21,6 +22,8 @@ message(STATUS "squish_test_case='${squish_test_case}'")
 message(STATUS "squish_wrapper='${squish_wrapper}'")
 message(STATUS "squish_env_vars='${squish_env_vars}'")
 message(STATUS "squish_aut_script='${squish_aut_script}'")
+
+set (squish_aut "${squish_aut} ${squish_aut_args}")
     
 set (kwwSquishSh "${squish_shell_script}")
 message(STATUS "The_sh_torun='${kwwSquishSh}'")
