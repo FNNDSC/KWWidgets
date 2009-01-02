@@ -110,7 +110,15 @@ macro(KWWidgets_ADD_Squish_TEST
     aut_args
     )
 
-  set(kwwSquishShellScript "${KWWidgets_CMAKE_DIR}/SquishRunTestCase.sh")
+  # for execute_process() to work on SquishRunTestCase.sh, it has to be on the
+  # same filesystem, i.e. not in a VMWare-shared disk for example.
+  set(kwwSquishShellScript "${KWWidgets_BINARY_DIR}/CMake/SquishRunTestCase.sh")
+  if(NOT EXISTS ${kwwSquishShellScript})
+    configure_file(
+      ${KWWidgets_CMAKE_DIR}/SquishRunTestCase.sh
+      ${kwwSquishShellScript}
+      IMMEDIATE)
+  endif(NOT EXISTS ${kwwSquishShellScript})
 
   # Can only handle "Tk"
   set(squish_script_wrapper "Tk")
