@@ -6,5 +6,4 @@ proc main {} {
     waitForObject ":KWHelloWorldExample.vtkKWMessageDialog1.vtkKWFrame0.vtkKWFrame4.vtkKWFrame0.vtkKWPushButton0"
     invoke clickButton ":KWHelloWorldExample.vtkKWMessageDialog1.vtkKWFrame0.vtkKWFrame4.vtkKWFrame0.vtkKWPushButton0" 
     snooze 1.8
-    invoke closeWindow ":KWHelloWorldExample.vtkKWMessageDialog1" 
 }

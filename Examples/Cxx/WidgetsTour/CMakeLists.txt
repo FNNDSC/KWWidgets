@@ -201,7 +201,7 @@ if(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
   if(KWWidgets_USE_Squish AND SQUISH_FOUND)
     set(Squish_TST_NAME "${KWWidgets_SOURCE_DIR}/Examples/Cxx/${PROJECT_NAME}/Testing/Squish/suite_KWWTourExample/tst_BrowseCoreWidgets")
     kwwidgets_add_squish_test_from_c_example(
-      KWWidgets-Squish-${PROJECT_NAME} ${EXE_NAME} "${Squish_TST_NAME}")    
+      KWWidgets-${PROJECT_NAME}Squish ${EXE_NAME} "${Squish_TST_NAME}")    
   endif(KWWidgets_USE_Squish AND SQUISH_FOUND)
 
 endif(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
