@@ -40,5 +40,4 @@ proc main {} {
     waitForObject ":KWPolygonalObjectViewerExample.vtkKWWindow0.vtkKWFrame3.vtkKWSplitFrame0.vtkKWFrame2.vtkKWSplitFrame0.vtkKWFrame2.vtkKWNotebook0.vtkKWFrame1.vtkKWFrame0.vtkKWRenderWidget0.vtkKWCoreWidget0"
     sendEvent ButtonEvent ":KWPolygonalObjectViewerExample.vtkKWWindow0.vtkKWFrame3.vtkKWSplitFrame0.vtkKWFrame2.vtkKWSplitFrame0.vtkKWFrame2.vtkKWNotebook0.vtkKWFrame1.vtkKWFrame0.vtkKWRenderWidget0.vtkKWCoreWidget0" 5 138 200 272 1 
     snooze 2.0
-    invoke closeWindow ":KWPolygonalObjectViewerExample.vtkKWTopLevel1.vtkKWSplitFrame0.vtkKWFrame2.vtkKWFrameWithLabel1.vtkKWFrame1.vtkKWFrame1.vtkKWMenuButtonWithLabel4.vtkKWMenuButton1.vtkKWMenu0" 
 }

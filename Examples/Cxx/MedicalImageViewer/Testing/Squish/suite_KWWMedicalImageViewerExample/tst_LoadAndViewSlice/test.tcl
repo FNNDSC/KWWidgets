@@ -46,5 +46,4 @@ proc main {} {
     waitForObject ":KWMedicalImageViewerExample.vtkKWMyWindow0.vtkKWFrame3.vtkKWSplitFrame0.vtkKWFrame0.vtkKWFrameWithLabel2.vtkKWFrame1.vtkKWFrame1.vtkKWSimpleAnimationWidget0.vtkKWPushButtonSet1.vtkKWPushButton0"
     invoke clickButton ":KWMedicalImageViewerExample.vtkKWMyWindow0.vtkKWFrame3.vtkKWSplitFrame0.vtkKWFrame0.vtkKWFrameWithLabel2.vtkKWFrame1.vtkKWFrame1.vtkKWSimpleAnimationWidget0.vtkKWPushButtonSet1.vtkKWPushButton0" 
     snooze 4.5
-    invoke closeWindow ":KWMedicalImageViewerExample.vtkKWTopLevel2" 
 }

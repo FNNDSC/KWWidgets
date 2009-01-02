@@ -37,6 +37,5 @@ proc main {} {
     sendEvent MotionEvent ":KWWindowWithPanelsExample.vtkKWWindow0.vtkKWFrame3.vtkKWSplitFrame0.vtkKWFrame0.vtkKWNotebook0.vtkKWFrameWithLabel3.vtkKWFrame1.vtkKWFrame1.vtkKWHSVColorSelector0.vtkKWCanvas1" 6 14 44 272 
     waitForObject ":KWWindowWithPanelsExample.vtkKWWindow0.vtkKWFrame3.vtkKWSplitFrame0.vtkKWFrame0.vtkKWNotebook0.vtkKWFrameWithLabel3.vtkKWFrame1.vtkKWFrame1.vtkKWHSVColorSelector0.vtkKWCanvas1"
     sendEvent ButtonEvent ":KWWindowWithPanelsExample.vtkKWWindow0.vtkKWFrame3.vtkKWSplitFrame0.vtkKWFrame0.vtkKWNotebook0.vtkKWFrameWithLabel3.vtkKWFrame1.vtkKWFrame1.vtkKWHSVColorSelector0.vtkKWCanvas1" 5 14 44 272 1 
-    snooze 4.4
-    invoke closeWindow ":KWWindowWithPanelsExample.vtkKWTopLevel2" 
+    snooze 1.4
 }

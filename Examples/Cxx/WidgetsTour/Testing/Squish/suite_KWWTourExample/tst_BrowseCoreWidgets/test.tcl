@@ -139,5 +139,4 @@ proc main {} {
     waitForObject ":KWWidgetsTourExample.vtkKWWindow1.vtkKWFrame3.vtkKWSplitFrame0.vtkKWFrame2.vtkKWSplitFrame0.vtkKWFrame0.vtkKWNotebook0.vtkKWFrame1.vtkKWFrame0.vtkKWTreeWithScrollbars0.vtkKWScrollbar0"
     invoke scrollTo ":KWWidgetsTourExample.vtkKWWindow1.vtkKWFrame3.vtkKWSplitFrame0.vtkKWFrame2.vtkKWSplitFrame0.vtkKWFrame0.vtkKWNotebook0.vtkKWFrame1.vtkKWFrame0.vtkKWTreeWithScrollbars0.vtkKWScrollbar0" 580 
     snooze 2.3
-    invoke closeWindow ":KWWidgetsTourExample.vtkKWSplashScreen0" 
 }
