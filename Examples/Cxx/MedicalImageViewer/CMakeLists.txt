@@ -130,10 +130,10 @@ if(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
   include("${KWWidgets_CMAKE_DIR}/KWWidgetsTestingMacros.cmake")
   kwwidgets_add_test_from_c_example(KWWidgets-${PROJECT_NAME} ${EXE_NAME})
 
-  if(KWWidgets_TEST_WITH_Squish AND SQUISH_FOUND)
+  if(KWWidgets_USE_Squish AND SQUISH_FOUND)
     set(Squish_TST_NAME "${KWWidgets_SOURCE_DIR}/Examples/Cxx/${PROJECT_NAME}/Testing/Squish/suite_KWWMedicalImageViewerExample/tst_LoadAndViewSlice")
     kwwidgets_add_squish_test_from_c_example(
       KWWidgets-Squish-${PROJECT_NAME} ${EXE_NAME} "${Squish_TST_NAME}")    
-  endif(KWWidgets_TEST_WITH_Squish AND SQUISH_FOUND)
+  endif(KWWidgets_USE_Squish AND SQUISH_FOUND)
 
 endif(BUILD_TESTING AND KWWidgets_BUILD_TESTING)
