@@ -19,10 +19,11 @@
 #include "vtkObjectFactory.h"
 
 #include <vtksys/stl/list>
+#include <vtksys/stl/map>
 #include <vtksys/stl/algorithm>
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWUserInterfaceManager, "$Revision: 1.23 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManager, "$Revision: 1.24 $");
 
 //----------------------------------------------------------------------------
 class vtkKWUserInterfaceManagerInternals
@@ -32,7 +33,11 @@ public:
   typedef vtksys_stl::list<vtkKWUserInterfaceManager::PanelSlot*> PanelsContainer;
   typedef vtksys_stl::list<vtkKWUserInterfaceManager::PanelSlot*>::iterator PanelsContainerIterator;
 
+  typedef vtksys_stl::map<vtkKWUserInterfacePanel*, int> PanelsIdHistoryContainer;
+  typedef vtksys_stl::map<vtkKWUserInterfacePanel*, int>::iterator PanelsIdHistoryIterator;
+
   PanelsContainer Panels;
+  PanelsIdHistoryContainer PanelsIdHistory;
 };
 
 //----------------------------------------------------------------------------
@@ -312,7 +317,22 @@ int vtkKWUserInterfaceManager::AddPanel(vtkKWUserInterfacePanel *panel)
   // Each panel has a unique ID in the manager lifetime
 
   panel_slot->Panel = panel;
-  panel_slot->Id = this->IdCounter++;
+
+  // If the panel had been added to the manager in the past, re-use the same
+  // ID. This is important for some subclasses for example which use that
+  // ID to track some internal widgets per panel.
+
+  vtkKWUserInterfaceManagerInternals::PanelsIdHistoryIterator it =
+    this->Internals->PanelsIdHistory.find(panel_slot->Panel);
+  if (it == this->Internals->PanelsIdHistory.end())
+    {
+    panel_slot->Id = this->IdCounter++;
+    this->Internals->PanelsIdHistory[panel_slot->Panel] = panel_slot->Id;
+    }
+  else
+    {
+    panel_slot->Id = it->second;
+    }
 
   // For convenience, make sure the panel use this instance.
   // Note that vtkKWUserInterfacePanel::SetUserInterfaceManager also
@@ -374,9 +394,8 @@ int vtkKWUserInterfaceManager::RemovePanel(vtkKWUserInterfacePanel *panel)
 
   this->Internals->Panels.erase(pos);
 
-  // For convenience, make sure the panel does not use this instance anymore.
-  // Note that vtkKWUserInterfacePanel::SetUserInterfaceManager also
-  // calls the current method for convenience.
+  // For convenience, we had made sure the panel use this instance as manager
+  // in the AddPanel() method. 
 
   panel_slot->Panel->SetUserInterfaceManager(NULL);
 

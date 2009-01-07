@@ -19,7 +19,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfacePanel);
-vtkCxxRevisionMacro(vtkKWUserInterfacePanel, "$Revision: 1.19 $");
+vtkCxxRevisionMacro(vtkKWUserInterfacePanel, "$Revision: 1.20 $");
 
 //----------------------------------------------------------------------------
 vtkKWUserInterfacePanel::vtkKWUserInterfacePanel()
@@ -48,12 +48,17 @@ void vtkKWUserInterfacePanel::SetUserInterfaceManager(vtkKWUserInterfaceManager 
     return;
     }
 
+#if 0
+  // Disable this code: we want to be able to add and remove panels by setting
+  // the manager to NULL and back to what it was. 
   if (this->IsCreated() && _arg)
     {
     vtkErrorMacro("The interface manager cannot be changed once this panel "
-                  "has been created.");
+                  "has been created. Use the manager's RemovePanel() method "
+                  "to remove the panel.");
     return;
     }
+#endif
 
   if (this->UserInterfaceManager != NULL) 
     { 

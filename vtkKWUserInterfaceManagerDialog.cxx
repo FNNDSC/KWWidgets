@@ -37,7 +37,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWUserInterfaceManagerDialog);
-vtkCxxRevisionMacro(vtkKWUserInterfaceManagerDialog, "$Revision: 1.23 $");
+vtkCxxRevisionMacro(vtkKWUserInterfaceManagerDialog, "$Revision: 1.24 $");
 
 //----------------------------------------------------------------------------
 class vtkKWUserInterfaceManagerDialogInternals
@@ -483,7 +483,8 @@ int vtkKWUserInterfaceManagerDialog::RemovePageWidgets(
   // Remove the pages that share the same tag (i.e. the pages that 
   // belong to the same panel).
 
-  this->Notebook->RemovePagesMatchingTag(tag);
+  //this->Notebook->RemovePagesMatchingTag(tag);
+  this->Notebook->HidePagesMatchingTag(tag);
 
   return 1;
 }
@@ -681,9 +682,10 @@ void vtkKWUserInterfaceManagerDialog::PopulateTree()
       {
       if (!tree->HasNode(panel_node.c_str()))
         {
+        const char *node_label = panel->GetName();
         tree->AddNode(parent_node.c_str(), 
                       panel_node.c_str(), 
-                      panel->GetName());
+                      node_label);
         tree->OpenNode(panel_node.c_str());
         tree->SetNodeSelectableFlag(panel_node.c_str(), 0);
         tree->SetNodeFontWeightToBold(panel_node.c_str());
@@ -700,9 +702,10 @@ void vtkKWUserInterfaceManagerDialog::PopulateTree()
       {
       if (!tree->HasNode(page_node.c_str()))
         {
+        const char *node_label = this->Notebook->GetPageTitle(page_id);
         tree->AddNode(parent_node.c_str(), 
                       page_node.c_str(), 
-                      this->Notebook->GetPageTitle(page_id));
+                      node_label);
         tree->OpenNode(page_node.c_str());
         tree->SetNodeSelectableFlag(page_node.c_str(), 0);
         tree->SetNodeFontWeightToBold(page_node.c_str());
@@ -717,9 +720,10 @@ void vtkKWUserInterfaceManagerDialog::PopulateTree()
     section_node += frame->GetTclName();
     if (!tree->HasNode(section_node.c_str()))
       {
+      const char *node_label = frame->GetLabel()->GetText();
       tree->AddNode(parent_node.c_str(), 
                     section_node.c_str(), 
-                    frame->GetLabel()->GetText());
+                    node_label);
       tree->OpenNode(section_node.c_str());
       tree->SetNodeUserData(section_node.c_str(), widget->GetWidgetName());
       }

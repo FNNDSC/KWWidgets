@@ -57,7 +57,8 @@ public:
   // Description:
   // Set the user interface manager. This automatically adds the 
   // panel to the manager. If you want to remove this panel from the manager,
-  // set the manager to NULL (it is done automatically by the destructor).
+  // set the manager to NULL (it is done automatically by the destructor),
+  // or call RemovePanel from the manager so that you can add it back later.
   // Note that ownership is transferred to the manager by incrementing
   // (and decrementing later on) the ref count of the panel in 
   // vtkKWUserInterfaceManager's AddPanel and RemovePanel methods.
