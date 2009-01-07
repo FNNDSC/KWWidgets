@@ -40,7 +40,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.99 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.100 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -5368,9 +5368,9 @@ const char* vtkKWMultiColumnList::EditStartCallback(
       vtksys_stl::string cell_contents(this->GetCellText(row, col));
       vtksys_stl::string start_contents(
         this->InvokeEditStartCommand(row, col, cell_contents.c_str()));
-      double r, g, b, out_r, out_g, out_b;
-      if (sscanf(start_contents.c_str(), "%lg %lg %lg", &r, &g, &b) == 3 &&
-          vtkKWTkUtilities::QueryUserForColor(
+      double r = 1, g = 1, b = 1, out_r = 1, out_g = 1, out_b = 1;
+      sscanf(start_contents.c_str(), "%lg %lg %lg", &r, &g, &b);
+      if (vtkKWTkUtilities::QueryUserForColor(
             this->GetApplication(), this, "Pick Color", 
             r, g, b, &out_r, &out_g, &out_b))
         {
