@@ -54,7 +54,7 @@
 #define VTK_KW_VPW_TESTING 0
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.54 $");
+vtkCxxRevisionMacro(vtkKWVolumePropertyWidget, "$Revision: 1.55 $");
 vtkStandardNewMacro(vtkKWVolumePropertyWidget);
 
 //----------------------------------------------------------------------------
@@ -562,7 +562,7 @@ void vtkKWVolumePropertyWidget::CreateWidget()
   this->ComponentWeightScaleSet->SetParent(frame);
   this->ComponentWeightScaleSet->Create();
   this->ComponentWeightScaleSet->SetLabelText(
-    ks_("Volume Property Editor|Component Weights:"));
+    ks_("Volume Property Editor|Component Weight(s):"));
   this->ComponentWeightScaleSet->SetLabelPositionToTop();
 
   vtkKWScaleWithEntrySet *scaleset = 
@@ -1378,7 +1378,7 @@ void vtkKWVolumePropertyWidget::Update()
           scaleset->SetWidgetVisibility(i, (i < nb_components ? 1 : 0));
           }
         }
-      int scales_out = (!this->GetIndependentComponents() || nb_components < 2);
+      int scales_out = !this->GetIndependentComponents();
       if (scales_out)
         {
         this->ComponentWeightScaleSet->SetEnabled(0);
