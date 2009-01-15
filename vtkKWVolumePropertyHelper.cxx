@@ -35,7 +35,7 @@ MAINTENANCE, SUPPORT, UPDATE, ENHANCEMENTS, OR MODIFICATIONS.
 
 //---------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWVolumePropertyHelper);
-vtkCxxRevisionMacro(vtkKWVolumePropertyHelper, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWVolumePropertyHelper, "$Revision: 1.3 $");
 
 //----------------------------------------------------------------------------
 void vtkKWVolumePropertyHelper::ApplyScalarOpacityPreset(
@@ -540,7 +540,7 @@ void vtkKWVolumePropertyHelper::ConvertNormalizedRange(
 
   // Scalar Opacity and Gradient Opacity
 
-  for (comp = 0; comp < VTK_MAX_VRCOMP; ++comp)
+  for (comp = 0; comp < nb_components; ++comp)
     {
     // We have only 2 cases with dependent component:
     // 2 or 4 comps, in both cases the scalar field is in the last comp
@@ -639,7 +639,7 @@ void vtkKWVolumePropertyHelper::ConvertNormalizedRange(
   // Color Transfer Functions
   // Done in a different loop because scalar_field is computed differently
 
-  for (comp = 0; comp < VTK_MAX_VRCOMP; ++comp)
+  for (comp = 0; comp < nb_components; ++comp)
     {
     // We have only 1 case with dependent component:
     // 2  comp (rest is RGB), the scalar field is in the first comp.
