@@ -191,6 +191,7 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWNuvolaIconResourc
     Nuvola/22x22/actions/help.png \
     Nuvola/22x22/actions/messagebox_info.png \
     Nuvola/22x22/actions/misc.png \
+    Nuvola/22x22/actions/wizard.png \
     Nuvola/22x22/apps/designer.png \
     Nuvola/22x22/filesystems/folder_blue.png \
     Nuvola/22x22/devices/camera.png \

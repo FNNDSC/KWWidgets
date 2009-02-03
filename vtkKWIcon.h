@@ -223,6 +223,7 @@ public:
     IconNuvola22x22ActionsHelp               = 3000,
     IconNuvola22x22ActionsMessageBoxInfo     = 3001,
     IconNuvola22x22ActionsMisc               = 3002,
+    IconNuvola22x22ActionsWizard             = 3003,
     IconNuvola22x22AppsDesigner              = 3300,
     IconNuvola22x22DevicesCamera             = 3600,
     IconNuvola22x22FilesystemsFolderBlue     = 3900,

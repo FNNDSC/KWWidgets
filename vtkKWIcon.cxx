@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.64 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.65 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -1812,6 +1812,15 @@ void vtkKWIcon::SetImage(int image)
         image_Nuvola_22x22_actions_misc_height,
         image_Nuvola_22x22_actions_misc_pixel_size, 
         image_Nuvola_22x22_actions_misc_length);
+      break;
+
+    case IconNuvola22x22ActionsWizard:
+      this->SetImage(
+        image_Nuvola_22x22_actions_wizard, 
+        image_Nuvola_22x22_actions_wizard_width, 
+        image_Nuvola_22x22_actions_wizard_height,
+        image_Nuvola_22x22_actions_wizard_pixel_size, 
+        image_Nuvola_22x22_actions_wizard_length);
       break;
 
     case IconNuvola22x22AppsDesigner:

@@ -1414,6 +1414,35 @@ static const unsigned char image_Nuvola_22x22_actions_misc[] =
 
 /* 
  * Resource generated for file:
+ *    wizard.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Nuvola_22x22_actions_wizard_width          = 22;
+static const unsigned int  image_Nuvola_22x22_actions_wizard_height         = 22;
+static const unsigned int  image_Nuvola_22x22_actions_wizard_pixel_size     = 4;
+static const unsigned long image_Nuvola_22x22_actions_wizard_length         = 1148;
+static const unsigned long image_Nuvola_22x22_actions_wizard_decoded_length = 1936;
+
+static const unsigned char image_Nuvola_22x22_actions_wizard[] = 
+  "eNq1lWlIVFEUx4+z+bBp0pkcp5rMXEowxZkIAj8U1tBKkAXVh6igTzG4UuZMZFG0SDvt9S"
+  "GyJqXFFm2hvdxKqxmTJgcCswS/lGWohc38O2/mvRCiNKwLf+499777u+ecey4PAOE/6QUR"
+  "PScSaolG3efxddYF1qVQf6zSqOl1aRQnT7M9GMncZ0SRnijhqXucrvMOL1USGc/zehnRwc"
+  "bFEwLtp2woHa5sOcxzx1knBpDMZT/HeZL03b1P9+HtxmW4Z1J3MrOu1pYQ8He70Oaai6Nh"
+  "dOsQ7znI2j+A+nGJ4y9/t20lm33ofnkOrTvn4dv7c2xX4EXueOwlKtzN321iFbEcf5DMvc"
+  "vjm0Rj7pvVXT3eCoTaK1YV8D0Xj5bpwbxy5gnr+VvnAJK5FTy+GMpnfduuBTz1mt2+AvQ4"
+  "WTZ01U/EwxV6lESFfVxHVMJ7dRsGyRXvqGZGgv9rqwsIVIWYXbOAz1bg2zSgcyY+XbXgik"
+  "0L9vky82n9byRzLyrpaMOiZN4fyif8eUC3Lcj87rWg/XA86tcYcX1hZKAsTeVnn84UhoVR"
+  "0W8kc6tM4X0dpbPRVjYP7rUJqFluQE8jn/N1Gt7sGY3s4SNxaWMJcqbP/zBXO2Lq2vBwcq"
+  "pU5FCryanRkFO0+/UytzxcWXo2UuU7QnRnD1HxZqJrtatHBvPQkD0a8SoB9qIi+N62BrJW"
+  "rapOM5kUU6KjaZJOR4nMiVMoaLxSGewT+CyZe4Zzwkw6INXfFiLV7ijll54bk/FgqSlgVe"
+  "s6xLRl2+3w+XyYn5XVqDUYNFq9noi5wcbMYOvHPSu9I7Hud7GKWXwv+6rmDEN5mtq/xGie"
+  "ZJw44Z7Izs3JQUtLCzIzM+s0oSZhFRL2V674TrdLdc93E1FIVMn15NrKMU5PSVEYx46tFt"
+  "l5eXnwer3IyMhoYFs1GO4O6c1sCPkcPEOMYUZiIsWnpJDBYHgos5ubm2G1WhvZ1v4Nt1Aa"
+  "l7Ayk5IoLjmZYmNjNTqdrkZkFxQUoKmpCenp6U9El4fCNZvNFBMTQ4IgPBbZ+fn58Hg8SE"
+  "1NFf0WhsKN5hpjnwWO/affEruObc0QuWLMYuzVMtvtdsNisdT9Ay5JeQ3epcPhgN1u9/8j"
+  "Lkm1Jv7C+iIiIm7jP/4zfwAdGrM7";
+
+/* 
+ * Resource generated for file:
  *    designer.png (zlib, base64) (image file)
  */
 static const unsigned int  image_Nuvola_22x22_apps_designer_width          = 22;
