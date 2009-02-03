@@ -33,7 +33,7 @@
 //----------------------------------------------------------------------------
 
 vtkStandardNewMacro(vtkKWHistogram);
-vtkCxxRevisionMacro(vtkKWHistogram, "$Revision: 1.14 $");
+vtkCxxRevisionMacro(vtkKWHistogram, "$Revision: 1.15 $");
 
 //----------------------------------------------------------------------------
 vtkKWHistogram::vtkKWHistogram()
@@ -1338,7 +1338,7 @@ double vtkKWHistogram::GetValueAtAccumulatedOccurence(
       if (*exclude_value < low || *exclude_value >= low + bin_width)
         {
         total += *bins_ptr;
-        if (total > acc)
+        if (total >= acc)
           {
           break;
           }
@@ -1352,7 +1352,7 @@ double vtkKWHistogram::GetValueAtAccumulatedOccurence(
     while (bins_ptr < bins_ptr_end)
       {
       total += *bins_ptr;
-      if (total > acc)
+      if (total >= acc)
         {
         break;
         }
@@ -1371,8 +1371,9 @@ double vtkKWHistogram::GetValueAtAccumulatedOccurence(
 
   vtkIdType index = bins_ptr - this->Bins->GetPointer(0);
   double previous_total = total - *bins_ptr;
-  return this->Range[0] + bin_width * 
-    ((double)index + (acc - previous_total) / (total - previous_total));
+  double delta_acc = (total - previous_total);
+  double partial_v = (delta_acc ? (acc - previous_total) / delta_acc : 0);
+  return this->Range[0] + bin_width * ((double)index + partial_v);
 }
 
 //----------------------------------------------------------------------------
