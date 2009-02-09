@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTree );
-vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.46 $");
+vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.47 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTreeInternals
@@ -141,7 +141,8 @@ void vtkKWTree::CreateWidget()
   // Bindings
 
   this->SetBinding("<<TreeSelect>>", this, "SelectionCallback");
-  this->SetBindText("<ButtonPress-3>", this, "RightClickOnNodeCallback");
+
+  this->SetRightClickOnNodeCommand(this, "RightClickOnNodeCallback");
   
   char *command = NULL;
   this->SetObjectMethodCommand(&command, this, "DropOverNodeCallback");
@@ -1379,6 +1380,9 @@ void vtkKWTree::SetRightClickOnNodeCommand(vtkObject *object,
                                             const char *method)
 {
   this->SetBindText("<ButtonPress-3>", object, method);
+#ifdef __APPLE__
+  this->SetBindText("<Control-Button-1>", object, method);
+#endif
 }
 
 //----------------------------------------------------------------------------
