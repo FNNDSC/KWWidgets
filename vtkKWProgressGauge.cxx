@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWProgressGauge );
-vtkCxxRevisionMacro(vtkKWProgressGauge, "$Revision: 1.43 $");
+vtkCxxRevisionMacro(vtkKWProgressGauge, "$Revision: 1.44 $");
 
 //----------------------------------------------------------------------------
 class vtkKWProgressGaugeInternals
@@ -382,6 +382,9 @@ void vtkKWProgressGauge::Redraw()
   this->Script(tk_cmd.str().c_str());
 
   this->GetApplication()->ProcessIdleTasks();
+  // DO NOT USE: this->GetApplication()->ProcessPendingEvents();
+  // This will trigger processing way too many events, including 
+  // nasty not-so-re-entrant Render in the VTK pipeline.
 
   if (!enabled)
     {
