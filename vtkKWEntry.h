@@ -82,6 +82,19 @@ public:
   virtual int GetPasswordMode();
 
   // Description:
+  // Select all text in the entry
+  virtual void SelectAll();
+
+  // Description:
+  // Set/Get if the entry's contents should be selected automatically
+  // when the entry receives focus. Off by default, this variable can be
+  // turned on to On to emulate the effect of the URL entry in a browser
+  // window. 
+  vtkBooleanMacro(SelectAllOnFocusIn, int);
+  virtual void SetSelectAllOnFocusIn(int);
+  vtkGetMacro(SelectAllOnFocusIn, int);
+
+  // Description:
   // Restrict the value to a given type (integer, hexadecimal, double, or 
   // no restriction).
   // Note: checks against RestrictValue are performed before ValidationCommand.
@@ -272,6 +285,7 @@ protected:
   int ReadOnly;
   int RestrictValue;
   int CommandTrigger;
+  int SelectAllOnFocusIn;
 
   char *Command;
   char *ValidationCommand;

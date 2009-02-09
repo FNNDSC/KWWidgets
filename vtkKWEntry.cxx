@@ -24,13 +24,14 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry);
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.99 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.100 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
 {
   this->Width               = -1;
   this->ReadOnly            = 0;
+  this->SelectAllOnFocusIn  = 0;
   this->InternalValueString = NULL;
   this->Command             = NULL;
   this->ValidationCommand   = NULL;
@@ -111,6 +112,15 @@ void vtkKWEntry::Configure()
   if (this->Width >= 0)
     {
     this->SetConfigurationOptionAsInt("-width", this->Width);
+    }
+
+  if (this->SelectAllOnFocusIn)
+    {
+    this->SetBinding("<FocusIn>", this, "SelectAll");
+    }
+  else
+    {
+    this->RemoveBinding("<FocusIn>", this, "SelectAll");
     }
 
   // When the entry is unmapped, trigger the callback as well. Here is
@@ -374,6 +384,19 @@ void vtkKWEntry::SetReadOnly(int arg)
   this->Modified();
   this->Configure();
   this->UpdateEnableState();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWEntry::SetSelectAllOnFocusIn(int arg)
+{
+  if (this->SelectAllOnFocusIn == arg)
+    {
+    return;
+    }
+
+  this->SelectAllOnFocusIn = arg;
+  this->Modified();
+  this->Configure();
 }
 
 //----------------------------------------------------------------------------
@@ -753,6 +776,15 @@ int vtkKWEntry::InvokeValidationCommand(const char *value)
 }
 
 //----------------------------------------------------------------------------
+void vtkKWEntry::SelectAll()
+{
+  if (this->IsCreated())
+    {
+    this->Script("%s selection range 0 end", this->GetWidgetName());
+    }
+}
+
+//----------------------------------------------------------------------------
 void vtkKWEntry::UpdateEnableState()
 {
   this->Superclass::UpdateEnableState();
@@ -773,7 +805,8 @@ void vtkKWEntry::PrintSelf(ostream& os, vtkIndent indent)
   this->Superclass::PrintSelf(os,indent);
 
   os << indent << "Width: " << this->GetWidth() << endl;
-  os << indent << "Readonly: " << (this->ReadOnly ? "On" : "Off") << endl;
+  os << indent << "ReadOnly: " << (this->ReadOnly ? "On" : "Off") << endl;
+  os << indent << "SelectAllOnFocusIn: " << (this->SelectAllOnFocusIn ? "On" : "Off") << endl;
   os << indent << "RestrictValue: " << this->RestrictValue << endl;
   os << indent << "CommandTrigger: " << this->CommandTrigger << endl;
 }

@@ -61,10 +61,12 @@ def vtkKWEntryEntryPoint(parent, win):
     entry3.SetParent(parent)
     entry3.Create()
     entry3.GetWidget().SetRestrictValueToHexadecimal()
-    entry3.SetLabelText("Another entry, restricted to hex, with a label in front:")
+    entry3.GetWidget().SetSelectAllOnFocusIn(1)
+    entry3.SetLabelText("Another entry, restricted to hex, with a label in front, auto-select on focus:")
     entry3.SetBalloonHelpString(
         "This is a vtkKWEntryWithLabel, i.e. a entry associated to a "
-        "label that can be positioned around the entry.")
+        "label that can be positioned around the entry. "
+        "It auto-selects on focus.")
     
     app.Script(
         "pack %s -side top -anchor nw -expand n -padx 2 -pady 6",
