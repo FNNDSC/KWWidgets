@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTree );
-vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.47 $");
+vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.48 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTreeInternals
@@ -86,6 +86,8 @@ vtkKWTree::vtkKWTree()
 {
   this->SelectionMode = vtkKWOptions::SelectionModeSingle;
   this->EnableReparenting = 0;
+  this->UseRawNodeUserData = 0;
+  this->UseRawNodeText = 0;
 
   this->SelectionChangedCommand = NULL;
   this->NodeParentChangedCommand = NULL;
@@ -785,8 +787,10 @@ const char* vtkKWTree::GetNodeUserData(const char *node)
 {
   if (this->IsCreated() && node && *node)
     {
-    return this->ConvertTclStringToInternalString(
-      this->Script("%s itemcget %s -data", this->GetWidgetName(), node));
+    const char *data = 
+      this->Script("%s itemcget %s -data", this->GetWidgetName(), node);
+    return this->UseRawNodeUserData 
+      ? data : this->ConvertTclStringToInternalString(data);
     }
   return NULL;
 }
@@ -796,8 +800,9 @@ void vtkKWTree::SetNodeUserData(const char *node, const char *data)
 {
   if (this->IsCreated() && node && *node && data)
     {
-    const char *val = this->ConvertInternalStringToTclString(
-      data, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+    const char *val = this->UseRawNodeUserData ? data : 
+      this->ConvertInternalStringToTclString(
+        data, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
     this->Script("%s itemconfigure %s -data \"%s\"", 
                  this->GetWidgetName(), node, val);
     }
@@ -878,8 +883,10 @@ const char* vtkKWTree::GetNodeText(const char *node)
 {
   if (this->IsCreated() && node && *node)
     {
-    return this->ConvertTclStringToInternalString(
-      this->Script("%s itemcget %s -text", this->GetWidgetName(), node));
+    const char *text = 
+      this->Script("%s itemcget %s -text", this->GetWidgetName(), node);
+    return this->UseRawNodeText 
+      ? text : this->ConvertTclStringToInternalString(text);
     }
   return NULL;
 }
@@ -889,8 +896,9 @@ void vtkKWTree::SetNodeText(const char *node, const char *text)
 {
   if (this->IsCreated() && node && *node && text)
     {
-    const char *val = this->ConvertInternalStringToTclString(
-      text, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+    const char *val = this->UseRawNodeText ? text : 
+      this->ConvertInternalStringToTclString(
+        text, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
     this->Script("%s itemconfigure %s -text \"%s\"", 
                  this->GetWidgetName(), node, val);
     }
@@ -1458,6 +1466,10 @@ void vtkKWTree::PrintSelf(ostream& os, vtkIndent indent)
 {
   os << indent << "EnableReparenting: " 
      << (this->EnableReparenting ? "On" : "Off") << endl;
+  os << indent << "UseRawNodeUserData: " 
+     << (this->UseRawNodeUserData ? "On" : "Off") << endl;
+  os << indent << "UseRawNodeText: " 
+     << (this->UseRawNodeText ? "On" : "Off") << endl;
 
   this->Superclass::PrintSelf(os,indent);
 }

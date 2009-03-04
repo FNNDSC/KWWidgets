@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.43 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.44 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -265,6 +265,8 @@ void vtkKWDirectoryExplorer::CreateWidget()
   dirtree->SetWidth(30);
   dirtree->SetHeight(15);
   dirtree->SetBackgroundColor(1.0, 1.0, 1.0);
+  dirtree->UseRawNodeUserDataOn();
+  dirtree->UseRawNodeTextOn();
 
   dirtree->SetOpenCommand(this,"DirectoryOpenedCallback");
   dirtree->SetCloseCommand(this, "DirectoryClosedCallback");

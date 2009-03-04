@@ -479,6 +479,22 @@ public:
   virtual void UpdateEnableState();
 
   // Description:
+  // Specifies if the node text should be stored in a raw format, i.e. 
+  // without converting from the application's CharacterEncoding to the
+  // internal Tcl/Tk encoding. Off by default.
+  vtkBooleanMacro(UseRawNodeText, int);
+  vtkGetMacro(UseRawNodeText, int);
+  vtkSetMacro(UseRawNodeText, int);
+
+  // Description:
+  // Specifies if the node user data should be stored in a raw format, i.e. 
+  // without converting from the application's CharacterEncoding to the
+  // internal Tcl/Tk encoding. Off by default.
+  vtkBooleanMacro(UseRawNodeUserData, int);
+  vtkGetMacro(UseRawNodeUserData, int);
+  vtkSetMacro(UseRawNodeUserData, int);
+
+  // Description:
   // Set focus to this widget.
   virtual void Focus();
   virtual int HasFocus();
@@ -505,6 +521,8 @@ protected:
   
   int SelectionMode;
   int EnableReparenting;
+  int UseRawNodeUserData;
+  int UseRawNodeText;
 
   char *SelectionChangedCommand;
   virtual void InvokeSelectionChangedCommand();
