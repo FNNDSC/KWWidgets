@@ -91,12 +91,14 @@ public:
     { this->SetBackgroundColor(rgb[0], rgb[1], rgb[2]); };
   
   // Description:
-  // Set/Get the foreground color of the widget.
+  // Set/Get the foreground color of the widget (or the default color).
   virtual void GetForegroundColor(double *r, double *g, double *b);
   virtual double* GetForegroundColor();
   virtual void SetForegroundColor(double r, double g, double b);
   virtual void SetForegroundColor(double rgb[3])
     { this->SetForegroundColor(rgb[0], rgb[1], rgb[2]); };
+  virtual void GetDefaultForegroundColor(double *r, double *g, double *b);
+  virtual double* GetDefaultForegroundColor();
 
   // Description:
   // Set/Get the highlight thickness, a non-negative value indicating the

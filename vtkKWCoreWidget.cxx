@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWCoreWidget );
-vtkCxxRevisionMacro(vtkKWCoreWidget, "$Revision: 1.21 $");
+vtkCxxRevisionMacro(vtkKWCoreWidget, "$Revision: 1.22 $");
 
 //----------------------------------------------------------------------------
 class vtkKWCoreWidgetInternals
@@ -204,6 +204,29 @@ void vtkKWCoreWidget::SetConfigurationOptionAsColor(
   const char *option, double r, double g, double b)
 {
   vtkKWTkUtilities::SetOptionColor(this, option, r, g, b);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWCoreWidget::GetDefaultConfigurationOptionAsColor(
+  const char *option, double *r, double *g, double *b)
+{
+  vtkKWTkUtilities::GetDefaultOptionColor(this, option, r, g, b);
+}
+
+//----------------------------------------------------------------------------
+double* vtkKWCoreWidget::GetDefaultConfigurationOptionAsColor(
+  const char *option)
+{
+  // Now this is still not super-safe if in a multi-thread context this
+  // method is called with different 'option' argument...
+
+  this->GetDefaultConfigurationOptionAsColor(
+    option, 
+    this->Internals->ConfigurationOptionAsColorTemp, 
+    this->Internals->ConfigurationOptionAsColorTemp + 1, 
+    this->Internals->ConfigurationOptionAsColorTemp + 2);
+
+  return this->Internals->ConfigurationOptionAsColorTemp;
 }
 
 //----------------------------------------------------------------------------

@@ -132,6 +132,21 @@ public:
                                 const char *option);
   
   // Description:
+  // Get the RGB components that correspond to the default color 'option'
+  // (say the default value for -bg, -fg, etc.) of the widget given by
+  // 'widget' (say, .foo.bar).
+  // A convenience method is provided to query a vtkKWWidget directly.
+  static void GetDefaultOptionColor(Tcl_Interp *interp,
+                                    const char *widget, 
+                                    const char *option, 
+                                    double *r, double *g, double *b);
+  static void GetDefaultOptionColor(vtkKWWidget *widget,
+                                    const char *option, 
+                                    double *r, double *g, double *b);
+  static double* GetDefaultOptionColor(vtkKWWidget *widget,
+                                       const char *option);
+  
+  // Description:
   // Set the RGB components of the color 'option'
   // (say -bg, -fg, etc.) of the widget given by 'widget' (say, .foo.bar).
   // A convenience method is provided to query a vtkKWWidget directly.

@@ -20,7 +20,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWLabel );
-vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.56 $");
+vtkCxxRevisionMacro(vtkKWLabel, "$Revision: 1.57 $");
 
 //----------------------------------------------------------------------------
 vtkKWLabel::vtkKWLabel()
@@ -275,6 +275,18 @@ void vtkKWLabel::GetForegroundColor(double *r, double *g, double *b)
 double* vtkKWLabel::GetForegroundColor()
 {
   return this->GetConfigurationOptionAsColor("-foreground");
+}
+
+//----------------------------------------------------------------------------
+void vtkKWLabel::GetDefaultForegroundColor(double *r, double *g, double *b)
+{
+  this->GetDefaultConfigurationOptionAsColor("-foreground", r, g, b);
+}
+
+//----------------------------------------------------------------------------
+double* vtkKWLabel::GetDefaultForegroundColor()
+{
+  return this->GetDefaultConfigurationOptionAsColor("-foreground");
 }
 
 //----------------------------------------------------------------------------

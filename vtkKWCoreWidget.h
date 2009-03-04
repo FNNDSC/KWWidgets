@@ -77,6 +77,9 @@ public:
     const char* option, double r, double g, double b);
   virtual void SetConfigurationOptionAsColor(const char* option, double rgb[3])
     { this->SetConfigurationOptionAsColor(option, rgb[0], rgb[1], rgb[2]); };
+  virtual void GetDefaultConfigurationOptionAsColor(
+    const char* option, double *r, double *g, double *b);
+  virtual double* GetDefaultConfigurationOptionAsColor(const char* option);
 
 protected:
   vtkKWCoreWidget();

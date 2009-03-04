@@ -46,7 +46,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.100 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.101 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -420,10 +420,11 @@ void vtkKWTkUtilities::GetOptionColor(vtkKWWidget *widget,
     return;
     }
   
-  vtkKWTkUtilities::GetOptionColor(widget->GetApplication()->GetMainInterp(),
-                                   widget->GetWidgetName(),
-                                   option,
-                                   r, g, b);
+  vtkKWTkUtilities::GetOptionColor(
+    widget->GetApplication()->GetMainInterp(),
+    widget->GetWidgetName(),
+    option,
+    r, g, b);
 }
 
 //----------------------------------------------------------------------------
@@ -431,7 +432,60 @@ double* vtkKWTkUtilities::GetOptionColor(vtkKWWidget *widget,
                                          const char *option)
 {
   static double rgb[3];
-  vtkKWTkUtilities::GetOptionColor(widget, option, rgb, rgb + 1, rgb + 2);
+  vtkKWTkUtilities::GetOptionColor(
+    widget, option, rgb, rgb + 1, rgb + 2);
+  return rgb;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWTkUtilities::GetDefaultOptionColor(Tcl_Interp *interp,
+                                             const char *widget,
+                                             const char *option,
+                                             double *r, double *g, double *b)
+{
+  if (!interp || !widget || !option || !r || !g || !b)
+    {
+    return;
+    }
+
+  vtksys_ios::ostringstream command;
+  command << "lindex [" << widget << " config " << option << "] 3";
+  if (Tcl_GlobalEval(interp, command.str().c_str()) != TCL_OK)
+    {
+    vtkGenericWarningMacro(
+      << "Unable to get " << option << " option: " 
+      << Tcl_GetStringResult(interp));
+    return;
+    }
+
+  vtkKWTkUtilities::GetRGBColor(
+    interp, widget, Tcl_GetStringResult(interp), r, g, b);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWTkUtilities::GetDefaultOptionColor(vtkKWWidget *widget, 
+                                             const char *option,
+                                             double *r, double *g, double *b)
+{
+  if (!widget || !widget->IsCreated())
+    {
+    return;
+    }
+  
+  vtkKWTkUtilities::GetDefaultOptionColor(
+    widget->GetApplication()->GetMainInterp(),
+    widget->GetWidgetName(),
+    option,
+    r, g, b);
+}
+
+//----------------------------------------------------------------------------
+double* vtkKWTkUtilities::GetDefaultOptionColor(vtkKWWidget *widget, 
+                                                const char *option)
+{
+  static double rgb[3];
+  vtkKWTkUtilities::GetDefaultOptionColor(
+    widget, option, rgb, rgb + 1, rgb + 2);
   return rgb;
 }
 
