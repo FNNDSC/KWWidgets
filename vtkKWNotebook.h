@@ -347,6 +347,14 @@ public:
   virtual void SetPinnedPageTabOutlineColor(double r, double g, double b);
   virtual void SetPinnedPageTabOutlineColor(double rgb[3]) 
     { this->SetPinnedPageTabOutlineColor(rgb[0], rgb[1], rgb[2]); };
+  vtkGetVector3Macro(PageTabTextColor,double);
+  virtual void SetPageTabTextColor(double r, double g, double b);
+  virtual void SetPageTabTextColor(double rgb[3]) 
+    { this->SetPageTabTextColor(rgb[0], rgb[1], rgb[2]); };
+  vtkGetVector3Macro(SelectedPageTabTextColor,double);
+  virtual void SetSelectedPageTabTextColor(double r, double g, double b);
+  virtual void SetSelectedPageTabTextColor(double rgb[3]) 
+    { this->SetSelectedPageTabTextColor(rgb[0], rgb[1], rgb[2]); };
 
   // Description:
   // Set/Get the amount of padding that is to be added to the internal
@@ -417,6 +425,8 @@ protected:
 
   double PageTabColor[3];
   double SelectedPageTabColor[3];
+  double PageTabTextColor[3];
+  double SelectedPageTabTextColor[3];
   double PinnedPageTabOutlineColor[3];
   int SelectedPageTabPadding;
 

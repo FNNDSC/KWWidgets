@@ -52,7 +52,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWNotebook);
-vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.113 $");
+vtkCxxRevisionMacro(vtkKWNotebook, "$Revision: 1.114 $");
 
 //----------------------------------------------------------------------------
 class vtkKWNotebookInternals
@@ -271,6 +271,14 @@ vtkKWNotebook::vtkKWNotebook()
   this->SelectedPageTabColor[0] = -1;
   this->SelectedPageTabColor[1] = -1;
   this->SelectedPageTabColor[2] = -1;
+
+  this->PageTabTextColor[0] = -1;
+  this->PageTabTextColor[1] = -1;
+  this->PageTabTextColor[2] = -1;
+
+  this->SelectedPageTabTextColor[0] = -1;
+  this->SelectedPageTabTextColor[1] = -1;
+  this->SelectedPageTabTextColor[2] = -1;
 
   this->PinnedPageTabOutlineColor[0] = 1.0;
   this->PinnedPageTabOutlineColor[1] = 1.0;
@@ -2370,40 +2378,70 @@ void vtkKWNotebook::UpdatePageTabAspect(vtkKWNotebook::Page *page)
 
   int selected = this->CurrentId == page->Id;
 
-  double frgb[3];
-  double *override = 
+  // Compute the background color
+
+  double tab_bg_rgb[3];
+  double *tab_bg_rgb_override = 
     selected ? this->SelectedPageTabColor : this->PageTabColor;
-  if (override[0] >= 0.0 && override[1] >= 0.0 && override[2] >= 0.0)
+  if (tab_bg_rgb_override[0] >= 0.0 && 
+      tab_bg_rgb_override[1] >= 0.0 && 
+      tab_bg_rgb_override[2] >= 0.0)
     {
-    frgb[0] = override[0];
-    frgb[1] = override[1];
-    frgb[2] = override[2];
+    tab_bg_rgb[0] = tab_bg_rgb_override[0];
+    tab_bg_rgb[1] = tab_bg_rgb_override[1];
+    tab_bg_rgb[2] = tab_bg_rgb_override[2];
     }
   else
     {
-    this->GetBackgroundColor(&frgb[0], &frgb[1], &frgb[2]);
+    this->GetBackgroundColor(
+      &tab_bg_rgb[0], &tab_bg_rgb[1], &tab_bg_rgb[2]);
     if (!selected)
       {
       double fh, fs, fv;
-      if (frgb[0] == frgb[1] && frgb[1] == frgb[2])
+      if (tab_bg_rgb[0] == tab_bg_rgb[1] && tab_bg_rgb[1] == tab_bg_rgb[2])
         {
         fh = fs = 0.0;
-        fv = frgb[0];
+        fv = tab_bg_rgb[0];
         }
       else
         {
-        vtkMath::RGBToHSV(frgb[0], frgb[1], frgb[2], &fh, &fs, &fv);
+        vtkMath::RGBToHSV(tab_bg_rgb[0], tab_bg_rgb[1], tab_bg_rgb[2], 
+                          &fh, &fs, &fv);
         }
       fv *= VTK_KW_NB_TAB_UNSELECTED_VALUE;
-      vtkMath::HSVToRGB(fh, fs, fv, &frgb[0], &frgb[1], &frgb[2]);
+      vtkMath::HSVToRGB(fh, fs, fv, 
+                        &tab_bg_rgb[0], &tab_bg_rgb[1], &tab_bg_rgb[2]);
       }
     }
 
-  page->Label->SetBackgroundColor(frgb);
+  page->Label->SetBackgroundColor(tab_bg_rgb);
+
+  // Compute the text color color
+
+  double tab_text_rgb[3];
+  double *tab_text_rgb_override = 
+    selected ? this->SelectedPageTabTextColor : this->PageTabTextColor;
+  if (tab_text_rgb_override[0] >= 0.0 && 
+      tab_text_rgb_override[1] >= 0.0 && 
+      tab_text_rgb_override[2] >= 0.0)
+    {
+    tab_text_rgb[0] = tab_text_rgb_override[0];
+    tab_text_rgb[1] = tab_text_rgb_override[1];
+    tab_text_rgb[2] = tab_text_rgb_override[2];
+    }
+  else
+    {
+    page->Label->GetDefaultForegroundColor(
+      &tab_text_rgb[0], &tab_text_rgb[1], &tab_text_rgb[2]);
+    }
+
+  page->Label->SetForegroundColor(tab_text_rgb);
+
+  // Icon
 
   if (page->Icon)
     {
-    page->ImageLabel->SetBackgroundColor(frgb);
+    page->ImageLabel->SetBackgroundColor(tab_bg_rgb);
     // Reset the imagelabel so that the icon is blended with the background
     page->ImageLabel->SetImageToIcon(page->Icon);
     }
@@ -2418,7 +2456,7 @@ void vtkKWNotebook::UpdatePageTabAspect(vtkKWNotebook::Page *page)
   else
     {
     vtkKWTkUtilities::ChangeFontSlantToRoman(page->Label);
-    page->TabFrame->SetBackgroundColor(frgb);
+    page->TabFrame->SetBackgroundColor(tab_bg_rgb);
     }
 
   // Update the space around
@@ -3071,6 +3109,42 @@ void vtkKWNotebook::SetSelectedPageTabColor(double r, double g, double b)
 }
 
 //----------------------------------------------------------------------------
+void vtkKWNotebook::SetPageTabTextColor(double r, double g, double b)
+{
+  if (this->PageTabTextColor[0] == r && 
+      this->PageTabTextColor[1] == g &&
+      this->PageTabTextColor[2] == b)
+    {
+    return;
+    }
+
+  this->PageTabTextColor[0] = r;
+  this->PageTabTextColor[1] = g;
+  this->PageTabTextColor[2] = b;
+  
+  this->Modified();
+  this->UpdateAllPagesTabAspect();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWNotebook::SetSelectedPageTabTextColor(double r, double g, double b)
+{
+  if (this->SelectedPageTabTextColor[0] == r && 
+      this->SelectedPageTabTextColor[1] == g &&
+      this->SelectedPageTabTextColor[2] == b)
+    {
+    return;
+    }
+
+  this->SelectedPageTabTextColor[0] = r;
+  this->SelectedPageTabTextColor[1] = g;
+  this->SelectedPageTabTextColor[2] = b;
+  
+  this->Modified();
+  this->UpdateAllPagesTabAspect();
+}
+
+//----------------------------------------------------------------------------
 void vtkKWNotebook::SetPinnedPageTabOutlineColor(double r, double g, double b)
 {
   if (this->PinnedPageTabOutlineColor[0] == r && 
@@ -3147,6 +3221,14 @@ void vtkKWNotebook::PrintSelf(ostream& os, vtkIndent indent)
      << this->SelectedPageTabColor[0] << ", " 
      << this->SelectedPageTabColor[1] << ", " 
      << this->SelectedPageTabColor[2] << ")\n";
+  os << indent << "PageTabTextColor: (" 
+     << this->PageTabTextColor[0] << ", " 
+     << this->PageTabTextColor[1] << ", " 
+     << this->PageTabTextColor[2] << ")\n";
+  os << indent << "SelectedPageTabTextColor: (" 
+     << this->SelectedPageTabTextColor[0] << ", " 
+     << this->SelectedPageTabTextColor[1] << ", " 
+     << this->SelectedPageTabTextColor[2] << ")\n";
   os << indent << "PinnedPageTabOutlineColor: (" 
      << this->PinnedPageTabOutlineColor[0] << ", " 
      << this->PinnedPageTabOutlineColor[1] << ", " 
