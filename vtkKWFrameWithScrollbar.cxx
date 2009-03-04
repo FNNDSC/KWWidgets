@@ -25,7 +25,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFrameWithScrollbar );
-vtkCxxRevisionMacro(vtkKWFrameWithScrollbar, "$Revision: 1.20 $");
+vtkCxxRevisionMacro(vtkKWFrameWithScrollbar, "$Revision: 1.21 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFrameWithScrollbarInternals
@@ -320,6 +320,26 @@ void vtkKWFrameWithScrollbar::UpdateEnableState()
 
   this->PropagateEnableState(this->Frame);
   this->PropagateEnableState(this->ScrollableFrame);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFrameWithScrollbar::ScrollToTop()
+{
+  if (this->ScrollableFrame && this->ScrollableFrame->IsCreated())
+    {
+    this->Script("%s yview moveto 0.0", 
+                 this->ScrollableFrame->GetWidgetName());
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWFrameWithScrollbar::ScrollToBottom()
+{
+  if (this->ScrollableFrame && this->ScrollableFrame->IsCreated())
+    {
+    this->Script("%s yview moveto 1.0", 
+                 this->ScrollableFrame->GetWidgetName());
+    }
 }
 
 //----------------------------------------------------------------------------

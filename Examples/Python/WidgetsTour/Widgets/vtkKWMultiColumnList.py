@@ -122,7 +122,7 @@ def vtkKWMultiColumnListEntryPoint(parent, win):
         
   
     app.Script(
-        "pack %s -side top -anchor nw -expand n -padx 2 -pady 2",
+        "pack %s -side top -anchor nw -expand y -fill y -padx 2 -pady 2",
         mcl1.GetWidgetName())
     
     

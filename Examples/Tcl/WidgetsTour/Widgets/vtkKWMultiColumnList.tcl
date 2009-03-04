@@ -93,7 +93,7 @@ proc vtkKWMultiColumnListEntryPoint {parent win} {
     $mcl1 SetCellWindowCommand $i 6 "" "CreateCompletionCellCallback $mcl1"
     }
 
-  pack [$mcl1 GetWidgetName] -side top -anchor nw -expand n -padx 2 -pady 2
+  pack [$mcl1 GetWidgetName] -side top -anchor nw -expand y -fill y -padx 2 -pady 2
   }
 
 proc vtkKWMultiColumnListGetType {} {

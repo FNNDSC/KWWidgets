@@ -86,6 +86,11 @@ public:
   virtual int GetHeight();
   
   // Description:
+  // Convenience method to set the view area to the top/bottom
+  virtual void ScrollToTop();
+  virtual void ScrollToBottom();
+
+  // Description:
   // Update the "enable" state of the object and its internal parts.
   // Depending on different Ivars (this->Enabled, the application's 
   // Limited Edition Mode, etc.), the "enable" state of the object is updated
