@@ -37,7 +37,7 @@
 #include <vtksys/stl/string>
 
 vtkStandardNewMacro(vtkKWColorTransferFunctionEditor);
-vtkCxxRevisionMacro(vtkKWColorTransferFunctionEditor, "$Revision: 1.60 $");
+vtkCxxRevisionMacro(vtkKWColorTransferFunctionEditor, "$Revision: 1.61 $");
 
 #define VTK_KW_CTFE_COLOR_RAMP_TAG "color_ramp_tag"
 
@@ -1808,24 +1808,27 @@ void vtkKWColorTransferFunctionEditor::ProcessCallbackCommandEvents(
 
   if (caller == color_picker_widget)
     {
-    switch (event)
+    if (event == vtkKWColorPickerWidget::NewColorChangingEvent ||
+        event == vtkKWColorPickerWidget::NewColorChangedEvent)
       {
-      case vtkKWColorPickerWidget::NewColorChangingEvent:
-        id = this->GetSelectedPoint();
-        if (id != -1)
+      id = this->GetSelectedPoint();
+      if (id != -1)
+        {
+        unsigned long mtime = this->GetFunctionMTime();
+        this->SetPointColorAsRGB(
+          id, color_picker_widget->GetNewColorAsRGB());
+        if (this->GetFunctionMTime() > mtime)
           {
-          unsigned long mtime = this->GetFunctionMTime();
-          this->SetPointColorAsRGB(
-            id, color_picker_widget->GetNewColorAsRGB());
-          if (this->GetFunctionMTime() > mtime)
+          if (event == vtkKWColorPickerWidget::NewColorChangingEvent)
             {
             this->InvokeFunctionChangingCommand();
             }
           }
-        break;
-      case vtkKWColorPickerWidget::NewColorChangedEvent:
-        this->InvokeFunctionChangedCommand();
-        break;
+        if (event == vtkKWColorPickerWidget::NewColorChangedEvent)
+          {
+          this->InvokeFunctionChangedCommand();
+          }
+        }
       }
     }
 
