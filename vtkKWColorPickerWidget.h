@@ -15,7 +15,7 @@
 // .SECTION Description
 // A widget that can be used to pick a color. It provides interactive
 // RGB and HSV sliders, a color spectrum area, and various other means to
-// select or enter color coordinates. It features a set of basic colors, a 
+// select or enter color coordinates. It features a set of colors swatches, a 
 // color preset editor that can be used store a list of persistent/favorite 
 // colors, and a history of "recently picked" colors.
 // This widget can be embedded in any other UI. For a standalone 
@@ -39,7 +39,7 @@ class vtkKWColorPresetSelector;
 class vtkKWColorTransferFunctionEditor;
 class vtkKWEntryWithLabel;
 class vtkKWFrame;
-class vtkKWFrameSet;
+class vtkKWColorSwatchesWidget;
 class vtkKWLabel;
 class vtkKWLabelSet;
 class vtkKWNotebook;
@@ -100,10 +100,10 @@ public:
   vtkGetMacro(ColorSpectrumVisibility, int);
 
   // Description:
-  // Set/Get the basic colors visibility.
-  vtkBooleanMacro(BasicColorsVisibility, int);
-  virtual void SetBasicColorsVisibility(int);
-  vtkGetMacro(BasicColorsVisibility, int);
+  // Set/Get the color swatches visibility.
+  vtkBooleanMacro(ColorSwatchesVisibility, int);
+  virtual void SetColorSwatchesVisibility(int);
+  vtkGetMacro(ColorSwatchesVisibility, int);
 
   // Description:
   // Set/Get the favorites preset selector visibility.
@@ -139,7 +139,7 @@ public:
   virtual void HistoryColorPresetApplyCallback(int id);
   virtual void CurrentColorCallback();
   virtual void HexadecimalColorEntryCallback(const char*);
-  virtual void BasicColorsCallback(const char *color);
+  virtual void SwatchSelectedCallback(double r, double g, double b);
   virtual void UpdateInfoLabelCallback();
 
   // Description:
@@ -202,7 +202,7 @@ protected:
   vtkKWColorSpectrumWidget         *ColorSpectrumWidget;
   vtkKWColorPresetSelector         *FavoritesColorPresetSelector;
   vtkKWColorPresetSelector         *HistoryColorPresetSelector;
-  vtkKWFrameSet                    *BasicColorsFrameSet;
+  vtkKWColorSwatchesWidget         *ColorSwatchesWidget;
 
   vtkKWFrame                       *ColorsFrame;
   vtkKWLabelSet                    *ColorsLabelSet;
@@ -218,7 +218,7 @@ protected:
   virtual void ScheduleUpdateInfoLabel();
 
   int ColorSpectrumVisibility;
-  int BasicColorsVisibility;
+  int ColorSwatchesVisibility;
   int FavoritesVisibility;
   int HistoryVisibility;
 
@@ -226,7 +226,7 @@ protected:
 
   virtual void CreateFavoritesColorPresetSelector();
   virtual void CreateHistoryColorPresetSelector();
-  virtual void CreateBasicColorsFrameSet();
+  virtual void CreateColorSwatchesWidget();
 
   virtual void ColorSpectrumChangingCallback();
   virtual void RGBSlidersChangingCallback();

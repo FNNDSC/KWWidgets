@@ -171,6 +171,7 @@ set(KWWidgets_SRCS
   vtkKWColorPickerWidget.cxx
   vtkKWColorPresetSelector.cxx
   vtkKWColorSpectrumWidget.cxx
+  vtkKWColorSwatchesWidget.cxx
   vtkKWComboBox.cxx
   vtkKWCompositeWidget.cxx
   vtkKWCoreWidget.cxx

@@ -87,12 +87,16 @@ public:
   // Description:
   // Hide/show a widget, given its unique id.
   // Get the number of visible widget in the set.
+  // Since the changing the widget visibility will trigger an expensive call
+  // to Pack(), one can use SetWidgetsVisibility to change the visibility of
+  // many widgets in a single call.
   virtual void HideWidget(int id);
   virtual void ShowWidget(int id);
   virtual int GetWidgetVisibility(int id);
   virtual void SetWidgetVisibility(int id, int flag);
   virtual int GetNumberOfVisibleWidgets();
   virtual int GetIdOfNthVisibleWidget(int rank);
+  virtual void SetWidgetsVisibility(int nb_ids, int *ids, int *flags);
 
   // Description:
   // Delete all widgets.

@@ -23,7 +23,7 @@
 #include <vtksys/ios/sstream> 
 
 //----------------------------------------------------------------------------
-vtkCxxRevisionMacro(vtkKWWidgetSet, "$Revision: 1.24 $");
+vtkCxxRevisionMacro(vtkKWWidgetSet, "$Revision: 1.25 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetSetInternals
@@ -524,6 +524,36 @@ void vtkKWWidgetSet::SetWidgetVisibility(int id, int flag)
         break;
         }
       }
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWWidgetSet::SetWidgetsVisibility(int nb_ids, int *ids, int *flags)
+{
+  int need_to_pack = 0;
+  for (; nb_ids > 0; --nb_ids, ++ids, ++flags)
+    {
+    vtkKWWidgetSetInternals::WidgetsContainerIterator it = 
+      this->Internals->Widgets.begin();
+    vtkKWWidgetSetInternals::WidgetsContainerIterator end = 
+      this->Internals->Widgets.end();
+    for (; it != end; ++it)
+      {
+      if (it->Id == *ids)
+        {
+        if (it->Visibility != *flags)
+          {
+          it->Visibility = *flags;
+          ++need_to_pack;
+          break;
+          }
+        }
+      }
+    }
+
+  if (need_to_pack)
+    {
+    this->Pack();
     }
 }
 
