@@ -46,6 +46,7 @@ class vtkKWNotebook;
 class vtkKWRadioButton;
 class vtkKWLabelWithLabel;
 class vtkKWColorPickerWidgetInternals;
+class vtkKWPushButton;
 
 class KWWidgets_EXPORT vtkKWColorPickerWidget : public vtkKWCompositeWidget
 {
@@ -118,6 +119,15 @@ public:
   vtkGetMacro(HistoryVisibility, int);
 
   // Description:
+  // Set/Get if the layout should be compact (off by default).
+  // Less precision can be achieved in compact mode, as the sliders and
+  // the spectrum widgets are twice as small.
+  vtkBooleanMacro(CompactMode, int);
+  virtual void SetCompactMode(int);
+  vtkGetMacro(CompactMode, int);
+  virtual void ToggleCompactMode();
+
+  // Description:
   // Events.
   // Not that no color values are passed as parameters (calldata), only
   // the value of EventCallData (defaults to NULL)
@@ -125,7 +135,8 @@ public:
   enum
   {
     NewColorChangedEvent = 10000,
-    NewColorChangingEvent
+    NewColorChangingEvent,
+    CompactModeChangedEvent
   };
   vtkGetMacro(EventCallData, void*);
   vtkSetMacro(EventCallData, void*);
@@ -209,11 +220,13 @@ protected:
   vtkKWLabelSet                    *ColorsNameLabelSet;
 
   vtkKWLabelWithLabel              *InfoLabel;
+  vtkKWPushButton                  *CompactModeButton;
 
   virtual void UpdateSlidersRGB(double rgb[3]);
   virtual void UpdateSlidersHSV(double hsv[3]);
   virtual void UpdateColorLabel(vtkKWLabel *label, double rgb[3]);
   virtual void UpdateHexadecimalColorEntry(double rgb[3]);
+
   virtual void UpdateInfoLabel();
   virtual void ScheduleUpdateInfoLabel();
 
@@ -221,6 +234,7 @@ protected:
   int ColorSwatchesVisibility;
   int FavoritesVisibility;
   int HistoryVisibility;
+  int CompactMode;
 
   void *EventCallData;
 
@@ -234,6 +248,8 @@ protected:
 
   virtual void NewColorChanged();
   virtual void NewColorChanging();
+
+  virtual void AdjustToCompactMode();
 
   // Description:
   // Processes the events that are passed through CallbackCommand (or others).

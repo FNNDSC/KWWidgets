@@ -20,17 +20,18 @@
 #include "vtkKWApplication.h"
 #include "vtkKWColorPresetSelector.h"
 #include "vtkKWColorSpectrumWidget.h"
+#include "vtkKWColorSwatchesWidget.h"
 #include "vtkKWColorTransferFunctionEditor.h"
 #include "vtkKWEntry.h"
 #include "vtkKWEntryWithLabel.h"
 #include "vtkKWEvent.h"
 #include "vtkKWFrame.h"
-#include "vtkKWColorSwatchesWidget.h"
 #include "vtkKWIcon.h"
 #include "vtkKWLabel.h"
 #include "vtkKWLabelSet.h"
 #include "vtkKWLabelWithLabel.h"
 #include "vtkKWNotebook.h"
+#include "vtkKWPushButton.h"
 #include "vtkKWRadioButton.h"
 
 #include <vtksys/ios/sstream>
@@ -43,14 +44,13 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.18 $");
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.19 $");
 
 //----------------------------------------------------------------------------
 class vtkKWColorPickerWidgetInternals
 {
 public:
   vtksys_stl::string ScheduleUpdateInfoLabelTimerId;
-
 };
 
 //----------------------------------------------------------------------------
@@ -62,6 +62,7 @@ vtkKWColorPickerWidget::vtkKWColorPickerWidget()
   this->ColorSwatchesVisibility = 1;
   this->FavoritesVisibility = 1;
   this->HistoryVisibility = 1;
+  this->CompactMode = 0;
 
   this->EventCallData = NULL;
 
@@ -92,6 +93,7 @@ vtkKWColorPickerWidget::vtkKWColorPickerWidget()
   this->ColorsLabelSet               = NULL;
   this->ColorsNameLabelSet           = NULL;
   this->InfoLabel                    = NULL;
+  this->CompactModeButton            = NULL;
 
   this->InternalCurrentColorAsRGB[0] = -1; /* unitialized */
   this->InternalCurrentColorAsRGB[1] = -1;
@@ -191,6 +193,12 @@ vtkKWColorPickerWidget::~vtkKWColorPickerWidget()
     this->InfoLabel = NULL;
     }
 
+  if (this->CompactModeButton)
+    {
+    this->CompactModeButton->Delete();
+    this->CompactModeButton = NULL;
+    }
+
   if (this->ColorSpectrumWidget)
     {
     this->ColorSpectrumWidget->Delete();
@@ -259,8 +267,6 @@ void vtkKWColorPickerWidget::CreateWidget()
     this->Notebook = vtkKWNotebook::New();
     }
   this->Notebook->SetParent(this);
-  this->Notebook->SetMinimumWidth(268);
-  this->Notebook->SetMinimumHeight(295);
   this->Notebook->Create();
   this->Notebook->AlwaysShowTabsOn();
   this->Notebook->ShowIconsOn();
@@ -363,9 +369,6 @@ void vtkKWColorPickerWidget::CreateWidget()
   this->ColorsNameLabelSet->Create();
   this->ColorsNameLabelSet->PackHorizontallyOn();
 
-  tk_cmd << "pack " << this->ColorsNameLabelSet->GetWidgetName() 
-         << " -side top -anchor center -expand y -fill x  -pady 0" << endl;
-
   if (!this->ColorsLabelSet)
     {
     this->ColorsLabelSet = vtkKWLabelSet::New();
@@ -376,9 +379,6 @@ void vtkKWColorPickerWidget::CreateWidget()
   this->ColorsLabelSet->SetBorderWidth(2);
   this->ColorsLabelSet->SetReliefToSunken();
 
-  tk_cmd << "pack " << this->ColorsLabelSet->GetWidgetName() 
-         << " -side top -anchor center -expand y -fill x  -pady 0" << endl;
-
   vtkKWLabel *label = NULL;
   for (i = 0; i <= 1; i++)
     {
@@ -386,12 +386,9 @@ void vtkKWColorPickerWidget::CreateWidget()
 
     label = this->ColorsLabelSet->AddWidget(i);
     label->SetBorderWidth(0);
-    label->SetWidth(10);
-    label->SetHeight(3);
     }
 
   this->ColorsNameLabelSet->GetWidget(0)->SetText("new");
-
   this->ColorsNameLabelSet->GetWidget(1)->SetText("current");
 
   this->ColorsLabelSet->GetWidget(1)->SetBinding(
@@ -412,10 +409,6 @@ void vtkKWColorPickerWidget::CreateWidget()
   entry->SetWidth(7);
   entry->SetRestrictValueToHexadecimal();
   entry->SetCommand(this, "HexadecimalColorEntryCallback");
-
-  tk_cmd << "pack " << this->HexadecimalColorEntry->GetWidgetName() 
-         << " -side top -anchor nw -expand n -fill none -padx 0 -pady 5"
-         << endl;
 
   // --------------------------------------------------------------
   // RGB sliders frame
@@ -467,18 +460,6 @@ void vtkKWColorPickerWidget::CreateWidget()
 
   // Can't decrease the font on Win32 for now, it's flickering :(
 
-  int info_label_margin = 6;
-
-#if 0
-  info_label_margin = 0;
-  int tcl_major = 0, tcl_minor = 0, tcl_patch_level = 0;
-  Tcl_GetVersion(&tcl_major, &tcl_minor, &tcl_patch_level, NULL);
-  const char *font = (tcl_major < 8 || (tcl_major == 8 && tcl_minor < 5)) 
-    ? "fixed" : "TkDefaultFont";
-  tk_cmd << label->GetWidgetName() << " config -font {{" << font << "} 7} "
-         << endl;
-#endif
-
   double fr, fg, fb, fh, fs, fv;
   label->GetForegroundColor(&fr, &fg, &fb);
   vtkMath::RGBToHSV(fr, fg, fb, &fh, &fs, &fv);
@@ -491,6 +472,20 @@ void vtkKWColorPickerWidget::CreateWidget()
   vtkMath::HSVToRGB(fh, fs, fv, &fr, &fg, &fb);
   label->SetForegroundColor(fr, fg, fb);
 
+  // --------------------------------------------------------------
+  // Compact mode
+
+  if (!this->CompactModeButton)
+    {
+    this->CompactModeButton = vtkKWPushButton::New();
+    }
+  this->CompactModeButton->SetParent(this);
+  this->CompactModeButton->Create();
+  this->CompactModeButton->SetBorderWidth(0);
+  this->CompactModeButton->SetCommand(this, "ToggleCompactMode");
+  this->CompactModeButton->SetImageToPredefinedIcon(
+    vtkKWIcon::IconSilkBulletToggleMinus);
+
   // Pack
   
   tk_cmd << "grid " << this->ColorsFrame->GetWidgetName() 
@@ -498,16 +493,12 @@ void vtkKWColorPickerWidget::CreateWidget()
          << endl;
 
   tk_cmd << "grid " << this->RGBSlidersFrame->GetWidgetName() 
-         << " -row 1 -column 0 -sticky {} -padx 0 -pady 0" 
+         << " -row 1 -column 0 -sticky {} -padx 0 -pady 2" 
          << endl;
 
   tk_cmd << "grid " << this->HSVSlidersFrame->GetWidgetName() 
-         << " -row 2 -column 0 -sticky {} -padx 0 -pady 0" 
+         << " -row 2 -column 0 -sticky {} -padx 0 -pady 2" 
          << endl;
-
-  tk_cmd << "grid " << this->InfoLabel->GetWidgetName() 
-         << " -row 3 -column 0 -sticky ews -padx " << info_label_margin
-         << " -pady 0" << endl;
 
   tk_cmd << "grid rowconfigure " 
          << this->InfoLabel->GetParent()->GetWidgetName() 
@@ -584,9 +575,6 @@ void vtkKWColorPickerWidget::CreateWidget()
       this->RGBSliders[i] = vtkKWColorTransferFunctionEditor::New();
       }
     this->RGBSliders[i]->SetParent(rgb_frame);
-    this->RGBSliders[i]->SetCanvasWidth(256);
-    this->RGBSliders[i]->SetCanvasHeight(18);
-    this->RGBSliders[i]->SetColorRampHeight(14);
     this->RGBSliders[i]->ExpandCanvasWidthOff();
     this->RGBSliders[i]->LabelVisibilityOn();
     this->RGBSliders[i]->SetLabelText(rgb_label[i]);
@@ -691,7 +679,6 @@ void vtkKWColorPickerWidget::CreateWidget()
       this->HSVSliders[i] = vtkKWColorTransferFunctionEditor::New();
       }
     this->HSVSliders[i]->SetParent(hsv_frame);
-    this->HSVSliders[i]->SetCanvasWidth(this->RGBSliders[i]->GetCanvasWidth());
     this->HSVSliders[i]->SetExpandCanvasWidth(
       this->RGBSliders[i]->GetExpandCanvasWidth());
     this->HSVSliders[i]->SetLabelVisibility(
@@ -749,10 +736,6 @@ void vtkKWColorPickerWidget::CreateWidget()
       this->RGBSliders[i]->GetColorSpaceOptionMenuVisibility());
     this->HSVSliders[i]->SetColorRampVisibility(
       this->RGBSliders[i]->GetColorRampVisibility());
-    this->HSVSliders[i]->SetCanvasHeight(
-      this->RGBSliders[i]->GetCanvasHeight());
-    this->HSVSliders[i]->SetColorRampHeight(
-      this->RGBSliders[i]->GetColorRampHeight());
     this->HSVSliders[i]->SetColorRampPosition(
       this->RGBSliders[i]->GetColorRampPosition());
     this->HSVSliders[i]->SetCanvasOutlineVisibility(
@@ -831,6 +814,8 @@ void vtkKWColorPickerWidget::CreateWidget()
   // to screen, make sure the label is updated immediately.
 
   this->AddBinding("<Map>", this, "UpdateInfoLabelCallback");
+
+  this->AdjustToCompactMode();
 }
 
 //----------------------------------------------------------------------------
@@ -892,6 +877,8 @@ void vtkKWColorPickerWidget::CreateFavoritesColorPresetSelector()
   this->FavoritesColorPresetSelector->SetPresetApplyCommand(
     this, "FavoritesColorPresetApplyCallback ");
   this->FavoritesColorPresetSelector->SetMaximumNumberOfPresets(64);
+  this->FavoritesColorPresetSelector->SetListWidth(15);
+  this->FavoritesColorPresetSelector->SetListHeight(4);
 
   this->Script("pack %s -side left -anchor nw -expand y -fill both",
                this->FavoritesColorPresetSelector->GetWidgetName());
@@ -921,6 +908,10 @@ void vtkKWColorPickerWidget::CreateHistoryColorPresetSelector()
   this->HistoryColorPresetSelector->SetPresetApplyCommand(
     this, "HistoryColorPresetApplyCallback ");
   this->HistoryColorPresetSelector->SetMaximumNumberOfPresets(32);
+  this->HistoryColorPresetSelector->SetListWidth(
+    this->FavoritesColorPresetSelector->GetListWidth());
+  this->HistoryColorPresetSelector->SetListHeight(
+    this->FavoritesColorPresetSelector->GetListHeight());
 
   this->Script("pack %s -side left -anchor nw -expand y -fill both",
                this->HistoryColorPresetSelector->GetWidgetName());
@@ -951,6 +942,93 @@ void vtkKWColorPickerWidget::Pack()
            << " -padx 2 -pady 2 -side left -anchor nw -expand n -fill none" 
            << endl;
     }
+
+  this->Script(tk_cmd.str().c_str());
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::AdjustToCompactMode()
+{
+  int i;
+  int base_size;
+
+  vtksys_ios::ostringstream tk_cmd;
+
+  // Compact mode
+
+  if (this->CompactMode)
+    {
+    base_size = 128;
+    this->ColorSwatchesWidget->SetSwatchSize(9);
+    this->ColorSwatchesWidget->SetMaximumNumberOfSwatchesPerRow(12);
+    this->ColorSwatchesWidget->SetSwatchesPadding(1);
+    for (i = 0; i <= 1; i++)
+      {
+      vtkKWLabel *label = this->ColorsLabelSet->GetWidget(i);
+      label->SetWidth(7);
+      label->SetHeight(1);
+      }
+    this->CompactModeButton->SetImageToPredefinedIcon(
+      vtkKWIcon::IconSilkBulletTogglePlus);
+
+    tk_cmd << "grid forget " << this->ColorsNameLabelSet->GetWidgetName() 
+           << endl;
+    
+    tk_cmd << "grid " << this->HexadecimalColorEntry->GetWidgetName() 
+           << " -row 1 -column 0 -sticky {w} -pady 0 -padx 2" << endl;
+
+    tk_cmd << "grid forget " << this->InfoLabel->GetWidgetName() << endl;
+    }
+
+  // Full mode
+
+  else
+    {
+    base_size = 256;
+    this->ColorSwatchesWidget->SetSwatchSize(16);
+    this->ColorSwatchesWidget->SetMaximumNumberOfSwatchesPerRow(13);
+    this->ColorSwatchesWidget->SetSwatchesPadding(2);
+    for (i = 0; i <= 1; i++)
+      {
+      vtkKWLabel *label = this->ColorsLabelSet->GetWidget(i);
+      label->SetWidth(10);
+      label->SetHeight(3);
+      }
+    this->CompactModeButton->SetImageToPredefinedIcon(
+      vtkKWIcon::IconSilkBulletToggleMinus);
+
+    tk_cmd << "grid " << this->ColorsNameLabelSet->GetWidgetName() 
+           << " -row 0 -column 1 -sticky {ew} -pady 0" << endl;
+    
+    tk_cmd << "grid " << this->HexadecimalColorEntry->GetWidgetName() 
+           << " -row 2 -column 1 -sticky {w} -pady 3 -padx 5" << endl;
+
+    tk_cmd << "grid " << this->InfoLabel->GetWidgetName() 
+           << " -row 3 -column 0 -sticky ews -padx 6 -pady 0" << endl;
+    }
+
+  this->Notebook->SetMinimumWidth(base_size + 12);
+  this->Notebook->SetMinimumHeight(base_size + 39);
+  this->ColorSpectrumWidget->SetCanvasSize(base_size);
+
+  for (i = 0; i < 3; i++)
+    {
+    this->RGBSliders[i]->SetCanvasWidth(base_size);
+    this->RGBSliders[i]->SetCanvasHeight(18);
+    this->RGBSliders[i]->SetColorRampHeight(14);
+    this->HSVSliders[i]->SetCanvasWidth(
+      this->RGBSliders[i]->GetCanvasWidth());
+    this->HSVSliders[i]->SetCanvasHeight(
+      this->RGBSliders[i]->GetCanvasHeight());
+    this->HSVSliders[i]->SetColorRampHeight(
+      this->RGBSliders[i]->GetColorRampHeight());
+    }
+
+  tk_cmd << "grid " << this->ColorsLabelSet->GetWidgetName() 
+         << " -row 1 -column 1 -sticky {ew} -pady 0" << endl;
+    
+  tk_cmd << "place " << this->CompactModeButton->GetWidgetName() 
+         << " -anchor nw -x 0 -y 0" << endl;
 
   this->Script(tk_cmd.str().c_str());
 }
@@ -1629,7 +1707,8 @@ void vtkKWColorPickerWidget::UpdateInfoLabel()
 
   if (this->ColorSpectrumWidget &&
       this->ColorSpectrumWidget->IsMapped() && 
-      this->ColorSpectrumWidget->GetFixedAxis() == vtkKWColorSpectrumWidget::FixedAxisV &&
+      this->ColorSpectrumWidget->GetFixedAxis() == 
+      vtkKWColorSpectrumWidget::FixedAxisV &&
       this->InternalNewColorAsHSV[2] == 0.0)
     {
     this->InfoLabel->LabelVisibilityOn();
@@ -1978,6 +2057,30 @@ void vtkKWColorPickerWidget::SetHistoryVisibility(int arg)
 }
 
 //----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::SetCompactMode(int arg)
+{
+  if (this->CompactMode == arg)
+    {
+    return;
+    }
+
+  this->CompactMode = arg;
+
+  this->Modified();
+
+  this->InvokeEvent(
+    vtkKWColorPickerWidget::CompactModeChangedEvent, this->EventCallData);
+
+  this->AdjustToCompactMode();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerWidget::ToggleCompactMode()
+{
+  this->SetCompactMode(this->CompactMode ? 0 : 1);
+}
+
+//----------------------------------------------------------------------------
 vtkKWColorPresetSelector* 
 vtkKWColorPickerWidget::GetFavoritesColorPresetSelector()
 {
@@ -2102,6 +2205,8 @@ void vtkKWColorPickerWidget::UpdateEnableState()
   this->PropagateEnableState(this->ColorsFrame);
   this->PropagateEnableState(this->ColorsLabelSet);
   this->PropagateEnableState(this->ColorsNameLabelSet);
+  this->PropagateEnableState(this->InfoLabel);
+  this->PropagateEnableState(this->CompactModeButton);
 }
 
 //----------------------------------------------------------------------------

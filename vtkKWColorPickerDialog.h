@@ -50,6 +50,10 @@ public:
   virtual void OK();
 
   // Description:
+  // Display the dialog. 
+  virtual void Display();
+
+  // Description:
   // Update the "enable" state of the object and its internal parts.
   virtual void UpdateEnableState();
 
@@ -67,6 +71,13 @@ protected:
   vtkKWPushButton* OKButton;
   vtkKWPushButton* CancelButton;
 
+  // Description:
+  // Processes the events that are passed through CallbackCommand (or others).
+  // Subclasses can oberride this method to process their own events, but
+  // should call the superclass too.
+  virtual void ProcessCallbackCommandEvents(
+    vtkObject *caller, unsigned long event, void *calldata);
+  
 private:
   vtkKWColorPickerDialog(const vtkKWColorPickerDialog&); // Not implemented
   void operator=(const vtkKWColorPickerDialog&); // Not implemented

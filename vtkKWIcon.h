@@ -250,6 +250,8 @@ public:
     IconSilkAttach                = 20002,
     IconSilkBinClosed             = 20003,
     IconSilkBug                   = 20004,
+    IconSilkBulletToggleMinus     = 20056,
+    IconSilkBulletTogglePlus      = 20057, //
     IconSilkCamera                = 20005,
     IconSilkCancel                = 20046,
     IconSilkChartCurve            = 20006,

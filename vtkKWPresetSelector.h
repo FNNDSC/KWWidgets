@@ -381,10 +381,12 @@ public:
   virtual int GetIdOfSelectedPreset();
 
   // Description:
-  // Set/Get the list height (in number of items)
+  // Set/Get the list height (in number of items) or width (in chars)
   // No effect if called before Create().
   virtual void SetListHeight(int);
   virtual int GetListHeight();
+  virtual void SetListWidth(int);
+  virtual int GetListWidth();
 
   // Description:
   // Set/Get the base icons to use for the preset buttons (and the toolbar).

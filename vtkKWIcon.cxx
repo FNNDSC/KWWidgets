@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.65 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.66 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -1955,6 +1955,22 @@ void vtkKWIcon::SetImage(int image)
         image_Silk_bug_width, image_Silk_bug_height,
         image_Silk_bug_pixel_size, 
         image_Silk_bug_length);
+      break;
+
+    case IconSilkBulletToggleMinus:
+      this->SetImage(
+        image_Silk_bullet_toggle_minus, 
+        image_Silk_bullet_toggle_minus_width, image_Silk_bullet_toggle_minus_height,
+        image_Silk_bullet_toggle_minus_pixel_size, 
+        image_Silk_bullet_toggle_minus_length);
+      break;
+
+    case IconSilkBulletTogglePlus:
+      this->SetImage(
+        image_Silk_bullet_toggle_plus, 
+        image_Silk_bullet_toggle_plus_width, image_Silk_bullet_toggle_plus_height,
+        image_Silk_bullet_toggle_plus_pixel_size, 
+        image_Silk_bullet_toggle_plus_length);
       break;
 
     case IconSilkCamera:

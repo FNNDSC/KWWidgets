@@ -219,6 +219,8 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWSilkIconResources
     Silk/attach.png \
     Silk/bin_closed.png \
     Silk/bug.png \
+    Silk/bullet_toggle_minus.png \
+    Silk/bullet_toggle_plus.png \
     Silk/camera.png \
     Silk/cancel.png \
     Silk/chart_curve.png \

@@ -156,6 +156,36 @@ static const unsigned char image_Silk_bug[] =
 
 /* 
  * Resource generated for file:
+ *    bullet_toggle_minus.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Silk_bullet_toggle_minus_width          = 16;
+static const unsigned int  image_Silk_bullet_toggle_minus_height         = 16;
+static const unsigned int  image_Silk_bullet_toggle_minus_pixel_size     = 4;
+static const unsigned long image_Silk_bullet_toggle_minus_length         = 200;
+static const unsigned long image_Silk_bullet_toggle_minus_decoded_length = 1024;
+
+static const unsigned char image_Silk_bullet_toggle_minus[] = 
+  "eNrtkjEKxCAQRffIaUTs0giCVWpt01hoKisjiHquvxmLsLuVxZYZeMXAvPmMCOCFh5ve+1"
+  "lKQUoJMUYcxwHnHPZ9P2f8nDNaa6i1fmGMwYxPmTQfQrihfdu2Tfne++F/FvVKqSn/unPk"
+  "0R6C8slf13XKt9aO+d834JxP+dedXmsNKeXIFEKAMYZlWfzzP//PG69F/8I=";
+
+/* 
+ * Resource generated for file:
+ *    bullet_toggle_plus.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Silk_bullet_toggle_plus_width          = 16;
+static const unsigned int  image_Silk_bullet_toggle_plus_height         = 16;
+static const unsigned int  image_Silk_bullet_toggle_plus_pixel_size     = 4;
+static const unsigned long image_Silk_bullet_toggle_plus_length         = 200;
+static const unsigned long image_Silk_bullet_toggle_plus_decoded_length = 1024;
+
+static const unsigned char image_Silk_bullet_toggle_plus[] = 
+  "eNrtkrEKxCAQRO+TLQKClVUQrKxNaaqAwSI2EhEi/tbcRbjjLtUWV2Zhunkz7LIAHrj1UW"
+  "ttL6UgpYRt2xBCwLIsmOd5p/A5Z9RacRzHj6ZpAoWPMXb/uq6nH977nmeMIfFv//eceUop"
+  "Eu+c6/y1X0pJ4q21ve96A845iX/t6bXWGMexdwohMAwDGGP+/s//6wm83wG3";
+
+/* 
+ * Resource generated for file:
  *    camera.png (zlib, base64) (image file)
  */
 static const unsigned int  image_Silk_camera_width          = 16;

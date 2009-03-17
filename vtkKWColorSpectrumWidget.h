@@ -88,6 +88,12 @@ public:
   vtkBooleanMacro(FixedAxisSelectorVisibility,int);
 
   // Description:
+  // Set/Get the size of the canvas.
+  virtual void SetCanvasSize(int);
+  vtkGetMacro(CanvasSize,int);
+  vtkBooleanMacro(CanvasSize,int);
+
+  // Description:
   // Specifies commands to associate with the widget. 
   // 'ColorChangedCommand' is invoked when the selected color has
   // changed (i.e. at the end of the user interaction).
@@ -163,6 +169,7 @@ protected:
 
   int FixedAxis;
   int FixedAxisSelectorVisibility;
+  int CanvasSize;
 
   // Description:
   // Commands.
@@ -175,6 +182,10 @@ protected:
   // Bind/Unbind all components.
   virtual void AddBindings();
   virtual void RemoveBindings();
+
+  // Description:
+  // Adjust several UI elements according to the canvas size
+  virtual void AdjustToCanvasSize();
 
   // PIMPL Encapsulation for STL containers
   //BTX

@@ -36,7 +36,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWColorSwatchesWidget);
-vtkCxxRevisionMacro(vtkKWColorSwatchesWidget, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWColorSwatchesWidget, "$Revision: 1.2 $");
 
 //----------------------------------------------------------------------------
 class vtkKWColorSwatchesWidgetInternals
@@ -120,7 +120,7 @@ vtkKWColorSwatchesWidget::vtkKWColorSwatchesWidget()
   this->Internals = new vtkKWColorSwatchesWidgetInternals;
   this->SwatchSize = 16;
   this->SwatchSelectedCommand = NULL;
-  this->Internals->SwatchesFrameSet = NULL;
+  this->Internals->SwatchesFrameSet = vtkKWFrameSet::New();
   this->Internals->SwatchesBalloonHelpManager = NULL;
   this->Internals->CollectionComboBox = NULL;
 }
@@ -252,6 +252,7 @@ void vtkKWColorSwatchesWidget::CreateWidget()
   this->Internals->CollectionComboBox->SetParent(this);
   this->Internals->CollectionComboBox->Create();
   this->Internals->CollectionComboBox->SetReadOnly(1);
+  this->Internals->CollectionComboBox->SetWidth(15);
   this->Internals->CollectionComboBox->SetCommand(
     this, "CollectionSelectedCallback");
 
@@ -260,19 +261,48 @@ void vtkKWColorSwatchesWidget::CreateWidget()
 
   // Swatches frames
 
-  this->Internals->SwatchesFrameSet = vtkKWFrameSet::New();
+  if (!this->Internals->SwatchesFrameSet)
+    {
+    this->Internals->SwatchesFrameSet = vtkKWFrameSet::New();
+    }
   this->Internals->SwatchesFrameSet->SetParent(this);
   this->Internals->SwatchesFrameSet->Create();
   this->Internals->SwatchesFrameSet->PackHorizontallyOn();
   this->Internals->SwatchesFrameSet->SetMaximumNumberOfWidgetsInPackingDirection(13);
   this->Internals->SwatchesFrameSet->SetWidgetsPadX(2);
-  this->Internals->SwatchesFrameSet->SetWidgetsPadY(2);
+  this->Internals->SwatchesFrameSet->SetWidgetsPadY(
+    this->Internals->SwatchesFrameSet->GetWidgetsPadX());
 
   this->Script("pack %s -side top -anchor nw -expand n -fill none",
                this->Internals->SwatchesFrameSet->GetWidgetName());
 
   this->SchedulePopulateCollections();
   this->SchedulePopulateSwatches();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorSwatchesWidget::SetMaximumNumberOfSwatchesPerRow(int arg)
+{
+  this->Internals->SwatchesFrameSet->SetMaximumNumberOfWidgetsInPackingDirection(arg);
+}
+
+//----------------------------------------------------------------------------
+int vtkKWColorSwatchesWidget::GetMaximumNumberOfSwatchesPerRow()
+{
+  return this->Internals->SwatchesFrameSet->GetMaximumNumberOfWidgetsInPackingDirection();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorSwatchesWidget::SetSwatchesPadding(int arg)
+{
+  this->Internals->SwatchesFrameSet->SetWidgetsPadX(arg);
+  this->Internals->SwatchesFrameSet->SetWidgetsPadY(arg);
+}
+
+//----------------------------------------------------------------------------
+int vtkKWColorSwatchesWidget::GetSwatchesPadding()
+{
+  return this->Internals->SwatchesFrameSet->GetWidgetsPadX();
 }
 
 //----------------------------------------------------------------------------
@@ -535,6 +565,7 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
 
   double r, g, b;
   double h, s, v;
+  const int nb_generated_colors = 100;
 
   // -----------------------------------------------------------------------
   // Basic colors
@@ -613,7 +644,9 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Rainbow (Full)
 
   id = this->AddCollection("Rainbow");
-  for (h = 0.0; h <= 1.0; h += 0.01)
+  for (h = 0.0; 
+       h <= 1.0; 
+       h += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(h, 1.0, 1.0, &r, &g, &b);
     sprintf(buffer, 
@@ -627,7 +660,9 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Grayscale
 
   id = this->AddCollection("Grayscale");
-  for (v = 0.0; v <= 1.0; v += 0.01)
+  for (v = 0.0; 
+       v <= 1.0; 
+       v += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(0.0, 0.0, v, &r, &g, &b);
     sprintf(buffer, 
@@ -641,7 +676,9 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Iron
 
   id = this->AddCollection("Iron");
-  for (h = 0.0; h <= 0.15; h += 0.0015)
+  for (h = 0.0; 
+       h <= 0.15; 
+       h += (0.15 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(h, 1.0, 1.0, &r, &g, &b);
     sprintf(buffer, 
@@ -655,7 +692,8 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Ocean
 
   id = this->AddCollection("Ocean");
-  for (h = 2.0/3.0; h >= 0.5; h += (0.5 - 2.0/3.0) * 0.01)
+  for (h = 2.0/3.0; 
+       h >= 0.5; h += (0.5 - 2.0/3.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(h, 1.0, 1.0, &r, &g, &b);
     sprintf(buffer, 
@@ -669,7 +707,9 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Red
 
   id = this->AddCollection("Red");
-  for (v = 0.0; v <= 1.0; v += 0.01)
+  for (v = 0.0; 
+       v <= 1.0; 
+       v += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(0, 1.0, v, &r, &g, &b);
     sprintf(buffer, 
@@ -683,7 +723,9 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Green
 
   id = this->AddCollection("Green");
-  for (v = 0.0; v <= 1.0; v += 0.01)
+  for (v = 0.0; 
+       v <= 1.0; 
+       v += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(1.0/3.0, 1.0, v, &r, &g, &b);
     sprintf(buffer, 
@@ -697,7 +739,9 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Blue
 
   id = this->AddCollection("Blue");
-  for (v = 0.0; v <= 1.0; v += 0.01)
+  for (v = 0.0; 
+       v <= 1.0; 
+       v += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(2.0/3.0, 1.0, v, &r, &g, &b);
     sprintf(buffer, 
@@ -711,7 +755,9 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Yellow
 
   id = this->AddCollection("Yellow");
-  for (v = 0.0; v <= 1.0; v += 0.01)
+  for (v = 0.0; 
+       v <= 1.0; 
+       v += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(0.1666667, 1.0, v, &r, &g, &b);
     sprintf(buffer, 
@@ -725,7 +771,9 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Cyan
 
   id = this->AddCollection("Cyan");
-  for (v = 0.0; v <= 1.0; v += 0.01)
+  for (v = 0.0; 
+       v <= 1.0; 
+       v += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(0.5, 1.0, v, &r, &g, &b);
     sprintf(buffer, 
@@ -739,7 +787,9 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Magenta
 
   id = this->AddCollection("Magenta");
-  for (v = 0.0; v <= 1.0; v += 0.01)
+  for (v = 0.0; 
+       v <= 1.0; 
+       v += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(0.8333, 1.0, v, &r, &g, &b);
     sprintf(buffer, 
@@ -753,7 +803,10 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Warm Shade 1
 
   id = this->AddCollection("Warm Shade (1)");
-  for (h = 0.1667, v = 0.0; v <= 1.0; h += (0.0 - 0.1667) * 0.01, v += 0.01)
+  for (h = 0.1667, v = 0.0; 
+       v <= 1.0; 
+       h += (0.0 - 0.1667) / (double)nb_generated_colors, 
+         v += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(h, 1.0, v, &r, &g, &b);
     sprintf(buffer, 
@@ -767,7 +820,10 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Warm Shade 2
 
   id = this->AddCollection("Warm Shade (2)");
-  for (h = 0.3333, v = 0.0; v <= 1.0; h += (0.1667 - 0.3333) * 0.01, v += 0.01)
+  for (h = 0.3333, v = 0.0; 
+       v <= 1.0; 
+       h += (0.1667 - 0.3333) / (double)nb_generated_colors, 
+         v += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(h, 1.0, v, &r, &g, &b);
     sprintf(buffer, 
@@ -781,7 +837,10 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Warm Shade 3
 
   id = this->AddCollection("Warm Shade (3)");
-  for (h = 0.5, v = 0.0; v <= 1.0; h += (0.3333 - 0.5) * 0.01, v += 0.01)
+  for (h = 0.5, v = 0.0; 
+       v <= 1.0; 
+       h += (0.3333 - 0.5) / (double)nb_generated_colors, 
+         v += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(h, 1.0, v, &r, &g, &b);
     sprintf(buffer, 
@@ -795,7 +854,10 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Cool Shade 1
 
   id = this->AddCollection("Cool Shade (1)");
-  for (h = 0.6667, v = 0.0; v <= 1.0; h += (0.5 - 0.6667) * 0.01, v += 0.01)
+  for (h = 0.6667, v = 0.0; 
+       v <= 1.0; 
+       h += (0.5 - 0.6667) / (double)nb_generated_colors, 
+         v += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(h, 1.0, v, &r, &g, &b);
     sprintf(buffer, 
@@ -809,7 +871,10 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Cool Shade 2
 
   id = this->AddCollection("Cool Shade (2)");
-  for (h = 0.8333, v = 0.0; v <= 1.0; h += (0.6667 - 0.8333) * 0.01, v += 0.01)
+  for (h = 0.8333, v = 0.0; 
+       v <= 1.0; 
+       h += (0.6667 - 0.8333) / (double)nb_generated_colors, 
+         v += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(h, 1.0, v, &r, &g, &b);
     sprintf(buffer, 
@@ -823,7 +888,10 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Cool Shade 3
 
   id = this->AddCollection("Cool Shade (3)");
-  for (h = 1.0, v = 0.0; v <= 1.0; h += (0.8333 - 1.0) * 0.01, v += 0.01)
+  for (h = 1.0, v = 0.0; 
+       v <= 1.0; 
+       h += (0.8333 - 1.0) / (double)nb_generated_colors, 
+         v += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(h, 1.0, v, &r, &g, &b);
     sprintf(buffer, 
@@ -837,7 +905,10 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Warm Tint 1
 
   id = this->AddCollection("Warm Tint (1)");
-  for (h = 0.1667, s = 0.0; s <= 1.0; h += (0.0 - 0.1667) * 0.01, s += 0.01)
+  for (h = 0.1667, s = 0.0; 
+       s <= 1.0; 
+       h += (0.0 - 0.1667)  / (double)nb_generated_colors, 
+         s += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(h, s, 1.0, &r, &g, &b);
     sprintf(buffer, 
@@ -851,7 +922,10 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Warm Tint 2
 
   id = this->AddCollection("Warm Tint (2)");
-  for (h = 0.3333, s = 0.0; s <= 1.0; h += (0.1667 - 0.3333) * 0.01, s += 0.01)
+  for (h = 0.3333, s = 0.0; 
+       s <= 1.0; 
+       h += (0.1667 - 0.3333) / (double)nb_generated_colors, 
+         s += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(h, s, 1.0, &r, &g, &b);
     sprintf(buffer, 
@@ -865,7 +939,10 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Warm Tint 3
 
   id = this->AddCollection("Warm Tint (3)");
-  for (h = 0.5, s = 0.0; s <= 1.0; h += (0.3333 - 0.5) * 0.01, s += 0.01)
+  for (h = 0.5, s = 0.0; 
+       s <= 1.0; 
+       h += (0.3333 - 0.5) / (double)nb_generated_colors, 
+         s += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(h, s, 1.0, &r, &g, &b);
     sprintf(buffer, 
@@ -879,7 +956,10 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Cool Tint 1
 
   id = this->AddCollection("Cool Tint (1)");
-  for (h = 0.6667, s = 0.0; s <= 1.0; h += (0.5 - 0.6667) * 0.01, s += 0.01)
+  for (h = 0.6667, s = 0.0; 
+       s <= 1.0; 
+       h += (0.5 - 0.6667) / (double)nb_generated_colors, 
+         s += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(h, s, 1.0, &r, &g, &b);
     sprintf(buffer, 
@@ -893,7 +973,10 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Cool Tint 2
 
   id = this->AddCollection("Cool Tint (2)");
-  for (h = 0.8333, s = 0.0; s <= 1.0; h += (0.6667 - 0.8333) * 0.01, s += 0.01)
+  for (h = 0.8333, s = 0.0; 
+       s <= 1.0; 
+       h += (0.6667 - 0.8333) / (double)nb_generated_colors, 
+         s += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(h, s, 1.0, &r, &g, &b);
     sprintf(buffer, 
@@ -907,7 +990,10 @@ void vtkKWColorSwatchesWidget::AddDefaultCollections()
   // Cool Tint 3
 
   id = this->AddCollection("Cool Tint (3)");
-  for (h = 1.0, s = 0.0; s <= 1.0; h += (0.8333 - 1.0) * 0.01, s += 0.01)
+  for (h = 1.0, s = 0.0; 
+       s <= 1.0; 
+       h += (0.8333 - 1.0) / (double)nb_generated_colors, 
+         s += (1.0 - 0.0) / (double)nb_generated_colors)
     {
     vtkMath::HSVToRGB(h, s, 1.0, &r, &g, &b);
     sprintf(buffer, 

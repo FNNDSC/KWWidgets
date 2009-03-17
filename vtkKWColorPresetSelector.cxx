@@ -40,7 +40,7 @@ const char *vtkKWColorPresetSelector::ColorColumnName = "Color";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWColorPresetSelector);
-vtkCxxRevisionMacro(vtkKWColorPresetSelector, "$Revision: 1.36 $");
+vtkCxxRevisionMacro(vtkKWColorPresetSelector, "$Revision: 1.37 $");
 
 //----------------------------------------------------------------------------
 vtkKWColorPresetSelector::vtkKWColorPresetSelector()
@@ -170,7 +170,6 @@ void vtkKWColorPresetSelector::CreateWidget()
 
   vtkKWMultiColumnList *list = this->PresetList->GetWidget();
   list->SetRowSpacing(0);
-  list->SetWidth(25);
 
   this->RestorePresetsFromRegistry();
 }

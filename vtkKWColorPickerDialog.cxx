@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerDialog );
-vtkCxxRevisionMacro(vtkKWColorPickerDialog, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWColorPickerDialog, "$Revision: 1.3 $");
 
 //----------------------------------------------------------------------------
 vtkKWColorPickerDialog::vtkKWColorPickerDialog()
@@ -93,6 +93,9 @@ void vtkKWColorPickerDialog::CreateWidget()
   this->ColorPickerWidget->SetBorderWidth(2);
   this->ColorPickerWidget->SetReliefToGroove();
 
+  this->AddCallbackCommandObserver(
+    this->ColorPickerWidget, vtkKWColorPickerWidget::CompactModeChangedEvent);
+
   this->Script(
     "pack %s -side top -anchor center -fill both -expand true -padx 2 -pady 2",
     this->ColorPickerWidget->GetWidgetName());
@@ -134,6 +137,23 @@ void vtkKWColorPickerDialog::CreateWidget()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWColorPickerDialog::Display()
+{
+  // Sadly, need to adjust the size of the dialog manually
+
+  if (this->ColorPickerWidget && this->ColorPickerWidget->GetCompactMode())
+    {
+    this->SetSize(376, 210);
+    }
+  else
+    {
+    this->SetSize(632, 334);
+    }
+
+  this->Superclass::Display();
+}
+
+//----------------------------------------------------------------------------
 void vtkKWColorPickerDialog::OK()
 {
   this->Superclass::OK();
@@ -170,6 +190,20 @@ void vtkKWColorPickerDialog::UpdateEnableState()
   this->PropagateEnableState(this->ColorPickerWidget);
   this->PropagateEnableState(this->OKButton);
   this->PropagateEnableState(this->CancelButton);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorPickerDialog::ProcessCallbackCommandEvents(vtkObject *caller,
+                                                          unsigned long event,
+                                                          void *calldata)
+{
+  if (caller == this->ColorPickerWidget && 
+      event == vtkKWColorPickerWidget::CompactModeChangedEvent)
+    {
+    this->Display(); // resize
+    }
+
+  this->Superclass::ProcessCallbackCommandEvents(caller, event, calldata);
 }
 
 //----------------------------------------------------------------------------

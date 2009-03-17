@@ -53,7 +53,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.84 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.85 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -1590,6 +1590,25 @@ int vtkKWPresetSelector::GetListHeight()
   if (this->PresetList)
     {
     return this->PresetList->GetWidget()->GetHeight();
+    }
+  return 0;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWPresetSelector::SetListWidth(int h)
+{
+  if (this->PresetList)
+    {
+    this->PresetList->GetWidget()->SetWidth(h);
+    }
+}
+
+//----------------------------------------------------------------------------
+int vtkKWPresetSelector::GetListWidth()
+{
+  if (this->PresetList)
+    {
+    return this->PresetList->GetWidget()->GetWidth();
     }
   return 0;
 }

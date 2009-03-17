@@ -26,14 +26,13 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorSpectrumWidget );
-vtkCxxRevisionMacro(vtkKWColorSpectrumWidget, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWColorSpectrumWidget, "$Revision: 1.6 $");
 
 #define VTK_KW_COLOR_SPECTRUM_WIDGET_FIXED_FONT "fixed"
 #define VTK_KW_COLOR_SPECTRUM_WIDGET_FIXED_FONT_85 "TkDefaultFont"
 
 #define VTK_KW_COLOR_SPECTRUM_WIDGET_IMAGE_TAG   "image"
 #define VTK_KW_COLOR_SPECTRUM_WIDGET_CURSOR_TAG  "sel"
-#define VTK_KW_COLOR_SPECTRUM_WIDGET_CANVAS_SIZE 256
 
 //----------------------------------------------------------------------------
 class vtkKWColorSpectrumWidgetInternals
@@ -43,6 +42,8 @@ public:
 
   double PreviousFixedAxisValue; // track the color that was rendered
   int PreviousFixedAxis;         // in the canvas to avoid re-rendering
+
+  unsigned char *ImageBuffer;    // permanent buffer for speed
 };
 
 //----------------------------------------------------------------------------
@@ -51,12 +52,14 @@ vtkKWColorSpectrumWidget::vtkKWColorSpectrumWidget()
   this->Internals = new vtkKWColorSpectrumWidgetInternals;
   this->Internals->PreviousFixedAxisValue = -1; /* unitialized */
   this->Internals->PreviousFixedAxis = -1;
+  this->Internals->ImageBuffer = NULL;
 
   this->ColorCanvas       = NULL;
   this->FixedAxisRadioButtonSet = NULL;
 
   this->FixedAxis   = vtkKWColorSpectrumWidget::FixedAxisV;
   this->FixedAxisSelectorVisibility = 1;
+  this->CanvasSize = 256;
 
   this->InternalColorRGB[0] = -1; /* unitialized */
   this->InternalColorRGB[1] = -1;
@@ -74,6 +77,8 @@ vtkKWColorSpectrumWidget::vtkKWColorSpectrumWidget()
 //----------------------------------------------------------------------------
 vtkKWColorSpectrumWidget::~vtkKWColorSpectrumWidget()
 {
+  delete [] this->Internals->ImageBuffer;
+
   delete this->Internals;
   this->Internals = NULL;
 
@@ -135,8 +140,6 @@ void vtkKWColorSpectrumWidget::CreateWidget()
   this->ColorCanvas->SetParent(this);
   this->ColorCanvas->Create();
   this->ColorCanvas->SetReliefToFlat();
-  this->ColorCanvas->SetHeight(VTK_KW_COLOR_SPECTRUM_WIDGET_CANVAS_SIZE);
-  this->ColorCanvas->SetWidth(VTK_KW_COLOR_SPECTRUM_WIDGET_CANVAS_SIZE);
   this->ColorCanvas->SetReliefToSolid();
   this->ColorCanvas->SetBorderWidth(0);
   this->ColorCanvas->SetConfigurationOption("-cursor", "target"); // "circle"
@@ -147,10 +150,7 @@ void vtkKWColorSpectrumWidget::CreateWidget()
   img_name << this->ColorCanvas->GetWidgetName() 
            << "." << VTK_KW_COLOR_SPECTRUM_WIDGET_IMAGE_TAG;
 
-  tk_cmd << "image create photo " << img_name.str().c_str() 
-         << " -width " << VTK_KW_COLOR_SPECTRUM_WIDGET_CANVAS_SIZE
-         << " -height " << VTK_KW_COLOR_SPECTRUM_WIDGET_CANVAS_SIZE 
-         << endl;
+  tk_cmd << "image create photo " << img_name.str().c_str() << endl;
 
   tk_cmd << canv << " create image 0 0 -anchor nw "
          << " -image " << img_name.str().c_str()
@@ -221,11 +221,35 @@ void vtkKWColorSpectrumWidget::CreateWidget()
   this->Script(tk_cmd.str().c_str());
   
   this->Pack();
-
-  this->UpdateColorCanvas();
-  this->UpdateColorCursor();
+  this->AdjustToCanvasSize(); // calls UpdateColorCanvas and UpdateColorCursor
 
   this->AddBindings();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorSpectrumWidget::AdjustToCanvasSize()
+{
+  delete [] this->Internals->ImageBuffer;
+  this->Internals->ImageBuffer = NULL;
+
+  this->ColorCanvas->SetHeight(this->CanvasSize);
+  this->ColorCanvas->SetWidth(this->CanvasSize);
+
+  vtksys_ios::ostringstream img_name;
+  img_name << this->ColorCanvas->GetWidgetName() 
+           << "." << VTK_KW_COLOR_SPECTRUM_WIDGET_IMAGE_TAG;
+
+  vtksys_ios::ostringstream tk_cmd;
+  tk_cmd << img_name.str().c_str() 
+         << " configure -width " << this->CanvasSize
+         << " -height " << this->CanvasSize 
+         << endl;
+  this->Script(tk_cmd.str().c_str());
+
+  this->Internals->PreviousFixedAxisValue = -1; // unitialize again
+  this->Internals->PreviousFixedAxis = -1;      // to force UpdateColorCanvas 
+  this->UpdateColorCanvas();
+  this->UpdateColorCursor();
 }
 
 //----------------------------------------------------------------------------
@@ -489,6 +513,29 @@ void vtkKWColorSpectrumWidget::SetFixedAxisSelectorVisibility(int arg)
 }
 
 //----------------------------------------------------------------------------
+void vtkKWColorSpectrumWidget::SetCanvasSize(int arg)
+{
+  if (arg < 10)
+    {
+    arg = 10;
+    }
+  else if (arg > 512)
+    {
+    arg = 512;
+    }
+
+  if (this->CanvasSize == arg)
+    {
+    return;
+    }
+
+  this->CanvasSize = arg;
+  this->Modified();
+
+  this->AdjustToCanvasSize();
+}
+
+//----------------------------------------------------------------------------
 void vtkKWColorSpectrumWidget::UpdateColorCanvas()
 {
   if (!this->ColorCanvas || !this->ColorCanvas->IsCreated())
@@ -496,8 +543,11 @@ void vtkKWColorSpectrumWidget::UpdateColorCanvas()
     return;
     }
 
-  const int size = VTK_KW_COLOR_SPECTRUM_WIDGET_CANVAS_SIZE;
-  unsigned char img_buffer[size * size * 3];
+  int size = this->CanvasSize;
+  if (!this->Internals->ImageBuffer)
+    {
+    this->Internals->ImageBuffer = new unsigned char[size * size * 3];
+    }
   
   double h, s, v;
   double r, g, b;
@@ -519,7 +569,7 @@ void vtkKWColorSpectrumWidget::UpdateColorCanvas()
   const double twothird = 2.0 / 3.0;
   const double fivesixth = 5.0 / 6.0;
 
-  unsigned char *img_ptr = img_buffer;
+  unsigned char *img_ptr = this->Internals->ImageBuffer;
 
   int i, j;
 
@@ -755,11 +805,9 @@ void vtkKWColorSpectrumWidget::UpdateColorCanvas()
 
   vtkKWTkUtilities::UpdatePhoto(this->GetApplication(),
                                 img_name.str().c_str(),
-                                img_buffer,
+                                this->Internals->ImageBuffer,
                                 size, size, 3,
                                 size * size * 3);
-  
-  // delete [] img_buffer;
 }
 
 //----------------------------------------------------------------------------
@@ -813,7 +861,7 @@ void vtkKWColorSpectrumWidget::UpdateColorCursor()
 
   y = 1.0 - y;
 
-  const int size = VTK_KW_COLOR_SPECTRUM_WIDGET_CANVAS_SIZE;
+  const int size = this->CanvasSize;
   double radius = 5.0;
 
   vtksys_ios::ostringstream tk_cmd;
@@ -863,7 +911,7 @@ void vtkKWColorSpectrumWidget::PickColorPressCallback(int x, int y)
 //----------------------------------------------------------------------------
 void vtkKWColorSpectrumWidget::PickColorMoveCallback(int x, int y)
 {
-  const int size = VTK_KW_COLOR_SPECTRUM_WIDGET_CANVAS_SIZE;
+  const int size = this->CanvasSize;
   
   double dx = (double)x / (double)size;
   double dy = (double)(size - y) / (double)size;

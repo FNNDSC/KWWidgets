@@ -58,6 +58,16 @@ public:
   virtual void SetSwatchSize(int);
 
   // Description:
+  // Set/Get the maximum number of swatches packed horizontally (per row).
+  virtual void SetMaximumNumberOfSwatchesPerRow(int);
+  virtual int GetMaximumNumberOfSwatchesPerRow();
+
+  // Description:
+  // Set/Get the padding between each swatch.
+  virtual void SetSwatchesPadding(int);
+  virtual int GetSwatchesPadding();
+
+  // Description:
   // Create the default collections
   virtual void AddDefaultCollections();
 
