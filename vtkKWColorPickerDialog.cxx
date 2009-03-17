@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerDialog );
-vtkCxxRevisionMacro(vtkKWColorPickerDialog, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWColorPickerDialog, "$Revision: 1.4 $");
 
 //----------------------------------------------------------------------------
 vtkKWColorPickerDialog::vtkKWColorPickerDialog()
@@ -141,14 +141,24 @@ void vtkKWColorPickerDialog::Display()
 {
   // Sadly, need to adjust the size of the dialog manually
 
+  int w, h;
+
   if (this->ColorPickerWidget && this->ColorPickerWidget->GetCompactMode())
     {
-    this->SetSize(376, 210);
+    w = 376;
+    h = 210;
     }
   else
     {
-    this->SetSize(632, 334);
+    w = 632;
+    h = 334;
     }
+
+#ifndef _WIN32
+  w += 10;
+#endif
+
+  this->SetSize(w, h);
 
   this->Superclass::Display();
 }
