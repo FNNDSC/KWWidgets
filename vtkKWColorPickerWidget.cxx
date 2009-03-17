@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.19 $");
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.20 $");
 
 //----------------------------------------------------------------------------
 class vtkKWColorPickerWidgetInternals
@@ -485,6 +485,8 @@ void vtkKWColorPickerWidget::CreateWidget()
   this->CompactModeButton->SetCommand(this, "ToggleCompactMode");
   this->CompactModeButton->SetImageToPredefinedIcon(
     vtkKWIcon::IconSilkBulletToggleMinus);
+  this->CompactModeButton->SetBalloonHelpString(
+    "Toggle the color picker layout between full mode and compact mode");
 
   // Pack
   
