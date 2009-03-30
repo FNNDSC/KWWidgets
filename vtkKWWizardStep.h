@@ -86,6 +86,18 @@ public:
   virtual int HasShowUserInterfaceCommand();
 
   // Description:
+  // Events.
+  //BTX
+  enum
+  {
+    ShowUserInterfaceEvent = 10000,
+    HideUserInterfaceEvent,
+    ValidateEvent
+  };
+  //ETX
+
+
+  // Description:
   // Hide the user interface associated to that step. Wizard developpers can
   // either reimplement the HideUserInterface method in a vtkKWWizardStep 
   // subclass (*do* call the superclass' HideUserInterface first), or create a 

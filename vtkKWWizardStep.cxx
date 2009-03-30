@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWizardStep);
-vtkCxxRevisionMacro(vtkKWWizardStep, "$Revision: 1.5 $");
+vtkCxxRevisionMacro(vtkKWWizardStep, "$Revision: 1.6 $");
 
 vtkIdType vtkKWWizardStep::IdCounter = 1;
 vtkKWWizardStepCleanup vtkKWWizardStep::Cleanup;
@@ -338,6 +338,8 @@ void vtkKWWizardStep::SetValidationFailedInput(vtkKWStateMachineInput *input)
 //----------------------------------------------------------------------------
 void vtkKWWizardStep::ShowUserInterface()
 {
+  this->InvokeEvent(vtkKWWizardStep::ShowUserInterfaceEvent);
+
   this->InvokeShowUserInterfaceCommand();
 }
 
@@ -366,6 +368,8 @@ int vtkKWWizardStep::HasShowUserInterfaceCommand()
 //----------------------------------------------------------------------------
 void vtkKWWizardStep::HideUserInterface()
 {
+  this->InvokeEvent(vtkKWWizardStep::HideUserInterfaceEvent);
+
   this->InvokeHideUserInterfaceCommand();
 }
 
@@ -394,6 +398,8 @@ int vtkKWWizardStep::HasHideUserInterfaceCommand()
 //----------------------------------------------------------------------------
 void vtkKWWizardStep::Validate()
 {
+  this->InvokeEvent(vtkKWWizardStep::ValidateEvent);
+
   this->InvokeValidateCommand();
 }
 
