@@ -1251,6 +1251,40 @@ static const unsigned char image_Nuvola_16x16_devices_camera[] =
 
 /* 
  * Resource generated for file:
+ *    folder_inbox.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Nuvola_16x16_filesystems_folder_inbox_width          = 16;
+static const unsigned int  image_Nuvola_16x16_filesystems_folder_inbox_height         = 16;
+static const unsigned int  image_Nuvola_16x16_filesystems_folder_inbox_pixel_size     = 4;
+static const unsigned long image_Nuvola_16x16_filesystems_folder_inbox_length         = 348;
+static const unsigned long image_Nuvola_16x16_filesystems_folder_inbox_decoded_length = 1024;
+
+static const unsigned char image_Nuvola_16x16_filesystems_folder_inbox[] = 
+  "eNr7//8/w38qY5FyEWOGDoZnyBgkRqx+kPq3/4//e/n/9N8Hfy/8u/fn9n+GbIbXpOpf8l"
+  "/ja913259hb7zpoh/Z39j0gzC+cADp+/z/wP/D/zn/3vzf8x9Zv/59j/9CV2zxugNm/4f/"
+  "h/5v/i+JoZ+Q/chmYHM/sXEIMwMUfyD9pOjFFpaE9M5MM/4Pw4TM7QhV+t8aJP+/yV/mP7"
+  "L+5+fnwc2YkWr0f1qywf8piXr/J8Xr/J8Qq/W/N0r9f3eE6n+Q/rOzLbDqf3Jyyv+HRzr/"
+  "399X+//OzuL/N7dk/r++Pv7/1VWh/y8t8/1/cZHr//Pz7bDqR8aE7Ed3PyUYAPS7nRA=";
+
+/* 
+ * Resource generated for file:
+ *    folder_outbox.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_Nuvola_16x16_filesystems_folder_outbox_width          = 16;
+static const unsigned int  image_Nuvola_16x16_filesystems_folder_outbox_height         = 16;
+static const unsigned int  image_Nuvola_16x16_filesystems_folder_outbox_pixel_size     = 4;
+static const unsigned long image_Nuvola_16x16_filesystems_folder_outbox_length         = 316;
+static const unsigned long image_Nuvola_16x16_filesystems_folder_outbox_decoded_length = 1024;
+
+static const unsigned char image_Nuvola_16x16_filesystems_folder_outbox[] = 
+  "eNr7//8/w38a4ZkMDP9BOI2BQYocvf/37Pn/f/16kH6SzADrPXXq///Kyv//4+L+/3d1Jd"
+  "oMsN6bN///nzIFRf9/LS2CZoD1vnjx///mzVj1/xcWBpuBSz/IbFiY4XA/8X7Aop/S8KOX"
+  "fpAfkfxLONzTjP/DMCGzO0KV/rcGyf9v8pf5j6z/+fl5cDNmpBr9n5Zs8H9Kot7/SfE6/y"
+  "fEav3vjVL/3x2h+h+k/+xsC6z6n5yc8v/hkc7/9/fV/r+zs/j/zS2Z/6+vj/9/dVXo/0vL"
+  "fP9fXOT6//x8O6z6kTEh+9HdTwkGAPT4pJI=";
+
+/* 
+ * Resource generated for file:
  *    trashcan_empty.png (zlib, base64) (image file)
  */
 static const unsigned int  image_Nuvola_16x16_filesystems_trashcan_empty_width          = 16;

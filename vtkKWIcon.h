@@ -217,6 +217,8 @@ public:
     IconNuvola16x16AppsKeyboard              = 1304,
     IconNuvola16x16AppsKTimer                = 1305,
     IconNuvola16x16DevicesCamera             = 1600,
+    IconNuvola16x16FilesystemsFolderInbox    = 1903,
+    IconNuvola16x16FilesystemsFolderOutbox   = 1904,
     IconNuvola16x16FilesystemsTrashcanEmpty  = 1901,
     IconNuvola16x16FilesystemsTrashcanFull   = 1902,
 

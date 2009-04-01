@@ -186,6 +186,8 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWNuvolaIconResourc
     Nuvola/16x16/apps/keyboard.png \
     Nuvola/16x16/apps/ktimer.png \
     Nuvola/16x16/devices/camera.png \
+    Nuvola/16x16/filesystems/folder_inbox.png \
+    Nuvola/16x16/filesystems/folder_outbox.png \
     Nuvola/16x16/filesystems/trashcan_empty.png \
     Nuvola/16x16/filesystems/trashcan_full.png \
     Nuvola/22x22/actions/help.png \

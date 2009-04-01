@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.66 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.67 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -1765,6 +1765,24 @@ void vtkKWIcon::SetImage(int image)
         image_Nuvola_16x16_devices_camera_height,
         image_Nuvola_16x16_devices_camera_pixel_size, 
         image_Nuvola_16x16_devices_camera_length);
+      break;
+
+    case IconNuvola16x16FilesystemsFolderInbox:
+      this->SetImage(
+        image_Nuvola_16x16_filesystems_folder_inbox, 
+        image_Nuvola_16x16_filesystems_folder_inbox_width, 
+        image_Nuvola_16x16_filesystems_folder_inbox_height,
+        image_Nuvola_16x16_filesystems_folder_inbox_pixel_size, 
+        image_Nuvola_16x16_filesystems_folder_inbox_length);
+      break;
+
+    case IconNuvola16x16FilesystemsFolderOutbox:
+      this->SetImage(
+        image_Nuvola_16x16_filesystems_folder_outbox, 
+        image_Nuvola_16x16_filesystems_folder_outbox_width, 
+        image_Nuvola_16x16_filesystems_folder_outbox_height,
+        image_Nuvola_16x16_filesystems_folder_outbox_pixel_size, 
+        image_Nuvola_16x16_filesystems_folder_outbox_length);
       break;
 
     case IconNuvola16x16FilesystemsTrashcanEmpty:
