@@ -104,6 +104,17 @@ public:
   virtual void SetEndCommand(vtkObject *object, const char *method);
 
   // Description:
+  // Events. The events are triggered when the extent slider is changed.
+  //BTX
+  enum
+  {
+    ChangeEvent = 10000,
+    StartChangeEvent = 10001,
+    EndChangeEvent = 10002
+  };
+  //ETX
+
+  // Description:
   // Set/Get whether the above commands should be called or not.
   virtual void SetDisableCommands(int);
   vtkBooleanMacro(DisableCommands, int);

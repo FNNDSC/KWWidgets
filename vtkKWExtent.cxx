@@ -22,7 +22,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWExtent );
-vtkCxxRevisionMacro(vtkKWExtent, "$Revision: 1.54 $");
+vtkCxxRevisionMacro(vtkKWExtent, "$Revision: 1.55 $");
 
 //----------------------------------------------------------------------------
 vtkKWExtent::vtkKWExtent()
@@ -275,6 +275,8 @@ void vtkKWExtent::RangeCommandCallback(double, double)
   this->Extent[3] = this->Range[1]->GetRange()[1];
   this->Extent[4] = this->Range[2]->GetRange()[0];
   this->Extent[5] = this->Range[2]->GetRange()[1];
+
+  this->InvokeEvent(vtkKWExtent::ChangeEvent);
  
   this->InvokeCommand(
     this->Extent[0], this->Extent[1],
@@ -285,6 +287,9 @@ void vtkKWExtent::RangeCommandCallback(double, double)
 //----------------------------------------------------------------------------
 void vtkKWExtent::RangeStartCommandCallback(double, double)
 {
+
+  this->InvokeEvent(vtkKWExtent::StartChangeEvent);
+
   this->InvokeStartCommand(
     this->Extent[0], this->Extent[1],
     this->Extent[2], this->Extent[3],
@@ -294,6 +299,9 @@ void vtkKWExtent::RangeStartCommandCallback(double, double)
 //----------------------------------------------------------------------------
 void vtkKWExtent::RangeEndCommandCallback(double, double)
 {
+
+  this->InvokeEvent(vtkKWExtent::EndChangeEvent);
+
   this->InvokeEndCommand(
     this->Extent[0], this->Extent[1],
     this->Extent[2], this->Extent[3],
