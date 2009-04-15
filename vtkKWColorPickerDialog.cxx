@@ -23,7 +23,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerDialog );
-vtkCxxRevisionMacro(vtkKWColorPickerDialog, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWColorPickerDialog, "$Revision: 1.5 $");
 
 //----------------------------------------------------------------------------
 vtkKWColorPickerDialog::vtkKWColorPickerDialog()
@@ -67,8 +67,7 @@ void vtkKWColorPickerDialog::CreateWidget()
 
   this->Superclass::CreateWidget();
 
-  this->SetResizable(0, 0);
-  this->SetSize(632, 334);
+  this->SetResizable(1, 1);
   vtksys_stl::string title;
   if (this->GetApplication()->GetName())
     {
@@ -134,10 +133,12 @@ void vtkKWColorPickerDialog::CreateWidget()
 
   this->AddBinding("<Return>", this, "OK");
   this->AddBinding("<Escape>", this, "Cancel");
+
+  this->UpdateSize();
 }
 
 //----------------------------------------------------------------------------
-void vtkKWColorPickerDialog::Display()
+void vtkKWColorPickerDialog::UpdateSize()
 {
   // Sadly, need to adjust the size of the dialog manually
 
@@ -146,12 +147,12 @@ void vtkKWColorPickerDialog::Display()
   if (this->ColorPickerWidget && this->ColorPickerWidget->GetCompactMode())
     {
     w = 376;
-    h = 210;
+    h = 215;
     }
   else
     {
     w = 632;
-    h = 334;
+    h = 339;
     }
 
 #ifndef _WIN32
@@ -159,7 +160,11 @@ void vtkKWColorPickerDialog::Display()
 #endif
 
   this->SetSize(w, h);
+}
 
+//----------------------------------------------------------------------------
+void vtkKWColorPickerDialog::Display()
+{
   this->Superclass::Display();
 }
 
@@ -210,7 +215,7 @@ void vtkKWColorPickerDialog::ProcessCallbackCommandEvents(vtkObject *caller,
   if (caller == this->ColorPickerWidget && 
       event == vtkKWColorPickerWidget::CompactModeChangedEvent)
     {
-    this->Display(); // resize
+    this->UpdateSize(); // resize
     }
 
   this->Superclass::ProcessCallbackCommandEvents(caller, event, calldata);

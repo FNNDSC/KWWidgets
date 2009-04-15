@@ -78,6 +78,10 @@ protected:
   virtual void ProcessCallbackCommandEvents(
     vtkObject *caller, unsigned long event, void *calldata);
   
+  // Description:
+  // Update Size
+  virtual void UpdateSize();
+  
 private:
   vtkKWColorPickerDialog(const vtkKWColorPickerDialog&); // Not implemented
   void operator=(const vtkKWColorPickerDialog&); // Not implemented
