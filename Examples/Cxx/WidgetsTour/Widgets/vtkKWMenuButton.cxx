@@ -52,6 +52,7 @@ void vtkKWMenuButtonItem::Create(vtkKWWidget *parent, vtkKWWindow *)
   menubutton1b->SetParent(parent);
   menubutton1b->Create();
   menubutton1b->GetWidget()->SetWidth(30);
+  menubutton1b->GetWidget()->SetAdjustLabelWidthToWidgetSize(1);
   menubutton1b->SetBalloonHelpString(
     "This is a vtkKWMenuButtonWithSpinButtons, i.e. a menu button associated "
     "to a set of spin buttons (vtkKWSpinButtons) that can be used to "

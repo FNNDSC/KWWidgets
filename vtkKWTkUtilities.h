@@ -376,6 +376,12 @@ public:
     Tcl_Interp *interp, const char *font, char *real_font);
 
   // Description:
+  // Get the amount of space the string txt when displayed in widget (using
+  // the default widget's -font parameter). Store the result in 'w'.
+  // Return 1 on success, 0 otherwise.
+  static int GetFontMeasure(vtkKWWidget *widget, const char *txt, int *w);
+
+  // Description:
   // Get the number of colums and rows defined in the grid layout of
   // the widget given by 'widget' (say, .foo.bar).
   // A convenience method is provided to query a vtkKWWidget directly.

@@ -13,6 +13,7 @@
 =========================================================================*/
 #include "vtkKWMenuButton.h"
 
+#include "vtkKWApplication.h"
 #include "vtkKWMenu.h"
 #include "vtkObjectFactory.h"
 #include "vtkKWIcon.h"
@@ -23,14 +24,25 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenuButton );
-vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.46 $");
+vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.47 $");
+
+//----------------------------------------------------------------------------
+class vtkKWPresetSelectorInternals
+{
+public:
+  vtksys_stl::string ScheduleUpdateMenuButtonLabelTimerId;
+
+};
 
 //----------------------------------------------------------------------------
 vtkKWMenuButton::vtkKWMenuButton()
 {
+  this->Internals = new vtkKWPresetSelectorInternals;
+
   this->CurrentValue      = NULL;
   this->Menu              = vtkKWMenu::New();
   this->MaximumLabelWidth = 0;
+  this->AdjustLabelWidthToWidgetSize = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -43,6 +55,9 @@ vtkKWMenuButton::~vtkKWMenuButton()
     this->Menu->Delete();
     this->Menu = NULL;
     }
+
+  delete this->Internals;
+  this->Internals = NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -70,6 +85,8 @@ void vtkKWMenuButton::CreateWidget()
     this->GetTclName());
 
   this->AddCallbackCommandObservers();
+
+  this->UpdateBindings();
 }
 
 //----------------------------------------------------------------------------
@@ -208,6 +225,36 @@ const char* vtkKWMenuButton::UpdateMenuButtonLabelFromMenu(
 }
 
 //----------------------------------------------------------------------------
+void vtkKWMenuButton::ScheduleUpdateMenuButtonLabel()
+{
+  // Already scheduled
+
+  if (this->Internals->ScheduleUpdateMenuButtonLabelTimerId.size())
+    {
+    return;
+    }
+
+  this->Internals->ScheduleUpdateMenuButtonLabelTimerId =
+    this->Script(
+      "after idle {catch {%s UpdateMenuButtonLabelCallback}}", 
+      this->GetTclName());
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMenuButton::UpdateMenuButtonLabelCallback()
+{
+  if (!this->GetApplication() || 
+      this->GetApplication()->GetInExit() ||
+      !this->IsAlive())
+    {
+    return;
+    }
+
+  this->UpdateMenuButtonLabel();
+  this->Internals->ScheduleUpdateMenuButtonLabelTimerId = "";
+}
+
+//----------------------------------------------------------------------------
 void vtkKWMenuButton::UpdateMenuButtonLabel()
 {
   if (!this->IsCreated())
@@ -240,15 +287,60 @@ void vtkKWMenuButton::UpdateMenuButtonLabel()
     found = label.c_str();
     }
 
-  if (this->MaximumLabelWidth <= 0)
+  // Adjust the label width
+
+  // Use the whole text
+
+  if (this->MaximumLabelWidth <= 0 && !this->AdjustLabelWidthToWidgetSize)
     {
     this->SetConfigurationOption("-text", found);
     }
   else
     {
-    vtksys_stl::string cropped = vtksys::SystemTools::CropString(
-      found, (size_t)this->MaximumLabelWidth);
-    this->SetConfigurationOption("-text", cropped.c_str());
+    // Adjust the text width to the widget size/width
+
+    if (this->AdjustLabelWidthToWidgetSize)
+      {
+      int widget_width, label_width;
+      if (vtkKWTkUtilities::GetWidgetSize(this, &widget_width, NULL) &&
+          vtkKWTkUtilities::GetFontMeasure(this, found, &label_width))
+        {
+        if (this->GetIndicatorVisibility())
+          {
+          widget_width -= 30;
+          }
+        if (widget_width < 0)
+          {
+          widget_width = 0;
+          }
+        if (label_width <= widget_width) // smaller than the widget? We good.
+          {
+          this->SetConfigurationOption("-text", found);
+          }
+        else
+          {
+          // Otherwise shrink the label until we find something that fits
+          // TODO: this can be optimized of course with binary search
+          size_t length = strlen(found);
+          vtksys_stl::string cropped;
+          do 
+            {
+            cropped = vtksys::SystemTools::CropString(found, --length);
+            vtkKWTkUtilities::GetFontMeasure(
+              this, cropped.c_str(), &label_width);
+            } while (length > 0 && label_width  > widget_width);
+          this->SetConfigurationOption("-text", cropped.c_str());
+          }
+        }
+      }
+    else if (this->MaximumLabelWidth > 0)
+      {
+      // Adjust the text width to a maximum custom width in characters
+
+      vtksys_stl::string cropped = vtksys::SystemTools::CropString(
+        found, (size_t)this->MaximumLabelWidth);
+      this->SetConfigurationOption("-text", cropped.c_str());
+      }
     }
 }
 
@@ -601,6 +693,47 @@ int vtkKWMenuButton::GetCompoundMode()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWMenuButton::SetAdjustLabelWidthToWidgetSize(int v)
+{
+  if (this->AdjustLabelWidthToWidgetSize == v)
+    {
+    return;
+    }
+
+  this->AdjustLabelWidthToWidgetSize = v;
+  this->Modified();
+
+  this->UpdateBindings();
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMenuButton::ConfigureCallback()
+{
+  if (this->AdjustLabelWidthToWidgetSize)
+    {
+    this->ScheduleUpdateMenuButtonLabel();
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMenuButton::UpdateBindings()
+{
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
+  if (this->AdjustLabelWidthToWidgetSize)
+    {
+    this->SetBinding("<Configure>", this, "ConfigureCallback");
+    }
+  else
+    {
+    this->RemoveBinding("<Configure>");
+    }
+}
+
+//----------------------------------------------------------------------------
 void vtkKWMenuButton::UpdateEnableState()
 {
   this->Superclass::UpdateEnableState();
@@ -680,5 +813,7 @@ void vtkKWMenuButton::PrintSelf(ostream& os, vtkIndent indent)
   this->Superclass::PrintSelf(os, indent);
   os << indent << "Menu: " << this->Menu << endl;
   os << indent << "MaximumLabelWidth: " << this->MaximumLabelWidth << endl;
+  os << indent << "AdjustLabelWidthToWidgetSize: " 
+     << (this->AdjustLabelWidthToWidgetSize ? "On" : "Off") << endl;
 }
 

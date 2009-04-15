@@ -46,7 +46,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.101 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.102 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -3650,6 +3650,55 @@ const char* vtkKWTkUtilities::GetWindowingSystem(Tcl_Interp *interp)
     return Tcl_GetStringResult(interp);
     }
   return NULL;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWTkUtilities::GetFontMeasure(
+  vtkKWWidget *widget, const char *txt, int *w)
+{
+  // Invalid args
+
+  if (!widget || !widget->IsCreated() || !w)
+    {
+    return 0;
+    }
+
+  // Empty txt
+
+  *w = 0;
+  if (!txt || !*txt)
+    {
+    return 1;
+    }
+
+
+  Tcl_Interp *interp = widget->GetApplication()->GetMainInterp();
+  const char *widget_name = widget->GetWidgetName(); 
+
+  vtksys_stl::string fontm("font measure [");
+  fontm += widget_name;
+  fontm += " cget -font] -displayof ";
+  fontm += widget_name;
+  fontm += " \"";
+  fontm += txt;
+  fontm += "\"";
+  if (Tcl_GlobalEval(interp, fontm.c_str()) != TCL_OK)
+    {
+    vtkGenericWarningMacro(<< "Unable to compute font measure! " 
+                           << Tcl_GetStringResult(interp));
+    return 0;
+    }
+  
+  int ww;
+  if (sscanf(Tcl_GetStringResult(interp), "%d", &ww) != 1)
+    {
+    vtkGenericWarningMacro(<< "Unable to parse font measure!");
+    return 0;
+    }
+  
+  *w = ww;
+
+  return 1;
 }
 
 //----------------------------------------------------------------------------

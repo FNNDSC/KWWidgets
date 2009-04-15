@@ -23,6 +23,7 @@
 
 class vtkKWMenu;
 class vtkKWIcon;
+class vtkKWPresetSelectorInternals;
 
 class KWWidgets_EXPORT vtkKWMenuButton : public vtkKWCoreWidget
 {
@@ -61,14 +62,24 @@ public:
   virtual int GetWidth();
   
   // Description:
-  // Set/Get the maximum width of the option menu label.
-  // This does not modify the internal value, this is just for display
+  // Set/Get the maximum width *in characters* of the option menu label.
+  // This does not modify the internal value, this is only meant for display
   // purposes: the option menu button can therefore be automatically
   // shrinked, while the menu associated to it will display all entries
   // correctly.
   // Set width to 0 (default) to prevent auto-cropping.
   virtual void SetMaximumLabelWidth(int);
   vtkGetMacro(MaximumLabelWidth, int);
+
+  // Description:
+  // Adjust the label width automatically to fit in the menu button.
+  // This does not modify the internal value, this is only meant for display
+  // purposes: the option menu button can therefore be automatically
+  // shrinked, while the menu associated to it will display all entries
+  // correctly. Overrides MaximumLabelWidth.
+  virtual void SetAdjustLabelWidthToWidgetSize(int);
+  vtkGetMacro(AdjustLabelWidthToWidgetSize, int);
+  vtkBooleanMacro(AdjustLabelWidthToWidgetSize, int);
 
   // Description:
   // Set/Get the background color of the widget.
@@ -243,6 +254,8 @@ public:
   // Callbacks. Internal, do not use.
   virtual void TracedVariableChangedCallback(
     const char *, const char *, const char *);
+  virtual void ConfigureCallback();
+  virtual void UpdateMenuButtonLabelCallback();
 
   // Description:
   // Add all the default observers needed by that object, or remove
@@ -266,10 +279,12 @@ protected:
   char      *CurrentValue;  
   vtkKWMenu *Menu;
   int       MaximumLabelWidth;
+  int       AdjustLabelWidthToWidgetSize;
 
   virtual void UpdateMenuButtonLabel();
   virtual const char* UpdateMenuButtonLabelFromMenu(
     const char *varname, const char *value, vtkKWMenu *menu);
+  virtual void ScheduleUpdateMenuButtonLabel();
 
   // Description:
   // Processes the events that are passed through CallbackCommand (or others).
@@ -277,14 +292,21 @@ protected:
   // should call the superclass too.
   virtual void ProcessCallbackCommandEvents(
     vtkObject *caller, unsigned long event, void *calldata);
+
+  // Description:
+  // Update bindings
+  virtual void UpdateBindings();
   
+  // PIMPL Encapsulation for STL containers
+  //BTX
+  vtkKWPresetSelectorInternals *Internals;
+  //ETX
+
 private:
   vtkKWMenuButton(const vtkKWMenuButton&); // Not implemented
   void operator=(const vtkKWMenuButton&); // Not implemented
 };
 
-
 #endif
-
 
 
