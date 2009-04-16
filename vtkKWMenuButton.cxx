@@ -24,10 +24,10 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenuButton );
-vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.47 $");
+vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.48 $");
 
 //----------------------------------------------------------------------------
-class vtkKWPresetSelectorInternals
+class vtkKWMenuButtonInternals
 {
 public:
   vtksys_stl::string ScheduleUpdateMenuButtonLabelTimerId;
@@ -37,7 +37,7 @@ public:
 //----------------------------------------------------------------------------
 vtkKWMenuButton::vtkKWMenuButton()
 {
-  this->Internals = new vtkKWPresetSelectorInternals;
+  this->Internals = new vtkKWMenuButtonInternals;
 
   this->CurrentValue      = NULL;
   this->Menu              = vtkKWMenu::New();

@@ -23,7 +23,7 @@
 
 class vtkKWMenu;
 class vtkKWIcon;
-class vtkKWPresetSelectorInternals;
+class vtkKWMenuButtonInternals;
 
 class KWWidgets_EXPORT vtkKWMenuButton : public vtkKWCoreWidget
 {
@@ -299,7 +299,7 @@ protected:
   
   // PIMPL Encapsulation for STL containers
   //BTX
-  vtkKWPresetSelectorInternals *Internals;
+  vtkKWMenuButtonInternals *Internals;
   //ETX
 
 private:
