@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.44 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.45 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -1302,64 +1302,75 @@ const char* vtkKWDirectoryExplorer::OpenDirectoryInternal(
     return NULL;
     }
   dir->Delete();
-
-  // Get all the directories for the node layers in the tree
-
-  vtksys_stl::string parentdir = 
-    vtksys::SystemTools::GetParentDirectory(path.c_str());
-  vtksys_stl::string rootdir = path;
-  vtksys_stl::list<vtksys_stl::string> dirlist;
-  dirlist.push_front(path);
-
-  // Find the most upper level node for this node
-  // and save each level of the found directory into a list
-
-  while (!parentdir.empty() && 
-         strcmp(parentdir.c_str(), rootdir.c_str()) != 0)
-    {
-    rootdir = parentdir;
-    dirlist.push_front(parentdir);
-    parentdir = vtksys::SystemTools::GetParentDirectory(parentdir.c_str());
-    }
   
+  const char* childnode = NULL;
+  // Take care of Unix root directory
+  if (!strcmp(path.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY))
+    {
 #ifndef _WIN32
-  // since on unix, the GetParentDirectory return "" 
-  // for root directory "/" let's add the root directory "/"
-  if (strcmp(path.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY) != 0)
-    {
-    dirlist.push_front(KWFileBrowser_UNIX_ROOT_DIRECTORY);
+    childnode = this->ReloadDirectory(
+      this->Internals->RootNode, path.c_str(),select);
+#endif
     }
-#endif  
-
-  vtksys_stl::string parentnode = this->Internals->RootNode;
-  vtksys_stl::string subdir;
-  
-  // Reload back each directory in the list. 
-  // Make sure to only select the last directory and
-  // only load the files in that directory
-
-  while (dirlist.size() > 1) //!dirlist.empty())
+  else
     {
-    subdir = dirlist.front().c_str();
-    const char* aNode = this->ReloadDirectory(parentnode.c_str(), 
-                                              subdir.c_str(),
-                                              0);
-    if (!aNode || !(*aNode))
+    // Get all the directories for the node layers in the tree
+
+    vtksys_stl::string rootdir = path;
+    vtksys_stl::string parentdir = 
+      vtksys::SystemTools::GetParentDirectory(path.c_str());
+    vtksys_stl::list<vtksys_stl::string> dirlist;
+    dirlist.push_front(path);
+
+    // Find the most upper level node for this node
+    // and save each level of the found directory into a list
+
+    while (!parentdir.empty() && 
+           strcmp(parentdir.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY) &&
+           strcmp(parentdir.c_str(), rootdir.c_str()) != 0)
       {
-      dirlist.clear();
-      return NULL;
+      rootdir = parentdir;
+      dirlist.push_front(parentdir);
+      parentdir = vtksys::SystemTools::GetParentDirectory(parentdir.c_str());
       }
-    parentnode = aNode;
-    dirlist.pop_front();
-    }
     
-  // Now, load the directory that will be selected and displayed
+  #ifndef _WIN32
+    if (strcmp(parentdir.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY) == 0)
+      {
+      dirlist.push_front(KWFileBrowser_UNIX_ROOT_DIRECTORY);
+      }
+  #endif  
 
-  subdir = dirlist.front().c_str();
-  const char* childnode = this->ReloadDirectory(
-    parentnode.c_str(), subdir.c_str(),select);
-  
-  dirlist.clear();
+    vtksys_stl::string parentnode = this->Internals->RootNode;
+    vtksys_stl::string subdir;
+    
+    // Reload back each directory in the list. 
+    // Make sure to only select the last directory and
+    // only load the files in that directory
+
+    while (dirlist.size() > 1) //!dirlist.empty())
+      {
+      subdir = dirlist.front().c_str();
+      const char* aNode = this->ReloadDirectory(parentnode.c_str(), 
+                                                subdir.c_str(),
+                                                0);
+      if (!aNode || !(*aNode))
+        {
+        dirlist.clear();
+        return NULL;
+        }
+      parentnode = aNode;
+      dirlist.pop_front();
+      }
+      
+    // Now, load the directory that will be selected and displayed
+
+    subdir = dirlist.front().c_str();
+    childnode = this->ReloadDirectory(
+      parentnode.c_str(), subdir.c_str(),select);
+    
+    dirlist.clear();
+    }
   
   if (!childnode || !(*childnode))
     {
