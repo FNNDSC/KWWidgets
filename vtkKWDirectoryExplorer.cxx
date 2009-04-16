@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.45 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.46 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -1335,7 +1335,10 @@ const char* vtkKWDirectoryExplorer::OpenDirectoryInternal(
       }
     
   #ifndef _WIN32
-    if (strcmp(parentdir.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY) == 0)
+    // since on unix, the GetParentDirectory return "" 
+    // for directories like "/home" let's add the root directory "/"
+    if (!strcmp(parentdir.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY) ||
+       parentdir.empty() || strcmp(parentdir.c_str(), "") == 0)
       {
       dirlist.push_front(KWFileBrowser_UNIX_ROOT_DIRECTORY);
       }
