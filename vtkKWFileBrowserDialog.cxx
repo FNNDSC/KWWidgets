@@ -39,7 +39,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.45 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.46 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -675,6 +675,16 @@ void vtkKWFileBrowserDialog::SetFileTypes(const char* _arg)
       this->FileTypeChangedCallback(buffer.c_str());
       }
     }
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWFileBrowserDialog::GetCurrentFileExtensions()
+{
+  if(strcmp(this->Internals->CurrentFileExtensions.c_str(), ".*"))
+    {
+    return this->Internals->CurrentFileExtensions.c_str();
+    }
+  return NULL;
 }
 
 //----------------------------------------------------------------------------

@@ -92,6 +92,13 @@ public:
   // Example: "{{Text Document} {.txt}} {{JPEG image} {.jpg .jpeg}}"
   virtual void SetFileTypes(const char *);
   vtkGetStringMacro(FileTypes);
+  
+  // Description:
+  // Get current file extensions that is selected from the FileType dropdown box.
+  // If multiple extensions are available (for example: {{JPEG image} {.jpg .jpeg}}),
+  // the extensions will be returned as a space-separated string (e.g. ".jpg .jpeg").
+  // NOTE: By default, the current file extension is set to ".*", and NULL will returned.
+  virtual const char* GetCurrentFileExtensions();
 
   // Description:
   // Set/Get the default file extension.
