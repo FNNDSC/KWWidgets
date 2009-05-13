@@ -23,9 +23,10 @@ void vtkKWLoadSaveButtonItem::Create(vtkKWWidget *parent, vtkKWWindow *win)
 
   vtkKWLoadSaveButton *load_button1 = vtkKWLoadSaveButton::New();
   load_button1->SetParent(parent);
+  load_button1->GetLoadSaveDialog()->SaveDialogOff(); // load mode
+  load_button1->GetLoadSaveDialog()->SetMasterWindow(win);
   load_button1->Create();
   load_button1->SetText("Click to Pick a File");
-  load_button1->GetLoadSaveDialog()->SaveDialogOff(); // load mode
 
   char command[1024];
   sprintf(command, "AddRecentFile [%s GetFileName] {} {}",
@@ -44,9 +45,10 @@ void vtkKWLoadSaveButtonItem::Create(vtkKWWidget *parent, vtkKWWindow *win)
 
   vtkKWLoadSaveButton *load_button2 = vtkKWLoadSaveButton::New();
   load_button2->SetParent(parent);
+  load_button2->GetLoadSaveDialog()->ChooseDirectoryOn();
+  load_button2->GetLoadSaveDialog()->SetMasterWindow(win);
   load_button2->Create();
   load_button2->SetText("Click to Pick a Directory");
-  load_button2->GetLoadSaveDialog()->ChooseDirectoryOn();
 
   app->Script(
     "pack %s -side top -anchor nw -expand n -padx 2 -pady 4", 
