@@ -23,7 +23,7 @@
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTopLevel );
-vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.36 $");
+vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.37 $");
 
 //----------------------------------------------------------------------------
 vtkKWTopLevel::vtkKWTopLevel()
@@ -122,11 +122,19 @@ void vtkKWTopLevel::PostCreate()
     this->Script("wm title %s \"%s\"", this->GetWidgetName(), title);
     }
 
-  if (this->GetMasterWindow() && this->GetMasterWindow()->IsCreated())
+  if (this->GetMasterWindow())
     {
-    this->Script("wm transient %s [winfo toplevel %s]", 
-                 this->GetWidgetName(), 
-                 this->GetMasterWindow()->GetWidgetName());
+    if (!this->GetMasterWindow()->IsCreated())
+      {
+      vtkWarningMacro("The toplevel is assigned a MasterWindow that has not "
+                      "been created yet. Ignoring master/slave request.");
+      }
+    else
+      {
+      this->Script("wm transient %s [winfo toplevel %s]", 
+                   this->GetWidgetName(), 
+                   this->GetMasterWindow()->GetWidgetName());
+      }
     }
 
   if (this->HideDecoration)
@@ -323,12 +331,19 @@ void vtkKWTopLevel::SetMasterWindow(vtkKWWidget* win)
     this->SetApplication(win->GetApplication());
     }
 
-  if (this->IsCreated() && 
-      this->GetMasterWindow() && this->GetMasterWindow()->IsCreated())
+  if (this->IsCreated() && this->GetMasterWindow())
     {
-    this->Script("wm transient %s [winfo toplevel %s]", 
-                 this->GetWidgetName(), 
-                 this->GetMasterWindow()->GetWidgetName());
+    if (!this->GetMasterWindow()->IsCreated())
+      {
+      vtkWarningMacro("The toplevel is assigned a MasterWindow that has not "
+                      "been created yet. Ignoring master/slave request.");
+      }
+    else
+      {
+      this->Script("wm transient %s [winfo toplevel %s]", 
+                   this->GetWidgetName(), 
+                   this->GetMasterWindow()->GetWidgetName());
+      }
     }
 }
 
