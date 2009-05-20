@@ -33,7 +33,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenu );
-vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.128 $");
+vtkCxxRevisionMacro(vtkKWMenu, "$Revision: 1.129 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMenuInternals
@@ -981,19 +981,13 @@ void vtkKWMenu::SetItemCascade(int index, const char *menu_name)
       menu_name_safe[parent_length] != '.')
     {
     vtksys_ios::ostringstream clone_menu;
-    clone_menu << wname << ".clone_";
-    vtksys_stl::string res(
-      this->Script("string trim [%s entrycget %d -label]",  wname, index));
-    if (res.size())
-      {
-      clone_menu << res.c_str();
-      }
-    else
-      {
-      clone_menu << index;
-      }
+    vtksys_stl::string menu_name_safe_no_dots(menu_name_safe);
+    vtksys::SystemTools::ReplaceString(menu_name_safe_no_dots, ".", "_");
+    clone_menu << wname << ".clone" << menu_name_safe_no_dots.c_str();
     this->Script("catch { destroy %s } \n %s clone %s", 
-                 clone_menu.str().c_str(), menu_name_safe.c_str(), clone_menu.str().c_str());
+                 clone_menu.str().c_str(), 
+                 menu_name_safe.c_str(), 
+                 clone_menu.str().c_str());
     str << " -menu {" << clone_menu.str().c_str() << "}";
     }
   else
