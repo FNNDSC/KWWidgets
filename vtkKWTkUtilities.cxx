@@ -46,7 +46,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWTkUtilities);
-vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.102 $");
+vtkCxxRevisionMacro(vtkKWTkUtilities, "$Revision: 1.103 $");
 
 //----------------------------------------------------------------------------
 const char* vtkKWTkUtilities::GetTclNameFromPointer(
@@ -3679,9 +3679,9 @@ int vtkKWTkUtilities::GetFontMeasure(
   fontm += widget_name;
   fontm += " cget -font] -displayof ";
   fontm += widget_name;
-  fontm += " \"";
+  fontm += " {";
   fontm += txt;
-  fontm += "\"";
+  fontm += "}";
   if (Tcl_GlobalEval(interp, fontm.c_str()) != TCL_OK)
     {
     vtkGenericWarningMacro(<< "Unable to compute font measure! " 

@@ -62,8 +62,8 @@ void vtkKWMenuButtonItem::Create(vtkKWWidget *parent, vtkKWWindow *)
     {
     vtksys_stl::string label(days[i]);
     label = label + " (" + days_fr[i] + ")";
-    vtksys_stl::string command("SetValue \"");
-    command = command + label + "\"";
+    vtksys_stl::string command("SetValue {");
+    command = command + label + "}";
     menubutton1b->GetWidget()->GetMenu()->AddCommand(
       label.c_str(), menubutton1b->GetWidget(), command.c_str());
     }
