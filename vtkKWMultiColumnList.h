@@ -485,7 +485,8 @@ public:
   // make it possible to sort the items very easily by time, with a second's
   // precision, even if their visual representation only contains the year, 
   // month, and day. 
-  // Also check SetColumnFormatCommandToEmptyOutput, which can be used
+  // Also check SetColumnFormatCommandToEmptyOutput or 
+  // SetColumnFormatCommandToEmptyOutputIfWindowCommand, which can be used
   // to set the ColumnFormatCommand to return an empty output.
   // The 'object' argument is the object that will have the method called on
   // it. The 'method' argument is the name of the method to be called and any
@@ -531,7 +532,11 @@ public:
   // string can be used, thus making sure that the textual information 
   // contained in that column remains hidden. This method can be used just
   // for that instead of SetColumnFormatCommand.
+  // SetColumnFormatCommandToEmptyOutputIfWindowCommand is another variant
+  // of that will only return an empty ouput if the cell's window command
+  // is set (see SetCellWindowCommand methods).
   virtual void SetColumnFormatCommandToEmptyOutput(int col_index);
+  virtual void SetColumnFormatCommandToEmptyOutputIfWindowCommand(int col_index);
 
   // Description:
   // Specifies a command to associate with the widget. This command is 
@@ -853,7 +858,8 @@ public:
   // the cell colors change, this user-defined widget is refreshed.
   // Also, if you have set a text contents in the same cell (using SetCellText)
   // you may want to hide it automatically using 
-  // SetColumnFormatCommandToEmptyOutput.
+  // SetColumnFormatCommandToEmptyOutput or 
+  // SetColumnFormatCommandToEmptyOutputIfWindowCommand.
   // The 'object' argument is the object that will have the method called on
   // it. The 'method' argument is the name of the method to be called and any
   // arguments in string form. If the object is NULL, the method is still
@@ -1483,6 +1489,8 @@ public:
     const char*, int, int, const char*);
   virtual void CellWindowCommandToPickDirectoryButtonChangeCallback(
     vtkKWWidget*, int, int);
+  virtual const char* ColumnFormatCommandToEmptyOutputIfWindowCommandCallback(
+    vtkKWWidget*, const char *);
   virtual void ColumnSortedCallback();
   virtual void ColumnMovedCallback();
   virtual void RowMovedCallback();

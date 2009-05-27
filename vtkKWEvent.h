@@ -83,6 +83,7 @@ public:
     ImageMouseBindingChangedEvent,
     ImageScaleBarColorChangedEvent,
     ImageScaleBarVisibilityChangedEvent,
+    BeginImageSliceChangeEvent,
     ImageSliceChangedEvent,
     ImageZoomFactorChangedEvent,
     InteractionModeChangedEvent,

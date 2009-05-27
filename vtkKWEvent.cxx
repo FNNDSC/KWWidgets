@@ -72,6 +72,7 @@ static const char *vtkKWEventStrings[] =
   "ImageMouseBindingChangedEvent",
   "ImageScaleBarColorChangedEvent",
   "ImageScaleBarVisibilityChangedEvent",
+  "BeginImageSliceChangeEvent",
   "ImageSliceChangedEvent",
   "ImageZoomFactorChangedEvent",
   "InteractionModeChangedEvent",

@@ -136,6 +136,25 @@ public:
   vtkGetMacro(LimitedEditionModeIconVisibility, int);
 
   // Description:
+  // Set/Get if the packing options should be changed automatically when
+  // the frame is collapsed/uncollapsed. This if OFF by default. 
+  // WARNING: turning this option will modify the -expand attribute in the
+  // packing options automatically. Packing is usually the responsibility of 
+  // the user, and no widget instance would usually change its own packing
+  // option automatically, since this could be considered pulling the rug out
+  // from under the user's feet. However, in some very specific case (say,
+  // when packing a vtkKWMultiColumnList), you would want the widget packed
+  // inside the frame with label to expand automatically. This can not be
+  // done without allowing the vtkKWFrameWithLabel instance to expand
+  // automatically as well, which is not compatible with the "collapsed" more.
+  // To work around this, the -expand flag of the vtkKWFrameWithLabel has
+  // to be changed automatically back and forth each time the frame is
+  // collapsed/uncollapsed. Turning this variable ON will take care of it.
+  vtkSetMacro(ChangePackingOnCollapse, int);
+  vtkBooleanMacro(ChangePackingOnCollapse, int);
+  vtkGetMacro(ChangePackingOnCollapse, int);
+
+  // Description:
   // Update the "enable" state of the object and its internal parts.
   // Depending on different Ivars (this->Enabled, the application's 
   // Limited Edition Mode, etc.), the "enable" state of the object is updated
@@ -187,6 +206,7 @@ protected:
   vtkKWIcon           *IconData;
 
   int AllowFrameToCollapse;
+  int ChangePackingOnCollapse;
   int LimitedEditionModeIconVisibility;
 
   static int DefaultAllowFrameToCollapse;

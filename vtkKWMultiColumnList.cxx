@@ -40,7 +40,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.100 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.101 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -1571,6 +1571,25 @@ void vtkKWMultiColumnList::SetColumnSortCommand(int col_index,
 void vtkKWMultiColumnList::SetColumnFormatCommandToEmptyOutput(int col_index)
 {
   this->SetColumnFormatCommand(col_index, NULL, "tablelist::emptyStr");
+}
+
+//----------------------------------------------------------------------------
+void vtkKWMultiColumnList::SetColumnFormatCommandToEmptyOutputIfWindowCommand(
+  int col_index)
+{
+  vtksys_stl::string command(
+    "ColumnFormatCommandToEmptyOutputIfWindowCommandCallback ");
+  command += this->GetTclName();
+  this->SetColumnFormatCommand(col_index, this, command.c_str());
+}
+
+//----------------------------------------------------------------------------
+const char* vtkKWMultiColumnList::ColumnFormatCommandToEmptyOutputIfWindowCommandCallback(vtkKWWidget *w, const char *contents)
+{
+  const char *window = 
+    this->Script("%s cellcget [join [lrange [%s formatinfo] 1 2] ,] -window",
+                 this->GetWidgetName(), this->GetWidgetName());
+  return (window && *window) ? "" : contents;
 }
 
 //----------------------------------------------------------------------------
@@ -3925,31 +3944,49 @@ void vtkKWMultiColumnList::CellWindowCommandToComboBoxCreateCallback(
   
   // Set the default based on the current column width.. 
 
-  int column_width = this->GetColumnWidth(col);
-  if (column_width != 0)
-    {
-    if (column_width > 0) // in chars
-      {
-      child->SetWidth(column_width - 4);
-      column_width *= 8; // let's say 10 pixels per char...
-      child->SetListboxWidth(column_width < 150 ? 150 : column_width);
-      }
-    else // in pixels
-      {
-      column_width = -column_width;
-      child->SetListboxWidth(column_width < 150 ? 150 : column_width);
-      column_width /= 8; // let's say 10 pixels per char...
-      child->SetWidth(column_width - 4);
-      }
-    }
-
-  // Put the values that were hidden in the -image option
-
   vtksys_stl::vector<vtksys_stl::string> split_elems;
   vtksys::SystemTools::Split(values, split_elems, ';');
   
   vtksys_stl::vector<vtksys_stl::string>::iterator it = split_elems.begin();
   vtksys_stl::vector<vtksys_stl::string>::iterator end = split_elems.end();
+
+  int column_width = this->GetColumnWidth(col);
+  const int column_width_margin = 4;
+
+  // If not set, try to set one given the longest string
+
+  if (column_width == 0)
+    {
+    for (; it != end; it++)
+      {
+      if ((*it).size() > column_width)
+        {
+        column_width = (*it).size();
+        }
+      }
+    if (column_width)
+      {
+      column_width += column_width_margin; // to compensate for margin account
+      }
+    }
+  
+  if (column_width > 0) // in chars
+    {
+    child->SetWidth(column_width - column_width_margin); // account for margin
+    column_width *= 8; // let's say 8 pixels per char...
+    child->SetListboxWidth(column_width < 150 ? 150 : column_width);
+    }
+  else if (column_width < 0) // in pixels
+    {
+    column_width = -column_width;
+    child->SetListboxWidth(column_width < 150 ? 150 : column_width);
+    column_width /= 8; // let's say 8 pixels per char...
+    child->SetWidth(column_width - column_width_margin); // account for margin
+    }
+  
+  // Put the values that were hidden in the -image option
+
+  it = split_elems.begin();
   for (; it != end; it++)
     {
     child->AddValue((*it).c_str());

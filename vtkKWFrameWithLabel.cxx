@@ -27,7 +27,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFrameWithLabel );
-vtkCxxRevisionMacro(vtkKWFrameWithLabel, "$Revision: 1.12 $");
+vtkCxxRevisionMacro(vtkKWFrameWithLabel, "$Revision: 1.13 $");
 
 int vtkKWFrameWithLabel::DefaultLabelCase = vtkKWFrameWithLabel::LabelCaseUppercaseFirst;
 int vtkKWFrameWithLabel::DefaultLabelFontWeight = vtkKWFrameWithLabel::LabelFontWeightBold;
@@ -47,6 +47,7 @@ vtkKWFrameWithLabel::vtkKWFrameWithLabel()
 
   this->AllowFrameToCollapse = 1;
   this->LimitedEditionModeIconVisibility = 0;
+  this->ChangePackingOnCollapse = 0;
 }
 
 //----------------------------------------------------------------------------
@@ -432,6 +433,10 @@ void vtkKWFrameWithLabel::ExpandFrame()
     {
     this->Script("pack %s -fill both -expand yes -padx 2 -pady 2",
                  this->Frame->GetWidgetName());
+    if (this->ChangePackingOnCollapse && this->IsPacked())
+      {
+      this->Script("pack configure %s -expand y", this->GetWidgetName());
+      }
     }
   if (this->IconData && this->Icon)
     {
@@ -448,6 +453,10 @@ void vtkKWFrameWithLabel::CollapseFrame()
     this->Script("pack forget %s", this->Frame->GetWidgetName());
     this->SetWidth(this->GetWidth());
     this->SetHeight(this->GetHeight());
+    if (this->ChangePackingOnCollapse && this->IsPacked())
+      {
+      this->Script("pack configure %s -expand n", this->GetWidgetName());
+      }
     }
   if (this->IconData && this->Icon)
     {
@@ -582,6 +591,8 @@ void vtkKWFrameWithLabel::PrintSelf(ostream& os, vtkIndent indent)
   this->Superclass::PrintSelf(os,indent);
   os << indent << "AllowFrameToCollapse: " 
      << (this->AllowFrameToCollapse ? "On" : "Off") << endl;
+  os << indent << "ChangePackingOnCollapse: " 
+     << (this->ChangePackingOnCollapse ? "On" : "Off") << endl;
   os << indent << "Frame: " << this->Frame << endl;
   os << indent << "LabelFrame: " << this->LabelFrame << endl;
   os << indent << "Groove: " << this->CollapsibleFrame << endl;
