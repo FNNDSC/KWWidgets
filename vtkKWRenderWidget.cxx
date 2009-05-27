@@ -47,7 +47,7 @@
 #include <vtksys/stl/map>
 
 vtkStandardNewMacro(vtkKWRenderWidget);
-vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.170 $");
+vtkCxxRevisionMacro(vtkKWRenderWidget, "$Revision: 1.171 $");
 
 //----------------------------------------------------------------------------
 class vtkKWRenderWidgetInternals
@@ -1773,6 +1773,8 @@ int vtkKWRenderWidget::RendererBackgroundColorCallback()
       (void*)(vtkKWRenderWidget::RendererBackgroundColorChangedEvent));
     this->AddCallbackCommandObserver(
       color_picker_widget, vtkKWColorPickerWidget::NewColorChangedEvent);
+    this->AddCallbackCommandObserver(
+      color_picker_widget, vtkKWColorPickerWidget::NewColorChangingEvent);
     }
 
   int ok = vtkKWTkUtilities::QueryUserForColor(
@@ -1797,6 +1799,8 @@ int vtkKWRenderWidget::RendererBackgroundColorCallback()
     {
     this->RemoveCallbackCommandObserver(
       color_picker_widget, vtkKWColorPickerWidget::NewColorChangedEvent);
+    this->RemoveCallbackCommandObserver(
+      color_picker_widget, vtkKWColorPickerWidget::NewColorChangingEvent);
     color_picker_widget->SetEventCallData(event_calldata);
     }
 
@@ -1824,6 +1828,8 @@ int vtkKWRenderWidget::RendererBackgroundColor2Callback()
       (void*)(vtkKWRenderWidget::RendererBackgroundColor2ChangedEvent));
     this->AddCallbackCommandObserver(
       color_picker_widget, vtkKWColorPickerWidget::NewColorChangedEvent);
+    this->AddCallbackCommandObserver(
+      color_picker_widget, vtkKWColorPickerWidget::NewColorChangingEvent);
     }
 
   int ok = vtkKWTkUtilities::QueryUserForColor(
@@ -1848,6 +1854,8 @@ int vtkKWRenderWidget::RendererBackgroundColor2Callback()
     {
     this->RemoveCallbackCommandObserver(
       color_picker_widget, vtkKWColorPickerWidget::NewColorChangedEvent);
+    this->RemoveCallbackCommandObserver(
+      color_picker_widget, vtkKWColorPickerWidget::NewColorChangingEvent);
     color_picker_widget->SetEventCallData(event_calldata);
     }
 
@@ -2464,64 +2472,70 @@ void vtkKWRenderWidget::ProcessCallbackCommandEvents(vtkObject *caller,
   if (caller == this->RenderWindow)
     {
     const char *cptr = 0;
+    int shape;
     switch (event)
       {
       case vtkCommand::CursorChangedEvent:
-        switch (*(static_cast<int*>(calldata))) 
+        shape = *(static_cast<int*>(calldata));
+        if (shape != this->RenderWindow->GetCurrentCursor())
           {
-          // Tk Cursors:
-          // http://www.xed.ch/lwm/tcltkref/tk.cursor.html
-          case VTK_CURSOR_DEFAULT:
-            cptr = "";
-            break;
-          case VTK_CURSOR_SIZENE:
+          switch (shape) 
+            {
+            // Tk Cursors:
+            // http://www.xed.ch/lwm/tcltkref/tk.cursor.html
+            case VTK_CURSOR_DEFAULT:
+              cptr = "";
+              break;
+            case VTK_CURSOR_SIZENE:
 #ifdef _WIN32
-            cptr = "size_ne_sw";
+              cptr = "size_ne_sw";
 #else
-            cptr = "top_right_corner";
+              cptr = "top_right_corner";
 #endif
-            break;
-          case VTK_CURSOR_SIZENW:
+              break;
+            case VTK_CURSOR_SIZENW:
 #ifdef _WIN32
-            cptr = "size_nw_se";
+              cptr = "size_nw_se";
 #else
-            cptr = "top_left_corner";
+              cptr = "top_left_corner";
 #endif
-            break;
-          case VTK_CURSOR_SIZESW:
+              break;
+            case VTK_CURSOR_SIZESW:
 #ifdef _WIN32
-            cptr = "size_ne_sw";
+              cptr = "size_ne_sw";
 #else
-            cptr = "bottom_left_corner";
+              cptr = "bottom_left_corner";
 #endif
-            break;
-          case VTK_CURSOR_SIZESE:
+              break;
+            case VTK_CURSOR_SIZESE:
 #ifdef _WIN32
-            cptr = "size_nw_se";
+              cptr = "size_nw_se";
 #else
-            cptr = "bottom_right_corner";
+              cptr = "bottom_right_corner";
 #endif
-            break;
-          case VTK_CURSOR_SIZENS:
-            cptr = "sb_v_double_arrow";
-            break;
-          case VTK_CURSOR_SIZEWE:
-            cptr = "sb_h_double_arrow";
-            break;
-          case VTK_CURSOR_SIZEALL:
+              break;
+            case VTK_CURSOR_SIZENS:
+              cptr = "sb_v_double_arrow";
+              break;
+            case VTK_CURSOR_SIZEWE:
+              cptr = "sb_h_double_arrow";
+              break;
+            case VTK_CURSOR_SIZEALL:
 #ifdef _WIN32
-            cptr = "fleur"; // should be "size" if we upgrade to Tcl/Tk > 8.4.5
+              // should be "size" if we upgrade to Tcl/Tk > 8.4.5
+              cptr = "fleur"; 
 #else
-            cptr = "fleur";
+              cptr = "fleur";
 #endif
-            break;
-          case VTK_CURSOR_HAND:
-            cptr = "hand2";
-            break;
-          }
-        if (cptr)
-          {
-          vtkKWTkUtilities::SetTopLevelMouseCursor(this, cptr);
+              break;
+            case VTK_CURSOR_HAND:
+              cptr = "hand2";
+              break;
+            }
+          if (cptr)
+            {
+            vtkKWTkUtilities::SetTopLevelMouseCursor(this, cptr);
+            }
           }
         break;
       }
@@ -2529,7 +2543,9 @@ void vtkKWRenderWidget::ProcessCallbackCommandEvents(vtkObject *caller,
 #endif
 
   vtkKWColorPickerWidget *cpw = vtkKWColorPickerWidget::SafeDownCast(caller);
-  if (cpw && event == vtkKWColorPickerWidget::NewColorChangedEvent)
+  if (cpw && 
+      (event == vtkKWColorPickerWidget::NewColorChangedEvent ||
+       event == vtkKWColorPickerWidget::NewColorChangingEvent))
     {
     if (calldata == 
         (void*)(vtkKWRenderWidget::RendererBackgroundColorChangedEvent))
