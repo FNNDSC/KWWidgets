@@ -6,6 +6,9 @@
 
 class vtkKWScale;
 
+// Note that C++ class have to be prefixed with "vtk" to be wrapped
+// automatically.
+
 class KWMyApplication_EXPORT vtkKWMyWidget : public vtkKWCompositeWidget
 {
 public:

@@ -34,6 +34,8 @@ set(TARGET_BASE_NAME "KW${PROJECT_NAME}Example")
 # This whole process is required to use C++ methods as callbacks; it is not
 # needed if you use VTK's C++ command/observer pattern directly, which is
 # also demonstrated in this example.
+# Note that C++ class have to be prefixed with "vtk" to be wrapped
+# automatically.
 
 set(LIB_NAME "KWCallbacksExampleLib")
 set(LIB_SRCS
