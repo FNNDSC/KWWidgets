@@ -522,6 +522,15 @@ macro(KWWidgets_GENERATE_SETUP_PATHS_FOR_ONE_CONFIGURATION_TYPE
     endif(INCR_TK_LIBRARY)
   endif(KWWidgets_USE_INCR_TCL)
 
+  # Qt
+
+  if(VTK_USE_QVTK AND VTK_QT_QMAKE_EXECUTABLE)
+    get_filename_component(path "${VTK_QT_QMAKE_EXECUTABLE}" PATH)
+    if(path)
+      set(KWWidgets_PATH_ENV ${KWWidgets_PATH_ENV} "${path}")
+    endif(path)
+  endif(VTK_USE_QVTK AND VTK_QT_QMAKE_EXECUTABLE)
+
   # If we have no TCL_LIBRARY or TCL_TCLSH, then we are probably being invoked
   # from an out-of-source example that is using either an installed VTK or
   # an installed KWWidgets. None of those projects export TCL_* variables
