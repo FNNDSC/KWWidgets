@@ -40,7 +40,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWMultiColumnList);
-vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.101 $");
+vtkCxxRevisionMacro(vtkKWMultiColumnList, "$Revision: 1.102 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMultiColumnListInternals
@@ -3959,9 +3959,9 @@ void vtkKWMultiColumnList::CellWindowCommandToComboBoxCreateCallback(
     {
     for (; it != end; it++)
       {
-      if ((*it).size() > column_width)
+      if ((int)((*it).size()) > column_width)
         {
-        column_width = (*it).size();
+        column_width = (int)((*it).size());
         }
       }
     if (column_width)

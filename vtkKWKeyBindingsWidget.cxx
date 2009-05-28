@@ -14,6 +14,13 @@
 
 #include "vtkKWKeyBindingsWidget.h"
 
+#ifdef _MSC_VER
+// Let us get rid of "decorated name length exceeded, name was truncated"
+// http://msdn.microsoft.com/en-us/library/074af4b6(VS.80).aspx
+// VS6 support might get discontinued anyway...
+#pragma warning( disable : 4503 )
+#endif 
+
 #include "vtkKWApplication.h"
 #include "vtkKWFrameWithLabel.h"
 #include "vtkKWIcon.h"
@@ -39,7 +46,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWKeyBindingsWidget );
-vtkCxxRevisionMacro(vtkKWKeyBindingsWidget, "$Revision: 1.1 $");
+vtkCxxRevisionMacro(vtkKWKeyBindingsWidget, "$Revision: 1.2 $");
 
 //----------------------------------------------------------------------------
 class vtkKWKeyBindingsWidgetInternals
