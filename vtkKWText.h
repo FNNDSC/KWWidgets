@@ -167,6 +167,11 @@ public:
   virtual int GetResizeToGrid();
 
   // Description:
+  // Adjusts the view in the widget so that the character at the end is
+  // completely visible.
+  virtual void SeeEnd();
+
+  // Description:
   // Update the "enable" state of the object and its internal parts.
   // Depending on different Ivars (this->Enabled, the application's 
   // Limited Edition Mode, etc.), the "enable" state of the object is updated

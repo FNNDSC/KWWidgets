@@ -36,7 +36,7 @@ const char *vtkKWText::TagFgDarkGreen = "_fg_dark_green_tag_";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWText);
-vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.61 $");
+vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.62 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTextInternals
@@ -575,6 +575,15 @@ void vtkKWText::AddTagMatcher(const char *regexp, const char *tag)
   tagmatcher.Tag = tag;
   this->Internals->TagMatchers.push_back(tagmatcher);
 } 
+
+//----------------------------------------------------------------------------
+void vtkKWText::SeeEnd()
+{
+  if (this->IsCreated())
+    {
+    this->Script("%s see end", this->GetWidgetName());
+    }
+}
 
 //----------------------------------------------------------------------------
 void vtkKWText::PrintSelf(ostream& os, vtkIndent indent)
