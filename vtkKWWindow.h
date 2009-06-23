@@ -335,6 +335,9 @@ public:
   // and propagated to its internal parts/subwidgets. This will, for example,
   // enable/disable parts of the widget UI, enable/disable the visibility
   // of 3D widgets, etc.
+  // Note: if you need to enable/disable a menu item conditionally in a 
+  // subclass, do it so by reimplementing UpdateMenuState(); do not forget to
+  // call the parent class's UpdateMenuState() from the subclass as well.
   virtual void UpdateEnableState();
   virtual void UpdateMenuState();
 
@@ -447,6 +450,9 @@ protected:
 
   // Description:
   // Populate the menus.
+  // Note: if you need to enable/disable a menu item conditionally in a 
+  // subclass, do it so by reimplementing UpdateMenuState(); do not forget to
+  // call the parent class's UpdateMenuState() from the subclass as well.
   virtual void PopulateWindowMenu();
   virtual void PopulateViewMenu();
   
