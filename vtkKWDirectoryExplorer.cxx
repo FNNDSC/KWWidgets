@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.46 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.47 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -487,7 +487,9 @@ void vtkKWDirectoryExplorer::AddDirectoryNode(
   vtkKWIcon *nodeicon)
 {
   this->DirectoryTree->GetWidget()->AddNode(parentnode, node, text);
-  this->DirectoryTree->GetWidget()->SetNodeUserData(node, fullname);
+  this->DirectoryTree->GetWidget()->SetNodeUserData(
+    node, vtksys::SystemTools::EscapeChars(
+      fullname, KWFileBrowser_ESCAPE_CHARS).c_str());
   this->DirectoryTree->GetWidget()->SetNodeImageToIcon(node, nodeicon);
 }
 
@@ -2172,7 +2174,8 @@ int vtkKWDirectoryExplorer::RenameCallback()
       this->DirectoryTree->GetWidget()->SetNodeText(
         node.c_str(), newname.c_str());
       this->DirectoryTree->GetWidget()->SetNodeUserData(
-        node.c_str(), fullname.c_str());
+        node.c_str(), vtksys::SystemTools::EscapeChars(
+          fullname.c_str(), KWFileBrowser_ESCAPE_CHARS).c_str());
       this->Update();
       this->InvokeDirectoryRenamedCommand(oldfile.c_str(), fullname.c_str());
       return 1;
@@ -2361,7 +2364,8 @@ int vtkKWDirectoryExplorer::RenameDirectory(
       this->DirectoryTree->GetWidget()->SetNodeText(
         (*it).c_str(), vtksys::SystemTools::GetFilenameName(newname).c_str());
       this->DirectoryTree->GetWidget()->SetNodeUserData(
-        (*it).c_str(), newname);
+        (*it).c_str(), vtksys::SystemTools::EscapeChars(
+          newname, KWFileBrowser_ESCAPE_CHARS).c_str());
       this->Update();
       return 1;
       }
