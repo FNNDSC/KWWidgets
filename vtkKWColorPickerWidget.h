@@ -107,6 +107,10 @@ public:
   vtkGetMacro(ColorSwatchesVisibility, int);
 
   // Description:
+  // Get the internal color swatches
+  vtkGetObjectMacro(ColorSwatchesWidget, vtkKWColorSwatchesWidget);   
+   
+  // Description:
   // Set/Get the favorites preset selector visibility.
   vtkBooleanMacro(FavoritesVisibility, int);
   virtual void SetFavoritesVisibility(int);
