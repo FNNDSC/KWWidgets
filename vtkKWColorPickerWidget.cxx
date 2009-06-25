@@ -44,7 +44,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWColorPickerWidget );
-vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.20 $");
+vtkCxxRevisionMacro(vtkKWColorPickerWidget, "$Revision: 1.21 $");
 
 //----------------------------------------------------------------------------
 class vtkKWColorPickerWidgetInternals
@@ -314,8 +314,6 @@ void vtkKWColorPickerWidget::CreateWidget()
     NULL, "Color Swatches", icon, VTK_KW_COLOR_PICKER_WIDGET_COLOR_SWATCHES_TAG);
   this->Notebook->SetPageVisibility(page_id, this->ColorSwatchesVisibility);
 
-  this->CreateColorSwatchesWidget();
-
   // --------------------------------------------------------------
   // Favorites presets
 
@@ -340,6 +338,8 @@ void vtkKWColorPickerWidget::CreateWidget()
     this, "HistoryColorPresetApplyCallback ");
 
   this->CreateHistoryColorPresetSelector();
+
+  this->CreateColorSwatchesWidget(); // need to be here
 
   // --------------------------------------------------------------
   // Sliders frame
@@ -845,9 +845,13 @@ void vtkKWColorPickerWidget::CreateColorSwatchesWidget()
   this->ColorSwatchesWidget->AddDefaultCollections();
   this->ColorSwatchesWidget->SetSwatchSelectedCommand(
     this, "SwatchSelectedCallback");
+  this->ColorSwatchesWidget->GetSwatchesColorPresetSelector()->SetListWidth(
+    this->FavoritesColorPresetSelector->GetListWidth());
+  this->ColorSwatchesWidget->GetSwatchesColorPresetSelector()->SetListHeight(
+    this->FavoritesColorPresetSelector->GetListHeight());
 
   this->Script(
-    "pack %s -side left -anchor nw -expand n -fill none -padx 2 -pady 2",
+    "pack %s -side left -anchor nw -expand y -fill both -padx 2 -pady 2",
     this->ColorSwatchesWidget->GetWidgetName());
 }
 

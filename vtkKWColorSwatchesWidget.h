@@ -25,6 +25,7 @@
 
 class vtkKWColorSwatchesWidgetInternals;
 class vtkKWFrameSet;
+class vtkKWColorPresetSelector;
 
 class KWWidgets_EXPORT vtkKWColorSwatchesWidget : public vtkKWCompositeWidget
 {
@@ -59,20 +60,41 @@ public:
     int collection_id, const char *name, double r, double g, double b);
 
   // Description:
+  // Set/Get the swatches representation.
+  //BTX
+  enum
+  {
+    RepresentationFrames = 0,
+    RepresentationList   = 1
+  };
+  //ETX
+  virtual void SetSwatchesRepresentation(int);
+  vtkGetMacro(SwatchesRepresentation, int);
+  virtual void SetSwatchesRepresentationToFrames(); 
+  virtual void SetSwatchesRepresentationToList();
+
+  // Description:
   // Set/Get the swatch size in pixels.
+  // Only relevant if SwatchesRepresentation is RepresentationFrames.
   vtkGetMacro(SwatchSize, int);
   virtual void SetSwatchSize(int);
 
   // Description:
   // Set/Get the maximum number of swatches packed horizontally (per row).
+  // Only relevant if SwatchesRepresentation is RepresentationFrames.
   virtual void SetMaximumNumberOfSwatchesPerRow(int);
   virtual int GetMaximumNumberOfSwatchesPerRow();
 
   // Description:
   // Set/Get the padding between each swatch.
+  // Only relevant if SwatchesRepresentation is RepresentationFrames.
   virtual void SetSwatchesPadding(int);
   virtual int GetSwatchesPadding();
 
+  // Description:
+  // Get the internal color swatches preset list
+  virtual vtkKWColorPresetSelector* GetSwatchesColorPresetSelector();   
+   
   // Description:
   // Create the default collections
   virtual void AddDefaultCollections();
@@ -94,6 +116,7 @@ public:
   virtual void CollectionSelectedCallback(const char*);
   virtual void PopulateCollectionsCallback();
   virtual void PopulateSwatchesCallback();
+  virtual void SwatchesColorPresetApplyCallback(int id);
 
   // Description:
   // Update the "enable" state of the object and its internal parts.
@@ -121,10 +144,17 @@ protected:
   // Populate the swatches frame and collectio combo
   virtual void PopulateCollections();
   virtual void PopulateSwatches();
+  virtual void PopulateSwatchesAsFrames();
+  virtual void PopulateSwatchesAsList();
   virtual void SchedulePopulateCollections();
   virtual void SchedulePopulateSwatches();
-  
+
+  // Description:
+  // Pack
+  virtual void Pack();
+
   int SwatchSize;
+  int SwatchesRepresentation;
   vtkKWColorSwatchesWidgetInternals *Internals;
 
 private:

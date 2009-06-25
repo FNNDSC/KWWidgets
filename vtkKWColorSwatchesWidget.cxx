@@ -17,18 +17,20 @@
 #include "vtkMath.h"
 
 #include "vtkKWApplication.h"
-#include "vtkKWLabel.h"
-#include "vtkKWIcon.h"
-#include "vtkKWMenu.h"
-#include "vtkKWMenuButton.h"
-#include "vtkKWTkUtilities.h"
-#include "vtkObjectFactory.h"
-#include "vtkKWInternationalization.h"
 #include "vtkKWBalloonHelpManager.h"
+#include "vtkKWColorPresetSelector.h"
 #include "vtkKWComboBox.h"
-
 #include "vtkKWFrame.h"
 #include "vtkKWFrameSet.h"
+#include "vtkKWIcon.h"
+#include "vtkKWInternationalization.h"
+#include "vtkKWLabel.h"
+#include "vtkKWMenu.h"
+#include "vtkKWMenuButton.h"
+#include "vtkKWRadioButton.h"
+#include "vtkKWRadioButtonSet.h"
+#include "vtkKWTkUtilities.h"
+#include "vtkObjectFactory.h"
 
 #include <vtksys/stl/list>
 #include <vtksys/stl/string>
@@ -36,7 +38,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWColorSwatchesWidget);
-vtkCxxRevisionMacro(vtkKWColorSwatchesWidget, "$Revision: 1.3 $");
+vtkCxxRevisionMacro(vtkKWColorSwatchesWidget, "$Revision: 1.4 $");
 
 //----------------------------------------------------------------------------
 class vtkKWColorSwatchesWidgetInternals
@@ -67,9 +69,12 @@ public:
   SwatchCollectionNode* GetCollectionByName(const char *name);
   SwatchCollectionNode* GetCollectionById(int id);
 
+  vtkKWFrame *ContainerFrame;
+  vtkKWComboBox *CollectionComboBox;
+  vtkKWRadioButtonSet *SwatchesRepresentationRadioButtonSet;
   vtkKWFrameSet *SwatchesFrameSet;
   vtkKWBalloonHelpManager *SwatchesBalloonHelpManager;
-  vtkKWComboBox *CollectionComboBox;
+  vtkKWColorPresetSelector *SwatchesColorPresetSelector;
 
   static int SwatchCollectionCounter;
   vtksys_stl::string SchedulePopulateCollectionsTimerId;
@@ -118,11 +123,17 @@ vtkKWColorSwatchesWidgetInternals::GetCollectionById(int id)
 vtkKWColorSwatchesWidget::vtkKWColorSwatchesWidget()
 {
   this->Internals = new vtkKWColorSwatchesWidgetInternals;
+  this->SwatchesRepresentation = 
+    vtkKWColorSwatchesWidget::RepresentationFrames;
   this->SwatchSize = 16;
   this->SwatchSelectedCommand = NULL;
-  this->Internals->SwatchesFrameSet = vtkKWFrameSet::New();
-  this->Internals->SwatchesBalloonHelpManager = NULL;
+  this->Internals->ContainerFrame = NULL;
   this->Internals->CollectionComboBox = NULL;
+  this->Internals->SwatchesRepresentationRadioButtonSet = NULL;
+  this->Internals->SwatchesBalloonHelpManager = NULL;
+  this->Internals->SwatchesFrameSet = vtkKWFrameSet::New();
+  this->Internals->SwatchesColorPresetSelector = 
+    vtkKWColorPresetSelector::New();
 }
 
 //----------------------------------------------------------------------------
@@ -138,6 +149,11 @@ vtkKWColorSwatchesWidget::~vtkKWColorSwatchesWidget()
     this->Internals->SwatchesFrameSet->Delete();
     this->Internals->SwatchesFrameSet = NULL;
     }
+  if (this->Internals->ContainerFrame)
+    {
+    this->Internals->ContainerFrame->Delete();
+    this->Internals->ContainerFrame = NULL;
+    }
   if (this->Internals->SwatchesBalloonHelpManager)
     {
     this->Internals->SwatchesBalloonHelpManager->Delete();
@@ -147,6 +163,16 @@ vtkKWColorSwatchesWidget::~vtkKWColorSwatchesWidget()
     {
     this->Internals->CollectionComboBox->Delete();
     this->Internals->CollectionComboBox = NULL;
+    }
+  if (this->Internals->SwatchesRepresentationRadioButtonSet)
+    {
+    this->Internals->SwatchesRepresentationRadioButtonSet->Delete();
+    this->Internals->SwatchesRepresentationRadioButtonSet = NULL;
+    }
+  if (this->Internals->SwatchesColorPresetSelector)
+    {
+    this->Internals->SwatchesColorPresetSelector->Delete();
+    this->Internals->SwatchesColorPresetSelector = NULL;
     }
 
   delete this->Internals;
@@ -272,18 +298,62 @@ void vtkKWColorSwatchesWidget::CreateWidget()
 
   this->Superclass::CreateWidget();
 
+  // Container frame
+
+  if (!this->Internals->ContainerFrame)
+    {
+    this->Internals->ContainerFrame = vtkKWFrame::New();
+    }
+  this->Internals->ContainerFrame->SetParent(this);
+  this->Internals->ContainerFrame->Create();
+
+  this->Script("pack %s -side top -anchor nw -expand n -fill none",
+               this->Internals->ContainerFrame->GetWidgetName());
+
   // Collection combobox
 
   this->Internals->CollectionComboBox = vtkKWComboBox::New();
-  this->Internals->CollectionComboBox->SetParent(this);
+  this->Internals->CollectionComboBox->SetParent(
+    this->Internals->ContainerFrame);
   this->Internals->CollectionComboBox->Create();
   this->Internals->CollectionComboBox->SetReadOnly(1);
   this->Internals->CollectionComboBox->SetWidth(15);
   this->Internals->CollectionComboBox->SetCommand(
     this, "CollectionSelectedCallback");
 
-  this->Script("pack %s -side top -anchor nw -expand n -fill none",
+  this->Script("pack %s -side left -anchor nw -expand n -fill none",
                this->Internals->CollectionComboBox->GetWidgetName());
+
+  // Representation mode
+
+  this->Internals->SwatchesRepresentationRadioButtonSet = 
+    vtkKWRadioButtonSet::New();
+  this->Internals->SwatchesRepresentationRadioButtonSet->SetParent(
+    this->Internals->ContainerFrame);
+  this->Internals->SwatchesRepresentationRadioButtonSet->Create();
+  this->Internals->SwatchesRepresentationRadioButtonSet->PackHorizontallyOn();
+  this->Internals->SwatchesRepresentationRadioButtonSet->SetWidgetsPadX(1);
+
+  vtkKWRadioButton *radiob = 
+    this->Internals->SwatchesRepresentationRadioButtonSet->AddWidget(
+      vtkKWColorSwatchesWidget::RepresentationFrames);
+  radiob->SetImageToPredefinedIcon(vtkKWIcon::IconSilkColorSwatch);
+  radiob->IndicatorVisibilityOff();
+  radiob->SetCommand(this, "SetSwatchesRepresentationToFrames");
+
+  radiob = 
+    this->Internals->SwatchesRepresentationRadioButtonSet->AddWidget(
+      vtkKWColorSwatchesWidget::RepresentationList);
+  radiob->SetImageToPredefinedIcon(vtkKWIcon::IconRows);
+  radiob->IndicatorVisibilityOff();
+  radiob->SetCommand(this, "SetSwatchesRepresentationToList");
+
+  this->Internals->SwatchesRepresentationRadioButtonSet->GetWidget(
+    this->SwatchesRepresentation)->SetSelectedState(1);
+
+  this->Script(
+    "pack %s -side left -anchor nw -expand n -fill none -padx 2",
+    this->Internals->SwatchesRepresentationRadioButtonSet->GetWidgetName());
 
   // Swatches frames
 
@@ -299,11 +369,102 @@ void vtkKWColorSwatchesWidget::CreateWidget()
   this->Internals->SwatchesFrameSet->SetWidgetsPadY(
     this->Internals->SwatchesFrameSet->GetWidgetsPadX());
 
-  this->Script("pack %s -side top -anchor nw -expand n -fill none",
-               this->Internals->SwatchesFrameSet->GetWidgetName());
+  // Swatches color presets
+
+  if (!this->Internals->SwatchesColorPresetSelector)
+    {
+    this->Internals->SwatchesColorPresetSelector = 
+      vtkKWColorPresetSelector::New();
+    }
+  this->Internals->SwatchesColorPresetSelector->SetParent(this);
+  this->Internals->SwatchesColorPresetSelector->Create();
+  this->Internals->SwatchesColorPresetSelector->SetPresetApplyCommand(
+    this, "SwatchesColorPresetApplyCallback ");
+  this->Internals->SwatchesColorPresetSelector->
+    SelectSpinButtonsVisibilityOff();
+  this->Internals->SwatchesColorPresetSelector->
+    RemoveButtonVisibilityOff();
+
+  // Populate
+
+  this->Pack();
 
   this->SchedulePopulateCollections();
   this->SchedulePopulateSwatches();
+}
+
+// ---------------------------------------------------------------------------
+void vtkKWColorSwatchesWidget::Pack()
+{
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
+  if (this->SwatchesRepresentation == 
+      vtkKWColorSwatchesWidget::RepresentationFrames)
+    {
+    this->Script(
+      "pack %s -side top -anchor nw -expand n -fill none -padx 0 -after %s", 
+      this->Internals->SwatchesFrameSet->GetWidgetName(), 
+      this->Internals->ContainerFrame->GetWidgetName());
+    this->Script(
+      "pack forget %s", 
+      this->Internals->SwatchesColorPresetSelector->GetWidgetName());
+    }
+  else
+    {
+    this->Script(
+      "pack %s -side top -anchor nw -expand y -fill both -padx 0 -after %s", 
+      this->Internals->SwatchesColorPresetSelector->GetWidgetName(), 
+      this->Internals->ContainerFrame->GetWidgetName());
+    this->Script(
+      "pack forget %s", 
+      this->Internals->SwatchesFrameSet->GetWidgetName());
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorSwatchesWidget::SetSwatchesRepresentation(int arg)
+{
+  if (this->SwatchesRepresentation == arg ||
+      arg < vtkKWColorSwatchesWidget::RepresentationFrames || 
+      arg > vtkKWColorSwatchesWidget::RepresentationList)
+    {
+    return;
+    }
+
+  this->SwatchesRepresentation = arg;
+  this->Modified();
+
+  if (this->Internals->SwatchesRepresentationRadioButtonSet &&
+      this->Internals->SwatchesRepresentationRadioButtonSet->IsCreated())
+    {
+    this->Internals->SwatchesRepresentationRadioButtonSet->GetWidget(
+      this->SwatchesRepresentation)->SetSelectedState(1);
+    }
+
+  this->Pack();
+  this->SchedulePopulateSwatches();
+}
+
+void vtkKWColorSwatchesWidget::SetSwatchesRepresentationToFrames()
+{ 
+  this->SetSwatchesRepresentation(
+    vtkKWColorSwatchesWidget::RepresentationFrames);
+}
+
+void vtkKWColorSwatchesWidget::SetSwatchesRepresentationToList()
+{ 
+  this->SetSwatchesRepresentation(
+    vtkKWColorSwatchesWidget::RepresentationList);
+}
+
+//----------------------------------------------------------------------------
+vtkKWColorPresetSelector* 
+vtkKWColorSwatchesWidget::GetSwatchesColorPresetSelector()
+{
+  return this->Internals->SwatchesColorPresetSelector;
 }
 
 //----------------------------------------------------------------------------
@@ -400,6 +561,20 @@ void vtkKWColorSwatchesWidget::PopulateCollectionsCallback()
 
 //----------------------------------------------------------------------------
 void vtkKWColorSwatchesWidget::PopulateSwatches()
+{
+  if (this->SwatchesRepresentation == 
+      vtkKWColorSwatchesWidget::RepresentationFrames)
+    {
+    this->PopulateSwatchesAsFrames();
+    }
+  else
+    {
+    this->PopulateSwatchesAsList();
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorSwatchesWidget::PopulateSwatchesAsFrames()
 {
   if (!this->IsCreated())
     {
@@ -506,6 +681,49 @@ void vtkKWColorSwatchesWidget::PopulateSwatches()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWColorSwatchesWidget::PopulateSwatchesAsList()
+{
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
+  const char *current_collection_name = NULL;
+  if (this->Internals->SwatchCollections.size())
+    {
+    current_collection_name = this->Internals->CollectionComboBox->GetValue();
+    }
+
+  vtkKWColorSwatchesWidgetInternals::SwatchCollectionNode *collection =
+    this->Internals->GetCollectionByName(current_collection_name);
+
+  // Clear then repopulate
+
+  this->Internals->SwatchesColorPresetSelector->RemoveAllPresets();
+  if (!collection || !collection->Swatches.size())
+    {
+    return;
+    }
+    
+  vtkKWColorSwatchesWidgetInternals::SwatchIterator it = 
+    collection->Swatches.begin();
+  vtkKWColorSwatchesWidgetInternals::SwatchIterator end = 
+    collection->Swatches.end();
+  for (; it != end; ++it)
+    {
+    vtkKWColorSwatchesWidgetInternals::SwatchNode &swatch = *it;
+    int id = this->Internals->SwatchesColorPresetSelector->AddPreset();
+    this->Internals->SwatchesColorPresetSelector->SetPresetColorAsRGB(
+      id, swatch.RGB);
+    if (swatch.Name.size())
+      {
+      this->Internals->SwatchesColorPresetSelector->SetPresetComment(
+        id, swatch.Name.c_str());
+      }
+    }
+}
+
+//----------------------------------------------------------------------------
 void vtkKWColorSwatchesWidget::SchedulePopulateSwatches()
 {
   // Already scheduled
@@ -539,6 +757,19 @@ void vtkKWColorSwatchesWidget::SwatchSelectedCallback(
   double r, double g, double b)
 {
   this->InvokeSwatchSelectedCommand(r, g, b);
+}
+
+//---------------------------------------------------------------------------
+void vtkKWColorSwatchesWidget::SwatchesColorPresetApplyCallback(int id)
+{
+  if (this->Internals->SwatchesColorPresetSelector &&
+      this->Internals->SwatchesColorPresetSelector->HasPreset(id))
+    {
+    double r, g, b;
+    this->Internals->SwatchesColorPresetSelector->GetPresetColorAsRGB(
+      id, r, g, b);
+    this->InvokeSwatchSelectedCommand(r, g, b);
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -1048,6 +1279,8 @@ void vtkKWColorSwatchesWidget::UpdateEnableState()
   this->Superclass::UpdateEnableState();
 
   this->PropagateEnableState(this->Internals->SwatchesFrameSet);
+  this->PropagateEnableState(this->Internals->CollectionComboBox);
+  this->PropagateEnableState(this->Internals->SwatchesColorPresetSelector);
 }
 
 //----------------------------------------------------------------------------
@@ -1056,5 +1289,6 @@ void vtkKWColorSwatchesWidget::PrintSelf(ostream& os, vtkIndent indent)
   this->Superclass::PrintSelf(os,indent);
 
   os << indent << "SwatchSize: " << this->SwatchSize << endl;
+  os << indent << "SwatchesRepresentation: " << this->SwatchesRepresentation << endl;
 }
 
