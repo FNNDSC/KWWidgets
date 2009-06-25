@@ -36,7 +36,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWColorSwatchesWidget);
-vtkCxxRevisionMacro(vtkKWColorSwatchesWidget, "$Revision: 1.2 $");
+vtkCxxRevisionMacro(vtkKWColorSwatchesWidget, "$Revision: 1.3 $");
 
 //----------------------------------------------------------------------------
 class vtkKWColorSwatchesWidgetInternals
@@ -198,6 +198,32 @@ int vtkKWColorSwatchesWidget::AddCollection(const char *name)
 }
 
 //----------------------------------------------------------------------------
+int vtkKWColorSwatchesWidget::RemoveCollection(int id)
+{
+  vtkKWColorSwatchesWidgetInternals::SwatchCollectionIterator it = 
+    this->Internals->SwatchCollections.begin();
+  vtkKWColorSwatchesWidgetInternals::SwatchCollectionIterator end = 
+    this->Internals->SwatchCollections.end();
+  for (; it != end; ++it)
+    {
+    if ((*it).Id == id)
+      {
+      this->Internals->SwatchCollections.erase(it);
+      this->SchedulePopulateCollections();
+      return 1;
+      }
+    }
+  return 0;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWColorSwatchesWidget::RemoveAllCollections()
+{
+  this->Internals->SwatchCollections.clear();
+  this->SchedulePopulateCollections();
+}
+
+//----------------------------------------------------------------------------
 int vtkKWColorSwatchesWidget::AddRGBSwatch(
   int collection_id, const char *name, double rgb[3])
 {
@@ -308,11 +334,15 @@ int vtkKWColorSwatchesWidget::GetSwatchesPadding()
 //----------------------------------------------------------------------------
 void vtkKWColorSwatchesWidget::PopulateCollections()
 {
-  if (!this->IsCreated() ||
-      !this->Internals->SwatchCollections.size())
+  if (!this->IsCreated())
     {
     return;
     }
+
+  const char *temp = this->Internals->CollectionComboBox->GetValue();
+  vtksys_stl::string old_sel(temp ? temp : "");
+
+  this->Internals->CollectionComboBox->DeleteAllValues();
 
   vtkKWColorSwatchesWidgetInternals::SwatchCollectionIterator it = 
     this->Internals->SwatchCollections.begin();
@@ -320,20 +350,23 @@ void vtkKWColorSwatchesWidget::PopulateCollections()
     this->Internals->SwatchCollections.end();
   for (; it != end; ++it)
     {
-    vtkKWColorSwatchesWidgetInternals::SwatchCollectionNode &collection = *it;
-    if (!this->Internals->CollectionComboBox->HasValue(collection.Name.c_str()))
-      {
-      this->Internals->CollectionComboBox->AddValue(collection.Name.c_str());
-      }
+    this->Internals->CollectionComboBox->AddValue((*it).Name.c_str());
     }
 
-  const char *current_collection_name = 
-    this->Internals->CollectionComboBox->GetValue();
-  if (!current_collection_name || !*current_collection_name)
+  const char *value = NULL;
+  if (old_sel.size() && this->GetCollectionId(old_sel.c_str()) != -1)
     {
-    this->Internals->CollectionComboBox->SetValue(
-      this->Internals->SwatchCollections.front().Name.c_str());
+    value = old_sel.c_str();
     }
+  else 
+    {
+    if (this->Internals->SwatchCollections.size())
+      {
+      value = this->Internals->SwatchCollections.front().Name.c_str();
+      }
+    this->SchedulePopulateSwatches();
+    }
+  this->Internals->CollectionComboBox->SetValue(value);
 }
 
 //----------------------------------------------------------------------------
@@ -368,94 +401,94 @@ void vtkKWColorSwatchesWidget::PopulateCollectionsCallback()
 //----------------------------------------------------------------------------
 void vtkKWColorSwatchesWidget::PopulateSwatches()
 {
-  // Not created or no collections at all, don't bother
-
-  if (!this->IsCreated() ||
-      !this->Internals->SwatchCollections.size())
+  if (!this->IsCreated())
     {
     return;
     }
 
-  // No collection selected..
-
-  const char *current_collection_name = 
-    this->Internals->CollectionComboBox->GetValue();
-  if (!current_collection_name || !*current_collection_name)
+  const char *current_collection_name = NULL;
+  if (this->Internals->SwatchCollections.size())
     {
-    return;
+    current_collection_name = this->Internals->CollectionComboBox->GetValue();
     }
+
   vtkKWColorSwatchesWidgetInternals::SwatchCollectionNode *collection =
     this->Internals->GetCollectionByName(current_collection_name);
-  if (!collection)
-    {
-    return;
-    }
 
-  // Create the special balloon help manager, if not created already
-
-  if (!this->Internals->SwatchesBalloonHelpManager)
-    {
-    this->Internals->SwatchesBalloonHelpManager = 
-      vtkKWBalloonHelpManager::New();
-    this->Internals->SwatchesBalloonHelpManager->SetApplication(
-      this->GetApplication());
-    this->Internals->SwatchesBalloonHelpManager->SetIgnoreIfNotEnabled(1);
-    this->Internals->SwatchesBalloonHelpManager->SetDelay(10);
-    }
-
-  vtkKWColorSwatchesWidgetInternals::SwatchIterator it = 
-    collection->Swatches.begin();
-  vtkKWColorSwatchesWidgetInternals::SwatchIterator end = 
-    collection->Swatches.end();
-
-  // Create or update the frames
-
-  vtksys_ios::ostringstream tk_cmd;
-
-  int nb_swatches = (int)collection->Swatches.size();
+  int nb_swatches = collection ? (int)collection->Swatches.size() : 0;
   int nb_frames = this->Internals->SwatchesFrameSet->GetNumberOfWidgets();
 
   int max_entries = nb_swatches > nb_frames ? nb_swatches : nb_frames;
+  if (!max_entries)
+    {
+    return;
+    }
+
+  // Create or update the frames
+
   int *frames_id = new int[max_entries];
   int *frames_id_ptr = frames_id;
   int *frames_visibility = new int[max_entries];
   int *frames_visibility_ptr = frames_visibility;
 
   char command[128];
-  int i;
-  for (i = 0; it != end; ++it, ++i)
-    {
-    vtkKWColorSwatchesWidgetInternals::SwatchNode &swatch = *it;
-    vtkKWFrame *frame = this->Internals->SwatchesFrameSet->GetWidget(i);
-    if (!frame)
-      {
-      frame = this->Internals->SwatchesFrameSet->AddWidget(i);
-      }
-    if (swatch.HexRGB[0] == 0)
-      {
-      // Cache the Hex RGB for speed
-      sprintf(swatch.HexRGB, "%02x%02x%02x", 
-              (int)(swatch.RGB[0] * 255.0),
-              (int)(swatch.RGB[1] * 255.0),
-              (int)(swatch.RGB[2] * 255.0));
-      }
-    tk_cmd << frame->GetWidgetName() 
-           << " configure -bd 1 -relief solid -width " << this->SwatchSize 
-           << " -height " << this->SwatchSize << " -bg #" << swatch.HexRGB 
-           << endl; 
-    sprintf(command, "SwatchSelectedCallback %f %f %f", 
-            swatch.RGB[0], swatch.RGB[1], swatch.RGB[2]);
-    frame->SetBinding("<Any-ButtonPress>", this, command);
-    if (swatch.Name.size())
-      {
-      frame->SetBalloonHelpManager(this->Internals->SwatchesBalloonHelpManager);
-      frame->SetBalloonHelpString(swatch.Name.c_str());
-      }
-    *frames_id_ptr++ = i;
-    *frames_visibility_ptr++ = 1;
-    }
+  int i = 0;
 
-  this->Script(tk_cmd.str().c_str());
+  if (collection)
+    {
+    // Create the special balloon help manager, if not created already
+    
+    if (!this->Internals->SwatchesBalloonHelpManager)
+      {
+      this->Internals->SwatchesBalloonHelpManager = 
+        vtkKWBalloonHelpManager::New();
+      this->Internals->SwatchesBalloonHelpManager->SetApplication(
+        this->GetApplication());
+      this->Internals->SwatchesBalloonHelpManager->SetIgnoreIfNotEnabled(1);
+      this->Internals->SwatchesBalloonHelpManager->SetDelay(10);
+      }
+
+    vtksys_ios::ostringstream tk_cmd;
+    
+    vtkKWColorSwatchesWidgetInternals::SwatchIterator it = 
+      collection->Swatches.begin();
+    vtkKWColorSwatchesWidgetInternals::SwatchIterator end = 
+      collection->Swatches.end();
+    for (; it != end; ++it, ++i)
+      {
+      vtkKWColorSwatchesWidgetInternals::SwatchNode &swatch = *it;
+      vtkKWFrame *frame = this->Internals->SwatchesFrameSet->GetWidget(i);
+      if (!frame)
+        {
+        frame = this->Internals->SwatchesFrameSet->AddWidget(i);
+        }
+      if (swatch.HexRGB[0] == 0)
+        {
+        // Cache the Hex RGB for speed
+        sprintf(swatch.HexRGB, "%02x%02x%02x", 
+                (int)(swatch.RGB[0] * 255.0),
+                (int)(swatch.RGB[1] * 255.0),
+                (int)(swatch.RGB[2] * 255.0));
+        }
+      tk_cmd << frame->GetWidgetName() 
+             << " configure -bd 1 -relief solid -width " << this->SwatchSize 
+             << " -height " << this->SwatchSize << " -bg #" << swatch.HexRGB 
+             << endl; 
+      sprintf(command, "SwatchSelectedCallback %f %f %f", 
+              swatch.RGB[0], swatch.RGB[1], swatch.RGB[2]);
+      frame->SetBinding("<Any-ButtonPress>", this, command);
+      if (swatch.Name.size())
+        {
+        frame->SetBalloonHelpManager(
+          this->Internals->SwatchesBalloonHelpManager);
+        frame->SetBalloonHelpString(swatch.Name.c_str());
+        }
+      *frames_id_ptr++ = i;
+      *frames_visibility_ptr++ = 1;
+      }
+
+    this->Script(tk_cmd.str().c_str());
+    }
 
   // Hide the remaining frames
 
@@ -467,7 +500,7 @@ void vtkKWColorSwatchesWidget::PopulateSwatches()
 
   this->Internals->SwatchesFrameSet->SetWidgetsVisibility(
     max_entries, frames_id, frames_visibility);
-
+  
   delete [] frames_id;
   delete [] frames_visibility;
 }

@@ -39,6 +39,12 @@ public:
   virtual int AddCollection(const char *name);
 
   // Description:
+  // Remove a swatches collection given its ID, or all collections
+  // Return 1 on success, 0 otherwise
+  virtual int RemoveCollection(int collection_id);
+  virtual void RemoveAllCollections();
+
+  // Description:
   // Get the unique ID of a swatches collection given its name
   // Return -1 on error. 
   virtual int GetCollectionId(const char *name);
