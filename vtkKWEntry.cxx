@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWEntry);
-vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.100 $");
+vtkCxxRevisionMacro(vtkKWEntry, "$Revision: 1.101 $");
 
 //----------------------------------------------------------------------------
 vtkKWEntry::vtkKWEntry()
@@ -133,7 +133,14 @@ void vtkKWEntry::Configure()
   // definitely be validated/acknowledged. This is what this event will
   // take care of.
 
-  this->SetBinding("<Unmap>", this, "ValueCallback");
+  if (!this->ReadOnly)
+    {
+    this->SetBinding("<Unmap>", this, "ValueCallback");
+    }
+  else
+    {
+    this->RemoveBinding("<Unmap>", this, "ValueCallback");
+    }
 
   this->ConfigureValidation();
 
