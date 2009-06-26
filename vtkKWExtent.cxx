@@ -22,7 +22,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWExtent );
-vtkCxxRevisionMacro(vtkKWExtent, "$Revision: 1.55 $");
+vtkCxxRevisionMacro(vtkKWExtent, "$Revision: 1.56 $");
 
 //----------------------------------------------------------------------------
 vtkKWExtent::vtkKWExtent()
@@ -92,6 +92,7 @@ void vtkKWExtent::CreateWidget()
     this->Range[i]->SetCommand(this, "RangeCommandCallback");
     this->Range[i]->SetStartCommand(this, "RangeStartCommandCallback");
     this->Range[i]->SetEndCommand(this,  "RangeEndCommandCallback");
+    this->Range[i]->SetEntriesCommand(this,  "RangeEntriesCommandCallback");
     this->Range[i]->AdjustResolutionOn();
     }
 
@@ -306,6 +307,12 @@ void vtkKWExtent::RangeEndCommandCallback(double, double)
     this->Extent[0], this->Extent[1],
     this->Extent[2], this->Extent[3],
     this->Extent[4], this->Extent[5]);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWExtent::RangeEntriesCommandCallback(double a, double b)
+{
+  this->RangeEndCommandCallback(a, b);
 }
 
 //----------------------------------------------------------------------------

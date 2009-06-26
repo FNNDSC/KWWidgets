@@ -188,6 +188,7 @@ public:
   virtual void RangeCommandCallback(double r0, double r1);
   virtual void RangeStartCommandCallback(double r0, double r1);
   virtual void RangeEndCommandCallback(double r0, double r1);
+  virtual void RangeEntriesCommandCallback(double r0, double r1);
 
 protected:
   vtkKWExtent();
