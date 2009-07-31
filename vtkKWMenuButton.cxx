@@ -24,13 +24,14 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenuButton );
-vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.48 $");
+vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.49 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMenuButtonInternals
 {
 public:
   vtksys_stl::string ScheduleUpdateMenuButtonLabelTimerId;
+  int WidgetWidthAtPreviousLabelCrop;
 
 };
 
@@ -38,6 +39,7 @@ public:
 vtkKWMenuButton::vtkKWMenuButton()
 {
   this->Internals = new vtkKWMenuButtonInternals;
+  this->Internals->WidgetWidthAtPreviousLabelCrop = 0;
 
   this->CurrentValue      = NULL;
   this->Menu              = vtkKWMenu::New();
@@ -305,6 +307,18 @@ void vtkKWMenuButton::UpdateMenuButtonLabel()
       if (vtkKWTkUtilities::GetWidgetSize(this, &widget_width, NULL) &&
           vtkKWTkUtilities::GetFontMeasure(this, found, &label_width))
         {
+        int old_width = this->Internals->WidgetWidthAtPreviousLabelCrop;
+        int width_delta = abs(widget_width - old_width);
+        if (old_width > 0 && width_delta < 50)
+          {
+          // label has previously been cropped and widget hasn't changed size very much so don't adjust the label width
+          // - this prevents the new label size from triggering a subsequent configure
+          // event that leads to an infinite resize loop
+          // - 50 pixels seems to be a good threshold for this
+          // 
+          return;
+          }
+
         if (this->GetIndicatorVisibility())
           {
           widget_width -= 30;
@@ -330,6 +344,7 @@ void vtkKWMenuButton::UpdateMenuButtonLabel()
               this, cropped.c_str(), &label_width);
             } while (length > 0 && label_width  > widget_width);
           this->SetConfigurationOption("-text", cropped.c_str());
+          this->Internals->WidgetWidthAtPreviousLabelCrop = widget_width;
           }
         }
       }
