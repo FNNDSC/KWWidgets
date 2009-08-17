@@ -24,7 +24,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWMenuButton );
-vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.49 $");
+vtkCxxRevisionMacro(vtkKWMenuButton, "$Revision: 1.50 $");
 
 //----------------------------------------------------------------------------
 class vtkKWMenuButtonInternals
@@ -32,6 +32,7 @@ class vtkKWMenuButtonInternals
 public:
   vtksys_stl::string ScheduleUpdateMenuButtonLabelTimerId;
   int WidgetWidthAtPreviousLabelCrop;
+  vtksys_stl::string ValueAtPreviousLabelCrop;
 
 };
 
@@ -40,6 +41,7 @@ vtkKWMenuButton::vtkKWMenuButton()
 {
   this->Internals = new vtkKWMenuButtonInternals;
   this->Internals->WidgetWidthAtPreviousLabelCrop = 0;
+  this->Internals->ValueAtPreviousLabelCrop = "";
 
   this->CurrentValue      = NULL;
   this->Menu              = vtkKWMenu::New();
@@ -307,10 +309,12 @@ void vtkKWMenuButton::UpdateMenuButtonLabel()
       if (vtkKWTkUtilities::GetWidgetSize(this, &widget_width, NULL) &&
           vtkKWTkUtilities::GetFontMeasure(this, found, &label_width))
         {
+        const char *prevValue = this->Internals->ValueAtPreviousLabelCrop.c_str();
         int old_width = this->Internals->WidgetWidthAtPreviousLabelCrop;
         int width_delta = abs(widget_width - old_width);
-        if (old_width > 0 && width_delta < 50)
+        if (!strcmp(prevValue, found) && old_width > 0 && width_delta < 50)
           {
+          // label value has not changed and 
           // label has previously been cropped and widget hasn't changed size very much so don't adjust the label width
           // - this prevents the new label size from triggering a subsequent configure
           // event that leads to an infinite resize loop
@@ -346,6 +350,7 @@ void vtkKWMenuButton::UpdateMenuButtonLabel()
           this->SetConfigurationOption("-text", cropped.c_str());
           this->Internals->WidgetWidthAtPreviousLabelCrop = widget_width;
           }
+        this->Internals->ValueAtPreviousLabelCrop = found;
         }
       }
     else if (this->MaximumLabelWidth > 0)
