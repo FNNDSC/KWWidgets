@@ -26,13 +26,14 @@
 #else
 #include <unistd.h>
 #endif
+#include <sys/types.h>
 
 #if defined(PATH_MAX)
-#define MAX_PATH_len PATH_MAX
+#define MAX_PATH_len ((size_t)PATH_MAX)
 #elif defined(MAXPATHLEN)
-#define MAX_PATH_len MAXPATHLEN
+#define MAX_PATH_len ((size_t)MAXPATHLEN)
 #else
-#define MAX_PATH_len 16384
+#define MAX_PATH_len ((size_t)16384)
 #endif
 
 #define MAX_QUOTED_ARGV 50
