@@ -252,10 +252,17 @@ public:
     unsigned long buffer_length = 0);
   
   // Description:
-  // Specifies a window/widget to display at the left of the label of a node.
+  // Set/Get a window/widget to display at the left of the label of a node.
   // This option overrides any image option.
   // Note that this window/widget *has* to be a child of this tree instance.
   virtual void SetNodeWindow(const char *node, vtkKWWidget *w);
+  virtual vtkKWWidget* GetNodeWindow(const char *node);
+
+  // Description:
+  // Starting with node, find all children nodes with a NodeWindow set
+  // and call Delete() and each of the corresponding widget.
+  // Use NULL or "root" to delete from the top.
+  virtual void DeleteAllNodeWindows(const char *parent);
 
   // Description:
   // Set/Get the distance between image or window and text of a node.

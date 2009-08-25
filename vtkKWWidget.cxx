@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.161 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.162 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetInternals
@@ -411,16 +411,19 @@ int vtkKWWidget::GetNumberOfChildren()
 //----------------------------------------------------------------------------
 vtkKWWidget* vtkKWWidget::GetChildWidgetWithName(const char *name)
 {
-  int nb_children = this->GetNumberOfChildren();
-  if (name && nb_children)
+  if (name && *name) 
     {
-    for (int i = 0; i < nb_children; i++)
+    int nb_children = this->GetNumberOfChildren();
+    if (name && nb_children)
       {
-      vtkKWWidget *child = this->GetNthChild(i);
-      const char *wname = child->GetWidgetName();
-      if (wname && !strcmp(wname, name))
+      for (int i = 0; i < nb_children; i++)
         {
-        return child;
+        vtkKWWidget *child = this->GetNthChild(i);
+        const char *wname = child->GetWidgetName();
+        if (wname && !strcmp(wname, name))
+          {
+          return child;
+          }
         }
       }
     }

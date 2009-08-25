@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTree );
-vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.48 $");
+vtkCxxRevisionMacro(vtkKWTree, "$Revision: 1.49 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTreeInternals
@@ -1007,6 +1007,46 @@ void vtkKWTree::SetNodeWindow(const char *node, vtkKWWidget *w)
     {
     this->Script("%s itemconfigure %s -window %s", 
                  this->GetWidgetName(), node, w->GetWidgetName());
+    }
+}
+
+//----------------------------------------------------------------------------
+vtkKWWidget* vtkKWTree::GetNodeWindow(const char *node)
+{
+  if (this->IsCreated() && node && *node)
+    {
+    const char *window = 
+      this->Script("%s itemcget %s -window", this->GetWidgetName(), node);
+    return this->GetChildWidgetWithName(window);
+    }
+  return NULL;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWTree::DeleteAllNodeWindows(const char *parent)
+{
+  const char *children = 
+    this->GetNodeChildren(parent && *parent ? parent : "root");
+  if (!children || !*children)
+    {
+    return;
+    }
+   
+  vtksys_stl::vector<vtksys_stl::string> children_list;
+  vtksys::SystemTools::Split(children, children_list, ' ');
+  vtksys_stl::vector<vtksys_stl::string>::iterator end = children_list.end();
+  vtksys_stl::vector<vtksys_stl::string>::iterator it = children_list.begin();
+
+  for (; it != end; it++)
+    {
+    const char *node = (*it).c_str();
+    vtkKWWidget *window = this->GetNodeWindow(node);
+    if (window)
+      {
+      this->SetNodeWindow(node, NULL);
+      window->SetParent(NULL);
+      }
+    this->DeleteAllNodeWindows(node);
     }
 }
 
