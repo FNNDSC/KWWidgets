@@ -49,6 +49,11 @@ public:
   // Return 1 on success, 0 otherwise
   virtual int WriteKeyBindingsToStream(ostream& os);
   virtual int WriteKeyBindingsToFile(const char *filename);
+
+  // Description:
+  // Expose a few internals
+  vtkGetObjectMacro(Toolbar, vtkKWToolbar);
+  vtkGetObjectMacro(SaveButton, vtkKWLoadSaveButton);
   
   // Description:
   // Update the "enable" state of the object and its internal parts.
