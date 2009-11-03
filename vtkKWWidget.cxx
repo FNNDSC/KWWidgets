@@ -32,7 +32,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWWidget );
-vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.162 $");
+vtkCxxRevisionMacro(vtkKWWidget, "$Revision: 1.163 $");
 
 //----------------------------------------------------------------------------
 class vtkKWWidgetInternals
@@ -40,6 +40,7 @@ class vtkKWWidgetInternals
 public:
   typedef vtksys_stl::vector<vtkKWWidget*> WidgetsContainer;
   typedef vtksys_stl::vector<vtkKWWidget*>::iterator WidgetsContainerIterator;
+  vtksys_stl::string PreviouslyGrabbedWidget;
 
   WidgetsContainer *Children;
 
@@ -793,6 +794,7 @@ void vtkKWWidget::Grab()
     return;
     }
 
+  this->Internals->PreviouslyGrabbedWidget = this->Script("grab current");
   this->Script("grab %s", this->GetWidgetName());
 }
 
@@ -805,6 +807,11 @@ void vtkKWWidget::ReleaseGrab()
     }
 
   this->Script("grab release %s", this->GetWidgetName());
+  if (this->Internals->PreviouslyGrabbedWidget.size() > 0)
+    {
+    this->Script("grab %s", this->Internals->PreviouslyGrabbedWidget.c_str());
+    this->Internals->PreviouslyGrabbedWidget = "";
+    }
 }
 
 //----------------------------------------------------------------------------

@@ -289,11 +289,17 @@ public:
   // WithdrawEvent is called when the toplevel has been withdrawn, as a result
   // of calling the Withdraw() method. DisplayEvent is called when the 
   // toplevel has been displayed by calling the Display() method.
+  // SlaveDisplayEvent is invoked when a slave toplevel of that instance is
+  // displayed (i.e. a toplevel whose MasterWindow was set to this instance).
+  // SlaveWithdrawEvent is invoked when a slave toplevel of that instance is
+  // withdrawn. Both events pass a pointer to the slave as call data.
   //BTX
   enum
   {
     DisplayEvent = 5500,
-    WithdrawEvent
+    WithdrawEvent,
+    SlaveDisplayEvent,
+    SlaveWithdrawEvent
   };
   //ETX
 
