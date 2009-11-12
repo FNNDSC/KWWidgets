@@ -36,7 +36,7 @@ const char *vtkKWText::TagFgDarkGreen = "_fg_dark_green_tag_";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWText);
-vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.62 $");
+vtkCxxRevisionMacro(vtkKWText, "$Revision: 1.63 $");
 
 //----------------------------------------------------------------------------
 class vtkKWTextInternals
@@ -62,6 +62,9 @@ vtkKWText::vtkKWText()
   this->InternalTextString = NULL;
   this->ReadOnly            = 0;
   this->QuickFormatting     = 0;
+  this->Command             = NULL;
+  this->CommandTrigger      = (vtkKWText::TriggerOnFocusOut | 
+                               vtkKWText::TriggerOnReturnKey);
 
   this->Internals = new vtkKWTextInternals;
 }
@@ -69,6 +72,12 @@ vtkKWText::vtkKWText()
 //----------------------------------------------------------------------------
 vtkKWText::~vtkKWText()
 {
+  if (this->Command)
+    {
+    delete [] this->Command;
+    this->Command = NULL;
+    }
+
   this->SetInternalTextString(NULL);
 
   // Delete all presets
@@ -77,6 +86,66 @@ vtkKWText::~vtkKWText()
     {
     delete this->Internals;
     this->Internals = NULL;
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWText::Configure(int disable)
+{
+  if (!this->IsCreated())
+    {
+    return;
+    }
+
+  if (!this->ReadOnly &&
+      this->CommandTrigger & vtkKWText::TriggerOnFocusOut &&
+      !disable)
+    {
+    this->SetBinding("<FocusOut>", this, "ValueCallback");
+    }
+  else
+    {
+    this->RemoveBinding("<FocusOut>", this, "ValueCallback");
+    }
+
+  if (this->CommandTrigger & vtkKWText::TriggerOnReturnKey &&
+      !disable)
+    {
+    this->SetBinding("<Return>", this, "ValueCallback");
+    }
+  else
+    {
+    this->RemoveBinding("<Return>", this, "ValueCallback");
+    }
+
+  if (this->CommandTrigger & vtkKWText::TriggerOnAnyChange &&
+      !disable)
+    {
+    this->SetBinding("<<Modified>>", this, "ValueCallback");
+    }
+  else
+    {
+    this->RemoveBinding("<<Modified>>", this, "ValueCallback");
+    }
+
+  // When the text is unmapped, trigger the callback as well. Here is
+  // the rationale: a user may have edited the value in the text but
+  // neither did he press Enter or clicked on any other widget that
+  // made that text lose its focus. When the user closes the window, or when
+  // the user switch to a different notebook tab than the one in which the 
+  // text was packed, or when the user skip to a different wizard step
+  // than the one in which the text was packed, then this text should
+  // definitely be validated/acknowledged. This is what this event will
+  // take care of.
+
+  if (!this->ReadOnly &&
+      !disable)
+    {
+    this->SetBinding("<Unmap>", this, "ValueCallback");
+    }
+  else
+    {
+    this->RemoveBinding("<Unmap>", this, "ValueCallback");
     }
 }
 
@@ -103,7 +172,7 @@ void vtkKWText::SetText(const char *s)
 //----------------------------------------------------------------------------
 void vtkKWText::SetText(const char *s, const char *tag)
 {
-  if (!this->IsCreated() || !s)
+  if (!this->IsCreated())
     {
     return;
     }
@@ -112,9 +181,13 @@ void vtkKWText::SetText(const char *s, const char *tag)
 
   int state = this->GetState();
   this->SetStateToNormal();
-
+  this->Configure(1); // disable all bindings so that deleting doesn't trigger
   this->Script("%s delete 1.0 end", this->GetWidgetName());
-
+  if (this->CommandTrigger & vtkKWText::TriggerOnAnyChange)
+    {
+    this->SetModifiedFlag(0);
+    }
+  this->Configure(0); // re-enable all bindings
   this->SetState(state);
 
   // Append to the end
@@ -131,7 +204,7 @@ void vtkKWText::AppendText(const char *s)
 //----------------------------------------------------------------------------
 void vtkKWText::AppendText(const char *s, const char *tag)
 {
-  if (!this->IsCreated() || !s)
+  if (!this->IsCreated())
     {
     return;
     }
@@ -152,7 +225,7 @@ void vtkKWText::AppendTextInternalTagging(const char *str, const char *tag)
 
   // In QuickFormatting mode, look for markers, and use tags accordingly
 
-  if (this->QuickFormatting)
+  if (this->QuickFormatting && str)
     {
     const int nb_markers = 3;
     const char* markertag[nb_markers * 2] = 
@@ -586,6 +659,77 @@ void vtkKWText::SeeEnd()
 }
 
 //----------------------------------------------------------------------------
+void vtkKWText::ValueCallback()
+{
+  this->InvokeCommand(this->GetText());
+  if (this->CommandTrigger & vtkKWText::TriggerOnAnyChange)
+    {
+    this->SetModifiedFlag(0);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWText::SetCommandTrigger(int arg)
+{
+  if (this->CommandTrigger == arg)
+    {
+    return;
+    }
+
+  this->CommandTrigger = arg;
+  this->Modified();
+
+  this->Configure();
+}
+
+void vtkKWText::SetCommandTriggerToReturnKeyAndFocusOut()
+{ 
+  this->SetCommandTrigger(
+    vtkKWText::TriggerOnFocusOut | vtkKWText::TriggerOnReturnKey); 
+}
+
+void vtkKWText::SetCommandTriggerToAnyChange()
+{ 
+  this->SetCommandTrigger(vtkKWText::TriggerOnAnyChange); 
+}
+
+//----------------------------------------------------------------------------
+void vtkKWText::SetCommand(vtkObject *object, const char *method)
+{
+  this->SetObjectMethodCommand(&this->Command, object, method);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWText::InvokeCommand(const char *value)
+{
+  if (this->Command && *this->Command && this->GetApplication())
+    {
+    const char *val = this->ConvertInternalStringToTclString(
+      value, vtkKWCoreWidget::ConvertStringEscapeInterpretable);
+    this->Script("%s \"%s\"", this->Command, val ? val : "");
+    }
+}
+
+//----------------------------------------------------------------------------
+int vtkKWText::GetModifiedFlag()
+{
+  if (this->IsCreated())
+    {
+    return atoi(this->Script("%s edit modified", this->GetWidgetName()));
+    }
+  return 0;
+}
+
+//----------------------------------------------------------------------------
+void vtkKWText::SetModifiedFlag(int flag)
+{
+  if (this->IsCreated())
+    {
+    this->Script("%s edit modified %d", this->GetWidgetName(), flag ? 1 : 0);
+    }
+}
+
+//----------------------------------------------------------------------------
 void vtkKWText::PrintSelf(ostream& os, vtkIndent indent)
 {
   this->Superclass::PrintSelf(os,indent);
@@ -594,4 +738,5 @@ void vtkKWText::PrintSelf(ostream& os, vtkIndent indent)
      << (this->ReadOnly ? "On" : "Off") << endl;
   os << indent << "QuickFormatting: " 
      << (this->QuickFormatting ? "On" : "Off") << endl;
+  os << indent << "CommandTrigger: " << this->CommandTrigger << endl;
 }

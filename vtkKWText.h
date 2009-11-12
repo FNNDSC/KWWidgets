@@ -172,6 +172,43 @@ public:
   virtual void SeeEnd();
 
   // Description:
+  // Specifies a command to associate with the widget. This command is 
+  // typically invoked when the return key is pressed, or the focus is lost,
+  // as specified by the CommandTrigger variable.
+  // The 'object' argument is the object that will have the method called on
+  // it. The 'method' argument is the name of the method to be called and any
+  // arguments in string form. If the object is NULL, the method is still
+  // evaluated as a simple command. 
+  // The following parameters are also passed to the command:
+  // - current value: const char*
+  virtual void SetCommand(vtkObject *object, const char *method);
+  virtual void InvokeCommand(const char *value);
+
+  // Description:
+  // Specify when Command should be invoked. Default to losing focus and
+  // return key.
+  //BTX
+  enum
+  {
+    TriggerOnFocusOut  = 1,
+    TriggerOnReturnKey = 2,
+    TriggerOnAnyChange = 4
+  };
+  //ETX
+  vtkGetMacro(CommandTrigger, int);
+  virtual void SetCommandTrigger(int);
+  virtual void SetCommandTriggerToReturnKeyAndFocusOut();
+  virtual void SetCommandTriggerToAnyChange();
+
+  // Description:
+  // Set/Get the modified flag. Each time the text is modified, this flag
+  // is set to true. Note that if CommandTrigger is set to AnyChange, each
+  // time the text is modified, the flag is reset to false so that the
+  // <<Modified>> event can be caught by the next change.
+  virtual int GetModifiedFlag();
+  virtual void SetModifiedFlag(int);
+
+  // Description:
   // Update the "enable" state of the object and its internal parts.
   // Depending on different Ivars (this->Enabled, the application's 
   // Limited Edition Mode, etc.), the "enable" state of the object is updated
@@ -195,6 +232,10 @@ public:
   static const char *TagFgDarkGreen;
   //ETX
 
+  // Description:
+  // Callbacks. Internal, do not use.
+  virtual void ValueCallback();
+
 protected:
   vtkKWText();
   ~vtkKWText();
@@ -203,8 +244,15 @@ protected:
   // Create the widget.
   virtual void CreateWidget();
 
+  // Description:
+  // Configure.
+  virtual void Configure(int disable = 0);
+
   int ReadOnly;
   int QuickFormatting;
+  int CommandTrigger;
+
+  char *Command;
 
   //BTX
   // PIMPL Encapsulation for STL containers
