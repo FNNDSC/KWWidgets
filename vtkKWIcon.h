@@ -244,6 +244,7 @@ public:
     IconCrystalProject16x16ActionsJabberOnline       = 10003,
     IconCrystalProject16x16ActionsRotate             = 10004,
     IconCrystalProject16x16AppsCookie                = 10300,
+    IconCrystalProject16x16AppsTutorials             = 10301,
 
     IconSilkAccept                = 20044,
     IconSilkAdd                   = 20045,

@@ -140,3 +140,28 @@ static const unsigned char image_CrystalProject_16x16_apps_cookie[] =
   "/Gi6b6xDX/WPQS9m/ywrLdh97dvlzY6cP7Svfmtzyctv7fHXo6O/gEr3PKUHg45sZKXXZt"
   "83Mt3rzuhdilcv8DDMJ7jA==";
 
+/* 
+ * Resource generated for file:
+ *    tutorials.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_CrystalProject_16x16_apps_tutorials_width          = 16;
+static const unsigned int  image_CrystalProject_16x16_apps_tutorials_height         = 16;
+static const unsigned int  image_CrystalProject_16x16_apps_tutorials_pixel_size     = 4;
+static const unsigned long image_CrystalProject_16x16_apps_tutorials_length         = 876;
+static const unsigned long image_CrystalProject_16x16_apps_tutorials_decoded_length = 1024;
+
+static const unsigned char image_CrystalProject_16x16_apps_tutorials[] = 
+  "eNqlk1tI02EYh4cYdFGZIHaiRVFRUa0LI63EspuILiQIi6TywiDMdNbcXJs7/nd0bittdl"
+  "LQ1Jo4nUt33n9uTqfLYRbWjWmgF0o5iS6Sil+f5oIgyPCF5+b7nh8v38v7AWBgBSy3puim"
+  "lE8DlozpcFvhbiZz+7/8adq8ZmawMysWecGei9gaZgesQ5M9zXOxcCvOHE/Li3sikSjhy6"
+  "h902y0O2tu2FH0eai7fqavPTLma4pFnY/h7jSipV0DUzsFZacUw6FHEOSf08bz5nuS+tgr"
+  "+/cRuhG03YTnHVrozRIorFJQDpLxqVEZ0kHfr4d2QA9v2IQm8XVXPK+8edkY6atDRbfkl9"
+  "tL3LAeRoKhvwpVfZXQhbTkXANlSI1mch+s5U+Q6NqF/Pnso3njLxtR1a/7w9UG1dAEVVAF"
+  "FAQKih45ZD0yGPxyvH4m/bYjNfnAQn7fts2HxlymH8ZeNZRBBZRLLkVcuV8KmV8CKS2GhF"
+  "DhqyAIMWKT43TangtLT0iKPqWm6gJqiPzi367YJ4LIS3yvEEKvAFw3Dw8DWrx9Y8d7fzWK"
+  "c45R8RlYqBu0xa8CzydYdAWeO+B7ysF3l4Pn4uK28xaKnCWoaeNhrOsB5kdpWA2cUDLpvZ"
+  "CX5581BDxKlHq44LrKwHFywHaUosjBRomLA3VvJZrJjJRdfLQ8KcakWYyvQxZkH2Et7kFu"
+  "Jutq1CZBoZONYtKL7+aihpbC5pUj6tTgQ4cO7xp4cKnyP0rzTvlz0ndVp+/cUMZY6r9/68"
+  "a08VYhBl0URqwyBO+XzLfyL03IL57w5mbsvctiphSsX52YSdQthMS/rGsSLzfLfOXkwVoW"
+  "M/UaEQ6Ts1RCAmP5tY6wivGfhRX+359XWO59";
+

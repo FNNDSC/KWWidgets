@@ -388,6 +388,17 @@ public:
   vtkSetStringMacro(HelpDialogStartingPage);
 
   // Description:
+  // Display the on-line tutorial for this application.
+  // Optionally provide a master window this dialog should be the slave of.
+  virtual void DisplayTutorial(vtkKWTopLevel *master);
+
+  // Description:
+  // Set/Get the tutorial starting page.
+  // If set to a CHM/HTML page, it will be opened automatically on Windows.
+  vtkGetStringMacro(TutorialStartingPage);
+  vtkSetStringMacro(TutorialStartingPage);
+
+  // Description:
   // Display the about dialog for this application.
   // Optionally provide a master window this dialog should be the slave of.
   virtual void DisplayAboutDialog(vtkKWTopLevel *master);
@@ -545,8 +556,18 @@ protected:
     const char *attachment_filename);
 
   // Description:
-  // On-line help starting page
+  // Help starting page
   char *HelpDialogStartingPage;
+
+  // Description:
+  // Tutorial starting page
+  char *TutorialStartingPage;
+
+  // Description:
+  // Display an on-line help page.
+  // Used by DisplayHelpDialog() and DisplayTutorial()
+  // Optionally provide a master window this dialog should be the slave of.
+  virtual void DisplayHelpPage(const char *page, vtkKWTopLevel *master);
 
   // Description:
   // Display the exit dialog.

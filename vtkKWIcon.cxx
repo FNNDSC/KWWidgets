@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.67 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.68 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -1349,6 +1349,15 @@ void vtkKWIcon::SetImage(int image)
         image_CrystalProject_16x16_apps_cookie_height,
         image_CrystalProject_16x16_apps_cookie_pixel_size, 
         image_CrystalProject_16x16_apps_cookie_length);
+      break;
+
+    case IconCrystalProject16x16AppsTutorials:
+      this->SetImage(
+        image_CrystalProject_16x16_apps_tutorials, 
+        image_CrystalProject_16x16_apps_tutorials_width, 
+        image_CrystalProject_16x16_apps_tutorials_height,
+        image_CrystalProject_16x16_apps_tutorials_pixel_size, 
+        image_CrystalProject_16x16_apps_tutorials_length);
       break;
 
       // -------------------------------------------------------------------

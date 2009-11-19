@@ -106,7 +106,7 @@ const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.354 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.355 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -260,6 +260,7 @@ vtkKWApplication::vtkKWApplication()
   this->LimitedEditionMode        = 0;
   this->LimitedEditionModeName    = NULL;
   this->HelpDialogStartingPage    = NULL;
+  this->TutorialStartingPage    = NULL;
   this->InstallationDirectory     = NULL;
   this->UserDataDirectory         = NULL;
   this->EmailFeedbackAddress      = NULL;
@@ -385,6 +386,7 @@ vtkKWApplication::~vtkKWApplication()
   this->SetUserDataDirectory(NULL);
   this->SetEmailFeedbackAddress(NULL);
   this->SetHelpDialogStartingPage(NULL);
+  this->SetTutorialStartingPage(NULL);
 
   if (this->RegistryHelper )
     {
@@ -1526,9 +1528,9 @@ int vtkKWApplication::DisplayExitDialog(vtkKWTopLevel *master)
 }
 
 //----------------------------------------------------------------------------
-void vtkKWApplication::DisplayHelpDialog(vtkKWTopLevel* master)
+void vtkKWApplication::DisplayHelpPage(const char *page, vtkKWTopLevel* master)
 {
-  if (!this->HelpDialogStartingPage || !*this->HelpDialogStartingPage)
+  if (!page || !*page)
     {
     return;
     }
@@ -1538,9 +1540,8 @@ void vtkKWApplication::DisplayHelpDialog(vtkKWTopLevel* master)
   // If it's not a remote link (crude test) and we can't find it yet, try in
   // the install/bin directory
 
-  int is_local = strstr(this->HelpDialogStartingPage, "://") ? 0 : 1;
-  if (is_local && 
-      !vtksys::SystemTools::FileExists(this->HelpDialogStartingPage))
+  int is_local = strstr(page, "://") ? 0 : 1;
+  if (is_local && !vtksys::SystemTools::FileExists(page))
     {
     if (this->GetInstallationDirectory())
       {
@@ -1548,15 +1549,15 @@ void vtkKWApplication::DisplayHelpDialog(vtkKWTopLevel* master)
       helplink = this->GetInstallationDirectory();
       helplink += "/";
 
-      try_file = helplink + this->HelpDialogStartingPage;
+      try_file = helplink + page;
       if (!vtksys::SystemTools::FileExists(try_file.c_str()))
         {
         helplink += "../";
-        try_file = helplink + this->HelpDialogStartingPage;
+        try_file = helplink + page;
         if (!vtksys::SystemTools::FileExists(try_file.c_str()))
           {
           helplink += "doc/";
-          try_file = helplink + this->HelpDialogStartingPage;
+          try_file = helplink + page;
           if (!vtksys::SystemTools::FileExists(try_file.c_str()))
             {
             helplink += "../Documentation/";
@@ -1566,13 +1567,13 @@ void vtkKWApplication::DisplayHelpDialog(vtkKWTopLevel* master)
       }
     }
 
-  helplink += this->HelpDialogStartingPage;
+  helplink += page;
   
   int status = 1;
   char buffer[500];
 
   const char *res = vtksys::SystemTools::FileExists(helplink.c_str()) 
-    ? helplink.c_str() : this->HelpDialogStartingPage;
+    ? helplink.c_str() : page;
 
 #if defined(_WIN32) && defined(KWWidgets_USE_HTML_HELP)
   // .chm ?
@@ -1595,7 +1596,7 @@ void vtkKWApplication::DisplayHelpDialog(vtkKWTopLevel* master)
     {
     sprintf(
       buffer, 
-      k_("The help resource %s cannot be displayed. This can be a result of "
+      k_("The help resource %s cannot be displayed. This can be the result of "
          "the program being wrongly installed or the help file being "
          "corrupted."), res);
     vtkKWMessageDialog::PopupMessage(
@@ -1603,6 +1604,18 @@ void vtkKWApplication::DisplayHelpDialog(vtkKWTopLevel* master)
       ks_("Display Help Dialog|Title|Help Error!"), 
       buffer, vtkKWMessageDialog::ErrorIcon);
     }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWApplication::DisplayHelpDialog(vtkKWTopLevel* master)
+{
+  this->DisplayHelpPage(this->HelpDialogStartingPage, master);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWApplication::DisplayTutorial(vtkKWTopLevel* master)
+{
+  this->DisplayHelpPage(this->TutorialStartingPage, master);
 }
 
 //----------------------------------------------------------------------------
@@ -3194,6 +3207,10 @@ void vtkKWApplication::PrintSelf(ostream& os, vtkIndent indent)
      << endl;
   os << indent << "HelpDialogStartingPage: "
      << (this->HelpDialogStartingPage ? this->HelpDialogStartingPage :
+         "(none)")
+     << endl;
+  os << indent << "TutorialStartingPage: "
+     << (this->TutorialStartingPage ? this->TutorialStartingPage :
          "(none)")
      << endl;
   os << indent << "ExitStatus: " << this->GetExitStatus() << endl;

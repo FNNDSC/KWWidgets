@@ -214,7 +214,8 @@ public:
   // Set/Get a hint about help support. Disabled by default.
   // If set to true (programmatically or by a superclass), it will hint the
   // instance about populating the help menu with common entries. 
-  // For example, an entry invoking the application's DisplayHelpDialog.
+  // For example, an entry invoking the application's DisplayHelpDialog or
+  // DisplayTutorial.
   vtkSetClampMacro(SupportHelp, int, 0, 1);
   vtkGetMacro(SupportHelp, int);
   vtkBooleanMacro(SupportHelp, int);
@@ -296,6 +297,7 @@ public:
   vtkGetStringMacro(HelpMenuLabel);
   vtkGetStringMacro(HelpAboutMenuLabel);
   vtkGetStringMacro(HelpTopicsMenuLabel);
+  vtkGetStringMacro(HelpTutorialMenuLabel);
   vtkGetStringMacro(HelpKeyBindingsMenuLabel);
   vtkGetStringMacro(HelpCheckForUpdatesMenuLabel);
   vtkGetStringMacro(ToolbarsVisibilityMenuLabel);
@@ -433,6 +435,7 @@ protected:
   vtkSetStringMacro(WindowMenuLabel);
   vtkSetStringMacro(HelpMenuLabel);
   vtkSetStringMacro(HelpTopicsMenuLabel);
+  vtkSetStringMacro(HelpTutorialMenuLabel);
   vtkSetStringMacro(HelpKeyBindingsMenuLabel);
   vtkSetStringMacro(HelpAboutMenuLabel);
   vtkSetStringMacro(HelpCheckForUpdatesMenuLabel);
@@ -461,6 +464,7 @@ private:
   char *WindowMenuLabel;
   char *HelpMenuLabel;
   char *HelpTopicsMenuLabel;
+  char *HelpTutorialMenuLabel;
   char *HelpKeyBindingsMenuLabel;
   char *HelpAboutMenuLabel;
   char *HelpCheckForUpdatesMenuLabel;

@@ -211,7 +211,8 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWCrystalProjectIco
     CrystalProject/16x16/actions/14_layer_visible.png \
     CrystalProject/16x16/actions/jabber_online.png \
     CrystalProject/16x16/actions/rotate.png \
-    CrystalProject/16x16/apps/cookie.png
+    CrystalProject/16x16/apps/cookie.png \
+    CrystalProject/16x16/apps/tutorials.png
 
 KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWSilkIconResources.h \
     Silk/accept.png \

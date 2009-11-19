@@ -36,7 +36,7 @@
 
 #include <vtksys/SystemTools.hxx>
 
-vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.66 $");
+vtkCxxRevisionMacro(vtkKWWindowBase, "$Revision: 1.67 $");
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWWindowBase );
@@ -121,6 +121,8 @@ vtkKWWindowBase::vtkKWWindowBase()
     vtksys::SystemTools::DuplicateString(ks_("Menu|&Help"));
   this->HelpTopicsMenuLabel = 
     vtksys::SystemTools::DuplicateString(ks_("Menu|Help|Help &Topics"));
+  this->HelpTutorialMenuLabel = 
+    vtksys::SystemTools::DuplicateString(ks_("Menu|Help|Tut&orial"));
   this->HelpKeyBindingsMenuLabel = 
     vtksys::SystemTools::DuplicateString(ks_("Menu|Help|&Keyboard Shortcuts"));
   this->HelpAboutMenuLabel = 
@@ -270,6 +272,7 @@ vtkKWWindowBase::~vtkKWWindowBase()
   this->SetWindowMenuLabel(NULL);
   this->SetHelpMenuLabel(NULL);
   this->SetHelpTopicsMenuLabel(NULL);
+  this->SetHelpTutorialMenuLabel(NULL);
   this->SetHelpKeyBindingsMenuLabel(NULL);
   this->SetHelpAboutMenuLabel(NULL);
   this->SetHelpCheckForUpdatesMenuLabel(NULL);
@@ -490,16 +493,32 @@ void vtkKWWindowBase::PopulateHelpMenu()
 
   if (this->SupportHelp)
     {
-    cmd = "DisplayHelpDialog ";
-    cmd += this->GetTclName();
-    idx = menu->AddCommand(this->GetHelpTopicsMenuLabel(), app, cmd.c_str());
-    menu->SetItemAccelerator(idx, "F1");
-    menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
-    if (show_icons)
+    if (app->GetHelpDialogStartingPage())
       {
-      menu->SetItemImageToPredefinedIcon(
-        idx, vtkKWIcon::IconSilkHelp);
-      menu->SetItemCompoundModeToLeft(idx);
+      cmd = "DisplayHelpDialog ";
+      cmd += this->GetTclName();
+      idx = menu->AddCommand(this->GetHelpTopicsMenuLabel(), app, cmd.c_str());
+      menu->SetItemAccelerator(idx, "F1");
+      menu->SetBindingForItemAccelerator(idx, menu->GetParentTopLevel());
+      if (show_icons)
+        {
+        menu->SetItemImageToPredefinedIcon(
+          idx, vtkKWIcon::IconSilkHelp);
+        menu->SetItemCompoundModeToLeft(idx);
+        }
+      }
+
+    if (app->GetTutorialStartingPage())
+      {
+      cmd = "DisplayTutorial ";
+      cmd += this->GetTclName();
+      idx = menu->AddCommand(this->GetHelpTutorialMenuLabel(),app,cmd.c_str());
+      if (show_icons)
+        {
+        menu->SetItemImageToPredefinedIcon(
+          idx, vtkKWIcon::IconCrystalProject16x16AppsTutorials);
+        menu->SetItemCompoundModeToLeft(idx);
+        }
       }
     }
 
