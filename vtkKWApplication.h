@@ -146,6 +146,17 @@ public:
   // informations (like its limited edition mode).
   virtual const char* GetPrettyName();
 
+  // Description:
+  // Get the most recent version this application was ever launched, if known.
+  // Each time this application is closed, its version is automatically saved
+  // to the registry (provided that this version is the most recent).
+  // Use this method to retrieve which most recent version was ever launched
+  // by your user. This can be used by newer application to detect if some
+  // migration is needed to upgrade from an older version.
+  // Returns 0 if no most recent version was ever recorded, or if it can not
+  // be parsed.
+  virtual int GetMostRecentVersionLaunched(int *major, int *minor);
+
   // Descrition:
   // Set/Get if the application is running in limited edition mode.
   // This can be used throughout the whole UI to enable or disable
@@ -521,6 +532,7 @@ public:
   static const char *SaveUserInterfaceGeometryRegKey;
   static const char *SplashScreenVisibilityRegKey;
   static const char *PrintTargetDPIRegKey;
+  static const char *MostRecentVersionLaunchedRegKey;
   //ETX
 
   // Description:

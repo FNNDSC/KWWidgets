@@ -103,10 +103,11 @@ const char *vtkKWApplication::BalloonHelpVisibilityRegKey = "ShowBalloonHelp";
 const char *vtkKWApplication::SaveUserInterfaceGeometryRegKey = "SaveUserInterfaceGeometry";
 const char *vtkKWApplication::SplashScreenVisibilityRegKey = "ShowSplashScreen";
 const char *vtkKWApplication::PrintTargetDPIRegKey = "PrintTargetDPI";
+const char *vtkKWApplication::MostRecentVersionLaunchedRegKey = "MostRecentVersionLaunched";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWApplication );
-vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.355 $");
+vtkCxxRevisionMacro(vtkKWApplication, "$Revision: 1.356 $");
 
 extern "C" int Kwwidgets_Init(Tcl_Interp *interp);
 
@@ -1265,6 +1266,18 @@ void vtkKWApplication::SaveApplicationSettingsToRegistry()
       2, "RunTime", vtkKWToolbar::WidgetsAspectRegKey, "%d", 
       vtkKWToolbar::GetGlobalWidgetsAspect()); 
     }
+
+  // Most recent version
+
+  int recent_major = 0, recent_minor = 0;
+  if (!this->GetMostRecentVersionLaunched(&recent_major, &recent_minor) ||
+      this->MajorVersion > recent_major  || 
+      (this->MajorVersion == recent_major && this->MinorVersion > recent_minor))
+    {
+    this->SetRegistryValue(
+      2, "RunTime", vtkKWApplication::MostRecentVersionLaunchedRegKey, "%d.%d", 
+      this->MajorVersion, this->MinorVersion);
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -2199,6 +2212,26 @@ const char* vtkKWApplication::GetVersionName()
     return this->Internals->VersionNameTemp.c_str();
     }
   return NULL;
+}
+
+//----------------------------------------------------------------------------
+int vtkKWApplication::GetMostRecentVersionLaunched(int *major, int *minor)
+{
+  if (!this->HasRegistryValue(
+        2, "RunTime", vtkKWApplication::MostRecentVersionLaunchedRegKey))
+    {
+    return 0;
+    }
+
+  char buffer[vtkKWRegistryHelper::RegistryKeyValueSizeMax];
+  this->GetRegistryValue(
+    2, "RunTime", vtkKWApplication::MostRecentVersionLaunchedRegKey, buffer);
+  if (sscanf(buffer, "%d.%d", major, minor) != 2)
+    {
+    return 0;
+    }
+
+  return 1;
 }
 
 //----------------------------------------------------------------------------
