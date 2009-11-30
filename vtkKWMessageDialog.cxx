@@ -529,7 +529,7 @@ void vtkKWMessageDialog::SetIcon()
   else if (this->Options & vtkKWMessageDialog::QuestionIcon)
     {
     this->Icon->SetImageToPredefinedIcon(
-      vtkKWIcon::IconNuvola48x48ActionsMessageBoxInfo);
+      vtkKWIcon::IconNuvola48x48ActionsHelp);
     }
   else if (this->Options & vtkKWMessageDialog::WarningIcon)
     {

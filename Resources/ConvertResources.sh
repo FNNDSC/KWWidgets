@@ -200,6 +200,7 @@ KWConvertImageToHeader --zlib --base64 --use_path_in_name vtkKWNuvolaIconResourc
     Nuvola/48x48/actions/messagebox_critical.png \
     Nuvola/48x48/actions/messagebox_info.png \
     Nuvola/48x48/actions/messagebox_warning.png \
+    Nuvola/48x48/actions/help.png \
     Nuvola/48x48/actions/history.png \
     Nuvola/48x48/apps/download_manager.png \
     Nuvola/48x48/devices/mouse.png \

@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.68 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.69 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -1904,6 +1904,15 @@ void vtkKWIcon::SetImage(int image)
         image_Nuvola_48x48_actions_messagebox_warning_height,
         image_Nuvola_48x48_actions_messagebox_warning_pixel_size, 
         image_Nuvola_48x48_actions_messagebox_warning_length);
+      break;
+
+    case vtkKWIcon::IconNuvola48x48ActionsHelp:
+      this->SetImage(
+        image_Nuvola_48x48_actions_help, 
+        image_Nuvola_48x48_actions_help_width, 
+        image_Nuvola_48x48_actions_help_height,
+        image_Nuvola_48x48_actions_help_pixel_size, 
+        image_Nuvola_48x48_actions_help_length);
       break;
 
     case vtkKWIcon::IconNuvola48x48ActionsHistory:

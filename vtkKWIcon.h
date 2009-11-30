@@ -233,6 +233,7 @@ public:
     IconNuvola48x48ActionsMessageBoxCritical = 5001,
     IconNuvola48x48ActionsMessageBoxInfo     = 5002,
     IconNuvola48x48ActionsMessageBoxWarning  = 5003,
+    IconNuvola48x48ActionsHelp               = 5004,
     IconNuvola48x48ActionsHistory            = 5000,
     IconNuvola48x48AppsDownloadManager       = 5300,
     IconNuvola48x48DevicesMouse              = 5600,
