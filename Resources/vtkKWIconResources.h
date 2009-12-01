@@ -1561,6 +1561,20 @@ static const unsigned char image_preset_previous[] =
 
 /* 
  * Resource generated for file:
+ *    preset_rewind.png (zlib, base64) (image file)
+ */
+static const unsigned int  image_preset_rewind_width          = 16;
+static const unsigned int  image_preset_rewind_height         = 16;
+static const unsigned int  image_preset_rewind_pixel_size     = 4;
+static const unsigned long image_preset_rewind_length         = 108;
+static const unsigned long image_preset_rewind_decoded_length = 1024;
+
+static const unsigned char image_preset_rewind[] = 
+  "eNr7//8/w/9RPGgwEICI/8SKo6v5/+4kWF1DQ8NWQuLY9KKrwyWOSy+yOlzi+PTC1OESp7"
+  "b91PA/NcIfPZ6xhRMx+kEYpAabOmziAGiAvY8=";
+
+/* 
+ * Resource generated for file:
  *    preset_update.png (zlib, base64) (image file)
  */
 static const unsigned int  image_preset_update_width          = 16;

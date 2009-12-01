@@ -123,6 +123,7 @@ public:
     IconPresetLocate              = 98,
     IconPresetNext                = 173,
     IconPresetPrevious            = 174,
+    IconPresetRewind              = 238,
     IconPresetUpdate              = 99,
     IconQuestion                  = 101,
     IconReload                    = 102,

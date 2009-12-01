@@ -31,7 +31,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWIcon );
-vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.69 $");
+vtkCxxRevisionMacro(vtkKWIcon, "$Revision: 1.70 $");
 
 //----------------------------------------------------------------------------
 vtkKWIcon::vtkKWIcon()
@@ -859,6 +859,14 @@ void vtkKWIcon::SetImage(int image)
         image_preset_previous_width, image_preset_previous_height,
         image_preset_previous_pixel_size, 
         image_preset_previous_length);
+      break;      
+
+    case vtkKWIcon::IconPresetRewind:
+      this->SetImage(
+        image_preset_rewind, 
+        image_preset_rewind_width, image_preset_rewind_height,
+        image_preset_rewind_pixel_size, 
+        image_preset_rewind_length);
       break;      
 
     case vtkKWIcon::IconPresetUpdate:
