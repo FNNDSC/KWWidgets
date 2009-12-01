@@ -53,7 +53,7 @@ const char *vtkKWPresetSelector::CommentColumnName   = "Comment";
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkKWPresetSelector);
-vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.85 $");
+vtkCxxRevisionMacro(vtkKWPresetSelector, "$Revision: 1.86 $");
 
 //----------------------------------------------------------------------------
 class vtkKWPresetSelectorInternals
@@ -312,6 +312,11 @@ vtkKWPresetSelector::vtkKWPresetSelector()
   this->PresetLoadCommand                = NULL;
   this->PresetFilteringHasChangedCommand = NULL;
 
+  this->CreateUserPresetButtonsCommand         = NULL;
+  this->UpdateUserPresetButtonsCommand         = NULL;
+  this->SetUserPresetButtonsIconsCommand       = NULL;
+  this->SetUserPresetButtonsHelpStringsCommand = NULL;
+
   this->PresetList              = NULL;
   this->PresetControlFrame      = NULL;
   this->PresetButtons           = NULL;
@@ -417,6 +422,30 @@ vtkKWPresetSelector::~vtkKWPresetSelector()
     {
     delete [] this->PresetFilteringHasChangedCommand;
     this->PresetFilteringHasChangedCommand = NULL;
+    }
+
+  if (this->CreateUserPresetButtonsCommand)
+    {
+    delete [] this->CreateUserPresetButtonsCommand;
+    this->CreateUserPresetButtonsCommand = NULL;
+    }
+
+  if (this->UpdateUserPresetButtonsCommand)
+    {
+    delete [] this->UpdateUserPresetButtonsCommand;
+    this->UpdateUserPresetButtonsCommand = NULL;
+    }
+
+  if (this->SetUserPresetButtonsIconsCommand)
+    {
+    delete [] this->SetUserPresetButtonsIconsCommand;
+    this->SetUserPresetButtonsIconsCommand = NULL;
+    }
+
+  if (this->SetUserPresetButtonsHelpStringsCommand)
+    {
+    delete [] this->SetUserPresetButtonsHelpStringsCommand;
+    this->SetUserPresetButtonsHelpStringsCommand = NULL;
     }
 
   // Remove all presets
@@ -762,6 +791,10 @@ void vtkKWPresetSelector::CreateToolbarPresetButtons(
   toolbar_pb->SetCommand(this, "PresetFilterCallback");
   toolbar->AddWidget(toolbar_pb);
   toolbar_pb->Delete();
+
+  // User buttons
+
+  this->InvokeCreateUserPresetButtonsCommand(toolbar, use_separators);
 }
 
 //---------------------------------------------------------------------------
@@ -904,6 +937,10 @@ void vtkKWPresetSelector::UpdateToolbarPresetButtons(vtkKWToolbar *toolbar)
     toolbar_pb->SetEnabled(
       this->FilterButtonSlotName ? toolbar->GetEnabled() : 0);
     }
+
+  // User buttons
+
+  this->InvokeUpdateUserPresetButtonsCommand(toolbar);
 }
 
 //----------------------------------------------------------------------------
@@ -1109,6 +1146,9 @@ void vtkKWPresetSelector::SetToolbarPresetButtonsIcons(vtkKWToolbar *toolbar)
     icon->Delete();
     }
 
+  // User buttons
+
+  this->InvokeSetUserPresetButtonsIconsCommand(toolbar);
 }
 
 //----------------------------------------------------------------------------
@@ -1210,6 +1250,10 @@ void vtkKWPresetSelector::SetToolbarPresetButtonsHelpStrings(vtkKWToolbar *toolb
     toolbar_pb->SetBalloonHelpString(
       ks_("Preset Selector|Filter preset(s)"));
     }
+
+  // User buttons
+
+  this->InvokeSetUserPresetButtonsHelpStringsCommand(toolbar);
 }
 
 //----------------------------------------------------------------------------
@@ -4507,6 +4551,98 @@ void vtkKWPresetSelector::InvokePresetFilteringHasChangedCommand()
       this->IsCreated())
     {
     this->InvokeObjectMethodCommand(this->PresetFilteringHasChangedCommand);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWPresetSelector::SetCreateUserPresetButtonsCommand(
+  vtkObject *object, const char *method)
+{
+  this->SetObjectMethodCommand(
+    &this->CreateUserPresetButtonsCommand, object, method);
+  this->InvokeCreateUserPresetButtonsCommand(this->PresetButtons, 1);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWPresetSelector::InvokeCreateUserPresetButtonsCommand(
+  vtkKWToolbar *toolbar, int use_separators)
+{
+  if (this->CreateUserPresetButtonsCommand && 
+      *this->CreateUserPresetButtonsCommand && 
+      this->IsCreated())
+    {
+    this->Script("%s %s %d", 
+                 this->CreateUserPresetButtonsCommand, 
+                 toolbar->GetTclName(), use_separators);
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWPresetSelector::SetUpdateUserPresetButtonsCommand(
+  vtkObject *object, const char *method)
+{
+  this->SetObjectMethodCommand(
+    &this->UpdateUserPresetButtonsCommand, object, method);
+  this->InvokeUpdateUserPresetButtonsCommand(this->PresetButtons);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWPresetSelector::InvokeUpdateUserPresetButtonsCommand(
+  vtkKWToolbar *toolbar)
+{
+  if (this->UpdateUserPresetButtonsCommand && 
+      *this->UpdateUserPresetButtonsCommand && 
+      this->IsCreated())
+    {
+    this->Script("%s %s", 
+                 this->UpdateUserPresetButtonsCommand, 
+                 toolbar->GetTclName());
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWPresetSelector::SetSetUserPresetButtonsIconsCommand(
+  vtkObject *object, const char *method)
+{
+  this->SetObjectMethodCommand(
+    &this->SetUserPresetButtonsIconsCommand, object, method);
+  this->InvokeSetUserPresetButtonsIconsCommand(this->PresetButtons);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWPresetSelector::InvokeSetUserPresetButtonsIconsCommand(
+  vtkKWToolbar *toolbar)
+{
+  if (this->SetUserPresetButtonsIconsCommand && 
+      *this->SetUserPresetButtonsIconsCommand && 
+      this->IsCreated())
+    {
+    this->Script("%s %s", 
+                 this->SetUserPresetButtonsIconsCommand, 
+                 toolbar->GetTclName());
+    }
+}
+
+//----------------------------------------------------------------------------
+void vtkKWPresetSelector::SetSetUserPresetButtonsHelpStringsCommand(
+  vtkObject *object, const char *method)
+{
+  this->SetObjectMethodCommand(
+    &this->SetUserPresetButtonsHelpStringsCommand, object, method);
+  this->InvokeSetUserPresetButtonsHelpStringsCommand(this->PresetButtons);
+}
+
+//----------------------------------------------------------------------------
+void vtkKWPresetSelector::InvokeSetUserPresetButtonsHelpStringsCommand(
+  vtkKWToolbar *toolbar)
+{
+  if (this->SetUserPresetButtonsHelpStringsCommand && 
+      *this->SetUserPresetButtonsHelpStringsCommand && 
+      this->IsCreated())
+    {
+    this->Script("%s %s", 
+                 this->SetUserPresetButtonsHelpStringsCommand, 
+                 toolbar->GetTclName());
     }
 }
 

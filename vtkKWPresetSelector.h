@@ -733,6 +733,28 @@ public:
   // This is temporary, this internal widget may change.
   vtkGetObjectMacro(PresetList, vtkKWMultiColumnListWithScrollbars);
 
+  // Description:
+  // Set the callbacks to be used to create, update, and set the icons and
+  // help strings on user-defined buttons. These callbacks can be used to
+  // add buttons to the preset selector toolbar(s), without subclassing it.
+  // The 'object' argument is the object that will have the method called on
+  // it. The 'method' argument is the name of the method to be called and any
+  // arguments in string form. If the object is NULL, the method is still
+  // evaluated as a simple command. 
+  // Note that each callback will receive the following parameters:
+  // CreateUserPresetButtonsCommand: vtkKWToolbar *toolbar, int use_separators
+  // UpdateUserPresetButtonsCommand: vtkKWToolbar *toolbar
+  // SetUserPresetButtonsIconsCommand: vtkKWToolbar *toolbar
+  // SetUserPresetButtonsHelpStringsCommand: vtkKWToolbar *toolbar
+  virtual void SetCreateUserPresetButtonsCommand(
+    vtkObject *object, const char *method);
+  virtual void SetUpdateUserPresetButtonsCommand(
+    vtkObject *object, const char *method);
+  virtual void SetSetUserPresetButtonsIconsCommand(
+    vtkObject *object, const char *method);
+  virtual void SetSetUserPresetButtonsHelpStringsCommand(
+    vtkObject *object, const char *method);
+
 protected:
   vtkKWPresetSelector();
   ~vtkKWPresetSelector();
@@ -889,6 +911,18 @@ protected:
 
   char *PresetFilteringHasChangedCommand;
   virtual void InvokePresetFilteringHasChangedCommand();
+
+  char *CreateUserPresetButtonsCommand;
+  virtual void InvokeCreateUserPresetButtonsCommand(vtkKWToolbar *, int);
+
+  char *UpdateUserPresetButtonsCommand;
+  virtual void InvokeUpdateUserPresetButtonsCommand(vtkKWToolbar *);
+
+  char *SetUserPresetButtonsIconsCommand;
+  virtual void InvokeSetUserPresetButtonsIconsCommand(vtkKWToolbar *);
+
+  char *SetUserPresetButtonsHelpStringsCommand;
+  virtual void InvokeSetUserPresetButtonsHelpStringsCommand(vtkKWToolbar *);
 
   // Description:
   // Get the index of a given column.
