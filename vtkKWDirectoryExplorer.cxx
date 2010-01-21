@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.47 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.48 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -467,10 +467,14 @@ void vtkKWDirectoryExplorer::LoadRootDirectory()
     vtkIdType dirID = vtkKWDirectoryExplorer::IdCounter++;
     char strDirID[20];
     sprintf(strDirID, "%lu", dirID);
+    // Be consistent with SystemTools::GetParentDirectory() returning as "C:/"
+    
+    vtksys_stl::string dirname = name;
+    dirname += '\\';
     this->AddDirectoryNode(this->Internals->RootNode, 
                            strDirID, 
                            realname.c_str(), 
-                           name.c_str(), 
+                           dirname.c_str(), 
                            tmpIcon);
     }
 
@@ -617,7 +621,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   vtksys_stl::string fullname = "";
   const char* image_name = this->Internals->FolderImage.c_str();
    
-  if (strcmp(nodepath.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY) != 0)
+  if (!KWFileBrowser_HasTrailingSlash(nodepath.c_str()))
     {
     nodepath += KWFileBrowser_PATH_SEPARATOR;
     }
@@ -689,7 +693,10 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
         }
         
       tmp_str = fullname;
-      tmp_str += KWFileBrowser_PATH_SEPARATOR;
+      if(!KWFileBrowser_HasTrailingSlash(tmp_str.c_str()))
+        {
+        tmp_str += KWFileBrowser_PATH_SEPARATOR;
+        }
 
       bool dot1found = false;
       bool dot2found = false;
@@ -1796,7 +1803,7 @@ void vtkKWDirectoryExplorer::CreateNewFolderCallback()
     
   // Add the new folder
 
-  if (strcmp(parentdir.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY)!=0)
+  if (!KWFileBrowser_HasTrailingSlash(parentdir.c_str()))
     {
     parentdir += KWFileBrowser_PATH_SEPARATOR;
     }
@@ -2162,7 +2169,7 @@ int vtkKWDirectoryExplorer::RenameCallback()
 
     // Rename the selected file
 
-    if (strcmp(parentdir.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY)!=0)
+    if (!KWFileBrowser_HasTrailingSlash(parentdir.c_str()))
       {
       parentdir += KWFileBrowser_PATH_SEPARATOR;
       }

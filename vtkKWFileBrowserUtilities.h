@@ -47,4 +47,13 @@ static char* KWFileBrowser_GetUnixPath(const char* path)
   return NULL;
 };
 
+static int KWFileBrowser_HasTrailingSlash(const char *dir)
+{ 
+  size_t dir_len = strlen(dir);
+  int has_slash = 
+   (dir_len && (dir[dir_len - 1] == '/' || dir[dir_len - 1] == '\\'));
+
+  return has_slash;
+};
+
 #endif

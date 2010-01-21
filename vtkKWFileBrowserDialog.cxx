@@ -39,7 +39,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.46 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.47 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -958,7 +958,7 @@ int vtkKWFileBrowserDialog::FileOK()
       {
       fullname = 
         this->FileBrowserWidget->GetFileListTable()->GetParentDirectory();
-      if (strcmp(fullname.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY) != 0)
+      if (!KWFileBrowser_HasTrailingSlash(fullname.c_str()))
         {
         fullname.append(KWFileBrowser_PATH_SEPARATOR);
         }
@@ -1114,7 +1114,7 @@ int vtkKWFileBrowserDialog::OpenMultipleFileNames(const char* inputnames)
 
   vtksys_stl::string parentDir = 
     this->FileBrowserWidget->GetFileListTable()->GetParentDirectory();
-  if (strcmp(parentDir.c_str(), KWFileBrowser_UNIX_ROOT_DIRECTORY) != 0)
+  if (!KWFileBrowser_HasTrailingSlash(parentDir.c_str()))
     {
     parentDir.append(KWFileBrowser_PATH_SEPARATOR);
     }
