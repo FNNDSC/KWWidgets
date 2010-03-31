@@ -39,7 +39,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFileBrowserDialog );
-vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.47 $");
+vtkCxxRevisionMacro(vtkKWFileBrowserDialog, "$Revision: 1.48 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFileBrowserDialogInternals
@@ -1187,7 +1187,7 @@ void vtkKWFileBrowserDialog::SetFileName(const char *arg)
     }
 
   if (this->FileName && arg &&
-    vtksys::SystemTools::ComparePath(currPath.c_str(), this->FileName))
+    KWFileBrowser_ComparePath(currPath.c_str(), this->FileName))
     {  
     return;
     }
@@ -1203,7 +1203,7 @@ void vtkKWFileBrowserDialog::SetFileName(const char *arg)
     strcpy(this->FileName,currPath.c_str());
     if(this->FileNames->GetNumberOfValues()==0 ||
       (this->GetNumberOfFileNames()>0 &&
-      !vtksys::SystemTools::ComparePath(
+      !KWFileBrowser_ComparePath(
       this->FileName, this->GetNthFileName(0))))
       {
       this->FileNames->Reset();

@@ -56,4 +56,27 @@ static int KWFileBrowser_HasTrailingSlash(const char *dir)
   return has_slash;
 };
 
+static bool KWFileBrowser_ComparePath(const char *dir1, const char* dir2)
+{ 
+  if(!dir1 || !dir2)
+    {
+    return false;
+    }
+  vtksys_stl::string path1 = dir1;
+  vtksys_stl::string path2 = dir2;
+  int dirslash1 = KWFileBrowser_HasTrailingSlash(dir1);
+  int dirslash2 = KWFileBrowser_HasTrailingSlash(dir2);
+  if(!dirslash1 && dirslash2)
+    {
+    path1 += "/";
+    }
+  else if(dirslash1 && !dirslash2)
+    {
+    path2 += "/";
+    }
+  vtksys::SystemTools::ConvertToUnixSlashes(path1);
+  vtksys::SystemTools::ConvertToUnixSlashes(path2);
+  return vtksys::SystemTools::ComparePath(path1.c_str(), path2.c_str());
+};
+
 #endif

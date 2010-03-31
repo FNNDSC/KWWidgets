@@ -56,7 +56,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFavoriteDirectoriesFrame );
-vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.26 $");
+vtkCxxRevisionMacro(vtkKWFavoriteDirectoriesFrame, "$Revision: 1.27 $");
 
 //----------------------------------------------------------------------------
 class vtkKWFavoriteDirectoriesFrameInternals
@@ -295,7 +295,7 @@ const char* vtkKWFavoriteDirectoriesFrame::GetNameOfFavoriteDirectory(
       {
       currPath = (*it)->Path;
       vtksys::SystemTools::ConvertToUnixSlashes(currPath);
-      if (vtksys::SystemTools::ComparePath(currPath.c_str(), dirpath.c_str()))
+      if (KWFileBrowser_ComparePath(currPath.c_str(), dirpath.c_str()))
         {
         return (*it)->Name.c_str();
         }
@@ -1176,7 +1176,7 @@ void vtkKWFavoriteDirectoriesFrame::WriteFavoriteDirectoriesToSystemRegistry()
           
           if (vtksys::SystemTools::FileIsDirectory(value.c_str()))
             {          
-            if (it != end && vtksys::SystemTools::ComparePath(
+            if (it != end && KWFileBrowser_ComparePath(
                   value.c_str(), (*it)->Path.c_str()))  
               {
               found=true;
@@ -1201,7 +1201,7 @@ void vtkKWFavoriteDirectoriesFrame::WriteFavoriteDirectoriesToSystemRegistry()
                 if (SHGetPathFromIDList(pidl, szPath))
                   {
                   if (it != end && 
-                      vtksys::SystemTools::ComparePath(
+                      KWFileBrowser_ComparePath(
                         szPath, (*it)->Path.c_str()))  
                     {          
                     found=true;

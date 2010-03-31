@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.48 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.49 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -1140,7 +1140,7 @@ void vtkKWDirectoryExplorer::SelectDirectory(const char* dirname)
         {
         nodedir = tree->GetNodeUserData((*it).c_str());
         vtksys::SystemTools::ConvertToUnixSlashes(nodedir);
-        if(vtksys::SystemTools::ComparePath(
+        if(KWFileBrowser_ComparePath(
           nodedir.c_str(), dirpath.c_str()))
           {
           if(!this->IsNodeSelected((*it).c_str()))
@@ -1179,7 +1179,7 @@ void vtkKWDirectoryExplorer::DeselectDirectory(const char* dirname)
       GetNodeUserData((*it).c_str());
     //Convert the path for comparing with other path
     vtksys::SystemTools::ConvertToUnixSlashes(nodedir);
-    if (vtksys::SystemTools::ComparePath(nodedir.c_str(), 
+    if (KWFileBrowser_ComparePath(nodedir.c_str(), 
       dirpath.c_str()))
       {
       this->DirectoryTree->GetWidget()->DeselectNode((*it).c_str());
@@ -1602,7 +1602,7 @@ const char* vtkKWDirectoryExplorer::ReloadDirectory(
     nodedir = this->DirectoryTree->GetWidget()->GetNodeUserData(
       (*it).c_str());
     vtksys::SystemTools::ConvertToUnixSlashes(nodedir);
-    if (vtksys::SystemTools::ComparePath(nodedir.c_str(), dirpath.c_str()))
+    if (KWFileBrowser_ComparePath(nodedir.c_str(), dirpath.c_str()))
       {
       this->Internals->IsNavigatingNode = 1;
       this->OpenDirectoryNode((*it).c_str(), select);
@@ -2298,7 +2298,7 @@ int vtkKWDirectoryExplorer::DeleteDirectory(const char* dirname)
     // Just to compare
 
     vtksys::SystemTools::ConvertToUnixSlashes(nodedir);
-    if (vtksys::SystemTools::ComparePath(nodedir.c_str(), dirpath.c_str()))
+    if (KWFileBrowser_ComparePath(nodedir.c_str(), dirpath.c_str()))
       {
       // If the directory still exists, remove it.
       if (vtksys::SystemTools::FileExists(dirpath.c_str()))
@@ -2366,7 +2366,7 @@ int vtkKWDirectoryExplorer::RenameDirectory(
     // Compare
 
     vtksys::SystemTools::ConvertToUnixSlashes(nodedir);
-    if (vtksys::SystemTools::ComparePath(nodedir.c_str(), dirpath.c_str()))
+    if (KWFileBrowser_ComparePath(nodedir.c_str(), dirpath.c_str()))
       {
       this->DirectoryTree->GetWidget()->SetNodeText(
         (*it).c_str(), vtksys::SystemTools::GetFilenameName(newname).c_str());
