@@ -9,8 +9,6 @@
 # raised.
 #
 
-cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
-
 # print out the variable that we are using
 message(STATUS "squish_aut='${squish_aut}'")
 message(STATUS "squish_aut_args='${squish_aut_args}'")
