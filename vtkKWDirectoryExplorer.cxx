@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.49 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.50 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -329,7 +329,7 @@ void vtkKWDirectoryExplorer::LoadRootDirectory()
   tmpIcon->SetImage(vtkKWIcon::IconFolderXP);
 
   char strDirID[20];
-  sprintf(strDirID, "%lu", dirID);
+  sprintf(strDirID, "%lu", (long unsigned int)dirID);
 
   this->AddDirectoryNode(
     this->Internals->RootNode, 
@@ -667,7 +667,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
       fullname += filename;
 
       dirID = vtkKWDirectoryExplorer::IdCounter++;
-      sprintf(strDirID, "%lu", dirID);
+      sprintf(strDirID, "%lu", (long unsigned int)dirID);
       tk_treecmd << treecmd;   
       tk_treecmd << strDirID << " -text {" 
                  << filename << "}" << " -image {" 
@@ -1826,7 +1826,7 @@ void vtkKWDirectoryExplorer::CreateNewFolderCallback()
   vtkIdType dirID;
   char strDirID[20];
   dirID = vtkKWDirectoryExplorer::IdCounter++;
-  sprintf(strDirID, "%lu", dirID);
+  sprintf(strDirID, "%lu", (long unsigned int)dirID);
   vtkKWIcon *tmpIcon = vtkKWIcon::New();
   tmpIcon->SetImage(vtkKWIcon::IconFolderXP);
   this->AddDirectoryNode(dirnode.c_str(), 

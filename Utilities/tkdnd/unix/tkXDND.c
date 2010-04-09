@@ -1501,7 +1501,7 @@ char *TkDND_GetCurrentTypeName(void) {
 char *TkDND_GetCurrentTypeCode(void) {
     char tmp[64], *str;
   
-    sprintf(tmp, "0x%08x", dnd->DesiredType);
+    sprintf(tmp, "0x%08x", (unsigned int)dnd->DesiredType);
     str = Tcl_Alloc(sizeof(char) * strlen(tmp));
     strcpy(str, tmp);
     return str;
@@ -1706,7 +1706,7 @@ char *TkDND_GetSourceTypeCodeList(void) {
 
     Tcl_DStringInit(&ds);
     for (atomPtr = dnd->DraggerTypeList; *atomPtr != None; atomPtr++) {
-        sprintf(tmp, "0x%08x", *atomPtr);
+        sprintf(tmp, "0x%08x", (unsigned int)*atomPtr);
         Tcl_DStringAppendElement(&ds, tmp);
     }
     str = Tcl_Alloc(sizeof(char) * (Tcl_DStringLength(&ds)+1));
