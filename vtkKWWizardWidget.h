@@ -161,6 +161,7 @@ public:
   // Get and customize some UI elements.
   vtkGetObjectMacro(CancelButton, vtkKWPushButton);
   vtkGetObjectMacro(OKButton, vtkKWPushButton);
+  vtkGetObjectMacro(FinishButton, vtkKWPushButton);
   vtkGetObjectMacro(HelpButton, vtkKWPushButton);
   vtkGetObjectMacro(SeparatorBeforeButtons, vtkKWSeparator);
   vtkGetObjectMacro(SubTitleLabel, vtkKWLabel);
