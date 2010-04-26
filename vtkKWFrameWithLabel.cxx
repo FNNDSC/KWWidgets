@@ -27,7 +27,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWFrameWithLabel );
-vtkCxxRevisionMacro(vtkKWFrameWithLabel, "$Revision: 1.13 $");
+vtkCxxRevisionMacro(vtkKWFrameWithLabel, "$Revision: 1.14 $");
 
 int vtkKWFrameWithLabel::DefaultLabelCase = vtkKWFrameWithLabel::LabelCaseUppercaseFirst;
 int vtkKWFrameWithLabel::DefaultLabelFontWeight = vtkKWFrameWithLabel::LabelFontWeightBold;
@@ -360,7 +360,7 @@ void vtkKWFrameWithLabel::SetLabelText(const char *text)
 //----------------------------------------------------------------------------
 void vtkKWFrameWithLabel::AdjustMarginCallback()
 {
-  if (this->IsCreated())
+  if (this->IsCreated() && this->IconData)
     {
     // Get the height of the label frame, and share it between
     // the two borders (frame).
