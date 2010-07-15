@@ -23,7 +23,7 @@
  
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWTopLevel );
-vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.38 $");
+vtkCxxRevisionMacro(vtkKWTopLevel, "$Revision: 1.39 $");
 
 //----------------------------------------------------------------------------
 vtkKWTopLevel::vtkKWTopLevel()
@@ -119,7 +119,7 @@ void vtkKWTopLevel::PostCreate()
     }
   if (title)
     {
-    this->Script("wm title %s \"%s\"", this->GetWidgetName(), title);
+    this->Script("wm title %s {%s}", this->GetWidgetName(), title);
     }
 
   if (this->GetMasterWindow())
@@ -407,7 +407,7 @@ void vtkKWTopLevel::SetTitle(const char* _arg)
 
   if (this->Title && this->IsCreated())
     {
-    this->Script("wm title %s \"%s\"", this->GetWidgetName(), this->Title);
+    this->Script("wm title %s {%s}", this->GetWidgetName(), this->Title);
     }
 }
 
