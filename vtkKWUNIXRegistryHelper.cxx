@@ -28,7 +28,7 @@
 #define BUFFER_SIZE 8192
 
 vtkStandardNewMacro( vtkKWUNIXRegistryHelper );
-vtkCxxRevisionMacro(vtkKWUNIXRegistryHelper, "$Revision: 1.7 $");
+vtkCxxRevisionMacro(vtkKWUNIXRegistryHelper, "$Revision: 1.8 $");
 
 //----------------------------------------------------------------------------
 //****************************************************************************
@@ -42,10 +42,16 @@ public:
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-vtkKWUNIXRegistryHelper::vtkKWUNIXRegistryHelper()
+vtkKWUNIXRegistryHelper::vtkKWUNIXRegistryHelper() : vtkKWRegistryHelper()
 {
   this->Internals = new vtkKWUNIXRegistryHelperInternals;
   this->SubKey  = 0;
+
+  const char* home = getenv("HOME");
+  if ( NULL != home )
+    {
+      this->SetConfigurationDirectory(home);
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -59,15 +65,15 @@ vtkKWUNIXRegistryHelper::~vtkKWUNIXRegistryHelper()
 int vtkKWUNIXRegistryHelper::OpenInternal(const char *toplevel,
                                               const char *subkey, 
                                               int readonly)
-{  
+{
   int res = 0;
   int cc;
-  vtksys_ios::ostringstream str;
-  if ( !getenv("HOME") )
+  if ( NULL == this->GetConfigurationDirectory() )
     {
     return 0;
     }
-  str << getenv("HOME") << "/." << toplevel << "rc";
+  vtksys_ios::ostringstream str;
+  str << this->GetConfigurationDirectory() << "/." << toplevel << "rc";
   if ( readonly == vtkKWRegistryHelper::ReadWrite )
     {
     ofstream ofs( str.str().c_str(), ios::out|ios::app );
@@ -144,12 +150,12 @@ int vtkKWUNIXRegistryHelper::CloseInternal()
     return 1;
     }
 
-  vtksys_ios::ostringstream str;
-  if ( !getenv("HOME") )
+  if ( NULL == this->GetConfigurationDirectory() )
     {
     return 0;
     }
-  str << getenv("HOME") << "/." << this->GetTopLevel() << "rc";
+  vtksys_ios::ostringstream str;
+  str << this->GetConfigurationDirectory() << "/." << this->GetTopLevel() << "rc";
   ofstream *ofs = new ofstream(str.str().c_str(), ios::out);
   if ( !ofs )
     {

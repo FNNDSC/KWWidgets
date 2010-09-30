@@ -81,6 +81,11 @@ public:
   // Should the registry be locked?
   vtkGetMacro(Locked, int);
 
+  // Description:
+  // Set or get the configuration directory - valid on UNIX only
+  vtkSetStringMacro(ConfigurationDirectory);
+  vtkGetStringMacro(ConfigurationDirectory);
+
   //BTX
   enum {
     ReadOnly,
@@ -146,6 +151,7 @@ private:
   char *TopLevel;  
   int Locked;
   int GlobalScope;
+  char* ConfigurationDirectory;
 
   vtkKWRegistryHelper(const vtkKWRegistryHelper&); // Not implemented
   void operator=(const vtkKWRegistryHelper&); // Not implemented

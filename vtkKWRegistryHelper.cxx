@@ -24,7 +24,7 @@
 
 #include <ctype.h>
 
-vtkCxxRevisionMacro(vtkKWRegistryHelper, "$Revision: 1.4 $");
+vtkCxxRevisionMacro(vtkKWRegistryHelper, "$Revision: 1.5 $");
 
 //----------------------------------------------------------------------------
 vtkKWRegistryHelper *vtkKWRegistryHelper::New()
@@ -51,6 +51,7 @@ vtkKWRegistryHelper::vtkKWRegistryHelper()
   this->Changed     = 0;
   this->Empty       = 1;
   this->GlobalScope = 0;
+  this->ConfigurationDirectory = NULL;
 }
 
 //----------------------------------------------------------------------------
