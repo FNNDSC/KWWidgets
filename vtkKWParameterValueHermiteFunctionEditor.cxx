@@ -24,7 +24,7 @@
 
 #include <ctype.h>
 
-vtkCxxRevisionMacro(vtkKWParameterValueHermiteFunctionEditor, "$Revision: 1.31 $");
+vtkCxxRevisionMacro(vtkKWParameterValueHermiteFunctionEditor, "$Revision: 1.32 $");
 
 const char *vtkKWParameterValueHermiteFunctionEditor::MidPointTag = "midpoint_tag";
 const char *vtkKWParameterValueHermiteFunctionEditor::MidPointGuidelineTag = "midpoint_guideline_tag";
@@ -1697,7 +1697,8 @@ void vtkKWParameterValueHermiteFunctionEditor::MoveMidPointCallback(
     {
     cursor = "sb_h_double_arrow";
     this->SetFunctionPointMidPoint(
-      this->GetSelectedMidPoint(), 
+      this->GetSelectedMidPoint(),
+      next_x == prev_x ? 0.5 :
       (double)(c_x - prev_x) / (double)(next_x - prev_x));
     }
   else if (button == 3)
