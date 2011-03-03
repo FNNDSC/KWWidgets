@@ -55,7 +55,7 @@
 
 //----------------------------------------------------------------------------
 vtkStandardNewMacro( vtkKWDirectoryExplorer );
-vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.50 $");
+vtkCxxRevisionMacro(vtkKWDirectoryExplorer, "$Revision: 1.51 $");
 
 vtkIdType vtkKWDirectoryExplorer::IdCounter = 1;
 
@@ -563,6 +563,7 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
   vtksys_stl::vector<const char*> dir_list;
   dir_list.reserve(num_files);
   bool dotfound = false, dotdotfound = false;
+  vtksys_stl::string strfilename;
 
   for (int i = 0; i < num_files; i++)
     {
@@ -582,6 +583,21 @@ void vtkKWDirectoryExplorer::UpdateDirectoryNode(const char* node)
         dotdotfound = true;
         continue;
         }
+      }
+
+    // Skip dir that has '\' in the name. 
+    // To fully handle a directory name containing slash, 
+    // we need to modify some methods in vtkDirectory and vtksys::SystemTools. 
+    // Also, the UseRawNodeUserData and UseRawNodeText variables in vtkKWTree
+    // needs to be considered.
+
+    strfilename = filename;
+    if(strfilename.find("\\") != vtksys_stl::string::npos)
+      {
+      vtkWarningMacro(
+        << "KWDirectoryExplorer currently does not support dir name containing slash \""
+        << filename << "\" under path: " << nodepath.c_str());
+      continue;
       }
       
     if (dir->FileIsDirectory(filename))
