@@ -277,6 +277,9 @@ if(KWWidgets_BUILD_VTK_WIDGETS)
   if(NOT VTK_USE_TK)
     message(FATAL_ERROR "Please set VTK_USE_TK to ON in VTK for KWWidgets_BUILD_VTK_WIDGETS to be ON as well.")
   endif(NOT VTK_USE_TK)
+  if(VTK_TCL_INCLUDE_DIR)
+    include_directories("${VTK_TCL_INCLUDE_DIR}" "${VTK_TK_INCLUDE_DIR}")
+  endif(VTK_TCL_INCLUDE_DIR)
   set(KWWidgets_SRCS ${KWWidgets_SRCS}
     vtkKWColorPresetMenu.cxx
     vtkKWColorTransferFunctionEditor.cxx
